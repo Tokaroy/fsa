@@ -63,7 +63,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             mTargetSpeed = 0.0f;
         }
         field_0x250 = randInt_801CD664(0x3D) + 0x3C;
-        mAnim.fn_801D22A0(mDir_0x98, 2);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 2);
         break;
     case 1:
         mSpeed = 0.0f;

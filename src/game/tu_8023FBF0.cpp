@@ -79,10 +79,10 @@ static inline bool carriedOffLayer8(const Player_804A6F38* player) {
     return r;
 }
 
-// ... and that layer lacks view bit 1 (GameView fn_802D7804).
+// ... and that layer lacks view bit 1 (GameView testLayerFlags_802D7804).
 static inline bool carriedOnHiddenLayer(const Player_804A6F38* player) {
     bool r = false;
-    if (carriedOffLayer8(player) && !getGameView_802D6A9C()->fn_802D7804(player->mLayer_0x3b4, 1)) {
+    if (carriedOffLayer8(player) && !getGameView_802D6A9C()->testLayerFlags_802D7804(player->mLayer_0x3b4, 1)) {
         r = true;
     }
     return r;
@@ -91,7 +91,7 @@ static inline bool carriedOnHiddenLayer(const Player_804A6F38* player) {
 // Layer 8, or a layer with view bit 1.
 static inline bool layerShown(s32 layer) {
     bool r = true;
-    if (layer != 8 && !getGameView_802D6A9C()->fn_802D7804(layer, 1)) {
+    if (layer != 8 && !getGameView_802D6A9C()->testLayerFlags_802D7804(layer, 1)) {
         r = false;
     }
     return r;
@@ -1876,7 +1876,7 @@ void Player_804A6F38::fn_8024F0E8(s32 sound) {
         mSoundObj_0x1254->startSound(sound);
         return;
     }
-    if (getGameView_802D6A9C()->fn_802D7804(mLayer_0x3b4, 0x800)) {
+    if (getGameView_802D6A9C()->testLayerFlags_802D7804(mLayer_0x3b4, 0x800)) {
         if (mLayer_0x3b4 < 8) {
             mSoundObj_0x1250->field_0x44 = 0;
             mSoundObj_0x1250->field_0x45 = 0;

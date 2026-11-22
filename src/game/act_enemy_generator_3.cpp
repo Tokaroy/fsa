@@ -89,7 +89,7 @@ void EnemyGenerator3_804AA1D0::update() {
             mRemaining--;
             if (mRemaining == 0) {
                 if (mMode == 0) {
-                    fn_801F35AC();
+                    markDead_801F35AC();
                 } else if (mMode == 1) {
                     mRemaining = mCount;
                     mState = 4;

@@ -146,10 +146,10 @@ public:
     void fn_80405D00(s32 dir);
     // 0x804054B8 (called by fn_80409FDC): shows the cursor pane 'Ndata10' at mCursorX_0x394 /
     // mCursorY_0x398 and the Plicu arrows (lbl_8048C618[dir][2], pairs per direction) in
-    // the directions fn_80405D00 / fn_80405B10 accept; blinks each pair every 15 frames.
+    // the directions fn_80405D00 / moveLevelCursor_80405B10 accept; blinks each pair every 15 frames.
     void fn_804054B8();
-    void fn_80405B10(s32 dir);
-    // Dead-stripped (fn_80405D00, fn_80405B10 and fn_8040B388 inline it): resets the
+    void moveLevelCursor_80405B10(s32 dir);
+    // Dead-stripped (fn_80405D00, moveLevelCursor_80405B10 and fn_8040B388 inline it): resets the
     // mPlanPanes_0x120 panes if field_0x65e is set.
     void inl_80405B10();
     // 0x80405FC0 (called by fn_80411230): draws the four players (player_sob.bin)
@@ -227,7 +227,7 @@ public:
     /* 0x340 */ s32 mStage_0x340; // the selected stage (0-7; fn_80404270)
     /* 0x344 */ s32 mPrevStage_0x344; // the stage selected before mStage_0x340 (fn_80408114)
     /* 0x348 */ s32 mLevel_0x348; // sub-stage of mStage_0x340 (0-3; fn_80409450)
-    /* 0x34C */ s32 field_0x34c; // row of mLevel_0x348 in lbl_8048C88C (fn_80405B10)
+    /* 0x34C */ s32 field_0x34c; // row of mLevel_0x348 in lbl_8048C88C (moveLevelCursor_80405B10)
     /* 0x350 */ s32 mState_0x350; // state
     /* 0x354 */ s32 mPrevState_0x354; // the state seen last by fn_804108B4
     /* 0x358 */ s32 field_0x358;

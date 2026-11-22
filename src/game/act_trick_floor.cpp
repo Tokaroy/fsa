@@ -397,7 +397,7 @@ void TrickFloor_804A83A0::update() {
                 JGeometry::TVec3f pos(48.0f + (96.0f + mPos.x), 48.0f + mPos.y, 0.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x263, 0, 0, NULL, NULL, true, 1.0f);
                 if (field_0x234 == 4) {
-                    const char* name = getGameView_802D6A9C()->fn_802D9C4C();
+                    const char* name = getGameView_802D6A9C()->getStageBgName_802D9C4C();
                     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x82, 1, 0, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x83, 1, 0, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x84, 1, 0, NULL, NULL, true, 1.0f);

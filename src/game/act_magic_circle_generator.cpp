@@ -82,9 +82,9 @@ void MagicCircleGenerator_804A9FB0::update() {
                 mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x2A7, 1, 0, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->startRumble_80134DE4(9, 0);
                 if (getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1 &&
-                    !getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, false)) {
+                    !getGameView_802D6A9C()->testOrSetBit_802D46D8(field_0x250, 0x24E, false)) {
                     lbl_8053AED0->requestMessage_8043D67C(0x24E, field_0x250, 0);
-                    getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, true);
+                    getGameView_802D6A9C()->testOrSetBit_802D46D8(field_0x250, 0x24E, true);
                 }
             }
             startSound_801F0E34(0x30050, 0);

@@ -92,7 +92,7 @@ void cls_804A51E4::fn_801E2D88() {
             mBox.f.x = 8.0f;
             mBox.f.y = 4.0f;
         }
-        if (fn_801D0DD4()) {
+        if (isOnGround_801D0DD4()) {
             mBox.i.y += 4.0f;
             mBox.f.y += 4.0f;
         }

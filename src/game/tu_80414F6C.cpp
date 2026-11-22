@@ -385,7 +385,7 @@ void BattleStageSelect_804B1378::fn_804170EC() {
     if (field_0x109 == 2) {
         lbl_8053AEC4->fn_8042EB98();
     }
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 void BattleStageSelect_804B1378::fn_804170B0() {

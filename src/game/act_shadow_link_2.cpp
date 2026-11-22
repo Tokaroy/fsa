@@ -735,7 +735,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             mPos.y += nudge.y;
         }
     }
-    if ((getShadowLinkFight_801C0D70()->field_0x0 & 0x400) && fn_801D0DD4()) {
+    if ((getShadowLinkFight_801C0D70()->field_0x0 & 0x400) && isOnGround_801D0DD4()) {
         switch (mState) {
         case 0xE:
         case 0xF:
@@ -804,7 +804,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 4:
-        if (mStateTimer > 1 && fn_801D0DD4()) {
+        if (mStateTimer > 1 && isOnGround_801D0DD4()) {
             fn_801C3B7C(5);
         }
         break;
@@ -902,7 +902,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 0x13:
-        if (fn_801D0DD4()) {
+        if (isOnGround_801D0DD4()) {
             if (mStateTimer >= field_0x250 || (mStateTimer >= 2 && mHelper540.fn_802189AC())) {
                 fn_801C3B7C(0x14);
             }
@@ -980,12 +980,12 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
                 mBox2.set(mBox);
             }
         }
-        if (mStateTimer > 1 && fn_801D0DD4()) {
+        if (mStateTimer > 1 && isOnGround_801D0DD4()) {
             fn_801C3B7C(0x1F);
         }
         break;
     case 0x1D:
-        if (fn_801D0DD4()) {
+        if (isOnGround_801D0DD4()) {
             if (getShadowLinkFight_801C0D70()->field_0x0 & 0x400) {
                 if (mStateTimer > 0x1E) {
                     fn_801C3B7C(0x1E);
@@ -1060,7 +1060,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 0x2A:
-        if (fn_801D0DD4()) {
+        if (isOnGround_801D0DD4()) {
             fn_801C6784();
             fn_801C3B7C(0x1C);
         }

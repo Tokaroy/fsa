@@ -21,7 +21,7 @@ public:
     void fn_804361A8();
     void fn_8043651C();
     // 0x80436668: draws the screen at (0, 0) with gGameRoot2_8053AB10's grafcontext,
-    // then lbl_8053AED8's (fn_80440EE8).
+    // then lbl_8053AED8's (draw_80440EE8).
     void fn_80436668();
     // 0x804366B8: runs lbl_804B1690[field_0x6b], then returns whether
     // field_0x6b is 2 (subfic / cntlzw / srwi: a word, not a bool).

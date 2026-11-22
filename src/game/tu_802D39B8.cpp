@@ -3,7 +3,7 @@
 // The view is reached through getGameView_802D6A9C() (this unit's accessor, inlined under
 // deferred inlining): the call's extra inline nodes are what make clearSlots' first loop
 // unroll by two as in the original (gGameRoot_8053AAF8->field_0x4->mView written out unrolls
-// it fully), and fn_802D46D8 match; no function changes for the worse.
+// it fully), and testOrSetBit_802D46D8 match; no function changes for the worse.
 
 #include "game/GameAudio.h"
 #include "game/BgRewrite.h"
@@ -43,7 +43,7 @@ static const f32 lbl_8046E148[4][3] = {
     {224.0f, 232.0f, 0.0f},
 };
 
-// The switch actors fn_802D8328 spawns before the rest of a screen's actors.
+// The switch actors spawnScreenActors_802D8328 spawns before the rest of a screen's actors.
 static const u32 lbl_8046E178[6] = {'CKSW', 'ONOF', 'OFFS', 'GLBS', 'LCLS', 'SWT4'};
 
 // The two tile codes fn_802D4CCC writes for a screen's slot kind (fn_802DED40).
@@ -86,7 +86,7 @@ static const char* lbl_804A9530[19][4] = {
     {NULL, NULL, NULL, NULL},
 };
 
-// "a"-"z", "1a", "1b" (fn_802D9C4C, indexed by field_0x40).
+// "a"-"z", "1a", "1b" (getStageBgName_802D9C4C, indexed by field_0x40).
 static const char* lbl_804A9660[28] = {
     "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
     "t", "u", "v", "w", "x", "y", "z", "1a", "1b",
@@ -516,7 +516,7 @@ void GameView_804A9950::vfunc_0xC() {
     fn_802D92F0();
     fn_802D8D50(false);
     placePlayers();
-    fn_802D8328(true, true);
+    spawnScreenActors_802D8328(true, true);
     JGeometry::TVec3f rankPos(0.0f, 0.0f, 0.0f);
     getActorManager_801F856C()->spawnActor_801F9484('RANK', 0, &rankPos, 0, -1, -1);
     JGeometry::TVec3f gbaoPos(0.0f, 0.0f, 0.0f);
@@ -687,7 +687,7 @@ u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
         fn_802D8D50(true);
         fn_802D6BE0(0);
         fn_802D6BC8(0);
-        fn_802D8328(false, false);
+        spawnScreenActors_802D8328(false, false);
         fn_802D6BF8(0);
         gGameRoot2_8053AB10->field_0x24->fn_8030C9E4(&mVisibleBox);
         moved = true;
@@ -722,7 +722,7 @@ u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
         fn_80231424();
         getActorManager_801F856C()->fn_801F7E88();
         fn_802D8D50(true);
-        fn_802D8328(false, false);
+        spawnScreenActors_802D8328(false, false);
         gGameRoot2_8053AB10->field_0x24->fn_8030C928(&mVisibleBox);
         moved = true;
     }
@@ -794,7 +794,7 @@ void GameView_804A9950::fn_802DBD60() {
     placePlayers();
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
-    fn_802D8328(false, false);
+    spawnScreenActors_802D8328(false, false);
     if (getGameView_802D6A9C()->field_0x131f9 == 2 || getGameView_802D6A9C()->field_0x131f9 == 3) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(0);
         pos.z = 0.0f;
@@ -856,7 +856,7 @@ void GameView_804A9950::fn_802DB6F0() {
     placePlayers();
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
-    fn_802D8328(false, false);
+    spawnScreenActors_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
@@ -913,7 +913,7 @@ void GameView_804A9950::fn_802DA8DC() {
     placePlayers();
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
-    fn_802D8328(false, false);
+    spawnScreenActors_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
@@ -999,7 +999,7 @@ void GameView_804A9950::fn_802DA010() {
     placePlayers();
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
-    fn_802D8328(false, false);
+    spawnScreenActors_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
@@ -1061,7 +1061,7 @@ void GameView_804A9950::fn_802D9CD8() {
     gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
     fn_802D92F0();
     fn_802D8D50(false);
-    fn_802D8328(true, false);
+    spawnScreenActors_802D8328(true, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
 }
@@ -1077,7 +1077,7 @@ const char* GameView_804A9950::fn_802D9C7C(s32 stage, s32 level) {
     return "500";
 }
 
-const char* GameView_804A9950::fn_802D9C4C() {
+const char* GameView_804A9950::getStageBgName_802D9C4C() {
     if (field_0x40 >= 0 && field_0x40 < 28) {
         return lbl_804A9660[field_0x40];
     }
@@ -1097,7 +1097,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
 // "bg_%s_gb_scl.szs" come before "bg_base_sch.szs".
 // Loads the stage's background and object tile images and palettes into the tile map
-// (the background set from fn_802D9C4C's name, the object set from fn_802D9C1C's).
+// (the background set from getStageBgName_802D9C4C's name, the object set from fn_802D9C1C's).
 void GameView_804A9950::fn_802D92F0() {
     char sch[0x20];
     char scl[0x20];
@@ -1106,7 +1106,7 @@ void GameView_804A9950::fn_802D92F0() {
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_base_sch.szs"), 0, 0, 0x6000, 0);
     gGameRoot2_8053AB10->field_0x20->fn_802FA160(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_base_sch.szs"), 0, 1, 0x6000, 0);
-    const char* name = fn_802D9C4C();
+    const char* name = getStageBgName_802D9C4C();
     if (name[0] == 'u') {
         getGameView_802D6A9C()->field_0x131f1 = 1;
     }
@@ -1247,7 +1247,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
 // layer, cell x, cell y, parameter; the switch tags of lbl_8046E178 first, then the rest),
 // then the screen's helper actors, its dropped items and keys; with reset, the per-stage
 // actor lists are cleared too.
-void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
+void GameView_804A9950::spawnScreenActors_802D8328(bool reset, bool flag) {
     s32 serials[1024];
     char name[0x20];
     field_0x131f6 = flag;
@@ -1517,7 +1517,7 @@ s32 GameView_804A9950::fn_802D7B34(s32 layer, s32 slot) {
 }
 
 // The screen's 64-bit mask for the layer (fn_802D4768-fn_802D4ADC inline it).
-u64 GameView_804A9950::fn_802D7AC4(s32 layer) {
+u64 GameView_804A9950::getScreenLayerMask_802D7AC4(s32 layer) {
     if (layer < 8) {
         return getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][0];
     }
@@ -1608,7 +1608,7 @@ void GameView_804A9950::fn_802D782C(u8 value) {
     getGameView_802D6A9C()->field_0x131de = value;
 }
 
-bool GameView_804A9950::fn_802D7804(s32 index, u16 bits) {
+bool GameView_804A9950::testLayerFlags_802D7804(s32 index, u16 bits) {
     return field_0x131b8[index] & bits;
 }
 
@@ -1845,12 +1845,12 @@ GameView_804A9950* getGameView_802D6A9C(void) {
 }
 
 // Scans a layer's tile grid (0x800 cells): records the cells of the screen's switchable
-// tiles in field_0x2948 and, where the screen's mask (fn_802D7AC4) has their bit set,
+// tiles in field_0x2948 and, where the screen's mask (getScreenLayerMask_802D7AC4) has their bit set,
 // rewrites them to their other state; layer 8 and up also handle the two-cell and
 // multi-cell pieces. Layers below 8 then copy the "bg_tenso_sch.bin" tiles.
 // FIXME: 92.13 %, missing/extra; behaviour near.
 void GameView_804A9950::fn_802D4CCC(s32 layer) {
-    u64 mask = getGameView_802D6A9C()->fn_802D7AC4(layer);
+    u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(layer);
     field_0x131b8[layer] = 0;
     field_0x131df[layer] = 0;
     s32 n = 0;
@@ -1890,7 +1890,7 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                         break;
                     }
                 } else {
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, layer, 1, lbl_8046E190[kind][0], lbl_8046E190[kind][1]);
+                    gBgRewrite_8053AC98->writeTilePair_8029EC84(cell, layer, 1, lbl_8046E190[kind][0], lbl_8046E190[kind][1]);
                     n++;
                 }
             } else if (tile == 0x30 || tile == 0x10 || tile == 0xaa || tile == 0x68 || tile == 0x19c ||
@@ -1996,7 +1996,7 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                         break;
                     }
                 } else {
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, layer, 8, lbl_8046E190[kind][0], lbl_8046E190[kind][1]);
+                    gBgRewrite_8053AC98->writeTilePair_8029EC84(cell, layer, 8, lbl_8046E190[kind][0], lbl_8046E190[kind][1]);
                     n++;
                 }
             } else if (tile == 0x26 || tile == 0x27 || tile == 0x36 || tile == 0x37) {
@@ -2292,19 +2292,19 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                             break;
                         case 0x308:
                         case 0x30a:
-                            gBgRewrite_8053AC98->fn_8029DB2C(layer, cell, 0, 0x2ea, 0x2ee, 0x2ee, 0x2ee, 0x2ee, 0x2eb);
+                            gBgRewrite_8053AC98->writeTileRun_8029DB2C(layer, cell, 0, 0x2ea, 0x2ee, 0x2ee, 0x2ee, 0x2ee, 0x2eb);
                             break;
                         case 0x318:
                         case 0x31a:
-                            gBgRewrite_8053AC98->fn_8029DB2C(layer, cell, 0, 0x2fa, 0x2fe, 0x2fe, 0x2fe, 0x2fe, 0x2fb);
+                            gBgRewrite_8053AC98->writeTileRun_8029DB2C(layer, cell, 0, 0x2fa, 0x2fe, 0x2fe, 0x2fe, 0x2fe, 0x2fb);
                             break;
                         case 0x309:
                         case 0x30c:
-                            gBgRewrite_8053AC98->fn_8029DB2C(layer, cell, 2, 0x2ec, 0x2ef, 0x2ef, 0x2ef, 0x2ef, 0x2fc);
+                            gBgRewrite_8053AC98->writeTileRun_8029DB2C(layer, cell, 2, 0x2ec, 0x2ef, 0x2ef, 0x2ef, 0x2ef, 0x2fc);
                             break;
                         case 0x319:
                         case 0x30d:
-                            gBgRewrite_8053AC98->fn_8029DB2C(layer, cell, 2, 0x2ed, 0x2ff, 0x2ff, 0x2ff, 0x2ff, 0x2fd);
+                            gBgRewrite_8053AC98->writeTileRun_8029DB2C(layer, cell, 2, 0x2ed, 0x2ff, 0x2ff, 0x2ff, 0x2ff, 0x2fd);
                             break;
                         case 0x330:
                             gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x338, 0x339);
@@ -2406,7 +2406,7 @@ bool GameView_804A9950::fn_802D4ADC(s32 layer, u16 id) {
                 bit <<= 1;
                 i--;
             }
-            if ((fn_802D7AC4(layer) & bit) != 0) {
+            if ((getScreenLayerMask_802D7AC4(layer) & bit) != 0) {
                 return true;
             }
             return false;
@@ -2432,7 +2432,7 @@ bool GameView_804A9950::fn_802D49A8(s32 layer, u16 id) {
         bit <<= 1;
         i--;
     }
-    if ((fn_802D7AC4(layer) & bit) != 0) {
+    if ((getScreenLayerMask_802D7AC4(layer) & bit) != 0) {
         return true;
     }
     return false;
@@ -2458,7 +2458,7 @@ void GameView_804A9950::fn_802D4874(s32 layer, u16 id, u64* outBit, u64* outMask
         *outBit <<= 1;
         i--;
     }
-    *outMask = fn_802D7AC4(layer);
+    *outMask = getScreenLayerMask_802D7AC4(layer);
 }
 
 void GameView_804A9950::fn_802D4768(s32 layer, u16 id, s64* outSlot, u64* outMask) {
@@ -2471,10 +2471,10 @@ void GameView_804A9950::fn_802D4768(s32 layer, u16 id, s64* outSlot, u64* outMas
         }
     }
     *outSlot = 15 - (i >> 2);
-    *outMask = fn_802D7AC4(layer);
+    *outMask = getScreenLayerMask_802D7AC4(layer);
 }
 
-bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
+bool GameView_804A9950::testOrSetBit_802D46D8(s32 index, u32 bit, bool set) {
     u32 word = bit / 32;
     if (!set) {
         return (getGameView_802D6A9C()->field_0x2d48[index][word] & lbl_8046E1CC[bit % 32]) != 0;

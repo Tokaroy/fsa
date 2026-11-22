@@ -160,7 +160,7 @@ JGeometry::TVec3f* fn_8017EB0C(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
     return v;
 }
 
-void ActorBase_804A5770::fn_8017EAF8(const JGeometry::TVec3f& v) {
+void ActorBase_804A5770::setVel_8017EAF8(const JGeometry::TVec3f& v) {
     mVel_0x3c = v;
 }
 
@@ -739,7 +739,7 @@ void PhantomGanon_804A1318::update() {
                 vel.x = field_0x28c * fn_801544FC(angle);
                 vel.y = field_0x28c * fn_801544E4(angle);
                 child->field_0x2bb = lbl_80539F88[0];
-                child->fn_8017EAF8(vel);
+                child->setVel_8017EAF8(vel);
                 child->mDir_0x98 = angleToDir_801F681C(angle);
             } else {
                 field_0x274 = -1;
@@ -944,7 +944,7 @@ void PhantomGanon_804A1318::update() {
                         shard->field_0x94 = field_0x24c;
                         vel.x = 5.0f * fn_801544FC(spread);
                         vel.y = 5.0f * fn_801544E4(spread);
-                        shard->fn_8017EAF8(vel);
+                        shard->setVel_8017EAF8(vel);
                     }
                 }
                 spread += 0x1000;

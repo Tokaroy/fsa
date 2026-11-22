@@ -82,7 +82,7 @@ void UnknownBGBL_804A4BB0::update() {
             if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
                 mode = 3;
             }
-            u8 hits = fn_801F2740(-1);
+            u8 hits = getPlayersInBox_801F2740(-1);
             if (hits) {
                 for (i = 0; i < 4; i++) {
                     if (hits & (1 << i)) {

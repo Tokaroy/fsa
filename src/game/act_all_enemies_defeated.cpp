@@ -109,10 +109,10 @@ void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
         switch (mField_0x238) {
         case 0: {
             s32 layer = actor->mLayer_0x4;
-            f32 scale1 = actor->fn_801EE4F0();
+            f32 scale1 = actor->getEffectScale_801EE4F0();
             spawnEmitter_8013CC50(layer, &actor->mPos, 0x172, 1, 1, NULL, NULL, true, scale1);
             layer = actor->mLayer_0x4;
-            f32 scale2 = actor->fn_801EE4F0();
+            f32 scale2 = actor->getEffectScale_801EE4F0();
             spawnEmitter_8013CC50(layer, &actor->mPos, 0x173, 1, 1, NULL, NULL, true, scale2);
             actor->fn_801F4694();
             actor->fn_801F3668();
@@ -120,7 +120,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
         }
         case 1: {
             s32 layer = actor->mLayer_0x4;
-            f32 scale = actor->fn_801EE4F0();
+            f32 scale = actor->getEffectScale_801EE4F0();
             spawnEmitter_8013CC50(layer, &actor->mPos, 0x35c, 1, 1, NULL, NULL, true, scale);
             actor->mAlive = false;
             break;
@@ -263,12 +263,12 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D2AC() {
                                 pos.y = lbl_804C1E30[i].y;
                                 pos.z = lbl_804C1E30[i].z;
                                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x18, 1, 7, NULL, NULL, true, 1.0f);
-                                JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x19, 1, 7, NULL, NULL, true, actor->fn_801EE4F0());
+                                JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x19, 1, 7, NULL, NULL, true, actor->getEffectScale_801EE4F0());
                                 startSound_801F0E34(0x3005E, 0);
                                 if (emitter != NULL) {
                                     getEffectSystem_8013C824()->fn_8013C830(mField_0x234, emitter);
                                 }
-                                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1A, 1, 7, NULL, NULL, true, actor->fn_801EE4F0());
+                                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1A, 1, 7, NULL, NULL, true, actor->getEffectScale_801EE4F0());
                                 lbl_804C4E30[i]--;
                                 break;
                             } else {

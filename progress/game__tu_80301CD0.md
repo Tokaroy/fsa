@@ -27,7 +27,7 @@ Findings:
 
 Next: the constructor fn_8030905C (proves the remaining .sbss types: ACDC..ACFC are u8[4],
 lbl_80506D48 is s32[4][4], lbl_805071E8 s16[4][0x80] then the 8 pool dtor chains), then
-fn_8030801C / fn_803085A4 (bitfield records lbl_80506DE8, cls_804AA858Sub11C), fn_803064A8,
+fn_8030801C / fillRecordHeader_803085A4 (bitfield records lbl_80506DE8, cls_804AA858Sub11C), fn_803064A8,
 fn_803066F0, fn_80303870, fn_80303CE4, fn_80304FB0.
 
 Review (Sonnet 5.5, 2026-11-05): d is u8 and g bool in showGbaSprite_803075AC/fn_80307830 (callers pass `x != 0`

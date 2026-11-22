@@ -276,7 +276,7 @@ void Pot_804A9428::die_0x24() {
                 pos.z = 0.0f;
                 s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
-                fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
+                cellToPos_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
                 tilePos.y += 8.0f;
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &tilePos, 0xF, -1, -1);
@@ -291,7 +291,7 @@ void Pot_804A9428::die_0x24() {
                 pos.z = 0.0f;
                 s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
-                fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
+                cellToPos_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
                 tilePos.y += 8.0f;
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &tilePos, 0xF, -1, -1);

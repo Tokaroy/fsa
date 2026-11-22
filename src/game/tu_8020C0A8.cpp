@@ -176,7 +176,7 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
     case 2:
         field_0x2ae = fn_801D0280(field_0x2a8) - 0x8000;
         if (viewLayerFlag(mLayer_0x4)) {
-            if (!(fn_801D0DD4() && fn_801CC9F8(&mPos, mLayer_0x4))) {
+            if (!(isOnGround_801D0DD4() && fn_801CC9F8(&mPos, mLayer_0x4))) {
                 if (field_0x2ae > 0) {
                     field_0x2ae = 0x4000;
                 } else {
@@ -186,8 +186,8 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
         }
         break;
     }
-    if (fn_801D0DD4() && mState != 0) {
-        if (mAnim.fn_801D217C()) {
+    if (isOnGround_801D0DD4() && mState != 0) {
+        if (mAnim.isLoopEnd_801D217C()) {
             startSound_801F0E34(0x5004F, 0);
         }
     }

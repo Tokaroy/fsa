@@ -266,7 +266,7 @@ void InextinguishableFlame_804A9D28::vfunc_0x54() {
 
 void InextinguishableFlame_804A9D28::die_0x24() {
     vfunc_0x54();
-    fn_801F35AC();
+    markDead_801F35AC();
 }
 
 // Returns 1 when one of the four neighbours of pos is a tile in the

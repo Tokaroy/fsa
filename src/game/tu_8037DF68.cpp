@@ -275,7 +275,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
     }
     u32 index = fn_80383EB0(window, fn_803846BC(msg));
     msg = lbl_8053AD78->mBmg->inf1.entries[index].id;
-    if (getGameView_802D6A9C()->fn_802D46D8(window, index, false) == 1) {
+    if (getGameView_802D6A9C()->testOrSetBit_802D46D8(window, index, false) == 1) {
         s32 w = windowIndex(window);
         const char* text = messageText(index);
         u32 next = index;
@@ -339,10 +339,10 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         }
         msg = fn_80383EB0(window, msg);
         if (!(flags & 0x20)) {
-            if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+            if (getGameView_802D6A9C()->testOrSetBit_802D46D8(window, msg, false) == 1) {
                 return false;
             }
-        } else if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+        } else if (getGameView_802D6A9C()->testOrSetBit_802D46D8(window, msg, false) == 1) {
             s32 index = windowIndex(window);
             const char* text = messageText(msg);
             u32 next = msg;
@@ -417,10 +417,10 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
     }
     msg = fn_80383EB0(window, msg);
     if (msg == 0xEA || msg == 0xEB) {
-        if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+        if (getGameView_802D6A9C()->testOrSetBit_802D46D8(window, msg, false) == 1) {
             return false;
         }
-    } else if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+    } else if (getGameView_802D6A9C()->testOrSetBit_802D46D8(window, msg, false) == 1) {
         s32 index = windowIndex(window);
         const char* text = messageText(msg);
         u32 next = msg;
@@ -789,7 +789,7 @@ bool fn_80387494(s32 player) {
         if (!(opt & 1)) {
             if (releasePlayers(player)) {
                     u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
-                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+                getGameView_802D6A9C()->testOrSetBit_802D46D8(window, bit, true);
                 w = lbl_8053AD78->mWindows[window];
                 opt = w->field_0x28;
                 if ((opt >> 3 & 1) || (opt & 0x80)) {
@@ -909,7 +909,7 @@ bool fn_803865B8(s32 player) {
                 pageSound(window);
                 MessageWindow_804AF490* w = lbl_8053AD78->mWindows[window];
                 if (!(w->field_0x28 >> 12 & 1)) {
-                    getGameView_802D6A9C()->fn_802D46D8(window, w->field_0x20, true);
+                    getGameView_802D6A9C()->testOrSetBit_802D46D8(window, w->field_0x20, true);
                 }
                 if (lbl_8053AD78->mWindows[window]->fn_80390C38() != -1) {
                     fn_8038470C(window, lbl_8053AD78->mWindows[window]->fn_80390C38());
@@ -938,7 +938,7 @@ bool fn_803865B8(s32 player) {
 // register before the caller's values (docs/REGALLOC.md, rule 4).
 static inline void setWindowBit(s32 window) {
     u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
-    getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+    getGameView_802D6A9C()->testOrSetBit_802D46D8(window, bit, true);
 }
 
 // Whether the player's window is done: idle, or in state 5 / 8 with nothing left to show
@@ -968,7 +968,7 @@ bool fn_80385960(s32 player) {
                 }
             } else {
                 // The same close without the release.
-                getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
+                getGameView_802D6A9C()->testOrSetBit_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {

@@ -137,8 +137,8 @@ union cls_804AA858Sub11C {
         u32 mPlayer : 2;               // fn_803068D0 (clrlwi 30)
         /* 0x03 */ u32 mKind : 4;      // 5 or 14 for the records fn_802F53F4 keeps
         u32 field_0x3_2 : 2;
-        u32 field_0x3_0 : 2;           // fn_803085A4: lbl_8053AD08
-        // Bytes 4-7 depend on the mode (lbl_80506D48[player], mMode): fn_803085A4
+        u32 field_0x3_0 : 2;           // fillRecordHeader_803085A4: lbl_8053AD08
+        // Bytes 4-7 depend on the mode (lbl_80506D48[player], mMode): fillRecordHeader_803085A4
         // clears the word, then fills the mode's layout.
         /* 0x04 */ union {
             u32 mWord;
@@ -261,7 +261,7 @@ public:
     /* 0x98 */ JUtility::TColor mAddColor;
 }; // Size: 0x9C
 
-// 0x10 at 0xBF9C: a slot that fn_802F601C fills (mKind 0 is free, else the
+// 0x10 at 0xBF9C: a slot that startHeightGridEffect_802F601C fills (mKind 0 is free, else the
 // slot with the smallest mTimer is reused).
 class cls_803003A8 {
 public:
@@ -364,7 +364,7 @@ public:
     // negated) at pos in a mHeightGridEffects_0xbf9c slot; kind 3 keeps dir normalized
     // (r6 is read as a TVec3f only there). act_warp_cannon passes (1, NULL,
     // 1.0f, -2.0f).
-    void fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir, f32 scaleX,
+    void startHeightGridEffect_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir, f32 scaleX,
                      f32 scaleY);
     // 0x802F9714 (game/tu_802F5040.cpp): the same arguments as fn_802FA160
     // (checkCompressed / getResSize for size 0); writes the nibble-swapped
@@ -590,7 +590,7 @@ s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer);
 s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer); // reads only x, y
 // 5 units. The inverse: out = the corner of cell `index` (box corner + the
 // unpacked x, y) with a constant z (psq_st/stfs to out 0/8, 0x80226D88).
-void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out);
+void cellToPos_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out);
 // 2 units. Whether the tile at pos blocks: the collision code of
 // getTileCollisionCode_8022461C (computed inline), 0 / 2 / 0x50 never, 0x22 only while
 // GameView field_0x170 is set; `flag` (clrlwi 24, 0x80226344) selects

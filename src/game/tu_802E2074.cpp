@@ -15,7 +15,7 @@ s32 lbl_8053ACB0;
 // call of the tile lookup (field_0x238 after it, as if the column came through an inlined
 // accessor) and copies the tile byte from r0 to r9 after the 0xFF test; the format string
 // waits for the unit's .rodata split (lbl_8046E9F8). The archive type is 'B   ' plus the
-// stage name's chars less ' ', added after the sprintf (GameView fn_802D8328's form).
+// stage name's chars less ' ', added after the sprintf (GameView spawnScreenActors_802D8328's form).
 void EnemyGenerator2_804A9BC8::init() {
     for (int i = 0; i < 0x50; i++) {
         lbl_804D4768[i] = -1;

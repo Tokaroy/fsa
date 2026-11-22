@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     /* 0x230 */ s32 field_0x230;   // state: switch in update(); 0 from init, vfunc_0x44 returns early in 5
-    /* 0x234 */ JUtility::TColor field_0x234; // colour, from fn_8018330C in init
+    /* 0x234 */ JUtility::TColor field_0x234; // colour, from getShadowColor_8018330C in init
     /* 0x238 */ u8 field_0x238[3];  // red, green, blue of field_0x234 (init)
     /* 0x23C */ s32 field_0x23c;   // draw skips the sprite in states 0 and 1 while 0
     /* 0x240 */ s32 field_0x240;   // zeroed by init

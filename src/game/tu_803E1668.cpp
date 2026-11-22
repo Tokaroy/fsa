@@ -2089,7 +2089,7 @@ void AdvEntryScreen_804B0B00::fn_803E64A0() {
     mScreen->search('Pscuro01')->setAlpha(alpha);
     mScreen->search('Pscuro02')->setAlpha(alpha);
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 // FIXME: 97.03 %, missing/extra; behaviour near.
@@ -2268,7 +2268,7 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
     if (field_0x1d4 == 8) {
         lbl_8053AEC0->fn_804316EC();
     }
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 static inline void updateGameSelectPanes(AdvEntryScreen_804B0B00* self, f32 offset) {
@@ -2354,7 +2354,7 @@ void AdvEntryScreen_804B0B00::fn_803E4940() {
     JGeometry::TBox2f box(0.0f, 0.0f, 280.0f, 210.0f);
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     fn_803E1668();
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 // Draws states 12 and 13 (the results screen field_0x10): each taking
@@ -2392,7 +2392,7 @@ void AdvEntryScreen_804B0B00::fn_803E4650() {
         }
     }
     field_0x10->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 void AdvEntryScreen_804B0B00::fn_803E462C() {

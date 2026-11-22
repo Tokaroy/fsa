@@ -36,11 +36,11 @@ public:
     // animation, mode 2), and updates mCel and mKey.
     void fn_801D1F14(f32 frame);
     // 4 units / 9 calls; callers test r3 with clrlwi 24. fn_801D21F0 for
-    // mode 0, fn_801D217C for mode 2, else 0.
+    // mode 0, isLoopEnd_801D217C for mode 2, else 0.
     bool fn_801D208C();
     // 5 units / 8 calls (clrlwi 24). A looping animation passed its last
     // frame (J3DFrameCtrl::checkPass(mLength - 0.001f)).
-    bool fn_801D217C();
+    bool isLoopEnd_801D217C();
     // 15 units / 53 calls (clrlwi 24). Stopped (J3DFrameCtrl state bit 1),
     // or a mode 0 animation with rate 0 within 0.002 of its end.
     bool fn_801D21F0();
@@ -48,7 +48,7 @@ public:
     // false) if anim is not the current one; returns whether it was set.
     // Callers pass lwz or addi values for anim and li 0 or 2 for mode.
     bool fn_801D2264(s32 anim, s32 mode);
-    bool fn_801D22A0(s32 anim, s32 mode);
+    bool startAnimIfChanged_801D22A0(s32 anim, s32 mode);
     // 54 units / 262 calls. Starts animation `anim` (an index into mTables)
     // in J3DFrameCtrl mode `mode` (stb 0x28; callers pass li 0 or 2): mLength
     // = the sum of its key durations (minus 1 unless mode 2). With keepFrame
@@ -62,7 +62,7 @@ public:
     void fn_801D2608(const s16** tables, s32 count);
 
     // Inline helpers: their code is repeated in fn_801D1C18, fn_801D1D60,
-    // fn_801D1F14 and startAnim_801D22DC (fn_801D208C repeats fn_801D217C and
+    // fn_801D1F14 and startAnim_801D22DC (fn_801D208C repeats isLoopEnd_801D217C and
     // fn_801D21F0 the same way). Not called out of line anywhere.
     void calcCel();
     void setFrameInline(f32 frame);

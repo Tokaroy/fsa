@@ -678,7 +678,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                 p++;
             }
             if (slot->mTimer == 290) {
-                fn_802F601C(&slot->mPos, 2, NULL, 1.0f, 1.0f);
+                startHeightGridEffect_802F601C(&slot->mPos, 2, NULL, 1.0f, 1.0f);
             }
             break;
         }
@@ -1671,7 +1671,7 @@ void TileMap_804AA858::fn_802FA3FC() {
     const TileShade_802FA3FC* table;
     s32 count;
     f32 alphaScale = 1.0f;
-    s8 stage = getGameView_802D6A9C()->fn_802D9C4C()[0];
+    s8 stage = getGameView_802D6A9C()->getStageBgName_802D9C4C()[0];
     JUTTexture tex((const ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "circle.bti"), 0);
     switch (stage) {
     case 'c':
@@ -3042,7 +3042,7 @@ u8 TileMap_804AA858::fn_802F6298(const JGeometry::TVec3f* pos, void* res, s32 fr
 
 // Starts an effect of `kind` at pos in a free slot of mHeightGridEffects_0xbf9c, else in
 // the one with the smallest timer; kind 3 also keeps the normalized dir.
-void TileMap_804AA858::fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir,
+void TileMap_804AA858::startHeightGridEffect_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir,
                                f32 scaleX, f32 scaleY) {
     s32 minTimer = -1;
     s32 minIndex = 0;

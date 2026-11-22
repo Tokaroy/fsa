@@ -43,7 +43,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
         mTargetSpeed = 2.5f;
-        mAnim.fn_801D22A0(mDir_0x98 + 0x14, 2);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98 + 0x14, 2);
         field_0x2bc = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x116, 0, 0, NULL, NULL, true, 1.0f);
         field_0x2c0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x115, 0, 0, NULL, NULL, true, 1.0f);
         break;
@@ -78,7 +78,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         n.normalize();
         JGeometry::TVec3f at = mPos + off;
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F601C(&at, 3, &n, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&at, 3, &n, 1.0f, 1.0f);
         }
         break;
     }
@@ -88,7 +88,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         mTargetSpeed = 0.0f;
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
-        mAnim.fn_801D22A0(mDir_0x98, 0);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 0);
         if (state == 7) {
             field_0x2b8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x565, 0, 1, NULL, NULL, true, 0.5f);
             startSound_801F0E34(0x4000E, 0);

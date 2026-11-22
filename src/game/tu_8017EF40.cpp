@@ -535,7 +535,7 @@ void HelmarocKing_804A1630::update() {
             if (serial >= 0) {
                 ActorBase_804A5770* rock = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (rock != NULL) {
-                    rock->fn_8017EAF8(JGeometry::TVec3f(0.0f, 0.0f, -1.0f));
+                    rock->setVel_8017EAF8(JGeometry::TVec3f(0.0f, 0.0f, -1.0f));
                     field_0x25c++;
                 }
             }
@@ -834,7 +834,7 @@ void HelmarocKing_804A1630::update() {
                                 vel.y = cosVal * (3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                                 vel.z = 8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f;
                                 piece->field_0x27c.set(vel);
-                                piece->fn_8017EAF8(vel);
+                                piece->setVel_8017EAF8(vel);
                             }
                         }
                     }
@@ -1010,7 +1010,7 @@ void HelmarocKing_804A1630::update() {
                     }
                     vel.y = -(1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     vel.z = 0.0f;
-                    piece->fn_8017EAF8(vel);
+                    piece->setVel_8017EAF8(vel);
                     piece->mDir_0x98 = mDir_0x98;
                 }
             }
@@ -1067,7 +1067,7 @@ void HelmarocKing_804A1630::update() {
                         }
                         vel.y = -(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f);
                         vel.z = 0.0f;
-                        piece->fn_8017EAF8(vel);
+                        piece->setVel_8017EAF8(vel);
                         piece->mDir_0x98 = mDir_0x98;
                     }
                 }

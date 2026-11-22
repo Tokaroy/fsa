@@ -237,7 +237,7 @@ public:
     // with mDir_0x98.
     s32 fn_801CF1B0(bool turn, f32 range, f32 margin);
     // 3 units / 7 calls (stored to mDir_0x98). A random direction
-    // (randInt_801CD664(4)), or fn_801CF720's when blocked (fn_801CFCF0).
+    // (randInt_801CD664(4)), or fn_801CF720's when blocked (isStepBlocked_801CFCF0).
     s32 fn_801CF6B8();
     // 3 units / 9 calls (callers pass mDir_0x98 or li 3; stored to
     // mDir_0x98). A random direction other than `dir` (fn_801CD580),
@@ -249,18 +249,18 @@ public:
     // 4 units / 15 calls (clrlwi.). Whether the way from `from` to `to`
     // (x, y) on `layer` is clear, tested with fn_801CFA70 at the ends and
     // in between.
-    bool fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer);
+    bool isWayBlocked_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 5 calls (clrlwi; cmplwi 1). Both points inside the view's
     // box for `layer` (0xCC, or 0xDC for layer 8 and up) and the map
     // between them clear (getTileCollisionCode_8022461C-style lookups on layer).
-    // It reads only (x, y) of both points, and fn_801CF888 passes it 8-byte
+    // It reads only (x, y) of both points, and isWayBlocked_801CF888 passes it 8-byte
     // TVec2f slots: the original's parameters were likely TVec2f (as are
     // getTileCollisionCodeAlt_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
     // 8-byte slots too). Kept TVec3f for the TVec3f callers (tu_801C5B08).
     bool fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 6 calls (clrlwi.). fn_801CFD68(dir, 6.0f + the box edge on
     // that side): whether a step in direction `dir` is free.
-    bool fn_801CFCF0(s32 dir);
+    bool isStepBlocked_801CFCF0(s32 dir);
     // 1 unit / 5 calls (act_rope: li 0-3 and an f1). Whether moving `dist`
     // in direction `dir` stays clear of the map; 0 or 1.
     bool fn_801CFD68(s32 dir, f32 dist);
@@ -293,7 +293,7 @@ public:
     // 9 units / 18 calls (clrlwi.). Whether `player` can be targeted (the
     // player tests fn_8022CAF8 / fn_8022F514 and the actor-id list of
     // fn_801D0338).
-    bool fn_801D0B44(s32 player);
+    bool canTargetPlayer_801D0B44(s32 player);
     // 2 units / 6 calls (clrlwi.). Whether mPlayerPos_0x1ac[player] is within
     // `dist` of *pos (squared distance in x, y).
     bool fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f32 dist);
@@ -302,7 +302,7 @@ public:
     f32 fn_801D0DA0(s32 player, const JGeometry::TVec3f* pos);
     // 6 units / 13 calls (clrlwi.). On a floor layer: ENEMY_FLAG_LANDED or
     // 0x10 set; elsewhere mPos.z <= 0.
-    bool fn_801D0DD4() const;
+    bool isOnGround_801D0DD4() const;
     // 3 units / 3 calls. Snaps mPos (x, y) with fn_801CCD34 and copies it
     // to mPrevPos and mSpawnPos.
     void fn_801D0E58();
@@ -313,7 +313,7 @@ public:
     // game/tu_801CDC8C.cpp.
     void moveStep();
     void stateStep(u8 mapHit);
-    // The player search fn_801D0B44 / fn_801D05F8 / fn_801D0DA0 do, inlined
+    // The player search canTargetPlayer_801D0B44 / fn_801D05F8 / fn_801D0DA0 do, inlined
     // in the other searches of the unit.
     bool isPlayerOnLayer(s32 player);
     bool canTargetPlayer(s32 player);

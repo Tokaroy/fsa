@@ -221,7 +221,7 @@ void Poe_8049F330::update() {
             }
         } else {
             JGeometry::TVec3f d;
-            fn_801EE8F4(&d, NULL, 0);
+            getNearestPlayerDir_801EE8F4(&d, NULL, 0);
             if (d.x < 0.0f) {
                 mVel_0x3c.x -= 0.01f;
             } else {
@@ -252,7 +252,7 @@ void Poe_8049F330::update() {
         break;
     case 2: {
         f32 dist;
-        fn_801EE8F4(NULL, &dist, 0);
+        getNearestPlayerDir_801EE8F4(NULL, &dist, 0);
         if (dist < 16.0f) {
             field_0x270 = 200.0f;
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1FD, 1, 1, NULL, NULL, true, 1.0f);

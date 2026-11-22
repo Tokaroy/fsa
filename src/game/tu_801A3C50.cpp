@@ -21,7 +21,7 @@ s32 ActorBase_804A5770::fn_801A6160() {
     timer = field_0xa8;
     if (timer != 0) {
         if (timer == 30) {
-            f32 scale = fn_801EE4F0();
+            f32 scale = getEffectScale_801EE4F0();
             if (scale < 1.0f) {
                 scale = 1.0f;
             }
@@ -192,16 +192,16 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             if (mLife < 1000) {
                 switch (arrow->mDir_0x98) {
                 case 0:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
                 case 1:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
                 case 2:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
                 case 3:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
                 }
             }

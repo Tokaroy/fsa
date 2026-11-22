@@ -250,7 +250,7 @@ void Wallmaster_804A3E44::fn_801BC554(s32 state) {
         mParam.mIndex = 0;
         mParam.mTarget = mParam.mOrder[mParam.mIndex];
         mParam.field_0x24 = 0;
-        mAnim.fn_801D22A0(4, 2);
+        mAnim.startAnimIfChanged_801D22A0(4, 2);
         break;
     }
 
@@ -317,7 +317,7 @@ inline bool Wallmaster_804A3E44::checkPlayerHit() {
         if (field_0x2b8 >= 0 && !fn_8022DCD8(field_0x2b8)) {
             if (isUpperLayer_801CD2F8(mLayer_0x4) || !isUpperLayer_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
                 mBox.set(-8.0f, -9.0f, 8.0f, 6.0f);
-                u8 hit = fn_801F2740(-1);
+                u8 hit = getPlayersInBox_801F2740(-1);
                 if (hit & (1 << field_0x2b8)) {
                     hitFlag = true;
                 }

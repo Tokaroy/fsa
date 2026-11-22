@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     /* 0x230 */ s32 field_0x230; // state: switch in update()
-    /* 0x234 */ JUtility::TColor field_0x234; // colour, from fn_8018330C in init (-1 until then)
+    /* 0x234 */ JUtility::TColor field_0x234; // colour, from getShadowColor_8018330C in init (-1 until then)
     /* 0x238 */ u8 field_0x238[3]; // red, green, blue of field_0x234
     /* 0x23B */ u8 field_0x23b;
     /* 0x23C */ s32 field_0x23c;

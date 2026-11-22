@@ -103,7 +103,7 @@ void BuzzBlob_8049F444::update() {
         if (landed || field_0x238 == 0) {
             field_0x238 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
             JGeometry::TVec3f dir;
-            fn_801EE8F4(&dir, NULL, 0);
+            getNearestPlayerDir_801EE8F4(&dir, NULL, 0);
             dir.scale(0.3f);
             mVel_0x3c.x = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + dir.x;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {

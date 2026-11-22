@@ -11,7 +11,7 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
 - tu_801EE24C: fn_801F329C.
 
 ## Resistant
-- tu_801EE24C fn_801F320C 94.2 % (scheduling): lwz field_0x4 issued after
+- tu_801EE24C isPlayerOnLayer_801F320C 94.2 % (scheduling): lwz field_0x4 issued after
   `mr r28, r3` instead of right after the prologue's `stw r31`; cmpw operands
   swapped. 7 tries (budget 6).
 

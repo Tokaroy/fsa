@@ -23,7 +23,7 @@ static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeome
 static inline void facePlayer(ShootingGallery_804A2B18* self, s32 player) {
     JGeometry::TVec3f diff;
     f32 dist;
-    self->fn_801EE8F4(&diff, &dist, player);
+    self->getNearestPlayerDir_801EE8F4(&diff, &dist, player);
     if (dist < 100.0f) {
         u32 angle = (u16)(JMath::atanTable_.atan2_(-diff.x, -diff.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -140,7 +140,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
 // FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
-// the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
+// the by-value position temporaries for fn_8038AD24 and getNearestPlayerDir_801EE8F4 and the loop registers in cases 0, 3,
 // and 5 differ; lbl_8053ABB8 is referenced via @sda21 in the original (split into act_all_enemies_defeated.cpp).
 void ShootingGallery_804A2B18::fn_8019F3AC() {
     JGeometry::TVec3f pos = mPos;

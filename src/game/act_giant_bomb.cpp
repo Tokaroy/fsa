@@ -109,7 +109,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
     }
 
     if (layer < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F601C(pos, 6, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(pos, 6, NULL, 1.0f, 1.0f);
     }
 
     spawnEmitter_8013CC50(layer, pos, 0x33, 1, 1, NULL, NULL, true, 1.0f);

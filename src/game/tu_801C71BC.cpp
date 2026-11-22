@@ -50,7 +50,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
             JGeometry::TVec2f prev(cur.x, cur.y);
             cur.x += stepX;
             cur.y += stepY;
-            if (fn_801CF888(&prev, (const JGeometry::TVec3f*)&cur, mLayer_0x4)) {
+            if (isWayBlocked_801CF888(&prev, (const JGeometry::TVec3f*)&cur, mLayer_0x4)) {
                 break;
             }
             JGeometry::TVec2f toGoal(field_0x32c.x - cur.x, field_0x32c.y - cur.y);
@@ -58,7 +58,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
             toGoal.x *= 14.0f;
             toGoal.y *= 14.0f;
             probe.set(cur.x + toGoal.x, cur.y + toGoal.y);
-            if (!fn_801CF888(&cur, (const JGeometry::TVec3f*)&probe, mLayer_0x4)) {
+            if (!isWayBlocked_801CF888(&cur, (const JGeometry::TVec3f*)&probe, mLayer_0x4)) {
                 dir->set(cur.x - startX, cur.y - startY);
                 return;
             }
@@ -170,7 +170,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         JGeometry::TVec2f detour;
         fn_801C9234(&detour);
         if ((field_0x524.field_0x0 & 0x800) && !(mFlags & 0x2000000) && !(mFlags & 0x100000) &&
-            fn_801CF888(&detour, &field_0x32c, mLayer_0x4)) {
+            isWayBlocked_801CF888(&detour, &field_0x32c, mLayer_0x4)) {
             bool moved = false;
             u8 next;
             u8 current;
@@ -308,7 +308,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
                 JGeometry::TVec3f p1;
                 fn_800FE294(&p1, field_0x358.fn_80214244(), prev);
                 JGeometry::TVec3f copy1 = p1;
-                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, mLayer_0x4)) {
+                if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(prev);
                 }
             }
@@ -317,7 +317,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
                 JGeometry::TVec3f p0;
                 fn_800FE294(&p0, field_0x358.fn_80214244(), next);
                 JGeometry::TVec3f copy0 = p0;
-                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, mLayer_0x4)) {
+                if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(next);
                 }
             }
@@ -387,7 +387,7 @@ void ShadowLink2_804A43E8::fn_801C7EE4() {
     if (!(mFlags & 0x2000000)) {
         if (field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
             if ((viewLayerFlag(mLayer_0x4) && __fabsf(mPos.y - field_0x32c.y) > 1.0f) ||
-                fn_801CF888((const JGeometry::TVec2f*)&mPos, &field_0x32c, mLayer_0x4)) {
+                isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &field_0x32c, mLayer_0x4)) {
                 mFlags |= 0x400000;
             }
         }
@@ -571,7 +571,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
         fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
         if (fn_801CCB1C(&railPos, mLayer_0x4)) {
             fn_801C8B50();
-            if (!fn_801D0DD4()) {
+            if (!isOnGround_801D0DD4()) {
                 return;
             }
             if (field_0x524.field_0x0 & 0x40) {
@@ -633,7 +633,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     s16 targetAngle = fn_801D02E0(&field_0x32c);
     if (mFlags & 0x20000) {
-        fn_801CD930(&field_0x33c, targetAngle, 0x500);
+        stepAngle_801CD930(&field_0x33c, targetAngle, 0x500);
     } else {
         field_0x33c = targetAngle;
     }

@@ -433,7 +433,7 @@ void BigPoe_804A0440::update() {
         addCalc2_801F71A4(&field_0x27c, field_0x280, 0.5f, 1.0f);
         if (field_0x27c < 0.2f * (f32)field_0x25c + 0.1f) {
             if (mLayer_0x4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 2, NULL, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 2, NULL, 1.0f, 1.0f);
             }
             startSound_801F0E34(0x40021, 0);
             for (s32 i = 0, param = 0; i < 6; i++, param += 0x2AAA00) {

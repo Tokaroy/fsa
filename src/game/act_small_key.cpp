@@ -522,7 +522,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         getGameView_802D6A9C()->fn_802D6C10(pos, layer);
     }
     u8 bit = 1;
-    u8 players = fn_801F2740(-1);
+    u8 players = getPlayersInBox_801F2740(-1);
     if (players != 0) {
         if (fn_802C2300(players) == true) {
             field_0x240 = 0xB;
@@ -1122,7 +1122,7 @@ bool SmallKey_804A8CD8::fn_802C2300(u8 playerBits) {
         field_0x2a0 = index;
     }
 
-    if (!getGameView_802D6A9C()->fn_802D46D8(field_0x2a0, 0x168, false)) {
+    if (!getGameView_802D6A9C()->testOrSetBit_802D46D8(field_0x2a0, 0x168, false)) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             if (fn_802308E0(field_0x2a0) == true) {
                 fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, 0, 0);

@@ -77,7 +77,7 @@ void ZoraLotus_804AC3E0::vfunc_0xA8() {
             touching = outlineInBox(this, i);
         }
         if (fn_80233E40(i)) {
-            if ((1 << i) & fn_801F2740(-1)) {
+            if ((1 << i) & getPlayersInBox_801F2740(-1)) {
                 if (mSpawnParam_0x90 & 1) {
                     fn_8022DC3C(i);
                 }
@@ -234,7 +234,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
             fn_801CD950(&field_0x54.x, 1.5f, 0.05f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
-        } else if (mStateTimer >= field_0x250 && mAnim.fn_801D217C()) {
+        } else if (mStateTimer >= field_0x250 && mAnim.isLoopEnd_801D217C()) {
             setState_801BACE8(2);
             vfunc_0xB0();
         }
@@ -245,7 +245,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
         }
         break;
     case 3:
-        if (mStateTimer >= field_0x250 && mAnim.fn_801D217C()) {
+        if (mStateTimer >= field_0x250 && mAnim.isLoopEnd_801D217C()) {
             setState_801BACE8(5);
         }
         break;

@@ -35,14 +35,14 @@ void HammerBulge_804A88E8::init() {
     }
 }
 
-// FIXME: scheduling+regalloc + reloc-name (94.76%). Our frame saves r29-r31 where the original saves r28-r31 (the original keeps one more local live across the loop, so every register from this/loop counter on is shifted by one); the fn_802F601C argument loads and the TBox2f scale stores are also scheduled differently.
+// FIXME: scheduling+regalloc + reloc-name (94.76%). Our frame saves r29-r31 where the original saves r28-r31 (the original keeps one more local live across the loop, so every register from this/loop counter on is shifted by one); the startHeightGridEffect_802F601C argument loads and the TBox2f scale stores are also scheduled differently.
 void HammerBulge_804A88E8::update() {
     switch (field_0x230) {
     case 0: {
         int j;
         if (field_0x244 > 0.0f || field_0x248 > 0.0f) {
             if (mLayer_0x4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 5, NULL, field_0x244, field_0x248);
+                gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 5, NULL, field_0x244, field_0x248);
             }
         }
 

@@ -82,7 +82,7 @@ void WindEnvironment_8049CC98::init() {
 }
 
 JAISoundHandle* ActorSoundObj_804578F4::startSound(JAISoundID id) {
-    return fn_80456334(id, 0);
+    return startSound_80456334(id, 0);
 }
 
 void WindEnvironment_8049CC98::update() {

@@ -1592,8 +1592,8 @@ void Ganon_804A25F0::update() {
         if (field_0x2f8 >= 0) {
             ActorBase_804A5770* owner = findActorBySerial_8015445C(field_0x2f8);
             if (owner != NULL) {
-                f32 dx = owner->fn_801544DC()->x - mPos.x;
-                f32 dy = owner->fn_801544DC()->y - mPos.y;
+                f32 dx = owner->getPos_801544DC()->x - mPos.x;
+                f32 dy = owner->getPos_801544DC()->y - mPos.y;
                 if (fn_80154378(dx * dx + dy * dy) < 8.0f) {
                     zeroVec_801546BC(&field_0x2b8);
                     zeroVec_801546BC(&mVel_0x3c);

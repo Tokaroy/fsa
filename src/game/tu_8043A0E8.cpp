@@ -778,10 +778,10 @@ bool HudMgr_804B1920::requestMessage_8043D67C(s32 id, u32 arg1, u32 arg2) {
         return false;
     }
     if (id == 0x199u) {
-        if (getGameView_802D6A9C()->fn_802D46D8(0, id, false) == true) {
+        if (getGameView_802D6A9C()->testOrSetBit_802D46D8(0, id, false) == true) {
             return false;
         }
-        getGameView_802D6A9C()->fn_802D46D8(0, id, true);
+        getGameView_802D6A9C()->testOrSetBit_802D46D8(0, id, true);
     } else if (id == 0x1B5u) {
         u8 bit = 1 << arg1;
         if (bool(field_0xde & bit) == true) {
@@ -792,10 +792,10 @@ bool HudMgr_804B1920::requestMessage_8043D67C(s32 id, u32 arg1, u32 arg2) {
     u8 type;
     fn_80383E2C(id, &type);
     if (type == 0x2A) {
-        if (getGameView_802D6A9C()->fn_802D46D8(0, id, false) == true) {
+        if (getGameView_802D6A9C()->testOrSetBit_802D46D8(0, id, false) == true) {
             return false;
         }
-        getGameView_802D6A9C()->fn_802D46D8(0, id, true);
+        getGameView_802D6A9C()->testOrSetBit_802D46D8(0, id, true);
     }
     field_0x10a = 1;
     field_0xfc = arg1 + 1;

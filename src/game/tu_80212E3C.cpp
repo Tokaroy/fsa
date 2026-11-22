@@ -97,7 +97,7 @@ void Antlion_804A6340::fn_80213774(int mode) {
             mBox.f.y = 8.0f * vy;
         }
         field_0x250 = randInt_801CD664(0x3D) + 0x1E;
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         startSound_801F0E34(0x50035, 0);
         break;
     case 5:
@@ -173,7 +173,7 @@ void Antlion_804A6340::updateState_0x90(u8 mapHit) {
         if (mFlags & 0x4000) {
             fn_80213774(6);
         } else if (mStateTimer >= field_0x250) {
-            if (mAnim.fn_801D217C()) {
+            if (mAnim.isLoopEnd_801D217C()) {
                 startSound_801F0E34(0x50035, 0);
                 fn_80213774(5);
             }
@@ -209,7 +209,7 @@ void Antlion_804A6340::updateState_0x90(u8 mapHit) {
 }
 
 void Antlion_804A6340::updateAnim_0x94() {
-    if (mState == 4 && mAnim.mAnim == 1 && mAnim.fn_801D217C()) {
+    if (mState == 4 && mAnim.mAnim == 1 && mAnim.isLoopEnd_801D217C()) {
         startSound_801F0E34(0x50035, 0);
     }
     EnemyBase_804A4808::updateAnim_0x94();

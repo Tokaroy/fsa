@@ -767,7 +767,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         mBox.i.y = -4.0f;
         mBox.f.x = 4.0f;
         mBox.f.y = 4.0f;
-        if (u8 mask = fn_801F2740(-1)) {
+        if (u8 mask = getPlayersInBox_801F2740(-1)) {
             s32 p = highestPlayer(mask);
             if (field_0x264 == p || field_0x264 == fn_8022F3DC(p)) {
                 if (damagePlayersInBox_801F2B7C(0, -1, 1)) {

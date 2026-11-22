@@ -143,7 +143,7 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
         mAnim.startAnim_801D22DC(0, 0, false);
         break;
     case 1:
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         if (mState != 6) {
             startSound_801F0E34(0x400AA, 0);
         }
@@ -154,7 +154,7 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
         } else {
             field_0x250 = randInt_801CD664(181) + 120;
         }
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         field_0x2b8.x = mPos.x;
         field_0x2b8.y = mPos.y;
         if (field_0x2a8 >= 0) {
@@ -167,17 +167,17 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
         }
         break;
     case 3:
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
         break;
     case 4:
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         mTargetSpeed = 4.5f;
         field_0x2b2 = fn_801D0280(field_0x2a8);
         break;
     case 5:
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         field_0x2b8.x = mPos.x;
         field_0x2b8.y = mPos.y;
         {
@@ -190,7 +190,7 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
         break;
     case 6:
         field_0x2a8 = -1;
-        mAnim.fn_801D22A0(1, 2);
+        mAnim.startAnimIfChanged_801D22A0(1, 2);
         break;
     }
     mStateTimer = 0;
@@ -226,7 +226,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
 
     case 2:
         if (field_0x2a8 >= 0) {
-            if (!fn_80230188(field_0x2a8) && !fn_801D0B44(field_0x2a8)) {
+            if (!fn_80230188(field_0x2a8) && !canTargetPlayer_801D0B44(field_0x2a8)) {
                 s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
@@ -259,7 +259,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
 
     case 3:
         if (mStateTimer >= 15) {
-            if (!fn_801D0B44(field_0x2a8)) {
+            if (!canTargetPlayer_801D0B44(field_0x2a8)) {
                 s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
@@ -275,7 +275,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
 
     case 4:
         if (mStateTimer >= 50) {
-            if (!fn_801D0B44(field_0x2a8)) {
+            if (!canTargetPlayer_801D0B44(field_0x2a8)) {
                 s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
@@ -290,7 +290,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
         break;
 
     case 5:
-        if (!fn_801D0B44(field_0x2a8)) {
+        if (!canTargetPlayer_801D0B44(field_0x2a8)) {
             s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
                 field_0x2a8 = player;

@@ -492,7 +492,7 @@ void cls_804A51E4::setState_801E1594(s32 newState) {
         if (mState == 0xD) {
             mAnim.startAnim_801D22DC(mDir_0x98 + 0xD, 0, false);
         } else {
-            mAnim.fn_801D22A0(mDir_0x98, 2);
+            mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 2);
         }
         break;
     case 3:
@@ -501,7 +501,7 @@ void cls_804A51E4::setState_801E1594(s32 newState) {
         if (field_0x2ac >= 0) {
             mAnim.startAnim_801D22DC(mDir_0x98 + 0xF, 2, false);
         } else {
-            mAnim.fn_801D22A0(mDir_0x98, 2);
+            mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 2);
         }
         break;
     case 5:
@@ -570,7 +570,7 @@ void cls_804A51E4::setState_801E1594(s32 newState) {
         field_0x250 = -1;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        mAnim.fn_801D22A0(mDir_0x98, 2);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 2);
         break;
     case 16:
         startSound_801F0E34(0x5001D, 0);
@@ -1080,7 +1080,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         break;
     case 10:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            if (fn_801D0DD4()) {
+            if (isOnGround_801D0DD4()) {
                 if (fn_801E2F40()) {
                     setState_801E1594(14);
                 } else {

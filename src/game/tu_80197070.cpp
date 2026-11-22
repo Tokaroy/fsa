@@ -1183,7 +1183,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 f32 dy = ganon->mPos.y - (zld->mPos.y - zld->mPos.z);
                 vel.x = 2.0f * JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
                 vel.y = 2.0f * JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
-                zld->fn_8017EAF8(vel);
+                zld->setVel_8017EAF8(vel);
                 zld->field_0x274 = vel.x;
                 zld->field_0x278 = vel.y;
                 zld->field_0x27c = vel.z;

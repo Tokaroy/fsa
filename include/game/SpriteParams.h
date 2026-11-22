@@ -9,7 +9,7 @@
 #include "dolphin/gx/GXStruct.h"
 #include "JSystem/JUtility/TColor.h"
 
-// A colour word: tu_802EF76C keeps fn_8018330C's colour in one and splits
+// A colour word: tu_802EF76C keeps getShadowColor_8018330C's colour in one and splits
 // its bytes.
 union SpriteParamsColor_801F5AE0 {
     s32 mWord;

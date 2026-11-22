@@ -76,7 +76,7 @@ public:
     // layer's slot list (field_0x131b8[layer], field_0x131df[layer] cleared first).
     void fn_802D4CCC(s32 layer);
     // 0x92C bytes; this unit only (fn_802D9CD8, fn_802DBD60, vfunc_0xC). Loads
-    // the background ('bg_%s_*' from fn_802D9C4C) and object tile images and
+    // the background ('bg_%s_*' from getStageBgName_802D9C4C) and object tile images and
     // palettes into the tile map; sets field_0x131f1 for the 'u' backgrounds.
     void fn_802D92F0();
     // 1 unit / 1 call. sprintf of "d_map%s_%d%d_mmm_2_%d.szs" (lbl_8046E7E8)
@@ -90,7 +90,7 @@ public:
     // parameter), then 'TINK', 'LFGN', 'TBGN', 'SWDL' and the screen's 'LSTI' /
     // 'KEY0' slots; with reset, also clears the per-stage actor lists (and
     // lbl_8053AC30). flag is stored in field_0x131f6. Both are bools (clrlwi.).
-    void fn_802D8328(bool reset, bool flag);
+    void spawnScreenActors_802D8328(bool reset, bool flag);
     // 0x5A0 bytes; this unit only. Loads the current screen's tile grids
     // ('M' + stage name resources, layers 0/1 and 8-22) and sets mVisibleBox and
     // the tile map's cell counts; with reload, first copies layers 0/1 to 4/5
@@ -101,7 +101,7 @@ public:
     const char* fn_802D9C1C();
     // 9 units. Entry field_0x40 of the 28-entry table lbl_804A9660, or
     // lbl_8054106C.
-    const char* fn_802D9C4C();
+    const char* getStageBgName_802D9C4C();
     // 1 unit (this unused). lbl_804A9530[a][b] when gGameRoot_8053AAF8->0x7F == 1,
     // else lbl_80541128.
     const char* fn_802D9C7C(s32 a, s32 b);
@@ -109,7 +109,7 @@ public:
     void fn_802D9CB0();
     // 1 unit. 0x2E4 bytes; no arguments. Clears the per-screen bit and byte
     // tables, rebuilds the screen (fn_802D3D48, fn_802D92F0, fn_802D8D50,
-    // fn_802D8328) and hands mVisibleBox to the camera and the tile map.
+    // spawnScreenActors_802D8328) and hands mVisibleBox to the camera and the tile map.
     void fn_802D9CD8();
     // 1 unit. field_0xc4 = 0x8CA0 if gGameRoot_8053AAF8->0x7F == 1, else 0x2A30.
     void fn_802D9FBC();
@@ -121,7 +121,7 @@ public:
     // isInTransition_802DCD0C. Returns the byte as is: the caller converts it to bool.
     u8 fn_802DA000();
     // 1 unit; no arguments. Enters the screen (field_0x24, field_0x28):
-    // resets its state, rebuilds it (fn_802D8D50, fn_802D8328), places the
+    // resets its state, rebuilds it (fn_802D8D50, spawnScreenActors_802D8328), places the
     // players and the camera and restarts the time limit.
     void fn_802DA010();
     // Inlined by fn_802DA010, fn_802DA8DC (with field_0x131f1-0x131f3 stored
@@ -153,7 +153,7 @@ public:
     u8 isInTransition_802DCD0C();
     // 2 units / 5 calls. Unless isInTransition_802DCD0C(), steps mScreenX_0x14 by the sign
     // of dir[0] or mScreenY_0x18 by that of dir[1], reloads the screen
-    // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
+    // (fn_802D8D50, spawnScreenActors_802D8328, fn_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
     // is a guess, a two-int struct passed by value would look the same.
     u8 fn_802DCD1C(const s32* dir);
@@ -172,7 +172,7 @@ public:
     // 64-bit masks (field_0x1048) ---
     // 6 units / 20 calls (this unused). Bit `bit` of field_0x2d48[index]
     // (mask table lbl_8046E1CC): tests it (0 or 1), or sets it and returns 1.
-    bool fn_802D46D8(s32 index, u32 bit, bool set);
+    bool testOrSetBit_802D46D8(s32 index, u32 bit, bool set);
     // 1 unit. Puts id in the last free slot of the layer's list (searching
     // down from slot 0x3C in steps of 4); *outSlot = 15 - slot / 4 (stw
     // srawi 31 and the value: a sign-extended 64-bit store, hence s64),
@@ -192,7 +192,7 @@ public:
     s32 fn_802D4C10(s32 layer, u16 id);
     // 1 unit / 4 calls. The screen's mask for the layer (r3:r4);
     // fn_802D4768-fn_802D4ADC inline it.
-    u64 fn_802D7AC4(s32 layer);
+    u64 getScreenLayerMask_802D7AC4(s32 layer);
     // 1 unit. The 4-bit field `slot` (bits 60 - slot * 4) of the screen's
     // mask: __shr2u, then the low word (callers clrlwi 16).
     s32 fn_802D7B34(s32 layer, s32 slot);
@@ -282,8 +282,8 @@ public:
     // 1 unit (this unused). field_0x131b8[index] = value.
     void fn_802D77E4(s32 index, u16 value);
     // 3 units / 12 calls. field_0x131b8[index] & bits, as 0 or 1.
-    bool fn_802D7804(s32 index, u16 bits);
-    // field_0x131b8[index] & bits: tu_80301CD0 fn_803085A4 inlines it (the index
+    bool testLayerFlags_802D7804(s32 index, u16 bits);
+    // field_0x131b8[index] & bits: tu_80301CD0 fillRecordHeader_803085A4 inlines it (the index
     // is computed before getGameView, then add / lhz).
     u16 getBits(s32 index, u16 bits) { return field_0x131b8[index] & bits; }
     // 6 units (this unused). field_0x131d8[index] = value for index 0-3.
@@ -337,7 +337,7 @@ public:
     /* 0x00034 */ s32 field_0x34; // fn_802D7970; 3 units read it
     /* 0x00038 */ s32 field_0x38;
     /* 0x0003C */ s32 field_0x3c;
-    /* 0x00040 */ s32 field_0x40; // index into lbl_804A9660 (fn_802D9C4C)
+    /* 0x00040 */ s32 field_0x40; // index into lbl_804A9660 (getStageBgName_802D9C4C)
     /* 0x00044 */ s32 field_0x44; // index into lbl_804A96D0 (fn_802D9C1C)
     /* 0x00048 */ s32 field_0x48;
     /* 0x0004C */ s32 field_0x4c;
@@ -371,11 +371,11 @@ public:
     // fn_802D7EB0 use the first screen's of [index].
     /* 0x003C8 */ u64 field_0x3c8[4][10][10];
     // Per screen and layer slot (the folded layer, as field_0x2948): every
-    // access adds 0x1048 + slot * 8 (fn_802D7AC4, fn_802D7D00), and the
+    // access adds 0x1048 + slot * 8 (getScreenLayerMask_802D7AC4, fn_802D7D00), and the
     // array ends where field_0x2948 starts.
     /* 0x01048 */ u64 field_0x1048[10][10][8];
     /* 0x02948 */ u16 field_0x2948[8][0x40]; // actor ids per layer slot (fn_802D4C10)
-    /* 0x02D48 */ u32 field_0x2d48[4][0x80]; // bits (fn_802D46D8)
+    /* 0x02D48 */ u32 field_0x2d48[4][0x80]; // bits (testOrSetBit_802D46D8)
     /* 0x03548 */ u32 field_0x3548[10][10][32]; // bits per screen (fn_802D76A8)
     /* 0x06748 */ s32 field_0x6748[8]; // counters per layer slot (fn_802D766C)
     /* 0x06768 */ u32 field_0x6768[10][10][32]; // bits per screen (fn_802D75BC)
@@ -391,7 +391,7 @@ public:
     /* 0x13148 */ JGeometry::TVec2f field_0x13148[8]; // fn_802D6D70's b
     /* 0x13188 */ u32 field_0x13188[8]; // ids, -1 when free
     /* 0x131A8 */ s32 field_0x131a8[4]; // fn_802D39B8; read by tu_801F6058
-    /* 0x131B8 */ u16 field_0x131b8[0x10]; // bits (fn_802D77BC, fn_802D7804)
+    /* 0x131B8 */ u16 field_0x131b8[0x10]; // bits (fn_802D77BC, testLayerFlags_802D7804)
     /* 0x131D8 */ u8 field_0x131d8[4]; // fn_802D7844
     /* 0x131DC */ u16 field_0x131dc; // fn_802D7870; tu_80432638 reads it
     // fn_802D782C; lbz in act_bg_rewrite_check_switch, stb in 8 more places

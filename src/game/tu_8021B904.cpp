@@ -36,7 +36,7 @@ s16 WanderSteerTimer_8021B904::fn_8021B904(s16 angle, bool turn) {
             mCount = 0;
             mCountMax = randInt_801CD664(21) + 10;
         }
-        fn_801CD930(&angle, mHeading, 0x200);
+        stepAngle_801CD930(&angle, mHeading, 0x200);
     }
     return angle;
 }

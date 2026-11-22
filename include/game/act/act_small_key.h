@@ -61,7 +61,7 @@ public:
     // pick players 1-3, else 0). Stores the player's index in 0x2A4 and the
     // index of the player it is paired with (fn_8022F3DC, if fn_8022F514
     // holds) in 0x2A0. Returns false when the early checks or the view's
-    // bit 0x168 (fn_802D46D8) refuse; otherwise returns true, calling
+    // bit 0x168 (testOrSetBit_802D46D8) refuse; otherwise returns true, calling
     // fn_8022FE80 when the conversation test (fn_802308E0 or fn_8023077C) holds.
     bool fn_802C2300(u8 playerBits);
     // 0x802C5284: passes its position (0x230) and layer (0x238) to GameView's
@@ -79,7 +79,7 @@ public:
     s32 fn_803A3220();
     /* 0x230 */ JGeometry::TVec2f field_0x230; // position (x, y)
     /* 0x238 */ s32 field_0x238; // layer
-    /* 0x23C */ u32 field_0x23c; // GameView_804A9950::fn_802D8328 stores the key value's top 2 bits (stw)
+    /* 0x23C */ u32 field_0x23c; // GameView_804A9950::spawnScreenActors_802D8328 stores the key value's top 2 bits (stw)
     /* 0x240 */ s32 field_0x240; // state; 4 is tested by act_invisible_npc_wall_tomi
     /* 0x244 */ ActorBase_804A5770* field_0x244;
     /* 0x248 */ JGeometry::TVec3f field_0x248;

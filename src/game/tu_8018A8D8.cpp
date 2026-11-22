@@ -792,7 +792,7 @@ void BigPoe2_804A1E50::update() {
                 ActorBase_804A5770* sw = switches[i];
                 if (sw != NULL && sw->fn_8018A5B0()) {
                     field_0x2e8[i] = sw->getScreenFlagBit_0x3C();
-                    copyVec_8018E8C0(&field_0x2f8[i], sw->fn_801544DC());
+                    copyVec_8018E8C0(&field_0x2f8[i], sw->getPos_801544DC());
                 }
             }
             fn_8018A6AC()->fn_80458FF0(0x1000004, false, 0);
@@ -1444,7 +1444,7 @@ void BigPoe2_804A1E50::update() {
                         fn_801EEC98(fn_801545E8(), &outAngle, NULL, NULL, NULL, 0, 0);
                         vel.x = 1.8f * fn_801544FC((s16)outAngle);
                         vel.y = 1.8f * fn_801544E4((s16)outAngle);
-                        oktm->fn_8017EAF8(vel);
+                        oktm->setVel_8017EAF8(vel);
                     }
                 }
             }

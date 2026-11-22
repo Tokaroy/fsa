@@ -244,7 +244,7 @@ void Log_804ACD70::update() {
                 }
                 field_0x230 = 2;
             } else {
-                s32 mask = fn_801F2740(-1);
+                s32 mask = getPlayersInBox_801F2740(-1);
                 bool hurt = false;
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {

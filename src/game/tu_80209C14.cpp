@@ -125,7 +125,7 @@ void SlimeFormation_804A5D60::setState_8020AA78(s32 state) {
                  0.5f * (12.0f * -lbl_8053EFB8));
         break;
     case 6:
-        mAnim.fn_801D22A0(5, 2);
+        mAnim.startAnimIfChanged_801D22A0(5, 2);
         break;
     case 7:
         mFlags &= ~0x4000;
@@ -282,7 +282,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 6:
-        if (mAnim.mAnim == 5 && mAnim.fn_801D217C()) {
+        if (mAnim.mAnim == 5 && mAnim.isLoopEnd_801D217C()) {
             if (mFlags & 0x4000) {
                 setState_8020AA78(7);
             } else if (mFlags & 0x8000) {

@@ -16,7 +16,7 @@ public:
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 mTimer;
     /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ u32 field_0x23c; // RGBA colour word, from fn_8018330C
+    /* 0x23C */ u32 field_0x23c; // RGBA colour word, from getShadowColor_8018330C
     /* 0x240 */ u32 field_0x240;
     /* 0x244 */ f32 field_0x244; // colour channels as floats
     /* 0x248 */ f32 field_0x248;

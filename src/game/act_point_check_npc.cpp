@@ -61,7 +61,7 @@ void PointCheckNPC_804A81C8::update() {
             if (field_0x234 == 10) {
                 mAlive = false;
             } else {
-                fn_801F35AC();
+                markDead_801F35AC();
             }
             break;
         case 1:
@@ -104,7 +104,7 @@ void PointCheckNPC_804A81C8::update() {
                     }
                 }
             }
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         case 7:
             getActorManager_801F856C()->spawnActor_801F9484('HART', mLayer_0x4, &mPos, 0, -1, -1);
@@ -112,14 +112,14 @@ void PointCheckNPC_804A81C8::update() {
             break;
         case 8:
             getActorManager_801F856C()->spawnActor_801F9484('MTBO', mLayer_0x4, &mPos, 0, -1, -1);
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         case 9:
             getActorManager_801F856C()->spawnActor_801F9484('FARY', mLayer_0x4, &mPos, 0, -1, -1);
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         default:
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         }
         break;
@@ -166,7 +166,7 @@ void PointCheckNPC_804A81C8::update() {
             }
             break;
         default:
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         }
         break;
@@ -180,7 +180,7 @@ void PointCheckNPC_804A81C8::update() {
             }
             break;
         default:
-            fn_801F35AC();
+            markDead_801F35AC();
             break;
         }
         break;

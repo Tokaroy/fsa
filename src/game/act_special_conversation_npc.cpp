@@ -260,7 +260,7 @@ void SpecialConversationNPC_804AAFB8::fn_80319658() {
             fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(mPlayer, mSerial)) {
                 setPartnerFacing(2);
-                fn_801F35AC();
+                markDead_801F35AC();
             }
         }
     }

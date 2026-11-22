@@ -223,7 +223,7 @@ void DroppedItem_804A8C80::update() {
                     if (fn_8022F514(player)) {
                         field_0x260 = fn_8022F3DC(player);
                     }
-                    if (!getGameView_802D6A9C()->fn_802D46D8(field_0x260, 0x151, false) && fn_802DE7CC()) {
+                    if (!getGameView_802D6A9C()->testOrSetBit_802D46D8(field_0x260, 0x151, false) && fn_802DE7CC()) {
                         field_0x25c = player;
                         if (fn_8022CAF8(player) != 4) {
                             field_0x25c = field_0x260;
@@ -291,7 +291,7 @@ void DroppedItem_804A8C80::update() {
     default:
         mAlive = false;
         if (field_0x234 == 1) {
-            fn_801F35AC();
+            markDead_801F35AC();
         } else {
             // Same load order as in fn_802BFF30: the original loads these two before the TVec2f argument copy.
             u32 v270 = field_0x270;
@@ -324,7 +324,7 @@ void DroppedItem_804A8C80::update() {
 void DroppedItem_804A8C80::fn_802C0570() {
     mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
     JGeometry::TVec3f savedPos(mPos);
-    u8 hitFlags = fn_801F2740(-1);
+    u8 hitFlags = getPlayersInBox_801F2740(-1);
     if (hitFlags != 0) {
         u8 mask = 1;
         for (s32 player = 0; player < 4; player++, mask <<= 1) {

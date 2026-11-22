@@ -199,7 +199,7 @@ s32 Thief_804A5A30::fn_802063FC() {
     ActorBase_804A5770** p = actors;
     s32 end = count > 0x14 ? 0x14 : count;
     for (s32 i = 0; i < end; i++, p++) {
-        if (!fn_801CF888(&from, &(*p)->mPos, mLayer_0x4)) {
+        if (!isWayBlocked_801CF888(&from, &(*p)->mPos, mLayer_0x4)) {
             result = (*p)->mSerial;
             break;
         }
@@ -362,7 +362,7 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
 
 // FIXME: 95.75 %, different + reloc-name; behaviour drift.
 // Ours has one more instruction (539 vs 538), the rest is register allocation (this in r29 vs
-// r31, the layer argument of fn_801CF888 in states 0 and 6 is loaded into a saved register before
+// r31, the layer argument of isWayBlocked_801CF888 in states 0 and 6 is loaded into a saved register before
 // getPlayerPos_8023E724 in the original) and literal relocations (the original pools 1.0f before
 // 1.2f / 2.0f; ours pools it last).
 void Thief_804A5A30::updateState_0x90(u8 mapHit) {
@@ -398,7 +398,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             if (serial >= 0) {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (target != NULL && fn_801CC9B0(target) &&
-                    !fn_801CF888((const JGeometry::TVec2f*)&mPos, &target->mPos, mLayer_0x4)) {
+                    !isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &target->mPos, mLayer_0x4)) {
                     findNew = false;
                 }
             }
@@ -435,7 +435,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
         } else if (field_0x338 >= 0) {
-            if (fn_801CCF34(field_0x338) <= 0 && !fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
+            if (fn_801CCF34(field_0x338) <= 0 && !isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
                 setState_80205E0C(6);
             } else if (fn_801D183C(0.0f)) {
                 setState_80205E0C(2);
@@ -483,7 +483,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     case 2:
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
-        } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) <= 0 || !fn_801D0B44(field_0x338) ||
+        } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) <= 0 || !canTargetPlayer_801D0B44(field_0x338) ||
                    fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) == 0) {
             setState_80205E0C(0);
         } else if (!fn_801D12CC()) {
@@ -532,14 +532,14 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     case 6:
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
-        } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !fn_801D0B44(field_0x338) ||
+        } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !canTargetPlayer_801D0B44(field_0x338) ||
                    !fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ||
-                   fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
+                   isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
             setState_80205E0C(0);
         } else if (mapHit) {
             fn_801D11FC();
         } else {
-            fn_801CD930(&field_0x33c, (s16)(fn_801D0280(field_0x338) - 0x8000), 0x200);
+            stepAngle_801CD930(&field_0x33c, (s16)(fn_801D0280(field_0x338) - 0x8000), 0x200);
         }
         break;
     case 7:
@@ -584,7 +584,7 @@ void Thief_804A5A30::updateAnim_0x94() {
         return;
     }
     if (mType == 2) {
-        mAnim.fn_801D22A0(mDir_0x98, 2);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 2);
     } else if (state == 0) {
         switch (mAnim.mAnim) {
         case 0:
@@ -607,7 +607,7 @@ void Thief_804A5A30::updateAnim_0x94() {
             break;
         default:
             if (mType == 0) {
-                mAnim.fn_801D22A0(mDir_0x98 + 4, 2);
+                mAnim.startAnimIfChanged_801D22A0(mDir_0x98 + 4, 2);
             } else {
                 mAnim.fn_801D2264(mDir_0x98 + 4, 2);
             }

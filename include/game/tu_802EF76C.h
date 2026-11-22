@@ -12,7 +12,7 @@
 // (fn_80128C58__Fl; game/act/tu_801286C0.h declares it the same way).
 // fn_8013A884 (game/tu_80139BE8.cpp) copies the four bytes at color into the
 // colour of the object at gGameRoot2_8053AB10->0x2C; fn_801B7550 (game/tu_801B6C50.cpp)
-// returns that object's byte at 0xC. fn_8018330C is in game/tu_80182914.h.
+// returns that object's byte at 0xC. getShadowColor_8018330C is in game/tu_80182914.h.
 void fn_80128C58(s32 value);
 extern "C" {
 void fn_8013A884(u32* color);
@@ -38,7 +38,7 @@ public:
     /* 0x23C */ f32 field_0x23c; // 0.0f, set in init
     /* 0x240 */ s32 field_0x240; // mSpawnParam_0x90 bits 22-26
     /* 0x244 */ s32 field_0x244; // mSpawnParam_0x90 & 0xFF, or -1; the switch index in init
-    /* 0x248 */ SpriteParamsColor_801F5AE0 mColor; // written by fn_8018330C; its four bytes are split below
+    /* 0x248 */ SpriteParamsColor_801F5AE0 mColor; // written by getShadowColor_8018330C; its four bytes are split below
     /* 0x24C */ s32 mColorCur[4]; // r, g, b, a of mColor (0x258 is also set by vfunc_0x54)
     /* 0x25C */ s32 mColorEnd[3]; // end colour r, g, b (vfunc_0x54, state 0)
     /* 0x268 */ s32 mCounter; // frame counter, 0..mDuration

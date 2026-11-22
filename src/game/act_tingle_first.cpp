@@ -220,7 +220,7 @@ void TingleFirstAppearance_804AADD8::update() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (!fn_8022B978(mLayer_0x4, &box, true)) {
-            fn_801F35AC();
+            markDead_801F35AC();
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }

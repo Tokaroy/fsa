@@ -1145,7 +1145,7 @@ void Cucco_804AB8C0::update() {
             mDir_0x98 = 1;
         }
         if (outDir >= 0 && field_0x94 <= 3) {
-            u8 mask = fn_801F2740(field_0x25c);
+            u8 mask = getPlayersInBox_801F2740(field_0x25c);
             s32 hitPlayer = -1;
             if (mask != 0) {
                 for (s32 i = 0; i < 4; i++) {

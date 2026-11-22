@@ -671,7 +671,7 @@ public:
     /* 0x03A4 */ JGeometry::TVec3f mWalkTarget_0x3a4;
     /* 0x03B0 */ s32 field_0x3b0;
     // The player's layer: compared with ActorBase_804A5770::mPlayerNo_0x4 by
-    // fn_801F320C and fn_801F5790; fn_801F329C tests it against 8.
+    // isPlayerOnLayer_801F320C and fn_801F5790; fn_801F329C tests it against 8.
     /* 0x03B4 */ s32 mLayer_0x3b4;
     /* 0x03B8 */ s32 field_0x3b8;
     // Copy of mLayer_0x3b4 that fn_802685D4 stores each frame.

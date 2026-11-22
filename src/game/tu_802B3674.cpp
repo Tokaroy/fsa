@@ -176,7 +176,7 @@ void EnvironmentSwitchControl_804A8638::init() {
         mEmitter->becomeInvalidEmitter();
         mEmitter = NULL;
     }
-    field_0x2dc = fn_8018330C();
+    field_0x2dc = getShadowColor_8018330C();
     field_0x2e0 = field_0x2dc.toUInt32() >> 24;
     field_0x2e4 = (field_0x2dc.toUInt32() >> 16) & 0xFF;
     field_0x2e8 = (field_0x2dc.toUInt32() >> 8) & 0xFF;

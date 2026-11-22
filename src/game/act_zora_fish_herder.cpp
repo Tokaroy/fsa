@@ -213,7 +213,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             if (fn_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                 JGeometry::TVec3f delta;
                 f32 dist;
-                fn_801EE8F4(&delta, &dist, field_0x268 + 1);
+                getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
                 if (dist < 100.0f) {
                     u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
                     if (angle < 0x2000 || angle >= 0xE000) {
@@ -497,7 +497,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 if (fn_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                     JGeometry::TVec3f delta;
                     f32 dist;
-                    fn_801EE8F4(&delta, &dist, field_0x268 + 1);
+                    getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
                     if (dist < 100.0f) {
                         u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
                         if (angle < 0x2000 || angle >= 0xE000) {

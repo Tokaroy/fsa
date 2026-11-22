@@ -311,7 +311,7 @@ void Door_804A8D88::update() {
         }
         case 2: {
             const u16* t = tiles.mWidth3[field_0x234][field_0x238];
-            gBgRewrite_8053AC98->fn_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
+            gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
             if (field_0x234 == 0 && field_0x230 == 3) {
                 if (field_0x238 == 0) {
                     spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43B, 0, 0, NULL, NULL, true, 1.0f);
@@ -327,9 +327,9 @@ void Door_804A8D88::update() {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
                 cell = fn_80226BC4(&pos2, mLayer_0x4);
                 const u16* t2 = tiles.mLayer2Width3[field_0x238];
-                gBgRewrite_8053AC98->fn_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
+                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
                 t2 = tiles.mLayer2Width3[field_0x238];
-                gBgRewrite_8053AC98->fn_8029DB2C(mLayer_0x4 + upper, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
+                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4 + upper, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
             }
             break;
         }
@@ -554,7 +554,7 @@ void Door_804A8D88::update() {
         }
         case 2: {
             const u16* t = tiles.mOpenWidth3[field_0x238];
-            gBgRewrite_8053AC98->fn_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
+            gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
             if (field_0x234 != 0) {
                 break;
             }

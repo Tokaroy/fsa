@@ -302,7 +302,7 @@ void TotalScreen_804B03D8::fn_803D8364() {
         }
         field_0x2c->mPane->setAlpha(alpha);
         field_0x4->search('Paccur01')->setAlpha(alpha);
-        lbl_8053AED8->fn_80440EE8();
+        lbl_8053AED8->draw_80440EE8();
     }
 }
 

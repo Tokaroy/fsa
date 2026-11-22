@@ -374,7 +374,7 @@ void KnightOfHyrule_804AABA8::update() {
             fn_8022CA6C(i, 5, true);
         }
         fn_8022ADCC();
-        fn_801F35AC();
+        markDead_801F35AC();
         break;
     case 17: {
         mPos.z += mVel_0x3c.z;

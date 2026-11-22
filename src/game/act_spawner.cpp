@@ -184,7 +184,7 @@ void SpawnerGenerator_804A9328::update() {
             }
         }
         if (field_0x674 >= field_0x244 - 1) {
-            fn_801F35AC();
+            markDead_801F35AC();
         }
         break;
     }

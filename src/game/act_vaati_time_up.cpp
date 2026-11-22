@@ -45,7 +45,7 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2d0 = 0;
     field_0x2f8 = 1;
 
-    field_0x2d4 = fn_8018330C().toUInt32();
+    field_0x2d4 = getShadowColor_8018330C().toUInt32();
     field_0x2d8 = (f32)(field_0x2d4 >> 24);
     field_0x2dc = (f32)((field_0x2d4 >> 16) & 0xFF);
     field_0x2e0 = (f32)((field_0x2d4 >> 8) & 0xFF);

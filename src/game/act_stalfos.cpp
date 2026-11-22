@@ -339,7 +339,7 @@ void Stalfos_804A0CD8::update() {
     case 6:
         switch (field_0x250) {
         case 0:
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
             mTimers[4] = 690;
             field_0x250 = 1;
             break;
@@ -355,7 +355,7 @@ void Stalfos_804A0CD8::update() {
                         mVel_0x3c.z = 0.0f;
                         mVel_0x3c.y = 0.0f;
                         mVel_0x3c.x = 0.0f;
-                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                         field_0x250 = 0;
                         field_0x230 = 0;
                     } else {
@@ -379,7 +379,7 @@ void Stalfos_804A0CD8::update() {
         field_0x26c.z = 0.0f;
         field_0x26c.y = 0.0f;
         field_0x26c.x = 0.0f;
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
         mDir_0x98 = 2;
         field_0xb0 = 0;
         field_0x230 = 8;

@@ -55,7 +55,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
             s32 dir = 0;
             f32 best = FLT_MAX;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_801D0B44(i)) {
+                if (canTargetPlayer_801D0B44(i)) {
                     f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
                     f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
                     if (dx <= 10.0f) {

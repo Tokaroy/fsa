@@ -34,7 +34,7 @@ public:
     /* 0x2CC */ u16 field_0x2cc;
     /* 0x2CE */ s16 field_0x2ce;
     /* 0x2D0 */ u16 field_0x2d0;
-    /* 0x2D4 */ u32 field_0x2d4; // RGBA colour word, from fn_8018330C
+    /* 0x2D4 */ u32 field_0x2d4; // RGBA colour word, from getShadowColor_8018330C
     /* 0x2D8 */ f32 field_0x2d8;     // colour channels as floats
     /* 0x2DC */ f32 field_0x2dc;
     /* 0x2E0 */ f32 field_0x2e0;

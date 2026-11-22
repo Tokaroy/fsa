@@ -26,8 +26,8 @@
 // parameter type is a symbols.txt rename too. "N units" counts the other
 // game units calling the function. "layer" is an actor layer
 // (ActorBase_804A5770::field_0x4). Not declared yet: the 2-unit tile
-// pattern writers fn_8029DB2C, fn_8029DD50, fn_8029DEBC, fn_8029DF80,
-// fn_8029EC84 (act_door, tu_802D39B8),
+// pattern writers writeTileRun_8029DB2C, fn_8029DD50, fn_8029DEBC, fn_8029DF80,
+// writeTilePair_8029EC84 (act_door, tu_802D39B8),
 // fn_802A20F0 (10 units; spreads fire over burnable tiles) and the 1-unit
 // ones; their argument types need their bodies read first.
 //
@@ -74,7 +74,7 @@ public:
     // 2 units (act_item_pedestal, tu_802D39B8). Writes a pair of tiles (tileA, then the cell
     // 16 columns left, or 0x110 back at a screen edge, gets tileB) on layer + layerOffset and
     // marks the view cell.
-    void fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB);
+    void writeTilePair_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB);
     // 8 units / 31 calls. The same write, remembering the cell in
     // field_0x20, then fn_802D782C(1) on the view, and when the tile code
     // is an actor id slot of the layer (fn_802D4C10(layer, (u16)cell) !=
@@ -145,7 +145,7 @@ public:
     // 2 units (see above). As fn_8029DEBC for four (DD50) or six (DB2C) tile codes in a row
     // or column. this unused.
     void fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
-    void fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
+    void writeTileRun_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
     // 2 units (act_door, tu_802D39B8). The 2 x 2 block of tile codes a..d at
     // cell (right neighbour and the row below as in fn_8029DEBC). this unused.
     void fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s32 d);

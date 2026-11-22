@@ -42,7 +42,7 @@ cls_804A46F4::cls_804A46F4() : mPathCount(0) {
 // and the player index in r31; ours has them the other way round.
 bool cls_804A46F4::fn_801D183C(f32 range) {
     bool result = false;
-    if (field_0x338 >= 0 && field_0x338 < 4 && fn_801F320C(field_0x338)) {
+    if (field_0x338 >= 0 && field_0x338 < 4 && isPlayerOnLayer_801F320C(field_0x338)) {
         s32 player = field_0x338;
         JGeometry::TVec3f pos;
         JGeometry::TVec3f other;
@@ -55,8 +55,8 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
             pos.set(playerPos.x, playerPos.y, playerPos.z);
         }
         if (range == 0.0f || square(pos.x - mPos.x) + square(pos.y - mPos.y) <= square(range)) {
-            // fn_801CF888 reads only (x, y) of its first position (8-byte slots).
-        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
+            // isWayBlocked_801CF888 reads only (x, y) of its first position (8-byte slots).
+        if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
                 result = true;
             }
         }
@@ -73,7 +73,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 // (3) The pos push in the else branch loads pos.x after the address.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
-    if (field_0x338 >= 0 && fn_801D0B44(field_0x338)) {
+    if (field_0x338 >= 0 && canTargetPlayer_801D0B44(field_0x338)) {
         s32 player = field_0x338;
         JGeometry::TVec3f pos;
         JGeometry::TVec3f probe;
@@ -95,8 +95,8 @@ bool cls_804A46F4::fn_801D12CC() {
             }
         }
         result = true;
-        // fn_801CF888 reads only (x, y) of its first position (8-byte slots).
-        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
+        // isWayBlocked_801CF888 reads only (x, y) of its first position (8-byte slots).
+        if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
             mPathCount = 0;
             field_0x32c.set(pos.x, pos.y, 0.0f);
         } else {
@@ -120,7 +120,7 @@ bool cls_804A46F4::fn_801D12CC() {
             } else {
                 JGeometry::TVec2f from;
                 waypoint(*this, mPathCount - 1, from);
-                if (fn_801CF888(&from, &pos, mLayer_0x4)) {
+                if (isWayBlocked_801CF888(&from, &pos, mLayer_0x4)) {
                     clear = true;
                 } else {
                     f32 ey = pos.y - from.y;
@@ -130,7 +130,7 @@ bool cls_804A46F4::fn_801D12CC() {
                         if (mPathCount >= 2) {
                             JGeometry::TVec2f prev;
                             waypoint(*this, mPathCount - 2, prev);
-                            if (!fn_801CF888(&prev, &pos, mLayer_0x4)) {
+                            if (!isWayBlocked_801CF888(&prev, &pos, mLayer_0x4)) {
                                 if (mPathCount > 0) {
                                     mPathCount--;
                                 }

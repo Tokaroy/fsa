@@ -10,7 +10,7 @@
 #include "game/act/tu_80183544.h"
 
 // Auto-inlining is off for the whole file (docs/INLINING.md, pragma rule 2): the
-// original inlines no same-unit plain function (init calls fn_8018330C of tu_80182914 out of line).
+// original inlines no same-unit plain function (init calls getShadowColor_8018330C of tu_80182914 out of line).
 #pragma auto_inline off
 
 // The emitter's colour comes from field_0x238 while view layer 0x13 is flagged.
@@ -50,7 +50,7 @@ void Geldman_804A1790::init() {
     field_0x238[1] = 0;
     field_0x238[2] = 0;
     if (viewLayerFlag(0x13) == 1) {
-        field_0x234 = fn_8018330C();
+        field_0x234 = getShadowColor_8018330C();
         field_0x238[0] = field_0x234.toUInt32() >> 24;
         field_0x238[1] = (field_0x234.toUInt32() >> 16) & 0xFF;
         field_0x238[2] = (field_0x234.toUInt32() >> 8) & 0xFF;

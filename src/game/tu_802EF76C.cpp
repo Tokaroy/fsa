@@ -34,7 +34,7 @@ void LightEnvironmentControl_804AA4F0::init() {
     s32 index = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x240 = index;
     mState = 0;
-    mColor.mColor = fn_8018330C();
+    mColor.mColor = getShadowColor_8018330C();
     mColorCur[0] = (u32)mColor.mWord >> 24;
     mColorCur[1] = ((u32)mColor.mWord >> 16) & 0xFF;
     mColorCur[2] = ((u32)mColor.mWord >> 8) & 0xFF;

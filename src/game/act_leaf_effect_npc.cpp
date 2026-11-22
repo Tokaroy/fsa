@@ -68,7 +68,7 @@ void LeafEffectNPC_804AE2E0::init() {
         mPos.y += 9.0f;
         field_0x240 = code;
     }
-    field_0x238 = getGameView_802D6A9C()->fn_802D9C4C();
+    field_0x238 = getGameView_802D6A9C()->getStageBgName_802D9C4C();
     field_0x23c = -1;
     char c = field_0x238[0];
     if (c == 'r' || c == 's') {

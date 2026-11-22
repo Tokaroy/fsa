@@ -100,7 +100,7 @@ public:
     // direction of its field_0x1, then fn_801C8BC4(1) and fn_801C3B7C 0x17/0x18.
     void fn_801C79A0();
     // game/tu_801C71BC.cpp (0x801C7EE4): sets mFlags 0x400000 when the rail point
-    // is out of reach (z too far on view layers with the flag, or fn_801CF888 blocked).
+    // is out of reach (z too far on view layers with the flag, or isWayBlocked_801CF888 blocked).
     void fn_801C7EE4();
     // game/tu_801C71BC.cpp (0x801C71BC): picks a neighbouring rail point (fn_800FD4C0), else
     // resets (fn_801C8B50) and turns by a random angle.

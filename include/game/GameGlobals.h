@@ -174,7 +174,7 @@ public:
     void fn_80306A94(s32 player);
     void fn_80307B58(s32 player, bool flag);
     void fn_8030801C(s32 player);
-    void fn_803085A4(s32 player);
+    void fillRecordHeader_803085A4(s32 player);
 };
 // game/tu_80301CD0.cpp: fn_80304FB0 ages and frees the sprite lists' entries (0x80304D64) and resets a
 // player's GBA link state and transfer queue (0x80303CE4).
@@ -613,13 +613,13 @@ s32 fn_801CD580(s32 except); // [0, 4) except `except`; game/tu_801CB270.cpp
 
 // game/tu_801CB270.cpp: steps *angle towards target by at most step (a
 // wrapper of fn_801CD970; the 0/1 it passes on is unused by all 9 callers).
-void fn_801CD930(s16* angle, s32 target, s32 step);
+void stepAngle_801CD930(s16* angle, s32 target, s32 step);
 
 // act_shadow_link_2.cpp (returns 0, no arguments). Callers (tu_801C5B08,
 // tu_801C71BC) test the result as a byte (clrlwi. 24).
 bool fn_801C5340();
 
-// game/tu_801CB270.cpp: the stepper fn_801CD930 wraps; true when *angle
+// game/tu_801CB270.cpp: the stepper stepAngle_801CD930 wraps; true when *angle
 // reached target.
 bool fn_801CD970(s16* angle, s32 target, s32 step);
 
@@ -1434,7 +1434,7 @@ struct cls_80204638 {
     // 0x802048F4: drops the layer-0 actors in the table that left the view box.
     void fn_802048F4();
     // 0x80204ABC: with reset, clears the byte at 0x0 and the words 0x4-0x50 (the table;
-    // GameView_804A9950::fn_802D8328 passes its first flag).
+    // GameView_804A9950::spawnScreenActors_802D8328 passes its first flag).
     void fn_80204ABC(bool reset);
     // 0x802049E0. Removes the actor from the slot the byte
     // at its 0x34a selects in the table (0x4 + 8 * slot): clears the first

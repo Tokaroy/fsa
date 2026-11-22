@@ -13,7 +13,7 @@ Resistant (cls_804A46F4 members):
 extab 55 %, extabindex 0 %: follow the function sizes.
 
 SHARED-EDITS: cls_804A46F4.h (ctor, fn_801D11FC, fn_801D183C, mPathCount/mPath[16] at 0x2A8/0x2AC),
-EnemyBase.h (fn_801CF888 first arg const TVec2f*: the callee reads x, y only, 8-byte stack slots),
-tu_801D3320.cpp (cast at its fn_801CF888 call), Player.h (fn_8022E114 extern "C", owner tu_8022AD64),
+EnemyBase.h (isWayBlocked_801CF888 first arg const TVec2f*: the callee reads x, y only, 8-byte stack slots),
+tu_801D3320.cpp (cast at its isWayBlocked_801CF888 call), Player.h (fn_8022E114 extern "C", owner tu_8022AD64),
 gen_game.tsv row removed, symbols.txt renames (fn_801D11FC, fn_801D183C, fn_801D1974 -> __ct__,
-fn_801CF888 mangled arg, fn_801546E4 -> __ct__Q29JGeometry8TVec2<f>Fv, lbl_804A46F4 -> __vt__12cls_804A46F4).
+isWayBlocked_801CF888 mangled arg, fn_801546E4 -> __ct__Q29JGeometry8TVec2<f>Fv, lbl_804A46F4 -> __vt__12cls_804A46F4).

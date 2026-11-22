@@ -1295,7 +1295,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     if (JMAAbs(mVel_0x3c.x) < 1.0f && JMAAbs(mVel_0x3c.y) < 1.0f) {
         JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
         fn_80239914(&box, mLayer_0x4, mSerial);
-        if (fn_801F2740(-1)) {
+        if (getPlayersInBox_801F2740(-1)) {
             mVel_0x3c.x = 0.0f;
             mVel_0x3c.y = 0.0f;
         }
@@ -1493,7 +1493,7 @@ void HitRing_800F802C::fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type) {
         break;
     }
     if (layer < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 2, NULL, step, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 2, NULL, step, 1.0f);
     }
 }
 

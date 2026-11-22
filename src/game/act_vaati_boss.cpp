@@ -428,7 +428,7 @@ static inline s32 pickTarget(VaatiBoss_804A4958* boss) {
     s32 count = 0;
     s32 chosen = -1;
     for (s32 i = 0; i < 4; i++) {
-        if (i != boss->field_0x5b0 && boss->field_0x2a8[i].field_0x0 == 0 && boss->fn_801D0B44(i)) {
+        if (i != boss->field_0x5b0 && boss->field_0x2a8[i].field_0x0 == 0 && boss->canTargetPlayer_801D0B44(i)) {
             found[count] = i;
             count++;
         }
@@ -472,7 +472,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5:
-        if (field_0x5b0 == -1 || field_0x2a8[field_0x5b0].field_0x0 != 0 || !fn_801D0B44(field_0x5b0)) {
+        if (field_0x5b0 == -1 || field_0x2a8[field_0x5b0].field_0x0 != 0 || !canTargetPlayer_801D0B44(field_0x5b0)) {
             field_0x5b0 = pickTarget(this);
             fn_801D5D84(5);
         } else if (mStateTimer >= field_0x250) {

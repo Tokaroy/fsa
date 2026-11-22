@@ -18,11 +18,11 @@ public:
     // way, toward the angle of mMapHitDir (x, y).
     void fn_801D11FC();
     // game/tu_801D11FC.cpp (0x801D183C): whether player field_0x338 (0-3,
-    // fn_801F320C) is within `range` (squared against; 0 = any) of mPos and
-    // the way to it is blocked (fn_801CF888); 0 or 1.
+    // isPlayerOnLayer_801F320C) is within `range` (squared against; 0 = any) of mPos and
+    // the way to it is blocked (isWayBlocked_801CF888); 0 or 1.
     bool fn_801D183C(f32 range);
     // game/tu_801D11FC.cpp. Picks the way toward the player in field_0x338
-    // (fn_801D0B44, fn_801CF888) as a list of waypoints, mPath[0] ends up in
+    // (canTargetPlayer_801D0B44, isWayBlocked_801CF888) as a list of waypoints, mPath[0] ends up in
     // field_0x32c; returns 0 or 1.
     bool fn_801D12CC();
 

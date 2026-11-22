@@ -110,7 +110,7 @@ void BgRewrite_804A7C98::fn_802A3A0C() {
         if (field_0x1c >= 8) {
             field_0x1c = 0;
         }
-        const char* name = getGameView_802D6A9C()->fn_802D9C4C();
+        const char* name = getGameView_802D6A9C()->getStageBgName_802D9C4C();
         char c = *name;
         if (c == 'l') {
             u32 off = lbl_8046C4A8[field_0x1c] + 0x2000;
@@ -355,7 +355,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         } else if (!getGameView_802D6A9C()->fn_802D72BC(bit)) {
             getGameView_802D6A9C()->fn_802D7310(bit, true);
             JGeometry::TVec3f spawnPos;
-            fn_80226CA8(bit, layer, &spawnPos);
+            cellToPos_80226CA8(bit, layer, &spawnPos);
             spawnPos.x += 8.0f;
             spawnPos.y += 8.0f;
             getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, &spawnPos, a + 0x200000, -1, -1);
@@ -621,7 +621,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     case 11:
     case 12:
     case 13:
-        fn_8029EC84(field_0x20, layer, layerOffset, 0xE, 0xE);
+        writeTilePair_8029EC84(field_0x20, layer, layerOffset, 0xE, 0xE);
         if (tile == 0) {
             getActorManager_801F856C()->spawnActor_801F9484(
                 'ITMS', layer, &pos, (field_0x20 << 16) + (player << 12) + (layerOffset << 8) + item + 0x10, -1, -1);
@@ -631,7 +631,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
         }
         break;
     case 0:
-        fn_8029EC84(field_0x20, layer, layerOffset, 0, 0);
+        writeTilePair_8029EC84(field_0x20, layer, layerOffset, 0, 0);
         break;
     }
     JGeometry::TVec3f effectPos(1.0f + pos.x, pos.y - 12.0f, pos.z);
@@ -941,7 +941,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                 s32 cell = (x & 0x100) | ((y & 0x100) << 1) | (y & 0xF0) | ((x >> 4) & 0xF);
                 u32 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
                 JGeometry::TVec3f cellPos;
-                fn_80226CA8(cell, layer, &cellPos);
+                cellToPos_80226CA8(cell, layer, &cellPos);
                 s32 serial;
                 if (tile >= 0x40 && tile <= 0x44) {
                     if (tile == 0x41) {
@@ -1077,7 +1077,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     }
                 } else if (tile == 0x9B || tile == 0x9C) {
                     JGeometry::TVec3f wallPos;
-                    fn_80226CA8(cell, layer, &wallPos);
+                    cellToPos_80226CA8(cell, layer, &wallPos);
                     *out = wallPos;
                     result = 1;
                     if (tile == 0x9B) {
@@ -1126,7 +1126,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
 // FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
 // The original copies layer into a second register before the fn_802D4C10
 // call and passes that copy in the default and 0xA0 cases.
-void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB) {
+void BgRewrite_804A7C98::writeTilePair_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB) {
     s32 layerPlus = layer + layerOffset;
     int index = cell;
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layerPlus, index, tileB);
@@ -1397,7 +1397,7 @@ void BgRewrite_804A7C98::fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s
 
 // FIXME(shotgun): 92.26 %, missing/extra; behaviour drift.
 // (register copies of layer / cell)
-void BgRewrite_804A7C98::fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
+void BgRewrite_804A7C98::writeTileRun_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
     if (vertical == 0) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, a);
         cell++;

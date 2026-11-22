@@ -158,7 +158,7 @@ void RankDisplay_804A8F74::update() {
         }
 
         if (fn_8023BE0C(i)) {
-            if (getPlayerLayer_8023DE58(i) < 8 && getGameView_802D6A9C()->fn_802D46D8(i, 0xEB, false) == true) {
+            if (getPlayerLayer_8023DE58(i) < 8 && getGameView_802D6A9C()->testOrSetBit_802D46D8(i, 0xEB, false) == true) {
                 field_0x27c[i] = 30;
                 field_0x28c[i] = 2;
             }

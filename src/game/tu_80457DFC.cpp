@@ -224,7 +224,7 @@ static const JASDsp::FxlineConfig_ lbl_80491600[4] = {
 };
 
 // 0x8045A0E4 / 0x8045A0D8
-// Not auto-inlined: fn_80459AE4 calls fn_8045A0E4 and fn_80459674 calls
+// Not auto-inlined: init_80459AE4 calls fn_8045A0E4 and fn_80459674 calls
 // fn_8045A0D8 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void fn_8045A0E4(int count) {
@@ -257,7 +257,7 @@ AudioMgr_8045A080::AudioMgr_8045A080() {
 
 // 0x80459AE4
 // FIXME(shotgun): 99.78 %, reloc-name; behaviour clean.
-void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData) {
+void AudioMgr_8045A080::init_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData) {
     JAU_JASInitializer jasInit;
     jasInit.mChannelPoolCount = lbl_8053A228;
     jasInit.mAudioMemSize = audioMemSize;
@@ -546,7 +546,7 @@ void AudioMgr_8045A080::fn_804593D4() {
     field_0x34->getCategory(6)->getParams()->moveVolume(0.0f, 3);
 }
 
-void AudioMgr_8045A080::fn_80459274() {
+void AudioMgr_8045A080::resumeSe_80459274() {
     field_0x8e = 0;
     if (field_0x8c != 0) {
         fn_80458744(2);
@@ -767,7 +767,7 @@ extern f32 lbl_804B1EA8[9];
 extern f32 lbl_804B1ECC[9];
 
 // Not auto-inlined: fn_80457E04 and fn_80457E54 call fn_80458744 out of line in the original
-// (so do the unwritten fn_80459274 / fn_804593D4; docs/INLINING.md, pragma rule 1).
+// (so do the unwritten resumeSe_80459274 / fn_804593D4; docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void AudioMgr_8045A080::fn_80458744(s32 mode) {
     f32 musicVolume;

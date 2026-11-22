@@ -88,7 +88,7 @@ PauseScreen_804B1DA8::PauseScreen_804B1DA8() {
 }
 
 PauseScreen_804B1DA8::~PauseScreen_804B1DA8() {
-    gAudioMgr_8053AF80->fn_80459274();
+    gAudioMgr_8053AF80->resumeSe_80459274();
     delete mScreen;
     mScreen = NULL;
     delete field_0x8;
@@ -218,7 +218,7 @@ s32 PauseScreen_804B1DA8::fn_80453B14() {
             field_0xc->field_0x22 = 0;
             field_0x58 = 7;
             gAudioMgr_8053AF80->playSystemSound_80458880(2, -1);
-            gAudioMgr_8053AF80->fn_80459274();
+            gAudioMgr_8053AF80->resumeSe_80459274();
         }
         break;
     case 13:
@@ -263,13 +263,13 @@ s32 PauseScreen_804B1DA8::fn_80453B14() {
                 if (field_0x1c == 1) {
                     gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
-                    gAudioMgr_8053AF80->fn_80459274();
+                    gAudioMgr_8053AF80->resumeSe_80459274();
                     field_0x58 = 6;
                 } else {
                     field_0x58 = 2;
                     gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
-                    gAudioMgr_8053AF80->fn_80459274();
+                    gAudioMgr_8053AF80->resumeSe_80459274();
                 }
             } else {
                 field_0x1e = 2;

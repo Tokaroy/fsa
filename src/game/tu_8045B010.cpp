@@ -57,7 +57,7 @@ JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
             }
         }
     }
-    JAISoundHandle* handle = fn_80456334(id, 0);
+    JAISoundHandle* handle = startSound_80456334(id, 0);
     if (handle == NULL) {
         return NULL;
     }
@@ -96,7 +96,7 @@ void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9) {
     } else if (group == 0) {
         gAudioMgr_8053AF80->playSystemSound_80458880(id, -1);
     } else {
-        handle = obj->fn_80456334(id, 0);
+        handle = obj->startSound_80456334(id, 0);
     }
     if (port9 != 0 && handle != NULL && handle->sound_ != NULL) {
         handle->sound_->getTrack()->writePort(9, port9);

@@ -1,7 +1,7 @@
 // EnemyBase_804A4808 (game/EnemyBase.h): the enemy base class, its
 // per-frame driver and the helpers its descendants call.
 //
-// Every function is written. The player searches (fn_801D0B44, fn_801D05F8,
+// Every function is written. The player searches (canTargetPlayer_801D0B44, fn_801D05F8,
 // fn_801D0D50, fn_801D0DA0, fn_801D0020, fn_801D01A0) are inlined into the
 // functions before them, so their bodies are inline helpers (canTargetPlayer,
 // nearestPlayer, ...) defined ahead of the first use; likewise the landing
@@ -27,7 +27,7 @@
 // original inlines no same-unit plain function. Checked: built with inlining off,
 // every written function's calls to this unit's functions equal the original's
 // `bl`s. The callers that need it: fn_801CF1B0, fn_801CF6B8, fn_801CF720 and fn_801CF798 call fn_801CF6B8,
-// fn_801CF720, fn_801CF798 and fn_801CFCF0 out of line.
+// fn_801CF720, fn_801CF798 and isStepBlocked_801CFCF0 out of line.
 #pragma auto_inline off
 
 const bool lbl_8053EFC0 = false;
@@ -75,9 +75,9 @@ inline void EnemyBase_804A4808::moveStep() {
     }
 }
 
-// The player tests fn_801D0B44 makes, inlined in every player search below
+// The player tests canTargetPlayer_801D0B44 makes, inlined in every player search below
 // (fn_801CECF4, fn_801D05F8, fn_801D08B4). These actors only need the player
-// on their own layer; the others ask fn_801F320C.
+// on their own layer; the others ask isPlayerOnLayer_801F320C.
 inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
     bool onLayer = false;
     switch (mActorId) {
@@ -97,7 +97,7 @@ inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
         }
         break;
     default:
-        onLayer = fn_801F320C(player);
+        onLayer = isPlayerOnLayer_801F320C(player);
         break;
     }
     return onLayer;
@@ -124,7 +124,7 @@ inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
             }
             break;
         default:
-            onLayer = fn_801F320C(player);
+            onLayer = isPlayerOnLayer_801F320C(player);
             break;
         }
         if (onLayer) {
@@ -257,7 +257,7 @@ void EnemyBase_804A4808::fn_801D0E58() {
 }
 
 // Whether the actor is on the ground.
-bool EnemyBase_804A4808::fn_801D0DD4() const {
+bool EnemyBase_804A4808::isOnGround_801D0DD4() const {
     if (viewLayerFlag(mLayer_0x4)) {
         return (mFlags & (ENEMY_FLAG_LANDED | 0x10)) != 0;
     }
@@ -282,7 +282,7 @@ bool EnemyBase_804A4808::fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f
 
 // Whether player `player` can be targeted: present, on this actor's layer and,
 // for some actors, not busy.
-bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
+bool EnemyBase_804A4808::canTargetPlayer_801D0B44(s32 player) {
     bool ok = false;
     if (fn_801CCFE4(player)) {
         bool onLayer = false;
@@ -301,7 +301,7 @@ bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
             }
             break;
         default:
-            onLayer = fn_801F320C(player);
+            onLayer = isPlayerOnLayer_801F320C(player);
             break;
         }
         if (onLayer) {
@@ -490,7 +490,7 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
 }
 
 // Whether a step of 6 units past the box edge in direction `dir` is blocked.
-bool EnemyBase_804A4808::fn_801CFCF0(s32 dir) {
+bool EnemyBase_804A4808::isStepBlocked_801CFCF0(s32 dir) {
     f32 dist = 6.0f;
     switch (dir) {
     case 0:
@@ -552,7 +552,7 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
 
 // Whether the way from *from to *to is blocked (fn_801CFA70): along the line
 // between them, then along the two lines 7 units to either side of it.
-bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer) {
+bool EnemyBase_804A4808::isWayBlocked_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer) {
     // fn_801CFA70 reads only (x, y) of both points; the side points are
     // 8-byte TVec2f slots, as `from` is.
     bool blocked = fn_801CFA70((const JGeometry::TVec3f*)from, to, layer);
@@ -596,13 +596,13 @@ s32 EnemyBase_804A4808::fn_801CF798(s32 dir, s32 except) {
         }
     }
     s32 i = randInt_801CD664(2);
-    return !fn_801CFCF0(dirs[i]) ? dirs[i] : dirs[1 - i];
+    return !isStepBlocked_801CFCF0(dirs[i]) ? dirs[i] : dirs[1 - i];
 }
 
 // A random direction other than `dir`, or another free one when blocked.
 s32 EnemyBase_804A4808::fn_801CF720(s32 dir) {
     s32 newDir = fn_801CD580(dir);
-    if (fn_801CFCF0(newDir)) {
+    if (isStepBlocked_801CFCF0(newDir)) {
         newDir = fn_801CF798(dir, newDir);
     }
     return newDir;
@@ -611,7 +611,7 @@ s32 EnemyBase_804A4808::fn_801CF720(s32 dir) {
 // A random direction, or another free one when that one is blocked.
 s32 EnemyBase_804A4808::fn_801CF6B8() {
     s32 dir = randInt_801CD664(4);
-    if (fn_801CFCF0(dir)) {
+    if (isStepBlocked_801CFCF0(dir)) {
         dir = fn_801CF720(dir);
     }
     return dir;
@@ -619,13 +619,13 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
 
 // FIXME: 99.41 %, missing/extra; behaviour clean.
 // Registers (the bools of canTargetPlayer swap) and one extra
-// mr r4, r5 in the target before fn_801CFCF0.
+// mr r4, r5 in the target before isStepBlocked_801CFCF0.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
 // one when there is none): on the dominant axis, or the other one with
 // probability `margin`. With `turn`, a direction equal to mDir_0x98 is
 // replaced by another free one (fn_801CF720), and by a third one
 // (fn_801CF798) when that would turn away from the player; without it, a
-// blocked direction (fn_801CFCF0) is swapped for the other axis.
+// blocked direction (isStepBlocked_801CFCF0) is swapped for the other axis.
 s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
     s32 dir;
     s32 player = nearestPlayer(&mPos, range);
@@ -644,7 +644,7 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
                     dir = fn_801CF798(dir, mDir_0x98);
                 }
             }
-        } else if (fn_801CFCF0(dir)) {
+        } else if (isStepBlocked_801CFCF0(dir)) {
             dir = directionTo(&mPos, player, !otherAxis);
         }
     }

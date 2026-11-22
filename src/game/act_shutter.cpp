@@ -86,7 +86,7 @@ void Shutter_804A8118::update() {
                 gGameRoot2_8053AB10->field_0x20->fn_802FA160(
                     gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
                 if (mFlag == 0) {
-                    fn_801F35AC();
+                    markDead_801F35AC();
                 } else {
                     mAlive = false;
                 }
@@ -104,7 +104,7 @@ void Shutter_804A8118::update() {
             gGameRoot2_8053AB10->field_0x20->fn_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
             if (mFlag == 0) {
-                fn_801F35AC();
+                markDead_801F35AC();
             } else {
                 mAlive = false;
             }

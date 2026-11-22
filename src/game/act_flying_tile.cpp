@@ -60,14 +60,14 @@ void FlyingTile_804AC100::init() {
         mMapBox_0x80.set(-30.0f, -30.0f, 30.0f, 30.0f);
         mBox.set(-30.0f, -30.0f, 30.0f, 30.0f);
         field_0x25c = 0x800;
-        field_0x288 = getGameView_802D6A9C()->fn_802D9C4C();
+        field_0x288 = getGameView_802D6A9C()->getStageBgName_802D9C4C();
         mParamAtcp_0x114 = 2;
         break;
     case 3:
         mMapBox_0x80.set(-40.0f, -40.0f, 40.0f, 40.0f);
         mBox.set(-40.0f, -40.0f, 40.0f, 40.0f);
         field_0x25c = 0x400;
-        field_0x288 = getGameView_802D6A9C()->fn_802D9C4C();
+        field_0x288 = getGameView_802D6A9C()->getStageBgName_802D9C4C();
         mParamAtcp_0x114 = 4;
         field_0x268 = 2;
         break;

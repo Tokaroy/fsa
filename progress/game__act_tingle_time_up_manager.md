@@ -18,7 +18,7 @@
 - `0x230`: `s32 mState` — state machine (0..7)
 - `0x234`: `s32 mTimer` — countdown timer, decremented at the end of `update()` when `> 0`
 - `0x238`: `s32 field_0x238` — spawned `TUTL` count in state 5
-- `0x23C`: `u32 field_0x23c` — initial RGBA colour word from `fn_8018330C()`
+- `0x23C`: `u32 field_0x23c` — initial RGBA colour word from `getShadowColor_8018330C()`
 - `0x240`: `u32 field_0x240` — saved RGBA colour word restored in states 6 and 7
 - `0x244..0x250`: `f32 field_0x244`, `field_0x248`, `field_0x24c`, `field_0x250` — current RGBA channels as floats
 - `0x254..0x25C`: `f32 field_0x254`, `field_0x258`, `field_0x25c` — per-frame RGB steps

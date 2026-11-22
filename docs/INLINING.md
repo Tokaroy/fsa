@@ -131,7 +131,7 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
 | tu_8028FBA0 | fn_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
-| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
+| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
 | tu_80457DFC | fn_80457E54, fn_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
 | tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
@@ -235,12 +235,12 @@ initial `auto_inline` state.)
 
 Reversed tu_801CDC8C, `-inline auto,deferred`:
 
-- No pragma: fn_801CF6B8 inlines fn_801CFCF0 and fn_801CF720 (wrong).
+- No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and fn_801CF720 (wrong).
 - Global `inline_max_size(5..40)`: fn_801CF6B8's calls match. But the same flag on
   the whole game destroys header inlining (N=10 → 2884, 40 → 3267, 100 → 3814
   functions): the draws inline large header inlines. **Rejected**: a callee-size
   threshold cannot be the separator. The original also keeps 4- and 5-instruction
-  callees out of line (fn_80128C58, fn_8018330C) while it inlines 39-instruction
+  callees out of line (fn_80128C58, getShadowColor_8018330C) while it inlines 39-instruction
   forwarders.
 - `#pragma auto_inline off` at the top of the file: calls match, the unit loses
   nothing.
@@ -257,8 +257,8 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
 fn_80222668 (50 instr), fn_801EDC0C (64), fn_8021AFB8 (125), fn_8026EB1C (91),
-fn_8043E7CC (16), fn_80458744 (79), fn_80128C58 (4), fn_8018330C (5),
-fn_801CF6B8 / fn_801CF720 / fn_801CFCF0 / fn_801CF798 (26-60), fn_801CD930/950.
+fn_8043E7CC (16), fn_80458744 (79), fn_80128C58 (4), getShadowColor_8018330C (5),
+fn_801CF6B8 / fn_801CF720 / isStepBlocked_801CFCF0 / fn_801CF798 (26-60), stepAngle_801CD930/950.
 There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.
 

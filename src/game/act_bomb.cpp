@@ -749,7 +749,7 @@ void Bomb_8049F784::update() {
         ((field_0x230 >= 1 && field_0x230 <= 3) || (field_0x230 == 10 && field_0x258 == 1))) {
         if (((mPos.z != 0.0f && mSpawnParam_0x90 != 6) || (mPos.z != 0.0f && mPos.z < 8.0f && mSpawnParam_0x90 == 6)) && field_0x240 == 0 &&
             field_0x244 == 0) {
-            u8 mask = fn_801F2740(-1);
+            u8 mask = getPlayersInBox_801F2740(-1);
             bool other = false;
             if (mask) {
                 s32 player = 0;

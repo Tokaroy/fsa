@@ -252,7 +252,7 @@ CollectScreen_804B1D58::CollectScreen_804B1D58() {
 }
 
 CollectScreen_804B1D58::~CollectScreen_804B1D58() {
-    gAudioMgr_8053AF80->fn_80459274();
+    gAudioMgr_8053AF80->resumeSe_80459274();
     fn_8044C7F0();
     delete mScreen;
     mScreen = NULL;
@@ -741,7 +741,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
             field_0x140 = 0;
             if (field_0x137 == 0) {
                 gAudioMgr_8053AF80->playSystemSound_80458880(2, -1);
-                gAudioMgr_8053AF80->fn_80459274();
+                gAudioMgr_8053AF80->resumeSe_80459274();
             }
             field_0x137 = 0;
         }
@@ -803,7 +803,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 if (field_0xf8 == 1) {
                     gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
-                    gAudioMgr_8053AF80->fn_80459274();
+                    gAudioMgr_8053AF80->resumeSe_80459274();
                     s32 mode;
                     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
                         (((mode = lbl_80529DEC.mStage_0x118) == 0 && lbl_80529DEC.mLevel_0x11c == 2) ||
@@ -830,7 +830,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     field_0x184 = 2;
                     gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
-                    gAudioMgr_8053AF80->fn_80459274();
+                    gAudioMgr_8053AF80->resumeSe_80459274();
                 }
             } else {
                 field_0xfc = 0;

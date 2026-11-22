@@ -61,7 +61,7 @@ inline bool SlimeManager_804A5BD8::checkTrigger() {
     case 2:
         for (s32 i = 0; i < 4; i++) {
             if (field_0x345 & (1 << i)) {
-                if (fn_801D0B44(i) && !fn_801D0D50(i, &mPos, range)) {
+                if (canTargetPlayer_801D0B44(i) && !fn_801D0D50(i, &mPos, range)) {
                     trigger = true;
                     break;
                 }

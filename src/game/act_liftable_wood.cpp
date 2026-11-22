@@ -34,7 +34,7 @@ void LiftableWood_804A87A8::init() {
     }
     mTimer23c = 2;
     mState = 0;
-    field_0x248 = getGameView_802D6A9C()->fn_802D9C4C();
+    field_0x248 = getGameView_802D6A9C()->getStageBgName_802D9C4C();
     mEmitter230 = NULL;
     mTimer240 = 0;
     if (getGameView_802D6A9C()->fn_802D7544(field_0x16c)) {

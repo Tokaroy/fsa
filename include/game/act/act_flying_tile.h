@@ -51,7 +51,7 @@ public:
     /* 0x278 */ u8 field_0x278;
     /* 0x279 */ u8 field_0x279[3];
     /* 0x27C */ JGeometry::TVec3f field_0x27c;
-    /* 0x288 */ const char* field_0x288; // the stage background name (GameView fn_802D9C4C)
+    /* 0x288 */ const char* field_0x288; // the stage background name (GameView getStageBgName_802D9C4C)
 }; // Size: 0x28C
 
 #endif

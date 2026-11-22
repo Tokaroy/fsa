@@ -142,7 +142,7 @@ f32 fn_801544E4(s16 angle) {
 
 // An actor's position (its mPos). Out of line in the original, called from
 // 4 other units on actors they got from findActorBySerial_801F666C / findActorBySerial_8015445C.
-JGeometry::TVec3f* ActorBase_804A5770::fn_801544DC() {
+JGeometry::TVec3f* ActorBase_804A5770::getPos_801544DC() {
     return &mPos;
 }
 
@@ -1095,8 +1095,8 @@ void SwordSoldier_8049FCA0::update() {
                 if (leader != NULL) {
                     if (field_0x27c == 1) {
                         field_0x2a0 = 0;
-                        f32 dx = leader->fn_801544DC()->x - mPos.x;
-                        f32 dy = leader->fn_801544DC()->y - mPos.y;
+                        f32 dx = leader->getPos_801544DC()->x - mPos.x;
+                        f32 dy = leader->getPos_801544DC()->y - mPos.y;
                         if (fn_80154378(dx * dx + dy * dy) > 40.0f) {
                             field_0x29e = (s16)fn_8015465C(dx, dy);
                             field_0x29e += (s16)(4096.0f - 8192.0f * randFloat_80154744());

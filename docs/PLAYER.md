@@ -652,7 +652,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
 - **0x41 recoil hop** (enter 8025D7E4, update 8025D6AC): speed lbl_8046AFE0[facing]
   = 2 back against the facing and 4 up, sound 0x20010, a view shake
   (GameView fn_802D79E8), the TV effect of kind 3 aimed along the facing
-  (TileMap_804AA858 fn_802F601C); then 0x344 is added to mPos with gravity 0.25 (to -4)
+  (TileMap_804AA858 startHeightGridEffect_802F601C); then 0x344 is added to mPos with gravity 0.25 (to -4)
   until the player lands (state 0).
 - **0x42** (update 8025AED0, requested by fn_8025AA8C(serial) from tu_801688AC):
   the player spins (facing every two frames) and is drawn 6 a frame across the floor
@@ -1123,7 +1123,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
   frame (field_0xb99 rising: 1 or 5) the point field_0x5c0 (lbl_8046B0C0, the charged set
   at +4) gets the box field_0x5b0 (16 or 8 around it), BgRewrite **fn_802A1D44** (now a
   member, returns bool, caller ignores it) acts on the tile 16 in front (lbl_8046B120),
-  the TV effect kind 2 / 1 (fn_802F601C) with strength 1 / player count (fn_802487FC,
+  the TV effect kind 2 / 1 (startHeightGridEffect_802F601C) with strength 1 / player count (fn_802487FC,
   unless formation 5 or fn_80240AF0), halved below level 2; dust emitters 0x23B-0x23F and
   0x3CF / 0x3D0 by tile (0x39 / 0xD), a view shake and startRumble_80134DE4(2) when charged.
 - **0x44** (item 6 below level 2): frame 11 of 0x45 without the Somaria block: while held,
@@ -1263,7 +1263,7 @@ reproduces both).
 | 0x49 | 80283948 | **held down / struggling**: pending layer switch 0xCE8 (fn_80303750 wait, fn_80290E90 / fn_80290D58); mode 0x1178 2 a 36-frame pose cycle; else button mashing (pad trigger 0xF) counts 0x3FC (free at 15, or 30 with more than one player, mode 1), decaying every 20 frames |
 | 0x4A | 80282FE0 | **mode 0x42C walk** (off view-flag layers; 0x4B on them): the mode (0xBE0 = 300, effects 0x15B / 0x15C, sounds 0x20040 / 0x20041) follows the leader's (fn_8022B7C4) or toggles by pad (fn_802466B4) after the cooldown 0x430 (90); movement fn_802804E0 + fn_80242DAC; dust 0x54E by distance moved (0x401) |
 | 0x4B | 80282ACC | the same on view-flag layers: movement fn_80280074, 'PEFF' actor every 50 counts of the random counter 0x402, bob 0x410 on y |
-| 0x4D | 80282178 | **fired from a cannon**: sound 0x10003 at 72; landing wait 0x3FC (GBA link fn_80301CD0), layer switch 0xCEA to 0xCE4 at 0xCD4 (return point 0xCB0), ground mark fn_802F601C, effect 0x17D; in flight 0x344 + 0x380 (stick-steered, 0.8 / 0.1 / 1.6), bounce 0x4E at a wall (fn_8025190C), state 5 by pad (fn_8022C3AC) |
+| 0x4D | 80282178 | **fired from a cannon**: sound 0x10003 at 72; landing wait 0x3FC (GBA link fn_80301CD0), layer switch 0xCEA to 0xCE4 at 0xCD4 (return point 0xCB0), ground mark startHeightGridEffect_802F601C, effect 0x17D; in flight 0x344 + 0x380 (stick-steered, 0.8 / 0.1 / 1.6), bounce 0x4E at a wall (fn_8025190C), state 5 by pad (fn_8022C3AC) |
 | 0x50 | 8028126C | (round 7) update: runs at 2 along the facing to 300 frames (0x408) or tile 0x39; the ACTOR_FIRE actor (FireRodFire_804A89F0::fn_802BAA0C) follows box 0x4C0; fire effects respawned on a turn |
 | 0x51 | 80280E44 | (round 7) update: button mashing (pad trigger 0xF) takes 10 off the timer 0x46C and jolts by the pad direction (0x474, 5 frames); at 0 stands with effects 0x28B / 0x28C and sound 0x2003C |
 

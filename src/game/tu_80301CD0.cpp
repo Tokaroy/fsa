@@ -233,7 +233,7 @@ void fn_80308D0C() {
 // link flags, then the mode's status bits in bytes 4-7.
 // 0x803085A4
 // FIXME: 97.08 %, missing/extra; behaviour near.
-void cls_804AA8B8::fn_803085A4(s32 player) {
+void cls_804AA8B8::fillRecordHeader_803085A4(s32 player) {
     s32 layer = fn_8022EA0C(player);
     lbl_80506DE8[player].f.field_0x3_0 = lbl_8053AD08;
     lbl_80506DE8[player].f.mPlayer = layer;
@@ -306,7 +306,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
         if (lbl_8053ACD0) {
             s32 mode = lbl_80506D48[player];
             if (mode == 2) {
-                lbl_80506DE8[player].f.field_0x4.mEven.field_0x5_7 = getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 1);
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x5_7 = getGameView_802D6A9C()->testLayerFlags_802D7804(getPlayerLayer_8023DE58(layer), 1);
             } else if ((mode & 1) == 1) {
                 if (getPlayerLayer_8023DE58(layer) >= 8) {
                     bool skip;
@@ -345,7 +345,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                     }
                 }
                 if (lbl_80506D48[player] == 3) {
-                    if (getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 12)) {
+                    if (getGameView_802D6A9C()->testLayerFlags_802D7804(getPlayerLayer_8023DE58(layer), 12)) {
                         lbl_80506DE8[player].f.field_0x4.mOdd.mOffsetMode =
                             getGameView_802D6A9C()->getBits(getPlayerLayer_8023DE58(layer), 0xC) >> 2;
                     } else {
@@ -386,7 +386,7 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     } else {
         lbl_80506DE8[player].f.mKind = 13;
     }
-    fn_803085A4(player);
+    fillRecordHeader_803085A4(player);
     for (s32 i = 0; i < 4; i++) {
         lbl_80506DE8[player].f.mEntries[i].mXHigh = 1;
         lbl_80506DE8[player].f.mEntries[i].mXLow = 0x80;
@@ -413,7 +413,7 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
             flag = 0;
             if (fn_8022F5B0(layer)) {
                 s32 playerLayer = getPlayerLayer_8023DE58(layer);
-                if (!getGameView_802D6A9C()->fn_802D7804(playerLayer, 2)) {
+                if (!getGameView_802D6A9C()->testLayerFlags_802D7804(playerLayer, 2)) {
                     flag = 1;
                 }
             }
@@ -487,7 +487,7 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     } else {
         lbl_80506DE8[player].f.mKind = 11;
     }
-    fn_803085A4(player);
+    fillRecordHeader_803085A4(player);
     s32 count = (lbl_80541618[lbl_8053AD08] - 2) * 2;
     s32 start = lbl_8053AD0C[player];
     s32 i;
@@ -716,7 +716,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     } else {
         lbl_80506DE8[player].f.mKind = 14;
     }
-    fn_803085A4(player);
+    fillRecordHeader_803085A4(player);
     s32 layer = fn_8022EA0C(player);
     for (s32 i = 0; i < 4; i++) {
         s32 idx = fn_802340A0(i);
@@ -787,7 +787,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
     u8 flag = 0;
     if (fn_8022F5B0(layer)) {
-        if (!getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
+        if (!getGameView_802D6A9C()->testLayerFlags_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
             flag = 1;
         }
     }
@@ -823,18 +823,18 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     if ((lbl_80506D48[player] & 1) == 0) {
         if (getPlayerLayer_8023DE58(layer) < 8) {
-            u64 mask = getGameView_802D6A9C()->fn_802D7AC4(8);
+            u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(8);
             record->f.field_0x18[lbl_80541618[lbl_8053AD08] - 7].mWord = swapBytes(mask & 0xFFFFFFFF);
         } else {
-            u64 mask = getGameView_802D6A9C()->fn_802D7AC4(getPlayerLayer_8023DE58(layer));
+            u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(getPlayerLayer_8023DE58(layer));
             record->f.field_0x18[lbl_80541618[lbl_8053AD08] - 7].mWord = swapBytes(mask & 0xFFFFFFFF);
         }
     } else {
         if (getPlayerLayer_8023DE58(layer) < 8) {
-            u64 mask = getGameView_802D6A9C()->fn_802D7AC4(8);
+            u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(8);
             record->f.field_0x18[lbl_80541618[lbl_8053AD08] - 7].mWord = swapBytes(mask >> 32);
         } else {
-            u64 mask = getGameView_802D6A9C()->fn_802D7AC4(getPlayerLayer_8023DE58(layer));
+            u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(getPlayerLayer_8023DE58(layer));
             record->f.field_0x18[lbl_80541618[lbl_8053AD08] - 7].mWord = swapBytes(mask >> 32);
         }
     }
@@ -1195,7 +1195,7 @@ void cls_804AA8B8::fn_80304FB0() {
                             lbl_8053AD24[player] = 0;
                             lbl_8053AD28[player] = 1;
                             record->f.mKind = 10;
-                            fn_803085A4(player);
+                            fillRecordHeader_803085A4(player);
                             s32 count = lbl_80541618[lbl_8053AD08] - 2;
                             s32 i;
                             for (i = 0; i < count; i++) {
@@ -1227,7 +1227,7 @@ void cls_804AA8B8::fn_80304FB0() {
                     }
                 } else if (lbl_8053AD28[player] == 1) {
                     record->f.mKind = 11;
-                    fn_803085A4(player);
+                    fillRecordHeader_803085A4(player);
                     s32 count = lbl_80541618[lbl_8053AD08] - 2;
                     s32 i;
                     for (i = 0; i < count; i++) {
@@ -1302,7 +1302,7 @@ void cls_804AA8B8::fn_80304FB0() {
             }
         } else if (entry->field_0x119 == 1) {
             record->f.mKind = 7;
-            fn_803085A4(player);
+            fillRecordHeader_803085A4(player);
             for (s32 i = 0; i < lbl_80541618[lbl_8053AD08] - 2; i++) {
                 record->f.mSprites[i].mWord = lbl_804DBC18[player][entry->field_0x104++];
                 if (entry->field_0x104 >= entry->mWords) {
@@ -1320,7 +1320,7 @@ void cls_804AA8B8::fn_80304FB0() {
             record->f.field_0x0 = sum;
         } else {
             record->f.mKind = 6;
-            fn_803085A4(player);
+            fillRecordHeader_803085A4(player);
             u16* src;
             if (entry->mAddress == 0x0600C000 || entry->mAddress == 0x0600E000) {
                 src = (u16*)fn_80403328(entry->mName);
@@ -1527,7 +1527,7 @@ void fn_80303CE4(s32 player) {
 void fn_80303870(s32 player) {
     char name[32];
     char name2[32];
-    const char* str = getGameView_802D6A9C()->fn_802D9C4C();
+    const char* str = getGameView_802D6A9C()->getStageBgName_802D9C4C();
     if (str[0] != 'c') {
         sprintf(name, "bg_%s_sch.szs", str);
         fn_80304C10(player, name, 0x6000000, 1, 0);
@@ -1941,7 +1941,7 @@ void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
 
 // Works out the link state lbl_8053ACE8[slot] (1-3, 0 for none) of a
 // connected player from the two layers a and b (8 counts as set, above 8
-// asks the view's fn_802D7804), stores them and the timer of `mode`.
+// asks the view's testLayerFlags_802D7804), stores them and the timer of `mode`.
 void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
     s32 slot = fn_8022F340(player);
     if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << slot)) == 0) {
@@ -1950,16 +1950,16 @@ void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
     if (a < 8) {
         if (b < 8) {
             lbl_8053ACE8[slot] = 0;
-        } else if (b == 8 || getGameView_802D6A9C()->fn_802D7804(b, 1)) {
+        } else if (b == 8 || getGameView_802D6A9C()->testLayerFlags_802D7804(b, 1)) {
             lbl_8053ACE8[slot] = 1;
         } else {
             lbl_8053ACE8[slot] = 3;
         }
-    } else if (a == 8 || getGameView_802D6A9C()->fn_802D7804(a, 1)) {
+    } else if (a == 8 || getGameView_802D6A9C()->testLayerFlags_802D7804(a, 1)) {
         if (b < 8) {
             lbl_8053ACE8[slot] = 3;
             lbl_8053ACF8[player] = 1;
-        } else if (b == 8 || getGameView_802D6A9C()->fn_802D7804(b, 1)) {
+        } else if (b == 8 || getGameView_802D6A9C()->testLayerFlags_802D7804(b, 1)) {
             lbl_8053ACE8[slot] = 2;
         } else {
             lbl_8053ACE8[slot] = 2;
@@ -1968,7 +1968,7 @@ void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
     } else {
         if (b < 8) {
             lbl_8053ACE8[slot] = 3;
-        } else if (b == 8 || getGameView_802D6A9C()->fn_802D7804(b, 1)) {
+        } else if (b == 8 || getGameView_802D6A9C()->testLayerFlags_802D7804(b, 1)) {
             lbl_8053ACE8[slot] = 1;
         } else {
             lbl_8053ACE8[slot] = 2;

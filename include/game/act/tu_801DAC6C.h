@@ -41,7 +41,7 @@ struct Singleton_801DAC6C {
 };
 
 // Owner game/tu_801DAC6C.cpp: a byte counter (0-4) other units step with lbz/stb;
-// GameView_804A9950::fn_802D8328 clears it.
+// GameView_804A9950::spawnScreenActors_802D8328 clears it.
 extern u8 lbl_8053AC30;
 
 // Owner game/tu_801DAC6C.cpp. Returns the guarded static above.

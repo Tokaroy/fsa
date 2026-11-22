@@ -477,7 +477,7 @@ void Player_804A6F38::fn_8025D7E4() {
     dir.normalize();
     const JGeometry::TVec3f& pos = mPos + offset;
     if (mLayer_0x3b4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F601C(&pos, 3, &dir, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&pos, 3, &dir, 1.0f, 1.0f);
     }
     field_0xb9c = true;
 }
@@ -1297,7 +1297,7 @@ void Player_804A6F38::fn_8025B3F0() {
         }
         if (field_0xb9b == true) {
             if (mLayer_0x3b4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F601C(&field_0x5c0, 2, NULL, 1.0f, 2.0f * strength);
+                gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&field_0x5c0, 2, NULL, 1.0f, 2.0f * strength);
             }
             fn_8024F0E8(0x2002b);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23b, 0, 0, NULL, NULL, true, 1.0f);
@@ -1315,7 +1315,7 @@ void Player_804A6F38::fn_8025B3F0() {
             gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
         } else {
             if (mLayer_0x3b4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F601C(&field_0x5c0, 1, NULL, 2.0f, strength);
+                gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&field_0x5c0, 1, NULL, 2.0f, strength);
             }
             fn_8024F0E8(0x20024);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23d, 0, 0, NULL, NULL, true, 1.0f);

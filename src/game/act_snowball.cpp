@@ -397,7 +397,7 @@ void Snowball_8049D020::chase(s32 target) {
     } else {
         step = 700;
     }
-    fn_801CD930(&field_0x230, (s16)angle, step);
+    stepAngle_801CD930(&field_0x230, (s16)angle, step);
     if (dist >= 64.0f) {
         fn_801CD950(&field_0x264, 1.6f, 0.08f);
     } else {

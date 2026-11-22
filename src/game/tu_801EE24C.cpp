@@ -342,8 +342,8 @@ void ActorBase_804A5770::die_0x24() {
         fn_801F52A4();
     }
     JPABaseEmitter* emitter =
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true, fn_801EE4F0());
-    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, fn_801EE4F0());
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
     player = mLastAttacker_0x10c;
     if (player >= 0 && player < 4) {
         getEffectSystem_8013C824()->fn_8013C830(player, emitter);
@@ -413,7 +413,7 @@ bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
     }
     if (mBossDeathTimer_0x188 == 0) {
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 2, NULL, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 2, NULL, 1.0f, 1.0f);
         }
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 0.3f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 1, 0, NULL, NULL, true, 0.375f);
@@ -573,7 +573,7 @@ s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
                 break;
             }
             if (mPos.z == 0.0f && mVel_0x3c.squared() > 1.0f) {
-                f32 size = mActorId == 'SLK2' ? 1.0f : fn_801EE4F0();
+                f32 size = mActorId == 'SLK2' ? 1.0f : getEffectScale_801EE4F0();
                 f32 scale = 0.9f * size;
                 if (scale > 0.0f) {
                     JGeometry::TVec3f dir;
@@ -632,7 +632,7 @@ s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
         result = 1;
     } else if (mDeathTimer_0xe0 != 0) {
         if (mDeathTimer_0xe0 == 30) {
-            f32 size = fn_801EE4F0();
+            f32 size = getEffectScale_801EE4F0();
             u16 id = 0xFFFF;
             switch (mHitType_0xfc) {
             case 1:
@@ -787,7 +787,7 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
                 if (mActorId == 'TINK' || mLife - attack <= 0) {
                     deleteEmitter(&mEmitter100);
                     deleteEmitter(&mEmitter104);
-                    f32 scale = fn_801EE4F0();
+                    f32 scale = getEffectScale_801EE4F0();
                     mEmitter100 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBB, 0, -1, NULL, NULL,
                                                         true, scale);
                     mEmitter104 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBC, 0, 1, NULL, NULL,
@@ -893,7 +893,7 @@ void ActorBase_804A5770::fn_801F3604() {
 }
 
 // Marks the actor dead, then fn_801F355C's report.
-void ActorBase_804A5770::fn_801F35AC() {
+void ActorBase_804A5770::markDead_801F35AC() {
     mAlive = false;
     fn_801F355C();
 }
@@ -984,7 +984,7 @@ bool ActorBase_804A5770::fn_801F329C(s32 player) const {
 
 // Whether `player` is on this actor's layer (getPlayerLayer_8023DE58), or counts as on
 // it through fn_801F329C.
-bool ActorBase_804A5770::fn_801F320C(s32 player) const {
+bool ActorBase_804A5770::isPlayerOnLayer_801F320C(s32 player) const {
     s32 layer = mLayer_0x4;
     bool result = false;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
@@ -1103,7 +1103,7 @@ u8 ActorBase_804A5770::checkActorHit_801F2DB4(u32 includeId, u32 excludeId, cons
 // means mParamAtcp_0x114 ("atcp"). Returns the bits of the players hit.
 // FIXME: 99.12 %, regalloc-only; behaviour clean.
 u8 ActorBase_804A5770::damagePlayersInBox_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
-    u32 result = fn_801F2740(skipPlayer);
+    u32 result = getPlayersInBox_801F2740(skipPlayer);
     if (result) {
         JGeometry::TBox2f screen;
         toScreenBox(&screen, mBox, mPos);
@@ -1222,7 +1222,7 @@ s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool
 // bool is not written here; an s32 local drops the in-loop clrlwi instead).
 // const: the box's first floats load before the register saves.
 // Besides, 32.0f is lbl_8053F748 once .sdata2 is in order.
-u8 ActorBase_804A5770::fn_801F2740(s32 skipPlayer) const {
+u8 ActorBase_804A5770::getPlayersInBox_801F2740(s32 skipPlayer) const {
     JGeometry::TBox2f box;
     toScreenBox(&box, mBox, mPos);
     u8 hits = 0;
@@ -1689,7 +1689,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
     }
     ActorSoundObj_804578F4* sound = fn_801F1184();
     sound->field_0x44 = mLayer_0x4 >= 8;
-    if (getGameView_802D6A9C()->fn_802D7804(mLayer_0x4, 0x800)) {
+    if (getGameView_802D6A9C()->testLayerFlags_802D7804(mLayer_0x4, 0x800)) {
         sound->field_0x45 = 0;
     } else {
         s32 layer = mLayer_0x4;
@@ -1714,7 +1714,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
             }
         }
     }
-    return sound->fn_80456334(soundId, fadeTime);
+    return sound->startSound_80456334(soundId, fadeTime);
 }
 
 // Plays sound effect `id` through the audio object; ids 3 and 0x42 on
@@ -2191,7 +2191,7 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
 
 // fn_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
 // with no player found the direction is zero (and the distance unset).
-void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
+void ActorBase_804A5770::getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best;
     JGeometry::TVec3f pos;
     pos.set(mPos);
@@ -2204,7 +2204,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && fn_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
+        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
             !fn_8022F478(i) && !fn_80236B50(i) &&
             !fn_8022D534(i))
         {
@@ -2257,7 +2257,7 @@ void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s3
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && fn_801F320C(i) && !fn_8022F478(i) && !fn_80236B50(i) &&
+        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_8022F478(i) && !fn_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);
@@ -2300,7 +2300,7 @@ static const f32 lbl_8046A00C[5] = {
     0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
 };
 
-f32 ActorBase_804A5770::fn_801EE4F0() {
+f32 ActorBase_804A5770::getEffectScale_801EE4F0() {
     return lbl_8046A00C[mParamEfsz_0xc0];
 }
 

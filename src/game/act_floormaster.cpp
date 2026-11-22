@@ -394,7 +394,7 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
                     fn_802300EC(field_0x2b8) && !fn_8022DCD8(field_0x2b8) &&
                     !fn_801CD1D0(field_0x2b8)) {
                     mBox.set(-10.0f, -16.0f, 10.0f, 10.0f);
-                    if (fn_801F2740(-1) & (1 << field_0x2b8)) {
+                    if (getPlayersInBox_801F2740(-1) & (1 << field_0x2b8)) {
                         flag = true;
                     }
                     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);

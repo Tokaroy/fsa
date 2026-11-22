@@ -338,7 +338,7 @@ void CrystalBall_804AB308::fn_80322964() {
     mBox.f.x = 6.0f;
     mBox.f.y = 6.0f;
     JGeometry::TVec3f saved = mPos;
-    u8 mask = fn_801F2740(-1);
+    u8 mask = getPlayersInBox_801F2740(-1);
     if (mask != 0) {
         u8 bit = 1;
         for (s32 i = 0; i < 4; i++) {

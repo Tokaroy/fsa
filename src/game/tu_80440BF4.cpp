@@ -32,7 +32,7 @@ ButtonIcons_804B1988::~ButtonIcons_804B1988() {
     lbl_8053AED8 = NULL;
 }
 
-void ButtonIcons_804B1988::fn_80440EE8() {
+void ButtonIcons_804B1988::draw_80440EE8() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }

@@ -47,19 +47,19 @@ public:
     virtual bool stopOK(JAISoundHandle& handle);
     // 0x80106EB0 (game/act_wind_environment.cpp, where the weak copy
     // landed): vtable slot 0x14, where JAUSoundObject has startSound;
-    // fn_80456334(id, 0).
+    // startSound_80456334(id, 0).
     virtual JAISoundHandle* startSound(JAISoundID id);
 
     // 0x804561D8 (game/tu_80455CA4.cpp, next to the ctor): r3 is this. `id`
-    // is passed by value (the callee re-copies it for fn_80456334), `fade`
-    // goes unextended into fn_80456334's u32 fade time.
+    // is passed by value (the callee re-copies it for startSound_80456334), `fade`
+    // goes unextended into startSound_80456334's u32 fade time.
     void fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c);
 
     // 0x80456334 (game/tu_80455CA4.cpp): r3 is this, r4 the id (copied to the
     // stack by the caller), r5 a fade time (fn_804561D8 passes its own);
     // returns the handle the sound was started on, or NULL. Called by
     // PlayerSoundObj_804B20F8::startSound (game/tu_8045B010.cpp) with 0.
-    JAISoundHandle* fn_80456334(JAISoundID id, u32 fade);
+    JAISoundHandle* startSound_80456334(JAISoundID id, u32 fade);
 
     void setField_0x48(f32 value) { field_0x48 = value; }
 

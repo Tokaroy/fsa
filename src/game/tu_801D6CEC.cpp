@@ -207,9 +207,9 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     }
     case 3:
         if (field_0x58 != 0) {
-            fn_801CD930(&field_0x56, 0, 0x20);
+            stepAngle_801CD930(&field_0x56, 0, 0x20);
         } else {
-            fn_801CD930(&field_0x56, 0x100, 0x10);
+            stepAngle_801CD930(&field_0x56, 0x100, 0x10);
         }
         field_0x54 += field_0x56;
         break;

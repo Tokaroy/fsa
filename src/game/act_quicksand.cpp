@@ -260,7 +260,7 @@ void Quicksand_804A6270::onFirstUpdate_0x54() {
 void Quicksand_804A6270::fn_80211EB0() {
     if (mState != 0) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_801D0B44(i)) {
+            if (canTargetPlayer_801D0B44(i)) {
                 if (fn_80211000(getPlayerPos_8023E724(i))) {
                     if (!(fn_802373EC(i) == 1 && fn_8023725C(i) == 2 && fn_8023513C(i))) {
                         JGeometry::TVec3f push;
@@ -444,7 +444,7 @@ void Quicksand_804A6270::fn_802110A8() {
             s32 i;
             bool inside = false;
             for (i = 0; i < 4; i++) {
-                if (fn_801D0B44(i) && fn_80211000(getPlayerPos_8023E724(i))) {
+                if (canTargetPlayer_801D0B44(i) && fn_80211000(getPlayerPos_8023E724(i))) {
                     inside = true;
                     break;
                 }

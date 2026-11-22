@@ -530,7 +530,7 @@ void Player_804A6F38::fn_8027D320() {
 // lbl_8046BB78[facing]) is handed to the callbacks 0x1278 / 0x1290 and the actor 0x12C0, the
 // boxes 0x4B0 (+-20) and 0x4A0 (+-12) and the point 0x30C are centred on the player.
 // FIXME: 99.37 %, scheduling; behaviour clean.
-// Scheduling only: the original computes &mPos for fn_802F601C before the
+// Scheduling only: the original computes &mPos for startHeightGridEffect_802F601C before the
 // layer < 8 test.
 void Player_804A6F38::fn_8027CC90() {
     if ((!mVel_0x344.isZero() || mPos.z > 0.0f) && mAnimTimer_0x3fa >= 11) {
@@ -582,7 +582,7 @@ void Player_804A6F38::fn_8027CC90() {
                 getGameView_802D6A9C()->fn_802D79E8(mLayer_0x3b4, 4.0f, 0.0f, false);
                 gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
                 if (mLayer_0x3b4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 1, NULL, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 1, NULL, 1.0f, 1.0f);
                 }
                 fn_8024F0E8(0x20024);
                 spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x23d, 0, 0, NULL, NULL, true, 1.0f);

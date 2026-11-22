@@ -33,7 +33,7 @@ void PanelRewriteNPC2_804A9F58::update() {
             if (field_0x230 == tile) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, i, field_0x234);
                 if (field_0x23c != 0) {
-                    fn_80226CA8(i, mLayer_0x4, &pos);
+                    cellToPos_80226CA8(i, mLayer_0x4, &pos);
                     layer = mLayer_0x4;
                     if (layer >= 8) {
                         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &pos, 0, -1, -1);

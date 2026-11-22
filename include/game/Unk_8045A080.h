@@ -4,14 +4,14 @@
 // The game's audio manager (provisional name after its constructor,
 // 0x8045A080; game/tu_80457DFC.cpp). One 0x90-byte instance, built by main
 // in the main heap and stored in gAudioMgr_8053AF80 (and GameState field_0xc).
-// fn_80459AE4 sets JAudio up from "GC4Sword_usa/AudioRes/JaiInit.baa",
+// init_80459AE4 sets JAudio up from "GC4Sword_usa/AudioRes/JaiInit.baa",
 // ".../Waves/" and ".../Seqs/JaiSeqs.arc" (the unit's .sdata string
 // pointers) and owns the sound manager, the SE / sequence managers, the
 // audience and the section heap. Its members play system sounds
 // (playSystemSound_80458880, 393 calls), start and stop the background music (the
 // sequence handle at 0x80: fn_80458FF0, fn_80458F9C), the second sequence
 // at 0x84 (fn_80458F04), and pause / fade the SE categories (fn_80458658,
-// fn_80459274, fn_804593D4). Its role matches Twilight Princess's
+// resumeSe_80459274, fn_804593D4). Its role matches Twilight Princess's
 // Z2AudioMgr (a structural reference only; the layout is FSA's).
 //
 // Included at the end of game/GameAudio.h so that every unit that includes
@@ -46,12 +46,12 @@ struct AudioMgr_8045A080 {
     /* 0x14 */ JAUSoundObject* field_0x14;    // system sounds (playSystemSound_80458880 with player < 0)
     /* 0x18 */ JAUSoundObject* field_0x18[4]; // per-player system sounds
     /* 0x28 */ JAUSoundObject* field_0x28;
-    /* 0x2C */ JASAudioReseter* field_0x2c; // fn_80459AE4 news it
-    /* 0x30 */ JAUSoundMgr* field_0x30; // fn_80459AE4 news it; starts the sequences (JAISoundStarter)
+    /* 0x2C */ JASAudioReseter* field_0x2c; // init_80459AE4 news it
+    /* 0x30 */ JAUSoundMgr* field_0x30; // init_80459AE4 news it; starts the sequences (JAISoundStarter)
     /* 0x34 */ JAISeMgr* field_0x34; // its categories 0-6 are paused / faded here
-    /* 0x38 */ JAISeqMgr* field_0x38; // fn_80459AE4: field_0x30 + 0x728
-    /* 0x3C */ JAUAudience_<4, JAUDopplerAudible<4>, JAUDopplerAudienceState, JAUAudience_withSetting_doppler>* field_0x3c; // fn_80459AE4 news it
-    /* 0x40 */ GameAudio::CustomSoundTable* field_0x40; // fn_80459AE4 builds it (vtable __vt__Q29GameAudio16CustomSoundTable)
+    /* 0x38 */ JAISeqMgr* field_0x38; // init_80459AE4: field_0x30 + 0x728
+    /* 0x3C */ JAUAudience_<4, JAUDopplerAudible<4>, JAUDopplerAudienceState, JAUAudience_withSetting_doppler>* field_0x3c; // init_80459AE4 news it
+    /* 0x40 */ GameAudio::CustomSoundTable* field_0x40; // init_80459AE4 builds it (vtable __vt__Q29GameAudio16CustomSoundTable)
     /* 0x44 */ JAUSectionHeap* field_0x44; // fn_80458090 loads wave archives of it
     /* 0x48 */ u8 field_0x48[0x4C - 0x48];
     /* 0x4C */ f32 field_0x4c; // music volume (fn_80458744 tables), times field_0x54
@@ -83,7 +83,7 @@ struct AudioMgr_8045A080 {
     /* 0x8B */ bool field_0x8b; // fn_8045815C's flag (fn_80458FF0 passes it on unconverted)
     /* 0x8C */ u8 field_0x8c; // fn_80457E54's flag
     /* 0x8D */ u8 field_0x8d;
-    /* 0x8E */ u8 field_0x8e; // set by fn_804593D4, cleared by fn_80459274
+    /* 0x8E */ u8 field_0x8e; // set by fn_804593D4, cleared by resumeSe_80459274
     /* 0x8F */ u8 field_0x8f;
     // 0x80457E54: stores flag at 0x8c, sets the mode (fn_80458744 2 / 0)
     // and the music tempo (moveMusicTempo_80458508 2 / 0, inlined).
@@ -105,8 +105,8 @@ struct AudioMgr_8045A080 {
     // game/tu_80457DFC.cpp. Sets up JAudio from the two loaded audio files
     // (the buffers at 0x14 of the loaders in tu_80442810): `heap` is the
     // heap lbl_80529DEC.field_0x4, 0x800000 the audio memory size stored in
-    // the JAU_JASInitializer (fn_80459AE4 stores r5 at its 0x4).
-    void fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData);
+    // the JAU_JASInitializer (init_80459AE4 stores r5 at its 0x4).
+    void init_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData);
     // game/tu_80457DFC.cpp: JASDriver::setOutputMode(mode).
     void fn_804594E4(u32 mode);
     // game/tu_80457DFC.cpp (0x80458FF0). act_enemy_generator_3 calls it with
@@ -143,7 +143,7 @@ struct AudioMgr_8045A080 {
     void fn_80458F9C(s32 frames);
     // game/tu_80457DFC.cpp (0x80459274, same unit). Called on gAudioMgr_8053AF80
     // by GbaConnectErrorWindow_804B19F0::fn_80441A1C (game/tu_80441A1C.cpp) after the 0x0 call.
-    void fn_80459274();
+    void resumeSe_80459274();
     // game/tu_80457DFC.cpp (0x80458090): loads wave archives 2, 3 and 4 of
     // the JAUSection at 0x44 (loadWaveArc). Called by tu_8039003C's
     // constructor when fn_804580DC returned 0.

@@ -29,7 +29,7 @@ static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeome
 static inline void faceTalker(DiggingGameKeeper_8049C970* self) {
     JGeometry::TVec3f diff;
     f32 dist;
-    self->fn_801EE8F4(&diff, &dist, self->field_0x23c + 1);
+    self->getNearestPlayerDir_801EE8F4(&diff, &dist, self->field_0x23c + 1);
     if (dist < 100.0f) {
         u32 angle = (u16)(JMath::atanTable_.atan2_(-diff.x, -diff.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -73,7 +73,7 @@ void DiggingGameKeeper_8049C970::init() {
 // (one more instruction than the original, 616 vs 615). The box
 // setup at the top keeps the mPos.y sum in a different register and stores
 // box.i.y one instruction later; the stack slots of the by-value position
-// temporaries for fn_8038AD24 / fn_801EE8F4 and the loop counters and
+// temporaries for fn_8038AD24 / getNearestPlayerDir_801EE8F4 and the loop counters and
 // pointers of cases 1 and 6 sit in other registers; case 5 schedules the
 // state store and the 0x3b argument in another order.
 void DiggingGameKeeper_8049C970::update() {

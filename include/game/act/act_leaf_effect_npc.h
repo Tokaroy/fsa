@@ -17,7 +17,7 @@ public:
     void spawnLeaves();
     /* 0x230 */ u8 field_0x230; // set by the generator (fn_8036D858): burst again
     /* 0x234 */ s32 field_0x234; // kind 0-3: index of the emitter id table
-    /* 0x238 */ const char* field_0x238; // stage name (GameView fn_802D9C4C)
+    /* 0x238 */ const char* field_0x238; // stage name (GameView getStageBgName_802D9C4C)
     /* 0x23C */ u32 field_0x23c; // sound id, -1 for none
     /* 0x240 */ u16 field_0x240; // tile code of the leaf's tile
     /* 0x244 */ JGeometry::TVec3f field_0x244; // mPos before init() shifted it

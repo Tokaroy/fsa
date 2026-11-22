@@ -130,7 +130,7 @@ void ZoraEnemy_804A3D7C::setState_801BACE8(s32 state) {
         mBox2.f.y = mBox.f.y;
         mFlags &= ~ENEMY_FLAG_NO_ATTACK;
         field_0x250 = randInt_801CD664(41) + 40;
-        mAnim.fn_801D22A0(2, 2);
+        mAnim.startAnimIfChanged_801D22A0(2, 2);
         break;
     case 4:
         field_0x250 = -1;
@@ -187,7 +187,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
         } else if (mStateTimer >= field_0x250) {
-            if (mAnim.fn_801D217C()) {
+            if (mAnim.isLoopEnd_801D217C()) {
                 setState_801BACE8(2);
                 vfunc_0xB0();
             }
@@ -202,7 +202,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         break;
     case 3:
         if (mStateTimer >= field_0x250) {
-            if (mAnim.fn_801D217C()) {
+            if (mAnim.isLoopEnd_801D217C()) {
                 setState_801BACE8(4);
             }
         }

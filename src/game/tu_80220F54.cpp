@@ -152,7 +152,7 @@ void ShadowLinkBase_804A6A00::fn_8022149C(s32 state) {
         mVel_0x3c.y = 0.0f;
         fn_80221670();
         mDir_0x98 = field_0x2a8;
-        mAnim.fn_801D22A0(mDir_0x98, 0);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 0);
         break;
     }
     mStateTimer = 0;
@@ -187,7 +187,7 @@ void ShadowLinkBase_804A6A00::fn_80221334() {
 void ShadowLinkBase_804A6A00::fn_802212AC() {
     if (mStateTimer == 0x2D) {
         mTargetSpeed = 1.0f;
-        mAnim.fn_801D22A0(mDir_0x98 + 4, 2);
+        mAnim.startAnimIfChanged_801D22A0(mDir_0x98 + 4, 2);
     } else if (mStateTimer > 0x2D) {
         if (__fabsf(field_0x2b0.x - mPos.x) < 0.1f && __fabsf(field_0x2b0.y - mPos.y) < 0.1f) {
             fn_801F3668();

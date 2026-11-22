@@ -48,7 +48,7 @@ stack slots (fn_8028538C, fn_8027FA08, fn_80284430 -> 100 %).
 fn_80284978, fn_80284E04, fn_80285098, fn_8028538C, fn_8027FA08, fn_80284430, fn_80285690, fn_802859C4 and
 the reloc-name ones (fn_802808E8, fn_80281E98, fn_80282094, fn_8028414C, fn_80284294, fn_8028434C).
 Structural (FIXME in source): fn_8028126C 99.92 (r29/r30 swapped), fn_80282178 99.33 (addi r4 = &mPos hoisted
-above the layer compare before fn_802F601C), fn_80282FE0 99.25 (TVec2f distance: original stores the vector
+above the layer compare before startHeightGridEffect_802F601C), fn_80282FE0 99.25 (TVec2f distance: original stores the vector
 and squares unfused), plus the older fn_8027E7E0 98.85, fn_8027EEB4 99.31, fn_80283D2C 99.44.
 .sdata2 98.99 %: only lbl_80540408's 4-byte tail (symbols.txt size 8; probably the next unit's alignment gap).
 SHARED-EDITS: include/game/Player.h (members followStep, fn_80280074, fn_802804E0, fn_80242DAC (tu_8023FBF0));

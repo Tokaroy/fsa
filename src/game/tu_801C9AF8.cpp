@@ -335,7 +335,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
             if (mask == 0) {
                 result = 0;
             } else {
-                result = fn_801F2740(-1);
+                result = getPlayersInBox_801F2740(-1);
                 if (result != 0) {
                     JGeometry::TVec2f v;
                     JGeometry::TVec2f out;

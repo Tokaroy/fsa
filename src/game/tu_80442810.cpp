@@ -38,7 +38,7 @@ void AudioResLoader_804B1A38::fn_80442810() {
         }
         if (lbl_8053AEE8->field_0x4 == 1 && lbl_8053AEEC->field_0x4 == 1) {
             OSReport("audio data load end!!\n");
-            lbl_80529DEC.mAudioMgr_0xc->fn_80459AE4(lbl_80529DEC.mSolidHeap_0x4, 0x800000,
+            lbl_80529DEC.mAudioMgr_0xc->init_80459AE4(lbl_80529DEC.mSolidHeap_0x4, 0x800000,
                                                 lbl_8053AEE8->field_0x14, lbl_8053AEEC->field_0x14);
             JKRHeap::free(lbl_8053AEE8->field_0x14, NULL);
             delete lbl_8053AEE8;

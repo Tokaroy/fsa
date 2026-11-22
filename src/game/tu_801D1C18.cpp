@@ -106,7 +106,7 @@ void SpriteAnim_801D267C::startAnim_801D22DC(s32 anim, s32 mode, bool keepFrame)
     }
 }
 
-bool SpriteAnim_801D267C::fn_801D22A0(s32 anim, s32 mode) {
+bool SpriteAnim_801D267C::startAnimIfChanged_801D22A0(s32 anim, s32 mode) {
     bool result = false;
     if (mAnim != anim) {
         startAnim_801D22DC(anim, mode, false);
@@ -132,7 +132,7 @@ bool SpriteAnim_801D267C::fn_801D21F0() {
     return isStopped();
 }
 
-bool SpriteAnim_801D267C::fn_801D217C() {
+bool SpriteAnim_801D267C::isLoopEnd_801D217C() {
     return isLoopEnd();
 }
 

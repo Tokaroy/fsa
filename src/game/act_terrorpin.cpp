@@ -308,7 +308,7 @@ void Terrorpin_804A3B10::updateAnim_0x94() {
     if (active) {
         flag = 1;
     }
-    mAnim.fn_801D22A0(flag, 2);
+    mAnim.startAnimIfChanged_801D22A0(flag, 2);
     f32 rate = 1.0f;
     if (mState == 3) {
         rate = 2.0f;

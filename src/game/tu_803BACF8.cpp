@@ -211,7 +211,7 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 0);
-            fn_803BACF8(files1, 0);
+            writeSaveChecksum_803BACF8(files1, 0);
         } else if (ok2_0) {
             memcpy(&files1[0], &files2[0], sizeof(SaveFile_803B950C));
             needWrite = 1;
@@ -228,7 +228,7 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 1);
-            fn_803BACF8(files1, 1);
+            writeSaveChecksum_803BACF8(files1, 1);
         } else if (ok2_1) {
             memcpy(&files1[1], &files2[1], sizeof(SaveFile_803B950C));
             needWrite = 1;
@@ -245,7 +245,7 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 2);
-            fn_803BACF8(files1, 2);
+            writeSaveChecksum_803BACF8(files1, 2);
         } else if (ok2_2) {
             memcpy(&files1[2], &files2[2], sizeof(SaveFile_803B950C));
             needWrite = 1;
@@ -443,7 +443,7 @@ bool fn_803BADAC(SaveFile_803B950C* file) {
 // Writes the checksum words of files[file].
 // FIXME(shotgun): 62.33 %, missing/extra; behaviour clean.
 // (as fn_803BADAC)
-void fn_803BACF8(SaveFile_803B950C* files, u8 file) {
+void writeSaveChecksum_803BACF8(SaveFile_803B950C* files, u8 file) {
     SaveFile_803B950C* f = &files[file];
     u32 sum = 0;
     u32 inverse = 0;

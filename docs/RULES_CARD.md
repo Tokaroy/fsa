@@ -542,7 +542,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Did not generalise (shape sweep 2): `return a() || b();` for a bool local — Player fn_80240DCC (the
   target sets `result = true` first, li r31 1) 92.3 -> 81.2, EnemyBase fn_801D08B4 99.7 -> 91.1; keep
   the local where the target materialises it before the tests. getField_0x4() as a later argument of a
-  call whose earlier argument is itself a call (act_thief fn_801CF888(.., getPlayerPos_8023E724(p),
+  call whose earlier argument is itself a call (act_thief isWayBlocked_801CF888(.., getPlayerPos_8023E724(p),
   layer): no change), or on another object (tu_8021775C `mOwner->getField_0x4()`: no change).
 - A u16 converted to float with the signed form (xoris): `(s32)mode->fbWidth`, as for u8 (tu_801ED3DC
   fn_801ED828 83.8 -> 90.1).

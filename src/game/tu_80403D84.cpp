@@ -885,7 +885,7 @@ void MapScreen_804B1288::fn_804111C4() {
     gGameRoot2_8053AB10->fn_8013B490();
     mMessageWindowScreen_0x18->setScissor(true);
     mMessageWindowScreen_0x18->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 void MapScreen_804B1288::fn_804108B4() {
@@ -2087,7 +2087,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             if (fn_804045F8(mStage_0x340)) {
                 fn_80405D00(0);
             } else {
-                fn_80405B10(0);
+                moveLevelCursor_80405B10(0);
             }
         } else {
             mLevel_0x348--;
@@ -2105,7 +2105,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             if (fn_804045F8(mStage_0x340)) {
                 fn_80405D00(2);
             } else {
-                fn_80405B10(2);
+                moveLevelCursor_80405B10(2);
             }
         } else {
             mLevel_0x348++;
@@ -2123,7 +2123,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             if (fn_804045F8(mStage_0x340)) {
                 fn_80405D00(3);
             } else {
-                fn_80405B10(3);
+                moveLevelCursor_80405B10(3);
             }
         }
     } else if (lbl_8053AD30->fn_80309A9C(2, -1)) {
@@ -2131,7 +2131,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             if (fn_804045F8(mStage_0x340)) {
                 fn_80405D00(1);
             } else {
-                fn_80405B10(1);
+                moveLevelCursor_80405B10(1);
             }
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x1000, -1)) {
@@ -2931,10 +2931,10 @@ void MapScreen_804B1288::fn_80405D00(s32 dir) {
     }
 }
 
-// Not auto-inlined: fn_80409FDC calls fn_80405B10 out of line in the original
+// Not auto-inlined: fn_80409FDC calls moveLevelCursor_80405B10 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void MapScreen_804B1288::fn_80405B10(s32 dir) {
+void MapScreen_804B1288::moveLevelCursor_80405B10(s32 dir) {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
         if (field_0x38c & (1 << (mStage_0x340 * 4 + i))) {
@@ -2959,7 +2959,7 @@ void MapScreen_804B1288::fn_80405B10(s32 dir) {
 }
 #pragma auto_inline reset
 
-// Dead-stripped: fn_80405D00, fn_80405B10 (each followed by sound 0x26) and fn_8040B388
+// Dead-stripped: fn_80405D00, moveLevelCursor_80405B10 (each followed by sound 0x26) and fn_8040B388
 // inline it after every change of the sub-stage (seven identical copies).
 // R2 pool helper (inlined at 13 call sites); was hideSubStagePanes.
 void MapScreen_804B1288::inl_80405B10() {

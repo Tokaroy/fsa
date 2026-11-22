@@ -370,7 +370,7 @@ void GameMode_804B0688::fn_803DF624() {
     }
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
     if (mState == 5) {
         field_0x10->setAlpha(field_0x7c);
         field_0x10->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);

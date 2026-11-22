@@ -34,14 +34,14 @@ void ShadowLink2_804A43E8::fn_801C6260() {
         return;
     }
     if (dist <= 2500.0f) {
-        if (field_0x59a == 0 && fn_801D0DD4() && !(field_0x524.field_0x0 & 0x40) &&
+        if (field_0x59a == 0 && isOnGround_801D0DD4() && !(field_0x524.field_0x0 & 0x40) &&
             (!notTarget || gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f)) {
             s32 player = field_0x338;
             s32 layer = mLayer_0x4;
             if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
                 const JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
                 if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-                    !fn_801CFCF0(1)) {
+                    !isStepBlocked_801CFCF0(1)) {
                     if (mPos.x < playerPos->x) {
                         field_0x33c = -0x4000;
                     } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.7f) {
@@ -50,7 +50,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
                         field_0x33c = 0x4000;
                     }
                 } else if (JMAAbs((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-                           !fn_801CFCF0(0)) {
+                           !isStepBlocked_801CFCF0(0)) {
                     if (mPos.x > playerPos->x) {
                         field_0x33c = 0x4000;
                     } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.7f) {
@@ -94,7 +94,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
 
 // FIXME: 98.61 %. Same instructions except the copy of the angle temporary
 // (the original keeps the (s16) result in r31 and copies it to r4 for
-// fn_801CD930; ours computes it straight into r4) and the literal labels
+// stepAngle_801CD930; ours computes it straight into r4) and the literal labels
 // (@NNN vs lbl_ for lbl_8053EE70, EE78, EE80: data split, not code).
 // The turn toward player `player`. With `flag` set, the turn is a side pick
 // (or fn_801D11FC) and the counter field_0x595 restarts; otherwise the
@@ -165,7 +165,7 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
         angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     }
     angle = (s16)(angle + randInt_801CD664(0x4001) - 0x2000);
-    fn_801CD930(&field_0x33c, angle, 0xAAA);
+    stepAngle_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
 // FIXME: 97.07 %. Register choice for the locals (the original holds the entry
@@ -195,7 +195,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
     if (mState != 0x1B) {
         return;
     }
-    if (field_0x59a == 0 && mStateTimer >= 0xF0 && fn_801D0DD4() && !(field_0x524.field_0x0 & 0x40)) {
+    if (field_0x59a == 0 && mStateTimer >= 0xF0 && isOnGround_801D0DD4() && !(field_0x524.field_0x0 & 0x40)) {
         s32 layer = mLayer_0x4;
         if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {

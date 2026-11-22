@@ -118,7 +118,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
             f32 x1 = mBox.f.x;
             f32 y1 = mBox.f.y;
             mBox.set(-4.0f, -6.0f, 4.0f, 4.0f);
-            hit = fn_801F2740(-1);
+            hit = getPlayersInBox_801F2740(-1);
             mBox.set(x0, y0, x1, y1);
             if (hit) {
                 fn_801F3128(&center);

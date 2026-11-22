@@ -1991,7 +1991,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     mScreen->search('Pscuro01')->setAlpha(alpha);
     mScreen->search('Pscuro02')->setAlpha(alpha);
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 // FIXME(shotgun): 96.54 %, missing/extra; behaviour near.
@@ -2168,7 +2168,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     if (mState_0x1c4 == 6) {
         lbl_8053AEC0->fn_804316EC();
     }
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 static inline void updateGameSelectPanes(ConnectScreen_804B0F10* self, f32 offset) {
@@ -2253,7 +2253,7 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     JGeometry::TBox2f box(0.0f, 0.0f, 280.0f, 210.0f);
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     fn_803F0A54();
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 // (twin AdvEntryScreen_804B0B00::fn_803E4650)
@@ -2292,7 +2292,7 @@ void ConnectScreen_804B0F10::fn_803F35B0() {
         }
     }
     mHandicapScreen_0x10->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 void ConnectScreen_804B0F10::fn_803F358C() {

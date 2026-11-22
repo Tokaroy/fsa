@@ -840,13 +840,13 @@ void PhantomGanon2_804A1A98::update() {
                     fn_801546D0(&oldPos, &mPos);
                     startSound_801F0E34(0x40043, 0);
                     zeroVec_801546BC(&vec54);
-                    fn_8018A684(&mPos, ball->fn_801544DC());
+                    fn_8018A684(&mPos, ball->getPos_801544DC());
                     if (field_0x27c != field_0x94 && field_0x27c != fn_8022F3DC(field_0x94) && field_0x94 != fn_8022F3DC(field_0x27c)) {
                         field_0x94 = field_0x27c;
                     }
                     if (field_0x258 >= 0) {
                         fn_80189DEC();
-                        spawnEmitter_8013CC50(mLayer_0x4, ball->fn_801544DC(), lbl_80539FC0[field_0x94], 1, 2, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, ball->getPos_801544DC(), lbl_80539FC0[field_0x94], 1, 2, NULL, NULL, true, 1.0f);
                     } else {
                         field_0x258 = (s32)(1.99f * randFloat_80154744());
                     }
@@ -864,7 +864,7 @@ void PhantomGanon2_804A1A98::update() {
                     vec54.y = field_0x28c * fn_801544E4(outAngle);
                     ball->field_0x2ef = 0;
                     ball->fn_8018A5A8(field_0x94);
-                    ball->fn_8017EAF8(vec54);
+                    ball->setVel_8017EAF8(vec54);
                     ball->fn_8018A5A0(angleToDir_801F681C(outAngle));
                 } else {
                     field_0x274 = -1;
@@ -1147,7 +1147,7 @@ void PhantomGanon2_804A1A98::update() {
                                     s16 a = (s16)baseAngle;
                                     vec54.x = 5.0f * fn_801544FC(a);
                                     vec54.y = 5.0f * fn_801544E4(a);
-                                    spark->fn_8017EAF8(vec54);
+                                    spark->setVel_8017EAF8(vec54);
                                 }
                             }
                             baseAngle += 0x1000;
@@ -1174,9 +1174,9 @@ void PhantomGanon2_804A1A98::update() {
                                 }
                                 mHitTimer_0xd8 = 0;
                                 fn_8023B6CC(hitPlayer);
-                                f32 dx = parent->fn_801544DC()->x - mPos.x;
-                                f32 zOff = 8.0f + parent->fn_801544DC()->z;
-                                f32 dy = (parent->fn_801544DC()->y - zOff) - mPos.y;
+                                f32 dx = parent->getPos_801544DC()->x - mPos.x;
+                                f32 zOff = 8.0f + parent->getPos_801544DC()->z;
+                                f32 dy = (parent->getPos_801544DC()->y - zOff) - mPos.y;
                                 outAngle = fn_8015465C(dx, dy);
                                 fn_80230FD0(hitPlayer, 0x20038);
                                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80539FC0[field_0x94], 1, 2, NULL, NULL, true, 1.0f);
@@ -1371,7 +1371,7 @@ void PhantomGanon2_804A1A98::update() {
                                     startSound_801F0E34(0x40044, 0);
                                     field_0x230 = 20;
                                 } else {
-                                    spawnEmitter_8013CC50(mLayer_0x4, hitAct->fn_801544DC(), 0x556, 0, 1, NULL, NULL, true, 0.1f);
+                                    spawnEmitter_8013CC50(mLayer_0x4, hitAct->getPos_801544DC(), 0x556, 0, 1, NULL, NULL, true, 0.1f);
                                     startSound_801F0E34(0x40047, 0);
                                     field_0x230 = 28;
                                 }

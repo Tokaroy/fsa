@@ -232,7 +232,7 @@ void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
             if (mAngleSpeed > 0x200) {
                 step = 0x800;
             }
-            fn_801CD930(&mAngleSpeed, 0x200, step);
+            stepAngle_801CD930(&mAngleSpeed, 0x200, step);
         }
         s32 target = fn_801D05F8(&mSearchPos, mSearchRange);
         if (target == -1) {
@@ -299,7 +299,7 @@ void FrostareChildFrosteye_804A4EE8::calcVelocity_0x88() {
 u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
     u8 hitPlayers = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        hitPlayers = fn_801F2740(-1);
+        hitPlayers = getPlayersInBox_801F2740(-1);
         if (hitPlayers != 0) {
             JGeometry::TVec3f conv;
             JGeometry::TVec3f center3;

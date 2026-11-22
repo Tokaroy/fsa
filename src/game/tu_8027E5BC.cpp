@@ -1280,13 +1280,13 @@ void Player_804A6F38::fn_8028286C() {
 }
 
 // FIXME: 99.33 %, scheduling+regalloc; behaviour clean.
-// Scheduling only: before the ground mark (fn_802F601C) the original computes &mPos
+// Scheduling only: before the ground mark (startHeightGridEffect_802F601C) the original computes &mPos
 // (addi r4) ahead of the layer compare, ours after loading gGameRoot2_8053AB10.
 // Update of state 0x4D (fired from a cannon): sound 0x10003 at frame 72 (0x394); while the landing
 // wait 0x3FC runs (and the GBA link fn_80301CD0 is free), a pending switch 0xCEA moves the player
 // to layer 0xCE4 at 0xCD4 (keeping the return point 0xCB0 when leaving layers 0-7; speed y
 // clamped to -7..-10 on view-flag layers, else y / z swapped and z clamped to 7..10), and at 0 the
-// landing (fn_80290D58, ground mark fn_802F601C below layer 8, effect 0x17D). In flight mPos moves
+// landing (fn_80290D58, ground mark startHeightGridEffect_802F601C below layer 8, effect 0x17D). In flight mPos moves
 // by 0x344 + 0x380; 0xCE8 starts the wait (60 below layer 8, else 20); on view-flag layers y
 // gains 0.25 to 6 and it lands (0x12 if fn_8025F684, else 0) at a wall (fn_8025190C: bounce 0x4E)
 // or out of the shrunk view box, elsewhere z loses 0.25 to -6 and it lands below 0; the stick
@@ -1328,7 +1328,7 @@ void Player_804A6F38::fn_80282178() {
             if (mStateTimer_0x3fc == 0) {
                 fn_80290D58();
                 if (mLayer_0x3b4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 1, NULL, 1.0f, -2.0f);
+                    gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mPos, 1, NULL, 1.0f, -2.0f);
                 }
                 spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x17d, 1, 0, NULL, NULL, true, 1.0f);
                 mStateLocked_0x124d = 0;
@@ -1471,7 +1471,7 @@ void Player_804A6F38::fn_80282094() {
     mVel_0x344.y = 3.0f;
     mVel_0x344.z = 0.0f;
     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x3b4, 4.0f, 0.0f, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mLastTvPos_0xcb0, 1, NULL, 1.0f, -2.0f);
+    gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&mLastTvPos_0xcb0, 1, NULL, 1.0f, -2.0f);
     mStateTimer_0x3fc = 20;
 }
 

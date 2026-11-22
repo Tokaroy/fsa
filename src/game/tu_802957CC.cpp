@@ -1579,7 +1579,7 @@ void MovingHouse_804A7AE0::die_0x24() {
             }
         }
     }
-    const char* stage = getGameView_802D6A9C()->fn_802D9C4C();
+    const char* stage = getGameView_802D6A9C()->getStageBgName_802D9C4C();
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x82, 1, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x83, 1, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x84, 1, 0, NULL, NULL, true, 1.0f);

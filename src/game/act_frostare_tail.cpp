@@ -89,7 +89,7 @@ void FrostareTail_804A4F90::calcVelocity_0x88() {
 }
 
 void FrostareTail_804A4F90::onHitReactionEnd_0x74() {
-    mAnim.fn_801D22A0(0, 2);
+    mAnim.startAnimIfChanged_801D22A0(0, 2);
     if (mHitCount >= 10) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);

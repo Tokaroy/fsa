@@ -302,7 +302,7 @@ void TwoPersonLiftableRock_804AC950::update() {
                 field_0x230 = 2;
                 field_0x37c = 0;
             } else {
-                u8 mask = fn_801F2740(-1);
+                u8 mask = getPlayersInBox_801F2740(-1);
                 bool hit = false;
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {

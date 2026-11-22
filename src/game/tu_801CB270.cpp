@@ -41,7 +41,7 @@ static inline s32 forceGemKind(ActorBase_804A5770* actor) {
     return kind;
 }
 
-// Not auto-inlined: fn_801CD950 calls fn_801CD9F0 and fn_801CD930 calls fn_801CD970 out of line
+// Not auto-inlined: fn_801CD950 calls fn_801CD9F0 and stepAngle_801CD930 calls fn_801CD970 out of line
 // in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Moves *value towards target by at most step; nonzero while it has not
@@ -112,7 +112,7 @@ s32 fn_801CD950(f32* value, f32 target, f32 step) {
 
 // Steps *angle towards target by at most step; the result of fn_801CD970 is
 // not used.
-void fn_801CD930(s16* angle, s32 target, s32 step) {
+void stepAngle_801CD930(s16* angle, s32 target, s32 step) {
     fn_801CD970(angle, target, step);
 }
 

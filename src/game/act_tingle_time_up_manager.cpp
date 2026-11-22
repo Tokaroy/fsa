@@ -22,7 +22,7 @@ void TingleTimeUpManager_804ACBF0::init() {
     field_0x238 = 0;
     mViewBox = getGameView_802D6A9C()->mVisibleBox;
     mState = 0;
-    field_0x23c = fn_8018330C().toUInt32();
+    field_0x23c = getShadowColor_8018330C().toUInt32();
     field_0x240 = field_0x23c;
     field_0x244 = (f32)(field_0x23c >> 24);
     field_0x248 = (f32)((field_0x23c >> 16) & 0xFF);

@@ -185,7 +185,7 @@ public:
     bool fn_801EE24C();
     // 3 units / 13 calls. Returns lbl_8046A00C[mParamEfsz_0xc0] (lfsx; 0xc0 is
     // EnemyParam "efsz") in f1.
-    f32 fn_801EE4F0();
+    f32 getEffectScale_801EE4F0();
     // 1 unit / 2 calls (the manager's update loop, 0x801F8B9C, with
     // mActors[i]). fn_801CB71C(&mEmitter100, &mPos, 0, -1), then the same
     // for mEmitter104 with 1.
@@ -199,8 +199,8 @@ public:
     // (fn_80230188, fn_8022DCD8 at 0x801EE9E0, 0x801EE9F0); with no player
     // found *outDir is zero (fn_801EE558 gives (0, 512, 0)). Both skip
     // players for which fn_8022F478, fn_80236B50 or fn_8022D534 holds and
-    // inline fn_801F320C's layer test.
-    void fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
+    // inline isPlayerOnLayer_801F320C's layer test.
+    void getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
     // 58 units / 104 calls. Never reads r3, but every caller passes an actor
     // there (`this` 102 times) and its own mSerial in r4, so a member is the
     // likelier source. Looks up the actor `serial` (findActorBySerial_801F666C, 0x801EECE4)
@@ -237,16 +237,16 @@ public:
     // mLayer_0x4 and mPos.
     void fn_801F0D20(u32 id);
     // 222 units / 964 calls. Starts sound `soundId` on this actor's sound
-    // object: fn_80456334(fn_801F6644(mgr, mSlot), &soundId, arg)
+    // object: startSound_80456334(fn_801F6644(mgr, mSlot), &soundId, arg)
     // (0x801F1150), gated by the layer (mLayer_0x4 against 8) and player
     // checks. fn_801F4694 calls it with the EnemyParam "voic" sound
     // (lbl_80469F38[voic - 1]) and 0x40002. The id is compared unsigned
     // (0x801F0EAC: subis/cmplwi against 0x30009). fadeTime goes to
-    // fn_80456334, which tests it for 0, stores it at sound+0x30 and
+    // startSound_80456334, which tests it for 0, stores it at sound+0x30 and
     // converts it with the unsigned 2^52 constant to compute (1 - v) / n
     // into +0x28: JAISound::fadeIn(u32) -> JAISoundFader::fadeInFromOut(u32)
     // (tp JAISound.h). Every caller passes 0. Returns 0 on the early outs,
-    // else fn_80456334's result (no caller reads it; the pointee is
+    // else startSound_80456334's result (no caller reads it; the pointee is
     // unknown).
     // const: its lwz of mLayer_0x4 is scheduled above the prologue's stw r28,
     // which MWCC does only for loads through a const `this`.
@@ -309,7 +309,7 @@ public:
     // around mPos in screen space (0x801F2828-0x801F2844). damagePlayersInBox_801F2B7C
     // inlines it. u8: the callers keep r3 raw and narrow it with clrlwi 24
     // where they use it. const: loads off `this` before the register saves.
-    u8 fn_801F2740(s32 skipPlayer) const;
+    u8 getPlayersInBox_801F2740(s32 skipPlayer) const;
     // 46 units / 65 calls. Index of a player (any when player < 0) whose box
     // overlaps mBox around mPos, or -1 (0x801F29F8). *outXY gets two floats
     // (stfs 0/4, 0x801F29EC-0x801F29F4) and *outFlag 0 or 1; `arg` is
@@ -317,7 +317,7 @@ public:
     // clrlwi. 24 (0x80273AF8); callers pass 1 in 54 of 65. const: the box
     // loads from `this` come before the register saves.
     s32 fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg, s32 player) const;
-    // 6 units / 6 calls. The mBox overlap test of fn_801F2740 against
+    // 6 units / 6 calls. The mBox overlap test of getPlayersInBox_801F2740 against
     // fn_8022E438(player, skipPlayer) and fn_80239B64(.., arg2, arg3, arg4),
     // whose last two are clrlwi 24 bytes; returns 0 or 1.
     bool fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b);
@@ -377,7 +377,7 @@ public:
     void fn_801F31C4(JGeometry::TBox2f* out) const;
     // 2 units / 7 calls. getPlayerLayer_8023DE58(player) == mLayer_0x4, or
     // fn_801F329C(player); returns 0 or 1.
-    bool fn_801F320C(s32 player) const;
+    bool isPlayerOnLayer_801F320C(s32 player) const;
     // 4 units / 5 calls. getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8.
     bool fn_801F329C(s32 player) const;
     // 1 unit / 2 calls (the manager's update loop, with mActors[i]). Fills
@@ -403,7 +403,7 @@ public:
     // 0, mLayer_0x4).
     void fn_801F355C();
     // 9 units / 16 calls. mAlive = false, then fn_801F355C's report.
-    void fn_801F35AC();
+    void markDead_801F35AC();
     // 13 units / 16 calls. fn_801F3668's report without clearing mAlive.
     void fn_801F3604();
     // 78 units / 153 calls. Clears mAlive, then reports the actor to the
@@ -468,7 +468,7 @@ public:
     // 0x8017EAF8, out of line in game/tu_8017C01C.cpp: mVel_0x3c = v (a whole
     // TVec3f copy, psq + stfs). Both callers in fn_8017C40C pass the actor
     // from findActorBySerial_801F666C and a stack TVec3f at 0x50(r1).
-    void fn_8017EAF8(const JGeometry::TVec3f& v);
+    void setVel_8017EAF8(const JGeometry::TVec3f& v);
 
     // Inline accessors. The spawner calls them out of line (it is too large
     // for the inliner), so they exist as weak functions in its unit at
@@ -502,7 +502,7 @@ public:
     // fn_801544C8) call them with a bl on actors of other classes.
     u32 fn_801544C8() const;               // mSpawnParam_0x90 (0x801544C8)
     void fn_801544D0(s32 value);           // mHitTimer_0xd8 and mHitTimerStart_0xdc (0x801544D0)
-    JGeometry::TVec3f* fn_801544DC();      // &mPos (0x801544DC)
+    JGeometry::TVec3f* getPos_801544DC();      // &mPos (0x801544DC)
     s32 fn_80154510() const;               // mParamAtcp_0x114, the "atcp" damage (0x80154510)
     u8 fn_801545C0(JGeometry::TVec3f* out, bool flag);   // fn_801F2618 (0x801545C0)
     s32 fn_801545E0() const;               // field_0x9c (0x801545E0)

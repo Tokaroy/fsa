@@ -364,7 +364,7 @@ static inline void setRowAlphas(FileSelect_804AFF60* self, s32 file) {
     self->field_0x38[file]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476BC0[file]), self->field_0x118[25]);
 }
 
-// Colour file row `file`'s picture groups 1-4 (the groups fn_803BC6F0 fades);
+// Colour file row `file`'s picture groups 1-4 (the groups fadeFileRow_803BC6F0 fades);
 // groups 1 and 3 end in a picture whose black is made opaque.
 static inline void setGroup1Colors(FileSelect_804AFF60* self, s32 file, JUtility::TColor black, JUtility::TColor white) {
     ((J2DPicture*)self->mScreenHuuin->search(lbl_80476B90[file]))->setBlackWhite(black, white);
@@ -852,7 +852,7 @@ void FileSelect_804AFF60::fn_803CEED4() {
         field_0x10->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
         lbl_8053AEC0->fn_804316EC();
     }
-    lbl_8053AED8->fn_80440EE8();
+    lbl_8053AED8->draw_80440EE8();
 }
 
 void FileSelect_804AFF60::fn_803CE9EC() {
@@ -1423,11 +1423,11 @@ void FileSelect_804AFF60::fn_803CC62C() {
 // for it) and keeps the card's serial number.
 void FileSelect_804AFF60::fn_803CC53C() {
     lbl_8050EC80.fn_803B93E8(field_0x5c, field_0x60, 0);
-    fn_803BACF8(field_0x5c, 0);
+    writeSaveChecksum_803BACF8(field_0x5c, 0);
     lbl_8050EC80.fn_803B93E8(field_0x5c, field_0x60, 1);
-    fn_803BACF8(field_0x5c, 1);
+    writeSaveChecksum_803BACF8(field_0x5c, 1);
     lbl_8050EC80.fn_803B93E8(field_0x5c, field_0x60, 2);
-    fn_803BACF8(field_0x5c, 2);
+    writeSaveChecksum_803BACF8(field_0x5c, 2);
     lbl_8051C1A0.fn_803B9D54(field_0x5c, 0x258, field_0x60, 0x1D4C, 0);
     setState(9);
     u64 serial;
@@ -1812,7 +1812,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
 // fill right but copies it for the walk (98.39, one more instruction).
 // Every field, call and branch is the original's.
 // State 20 (copy, from fn_803C1340): the board slides out while row
-// field_0xa4 takes its highlighted colours (fn_803BC6F0), the four buttons
+// field_0xa4 takes its highlighted colours (fadeFileRow_803BC6F0), the four buttons
 // slide out, and the other two rows slide back in, spaced around the middle
 // of the second and third rows' places (their new targets field_0x70 /
 // field_0x64); row field_0xa4's target becomes the first row's place (timings
@@ -1854,7 +1854,7 @@ void FileSelect_804AFF60::fn_803C9F80() {
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
         if (field_0xd8 <= boardDelay + boardFrames) {
-            fn_803BC6F0(field_0xa4, (f32)(field_0xd8 - boardDelay) / (f32)boardFrames);
+            fadeFileRow_803BC6F0(field_0xa4, (f32)(field_0xd8 - boardDelay) / (f32)boardFrames);
         }
     }
     for (s32 i = 0; i < 4; i++) {
@@ -1915,7 +1915,7 @@ void FileSelect_804AFF60::fn_803C9F14() {
 // Scheduling and registers only, the timing sums as in
 // fn_803C5190.
 // State 22 (copy, after the copy prompt's yes): as fn_803C5190, the board (or
-// the copy board) slides out while row field_0xa4 fades back (fn_803BC6F0);
+// the copy board) slides out while row field_0xa4 fades back (fadeFileRow_803BC6F0);
 // at its end the copy board sits at the second row's height and messages
 // 0x63 / 'Tdb01' 0x67 come up; the buttons slide out and the copy board comes
 // in (timings lbl_8050DB0C field_0x4c[0xC2..0xC8]). Then file field_0xa4 is
@@ -1961,7 +1961,7 @@ void FileSelect_804AFF60::fn_803C9898() {
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
-        fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - boardDelay) / (f32)boardFrames);
+        fadeFileRow_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - boardDelay) / (f32)boardFrames);
         if (field_0xd8 == boardEnd) {
             setMessage(0x63);
             getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tdb01'))->getStringPtr(), 0x67, 0, NULL, NULL);
@@ -2002,7 +2002,7 @@ void FileSelect_804AFF60::fn_803C9898() {
     }
     if (field_0xd8 > end) {
         memcpy(&field_0x5c[field_0xa0], &field_0x5c[field_0xa4], sizeof(SaveFile_803B950C));
-        fn_803BACF8(field_0x5c, field_0xa0);
+        writeSaveChecksum_803BACF8(field_0x5c, field_0xa0);
         lbl_8051C1A0.fn_803B9CCC(field_0x5c, 0x258, 0);
         setState(21);
     }
@@ -2357,7 +2357,7 @@ void FileSelect_804AFF60::fn_803C70B8() {
                 field_0x44[i]->fn_80402940(rowFrames, 0, field_0x64[i], 0.0f);
             }
         }
-        fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - rowDelay) / (f32)rowFrames);
+        fadeFileRow_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - rowDelay) / (f32)rowFrames);
     }
     if (field_0xd8 > end) {
         setState(5);
@@ -2426,7 +2426,7 @@ void FileSelect_804AFF60::fn_803C6690() {
             field_0x38[i]->fn_80402940(frames, 0, field_0x70[i], 0.0f);
             field_0x44[i]->fn_80402940(frames, 0, field_0x64[i], 0.0f);
         }
-        fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - delay) / (f32)frames);
+        fadeFileRow_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - delay) / (f32)frames);
     }
     if (field_0xd8 > end) {
         setState(5);
@@ -2661,7 +2661,7 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
     if (field_0xd8 > end) {
         lbl_8050EC80.fn_803B933C(field_0x5c, field_0xa4);
-        fn_803BACF8(field_0x5c, field_0xa4);
+        writeSaveChecksum_803BACF8(field_0x5c, field_0xa4);
         lbl_8051C1A0.fn_803B9CCC(field_0x5c, 0x258, 0);
         setState(33);
     }
@@ -2706,7 +2706,7 @@ void FileSelect_804AFF60::fn_803C4628() {
             field_0x80 = 0;
         }
         if (hasBadChecksum(field_0xa4) != false) {
-            fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - outDelay) / (f32)outFrames);
+            fadeFileRow_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - outDelay) / (f32)outFrames);
         }
     }
     if (field_0xd8 > boardDelay) {
@@ -3645,7 +3645,7 @@ void FileSelect_804AFF60::fn_803BE3D8() {
 }
 
 // Restores file row `file`'s pictures to the colours the constructor read
-// (field_0xe8 / field_0xfc), group by group as fn_803BC6F0 fades them.
+// (field_0xe8 / field_0xfc), group by group as fadeFileRow_803BC6F0 fades them.
 void FileSelect_804AFF60::fn_803BDD44(s32 file) {
     ((J2DPicture*)mScreenHuuin->search(lbl_80476BA8[file]))->setBlackWhite(field_0xfc[0], field_0xe8[0]);
 
@@ -3656,7 +3656,7 @@ void FileSelect_804AFF60::fn_803BDD44(s32 file) {
 }
 
 // Gives file row `file`'s pictures their highlighted colours, the ones
-// fn_803BC6F0 fades them to at alpha 1 (group by group, the same panes as
+// fadeFileRow_803BC6F0 fades them to at alpha 1 (group by group, the same panes as
 // fn_803BDD44).
 void FileSelect_804AFF60::fn_803BD5E0(s32 file) {
     ((J2DPicture*)mScreenHuuin->search(lbl_80476BA8[file]))
@@ -3676,7 +3676,7 @@ void FileSelect_804AFF60::fn_803BD5E0(s32 file) {
 // Fades file `file`'s row pictures between their colours and grey:
 // alpha 0 keeps the colours read by the constructor, alpha 1 sets each
 // group's black and white to fixed grey levels.
-void FileSelect_804AFF60::fn_803BC6F0(s32 file, f32 alpha) {
+void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     if (alpha > 1.0f) {
         alpha = 1.0f;
     }

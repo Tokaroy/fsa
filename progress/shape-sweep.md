@@ -5,7 +5,7 @@ Cross-file sweep of the wave-18 shapes over every sub-100 game function (objdiff
 subfic/cntlzw/extrwi. bytes, bne +8 / b early-outs, `lwz rS` before a bl then cmpw with r3).
 
 To 100 %: tu_8013AAD4 fn_8013BBE0, tu_80158624 fn_80159330 (isGameMode); tu_8025EB18 fn_8025EE48,
-fn_8025F2CC (isField0xd64One `? true : false`), fn_8025FCC8 (member || chain); tu_801CDC8C fn_801D0B44,
+fn_8025F2CC (isField0xd64One `? true : false`), fn_8025FCC8 (member || chain); tu_801CDC8C canTargetPlayer_801D0B44,
 tu_8027E5BC fn_80283D2C / fn_8027E7E0, act_special_conversation_npc x3, act_block fn_8028C364
 (inlined getters); tu_8023FBF0 fn_802416FC (one early-out condition); tu_801ED3DC fn_801ED3DC (const).
 Raised, FIXMEs updated: see the git log of chore/shape-sweep.

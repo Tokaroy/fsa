@@ -12,7 +12,7 @@
 // Auto-inlining is off for the whole file (docs/INLINING.md, pragma rule 2): the
 // original inlines no same-unit plain function. Checked: built with inlining off,
 // every written function's calls to this unit's functions equal the original's
-// `bl`s. The callers that need it: init calls fn_8018330C (5 instructions) out of line.
+// `bl`s. The callers that need it: init calls getShadowColor_8018330C (5 instructions) out of line.
 #pragma auto_inline off
 
 // The emitter's colour comes from field_0x238 while view layer 0x13 is flagged.
@@ -39,7 +39,7 @@ static inline void followHeld(Leever_804A1718* self) {
 }
 
 // Returns the colour of the ShadowCircle_804A0160 at gGameRoot2_8053AB10->0x2C.
-JUtility::TColor fn_8018330C() {
+JUtility::TColor getShadowColor_8018330C() {
     return gGameRoot2_8053AB10->field_0x2c->field_0x4;
 }
 
@@ -59,7 +59,7 @@ void Leever_804A1718::init() {
     field_0x238[1] = 0;
     field_0x238[2] = 0;
     if (viewLayerFlag(0x13) == 1) {
-        field_0x234 = fn_8018330C();
+        field_0x234 = getShadowColor_8018330C();
         field_0x238[0] = field_0x234.toUInt32() >> 24;
         field_0x238[1] = (field_0x234.toUInt32() >> 16) & 0xFF;
         field_0x238[2] = (field_0x234.toUInt32() >> 8) & 0xFF;

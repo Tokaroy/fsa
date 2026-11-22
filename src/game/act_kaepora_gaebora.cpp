@@ -311,7 +311,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         hit.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
         bool found = false;
         for (int i = 0; i < 4; i++) {
-            if (fn_801D0B44(i)) {
+            if (canTargetPlayer_801D0B44(i)) {
                 if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i), 0x100)) {
                     JGeometry::TVec2f p;
                     p.y = lbl_8046A640[fn_80230CFC(i)][1];

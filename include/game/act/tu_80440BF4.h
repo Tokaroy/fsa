@@ -32,7 +32,7 @@ public:
     // Sets the seven panes' alpha to their initial alpha times alpha.
     void fn_80440E0C(f32 alpha);
     // Draws the screen.
-    void fn_80440EE8();
+    void draw_80440EE8();
 
     /* 0x00 */ // vtable
     /* 0x04 */ J2DScreen* mScreen;

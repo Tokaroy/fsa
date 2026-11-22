@@ -46,7 +46,7 @@ void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry:
 void fn_8045BA84(const Vec* pos, Vec* out);
 
 // FIXME(shotgun): 94.81 %, missing/extra; behaviour drift.
-JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
+JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 fade) {
     if (field_0x31 == 0) {
         return NULL;
     }
@@ -494,7 +494,7 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
 // FIXME(shotgun): 96.17 %, missing/extra + reloc-name; behaviour drift.
 void ActorSoundObj_804578F4::fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c) {
     field_0x44 = c;
-    JAISoundHandle* handle = fn_80456334(id, fade);
+    JAISoundHandle* handle = startSound_80456334(id, fade);
     JAISound* sound = handle->sound_;
     if (sound != NULL) {
         f32 pan;

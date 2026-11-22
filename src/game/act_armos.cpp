@@ -210,7 +210,7 @@ void Armos_8049F260::update() {
                     return;
                 }
             }
-            fn_801EE8F4(&p, NULL, 0);
+            getNearestPlayerDir_801EE8F4(&p, NULL, 0);
             p.scale(0.5f);
             mVel_0x3c.x = p.x;
             mVel_0x3c.y = p.y;

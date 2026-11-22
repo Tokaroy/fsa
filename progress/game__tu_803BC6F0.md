@@ -19,7 +19,7 @@ fn_803CE4B0 (boot path). .bss 100 % (@814..@822 + 9 weak memPool copies).
 
 ## Resistant
 - fn_803CE9EC 99.86 (boot path), fn_803C6690 99.85: reloc-name only (.sdata2
-  literal order; fn_803BC6F0, first in the file, uses 0, -200, 200, the int
+  literal order; fadeFileRow_803BC6F0, first in the file, uses 0, -200, 200, the int
   conversion doubles first). Will match once the earlier functions exist.
 - fn_803CE370 99.69, fn_803CE11C 99.50 (boot path): `getBounds()->i.x -
   field_0x20->field_0x8 < 600.0f` loads into f1/f2 swapped (orig fsubs f0,f0,f1
@@ -103,17 +103,17 @@ and act_fairy init (97.86 -> 97.39). Reverted.
 
 ### Literal order (.sdata2)
 Target pool: 0, -200, 200, (pad), dbl 0x4330/80000000, dbl 0x4330/0, 1, 360,
-0.5, 270, 13, 10, 12, -300, 600, ... fn_803BC6F0 uses only 1.0 (first in its
+0.5, 270, 13, 10, 12, -300, 600, ... fadeFileRow_803BC6F0 uses only 1.0 (first in its
 code), 0.0 and the two doubles; -200 / 200 are used only by fn_803C24BC,
 fn_803CD75C, fn_803CE9EC, fn_803CF504 (200 only by fn_803CE9EC). So writing
-fn_803BC6F0 alone won't put -200 / 200 ahead of its doubles: something
+fadeFileRow_803BC6F0 alone won't put -200 / 200 ahead of its doubles: something
 compiled before it uses 0, -200, 200 in that order. An in-class inline
 (`field_0x58->moveFromCentre_80402E08(0.0f, 200.0f * t + -200.0f)`) used from fn_803CE9EC
 did NOT move them (literals are pooled at use, not at parse). Open question.
 
 ### Next
 - blobs.txt array line for the two tag tables (coordinator).
-- fn_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
+- fadeFileRow_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
   fn_803BE3D8 / fn_803CE4CC for the string offsets.
 
 ### SHARED-EDITS
@@ -122,8 +122,8 @@ did NOT move them (literals are pooled at use, not at parse). Open question.
 - symbols.txt: lbl_804765D0 (0x368) and lbl_804769D0 (0x550) split into the
   tables / strings above (placeholders only).
 
-### fn_803BC6F0 shape (read, not written)
-fn_803BC6F0(s32 file, f32 alpha): clamp alpha (`> 1.0f` first, then
+### fadeFileRow_803BC6F0 shape (read, not written)
+fadeFileRow_803BC6F0(s32 file, f32 alpha): clamp alpha (`> 1.0f` first, then
 `< 0.0f`); two TColors on the stack (black at sp 0xF4, white at 0xF0,
 default-constructed to -1); per channel `c + (target - c) * alpha` (target - c
 converted signed, c unsigned, fmadds, fctiwz). Five groups, each lerps
@@ -149,7 +149,7 @@ Written (all try.py-checked):
 - fn_803CF504 99.93 reloc-name (instructions identical): resets the screen (ctor fields again, Tf?lv/fir/date hidden, rows' start).
 - fn_803CB3DC 98.40 missing/extra (1 instr): state 18, the other two rows slide out, board / buttons in (timings lbl_8050DB0C field_0x4c[0x98..0x9F]).
   FIXME: row-loop start test folded (rowDelay + delay), fsubs operand order.
-- fn_803BC6F0 98.65 missing/extra (8 instrs): colour lerp of the row pictures. Group copies (sp 0xE4/0xE0 ..) are named
+- fadeFileRow_803BC6F0 98.65 missing/extra (8 instrs): colour lerp of the row pictures. Group copies (sp 0xE4/0xE0 ..) are named
   locals; the original copies them through one more temporary (sp 0x20 ..) per group. Tried: explicit TColor(...) temp,
   const copy, default+assign (worse), (GXColor) cast (worse, bytewise). Group 2's 5th call is a plain one (only 1 and 3
   rebuild black with alpha 0xFF).
@@ -161,7 +161,7 @@ fn_803BF9C4 / fn_803C1734 are FileSelect members (this in r3).
 A shared 40-call inline for the rows' slide-in start is NOT inlined (MWCC refuses; ours called it), so that block is
 written in both fn_803C24BC and fn_803CF504.
 
-Near-misses: none flip. The pool still needs 0, -200, 200, dbl, dbl before 1.0, and fn_803BC6F0 (first in .text) uses
+Near-misses: none flip. The pool still needs 0, -200, 200, dbl, dbl before 1.0, and fadeFileRow_803BC6F0 (first in .text) uses
 1.0 first, so the leading literals come from something compiled before it that the linker dropped (fn_803CE9EC's
 kk-fade code shape: 0.0f, -200, 200, s32 and u8 conversions). Written functions' literals now pool in a different
 order, so fn_803C6690 99.85 -> 99.70, fn_803CE9EC 99.86 -> 99.79, fn_803CE11C 99.50 -> 99.46, ctor 98.829 -> 98.827
@@ -186,7 +186,7 @@ Baseline (progress.py): `total: 8338 / 11557 functions, 1561464 / 4442032 bytes 
 After: honest unchanged (no new 100 %, no drops by address); structural 8682 (1690868 B).
 
 Written (try.py class):
-- fn_803BDD44 99.58 operands (stack slots only): resets row `file`'s pictures to the ctor colours (fn_803BC6F0 at alpha 0).
+- fn_803BDD44 99.58 operands (stack slots only): resets row `file`'s pictures to the ctor colours (fadeFileRow_803BC6F0 at alpha 0).
   Original numbers the by-value TColor copies upwards within a group and puts group 0's copies above the group locals.
 - fn_803CEED4 99.89 regalloc-only: the draw. Seven separate fn_803B8CAC tests (a loop with break isn't unrolled; the
   field_0xb8 search loop is). `lbl_8050EC80[i]` adds base + offset in ours, offset + base in the original (also in
@@ -220,7 +220,7 @@ SHARED-EDITS
 ### Next
 - fn_803CE4CC after the lbl_8050EC80 decision; fn_803BE3D8 (0xC2C, called by the draw), fn_803C3904 (state 38),
   fn_803C4628 (35), fn_803C5190 (34), fn_803C5808 (32) ... in address order.
-- The stack-slot order of by-value TColor copies (fn_803BDD44 / fn_803BC6F0 / fn_803CABAC ascend, fn_803C1734 /
+- The stack-slot order of by-value TColor copies (fn_803BDD44 / fadeFileRow_803BC6F0 / fn_803CABAC ascend, fn_803C1734 /
   fn_803BF9C4 descend like ours) is the common open question.
 
 ## Session 2026-11-05 (Opus, leverage wave 14: save-data switch + file select)
@@ -287,10 +287,10 @@ Written (try.py class):
   first: .rodata now 100 %, .sdata2 65 -> 86 %. Evidence for a dropped helper: the single-sprite branch
   adds a run-time 0.0f to x (lfs 0 / fadds), which `+ 0.0f` in the caller folds away; setSpritePos(dx,
   dy) with the tag passed by pointer (the original reloads it for every search) gives it exactly.
-- fn_803BD5E0 99.65 operands (stack slots): the rows' highlighted colours (= fn_803BC6F0 at alpha 1).
+- fn_803BD5E0 99.65 operands (stack slots): the rows' highlighted colours (= fadeFileRow_803BC6F0 at alpha 1).
   black1 / black3 are copy-initialised (`= TColor(...)`): the original stores a second copy of each
   before the group's first call and rebuilds the last call's opaque black from it.
-- fn_803CC53C 100: state 8, save write (fn_803B93E8 + fn_803BACF8 per file, unrolled by hand: a loop
+- fn_803CC53C 100: state 8, save write (fn_803B93E8 + writeSaveChecksum_803BACF8 per file, unrolled by hand: a loop
   isn't unrolled; fn_803B9D54; CARDGetSerialNo into a local).
 - fn_803CDEE8 100: state 3, the "new game?" prompt.
 - fn_803C0018 100, fn_803C02CC 100, fn_803BF698 99.95, fn_803C21A8 99.95, fn_803C1340 99.94 (literal
@@ -329,10 +329,10 @@ literals 0, -200, 200 (see above) remain the reason for most reloc-name FIXMEs.
   the player); else each cleared stage's enemy at its 'Padvw?0' pane, animated by field_0xdc (0..53).
 
 SHARED-EDITS
-- tu_803B8C74.h: `void fn_803BACF8(SaveFile_803B950C* files, u8 file)` (owner tu_803BACF8, the checksum
+- tu_803B8C74.h: `void writeSaveChecksum_803BACF8(SaveFile_803B950C* files, u8 file)` (owner tu_803BACF8, the checksum
   writer: 0xC0 byte sum, 0xC4 complement sum).
 - tu_803BC6F0.h: members fn_803C02CC, fn_803C1054, fn_803C05D8; inline setMessage.
-- symbols.txt: fn_803BACF8 -> fn_803BACF8__FP17SaveFile_803B950CUc; fn_803C1054, fn_803C02CC, fn_803C05D8
+- symbols.txt: writeSaveChecksum_803BACF8 -> writeSaveChecksum_803BACF8__FP17SaveFile_803B950CUc; fn_803C1054, fn_803C02CC, fn_803C05D8
   -> ...__19FileSelect_804AFF60Fv (this in r3, FileSelect fields).
 
 ## Session 2026-11-06 (Opus, round 2: the 12 large states, structure first)
@@ -355,13 +355,13 @@ All twelve written (try.py class after the pool fix):
 - fn_803C5808 98.63 missing/extra 1 (state 32: fn_803CB3DC's shape and timings with the copy board, 2 buttons).
 - fn_803C4628 99.90 regalloc-only (state 35). The checksum test materialises the bool (neg/or/srwi.): `!= false`.
 - fn_803CC760 98.47 different, same length (state 6: fn_803C2E24 with four buttons; restores Pcopb/Pdelb colours).
-- fn_803C70B8 99.49 scheduling+regalloc (state 28: copy prompt's no; fn_803C6798's rows + fn_803BC6F0 fade).
+- fn_803C70B8 99.49 scheduling+regalloc (state 28: copy prompt's no; fn_803C6798's rows + fadeFileRow_803BC6F0 fade).
 - fn_803C7F7C 99.39 scheduling+regalloc (state 26: copy board in; destination row's new target field_0x70/64).
 - fn_803C9F80 98.52 different, same length (state 20: copy entry; rows spaced around the 2nd/3rd rows' middle).
 
 Literal pool solved: fn_803CE9EC's two 'kk_' fade cases are one helper, setFadeStep (plain static, at the bottom of
 the file, inlined twice, out-of-line copy dropped by the linker like getProgressMsg). Compiled first, it pools
-0, -200, 200 and the two conversion doubles ahead of fn_803BC6F0's 1.0: the .sdata2 order is now the original's and
+0, -200, 200 and the two conversion doubles ahead of fadeFileRow_803BC6F0's 1.0: the .sdata2 order is now the original's and
 every reloc-name FIXME went: fn_803CF504, fn_803CEED4, fn_803CE9EC, fn_803CD2DC, fn_803C6690, fn_803C4330,
 fn_803C24BC, fn_803C21A8, fn_803C1340, fn_803BF698 -> 100.
 
