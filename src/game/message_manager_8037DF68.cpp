@@ -1081,7 +1081,7 @@ u16 fn_803846A4(s32 index) {
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
-// FIXME(shotgun): 97.35 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.40 %, missing/extra; behaviour drift.
 // Follows the conditional-message commands (0x1A size 2, the twelve commands fn_80383E2C finds)
 // from message msg for the player window `window`: each command picks one of its operands as the
 // next message id (by a key or other holdable the player carries, a random draw, the player
