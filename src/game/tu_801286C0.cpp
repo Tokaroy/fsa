@@ -87,7 +87,7 @@ void cls_8049E500::update() {
     case 10:
         break;
     case 5:
-        fn_8022FE80(0, field_0x4, mSerial, 1, 0);
+        fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -97,7 +97,7 @@ void cls_8049E500::update() {
         fn_801CD950(&field_0x234, 255.0f, -2.125f);
         break;
     case 7:
-        fn_8022FE80(0, field_0x4, mSerial, 1, 0);
+        fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -174,15 +174,15 @@ void cls_8049E500::fn_80128728(int state) {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f box = view->mVisibleBox;
         JGeometry::TVec3f pos(0.5f * (box.f.x - box.i.x) + box.i.x, 0.5f * (box.f.y - box.i.y) + box.i.y, 0.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33C, 1, 2, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33D, 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33C, 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33D, 1, 2, NULL, NULL, true, 1.0f);
         break;
     }
     case 5: {
         GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f pos(0.5f * (s32)mode->fbWidth, 0.5f * (s32)mode->efbHeight - 40.0f, 0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x231, field_0x4, pos, 0x62)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, 0x231, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
         }
         break;
@@ -190,15 +190,15 @@ void cls_8049E500::fn_80128728(int state) {
     case 7: {
         GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f pos(0.5f * (s32)mode->fbWidth, 0.5f * (s32)mode->efbHeight - 40.0f, 0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x23C, field_0x4, pos, 0x62)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, 0x23C, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
         }
         break;
     }
     case 6:
         gAudioMgr_8053AF80->fn_80458FF0(0x100001D, false, 0);
-        getActorManager_801F856C()->spawnActor_801F9484('SEV2', field_0x4, &mPos, 0x2000, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('SEV2', mLayer_0x4, &mPos, 0x2000, -1, -1);
         break;
     case 8:
         fn_80119DD0()->fn_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);

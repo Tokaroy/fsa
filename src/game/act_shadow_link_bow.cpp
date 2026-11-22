@@ -25,7 +25,7 @@ cls_804A6B70::cls_804A6B70() {
 
 void cls_804A6B70::init() {
     ShadowLinkBase_804A6A00::init();
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mState = 4;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -40,7 +40,7 @@ void cls_804A6B70::init() {
 // other way round; it also loads box.f.y before box.i.y. The .sdata2 pool
 // order differs too (32.0f before 64.0f here).
 void cls_804A6B70::fn_80222730() {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
     f32 half = 0.5f * (box.f.x - box.i.x);
@@ -49,19 +49,19 @@ void cls_804A6B70::fn_80222730() {
     f32 x = mPos.x - 0.5f * half;
     for (s32 i = 0; i < (s32)(0.0625f * half) + 1; i++) {
         JGeometry::TVec3f pos(x + spread(7.0f), bottom + spread(15.0f), 0.0f);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OKTM, field_0x4, &pos, 5, -1, -1);
+        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OKTM, mLayer_0x4, &pos, 5, -1, -1);
         if (serial >= 0) {
             OctorokRock_8049F5D8* rock =
                 static_cast<OctorokRock_8049F5D8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (rock != NULL) {
-                rock->field_0x98 = 2;
+                rock->mDir_0x98 = 2;
                 JGeometry::TVec3f vel;
                 vel.x = 0.0f;
                 vel.y = 3.2f + 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
                 vel.z = 0.0f;
-                rock->field_0x3c = vel;
+                rock->mVel_0x3c = vel;
                 rock->field_0x194 = 1;
-                rock->field_0x23c = (s32)(reach * (1.0f / rock->field_0x3c.y));
+                rock->field_0x23c = (s32)(reach * (1.0f / rock->mVel_0x3c.y));
             }
         }
         x += 16.0f;
@@ -72,7 +72,7 @@ void cls_804A6B70::fn_80222668(s32 state) {
     switch (state) {
     case 3:
         field_0x250 = 120;
-        mAnim.startAnim_801D22DC(field_0x98, 0, false);
+        mAnim.startAnim_801D22DC(mDir_0x98, 0, false);
         break;
     case 5:
         mAnim.startAnim_801D22DC(0x1b, 0, false);
@@ -82,7 +82,7 @@ void cls_804A6B70::fn_80222668(s32 state) {
         mShots++;
         break;
     case 7:
-        mAnim.startAnim_801D22DC(field_0x98, 0, false);
+        mAnim.startAnim_801D22DC(mDir_0x98, 0, false);
         break;
     }
     mStateTimer = 0;
@@ -113,7 +113,7 @@ void cls_804A6B70::updateState_0x90(u8 mapHit) {
             if (mFlags & CLS_804A6A00_FLAG_0x2000) {
                 fn_80222668(5);
             } else {
-                field_0x3c.z = lbl_8053FE70;
+                mVel_0x3c.z = lbl_8053FE70;
             }
         }
         break;

@@ -53,8 +53,8 @@ public:
     /* 0x340 */ s32 field_0x340;
     /* 0x344 */ u8 field_0x344;
     /* 0x345 */ u8 field_0x345;
-    /* 0x346 */ u16 field_0x346; // fn_8022461C(&mPos, field_0x4)
-    /* 0x348 */ u16 field_0x348; // fn_80226850(&mPos, field_0x4)
+    /* 0x346 */ u16 field_0x346; // fn_8022461C(&mPos, mLayer_0x4)
+    /* 0x348 */ u16 field_0x348; // fn_80226850(&mPos, mLayer_0x4)
     /* 0x34A */ u8 field_0x34a;
 };
 

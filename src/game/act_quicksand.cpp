@@ -87,7 +87,7 @@ cls_804A6270::~cls_804A6270() {
 
 void cls_804A6270::init() {
     EnemyBase_804A4808::init();
-    s32 kind = field_0x90 & 7;
+    s32 kind = mSpawnParam_0x90 & 7;
     if (kind > 2) {
         kind = 2;
     } else if (kind < 0) {
@@ -108,21 +108,21 @@ void cls_804A6270::init() {
         field_0x394 = 8.0f;
         break;
     }
-    if ((field_0x90 >> 3) & 1) {
+    if ((mSpawnParam_0x90 >> 3) & 1) {
         mFlags |= 0x4000;
     }
-    if ((field_0x90 >> 4) & 1) {
+    if ((mSpawnParam_0x90 >> 4) & 1) {
         mFlags |= 0x2000;
     }
-    field_0x2bc = (field_0x90 >> 5) & 7;
-    s32 mode = (field_0x90 >> 8) & 0xF;
+    field_0x2bc = (mSpawnParam_0x90 >> 5) & 7;
+    s32 mode = (mSpawnParam_0x90 >> 8) & 0xF;
     if (mode > 4) {
         mode = 4;
     } else if (mode < 0) {
         mode = 0;
     }
     field_0x2ac = mode;
-    switch ((field_0x90 >> 12) & 3) {
+    switch ((mSpawnParam_0x90 >> 12) & 3) {
     case 0:
         field_0x3a4 = 0.75f;
         field_0x3a8 = 0.4f;
@@ -136,25 +136,25 @@ void cls_804A6270::init() {
         field_0x3a8 = 1.0f;
         break;
     }
-    if ((field_0x90 >> 25) & 1) {
+    if ((mSpawnParam_0x90 >> 25) & 1) {
         mFlags |= 0x10000;
     }
-    if ((field_0x90 >> 26) & 1) {
+    if ((mSpawnParam_0x90 >> 26) & 1) {
         mFlags |= 0x8000;
     }
-    field_0x2b8 = (field_0x90 >> 15) & 0x1F;
-    field_0x2b4 = (field_0x90 >> 20) & 0x1F;
-    field_0x2b0 = field_0x90 >> 27;
+    field_0x2b8 = (mSpawnParam_0x90 >> 15) & 0x1F;
+    field_0x2b4 = (mSpawnParam_0x90 >> 20) & 0x1F;
+    field_0x2b0 = mSpawnParam_0x90 >> 27;
     mBox.i.set(1.0f, 1.0f);
     mBox.f.set(-1.0f, -1.0f);
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.set(1.0f, 1.0f);
-    field_0x80.f.set(-1.0f, -1.0f);
+    mMapBox_0x80.i.set(1.0f, 1.0f);
+    mMapBox_0x80.f.set(-1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -183,7 +183,7 @@ void cls_804A6270::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     if (mFlags & 0x2000) {
-        field_0x388 = getActorManager_801F856C()->spawnActor_801F9484('ARIJ', field_0x4, &mPos, mSerial, -1, -1);
+        field_0x388 = getActorManager_801F856C()->spawnActor_801F9484('ARIJ', mLayer_0x4, &mPos, mSerial, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x388);
         if (actor != NULL) {
             switch (field_0x2ac) {
@@ -230,7 +230,7 @@ void cls_804A6270::init() {
 
 void cls_804A6270::fn_802121C8() {
     if (!(mFlags & 0x2000)) {
-        field_0x38c = getActorManager_801F856C()->fn_801F76F0('WARP', field_0x4, &mPos, -1);
+        field_0x38c = getActorManager_801F856C()->fn_801F76F0('WARP', mLayer_0x4, &mPos, -1);
         s32 serial = field_0x38c;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -249,7 +249,7 @@ void cls_804A6270::fn_802121C8() {
 
 void cls_804A6270::onFirstUpdate_0x54() {
     if (mFlags & 0x8000 && field_0x2bc != 0) {
-        field_0x2c0.fn_800FE3EC(field_0x2bc, mPos, field_0x4);
+        field_0x2c0.fn_800FE3EC(field_0x2bc, mPos, mLayer_0x4);
     }
 }
 
@@ -439,7 +439,7 @@ void cls_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
             JGeometry::TVec3f pos(mPos);
-            field_0x2c0.fn_800FDEA0(&pos, 1.0f, &field_0x3c, NULL, NULL, 0x200);
+            field_0x2c0.fn_800FDEA0(&pos, 1.0f, &mVel_0x3c, NULL, NULL, 0x200);
         } else {
             s32 i;
             bool inside = false;
@@ -473,21 +473,21 @@ void cls_804A6270::fn_802110A8() {
             if (field_0x3ac >= 0) {
                 JGeometry::TVec2f step;
                 fn_801D00B4(field_0x3ac, &step, 1.0f);
-                field_0x3c.x = step.x;
-                field_0x3c.y = step.y;
+                mVel_0x3c.x = step.x;
+                mVel_0x3c.y = step.y;
             }
         }
-        if (field_0x38c >= 0 && !field_0x3c.isZero()) {
+        if (field_0x38c >= 0 && !mVel_0x3c.isZero()) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x38c);
             if (actor != NULL) {
-                actor->mPos = actor->mPos + field_0x3c;
+                actor->mPos = actor->mPos + mVel_0x3c;
             }
         }
     }
 }
 
 void cls_804A6270::calcVelocity_0x88() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     fn_802110A8();
 }
 

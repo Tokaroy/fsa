@@ -38,7 +38,7 @@ static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
     box.f.x += self->mPos.x;
     box.i.y += self->mPos.y;
     box.f.y += self->mPos.y;
-    fn_8022FEB8(&box, self->field_0x4, self->mSerial, true, false);
+    fn_8022FEB8(&box, self->mLayer_0x4, self->mSerial, true, false);
     s32 p = fn_8022FD8C(self->mSerial);
     if (p < 0 || p >= 4) {
         return -1;
@@ -46,7 +46,7 @@ static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
     if (!fn_802300EC(p)) {
         return -1;
     }
-    if (fn_8038AD24(p, msg, self->mSerial, self->field_0x4, self->mPos, 0x28)) {
+    if (fn_8038AD24(p, msg, self->mSerial, self->mLayer_0x4, self->mPos, 0x28)) {
         return p;
     }
     return -1;
@@ -55,16 +55,16 @@ static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
 // 0x8013416C.
 void cls_8049ED30::init() {
     ActorBase_804A5770::init();
-    field_0x234 = field_0x90 & 0x1F;
+    field_0x234 = mSpawnParam_0x90 & 0x1F;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
     field_0x240.fn_801D2608(lbl_80539F50, 1);
     field_0x240.startAnim_801D22DC(0, 2, false);
     field_0x240.fn_801D1F14(0.0f);
@@ -89,7 +89,7 @@ void cls_8049ED30::update() {
         }
         break;
     case 1:
-        fn_8022FF8C(field_0x238, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x238, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x238, mSerial)) {
             setState(this, 0);
         }
@@ -105,7 +105,7 @@ void cls_8049ED30::update() {
     case 3:
         break;
     }
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     field_0x240.fn_801D1C18();
 }
 
@@ -147,10 +147,10 @@ bool fn_80133B58() {
 // Spawns the two emitters that are not there yet.
 void cls_8049ED30::spawnEmitters() {
     if (mEmitters[0] == NULL) {
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
     }
     if (mEmitters[1] == NULL) {
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 

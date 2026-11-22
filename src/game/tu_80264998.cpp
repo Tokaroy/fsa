@@ -48,13 +48,13 @@ static inline void drawGba(s32 serial, s32 layer, const JGeometry::TVec3f& pos, 
     fn_803075AC(serial, layer, &pos, frame, 0, 1, -1, false, 0, 0);
 }
 
-// The body frame field_0x3c4 by facing (field_0x3dc: right, left, down, up).
+// The body frame field_0x3c4 by facing (mFacing_0x3dc: right, left, down, up).
 static inline void setFacingFrame(Player_804A6F38* player, u16 right, u16 left, u16 down, u16 up) {
-    if (player->field_0x3dc == 0) {
+    if (player->mFacing_0x3dc == 0) {
         player->field_0x3c4 = right;
-    } else if (player->field_0x3dc == 1) {
+    } else if (player->mFacing_0x3dc == 1) {
         player->field_0x3c4 = left;
-    } else if (player->field_0x3dc == 2) {
+    } else if (player->mFacing_0x3dc == 2) {
         player->field_0x3c4 = down;
     } else {
         player->field_0x3c4 = up;
@@ -115,7 +115,7 @@ void Player_804A6F38::fn_80267E18() {
 // The frame number is a byte (clrlwi 24 before each sth).
 void Player_804A6F38::fn_80267D30() {
     u8 f;
-    if (field_0x3dc == 0) {
+    if (mFacing_0x3dc == 0) {
         if (field_0x3fb < 8) {
             f = (field_0x3fb & 7) + 0x8F;
             field_0x3c4 = f;
@@ -123,7 +123,7 @@ void Player_804A6F38::fn_80267D30() {
             f = field_0x3fb + 0x8F;
             field_0x3c4 = f;
         }
-    } else if (field_0x3dc == 1) {
+    } else if (mFacing_0x3dc == 1) {
         if (field_0x3fb < 8) {
             f = ((field_0x3fb + 4) & 7) + 0x8F;
             field_0x3c4 = f;
@@ -131,7 +131,7 @@ void Player_804A6F38::fn_80267D30() {
             f = field_0x3fb + 0x93;
             field_0x3c4 = f;
         }
-    } else if (field_0x3dc == 2) {
+    } else if (mFacing_0x3dc == 2) {
         if (field_0x3fb < 8) {
             f = ((field_0x3fb + 2) & 7) + 0x8F;
             field_0x3c4 = f;
@@ -245,7 +245,7 @@ void Player_804A6F38::fn_80267598() {
 }
 
 void Player_804A6F38::fn_80267470() {
-    if (!isPlayerBitSet(gGameRoot_8053AAF8, field_0x4) && !fn_80240808()) {
+    if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !fn_80240808()) {
         field_0x3c4 = 0x31D;
     } else {
         fn_80268194();
@@ -291,7 +291,7 @@ void Player_804A6F38::fn_802670CC() {
 }
 
 void Player_804A6F38::fn_80267018() {
-    if (field_0x3b4 < 8) {
+    if (mLayer_0x3b4 < 8) {
         setFacingFrame(this, 0x375, 0x37D, 0x385, 0x38D);
     } else {
         setFacingFrame(this, 0x395, 0x39D, 0x3A5, 0x3AD);
@@ -443,7 +443,7 @@ void Player_804A6F38::fn_80265E88() {
     case 0x1C:
     case 0x1D:
         if (field_0xceb == 1) {
-            if (viewLayerFlag(field_0x3b4)) {
+            if (viewLayerFlag(mLayer_0x3b4)) {
                 fn_802670CC();
             } else {
                 fn_802671C8();
@@ -472,7 +472,7 @@ void Player_804A6F38::fn_80265E88() {
             field_0x3c4 += field_0x3f9;
         } else if (field_0x3fd == 1) {
             field_0x3c4 = 0x31C;
-        } else if (field_0x3b4 < 8) {
+        } else if (mLayer_0x3b4 < 8) {
             field_0x3c4 = 0x121;
         } else {
             fn_80268194();
@@ -539,7 +539,7 @@ void Player_804A6F38::fn_80265E88() {
         field_0x3c4 += field_0x3f9;
         break;
     case 0x31:
-        if (field_0x3b4 < 8) {
+        if (mLayer_0x3b4 < 8) {
             field_0x3c4 = 0x358;
             field_0x3c4 += field_0x3f9;
         } else {
@@ -678,9 +678,9 @@ void Player_804A6F38::fn_80265E88() {
 // above the GBA layer 8, full on layer 8; otherwise it fades out while
 // fn_8025F448 holds and the actor field_0xd70 is not on layer 8, else in.
 void Player_804A6F38::fn_80265DB0() {
-    if (field_0x3c4 == 0x122 || (field_0x3c4 >= 0xB7 && field_0x3c4 < 0xBD) || field_0x3b4 > 8) {
+    if (field_0x3c4 == 0x122 || (field_0x3c4 >= 0xB7 && field_0x3c4 < 0xBD) || mLayer_0x3b4 > 8) {
         field_0xca1 = 0;
-    } else if (field_0x3b4 == 8) {
+    } else if (mLayer_0x3b4 == 8) {
         field_0xca1 = 0xFF;
     } else if (fn_8025F448() && (field_0xd70 < 0 || getPlayerLayer_8023DE58(field_0xd70) != 8)) {
         if (field_0xca1 >= 8) {
@@ -751,11 +751,11 @@ void Player_804A6F38::fn_80265AE4() {
     } else {
         field_0x3ca = 0x190;
     }
-    if (mPos.z <= 0.0f && fn_8022461C(&mPos, field_0x3b4) == 0x39 &&
+    if (mPos.z <= 0.0f && fn_8022461C(&mPos, mLayer_0x3b4) == 0x39 &&
         (field_0x3c4 != field_0x3c6 || magnitude(mPos - field_0x14) > 0.5f))
     {
         if (field_0x1384 == NULL) {
-            field_0x1384 = spawnEmitter_8013CC50(field_0x3b4, &mPos, 0x4D2, 0, 0, NULL, NULL, true, 1.0f);
+            field_0x1384 = spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x4D2, 0, 0, NULL, NULL, true, 1.0f);
         } else {
             setEmitterPos_8013CB44(field_0x1384, &mPos, 0, 0, true);
         }
@@ -780,7 +780,7 @@ void Player_804A6F38::fn_80264998() {
     if (field_0xcee == 1) {
         return;
     }
-    if (field_0x1215 && !isPlayerBitSet(gGameRoot_8053AAF8, field_0x4)) {
+    if (field_0x1215 && !isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
         return;
     }
     u8 alpha = fn_8023FC5C();
@@ -789,9 +789,9 @@ void Player_804A6F38::fn_80264998() {
         field_0x3c4 = 0x3D4;
     }
     if (field_0xb90 > 0.0f) {
-        drawShadow(field_0x3b4, &field_0x338, JUtility::TColor(0, 0, 0, 0xFF), field_0xb90);
+        drawShadow(mLayer_0x3b4, &field_0x338, JUtility::TColor(0, 0, 0, 0xFF), field_0xb90);
     }
-    if (field_0x3b4 > 8 && fn_80246B10(0x40)) {
+    if (mLayer_0x3b4 > 8 && fn_80246B10(0x40)) {
         SpriteParams_801F5AE0 markParams;
         markParams.field_0x1c = 1;
         markParams.field_0x2d = 1;
@@ -810,7 +810,7 @@ void Player_804A6F38::fn_80264998() {
         } else {
             pos.set(mPos.x, mPos.y - 0.01f, -5.0f);
         }
-        if (field_0x3b4 == 8) {
+        if (mLayer_0x3b4 == 8) {
             GameView_804A9950* view = getGameView_802D6A9C();
             pos += JGeometry::TVec3f(view->mVisibleBox.i.x, view->mVisibleBox.i.y, 0.0f);
             pos += JGeometry::TVec3f(0.0f, -mPos.z, 0.0f);
@@ -831,7 +831,7 @@ void Player_804A6F38::fn_80264998() {
             shadowParams.field_0x10.a = 79.0f >= a ? 79.0f : a;
         }
         Mtx scale;
-        if (field_0x3b4 == 8) {
+        if (mLayer_0x3b4 == 8) {
             PSMTXScale(scale, 1.0f, 1.0f, 1.0f);
         } else {
             PSMTXScale(scale, 0.9f, 0.5f, 0.5f);
@@ -844,14 +844,14 @@ void Player_804A6F38::fn_80264998() {
         shadowParams.field_0x14.g = 0x28;
         shadowParams.field_0x14.b = 0x28;
         if (field_0x43f != true) {
-            if (field_0x3b4 == 8) {
+            if (mLayer_0x3b4 == 8) {
                 drawSob("player_sob.bin", pos + field_0x2b8, field_0x3c4, &shadowParams);
             } else {
-                drawSobOnTv(field_0x3b4, "player_sob.bin", pos + field_0x2b8, field_0x3c4, &shadowParams);
+                drawSobOnTv(mLayer_0x3b4, "player_sob.bin", pos + field_0x2b8, field_0x3c4, &shadowParams);
             }
         }
         if (mPos.z > 0.0f) {
-            s32 layer = field_0x3b4;
+            s32 layer = mLayer_0x3b4;
             if (layer >= 8 && !viewLayerFlag(layer)) {
                 JGeometry::TVec3f groundPos;
                 if (fn_80240DAC()) {
@@ -859,7 +859,7 @@ void Player_804A6F38::fn_80264998() {
                 } else {
                     groundPos.set(mPos.x, mPos.y - 0.01f, 0.0f);
                 }
-                drawGba(-40000 - field_0x4, field_0x3b4, groundPos + field_0x2b8, 0x3CD);
+                drawGba(-40000 - mPlayerNo_0x4, mLayer_0x3b4, groundPos + field_0x2b8, 0x3CD);
             }
         }
     }
@@ -963,37 +963,37 @@ void Player_804A6F38::fn_80264998() {
     const JGeometry::TVec3f& bodyPos = mPos + field_0x2b8;
     JGeometry::TVec3f drawPos(bodyPos.x, bodyPos.y, bodyPos.z);
     drawPos.set((s32)drawPos.x, (s32)drawPos.y, (s32)drawPos.z);
-    if (field_0x3b4 < 8) {
-        drawSobOnTv(field_0x3b4, "player_sob.bin", drawPos, frame, &bodyParams);
+    if (mLayer_0x3b4 < 8) {
+        drawSobOnTv(mLayer_0x3b4, "player_sob.bin", drawPos, frame, &bodyParams);
     }
     SpriteParams_801F5AE0 floorParams;
-    if (field_0x458 == 1 && field_0x3dc == 2) {
+    if (field_0x458 == 1 && mFacing_0x3dc == 2) {
         floorParams.field_0x10.a = 0x80;
     }
-    u16 tile = fn_8022461C(&mPos, field_0x3b4);
+    u16 tile = fn_8022461C(&mPos, mLayer_0x3b4);
     JGeometry::TVec3f floorPos(mPos);
     floorPos.y += 1.0f;
-    if (mPos.z <= 0.0f && fn_8022517C(&mPos, field_0x3b4)) {
-        s32 layer = field_0x3b4;
+    if (mPos.z <= 0.0f && fn_8022517C(&mPos, mLayer_0x3b4)) {
+        s32 layer = mLayer_0x3b4;
         if (layer < 8) {
             drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3c8, &floorParams);
         } else {
-            drawGba(-10000 - field_0x4, layer, floorPos, field_0x3c8);
+            drawGba(-10000 - mPlayerNo_0x4, layer, floorPos, field_0x3c8);
         }
     } else if (mPos.z <= 0.0f && fn_80270A8C() && (tile == 0x39 || tile == 0xD || tile == 0x3B)) {
         if (field_0x3c4 >= 0xC2 && field_0x3c4 < 0xC5) {
-            s32 layer = field_0x3b4;
+            s32 layer = mLayer_0x3b4;
             if (layer < 8) {
                 drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca + 3, &floorParams);
             } else {
-                drawGba(-20000 - field_0x4, layer, floorPos, field_0x3ca + 3);
+                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca + 3);
             }
         } else {
-            s32 layer = field_0x3b4;
+            s32 layer = mLayer_0x3b4;
             if (layer < 8) {
                 drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca, &floorParams);
             } else {
-                drawGba(-20000 - field_0x4, layer, floorPos, field_0x3ca);
+                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca);
             }
         }
     } else if (mPos.z <= 0.0f) {
@@ -1003,14 +1003,14 @@ void Player_804A6F38::fn_80264998() {
         if (fn_8024BBB0()) {
             return;
         }
-        if (tile != 0x39 && !fn_80225BE4(&mPos, field_0x3b4)) {
+        if (tile != 0x39 && !fn_80225BE4(&mPos, mLayer_0x3b4)) {
             return;
         }
-        s32 layer = field_0x3b4;
+        s32 layer = mLayer_0x3b4;
         if (layer < 8) {
             drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca, &floorParams);
         } else {
-            drawGba(-20000 - field_0x4, layer, floorPos, field_0x3ca);
+            drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca);
         }
     }
 }

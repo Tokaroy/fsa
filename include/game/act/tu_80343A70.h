@@ -25,7 +25,7 @@ public:
     /* 0x24C */ s32 field_0x24c;
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254[7];
-    /* 0x270 */ s32 field_0x270; // bit 0 of field_0x90
+    /* 0x270 */ s32 field_0x270; // bit 0 of mSpawnParam_0x90
     /* 0x274 */ s32 field_0x274; // kind (1, 2 pick what die_0x24 drops)
     /* 0x278 */ f32 field_0x278[7];
     /* 0x294 */ u16 field_0x294;

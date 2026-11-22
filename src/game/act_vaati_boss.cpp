@@ -96,23 +96,23 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
 
 void VaatiBoss_804A4958::init() {
     EnemyBase_804A4808::init();
-    field_0x5dc = field_0x90 & 0xF;
+    field_0x5dc = mSpawnParam_0x90 & 0xF;
     if (field_0x5dc != 0) {
         field_0x5dc += 7;
     }
 
-    field_0x5e0.set((f32)(((field_0x90 >> 24) & 0x3F) * 8) + 8.0f,
-                    (f32)(((field_0x90 >> 16) & 0x3F) * 8) + 8.0f);
-    field_0x5e8 = (field_0x90 >> 10) & 0x3F;
-    field_0x5e9 = (field_0x90 >> 4) & 0x3F;
+    field_0x5e0.set((f32)(((mSpawnParam_0x90 >> 24) & 0x3F) * 8) + 8.0f,
+                    (f32)(((mSpawnParam_0x90 >> 16) & 0x3F) * 8) + 8.0f);
+    field_0x5e8 = (mSpawnParam_0x90 >> 10) & 0x3F;
+    field_0x5e9 = (mSpawnParam_0x90 >> 4) & 0x3F;
 
     fn_801E4790(false);
     fn_801E4758();
 
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_FLOOR | ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_KEEP_LIFE;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     mLife = 1000;
     mLifeBackup = mLife;
     field_0x196 = 1;
@@ -130,9 +130,9 @@ void VaatiBoss_804A4958::init() {
     rec.field_0x0 = 1;
     rec.field_0x4 = 1;
     field_0x464.field_0xc = rec;
-    field_0x464.fn_801EB710(field_0x4, &mPos);
+    field_0x464.fn_801EB710(mLayer_0x4, &mPos);
 
-    field_0x5d8 = field_0x4;
+    field_0x5d8 = mLayer_0x4;
     field_0x5b8 = fn_801CD664(4);
 
     field_0x5bc.x = mPos.x;
@@ -174,11 +174,11 @@ void VaatiBoss_804A4958::onFirstUpdate_0x54() {
 // regalloc-only + reloc-name. Register allocation of the random-velocity arithmetic.
 void VaatiBoss_804A4958::fn_801D63D0() {
     for (s32 i = 0; i < 5; i++) {
-        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, 2);
+        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 2);
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->field_0x3c = JGeometry::TVec3f(
+                actor->mVel_0x3c = JGeometry::TVec3f(
                     (gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 2.0f - 1.0f) * 1.2f,
                     (gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 2.0f - 1.0f) * 1.2f,
                     3.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 3.0f
@@ -229,7 +229,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         field_0x5b0 = -1;
         field_0xb0 = 3;
         JGeometry::TBox2f box;
-        fn_801E4618(&box, fn_801CD2F8(field_0x4));
+        fn_801E4618(&box, fn_801CD2F8(mLayer_0x4));
         field_0x60c.set(0.5f * (box.f.x - box.i.x) + box.i.x, 0.5f * (box.f.y - box.i.y) + box.i.y, 0.0f);
         field_0x5bc.x = (box.f.x - box.i.x) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.x;
         field_0x5bc.y = (box.f.y - box.i.y) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.y;
@@ -241,7 +241,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         mTargetSpeed = 0.0f;
         break;
     case 10:
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             mTargetSpeed = 1.4f;
             field_0x250 = fn_801CD664(0xB5) + 0xB4;
         } else {
@@ -257,15 +257,15 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         field_0x448.fn_80217A74();
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x5d1 = 0;
         break;
     case 12:
         mTargetSpeed = gGameRoot_8053AAF8->field_0x7e != 0 ? 1.4f : 1.0f;
         field_0x250 = fn_801CD664(0x79) + 0x78;
-        field_0x4c4.fn_801D74E0(&mPos, field_0x4);
+        field_0x4c4.fn_801D74E0(&mPos, mLayer_0x4);
         break;
     case 13:
         mTargetSpeed = 0.0f;
@@ -280,7 +280,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     case 15:
         mTargetSpeed = 0.0f;
         field_0x5cf = 0;
-        field_0x4c4.fn_801D74E0(&mPos, field_0x4);
+        field_0x4c4.fn_801D74E0(&mPos, mLayer_0x4);
         startSound_801F0E34(0x40068, 0);
         break;
     case 16:
@@ -306,7 +306,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     case 23: {
         field_0x5fc = field_0x5dc;
         field_0x600.z = 0.0f;
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             field_0x5fc = field_0x5d8;
             field_0x600.z = 31.9f;
         }
@@ -317,11 +317,11 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         fn_801E44CC(&box, &field_0x600, NULL);
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x5d1 = 0;
-        if (!fn_801CD2F8(field_0x4)) {
+        if (!fn_801CD2F8(mLayer_0x4)) {
             field_0x448.fn_80217A74();
             field_0x448.fn_80217DE8();
             field_0x448.fn_80217BC8();
@@ -341,15 +341,15 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
-        field_0x80.i.x = 1.0f;
-        field_0x80.i.y = 1.0f;
-        field_0x80.f.x = -1.0f;
-        field_0x80.f.y = -1.0f;
+        mMapBox_0x80.i.x = 1.0f;
+        mMapBox_0x80.i.y = 1.0f;
+        mMapBox_0x80.f.x = -1.0f;
+        mMapBox_0x80.f.y = -1.0f;
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x5d1 = 0;
         break;
     case 25:
@@ -396,7 +396,7 @@ inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
 #pragma auto_inline off
 void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             if (field_0x5d0 == 0) {
                 fn_801D5D84(0x15);
             } else {
@@ -443,7 +443,7 @@ static inline s32 pickTarget(VaatiBoss_804A4958* boss) {
 void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
-        if (fn_801CD228(field_0x4) && getActorManager_801F856C()->fn_801F68E0() != 0) {
+        if (fn_801CD228(mLayer_0x4) && getActorManager_801F856C()->fn_801F68E0() != 0) {
             fn_801D5D84(1);
         }
         break;
@@ -511,7 +511,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
         break;
     case 11:
         if (mStateTimer >= 180) {
-            if (fn_801CD2F8(field_0x4)) {
+            if (fn_801CD2F8(mLayer_0x4)) {
                 fn_801D5D84(15);
             } else {
                 field_0x448.fn_80217CD8();
@@ -532,7 +532,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
                 startSound_801F0E34(0x40060, 0);
                 fn_801D5D84(14);
             }
-        } else if (field_0x3c.x < 0.001f && field_0x3c.y < 0.001f) {
+        } else if (mVel_0x3c.x < 0.001f && mVel_0x3c.y < 0.001f) {
             field_0x5cf = 10;
         }
         break;
@@ -552,7 +552,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
                 startSound_801F0E34(0x40069, 0);
                 fn_801D5D84(16);
             }
-        } else if (field_0x3c.x < 0.001f && field_0x3c.y < 0.001f) {
+        } else if (mVel_0x3c.x < 0.001f && mVel_0x3c.y < 0.001f) {
             field_0x5cf = 10;
         }
         break;
@@ -600,11 +600,11 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
             field_0x5b8 = fn_801CD664(4);
             field_0x5bc.x = field_0x600.x;
             field_0x5bc.y = field_0x600.y;
-            field_0x4 = field_0x5fc;
+            mLayer_0x4 = field_0x5fc;
             mPos = field_0x600;
             mPrevPos = field_0x600;
-            fn_801E4790(fn_801CD2F8(field_0x4));
-            if (fn_801CD2F8(field_0x4)) {
+            fn_801E4790(fn_801CD2F8(mLayer_0x4));
+            if (fn_801CD2F8(mLayer_0x4)) {
                 field_0x5d0 = fn_801CD664(4) + 3;
                 field_0x448.fn_80217A30();
             } else {
@@ -720,8 +720,8 @@ void VaatiBoss_804A4958::move_0x98() {
             s16 angle = field_0x5d2;
             JGeometry::TVec2<f32> vel(1.4f * JMath::sincosTable_.sinShort(angle),
                                       1.4f * JMath::sincosTable_.cosShort(angle));
-            field_0x3c.x = vel.x;
-            field_0x3c.y = vel.y;
+            mVel_0x3c.x = vel.x;
+            mVel_0x3c.y = vel.y;
         }
     }
     switch (mState) {
@@ -735,7 +735,7 @@ void VaatiBoss_804A4958::move_0x98() {
     case 6:
         if (mFlags & 1) {
             mPos.z = mPrevPos.z;
-            field_0x3c.z = mPrevVel.z;
+            mVel_0x3c.z = mPrevVel.z;
         }
         step = true;
         break;
@@ -760,7 +760,7 @@ void VaatiBoss_804A4958::move_0x98() {
         }
         bool turn = false;
         JGeometry::TVec3f probe(field_0x5bc.x, field_0x5bc.y, 0.0f);
-        if (isBlocked_0x4C(field_0x4, &probe)) {
+        if (isBlocked_0x4C(mLayer_0x4, &probe)) {
             field_0x5bc.x = old.x;
             field_0x5bc.y = old.y;
             turn = true;
@@ -790,7 +790,7 @@ void VaatiBoss_804A4958::move_0x98() {
         }
         break;
     default:
-        if (!fn_801CD2F8(field_0x4)) {
+        if (!fn_801CD2F8(mLayer_0x4)) {
             f32 z = mPos.z;
             if (z > 500.0f) {
                 z = 500.0f;
@@ -813,29 +813,29 @@ void VaatiBoss_804A4958::fn_801D4C70() {
     case 3:
     case 4:
     case 0x11:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
         return;
     case 0x15: {
         JGeometry::TVec2f out;
         // fn_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot.
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x5ec, &out, 1.5f);
-        field_0x3c.x = out.x;
-        field_0x3c.y = out.y;
+        mVel_0x3c.x = out.x;
+        mVel_0x3c.y = out.y;
         return;
     }
     case 0x16: {
         JGeometry::TVec2f out;
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x5f4, &out, 0.5f);
-        field_0x3c.x = out.x;
-        field_0x3c.y = out.y;
+        mVel_0x3c.x = out.x;
+        mVel_0x3c.y = out.y;
         return;
     }
     }
     if (field_0x5d1 != 0) {
         JGeometry::TVec2f v(4.0f * JMASSin(field_0x5d2), 4.0f * JMASCos(field_0x5d2));
-        field_0x3c.x = v.x;
-        field_0x3c.y = v.y;
+        mVel_0x3c.x = v.x;
+        mVel_0x3c.y = v.y;
         return;
     }
     JGeometry::TVec2f d(0.0f, 0.0f);
@@ -879,24 +879,24 @@ void VaatiBoss_804A4958::fn_801D4C70() {
         }
         d = dir;
     }
-    addCalc2_801F71A4(&field_0x3c.x, d.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, d.y, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.x, d.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, d.y, 0.3f, 1.0f);
 }
 
 void VaatiBoss_804A4958::calcVelocity_0x88() {
     fn_801D4C70();
     switch (mState) {
     case 1:
-        field_0x3c.z = -2.0f;
+        mVel_0x3c.z = -2.0f;
         break;
     case 6:
-        field_0x3c.z = 4.0f;
+        mVel_0x3c.z = 4.0f;
         break;
     case 8:
-        field_0x3c.z += -0.1f;
+        mVel_0x3c.z += -0.1f;
         break;
     default:
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
         break;
     }
     if (mState == 5) {
@@ -912,19 +912,19 @@ void VaatiBoss_804A4958::onHitReactionEnd_0x74() {
 
     if (checkFlag(0x8000)) {
         mFlags &= ~0x8000;
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             fn_801D5D84(0x15);
         } else {
             fn_801D5D84(0x17);
         }
     } else if (mState == 11) {
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             fn_801D5D84(0xF);
         } else {
             field_0x448.fn_80217CD8();
             fn_801D5D84(0xC);
         }
-    } else if (fn_801CD2F8(field_0x4)) {
+    } else if (fn_801CD2F8(mLayer_0x4)) {
         switch (mState) {
         case 15:
         case 16:
@@ -944,7 +944,7 @@ void VaatiBoss_804A4958::onHitReactionEnd_0x74() {
 // FIXME(shotgun): 99.41 %, missing/extra; behaviour drift.
 // Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
-    const JGeometry::TBox2f* box = layerBox(field_0x4);
+    const JGeometry::TBox2f* box = layerBox(mLayer_0x4);
     JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
     f32 top = 0.001f + box->i.y;
     focus.y = __fsel(top - focus.y, top, focus.y);

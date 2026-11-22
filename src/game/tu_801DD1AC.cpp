@@ -196,13 +196,13 @@ bool cls_804A4C58::fn_801DE018() {
         JGeometry::TBox2f box;
         JGeometry::TVec2f out;
         box.set(-40.0f + mPos.x, -16.0f + mPos.y, 40.0f + mPos.x, 50.0f + mPos.y);
-        s32 player = fn_8023AE34(&box, field_0x4, &out);
+        s32 player = fn_8023AE34(&box, mLayer_0x4, &out);
         if (player < 0) {
-            player = fn_8023AA18(&box, field_0x4, &out);
+            player = fn_8023AA18(&box, mLayer_0x4, &out);
             if (player < 0) {
-                player = fn_8023AC74(&box, field_0x4, &out);
+                player = fn_8023AC74(&box, mLayer_0x4, &out);
                 if (player < 0) {
-                    player = fn_8023AD54(&box, field_0x4, &out);
+                    player = fn_8023AD54(&box, mLayer_0x4, &out);
                 }
             }
         }
@@ -245,7 +245,7 @@ bool cls_804A4C58::fn_801DDBE4() {
             case 'FIRE':
                 if (mState == 0x11) {
                     touched = true;
-                } else if (!(other->field_0x3c.y > 0.0f)) {
+                } else if (!(other->mVel_0x3c.y > 0.0f)) {
                     switch (mState) {
                     case 0xC:
                         touched = true;
@@ -253,13 +253,13 @@ bool cls_804A4C58::fn_801DDBE4() {
                     case 0xB:
                     case 0xD:
                     case 0xE:
-                        if (other->field_0x3c.y < 0.0f) {
+                        if (other->mVel_0x3c.y < 0.0f) {
                             touched = true;
                         } else if (mFlags & 0x2000) {
-                            if (other->field_0x3c.x < 0.0) {
+                            if (other->mVel_0x3c.x < 0.0) {
                                 touched = true;
                             }
-                        } else if (other->field_0x3c.x > 0.0) {
+                        } else if (other->mVel_0x3c.x > 0.0) {
                             touched = true;
                         }
                         break;
@@ -269,8 +269,8 @@ bool cls_804A4C58::fn_801DDBE4() {
             }
             if (touched) {
                 s32 life = mLife;
-                JGeometry::TVec3f from = mPos - other->field_0x3c;
-                if (fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
+                JGeometry::TVec3f from = mPos - other->mVel_0x3c;
+                if (fn_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
                     if (mLife != life) {
                         hit = true;
                         if (mState != 0x11) {
@@ -280,16 +280,16 @@ bool cls_804A4C58::fn_801DDBE4() {
                 }
             }
             if (hit) {
-                field_0xf8 = 0;
-                field_0x3c.z = 0.0f;
+                mKnockbackKind_0xf8 = 0;
+                mVel_0x3c.z = 0.0f;
                 mPos.z = 0.0f;
                 startSound_801F0E34(0x40005, 0);
                 fn_801E62D4();
                 if (mState != 0x11) {
                     field_0x33f++;
                     if (field_0x33f >= lbl_8053F1C8) {
-                        field_0x3c.x *= 2.0f;
-                        field_0x3c.y *= 2.0f;
+                        mVel_0x3c.x *= 2.0f;
+                        mVel_0x3c.y *= 2.0f;
                         fn_801D9C58(0xF);
                     }
                 }
@@ -300,11 +300,11 @@ bool cls_804A4C58::fn_801DDBE4() {
                 startSound_801F0E34(0x400D1, 0);
                 switch (other->mActorId) {
                 case 'SWBM':
-                    fn_801CB538(field_0x4, &other->mPos, 0, 0);
+                    fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
                     break;
                 case 'FIRE':
-                    fn_801CB538(field_0x4, &other->mPos, 0, 0);
-                    spawnEmitter_8013CC50(field_0x4, &other->mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
+                    fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
+                    spawnEmitter_8013CC50(mLayer_0x4, &other->mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
                     break;
                 }
             }
@@ -385,16 +385,16 @@ bool cls_804A4C58::fn_801DD410() {
         }
         if (hit) {
             mLife = 0;
-            field_0xf8 = 0;
-            field_0x3c.z = 0.0f;
+            mKnockbackKind_0xf8 = 0;
+            mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             startSound_801F0E34(0x40005, 0);
             fn_801E62D4();
             if (mState != 0x11) {
                 field_0x33f++;
                 if (field_0x33f >= lbl_8053F1C8) {
-                    field_0x3c.x *= 2.0f;
-                    field_0x3c.y *= 2.0f;
+                    mVel_0x3c.x *= 2.0f;
+                    mVel_0x3c.y *= 2.0f;
                     fn_801D9C58(0xF);
                 }
             }
@@ -410,16 +410,16 @@ bool cls_804A4C58::fn_801DD410() {
                 }
             }
             if (hit) {
-                field_0xf8 = 0;
-                field_0x3c.z = 0.0f;
+                mKnockbackKind_0xf8 = 0;
+                mVel_0x3c.z = 0.0f;
                 mPos.z = 0.0f;
                 startSound_801F0E34(0x40005, 0);
                 fn_801E62D4();
                 if (mState != 0x11) {
                     field_0x33f++;
                     if (field_0x33f >= lbl_8053F1C8) {
-                        field_0x3c.x *= 2.0f;
-                        field_0x3c.y *= 2.0f;
+                        mVel_0x3c.x *= 2.0f;
+                        mVel_0x3c.y *= 2.0f;
                         fn_801D9C58(0xF);
                     }
                 }
@@ -444,7 +444,7 @@ bool cls_804A4C58::fn_801DD410() {
                         fn_80237948(i, &p);
                         if (outFlag == 1 && field_0x1dc.fn_801EAC20(i)) {
                             JGeometry::TVec3f at(where.x, where.y, 0.0f);
-                            fn_801CB538(field_0x4, &at, 0, 0);
+                            fn_801CB538(mLayer_0x4, &at, 0, 0);
                             sound = true;
                         }
                     }
@@ -454,16 +454,16 @@ bool cls_804A4C58::fn_801DD410() {
                 startSound_801F0E34(0x400D1, 0);
             }
             if (hit) {
-                field_0xf8 = 0;
-                field_0x3c.z = 0.0f;
+                mKnockbackKind_0xf8 = 0;
+                mVel_0x3c.z = 0.0f;
                 mPos.z = 0.0f;
                 startSound_801F0E34(0x40005, 0);
                 fn_801E62D4();
                 if (mState != 0x11) {
                     field_0x33f++;
                     if (field_0x33f >= lbl_8053F1C8) {
-                        field_0x3c.x *= 2.0f;
-                        field_0x3c.y *= 2.0f;
+                        mVel_0x3c.x *= 2.0f;
+                        mVel_0x3c.y *= 2.0f;
                         fn_801D9C58(0xF);
                     }
                 }
@@ -501,7 +501,7 @@ u8 cls_804A4C58::fn_801DD28C() {
         mBox.i.y = y0;
         mBox.f.x = x1;
         mBox.f.y = y1;
-        hit = fn_801F2B7C(field_0x114, -1, 1);
+        hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
         mBox.i.x = sx0;
         mBox.i.y = sy0;
         mBox.f.x = sx1;

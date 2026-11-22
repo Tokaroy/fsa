@@ -20,8 +20,8 @@ cls_804A68D0::cls_804A68D0() {
 
 void cls_804A68D0::init() {
     ShadowLinkBase_804A6A00::init();
-    mKind = field_0x90 & 3;
-    field_0x98 = 2;
+    mKind = mSpawnParam_0x90 & 3;
+    mDir_0x98 = 2;
     mState = 3;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -34,45 +34,45 @@ void cls_804A68D0::fn_8022089C(s32 state) {
     switch (state) {
     case 3:
         setBox(mBox, -8.0f, 8.0f);
-        setBox(field_0x80, -8.0f, 8.0f);
+        setBox(mMapBox_0x80, -8.0f, 8.0f);
         break;
     case 4:
         mFlags &= ~0x4000;
         setBox(mBox, 1.0f, -1.0f);
         mBox2.i = mBox.i;
         mBox2.f = mBox.f;
-        setBox(field_0x80, 1.0f, -1.0f);
+        setBox(mMapBox_0x80, 1.0f, -1.0f);
         static f32 lbl_8053AC80 = 0.5f * (45.0f * -lbl_8053EFB8);
-        field_0x3c.z = lbl_8053AC80;
+        mVel_0x3c.z = lbl_8053AC80;
         switch (mKind) {
         case 0:
         case 1:
-            field_0x3c.x = 2.8444445f;
+            mVel_0x3c.x = 2.8444445f;
             if (mKind == 1) {
-                field_0x3c.x = -field_0x3c.x;
+                mVel_0x3c.x = -mVel_0x3c.x;
             }
             if (mHops & 1) {
-                field_0x3c.x = -field_0x3c.x;
+                mVel_0x3c.x = -mVel_0x3c.x;
             }
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             break;
         case 2:
         case 3:
-            field_0x3c.y = 2.8444445f;
+            mVel_0x3c.y = 2.8444445f;
             if (mKind == 3) {
-                field_0x3c.y = -field_0x3c.y;
+                mVel_0x3c.y = -mVel_0x3c.y;
             }
             if (mHops & 1) {
-                field_0x3c.y = -field_0x3c.y;
+                mVel_0x3c.y = -mVel_0x3c.y;
             }
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.x = 0.0f;
             break;
         }
         startSound_801F0E34(0x400C7, 0);
         break;
     case 5:
         setBox(mBox, -8.0f, 8.0f);
-        setBox(field_0x80, -8.0f, 8.0f);
+        setBox(mMapBox_0x80, -8.0f, 8.0f);
         if (gGameRoot_8053AAF8->field_0x7e) {
             field_0x250 = 6;
         } else {
@@ -84,16 +84,16 @@ void cls_804A68D0::fn_8022089C(s32 state) {
         setBox(mBox, 1.0f, -1.0f);
         mBox2.i = mBox.i;
         mBox2.f = mBox.f;
-        setBox(field_0x80, 1.0f, -1.0f);
+        setBox(mMapBox_0x80, 1.0f, -1.0f);
         static f32 lbl_8053AC88 = 0.5f * (120.0f * -lbl_8053EFB8);
-        field_0x3c.z = lbl_8053AC88;
+        mVel_0x3c.z = lbl_8053AC88;
         fn_80221670();
-        field_0x3c.x = (field_0x2b0.x - mPos.x) * 0.008333334f;
-        field_0x3c.y = (field_0x2b0.y - mPos.y) * 0.008333334f;
-        s32 angle = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) *
+        mVel_0x3c.x = (field_0x2b0.x - mPos.x) * 0.008333334f;
+        mVel_0x3c.y = (field_0x2b0.y - mPos.y) * 0.008333334f;
+        s32 angle = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) *
                     (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-        field_0x98 = fn_801F681C((u16)angle);
-        mAnim.startAnim_801D22DC(field_0x98 + 8, 0, false);
+        mDir_0x98 = fn_801F681C((u16)angle);
+        mAnim.startAnim_801D22DC(mDir_0x98 + 8, 0, false);
         break;
     }
     mStateTimer = 0;
@@ -127,7 +127,7 @@ void cls_804A68D0::updateState_0x90(u8 mapHit) {
                 fn_8022089C(4);
             }
         } else if (mPos.z <= 0.0f) {
-            field_0x3c.z = lbl_8053FE70;
+            mVel_0x3c.z = lbl_8053FE70;
         }
         break;
     case 4:
@@ -160,11 +160,11 @@ void cls_804A68D0::calcVelocity_0x88() {
         break;
     case 4:
     case 6:
-        field_0x3c.z = field_0x3c.z + lbl_8053EFB8;
+        mVel_0x3c.z = mVel_0x3c.z + lbl_8053EFB8;
         break;
     default:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
         applyGravity_0x84();
         break;
     }

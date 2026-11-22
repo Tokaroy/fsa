@@ -5,7 +5,7 @@
 #include "game/act/act_dummy_conversation.h"
 
 void DummyConversation_804B1A48::init() {
-    if (!fn_802308E0(field_0x90 >> 28)) {
+    if (!fn_802308E0(mSpawnParam_0x90 >> 28)) {
         mAlive = false;
     }
     mState = 0;
@@ -13,7 +13,7 @@ void DummyConversation_804B1A48::init() {
 }
 
 void DummyConversation_804B1A48::update() {
-    s32 player = field_0x90 >> 28;
+    s32 player = mSpawnParam_0x90 >> 28;
     switch (mState) {
     case 0:
         if (lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(player), 0x400) &&
@@ -65,10 +65,10 @@ void DummyConversation_804B1A48::update() {
         }
         break;
     case 1:
-        fn_8022FE80(player, field_0x4, mSerial, 0, 0);
+        fn_8022FE80(player, mLayer_0x4, mSerial, 0, 0);
         s32 owner = fn_8022FD8C(mSerial);
         if (owner == player) {
-            if (open(player, field_0x4, mSerial, mPos, 0x10)) {
+            if (open(player, mLayer_0x4, mSerial, mPos, 0x10)) {
                 mState = 2;
             } else {
                 lbl_8053AED0->field_0x1f0[player] = 2;
@@ -77,7 +77,7 @@ void DummyConversation_804B1A48::update() {
         }
         break;
     case 2:
-        fn_8022FE80(player, field_0x4, mSerial, 0, 0);
+        fn_8022FE80(player, mLayer_0x4, mSerial, 0, 0);
         if (fn_80388CAC(player, mSerial)) {
             lbl_8053AED0->field_0x1f0[player] = 2;
             mAlive = false;

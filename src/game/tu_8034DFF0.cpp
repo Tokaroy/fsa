@@ -15,13 +15,13 @@ static const s32 lbl_804721D4[15] = {30, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 10,
 // each field_0x254 vector as z, y, x, this build x, y, z).
 // 0x8034EAB4.
 void cls_804AC9A8::init() {
-    field_0x80.set(-15.0f, -15.0f, 15.0f, 15.0f);
+    mMapBox_0x80.set(-15.0f, -15.0f, 15.0f, 15.0f);
     mBox.set(-15.0f, -15.0f, 15.0f, 15.0f);
     field_0x238 = 0;
     field_0x23c = field_0x238;
     field_0x244 = 0;
     field_0x240 = 0;
-    field_0x234 = field_0x90 & 0xF;
+    field_0x234 = mSpawnParam_0x90 & 0xF;
     for (s32 i = 0; i < 4; i++) {
         field_0x24c[i] = 0;
         field_0x250[i] = 0;
@@ -47,7 +47,7 @@ void cls_804AC9A8::update() {
         for (s32 i = 0; i < 4; i++) {
             field_0x250[i] = field_0x24c[i];
             if (fn_8023F264(i) && !fn_8023EA28(i)) {
-                field_0x24c[i] = fn_8023B0F4(i, &box, field_0x4, false, 4.0f);
+                field_0x24c[i] = fn_8023B0F4(i, &box, mLayer_0x4, false, 4.0f);
                 if (field_0x24c[i] == 1) {
                     count++;
                 }
@@ -185,11 +185,11 @@ void cls_804AC9A8::draw() {
     params.field_0x1d = -3;
     params.field_0x1c = 0;
     s32 frame = field_0x238 + 0xD;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_80307AC8(mSerial, field_0x4, &mPos, field_0x238 + 0xD, 0, 0, -1);
+    fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 + 0xD, 0, 0, -1);
 }
 
 

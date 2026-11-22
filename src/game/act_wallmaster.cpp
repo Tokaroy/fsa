@@ -109,16 +109,16 @@ cls_804A3E44::~cls_804A3E44() {
 // FIXME: 99.87 %, regalloc-only; behaviour clean.
 void cls_804A3E44::init() {
     EnemyBase_804A4808::init();
-    u32 p = field_0x90 & 0x1F;
+    u32 p = mSpawnParam_0x90 & 0x1F;
     if (p >= 2) {
         mFlags |= 0x4000;
     }
     field_0x2a8 = p & 1;
-    mParam.fn_801BCD70(field_0x90);
+    mParam.fn_801BCD70(mSpawnParam_0x90);
     if (mFlags & 0x4000) {
-        field_0x2ac = field_0x4;
+        field_0x2ac = mLayer_0x4;
     } else {
-        field_0x2ac = (field_0x90 >> 24) & 7;
+        field_0x2ac = (mSpawnParam_0x90 >> 24) & 7;
         if (field_0x2ac != 0) {
             field_0x2ac += 7;
         }
@@ -131,13 +131,13 @@ void cls_804A3E44::init() {
             f4 = box->i.x;
             f5 = box->i.y;
         }
-        field_0x2b0.set(((field_0x90 >> 16) & 0x3F) * 8 + f4 + 8.0f,
-                        ((field_0x90 >> 8) & 0x3F) * 8 + f5 + 8.0f);
+        field_0x2b0.set(((mSpawnParam_0x90 >> 16) & 0x3F) * 8 + f4 + 8.0f,
+                        ((mSpawnParam_0x90 >> 8) & 0x3F) * 8 + f5 + 8.0f);
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x98 = 2;
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_ATTACK;
     field_0x194 = 1;
     if (field_0x2a8 == 0) {
@@ -179,10 +179,10 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         field_0x2bc = 0;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         field_0x250 = fn_801CD664(0x79) + 60;
         mPos.set(mSpawnPos.x, mSpawnPos.y, 100.0f);
-        field_0x4 = field_0x8;
+        mLayer_0x4 = field_0x8;
         break;
     case 1:
         field_0x2bc = 0;
@@ -191,7 +191,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         mAnim.startAnim_801D22DC(0, 0, false);
         if (mState != 5) {
             mPos.set(mSpawnPos.x, mSpawnPos.y, 100.0f);
-            field_0x4 = field_0x8;
+            mLayer_0x4 = field_0x8;
         }
         break;
     case 3:
@@ -230,14 +230,14 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         field_0x2bc = 0;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         field_0x250 = fn_801CD664(0xB5) + 180;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         mPos.x = mSpawnPos.x;
         mPos.y = mSpawnPos.y;
         mPos.z = mSpawnPos.z;
-        field_0x4 = field_0x8;
+        mLayer_0x4 = field_0x8;
         break;
     case 10:
         mFlags &= ~0x2000;
@@ -315,7 +315,7 @@ inline bool cls_804A3E44::checkPlayerHit() {
     bool hitFlag = false;
     if (mState == 10 || (mState == 3 && mAnim.mCel == 1)) {
         if (field_0x2b8 >= 0 && !fn_8022DCD8(field_0x2b8)) {
-            if (fn_801CD2F8(field_0x4) || !fn_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
+            if (fn_801CD2F8(mLayer_0x4) || !fn_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
                 mBox.set(-8.0f, -9.0f, 8.0f, 6.0f);
                 u8 hit = fn_801F2740(-1);
                 if (hit & (1 << field_0x2b8)) {
@@ -480,7 +480,7 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
         break;
     case 4:
         if (mPos.z >= 30.0f) {
-            if (field_0x2ac != field_0x4) {
+            if (field_0x2ac != mLayer_0x4) {
                 fn_801BC554(7);
             } else {
                 mPos.z = 30.0f;
@@ -514,7 +514,7 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
     case 7:
         if (mPos.z >= 100.0f) {
             mPos.z = 100.0f;
-            field_0x4 = field_0x2ac;
+            mLayer_0x4 = field_0x2ac;
             mPos.x = field_0x2b0.x;
             mPos.y = field_0x2b0.y;
             JGeometry::TVec3f pos;
@@ -535,7 +535,7 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
         break;
     case 9:
         if (mStateTimer >= field_0x250) {
-            getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4, &mPos, 3, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
             fn_801BC554(10);
         }
         break;
@@ -556,15 +556,15 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
             }
         }
         if (flag) {
-            getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4, &mPos, 3, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
             fn_801BC554(9);
         } else {
-            field_0x98 = mParam.mTarget;
+            mDir_0x98 = mParam.mTarget;
             field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {
-                        field_0x98 = 2;
+                        mDir_0x98 = 2;
                         fn_801BC554(4);
                     }
                 }
@@ -576,38 +576,38 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
 }
 
 void cls_804A3E44::calcVelocity_0x88() {
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     switch (mState) {
     case 1:
     case 2:
-        field_0x3c.z = -0.7f;
+        mVel_0x3c.z = -0.7f;
         if (field_0x2b8 >= 0) {
             JGeometry::TVec2f d;
             fn_801D00B4(field_0x2b8, &d, 1.0f);
-            field_0x3c.x = d.x;
-            field_0x3c.y = d.y;
+            mVel_0x3c.x = d.x;
+            mVel_0x3c.y = d.y;
         }
         break;
     case 4:
-        field_0x3c.z = 0.3f;
+        mVel_0x3c.z = 0.3f;
         break;
     case 5:
-        field_0x3c.z = 0.5f;
+        mVel_0x3c.z = 0.5f;
         break;
     case 6: {
         JGeometry::TVec2f d;
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, 0.5f);
-        field_0x3c.x = d.x;
-        field_0x3c.y = d.y;
+        mVel_0x3c.x = d.x;
+        mVel_0x3c.y = d.y;
         break;
     }
     case 7:
-        field_0x3c.z = 0.3f;
+        mVel_0x3c.z = 0.3f;
         break;
     case 8:
-        field_0x3c.z = -0.5f;
+        mVel_0x3c.z = -0.5f;
         break;
     case 10:
         EnemyBase_804A4808::calcVelocity_0x88();
@@ -630,7 +630,7 @@ void cls_804A3E44::onDeath_0x78() {
 
 // FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
 u8 cls_804A3E44::checkHitByActor_0x60() {
-    if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f) {
+    if (!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f) {
         return fn_801CEA60();
     }
     return EnemyBase_804A4808::checkHitByActor_0x60();

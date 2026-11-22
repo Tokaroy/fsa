@@ -19,8 +19,8 @@ public:
     // How many tiles long the switch is (param bits 12-16; 0 means 1).
     s32 getLength() {
         s32 length = 1;
-        if ((field_0x90 >> 12) & 0x1F) {
-            length = (field_0x90 >> 12) & 0x1F;
+        if ((mSpawnParam_0x90 >> 12) & 0x1F) {
+            length = (mSpawnParam_0x90 >> 12) & 0x1F;
         }
         return length;
     }

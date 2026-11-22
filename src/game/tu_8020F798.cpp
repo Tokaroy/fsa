@@ -10,7 +10,7 @@
 
 void Thief_804A5A30::fn_8020FADC() {
     bool release = false;
-    if (fn_8022461C(&mPos, field_0x4) == 0x39) {
+    if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
         bool moving = false;
         if (field_0xc4 == 0 && mPos.z <= 0.0f) {
             if (__fabsf(mPos.x - mPrevPos.x) > 0.001f || __fabsf(mPos.y - mPrevPos.y) > 0.001f) {
@@ -20,7 +20,7 @@ void Thief_804A5A30::fn_8020FADC() {
         if (moving) {
             startSound_801F0E34(0x4007F, 0);
             if (mEmitter358 == NULL) {
-                mEmitter358 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4D2, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter358 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4D2, 0, 0, NULL, NULL, true, 1.0f);
             }
         } else {
             release = true;
@@ -49,7 +49,7 @@ void Thief_804A5A30::fn_8020F80C(s32 frame) {
     params.field_0x1c = 0;
     params.field_0x1d = 0;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 0, "kage_sob.bin", 0, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 0, "kage_sob.bin", 0, NULL);
     }
     s32 mode = 0;
     params.field_0x1f = 0;
@@ -73,16 +73,16 @@ void Thief_804A5A30::fn_8020F80C(s32 frame) {
         mode = 2;
         mPos.z -= lbl_8046A238[mType].mHeight;
     }
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    if (field_0x4 == 8) {
+    if (mLayer_0x4 == 8) {
         JGeometry::TVec3f pos;
         fn_801CD0D0(&mPos, &pos);
         fn_801EF574("enemy_both_sob.bin", frame, &pos, &params);
     }
-    fn_80307AC8(mSerial, field_0x4, &mPos, frame, false, mode, -1);
+    fn_80307AC8(mSerial, mLayer_0x4, &mPos, frame, false, mode, -1);
 }
 
 // The sprite is drawn at its own position and then put back.

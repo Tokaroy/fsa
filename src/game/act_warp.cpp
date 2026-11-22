@@ -59,7 +59,7 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
     return v | kind;
 }
 
-// 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
+// 0x80228B60. Decodes the spawn parameter (mSpawnParam_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
 // FIXME(shotgun): 99.24 %, scheduling+regalloc; behaviour clean.
@@ -70,60 +70,60 @@ void Warp_804A6DC8::init() {
     for (s32 i = 0; i < 4; i++) {
         field_0x27c[i] = NULL;
     }
-    s32 kind = field_0x90 & 0x7F;
+    s32 kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x20) {
         field_0x254 = 1;
     } else {
         field_0x254 = 0;
     }
-    s32 destLayer = warpLayer(field_0x90);
+    s32 destLayer = warpLayer(mSpawnParam_0x90);
     JGeometry::TBox2f* destBox = layerBox(destLayer);
     f32 destX = destBox->i.x;
     f32 destY = destBox->i.y;
-    s32 myLayer = field_0x4;
+    s32 myLayer = mLayer_0x4;
     JGeometry::TBox2f* myBox = layerBox(myLayer);
     f32 myX = myBox->i.x;
     f32 myY = myBox->i.y;
-    kind = field_0x90 & 0x7F;
-    if ((kind == 6 || kind == 4 || kind == 0x20 || kind == 0x24) && ((field_0x90 >> 13) & 0x1F8) == 0 &&
-        ((field_0x90 >> 5) & 0x1F8) == 0)
+    kind = mSpawnParam_0x90 & 0x7F;
+    if ((kind == 6 || kind == 4 || kind == 0x20 || kind == 0x24) && ((mSpawnParam_0x90 >> 13) & 0x1F8) == 0 &&
+        ((mSpawnParam_0x90 >> 5) & 0x1F8) == 0)
     {
         field_0x238.x = destX + (mPos.x - myX);
         field_0x238.y = destY + (mPos.y - myY);
         field_0x238.z = 0.0f;
     } else {
-        field_0x238.set((f32)((field_0x90 >> 13) & 0x1F8) + destX, (f32)((field_0x90 >> 5) & 0x1F8) + destY, 0.0f);
+        field_0x238.set((f32)((mSpawnParam_0x90 >> 13) & 0x1F8) + destX, (f32)((mSpawnParam_0x90 >> 5) & 0x1F8) + destY, 0.0f);
     }
-    s32 enc = layerCode(field_0x4);
-    kind = field_0x90 & 0x7F;
+    s32 enc = layerCode(mLayer_0x4);
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x19) {
-        u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 1);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
-        field_0x90 = field_0x90 & ~0xFF;
+        u32 param = pairParam(mSpawnParam_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(mSpawnParam_0x90), &field_0x238, param, -1, -1);
+        mSpawnParam_0x90 = mSpawnParam_0x90 & ~0xFF;
     } else if (kind == 0x1A) {
-        u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 3);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
-        field_0x90 = (field_0x90 & ~0xFF) | 2;
+        u32 param = pairParam(mSpawnParam_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 3);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(mSpawnParam_0x90), &field_0x238, param, -1, -1);
+        mSpawnParam_0x90 = (mSpawnParam_0x90 & ~0xFF) | 2;
     } else if (kind == 0x1B) {
-        u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x18);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
-        field_0x90 = (field_0x90 & ~0xFF) | 0x17;
+        u32 param = pairParam(mSpawnParam_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x18);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(mSpawnParam_0x90), &field_0x238, param, -1, -1);
+        mSpawnParam_0x90 = (mSpawnParam_0x90 & ~0xFF) | 0x17;
     } else if (kind == 0x1C) {
-        u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x17);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
-        field_0x90 = (field_0x90 & ~0xFF) | 0x18;
+        u32 param = pairParam(mSpawnParam_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x17);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(mSpawnParam_0x90), &field_0x238, param, -1, -1);
+        mSpawnParam_0x90 = (mSpawnParam_0x90 & ~0xFF) | 0x18;
     }
-    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0x20) {
+    if (((mSpawnParam_0x90 >> 7) & 1) == 0 && warpKind(mSpawnParam_0x90) != 0x20) {
         field_0x238.x += 8.0f;
         field_0x238.y += 8.0f;
     }
-    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0xB && warpKind(field_0x90) != 0x1E &&
-        warpKind(field_0x90) != 0x1F && warpKind(field_0x90) != 0x20)
+    if (((mSpawnParam_0x90 >> 7) & 1) == 0 && warpKind(mSpawnParam_0x90) != 0xB && warpKind(mSpawnParam_0x90) != 0x1E &&
+        warpKind(mSpawnParam_0x90) != 0x1F && warpKind(mSpawnParam_0x90) != 0x20)
     {
         mPos.x += (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
         mPos.y += (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
     }
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 6) {
         mBox.set(-0.01f, -0.01f, 0.01f, 0.01f);
     } else if (kind == 0xB) {
@@ -145,17 +145,17 @@ void Warp_804A6DC8::init() {
     } else if (kind == 0x16) {
         mBox.set(-24.0f, -8.0f, 24.0f, 8.0f);
     } else if (kind == 0x15) {
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
-        } else if (field_0x4 >= 8) {
+        } else if (mLayer_0x4 >= 8) {
             mBox.set(-4.0f, -4.0f, 4.0f, 20.0f);
         } else {
             mBox.set(-4.0f, -20.0f, 4.0f, 4.0f);
         }
     } else if (kind == 0x23) {
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
-        } else if (field_0x4 >= 8) {
+        } else if (mLayer_0x4 >= 8) {
             mBox.set(-4.0f, -20.0f, 4.0f, 4.0f);
         } else {
             mBox.set(-4.0f, -4.0f, 4.0f, 20.0f);
@@ -171,8 +171,8 @@ void Warp_804A6DC8::init() {
     } else {
         mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
     }
-    if (warpKind(field_0x90) == 0x28) {
-        field_0x90 = (field_0x90 & ~0x7F) | 4;
+    if (warpKind(mSpawnParam_0x90) == 0x28) {
+        mSpawnParam_0x90 = (mSpawnParam_0x90 & ~0x7F) | 4;
     }
     mLife = 0;
     field_0xb0 = 3;
@@ -181,18 +181,18 @@ void Warp_804A6DC8::init() {
     }
     mEmitter24c = NULL;
     mEmitter250 = NULL;
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0xE) {
-        mEmitter24c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x553, 0, -1, NULL, NULL, true, 1.0f);
-        mEmitter250 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EE, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x553, 0, -1, NULL, NULL, true, 1.0f);
+        mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4EE, 0, 0, NULL, NULL, true, 1.0f);
     }
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x25) {
-        mEmitter24c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x553, -1, -1, NULL, NULL, true, 1.0f);
-        mEmitter250 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EE, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x553, -1, -1, NULL, NULL, true, 1.0f);
+        mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4EE, 0, 0, NULL, NULL, true, 1.0f);
     }
-    field_0x244 = getGameView_802D6A9C()->field_0x14;
-    field_0x248 = getGameView_802D6A9C()->field_0x18;
+    field_0x244 = getGameView_802D6A9C()->mScreenX_0x14;
+    field_0x248 = getGameView_802D6A9C()->mScreenY_0x18;
     for (s32 i = 0; i < 4; i++) {
         field_0x258[i] = 0.0f;
         field_0x268[i] = 0.0f;
@@ -206,7 +206,7 @@ Warp_804A6DC8::~Warp_804A6DC8() {
 
 // Whether the bomb-flower rests: flagged, or its velocity is within 32 * FLT_EPSILON of field_0x364.
 static inline bool bomeAtRest(cls_804A0738* b) {
-    if (b->field_0x230 == 1 || epsilonEquals(b->field_0x3c, b->field_0x364, 32.0f * FLT_EPSILON)) {
+    if (b->field_0x230 == 1 || epsilonEquals(b->mVel_0x3c, b->field_0x364, 32.0f * FLT_EPSILON)) {
         return true;
     }
     return false;
@@ -250,16 +250,16 @@ void Warp_804A6DC8::update() {
     } else {
         field_0x278 = -1;
     }
-    s32 kind = field_0x90 & 0x7F;
+    s32 kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x20) {
         updateSandHole(this);
     }
-    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
+    if ((mSpawnParam_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     JGeometry::TBox2f box(mBox.i, mBox.f);
     JGeometry::TVec2f at(mPos.x, mPos.y);
-    u16 tile = fn_802265FC((const JGeometry::TVec3f*)&at, field_0x4);
+    u16 tile = fn_802265FC((const JGeometry::TVec3f*)&at, mLayer_0x4);
     if (tile == 1 || tile == 0x21) {
         return;
     }
@@ -275,14 +275,14 @@ void Warp_804A6DC8::update() {
         }
     }
     box.addPos(at);
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x20) {
         JGeometry::TBox2f arg = box;
         fn_80227530(&arg);
     } else if (kind == 0x24) {
         for (s32 i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(i)) {
-                if (getPlayerLayer_8023DE58(i) != warpLayer(field_0x90)) {
+                if (getPlayerLayer_8023DE58(i) != warpLayer(mSpawnParam_0x90)) {
                     continue;
                 }
             }
@@ -291,19 +291,19 @@ void Warp_804A6DC8::update() {
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
                 playerBox.addPos(JGeometry::TVec2f(0.0f, dy));
             }
-            if (fn_8023B0F4(i, &playerBox, field_0x4, false, 8.0f)) {
-                fn_802317F0(i, warpLayer(field_0x90), &mPos, &field_0x238, field_0x90 & 0x7F);
+            if (fn_8023B0F4(i, &playerBox, mLayer_0x4, false, 8.0f)) {
+                fn_802317F0(i, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, mSpawnParam_0x90 & 0x7F);
             }
         }
     } else {
         JGeometry::TBox2f arg = box;
         fn_802278A8(&arg);
     }
-    s32 destTile = fn_80226850(&field_0x238, warpLayer(field_0x90));
+    s32 destTile = fn_80226850(&field_0x238, warpLayer(mSpawnParam_0x90));
     if (destTile == 0x19C || destTile == 0x19D) {
         return;
     }
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     s32 serial;
     if (kind == 4 || kind == 0x20 || kind == 0x24) {
         serial = fn_801F26CC(lbl_8046AC2C);
@@ -319,35 +319,35 @@ void Warp_804A6DC8::update() {
     if (actor == NULL) {
         return;
     }
-    kind = field_0x90 & 0x7F;
+    kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0 || kind == 3 || kind == 0x15 || kind == 0x23) {
-        if (actor->field_0x3c.y >= 0.0f) {
+        if (actor->mVel_0x3c.y >= 0.0f) {
             return;
         }
     }
     if (kind == 1 || kind == 2) {
-        if (actor->field_0x3c.y <= 0.0f) {
+        if (actor->mVel_0x3c.y <= 0.0f) {
             return;
         }
     }
     if (kind == 0x17) {
-        if (actor->field_0x3c.x <= 0.0f) {
+        if (actor->mVel_0x3c.x <= 0.0f) {
             return;
         }
     }
     if (kind == 0x18) {
-        if (actor->field_0x3c.x >= 0.0f) {
+        if (actor->mVel_0x3c.x >= 0.0f) {
             return;
         }
     }
     if (actor->mActorId == 'BOME') {
         cls_804A0738* bome = static_cast<cls_804A0738*>(actor);
-        getPlayerLayer_8023DE58(bome->field_0x90 & 0xF);
+        getPlayerLayer_8023DE58(bome->mSpawnParam_0x90 & 0xF);
         // The original compares this result with 1 (cmplwi), the second one below with 0.
         if (bomeAtRest(bome) == true) {
             return;
         }
-        kind = field_0x90 & 0x7F;
+        kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 4 || kind == 0x20 || kind == 0x24) {
             if (!bomeAtRest(bome)) {
                 return;
@@ -356,10 +356,10 @@ void Warp_804A6DC8::update() {
     }
     u32 id = actor->mActorId;
     if (id == 'HBMB' || id == 'STON' || id == 'GRAS' || id == 'TUBO' || id == 'YASI') {
-        if (PSVECMag(&actor->field_0x3c) <= 1.0f) {
+        if (PSVECMag(&actor->mVel_0x3c) <= 1.0f) {
             return;
         }
-        kind = field_0x90 & 0x7F;
+        kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 4 || (u32)(kind - 7) <= 2 || kind == 0x12 || kind == 0x20 || kind == 0x24) {
             if (actor->mPos.z > 4.0f) {
                 return;
@@ -368,9 +368,9 @@ void Warp_804A6DC8::update() {
     }
     id = actor->mActorId;
     if (id == 'HNRY' || id == 'BOME' || id == 'PCDM' || id == 'SWBM' ||
-        (id == 'FIRE' && ((actor->field_0x90 >> 6) & 7) != 1))
+        (id == 'FIRE' && ((actor->mSpawnParam_0x90 >> 6) & 7) != 1))
     {
-        kind = field_0x90 & 0x7F;
+        kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 4 || kind == 0x20 || kind == 0x24) {
             if (actor->mPos.z > 0.0f) {
                 return;
@@ -381,30 +381,30 @@ void Warp_804A6DC8::update() {
         offset.x -= mPos.x;
         offset.y -= mPos.y;
         dest += offset;
-        actor->fn_801F349C(warpLayer(field_0x90), &dest);
+        actor->fn_801F349C(warpLayer(mSpawnParam_0x90), &dest);
         return;
     }
     if (actor->mActorId == 'ESRY') {
-        kind = field_0x90 & 0x7F;
+        kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 0 || kind == 3 || kind == 0x15 || kind == 0x23) {
-            actor->field_0x3c = JGeometry::TVec3f(0.0f, -1.8f, 0.0f);
+            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, -1.8f, 0.0f);
         } else if (kind == 1 || kind == 2) {
-            actor->field_0x3c = JGeometry::TVec3f(0.0f, 1.8f, 0.0f);
+            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 1.8f, 0.0f);
         } else if (kind == 0x17) {
-            actor->field_0x3c = JGeometry::TVec3f(1.8f, 0.0f, 0.0f);
+            actor->mVel_0x3c = JGeometry::TVec3f(1.8f, 0.0f, 0.0f);
         } else if (kind == 0x18) {
-            actor->field_0x3c = JGeometry::TVec3f(-1.8f, 0.0f, 0.0f);
+            actor->mVel_0x3c = JGeometry::TVec3f(-1.8f, 0.0f, 0.0f);
         }
     }
     if (actor->mActorId == 'FIRE') {
-        if (((actor->field_0x90 >> 6) & 3) == 1) {
+        if (((actor->mSpawnParam_0x90 >> 6) & 3) == 1) {
             return;
         }
         if (actor->field_0xc4) {
             return;
         }
     }
-    actor->fn_801F349C(warpLayer(field_0x90), &field_0x238);
+    actor->fn_801F349C(warpLayer(mSpawnParam_0x90), &field_0x238);
 }
 
 // 0x80227CE8.
@@ -414,7 +414,7 @@ void Warp_804A6DC8::draw() {
         0.0f, 0.7f,  1.4f,  0.7f,  0.0f, -0.6f, -1.2f, -0.6f,
         0.0f, 0.4f,  0.8f,  0.4f,  0.0f, -0.3f, -0.6f, -0.3f,
     };
-    s32 kind = field_0x90 & 0x7F;
+    s32 kind = mSpawnParam_0x90 & 0x7F;
     if (kind == 0x20 && field_0x255 == 0) {
         SpriteParams_801F5AE0 params;
         JGeometry::TVec3f saved = mPos;
@@ -430,7 +430,7 @@ void Warp_804A6DC8::draw() {
         params.field_0x1d = -2;
         params.field_0x10.a = 0xA0;
         params.field_0x2c = 0;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "sand2_smp.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(&mPos, res, &params);
         }
@@ -446,12 +446,12 @@ static void updateSandHole(Warp_804A6DC8* self) {
         if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
             JGeometry::TVec3f pos = *fn_8023A478(i);
             if (__fabsf(self->mPos.x - pos.x) < 64.0f && __fabsf(self->mPos.y - pos.y) < 64.0f) {
-                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->field_0x4, 0xC);
-                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->field_0x4, 0xC);
-                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->field_0x4, 0xC);
-                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->field_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->mLayer_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->mLayer_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->mLayer_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->mLayer_0x4, 0xC);
                 if (self->field_0x255 == 0) {
-                    spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(self->mLayer_0x4, &self->mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
                     self->field_0x255 = 1;
                 }
                 break;
@@ -473,32 +473,32 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             field_0x234[player] = 1;
             continue;
         }
-        s32 kind = field_0x90 & 0x7F;
+        s32 kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 0x10) {
             return;
         }
         if (fn_8022F514(player)) {
-            kind = field_0x90 & 0x7F;
+            kind = mSpawnParam_0x90 & 0x7F;
             if (kind == 0 || (u32)(kind - 1) <= 2 || kind == 0x17 || kind == 0x18) {
-                if (fn_8023B0F4(player, box, field_0x4, false, 8.0f)) {
+                if (fn_8023B0F4(player, box, mLayer_0x4, false, 8.0f)) {
                     fn_802381B8(player);
                 }
             }
         }
-        kind = field_0x90 & 0x7F;
+        kind = mSpawnParam_0x90 & 0x7F;
         if (kind == 0x13) {
             if (!fn_80234E30(player)) {
                 continue;
             }
         }
         if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(player)) {
-            if (getPlayerLayer_8023DE58(player) != warpLayer(field_0x90)) {
+            if (getPlayerLayer_8023DE58(player) != warpLayer(mSpawnParam_0x90)) {
                 continue;
             }
         }
-        if (fn_8023B0F4(player, box, field_0x4, false, 8.0f)) {
-            kind = field_0x90 & 0x7F;
-            if ((kind == 0x15 || kind == 0x23) && viewLayerFlag(field_0x4)) {
+        if (fn_8023B0F4(player, box, mLayer_0x4, false, 8.0f)) {
+            kind = mSpawnParam_0x90 & 0x7F;
+            if ((kind == 0x15 || kind == 0x23) && viewLayerFlag(mLayer_0x4)) {
                 if (!fn_8022C5EC(player, 8) && !fn_8022C5EC(player, 4) && !fn_8022C46C(player, 8) &&
                     !fn_8022C46C(player, 4))
                 {
@@ -516,19 +516,19 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (fn_8022F478(player) && warpKind(field_0x90) != 4) {
+            if (fn_8022F478(player) && warpKind(mSpawnParam_0x90) != 4) {
                 continue;
             }
-            kind = field_0x90 & 0x7F;
+            kind = mSpawnParam_0x90 & 0x7F;
             if (kind == 4 || kind == 0x20 || kind == 0x24) {
                 if (fn_802373EC(player) == 1 && fn_8023725C(player) >= 2 && fn_8023513C(player)) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
+            if (!fn_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
                 continue;
             }
-            if (warpKind(field_0x90) != 4 || !fn_8022F514(player)) {
+            if (warpKind(mSpawnParam_0x90) != 4 || !fn_8022F514(player)) {
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(player);
@@ -545,7 +545,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             fn_802348C4(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player));
         } else {
             box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
-            if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
+            if (!fn_8023B0F4(player, box, mLayer_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
         }
@@ -561,11 +561,11 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
         box->set(mBox);
         box->set(box->i.x + mPos.x, box->i.y + mPos.y, box->f.x + mPos.x, box->f.y + mPos.y);
         if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(player)) {
-            if (getPlayerLayer_8023DE58(player) != warpLayer(field_0x90)) {
+            if (getPlayerLayer_8023DE58(player) != warpLayer(mSpawnParam_0x90)) {
                 continue;
             }
         }
-        if (fn_8023B0F4(player, box, field_0x4, false, 8.0f)) {
+        if (fn_8023B0F4(player, box, mLayer_0x4, false, 8.0f)) {
             if (field_0x234[player] == 1) {
                 continue;
             }
@@ -579,27 +579,27 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
+            if (!fn_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
                 continue;
             }
             if (field_0x254 != 1) {
                 continue;
             }
             JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-            gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
+            gBgRewrite_8053AC98->fn_802A3948(&p0, player, mLayer_0x4, 0xC);
             JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-            gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
+            gBgRewrite_8053AC98->fn_802A3948(&p1, player, mLayer_0x4, 0xC);
             JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-            gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
+            gBgRewrite_8053AC98->fn_802A3948(&p2, player, mLayer_0x4, 0xC);
             JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-            gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
+            gBgRewrite_8053AC98->fn_802A3948(&p3, player, mLayer_0x4, 0xC);
             if (field_0x255 == 0) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
                 field_0x255 = 1;
             }
         } else {
             box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
-            if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
+            if (!fn_8023B0F4(player, box, mLayer_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
         }
@@ -611,11 +611,11 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
 // FIXME(shotgun): 88.30 %, different; behaviour clean.
 s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
     s32 found = -1;
-    u8 anyZ = viewLayerFlag(field_0x4);
+    u8 anyZ = viewLayerFlag(mLayer_0x4);
     s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
-        if (other == NULL || !other->mAlive || other->field_0x4 != field_0x4 || excludeSerial == other->mSerial) {
+        if (other == NULL || !other->mAlive || other->mLayer_0x4 != mLayer_0x4 || excludeSerial == other->mSerial) {
             continue;
         }
         if (!anyZ && __fabsf(mPos.z - other->mPos.z) > maxDz) {
@@ -654,7 +654,7 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
         field_0x27c[player] = NULL;
         return;
     }
-    if (field_0x27c[player]->field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
+    if (field_0x27c[player]->mVel_0x3c.squared() <= 32.0f * FLT_EPSILON) {
         return;
     }
     if (!(field_0x27c[player]->mPos.z < 4.0f)) {
@@ -673,7 +673,7 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
         gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f), player, getField_0x4(), 0xC);
         gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f), player, getField_0x4(), 0xC);
         if (field_0x255 == 0) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
             field_0x255 = 1;
         }
     }

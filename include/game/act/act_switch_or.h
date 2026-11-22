@@ -16,7 +16,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;   // 0 idle, 1 active
-    /* 0x234 */ s32 mCount;   // number of switch slots (field_0x90 & 0x1F)
+    /* 0x234 */ s32 mCount;   // number of switch slots (mSpawnParam_0x90 & 0x1F)
 }; // Size: 0x238
 
 #endif

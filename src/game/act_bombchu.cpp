@@ -13,25 +13,25 @@
 // Frames to hold each blast frame (indexed by field_0x250).
 static s32 lbl_804AB440[9] = {4, 4, 2, 2, 4, 4, 4, 4, 4};
 
-// The kind: the low four bits of field_0x90 (init keeps only them; every test
+// The kind: the low four bits of mSpawnParam_0x90 (init keeps only them; every test
 // masks again, clrlwi 28).
 inline s32 Bombchu_804AB464::kind() const {
-    return field_0x90 & 0xF;
+    return mSpawnParam_0x90 & 0xF;
 }
 
 // The players caught in the blast (a bit per player). Inlined in vfunc_0x54
 // and in three update states (the same call pair each time).
 inline s32 Bombchu_804AB464::hitPlayers() {
     if (gGameRoot_8053AAF8->field_0x7f == 0 || kind() == 4 || kind() == 3) {
-        return fn_801F2B7C(field_0x114, -1, 1);
+        return fn_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
     return fn_801F2B7C(0, -1, 1);
 }
 
 void Bombchu_804AB464::init() {
-    field_0x26c = (field_0x90 >> 16) & 3;
+    field_0x26c = (mSpawnParam_0x90 >> 16) & 3;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-7.0f, -4.0f, 7.0f, 7.0f);
+    mMapBox_0x80.set(-7.0f, -4.0f, 7.0f, 7.0f);
     field_0x250 = 0;
     field_0x254 = 0;
     field_0x258 = 0;
@@ -45,15 +45,15 @@ void Bombchu_804AB464::init() {
     field_0x248 = 0;
     field_0x24c = 0;
     mLife = 2;
-    field_0x118 = 2;
-    field_0x114 = 2;
+    mParamAtcn_0x118 = 2;
+    mParamAtcp_0x114 = 2;
     field_0x280 = 1.0f;
     field_0x27c = 0.0f;
-    field_0x278 = (field_0x90 >> 4) & 1;
+    field_0x278 = (mSpawnParam_0x90 >> 4) & 1;
     field_0x268 = 0;
     field_0xb0 = 0x53308;
-    field_0x270 = (field_0x90 >> 8) & 0xF;
-    field_0x90 = field_0x90 & 0xF;
+    field_0x270 = (mSpawnParam_0x90 >> 8) & 0xF;
+    mSpawnParam_0x90 = mSpawnParam_0x90 & 0xF;
     field_0x264 = -1;
     field_0x274 = 0;
     field_0x275 = 1;
@@ -66,9 +66,9 @@ void Bombchu_804AB464::init() {
     }
     switch (kind()) {
     case 0:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x23c = 300;
         field_0x230 = 0;
         field_0xb0 = 0x73308;
@@ -92,9 +92,9 @@ void Bombchu_804AB464::init() {
         field_0x230 = 2;
         field_0xb0 = 0x73308;
         s16 angle = 65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        field_0x3c.x = speed * JMath::sincosTable_.sinShort(angle);
-        field_0x3c.y = speed * JMath::sincosTable_.cosShort(angle);
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = speed * JMath::sincosTable_.sinShort(angle);
+        mVel_0x3c.y = speed * JMath::sincosTable_.cosShort(angle);
+        mVel_0x3c.z = 0.0f;
         field_0x275 = 0;
         break;
     }
@@ -107,17 +107,17 @@ void Bombchu_804AB464::init() {
         f32 coin = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         field_0x277 = 0;
         if ((s32)(2.0f * coin) != 0) {
-            field_0x3c.x = speed;
+            mVel_0x3c.x = speed;
         } else {
-            field_0x3c.x = -speed;
+            mVel_0x3c.x = -speed;
         }
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x275 = 0;
         break;
     case 5:
         field_0x23c = 300;
-        field_0x90 = 0;
+        mSpawnParam_0x90 = 0;
         field_0x230 = 2;
         field_0xb0 = 0x73308;
         fn_8023061C(field_0x26c, false);
@@ -131,13 +131,13 @@ void Bombchu_804AB464::init() {
 }
 
 void Bombchu_804AB464::vfunc_0x54() {
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     mPos.z = 0.0f;
     field_0xb0 = 0;
     mBox.set(-16.0f, -16.0f, 16.0f, 16.0f);
-    getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
+    getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
     gGameRoot_8053AAF8->fn_80134DE4(1, 0);
     s32 hit = hitPlayers();
     field_0x250 = 0;
@@ -150,16 +150,16 @@ void Bombchu_804AB464::vfunc_0x54() {
             }
         }
     }
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x59, 1, 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x5A, 1, 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 1, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 1, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30001, 0);
-    s32 code = fn_8022461C(&mPos, field_0x4);
+    s32 code = fn_8022461C(&mPos, mLayer_0x4);
     if (code == 0x39 || code == 0xD || code == 0x3B) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F3, -1, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F4, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F5, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F6, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F3, -1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F4, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F5, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F6, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30022, 0);
     }
 }
@@ -167,7 +167,7 @@ void Bombchu_804AB464::vfunc_0x54() {
 void Bombchu_804AB464::vfunc_0x48() {
     vfunc_0x54();
     JGeometry::TVec3f result;
-    gBgRewrite_8053AC98->fn_8029EDB8(&mPos, 0, field_0x4, &result);
+    gBgRewrite_8053AC98->fn_8029EDB8(&mPos, 0, mLayer_0x4, &result);
     field_0x230 = 3;
 }
 
@@ -188,7 +188,7 @@ void Bombchu_804AB464::update() {
     if (field_0xc4) {
         field_0x260 = 0;
         mPos.set(*fn_8023E7B0(field_0xc8));
-        field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+        mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
         field_0x264 = field_0xc8;
     } else {
         fn_8032506C();
@@ -198,29 +198,29 @@ void Bombchu_804AB464::update() {
     }
     switch (field_0x230) {
     case 0:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         mPos.z = 0.0f;
         for (i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80239C00(i, &box, field_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
+            if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
                 field_0x258 = 0;
                 field_0x230 = 2;
             }
         }
         break;
     case 2:
-        if (!viewLayerFlag(field_0x4)) {
+        if (!viewLayerFlag(mLayer_0x4)) {
             if (!field_0xc4) {
                 if (field_0x260 == 0) {
                     field_0x248 = 30;
                     field_0x260 = 1;
                 }
                 if (field_0x260 == 1) {
-                    field_0x3c.z += -0.15f;
+                    mVel_0x3c.z += -0.15f;
                 }
             }
-            if (mPos.z < 0.0f && field_0x3c.z < 0.0f) {
+            if (mPos.z < 0.0f && mVel_0x3c.z < 0.0f) {
                 mPos.z = 0.0f;
             }
             if (mPos.z == 0.0f && field_0x248 <= 0) {
@@ -242,7 +242,7 @@ void Bombchu_804AB464::update() {
                 field_0x248 = 10;
                 mPos.y -= mPos.z;
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
                 field_0x260 = 1;
             }
             faceMoveDirection();
@@ -260,9 +260,9 @@ void Bombchu_804AB464::update() {
         }
         break;
     case 3: {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         s32 hit = hitPlayers();
         fn_801F2B20(5);
         if (hit > 0) {
@@ -334,7 +334,7 @@ void Bombchu_804AB464::draw() {
     bool held = false;
     s32 flags = 7;
     if (mPos.z == 0.0f) {
-        s32 code = fn_8022461C(&mPos, field_0x4);
+        s32 code = fn_8022461C(&mPos, mLayer_0x4);
         if (code == 0x39) {
             flags = 0;
         }
@@ -367,9 +367,9 @@ void Bombchu_804AB464::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x8C, &params, flags, 1.0f, 1.0f);
     }
     if (field_0x230 != 3) {
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x8C, 0, 2, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x8C, 0, 2, -1, false, 0, 0);
     } else {
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0xE8, 0, 2, -1, held, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0xE8, 0, 2, -1, held, 0, 0);
     }
 }
 
@@ -409,25 +409,25 @@ bool Bombchu_804AB464::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 void Bombchu_804AB464::fn_8032506C() {
-    if (!viewLayerFlag(field_0x4)) {
+    if (!viewLayerFlag(mLayer_0x4)) {
         JGeometry::TVec3f wall;
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         if (fn_801F2618(&wall, false) == 1) {
             if (wall.x != 0.0f) {
                 if (field_0x275) {
-                    field_0x3c.x *= -0.7;
-                    field_0x3c.y = -field_0x3c.x;
+                    mVel_0x3c.x *= -0.7;
+                    mVel_0x3c.y = -mVel_0x3c.x;
                     field_0x275 = 0;
                 } else {
-                    field_0x3c.x = -field_0x3c.x;
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 }
             } else {
                 if (field_0x275) {
-                    field_0x3c.y *= -0.7;
-                    field_0x3c.x = field_0x3c.y;
+                    mVel_0x3c.y *= -0.7;
+                    mVel_0x3c.x = mVel_0x3c.y;
                     field_0x275 = 0;
                 } else {
-                    field_0x3c.y = -field_0x3c.y;
+                    mVel_0x3c.y = -mVel_0x3c.y;
                 }
             }
         }
@@ -435,38 +435,38 @@ void Bombchu_804AB464::fn_8032506C() {
         if (field_0x260 != 1) {
             return;
         }
-        mPos += JGeometry::TVec3f(field_0x3c.x, 0.0f, 0.0f);
+        mPos += JGeometry::TVec3f(mVel_0x3c.x, 0.0f, 0.0f);
         if (fn_801F2618(NULL, false)) {
             if (field_0x234 > 0.0f) {
-                if (field_0x3c.x > 0.0f) {
-                    field_0x3c.x = -field_0x3c.x;
+                if (mVel_0x3c.x > 0.0f) {
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 } else {
                     field_0x234 = -field_0x234;
                 }
             } else {
-                if (field_0x3c.x > 0.0f) {
+                if (mVel_0x3c.x > 0.0f) {
                     field_0x234 = -field_0x234;
                 } else {
-                    field_0x3c.x = -field_0x3c.x;
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 }
             }
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             field_0x276 = 0;
         }
         if (field_0x276 == 1) {
-            field_0x3c.y += field_0x234;
-            mPos += JGeometry::TVec3f(0.0f, field_0x3c.y, 0.0f);
+            mVel_0x3c.y += field_0x234;
+            mPos += JGeometry::TVec3f(0.0f, mVel_0x3c.y, 0.0f);
             if (fn_801F2618(NULL, false)) {
-                field_0x3c.y = 0.0f;
+                mVel_0x3c.y = 0.0f;
                 field_0x277 = 0;
                 return;
             }
             if (field_0x24c <= 0 && !field_0x277) {
-                if (field_0x3c.x < 0.0f) {
+                if (mVel_0x3c.x < 0.0f) {
                     if (field_0x234 > 0.0f) {
-                        field_0x3c.x = -field_0x3c.x;
+                        mVel_0x3c.x = -mVel_0x3c.x;
                     }
-                    field_0x3c.y = -0.0f;
+                    mVel_0x3c.y = -0.0f;
                     if (field_0x270 == 1) {
                         field_0x234 = 1.25f;
                     } else {
@@ -474,9 +474,9 @@ void Bombchu_804AB464::fn_8032506C() {
                     }
                 } else {
                     if (field_0x234 < 0.0f) {
-                        field_0x3c.x = -field_0x3c.x;
+                        mVel_0x3c.x = -mVel_0x3c.x;
                     }
-                    field_0x3c.y = 0.0f;
+                    mVel_0x3c.y = 0.0f;
                     if (field_0x270 == 1) {
                         field_0x234 = -1.25f;
                     } else {
@@ -490,36 +490,36 @@ void Bombchu_804AB464::fn_8032506C() {
         if (field_0x260 != 1) {
             return;
         }
-        mPos += JGeometry::TVec3f(0.0f, field_0x3c.x, 0.0f);
+        mPos += JGeometry::TVec3f(0.0f, mVel_0x3c.x, 0.0f);
         if (fn_801F2618(NULL, false)) {
             if (field_0x234 > 0.0f) {
-                if (field_0x3c.x > 0.0f) {
-                    field_0x3c.x = -field_0x3c.x;
+                if (mVel_0x3c.x > 0.0f) {
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 } else {
                     field_0x234 = -field_0x234;
                 }
             } else {
-                if (field_0x3c.x > 0.0f) {
+                if (mVel_0x3c.x > 0.0f) {
                     field_0x234 = -field_0x234;
                 } else {
-                    field_0x3c.x = -field_0x3c.x;
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 }
             }
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             field_0x276 = 1;
         }
         if (field_0x276 == 0) {
-            field_0x3c.y += field_0x234;
-            mPos += JGeometry::TVec3f(field_0x3c.y, 0.0f, 0.0f);
+            mVel_0x3c.y += field_0x234;
+            mPos += JGeometry::TVec3f(mVel_0x3c.y, 0.0f, 0.0f);
             if (fn_801F2618(NULL, false)) {
-                field_0x3c.y = 0.0f;
+                mVel_0x3c.y = 0.0f;
                 return;
             }
-            if (field_0x3c.x < 0.0f) {
+            if (mVel_0x3c.x < 0.0f) {
                 if (field_0x234 > 0.0f) {
-                    field_0x3c.x = -field_0x3c.x;
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 }
-                field_0x3c.y = 0.0f;
+                mVel_0x3c.y = 0.0f;
                 if (field_0x270 == 1) {
                     field_0x234 = 1.25f;
                 } else {
@@ -527,9 +527,9 @@ void Bombchu_804AB464::fn_8032506C() {
                 }
             } else {
                 if (field_0x234 < 0.0f) {
-                    field_0x3c.x = -field_0x3c.x;
+                    mVel_0x3c.x = -mVel_0x3c.x;
                 }
-                field_0x3c.y = 0.0f;
+                mVel_0x3c.y = 0.0f;
                 if (field_0x270 == 1) {
                     field_0x234 = -1.25f;
                 } else {

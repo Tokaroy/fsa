@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x230 */ u32 field_0x230;   // state: a switch in update(), 0 / 5 / 8 set by init()
     /* 0x234 */ u8 field_0x234[4]; // not yet known
-    /* 0x238 */ s32 field_0x238;   // kind: field_0x90 & 0x3F in init(); 0 and 3 share a path
+    /* 0x238 */ s32 field_0x238;   // kind: mSpawnParam_0x90 & 0x3F in init(); 0 and 3 share a path
     /* 0x23C */ s32 field_0x23c;   // 0 from init(); update() stores a float-to-int value here
     /* 0x240 */ u8 field_0x240[4]; // not yet known
 }; // Size: 0x244

@@ -28,14 +28,14 @@ extern const s32 lbl_804ABCA0[4][4]; // sprite frame offsets by animation step (
 
 // 0x8033E188.
 void StrangeBlock_804AC2D8::init() {
-    field_0x25c = (field_0x90 >> 12) & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 12) & 0xF;
     switch (field_0x25c) {
     case 0:
     case 1:
     case 5:
         mPos.add(JGeometry::TVec3f(0.0f, 8.0f, 0.0f));
         mBox.set(-15.0f, -23.0f, 15.0f, 7.0f);
-        field_0x80.set(-15.0f, -23.0f, 15.0f, 7.0f);
+        mMapBox_0x80.set(-15.0f, -23.0f, 15.0f, 7.0f);
         field_0x1a4 = 2;
         field_0x260 = 2;
         break;
@@ -44,19 +44,19 @@ void StrangeBlock_804AC2D8::init() {
     case 6:
         mPos.add(JGeometry::TVec3f(0.0f, 16.0f, 0.0f));
         mBox.set(-31.0f, -47.0f, 31.0f, 15.0f);
-        field_0x80.set(-31.0f, -47.0f, 31.0f, 15.0f);
+        mMapBox_0x80.set(-31.0f, -47.0f, 31.0f, 15.0f);
         field_0x1a4 = 4;
         field_0x260 = 4;
         break;
     case 4:
         mBox.set(-31.0f, -31.0f, 31.0f, 31.0f);
-        field_0x80.set(-31.0f, -31.0f, 31.0f, 31.0f);
+        mMapBox_0x80.set(-31.0f, -31.0f, 31.0f, 31.0f);
         field_0x1a4 = 4;
         field_0x260 = 4;
         break;
     }
     mSpawnPos = mPos;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x244 = 0;
     field_0x248 = 0;
     field_0xb8 = 2;
@@ -66,9 +66,9 @@ void StrangeBlock_804AC2D8::init() {
     field_0x254 = 2;
     field_0x258 = -1;
     field_0x272 = 0;
-    field_0x268 = (field_0x90 & 0xFFF) + 0x12B;
+    field_0x268 = (mSpawnParam_0x90 & 0xFFF) + 0x12B;
     field_0x265 = 0;
-    field_0x264 = (field_0x90 >> 17) & 1;
+    field_0x264 = (mSpawnParam_0x90 >> 17) & 1;
     if (field_0x264 == 0) {
         if (fn_8028D4DC(&mPos, field_0x260 - 1, field_0x16c)) {
             field_0x265 = 1;
@@ -92,11 +92,11 @@ inline void StrangeBlock_804AC2D8::checkTalk() {
     talkBox.f.x += mPos.x;
     talkBox.f.y += mPos.y;
     if (field_0x25c == 0 || field_0x25c == 2) {
-        fn_8022FEB8(&talkBox, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&talkBox, mLayer_0x4, mSerial, true, false);
         field_0x258 = fn_8022FD8C(mSerial);
         if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
             fn_802300EC(field_0x258)) {
-            if (fn_8038C678(field_0x258, field_0x268, mSerial, field_0x4, mPos, 0)) {
+            if (fn_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
                 field_0x234 = 1;
                 field_0x254 = fn_80230CFC(field_0x258);
                 field_0x254 = field_0x254 ^ 1;
@@ -114,7 +114,7 @@ void StrangeBlock_804AC2D8::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if (field_0x25c != 0 && field_0x25c != 2) {
         fn_8020D58C()->addBox(mSerial);
     }
@@ -141,15 +141,15 @@ void StrangeBlock_804AC2D8::update() {
                 mPos.y = fn_8033D4AC(mPos.y, field_0x238.y, reach);
             }
             field_0x238 = mPos;
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
             field_0x272 = 0;
             mPrevPos = mPos;
             if (field_0x230 != NULL) {
                 releaseEmitter_801EE434(field_0x230);
             }
-            if (!((field_0x90 >> 16) & 1) &&
+            if (!((mSpawnParam_0x90 >> 16) & 1) &&
                 PSVECDistance(&mPos, &mSpawnPos) >= (f32)(field_0x260 << 4) - 0.1f) {
                 field_0x244 = -1;
                 setScreenFlag_0x30(0xFF, true);
@@ -163,11 +163,11 @@ void StrangeBlock_804AC2D8::update() {
         } else if (field_0x265) {
             checkTalk();
         } else {
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
             if (field_0x244 > 0) {
                 field_0x244--;
             } else if (field_0x244 == 0) {
-                if (field_0x3c.isZero()) {
+                if (mVel_0x3c.isZero()) {
                     fn_8033D4CC();
                 } else if (!blockedAtFullReach(reach)) {
                     field_0x244 = 8;
@@ -182,7 +182,7 @@ void StrangeBlock_804AC2D8::update() {
         break;
     }
     case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x258, mSerial)) {
             field_0x234 = 0;
             field_0x254 = 2;
@@ -236,19 +236,19 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
                 case 0:
                 case 1:
                 case 5:
-                    field_0x3c.x = lbl_804AC2A8[dir * 3];
-                    field_0x3c.y = lbl_804AC2A8[dir * 3 + 1];
-                    field_0x3c.z = lbl_804AC2A8[dir * 3 + 2];
-                    field_0x3c.scale(0.7f);
+                    mVel_0x3c.x = lbl_804AC2A8[dir * 3];
+                    mVel_0x3c.y = lbl_804AC2A8[dir * 3 + 1];
+                    mVel_0x3c.z = lbl_804AC2A8[dir * 3 + 2];
+                    mVel_0x3c.scale(0.7f);
                     break;
                 case 2:
                 case 3:
                 case 4:
                 case 6:
-                    field_0x3c.x = lbl_804AC2A8[dir * 3];
-                    field_0x3c.y = lbl_804AC2A8[dir * 3 + 1];
-                    field_0x3c.z = lbl_804AC2A8[dir * 3 + 2];
-                    field_0x3c.scale(0.4f);
+                    mVel_0x3c.x = lbl_804AC2A8[dir * 3];
+                    mVel_0x3c.y = lbl_804AC2A8[dir * 3 + 1];
+                    mVel_0x3c.z = lbl_804AC2A8[dir * 3 + 2];
+                    mVel_0x3c.scale(0.4f);
                     break;
                 }
                 if (field_0x271 == 1) {
@@ -263,19 +263,19 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             }
             if (field_0x25c == 4) {
                 if (dir == 0) {
-                    field_0x230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31A, 1, 1, NULL, NULL, true, 1.0f);
+                    field_0x230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31A, 1, 1, NULL, NULL, true, 1.0f);
                 } else if (dir == 1) {
-                    field_0x230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31B, 1, 1, NULL, NULL, true, 1.0f);
+                    field_0x230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31B, 1, 1, NULL, NULL, true, 1.0f);
                 } else if (dir == 2) {
-                    field_0x230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31C, 1, 1, NULL, NULL, true, 1.0f);
+                    field_0x230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31C, 1, 1, NULL, NULL, true, 1.0f);
                 } else {
-                    field_0x230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
+                    field_0x230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
                 }
             }
         }
-    } else if (((field_0x90 >> 16) & 1) && PSVECDistance(&mPos, &mSpawnPos) > 1.0f) {
+    } else if (((mSpawnParam_0x90 >> 16) & 1) && PSVECDistance(&mPos, &mSpawnPos) > 1.0f) {
         if (field_0x248 == 0) {
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             f32 speed;
             switch (field_0x25c) {
             case 0:
@@ -291,13 +291,13 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
                 break;
             }
             if (mPos.x > mSpawnPos.x) {
-                field_0x3c.x = -speed;
+                mVel_0x3c.x = -speed;
             } else if (mPos.x < mSpawnPos.x) {
-                field_0x3c.x = speed;
+                mVel_0x3c.x = speed;
             } else if (mPos.y > mSpawnPos.y) {
-                field_0x3c.y = -speed;
+                mVel_0x3c.y = -speed;
             } else if (mPos.y < mSpawnPos.y) {
-                field_0x3c.y = speed;
+                mVel_0x3c.y = speed;
             }
             field_0x238.x = mPos.x;
             field_0x238.y = mPos.y;
@@ -313,10 +313,10 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (field_0x25c == 0 || field_0x25c == 2) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x258 = fn_8022FD8C(mSerial);
             if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f && fn_802300EC(field_0x258)) {
-                if (fn_8038C678(field_0x258, field_0x268, mSerial, field_0x4, mPos, 0)) {
+                if (fn_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
                     field_0x234 = 1;
                     field_0x254 = fn_80230CFC(field_0x258);
                     field_0x254 = field_0x254 ^ 1;
@@ -338,15 +338,15 @@ f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
 // A plain function that update inlines and whose own copy the linker dropped: the original's
 // .sdata2 has its literals (19.9f, 8f) ahead of fn_8033D4AC's, so it was generated before it
 // (tools/pool.py). False when a size-2 block at its full reach, 8 or more away from where it
-// started, cannot go on in its direction; otherwise puts field_0x3c back and returns true.
+// started, cannot go on in its direction; otherwise puts mVel_0x3c back and returns true.
 bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
-    JGeometry::TVec3f saved = field_0x3c;
+    JGeometry::TVec3f saved = mVel_0x3c;
     if (field_0x260 == 2 && reach == 19.9f &&
         PSVECDistance(&mPos, (const Vec*)&field_0x238) >= 8.0f && field_0x26c != 0 &&
         !fn_8033D264(field_0x26c - 1)) {
         return false;
     }
-    field_0x3c = saved;
+    mVel_0x3c = saved;
     return true;
 }
 
@@ -355,8 +355,8 @@ bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
 bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     bool movable = false;
     JGeometry::TVec3f savedPos = mPos;
-    field_0x3c.set(lbl_80471E28[dir].x, lbl_80471E28[dir].y, lbl_80471E28[dir].z);
-    mPos.add(field_0x3c);
+    mVel_0x3c.set(lbl_80471E28[dir].x, lbl_80471E28[dir].y, lbl_80471E28[dir].z);
+    mPos.add(mVel_0x3c);
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&out, false)) {
         switch (dir) {
@@ -392,7 +392,7 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
+            if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
                 if (fn_8022CAF8(i) != 5 || !fn_8022F478(i)) {
                     if (fn_80238CB4(i) != getSerial()) {
                         movable = false;
@@ -402,7 +402,7 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
         }
     }
     mPos = savedPos;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     return movable;
 }
 
@@ -426,7 +426,7 @@ void StrangeBlock_804AC2D8::draw() {
             name = "enemy_both2_sob.bin";
         }
         drawSprite_801F06F0(name, frame, NULL, 3, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
         break;
     }
     case 2:
@@ -455,7 +455,7 @@ void StrangeBlock_804AC2D8::draw() {
         }
         JGeometry::TVec3f saved = mPos;
         mPos += JGeometry::TVec3f(0.0f, -16.0f, 0.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, frame2, 0, 2, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame2, 0, 2, -1, false, 0, 0);
         mPos = saved;
         break;
     }
@@ -474,7 +474,7 @@ void StrangeBlock_804AC2D8::draw() {
         mtx[2][2] = 2.0f;
         params.mMtx = mtx;
         drawSprite_801F06F0("enemy_both2_sob.bin", 0x1C1, &params, 3, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, 0x1C1, 1, 2, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x1C1, 1, 2, -1, false, 0, 0);
         break;
     }
     case 4: {

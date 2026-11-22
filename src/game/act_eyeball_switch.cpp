@@ -15,14 +15,14 @@ static const s32 lbl_80475138[4] = {0x16, 0x11, 0xC, 7};
 void EyeballSwitch_804AE678::init() {
     mPos.x += 8.0f;
     mPos.y += 8.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     mBox.set(-8.5f, -8.5f, 8.5f, 8.5f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x250 = -1;
-    field_0x24c = field_0x90 & 0xFFF;
-    field_0x23c = (field_0x90 >> 12) & 7;
-    field_0x248 = field_0x90 >> 27;
-    field_0x240 = (field_0x90 >> 25) & 3;
+    field_0x24c = mSpawnParam_0x90 & 0xFFF;
+    field_0x23c = (mSpawnParam_0x90 >> 12) & 7;
+    field_0x248 = mSpawnParam_0x90 >> 27;
+    field_0x240 = (mSpawnParam_0x90 >> 25) & 3;
     field_0x238 = 0;
     setScreenFlag_0x30(0xFF, false);
     field_0x244 = false;
@@ -45,7 +45,7 @@ void EyeballSwitch_804AE678::init() {
     }
     if (active == 1) {
         if (field_0x23c >= 3 && getGameView_802D6A9C()->fn_802D7888(field_0x248) == true) {
-            gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
+            gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x35);
             setScreenFlag_0x30(0xFF, true);
             if (field_0x23c == 4) {
                 field_0x234 = 2;
@@ -53,10 +53,10 @@ void EyeballSwitch_804AE678::init() {
                 field_0x244 = true;
             }
         } else {
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
+            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xAC);
         }
     } else {
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x35);
         setScreenFlag_0x30(0xFF, true);
         field_0x234 = 2;
         field_0x244 = true;
@@ -74,12 +74,12 @@ void EyeballSwitch_804AE678::vfunc_0x10() {
         if (monitor != NULL && (monitor->mActorId == ACTOR_SWT4 || monitor->mActorId == ACTOR_LOSW) &&
             field_0x170 == monitor->field_0x170)
         {
-            u32 params = monitor->field_0x90;
+            u32 params = monitor->mSpawnParam_0x90;
             for (s32 j = 0; j < 4; j++) {
                 if (field_0x248 == ((params >> lbl_80475138[j]) & 0x1F)) {
                     field_0x254 = params >> 27;
                     if (getGameView_802D6A9C()->fn_802D800C(field_0x254)) {
-                        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
+                        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x35);
                         field_0x234 = 2;
                         break;
                     }
@@ -103,7 +103,7 @@ void EyeballSwitch_804AE678::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
     JGeometry::TBox2f box(mBox);
     box.addPos(p);
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     fn_8020D58C()->addBox(mSerial);
     s32 arrow = field_0x250;
     if (arrow != -1) {
@@ -118,7 +118,7 @@ void EyeballSwitch_804AE678::update() {
         if (field_0x238 != 0) {
             field_0x238--;
         } else {
-            fn_8023BA68(&box, field_0x4, &p, true);
+            fn_8023BA68(&box, mLayer_0x4, &p, true);
             s32 serial = fn_801F8108(this, ACTOR_ARRW, -1, 32.0f);
             if (serial >= 0) {
                 ActorBase_804A5770* arrowActor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -140,7 +140,7 @@ void EyeballSwitch_804AE678::update() {
                         }
                         if (!field_0x244) {
                             setScreenFlag_0x30(0xFF, false);
-                            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
+                            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xAC);
                         } else {
                             open();
                         }
@@ -155,7 +155,7 @@ void EyeballSwitch_804AE678::update() {
             if (field_0x238 == 0) {
                 field_0x234 = 0;
                 setScreenFlag_0x30(0xFF, false);
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
+                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xAC);
                 field_0x244 = false;
             }
         }
@@ -166,7 +166,7 @@ void EyeballSwitch_804AE678::update() {
     }
     if (field_0x244 == true) {
         if (mEmitter == NULL) {
-            mEmitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x182, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x182, 0, 0, NULL, NULL, true, 1.0f);
         }
     } else {
         deleteEmitter(&mEmitter);
@@ -176,8 +176,8 @@ void EyeballSwitch_804AE678::update() {
 // Not in the binary (update inlines it twice); the pool has its 1.0f ahead of update's 32.0f.
 void EyeballSwitch_804AE678::open() {
     setScreenFlag_0x30(0xFF, true);
-    gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
+    gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x35);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x3008F, 0);
 }
 

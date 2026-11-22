@@ -20,7 +20,7 @@ static inline void breakTiles(IronBallHoming_804AB9C0* self, u16 angle, f32 radi
     JGeometry::TVec3f pos(self->mPos);
     pos.x += radius * JMath::sincosTable_.sinShort(angle);
     pos.y += radius * JMath::sincosTable_.cosShort(angle);
-    gBgRewrite_8053AC98->fn_802A1688(&pos, self->field_0x4, 'SBAL');
+    gBgRewrite_8053AC98->fn_802A1688(&pos, self->mLayer_0x4, 'SBAL');
 }
 
 // States 1 and 2 turn toward the last player position seen (field_0x260), or away from
@@ -44,16 +44,16 @@ static inline void steer(IronBallHoming_804AB9C0* self, u8 hitWall, s32 player) 
 void IronBallHoming_804AB9C0::init() {
     mLife = 0x80;
     field_0xb0 = 0x42304;
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         field_0x250 = 1;
         mBox.set(-8.0f, -4.0f, 8.0f, 12.0f);
-        field_0x80.set(-14.0f, -8.0f, 14.0f, 20.0f);
+        mMapBox_0x80.set(-14.0f, -8.0f, 14.0f, 20.0f);
     } else {
         field_0x250 = 0;
         mBox.set(-4.0f, -3.0f, 4.0f, 5.0f);
-        field_0x80.set(-7.0f, -6.0f, 7.0f, 8.0f);
+        mMapBox_0x80.set(-7.0f, -6.0f, 7.0f, 8.0f);
     }
-    field_0x94 = (field_0x90 >> 4) & 1;
+    field_0x94 = (mSpawnParam_0x90 >> 4) & 1;
     field_0x234 = 0.0f;
     field_0x238 = 0.0f;
     field_0x23c = 0.0f;
@@ -99,8 +99,8 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
 void IronBallHoming_804AB9C0::update() {
     u16 angle = 0;
     s32 player;
-    mPos.add(field_0x3c);
-    if (field_0x90 & 1) {
+    mPos.add(mVel_0x3c);
+    if (mSpawnParam_0x90 & 1) {
         breakTiles(this, field_0x26c, 25.0f);
         breakTiles(this, field_0x26c + 0x1500, 25.0f);
         breakTiles(this, field_0x26c - 0x1500, 25.0f);
@@ -117,14 +117,14 @@ void IronBallHoming_804AB9C0::update() {
     if (0.0f == mPos.z && field_0x230 != 7) {
         bool hit;
         if (field_0x250 == 1) {
-            hit = fn_801F2B7C(field_0x114, -1, 5) != 0;
+            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 5) != 0;
         } else {
-            hit = fn_801F2B7C(field_0x114, -1, 4) != 0;
+            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
         }
         if (hit) {
-            field_0x3c.x = -field_0x3c.x;
-            field_0x3c.y = -field_0x3c.y;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = -mVel_0x3c.x;
+            mVel_0x3c.y = -mVel_0x3c.y;
+            mVel_0x3c.z = 0.0f;
             field_0x244 = 20;
             field_0x230 = 3;
         }
@@ -148,11 +148,11 @@ void IronBallHoming_804AB9C0::update() {
         }
         if (player >= 0 ||
             !epsilonEquals(field_0x260, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 32.0f * FLT_EPSILON)) {
-            field_0x3c.x = field_0x23c * JMath::sincosTable_.sinShort(field_0x26c);
-            field_0x3c.y = field_0x23c * JMath::sincosTable_.cosShort(field_0x26c);
+            mVel_0x3c.x = field_0x23c * JMath::sincosTable_.sinShort(field_0x26c);
+            mVel_0x3c.y = field_0x23c * JMath::sincosTable_.cosShort(field_0x26c);
         } else {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
         }
         field_0x248--;
         break;
@@ -162,24 +162,24 @@ void IronBallHoming_804AB9C0::update() {
         field_0x254--;
         if (player >= 0 ||
             !epsilonEquals(field_0x260, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 32.0f * FLT_EPSILON)) {
-            field_0x3c.x = JMath::sincosTable_.sinShort(field_0x26c);
-            field_0x3c.y = JMath::sincosTable_.cosShort(field_0x26c);
+            mVel_0x3c.x = JMath::sincosTable_.sinShort(field_0x26c);
+            mVel_0x3c.y = JMath::sincosTable_.cosShort(field_0x26c);
         } else {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
         }
         field_0x248--;
         break;
     case 3:
     case 4:
         field_0x244--;
-        if (field_0x3c.squared() > 0.01f) {
-            addCalc2_801F71A4(&field_0x3c.x, 0.0f, 0.05f, 0.05f);
-            addCalc2_801F71A4(&field_0x3c.y, 0.0f, 0.05f, 0.05f);
+        if (mVel_0x3c.squared() > 0.01f) {
+            addCalc2_801F71A4(&mVel_0x3c.x, 0.0f, 0.05f, 0.05f);
+            addCalc2_801F71A4(&mVel_0x3c.y, 0.0f, 0.05f, 0.05f);
         }
         if (field_0x244 <= 0) {
             field_0x230 = 0;
-            field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+            mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
             field_0x244 = 90;
         }
         break;
@@ -190,18 +190,18 @@ void IronBallHoming_804AB9C0::update() {
         }
         break;
     case 6:
-        field_0x3c.z -= 0.5f;
-        if (field_0x3c.z <= -6.0f) {
-            field_0x3c.z = -6.0f;
+        mVel_0x3c.z -= 0.5f;
+        if (mVel_0x3c.z <= -6.0f) {
+            mVel_0x3c.z = -6.0f;
         }
-        if (mPos.z <= 0.0f && field_0x3c.z < 0.0f) {
-            mPos.z = field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        if (mPos.z <= 0.0f && mVel_0x3c.z < 0.0f) {
+            mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
             field_0x230 = 0;
             field_0x244 = 40;
-            if (field_0x90 & 1) {
-                getGameView_802D6A9C()->fn_802D79E8(field_0x4, 8.0f, 0.0f, false);
+            if (mSpawnParam_0x90 & 1) {
+                getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
             } else {
-                getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
+                getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
             }
             startSound_801F0E34(0x3000F, 0);
         }
@@ -211,9 +211,9 @@ void IronBallHoming_804AB9C0::update() {
             field_0x25c--;
         } else {
             field_0x240 -= 0.02f;
-            field_0x3c.scale(0.98f);
+            mVel_0x3c.scale(0.98f);
             if (field_0x240 < 0.1f) {
-                field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+                mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
                 if (vfunc_0x54() < 0) {
                     fn_801F3668();
                 } else {
@@ -260,31 +260,31 @@ void IronBallHoming_804AB9C0::draw() {
     if (field_0x250 == 0) {
         if (field_0x230 != 7) {
             JGeometry::TVec3f pos(mPos.x, 3.0f + mPos.y, 0.0f);
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0, &shadow, 1.0f, 1.0f);
             }
         }
         s32 frame = field_0x24c + 0x25;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x24c + 0x25, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x24c + 0x25, 0, 0, -1);
     } else {
         if (field_0x230 != 7) {
             JGeometry::TVec3f pos(mPos.x, 12.0f + mPos.y, 0.0f);
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 3, &shadow, 2.0f, 1.0f);
             }
         }
         s32 frame = field_0x24c + 0x27;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x24c + 0x27, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x24c + 0x27, 0, 0, -1);
     }
 }
 
@@ -300,7 +300,7 @@ s32 IronBallHoming_804AB9C0::vfunc_0x54() {
         if (warp == NULL) {
             continue;
         }
-        u32 param = warp->field_0x90;
+        u32 param = warp->mSpawnParam_0x90;
         if ((param & 0xFF) != 7) {
             continue;
         }

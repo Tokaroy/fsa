@@ -13,9 +13,9 @@ void cls_804A6400::init() {
     EnemyBase_804A4808::init();
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -32,11 +32,11 @@ void cls_804A6400::init() {
 void cls_804A6400::updateState_0x90(u8) {}
 
 void cls_804A6400::calcVelocity_0x88() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
 }
 
 void cls_804A6400::draw() {
-    fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x1C3, false, 1, -1, 1, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C3, false, 1, -1, 1, 0, 0);
 }
 
 cls_804A6400::~cls_804A6400() {}

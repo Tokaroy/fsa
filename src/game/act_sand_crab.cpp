@@ -8,15 +8,15 @@
 // gGameRoot_8053AAF8 pointer in r7 (we swap them), so r6/r7 differ in 13 instructions.
 void SandCrab_8049F3B0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x98 = 0;
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mDir_0x98 = 0;
     switch ((s32)(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1())) {
     case 0:
-        field_0x3c.x = 1.0f;
+        mVel_0x3c.x = 1.0f;
         break;
     case 1:
-        field_0x3c.x = -1.0f;
-        field_0x98 = 1;
+        mVel_0x3c.x = -1.0f;
+        mDir_0x98 = 1;
         break;
     }
     mTimers[0] = 0;
@@ -47,22 +47,22 @@ void SandCrab_8049F3B0::update() {
     if (mTimers[2] != 0) {
         return;
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     fn_801F2B7C(-100, -1, 1);
     u8 hit = fn_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
         mTimers[0] = 2;
-        field_0x3c.scale(0.0f);
+        mVel_0x3c.scale(0.0f);
         if (mTimers[1] == 0) {
-            field_0x98++;
-            field_0x98 &= 1;
-            switch (field_0x98) {
+            mDir_0x98++;
+            mDir_0x98 &= 1;
+            switch (mDir_0x98) {
             case 0:
-                field_0x3c.x = 1.0f;
+                mVel_0x3c.x = 1.0f;
                 break;
             case 1:
-                field_0x3c.x = -1.0f;
+                mVel_0x3c.x = -1.0f;
                 break;
             }
             mTimers[1] = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
@@ -80,11 +80,11 @@ void SandCrab_8049F3B0::update() {
                 FABS(getPlayerPos_8023E724(i)->y - mPos.y) < 40.0f) {
                 JGeometry::TVec3f outPos;
                 JGeometry::TVec3f out2;
-                if (!fn_801F23BC(field_0x4, &mPos, getPlayerPos_8023E724(i), &field_0x80, &outPos, &out2, false)) {
+                if (!fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(i), &mMapBox_0x80, &outPos, &out2, false)) {
                     mTimers[0] = 0;
-                    field_0x3c.x = 2.0f;
+                    mVel_0x3c.x = 2.0f;
                     if (getPlayerPos_8023E724(i)->x < mPos.x) {
-                        field_0x3c.x = -2.0f;
+                        mVel_0x3c.x = -2.0f;
                     }
                     mTimers[1] = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
                     field_0x230 = 2;

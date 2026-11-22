@@ -80,7 +80,7 @@ MANIFEST = ROOT / "docs/names/names.tsv"
 SYMBOLS = "config/G4SE01/symbols.txt"
 SHA1_FILE = ROOT / "config/G4SE01/build.sha1"
 
-KINDS = {"class", "function", "global", "member"}
+KINDS = {"class", "function", "global", "member", "field"}
 SLOT = re.compile(r"_?(0x[0-9A-Fa-f]+)\Z")
 
 # Never rewritten. Paths are relative to the repository root.
@@ -148,7 +148,15 @@ def read_manifest():
         for x in (old, new):
             if not IDENT.match(x):
                 problems.append(f"names.tsv:{n}: {x!r} is not an identifier")
-        if kind == "member":
+        if kind == "field":
+            fo = re.fullmatch(r"field_(0x[0-9A-Fa-f]+)", old)
+            if not fo:
+                problems.append(f"names.tsv:{n}: field {old} is not a field_0x<offset> placeholder")
+            elif conf != "high" and not new.endswith("_" + fo[1]):
+                problems.append(f"names.tsv:{n}: {new} must keep its offset (_{fo[1]}) below high confidence")
+            elif new.startswith("field_"):
+                problems.append(f"names.tsv:{n}: {new} is still a placeholder")
+        elif kind == "member":
             so = SLOT.search(old)
             if not so:
                 problems.append(f"names.tsv:{n}: member {old} does not carry its slot (vfunc_0xNN)")
@@ -162,12 +170,22 @@ def read_manifest():
             problems.append(f"names.tsv:{n}: no evidence")
         rows.append(r)
     seen_old, seen_new = {}, {}
+    seen_field = {}
     for r in rows:
+        if r["kind"] == "field":  # unique per class; the same placeholder is in many classes
+            for key in ("old", "new"):
+                k = (r["addr"], r[key])
+                if k in seen_field:
+                    problems.append(f"names.tsv:{r['line']}: {key} name {r[key]} of {r['addr']} also on line {seen_field[k]}")
+                seen_field[k] = r["line"]
+            continue
         for key, seen in (("old", seen_old), ("new", seen_new)):
             if r[key] in seen:
                 problems.append(f"names.tsv:{r['line']}: {key} name {r[key]} also on line {seen[r[key]]}")
             seen[r[key]] = r["line"]
     for r in rows:
+        if r["kind"] == "field":
+            continue
         if r["new"] in seen_old or r["old"] in seen_new:
             problems.append(f"names.tsv:{r['line']}: chained rename ({r['old']} -> {r['new']}); not allowed")
     return rows, problems
@@ -268,6 +286,8 @@ def current_renames():
         syms = parse_symbols((ROOT / SYMBOLS).read_text())
         _current = []
         for r in rows:
+            if r["kind"] == "field":  # scoped by the compiler; generator records are left to gen_game.py
+                continue
             st = row_state(r, syms) if r["apply"] else None
             if st is True:
                 _current.append((r["old"], r["new"], r["kind"]))
@@ -284,6 +304,17 @@ def to_current(text):
         return None
     for a, b, kind in current_renames():
         text, _ = substitute(text, a, b, kind)
+    return text
+
+
+def fields_to_placeholders(text):
+    """text with every field row's new name put back to its `field_0x..`
+    placeholder (plain: a new field name keeps its offset, so it maps to one
+    placeholder whatever class it is in). For comparing generator output."""
+    rows, _ = read_manifest()
+    for r in rows:
+        if r["kind"] == "field" and r["new"] in text:
+            text, _ = substitute(text, r["new"], r["old"], "function")
     return text
 
 
@@ -460,6 +491,7 @@ def main(argv):
     g.add_argument("--revert", action="store_true")
     ap.add_argument("--verify", action="store_true", help="run ninja and compare the DOL SHA-1 afterwards")
     ap.add_argument("--only", default="", help="comma-separated old or new names")
+    ap.add_argument("--kind", default="", help="restrict to rows of these kinds (comma-separated)")
     ap.add_argument("-q", "--quiet", action="store_true")
     args = ap.parse_args(argv)
 
@@ -470,11 +502,15 @@ def main(argv):
     only = {x for x in args.only.split(",") if x}
     if only:
         rows = [r for r in rows if r["old"] in only or r["new"] in only]
+    if args.kind:
+        rows = [r for r in rows if r["kind"] in args.kind.split(",")]
+    frows = [r for r in rows if r["kind"] == "field"]
+    rows = [r for r in rows if r["kind"] != "field"]
 
     files = git_files()
     scan = [f for f in files if (f in INCLUDE_EXTRA or not (f.startswith(EXCLUDE_PREFIX) or f in EXCLUDE_FILES))
             and Path(f).suffix in TEXT_SUFFIX]
-    self_ = {"tools/rename.py", "tools/names_compare.py"}  # their docs cite example names
+    self_ = {"tools/rename.py", "tools/rename_fields.py", "tools/names_compare.py"}  # their docs cite example names
     block = [f for f in files if f.startswith(BLOCK_PREFIX) and f.endswith(".py") and f not in self_] + \
             [f for f in BLOCK_FILES if (ROOT / f).exists()]
     texts = {}
@@ -559,6 +595,7 @@ def main(argv):
                   + (f" ({n_dst} already renamed)" if n_dst else "")
                   + (f" ({left} left: no class context)" if left else ""))
 
+    ftodo = field_plan(frows, forward, syms, texts, report, args.quiet)
     print("rename: " + ", ".join(f"{k} {v}" for k, v in report.items()))
     if report["refused"]:
         print("rename: refused rows above; nothing written")
@@ -588,9 +625,63 @@ def main(argv):
     for f in sorted(changed):
         (ROOT / f).write_text(texts[f], encoding="utf-8")
     print(f"rename: {len(changed)} file(s) written")
+    if ftodo:
+        if field_apply(ftodo, forward, texts):
+            return 1
 
     if args.verify:
         return verify()
+    return 0
+
+
+# ---------------------------------------------------------------- field rows (data members)
+
+def field_plan(frows, forward, syms, texts, report, quiet):
+    """State of each field row; [(row, root class)] to do. See tools/rename_fields.py."""
+    import rename_fields as rf
+    if not frows:
+        return []
+    tree = rf.Tree(ROOT, {f: t for f, t in texts.items() if f.endswith(rf.CODE_SUFFIX)})
+    todo = []
+    for r in frows:
+        tag = f"{r['old']} -> {r['new']}"
+        if not r["apply"]:
+            report["not-applied"] += 1
+            continue
+        root = class_at(syms, r["addr"])
+        if root is None:
+            report["refused"] += 1
+            print(f"REFUSED  {tag}: no __vt__ at {r['addr']} in symbols.txt")
+            continue
+        st = rf.state(tree, r, root)
+        if st is None:
+            report["refused"] += 1
+            print(f"REFUSED  {tag}: {root} declares neither name")
+            continue
+        if st == forward:
+            report["done"] += 1
+            continue
+        report["apply"] += 1
+        todo.append((r, root))
+        if not quiet:
+            print(f"{'APPLY ' if forward else 'REVERT'}   {root}::{tag}")
+    return todo
+
+
+def field_apply(todo, forward, texts):
+    import rename_fields as rf
+    tree = rf.Tree(ROOT, {f: (ROOT / f).read_text(encoding="utf-8") for f in texts if f.endswith(rf.CODE_SUFFIX)})
+    rows = {id(r): (r, root) for r, root in todo}
+    total = left = 0
+    for p in rf.passes([r for r, _ in todo]):
+        try:
+            counts, k = rf.run_pass(tree, [rows[id(r)] for r in p], forward)
+        except RuntimeError as e:
+            print(f"rename: field pass failed, its files restored: {e}")
+            return 1
+        total += sum(counts.values())
+        left += k
+    print(f"rename: fields: {total} use(s) renamed in code, {left} doc mention(s) left")
     return 0
 
 

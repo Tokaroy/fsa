@@ -36,7 +36,7 @@ public:
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // 0x801DC264, called by Singleton_801DAC6C::fn_801DAD2C: in animation 1,
-    // a 0-255 fade of the hit-reaction timer field_0xd8 over its first or
+    // a 0-255 fade of the hit-reaction timer mHitTimer_0xd8 over its first or
     // last 25 frames (clrlwi 24 in the body, returned without extending).
     u8 fn_801DC264();
 

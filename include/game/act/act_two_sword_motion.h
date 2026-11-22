@@ -29,8 +29,8 @@ public:
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
-    /* 0x24C */ s32 field_0x24c; // player index, low 2 bits of field_0x90
-    /* 0x250 */ s32 field_0x250; // second player index, bits 28-29 of field_0x90
+    /* 0x24C */ s32 field_0x24c; // player index, low 2 bits of mSpawnParam_0x90
+    /* 0x250 */ s32 field_0x250; // second player index, bits 28-29 of mSpawnParam_0x90
     /* 0x254 */ s32 field_0x254; // set to 1 in init
     /* 0x258 */ s32 field_0x258;
     /* 0x25C */ s32 field_0x25c;

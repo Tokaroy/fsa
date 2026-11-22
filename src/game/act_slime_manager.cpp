@@ -30,7 +30,7 @@ inline void cls_804A5BD8::spawnSlimes() {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        mSlots[i].mSerial = spawnActorInline(ACTOR_FOSL, field_0x4, field_0x340 == 3 ? &mPos : &pos, mSerial, -1, -1);
+        mSlots[i].mSerial = spawnActorInline(ACTOR_FOSL, mLayer_0x4, field_0x340 == 3 ? &mPos : &pos, mSerial, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
             actor->field_0x94 = i;
@@ -73,7 +73,7 @@ inline bool cls_804A5BD8::checkTrigger() {
         }
         break;
     case 3:
-        if (field_0x346 != fn_8022461C(&mPos, field_0x4) || field_0x348 != fn_80226850(&mPos, field_0x4)) {
+        if (field_0x346 != fn_8022461C(&mPos, mLayer_0x4) || field_0x348 != fn_80226850(&mPos, mLayer_0x4)) {
             trigger = true;
         }
         break;
@@ -135,24 +135,24 @@ cls_804A5BD8::cls_804A5BD8() {
 
 void cls_804A5BD8::init() {
     EnemyBase_804A4808::init();
-    field_0x2ac = field_0x90 & 3;
+    field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
         field_0x2ac = fn_801CD664(2);
     }
-    s32 mode = (field_0x90 >> 4) & 3;
+    s32 mode = (mSpawnParam_0x90 >> 4) & 3;
     if (mode > 3) {
         mode = 3;
     } else if (mode < 0) {
         mode = 0;
     }
     field_0x340 = mode;
-    field_0x344 = (field_0x90 >> 8) & 0xFF;
+    field_0x344 = (mSpawnParam_0x90 >> 8) & 0xFF;
 
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_NO_HURT | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -171,8 +171,8 @@ void cls_804A5BD8::init() {
 }
 
 void cls_804A5BD8::onFirstUpdate_0x54() {
-    field_0x346 = fn_8022461C(&mPos, field_0x4);
-    field_0x348 = fn_80226850(&mPos, field_0x4);
+    field_0x346 = fn_8022461C(&mPos, mLayer_0x4);
+    field_0x348 = fn_80226850(&mPos, mLayer_0x4);
 }
 
 void cls_804A5BD8::vfunc_0xA4() {
@@ -318,9 +318,9 @@ void cls_804A5BD8::updateState_0x90(u8 mapHit) {
 }
 
 void cls_804A5BD8::calcVelocity_0x88() {
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
 }
 
 void cls_804A5BD8::fn_80207ECC() {

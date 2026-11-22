@@ -10,26 +10,26 @@ void PostWarpPillarHandling_804AC1F8::init() {
         if (!fn_80230188(i)) {
             mAlive = false;
         } else {
-            field_0x3c.z = 4.0f;
+            mVel_0x3c.z = 4.0f;
         }
     }
-    if (!(field_0x90 & 1)) {
+    if (!(mSpawnParam_0x90 & 1)) {
         gGameRoot2_8053AB10->field_0x2c->field_0xc = 0xff;
     }
 }
 
 void PostWarpPillarHandling_804AC1F8::update() {
-    field_0x3c.z -= 0.1;
+    mVel_0x3c.z -= 0.1;
     bool done = false;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-        pos += field_0x3c;
+        pos += mVel_0x3c;
         if (pos.z <= 0.0f) {
             pos.z = 0.0f;
             fn_80230BF4(i, 2);
             done = true;
-        } else if (field_0x3c.z > 0.0f) {
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x345, 0, 0, NULL, NULL, true, 0.15f);
+        } else if (mVel_0x3c.z > 0.0f) {
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x345, 0, 0, NULL, NULL, true, 0.15f);
             fn_80230498(i, &pos, 0x3cf, field_0x230 * 255 / 40, -128, -128, true);
         } else {
             fn_80230498(i, &pos, 0x3e, 255, -128, -128, true);

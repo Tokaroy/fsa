@@ -34,9 +34,9 @@ IceWall_8049DE18::~IceWall_8049DE18() {
 
 void IceWall_8049DE18::init() {
     ActorBase_804A5770::init();
-    field_0x230 = field_0x90 & 0xF;
-    field_0x238 = field_0x90 >> 4 & 0xF;
-    field_0x23c = field_0x90 >> 8 & 0xFF;
+    field_0x230 = mSpawnParam_0x90 & 0xF;
+    field_0x238 = mSpawnParam_0x90 >> 4 & 0xF;
+    field_0x23c = mSpawnParam_0x90 >> 8 & 0xFF;
     switch (field_0x230) {
     case 1:
         field_0x240 = 0.5f;
@@ -45,10 +45,10 @@ void IceWall_8049DE18::init() {
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
         mBox.f.y = 8.0f;
-        field_0x80.i.x = -4.0f;
-        field_0x80.i.y = -4.0f;
-        field_0x80.f.x = 4.0f;
-        field_0x80.f.y = 4.0f;
+        mMapBox_0x80.i.x = -4.0f;
+        mMapBox_0x80.i.y = -4.0f;
+        mMapBox_0x80.f.x = 4.0f;
+        mMapBox_0x80.f.y = 4.0f;
         break;
     // Case 0 is written out with the default: the original's dispatch sends
     // both sides of the test against 1 to this block.
@@ -58,10 +58,10 @@ void IceWall_8049DE18::init() {
         mBox.i.y = -16.0f;
         mBox.f.x = 16.0f;
         mBox.f.y = 16.0f;
-        field_0x80.i.x = -8.0f;
-        field_0x80.i.y = -8.0f;
-        field_0x80.f.x = 8.0f;
-        field_0x80.f.y = 8.0f;
+        mMapBox_0x80.i.x = -8.0f;
+        mMapBox_0x80.i.y = -8.0f;
+        mMapBox_0x80.f.x = 8.0f;
+        mMapBox_0x80.f.y = 8.0f;
         break;
     }
     mBox2.i.x = mBox.i.x;
@@ -70,7 +70,7 @@ void IceWall_8049DE18::init() {
     mBox2.f.y = mBox.f.y;
     field_0xb8 = 1;
     field_0xb0 = 0x06040304;
-    field_0x118 = 0;
+    mParamAtcn_0x118 = 0;
     field_0xbc = 3;
     mSprite.fn_801D2608(lbl_80539F28, 1);
     mSprite.startAnim_801D22DC(0, 2, false);
@@ -92,7 +92,7 @@ void IceWall_8049DE18::update() {
 
     switch (field_0x234) {
     case 0: {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         bool hit; // the original tests the result of an inlined bool helper (li 1 / li 0, clrlwi.)
         if (player >= 0) {
@@ -140,7 +140,7 @@ void IceWall_8049DE18::update() {
             if (field_0x23c != 0) {
                 s32 arg = lbl_80464C0C[field_0x23c];
                 u32 actorId = lbl_80464BE8[field_0x23c];
-                getActorManager_801F856C()->spawnActor_801F9484(actorId, field_0x4, &mPos, arg, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484(actorId, mLayer_0x4, &mPos, arg, -1, -1);
             }
             fn_801F3668();
             field_0x234 = 2;
@@ -183,20 +183,20 @@ void IceWall_8049DE18::draw() {
         JGeometry::TVec3f pos = *pPos;
         switch (field_0x23c) {
         case 1:
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0xE9, NULL, 1.0f, 1.0f);
             }
             break;
         case 2:
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0x11, NULL, 1.0f, 1.0f);
             }
             break;
         case 3:
             params2.field_0x0[2] = 4;
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0x200, &params2, 1.0f, 1.0f);
             }
@@ -204,25 +204,25 @@ void IceWall_8049DE18::draw() {
         case 4:
             pos.y += 5.0f;
             params2.field_0x1d = -1;
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x14C, &params2, 1.0f, 1.0f);
             }
             break;
         case 5:
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x5E, &params2, 1.0f, 1.0f);
             }
             break;
         case 6:
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x31, &params2, 1.0f, 1.0f);
             }
             break;
         case 8:
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x2C, &params2, 1.0f, 1.0f);
             }
@@ -248,14 +248,14 @@ void IceWall_8049DE18::draw() {
 void IceWall_8049DE18::startMelting() {
     deleteEmitter(&mEmitter100);
     deleteEmitter(&mEmitter104);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (layer == 0) {
         f32 scale = 1.0f;
         if (field_0x230 == 1) {
             scale = 0.5f;
         }
         field_0x27c = spawnEmitter_8013CC50(layer, &mPos, 0x28D, 1, 0, NULL, NULL, true, scale);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x28E, 1, 0, NULL, NULL, true, scale);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28E, 1, 0, NULL, NULL, true, scale);
     }
     startSound_801F0E34(0x30061, 0);
     field_0x234 = 1;
@@ -271,7 +271,7 @@ bool IceWall_8049DE18::hitByFire() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     hitPos.set(0.0f, 0.0f);
-    if (fn_8023AB94(&box, field_0x4, &hitPos) >= 0 || fn_801F2718('FIRE') >= 0) {
+    if (fn_8023AB94(&box, mLayer_0x4, &hitPos) >= 0 || fn_801F2718('FIRE') >= 0) {
         return true;
     }
     return false;
@@ -288,21 +288,21 @@ bool IceWall_8049DE18::hitByWeapon() {
     box.set(mBox2);
     box.addPos(screenPos);
 
-    s32 hitCode = fn_8023AA18(&box, field_0x4, &hitPos);
+    s32 hitCode = fn_8023AA18(&box, mLayer_0x4, &hitPos);
     if (hitCode >= 0) {
         return true;
     }
-    hitCode = fn_8023AE34(&box, field_0x4, &hitPos);
+    hitCode = fn_8023AE34(&box, mLayer_0x4, &hitPos);
     if (hitCode >= 0) {
         fn_801CC820(hitCode, NULL);
         return true;
     }
-    hitCode = fn_8023AC74(&box, field_0x4, &hitPos);
+    hitCode = fn_8023AC74(&box, mLayer_0x4, &hitPos);
     if (hitCode >= 0) {
         fn_801CC538(hitCode, &hitPos, &stack40, NULL);
         return true;
     }
-    hitCode = fn_8023AD54(&box, field_0x4, &hitPos);
+    hitCode = fn_8023AD54(&box, mLayer_0x4, &hitPos);
     if (hitCode >= 0) {
         fn_801CC640(hitCode, NULL, NULL);
         return true;

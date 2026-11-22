@@ -27,12 +27,12 @@ cls_804A5568::~cls_804A5568() {
 
 void cls_804A5568::init() {
     EnemyBase_804A4808::init();
-    field_0x2ac = field_0x90;
+    field_0x2ac = mSpawnParam_0x90;
     mBox.set(-lbl_8053F650, -lbl_8053F650, lbl_8053F650, lbl_8053F650);
     mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x280;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -157,7 +157,7 @@ void cls_804A5568::updateState_0x90(u8 mapHit) {
             if (getGameView_802D6A9C()->fn_802D800C(trigger)) {
                 mFlags |= 0x2000;
                 deleteEmitterKeep(&mEmitter3c0);
-                mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
+                mEmitter3c0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
                 mStateTimer = 0;
                 mState = 1;
             }
@@ -197,7 +197,7 @@ u8 cls_804A5568::checkHitByActor_0x60() {
         if (fn_801E9B58() >= 0) {
             mFlags |= 0x2000;
             deleteEmitterKeep(&mEmitter3c0);
-            mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
+            mEmitter3c0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
             mStateTimer = 0;
             mState = 1;
         }

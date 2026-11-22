@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mTimer;      // frames left before the action fires
     /* 0x234 */ bool mWasOn;     // isScreenFlagSet_0x34() at the last check
-    /* 0x238 */ s32 mDelay;      // field_0x90 & 0x1FFFF
+    /* 0x238 */ s32 mDelay;      // mSpawnParam_0x90 & 0x1FFFF
     /* 0x23C */ u8 mCallWhenDone; // bit 17: run die_0x24() when the timer ends
     /* 0x23D */ u8 mSwitchMode;  // bits 18-19: 0 sets the switch bit, 1 clears it
     /* 0x23E */ u8 mSoundMode;   // bits 20-21: 1 calls setScreenFlag_0x30(0xFF, true), 2 (0xFF, false)

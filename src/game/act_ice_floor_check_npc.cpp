@@ -15,7 +15,7 @@ cls_8049E950::~cls_8049E950() {}
 
 void cls_8049E950::init() {
     ActorBase_804A5770::init();
-    mTile = fn_80226850(&mPos, field_0x4);
+    mTile = fn_80226850(&mPos, mLayer_0x4);
     fn_8012F554()->fn_8012F530(this);
 }
 
@@ -23,7 +23,7 @@ void cls_8049E950::update() {
     ActorBase_804A5770::update();
     switch (mState) {
     case 0:
-        if (mTile != fn_80226850(&mPos, field_0x4)) {
+        if (mTile != fn_80226850(&mPos, mLayer_0x4)) {
             if (getScreenFlagBit_0x3C() > 0) {
                 setScreenFlag_0x30(0xFF, true);
             }

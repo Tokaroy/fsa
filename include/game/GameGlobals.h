@@ -209,11 +209,11 @@ struct GameRoot_8049EF20 {
     // The fade object (also lbl_8053ACA0); fn_80138C9C calls fn_802ACB58 on it.
     /* 0x10 */ cls_804A8390* field_0x10;
     /* 0x14 */ u8 field_0x14[0x18 - 0x14];
-    /* 0x18 */ MessageManager_804AF070* field_0x18; // new 0x158 in the constructor
+    /* 0x18 */ MessageManager_804AF070* mMessageManager_0x18; // new 0x158 in the constructor
     /* 0x1C */ cls_804AE9A0* field_0x1c;         // mode 12 (0x20 bytes)
-    /* 0x20 */ Title_804AF820* field_0x20;       // mode 1 (0x158 bytes)
-    /* 0x24 */ FileSelect_804AFF60* field_0x24;  // mode 3 (0x1AC bytes)
-    /* 0x28 */ GameMode_804B0688* field_0x28;    // modes 2 and 5 (0x120 bytes)
+    /* 0x20 */ Title_804AF820* mTitle_0x20;       // mode 1 (0x158 bytes)
+    /* 0x24 */ FileSelect_804AFF60* mFileSelect_0x24;  // mode 3 (0x1AC bytes)
+    /* 0x28 */ GameMode_804B0688* mGameMode_0x28;    // modes 2 and 5 (0x120 bytes)
     /* 0x2C */ cls_804AF878* field_0x2c;         // mode 4 (0x10 bytes)
     /* 0x30 */ cls_804AF480* field_0x30;         // mode 6 (0x10 bytes)
     // Made by the constructor (0x24, 0x28, 0x14 and 0xF0 bytes).
@@ -315,7 +315,7 @@ struct GameRoot_8049EF20 {
     // both slots too, so the code is the same either way; the game's loaders
     // build JKRAramArchive/JKRMemArchive (fn_80401AC8, fn_80401D20).
     /* 0xA4 */ JKRArchive* field_0xa4;
-    /* 0xA8 */ JKRArchive* field_0xa8; // lbl_80529DEC's field_0x1c (msgus.arc)
+    /* 0xA8 */ JKRArchive* mMsgArchive_0xa8; // lbl_80529DEC's field_0x1c (msgus.arc)
     // The archives fn_80135A04 starts loading for a game mode (fn_80401E10;
     // the boss archive, game2D.arc, gamemode.arc, ...); fn_80135494 waits for
     // their byte 0x4 and deletes them.

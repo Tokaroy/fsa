@@ -36,8 +36,8 @@ bool cls_804A51E4::fn_80218538() const {
     JGeometry::TBox2f box(p, p);
     bool result = false;
     growBox(box, mBox);
-    if (fn_801CD2F8(field_0x4)) {
-        if (fn_8022B978(field_0x4, &box, false)) {
+    if (fn_801CD2F8(mLayer_0x4)) {
+        if (fn_8022B978(mLayer_0x4, &box, false)) {
             result = true;
         }
     } else {
@@ -72,8 +72,8 @@ void cls_804A51E4::fn_8021835C() {
         a.x += mBox.i.x;
         b.x += mBox.f.x;
     }
-    if (fn_801CD2F8(field_0x4)) {
-        if (fn_8022BA58(field_0x4, &a) && fn_8022BA58(field_0x4, &b)) {
+    if (fn_801CD2F8(mLayer_0x4)) {
+        if (fn_8022BA58(mLayer_0x4, &a) && fn_8022BA58(mLayer_0x4, &b)) {
             visible = true;
         }
     } else {
@@ -110,7 +110,7 @@ void cls_804A51E4::vfunc_0xA0() {
     if (mState == 0) {
         return;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     if (box->i.y < mPos.y && mPos.y < box->f.y) {

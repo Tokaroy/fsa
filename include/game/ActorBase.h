@@ -110,7 +110,7 @@ public:
     // of an s8, so the parameter is a full int), f1 and f2, and ignore r3.
     /* 0x28 */ virtual void startBossDeath_0x28(s32, f32, f32);
     // 0x801F4850 (written): one frame of a boss's death explosion while
-    // field_0x188 counts down (false when it is -1): blasts at mPos + (x, y)
+    // mBossDeathTimer_0x188 counts down (false when it is -1): blasts at mPos + (x, y)
     // within `scale`, then at 0 the Force Gems (ACTOR_GOLD, ACTOR_RUPY) and
     // the end of the boss music. Never overridden; all 8 calls (fn_801D8430,
     // 0x8017C4B0, 0x8017FBB4, ...) set f1-f3 and test r3 with clrlwi. 24.
@@ -134,7 +134,7 @@ public:
     // (it was declared u8 before G1; the return type is not in the
     // mangled name, so the symbol is unchanged).
     /* 0x38 */ virtual s32 getScreenFlagCount_0x38();
-    // 0x801F4710: the top 5 bits of field_0x90 (srwi 27). Never overridden;
+    // 0x801F4710: the top 5 bits of mSpawnParam_0x90 (srwi 27). Never overridden;
     // 38 calls in 22 units, 32 of them cmpwi r3, 0.
     /* 0x3C */ virtual s32 getScreenFlagBit_0x3C();
     // 0x801F470C, empty. 6 overrides, all pickups (act_force_gem,
@@ -179,11 +179,11 @@ public:
     // fn_801EF830 extern "C").
 
     // 1 unit / 4 calls. Looks for a 'WARP' actor (fn_801F78F4) on this
-    // layer whose (field_0x90 & 0xFF) == 8, moves mPos by the view boxes'
-    // offset to the destination layer and sets field_0x4; returns 0 or 1
+    // layer whose (mSpawnParam_0x90 & 0xFF) == 8, moves mPos by the view boxes'
+    // offset to the destination layer and sets mLayer_0x4; returns 0 or 1
     // (0x801EE374, 0x801EE3A0; act_small_key tests it with clrlwi).
     bool fn_801EE24C();
-    // 3 units / 13 calls. Returns lbl_8046A00C[field_0xc0] (lfsx; 0xc0 is
+    // 3 units / 13 calls. Returns lbl_8046A00C[mParamEfsz_0xc0] (lfsx; 0xc0 is
     // EnemyParam "efsz") in f1.
     f32 fn_801EE4F0();
     // 1 unit / 2 calls (the manager's update loop, 0x801F8B9C, with
@@ -192,7 +192,7 @@ public:
     void fn_801EE508();
     // 10 units / 37 calls. The nearest player (player == 0: all four, else
     // only player - 1; callers pass li 0 or index + 1): its position in
-    // field_0x1ac[] relative to mPos goes normalised to *outDir (stfs
+    // mPlayerPos_0x1ac[] relative to mPos goes normalised to *outDir (stfs
     // 0/4/8), the distance to *outDist.
     void fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
     // 6 units / 12 calls. fn_801EE558 with extra player filters
@@ -226,7 +226,7 @@ public:
     void fn_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params, s32 flags,
                      s32 mode, bool arg, f32 scaleX, f32 scaleY);
     // 116 units / 193 calls. Draws frame `frame` of the "SOB " sprite bank
-    // `name` at mPos on this actor's layer: fn_801EF830(field_0x4, &mPos,
+    // `name` at mPos on this actor's layer: fn_801EF830(mLayer_0x4, &mPos,
     // params, flags, name, frame, NULL) (0x801F0740-0x801F0758). params may
     // be NULL (callers: a stack struct 131 times, 0 61 times); flags is -1,
     // 0 or 7 at most calls.
@@ -234,11 +234,11 @@ public:
     void drawSprite_801F06F0(const char* name, s32 frame, SpriteParams_801F5AE0* params, s32 flags,
                      f32 scaleX, f32 scaleY) const;
     // 53 units / 107 calls. id compared unsigned with 3 and 0x42; uses
-    // field_0x4 and mPos.
+    // mLayer_0x4 and mPos.
     void fn_801F0D20(u32 id);
     // 222 units / 964 calls. Starts sound `soundId` on this actor's sound
     // object: fn_80456334(fn_801F6644(mgr, mSlot), &soundId, arg)
-    // (0x801F1150), gated by the layer (field_0x4 against 8) and player
+    // (0x801F1150), gated by the layer (mLayer_0x4 against 8) and player
     // checks. fn_801F4694 calls it with the EnemyParam "voic" sound
     // (lbl_80469F38[voic - 1]) and 0x40002. The id is compared unsigned
     // (0x801F0EAC: subis/cmplwi against 0x30009). fadeTime goes to
@@ -248,15 +248,15 @@ public:
     // (tp JAISound.h). Every caller passes 0. Returns 0 on the early outs,
     // else fn_80456334's result (no caller reads it; the pointee is
     // unknown).
-    // const: its lwz of field_0x4 is scheduled above the prologue's stw r28,
+    // const: its lwz of mLayer_0x4 is scheduled above the prologue's stw r28,
     // which MWCC does only for loads through a const `this`.
     JAISoundHandle* startSound_801F0E34(u32 soundId, u32 fadeTime) const;
     // 4 units / 5 calls. The actor's sound object: fn_801F6644(mgr, mSlot)
     // (0x801F118C-0x801F11A0), mSounds[mSlot] or the manager's shared one.
     ActorSoundObj_804578F4* fn_801F1184() const;
     // 2 units / 2 calls. If the box at 0x80 is not empty and isBlocked_0x4C(
-    // field_0x4, &mPos) (0x801F11FC-0x801F1210): pushes mPos back from
-    // mPrevPos along field_0x98's angle, or respawns at mSpawnPos when out
+    // mLayer_0x4, &mPos) (0x801F11FC-0x801F1210): pushes mPos back from
+    // mPrevPos along mDir_0x98's angle, or respawns at mSpawnPos when out
     // of view; returns 0 or 1.
     bool fn_801F11B4();
     // 8 units / 8 calls, all from isBlocked_0x4C overrides (act_pot, act_rock, act_grass,
@@ -285,7 +285,7 @@ public:
                    const JGeometry::TBox2f* box, JGeometry::TVec3f* outPos,
                    JGeometry::TVec3f* out2, bool flag);
     // 82 units / 201 calls. Unless field_0x174 > 0, sweeps the box at 0x80
-    // from mPrevPos to mPos (fn_801F23BC(this, field_0x4, &mPos, &mPrevPos,
+    // from mPrevPos to mPos (fn_801F23BC(this, mLayer_0x4, &mPos, &mPrevPos,
     // box, ...)), moves mPos to the result and stores a vector in *out
     // (0x801F2670-0x801F2688); returns 0 or 1. Callers pass 0 or a stack
     // TVec3f for out and 0 for `flag` (197 of 201).
@@ -330,8 +330,8 @@ public:
     // right before draw(): rebuilds mSpriteParams (r3 is the actor; only its
     // fields from 0x120 on are touched). Result unused.
     void fn_801A3CFC();
-    // game/tu_801A3C50.cpp. The actor was hit by `player`: mLife = 0, field_0x10c /
-    // field_0xa0 = player, field_0x48 = (1.4, 0.4, 0.4), field_0xd8 / 0xdc / 0xa4 = 0,
+    // game/tu_801A3C50.cpp. The actor was hit by `player`: mLife = 0, mLastAttacker_0x10c /
+    // field_0xa0 = player, field_0x48 = (1.4, 0.4, 0.4), mHitTimer_0xd8 / 0xdc / 0xa4 = 0,
     // fn_801F4694, field_0xa8 = 30 (layer 8 and up) or 35, lbl_8053A100 = player, then
     // vfunc_0x44. tu_802242F4 calls it; fn_801A4D74
     // inlines it.
@@ -350,13 +350,13 @@ public:
     s32 fn_801A6160();
     // 88 units / 153 calls. Hits every player (except skipPlayer; -1 in 138
     // calls) whose box (fn_8023B190) overlaps mBox on this layer, with
-    // fn_80238548(player, damage, &pos, arg); damage -100 means field_0x114
+    // fn_80238548(player, damage, &pos, arg); damage -100 means mParamAtcp_0x114
     // (EnemyParam "atcp", 0x801F2D60). Returns the bitmask of players hit.
     u8 fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg);
     // 27 units / 41 calls. Takes a hit from an overlapping actor
     // (fn_801F82CC) whose mActorId is includeId (or any, 'NULL'), is not
     // excludeId and is not in the 'NULL'-ended list excludeIds (or NULL):
-    // fn_801F37AC(this, attacker->field_0x118, ...) (0x801F2ECC). Returns
+    // fn_801F37AC(this, attacker->mParamAtcn_0x118, ...) (0x801F2ECC). Returns
     // 0 or 1.
     u8 fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excludeIds);
     // 20 units / 22 calls. For each player overlapping this actor
@@ -375,18 +375,18 @@ public:
     // 11 units / 21 calls. The same for mBox; the manager's actor-vs-actor
     // test (0x801F801C) uses it too.
     void fn_801F31C4(JGeometry::TBox2f* out) const;
-    // 2 units / 7 calls. getPlayerLayer_8023DE58(player) == field_0x4, or
+    // 2 units / 7 calls. getPlayerLayer_8023DE58(player) == mLayer_0x4, or
     // fn_801F329C(player); returns 0 or 1.
     bool fn_801F320C(s32 player) const;
-    // 4 units / 5 calls. getPlayerLayer_8023DE58(player) < 8 && field_0x4 == 8.
+    // 4 units / 5 calls. getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8.
     bool fn_801F329C(s32 player) const;
     // 1 unit / 2 calls (the manager's update loop, with mActors[i]). Fills
-    // field_0x1ac[0..3] with each player's position (getPlayerPos_8023E724), adjusted
+    // mPlayerPos_0x1ac[0..3] with each player's position (getPlayerPos_8023E724), adjusted
     // by fn_801CD150 for players on layer 8 and up while this is on 8.
     void fn_801F32F4();
     // 1 unit / 2 calls (the manager's update loop, between savePrevPos and
     // update). Applies a warp fn_801F349C queued: mPos.xy = field_0x30.xy,
-    // field_0x4 = field_0x178, field_0x17d = 1, field_0x174 = field_0x180;
+    // mLayer_0x4 = field_0x178, field_0x17d = 1, field_0x174 = field_0x180;
     // while field_0x174 counts down, ends it once mPos is field_0x184 away
     // from field_0x30 (PSVECMag).
     void fn_801F33C4();
@@ -400,15 +400,15 @@ public:
     // 1 unit / 1 call. mAlive = false, then fn_801F34DC's report.
     void fn_801F3518();
     // 1 unit / 2 calls. If field_0x16c != -1: fn_802D7704(view, field_0x16c,
-    // 0, field_0x4).
+    // 0, mLayer_0x4).
     void fn_801F355C();
     // 9 units / 16 calls. mAlive = false, then fn_801F355C's report.
     void fn_801F35AC();
     // 13 units / 16 calls. fn_801F3668's report without clearing mAlive.
     void fn_801F3604();
     // 78 units / 153 calls. Clears mAlive, then reports the actor to the
-    // view: fn_802D7704(view, field_0x16c, field_0x1a8, field_0x4) when
-    // field_0x16c != -1, else fn_802D766C(view, field_0x1a8, field_0x4).
+    // view: fn_802D7704(view, field_0x16c, mParamDstr_0x1a8, mLayer_0x4) when
+    // field_0x16c != -1, else fn_802D766C(view, mParamDstr_0x1a8, mLayer_0x4).
     void fn_801F3668();
     // 1 unit / 3 calls (tu_80204638, on actors from the manager's lists).
     // Returns 1 if field_0x94 == 1 or field_0xc4 is set, else 0. Defined in
@@ -416,47 +416,47 @@ public:
     bool fn_80204D44();
     // 0x8032D564, defined in game/act_force_gem.cpp: returns entry `index` of
     // its 20-value table. r3 (the actor) is never read; callers pass the
-    // actor and (field_0x90 & 0xFF) (act_thief, tu_801DE714).
+    // actor and (mSpawnParam_0x90 & 0xFF) (act_thief, tu_801DE714).
     s32 fn_8032D564(s32 index);
     // 1 unit / 2 calls (tu_8025EB18, on an actor found by serial). If
     // neither field_0xcc nor field_0xc4: field_0xcc = 1, field_0xd0 = v,
     // returns 1; else 0.
     u8 fn_801F36D4(s32 v);
-    // 1 unit / 2 calls (tu_8025EB18). If field_0xc4: clears it, field_0x3c =
+    // 1 unit / 2 calls (tu_8025EB18). If field_0xc4: clears it, mVel_0x3c =
     // *v, returns 1; else 0.
     u8 fn_801F3708(const JGeometry::TVec3f* v);
-    // 1 unit / 9 calls (tu_8025EB18; callers pass a field_0x4). If not
+    // 1 unit / 9 calls (tu_8025EB18; callers pass a mLayer_0x4). If not
     // field_0xc4: field_0xc4 = 1, field_0xc8 = field_0x110 = v, field_0xcc
     // = 0, field_0xd0 = -1, returns 1; else 0.
     u8 fn_801F3744(s32 v);
     // 1 unit / 3 calls (tu_801A3C50, always 300). field_0xa4 = v and clears
-    // field_0xd5, 0xd8, 0xe4, 0xe8 (and 0xe0 while mLife > 0).
+    // mHitPlayers_0xd5, 0xd8, 0xe4, 0xe8 (and 0xe0 while mLife > 0).
     void fn_801F3780(s32 v);
     // 19 units / 35 calls. Applies one hit (written): attack points (taken
     // from mLife; > 4 is a strong hit), the attacker's position (sets the
-    // knock-back direction field_0xec and velocity field_0x3c), strength
-    // (clamped to 2), type (field_0xfc; 5 and 2 can be ignored or absorbed by
-    // field_0xb0's bits) and the attacking player (-1 for none; field_0xd5
-    // collects the players that hit during field_0xd8, field_0x10c keeps the
+    // knock-back direction mHitDir_0xec and velocity mVel_0x3c), strength
+    // (clamped to 2), type (mHitType_0xfc; 5 and 2 can be ignored or absorbed by
+    // field_0xb0's bits) and the attacking player (-1 for none; mHitPlayers_0xd5
+    // collects the players that hit during mHitTimer_0xd8, mLastAttacker_0x10c keeps the
     // last). Returns 1 when the hit counts (also when absorbed), else 0.
     bool fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, s32 strength, s32 type,
                      s32 player);
     // 48 units / 63 calls. The per-frame hit reaction (written): moves by
-    // the knock-back field_0x3c while field_0xd8 runs (when `flag`), starts
-    // the death timer field_0xe0 when life is out, runs it down to
-    // die_0x24, and emits field_0xe8 hit sparks. Returns 0 (idle), 1, or
+    // the knock-back mVel_0x3c while mHitTimer_0xd8 runs (when `flag`), starts
+    // the death timer mDeathTimer_0xe0 when life is out, runs it down to
+    // die_0x24, and emits mSparksLeft_0xe8 hit sparks. Returns 0 (idle), 1, or
     // -1 with no life left (0x801F4630).
     // u8, not bool: EnemyBase_804A4808::update() passes a bool local with
     // clrlwi r4, r31, 24 (0x801CDE0C), which MWCC emits for a bool going to
     // an unsigned char parameter (a bool one takes it with mr).
     s32 fn_801F3D94(u8 flag);
     // 0x801F52A4, called by die_0x24 (0x801F50FC). Drops items by
-    // EnemyParam "dasu" (field_0x18c): a chance per dasu, then one of eight
+    // EnemyParam "dasu" (mParamDasu_0x18c): a chance per dasu, then one of eight
     // drops ('HART' / 'RUPY', count and spawn parameter) spawned at the
     // actor's top-down position.
     void fn_801F52A4();
     // 2 units / 6 calls. Plays the actor's EnemyParam "voic" sound
-    // (startSound_801F0E34(lbl_80469F38[voic - 1], 0)) and, if field_0xe8 == 0,
+    // (startSound_801F0E34(lbl_80469F38[voic - 1], 0)) and, if mSparksLeft_0xe8 == 0,
     // sound 0x40002.
     void fn_801F4694() const;
     // 0x8019CEAC, out of line in game/tu_80197070.cpp: field_0xb0 = v. One
@@ -465,7 +465,7 @@ public:
     // 0x8019CEB4, out of line in game/tu_80197070.cpp: returns field_0xb0.
     // Its caller (0x8019AA3C, 0x8019AC40) compares the result with 0xE.
     s32 fn_8019CEB4() const;
-    // 0x8017EAF8, out of line in game/tu_8017C01C.cpp: field_0x3c = v (a whole
+    // 0x8017EAF8, out of line in game/tu_8017C01C.cpp: mVel_0x3c = v (a whole
     // TVec3f copy, psq + stfs). Both callers in fn_8017C40C pass the actor
     // from findActorBySerial_801F666C and a stack TVec3f at 0x50(r1).
     void fn_8017EAF8(const JGeometry::TVec3f& v);
@@ -493,27 +493,27 @@ public:
     // Inline getters: MWCC orders an inlined call with the other calls of an
     // expression, so the original reads these before the calls they are
     // compared with (lwz into a saved register ahead of the bl; RULES_CARD).
-    s32 getField_0x4() const { return field_0x4; }
+    s32 getField_0x4() const { return mLayer_0x4; }
     s32 getSerial() const { return mSerial; }
-    // field_0x90 read as a signed value (tu_80147B50 compares it with cmpwi).
-    s32 getField_0x90() const { return field_0x90; }
+    // mSpawnParam_0x90 read as a signed value (tu_80147B50 compares it with cmpwi).
+    s32 getField_0x90() const { return mSpawnParam_0x90; }
     // Out-of-line accessors in game/act_sword_soldier.cpp; act_ganon,
     // act_phantom_ganon_2, tu_80197070, tu_8018A8D8 (and tu_803944C8 for
     // fn_801544C8) call them with a bl on actors of other classes.
-    u32 fn_801544C8() const;               // field_0x90 (0x801544C8)
-    void fn_801544D0(s32 value);           // field_0xd8 and field_0xdc (0x801544D0)
+    u32 fn_801544C8() const;               // mSpawnParam_0x90 (0x801544C8)
+    void fn_801544D0(s32 value);           // mHitTimer_0xd8 and mHitTimerStart_0xdc (0x801544D0)
     JGeometry::TVec3f* fn_801544DC();      // &mPos (0x801544DC)
-    s32 fn_80154510() const;               // field_0x114, the "atcp" damage (0x80154510)
+    s32 fn_80154510() const;               // mParamAtcp_0x114, the "atcp" damage (0x80154510)
     u8 fn_801545C0(JGeometry::TVec3f* out, bool flag);   // fn_801F2618 (0x801545C0)
     s32 fn_801545E0() const;               // field_0x9c (0x801545E0)
     s32 fn_801545E8() const;               // mSerial (0x801545E8)
     void fn_80154614(s32 value);           // field_0xb8 (0x80154614)
-    s32 fn_8015461C() const;               // field_0x4, the layer (0x8015461C)
+    s32 fn_8015461C() const;               // mLayer_0x4, the layer (0x8015461C)
     // Out-of-line accessors in game/act_phantom_ganon_2.cpp (0x8018A590-0x8018A5B0);
     // act_ganon and tu_80197070 call them on other actors too.
     u16 fn_8018A590() const;               // field_0x94 (0x8018A590)
     void fn_8018A598(bool alive);          // mAlive (0x8018A598)
-    void fn_8018A5A0(s32 value);           // field_0x98 (0x8018A5A0)
+    void fn_8018A5A0(s32 value);           // mDir_0x98 (0x8018A5A0)
     void fn_8018A5A8(u16 value);           // field_0x94 (0x8018A5A8)
     bool fn_8018A5B0() const;              // mAlive (0x8018A5B0)
     // 0x801E9B58 (game/tu_801E9AFC.cpp): the serial of a FIRE / BLZE / BMTY
@@ -521,52 +521,52 @@ public:
     // (fn_802BAA00), one that fn_801CC8E4 accepts is skipped (-1); -1 if none.
     s32 fn_801E9B58();
     void fn_802BAA00();                    // clears mAlive; out-of-line copy in act_fire_rod_fire (0x802BAA00, not written yet)
-    void setField_0x4(s32 v) { field_0x4 = v; }
+    void setField_0x4(s32 v) { mLayer_0x4 = v; }
     void setField_0x8(s32 v) { field_0x8 = v; }
-    void setField_0x90(u32 v) { field_0x90 = v; }
-    void setField_0xC0(s32 v) { field_0xc0 = v; }
+    void setField_0x90(u32 v) { mSpawnParam_0x90 = v; }
+    void setField_0xC0(s32 v) { mParamEfsz_0xc0 = v; }
     void setField_0x110(s32 v) { field_0x110 = v; }
-    void setField_0x114(s32 v) { field_0x114 = v; }
-    void setField_0x118(s32 v) { field_0x118 = v; }
+    void setField_0x114(s32 v) { mParamAtcp_0x114 = v; }
+    void setField_0x118(s32 v) { mParamAtcn_0x118 = v; }
     void setField_0x16C(s32 v) { field_0x16c = v; }
     void setField_0x170(s32 v) { field_0x170 = v; }
-    void setField_0x18C(s32 v) { field_0x18c = v; }
-    void setField_0x190(s32 v) { field_0x190 = v; }
-    void setField_0x1A8(bool v) { field_0x1a8 = v; }
+    void setField_0x18C(s32 v) { mParamDasu_0x18c = v; }
+    void setField_0x190(s32 v) { mParamVoic_0x190 = v; }
+    void setField_0x1A8(bool v) { mParamDstr_0x1a8 = v; }
 
     // The spawner's 3rd argument; spawned children usually get their
     // parent's. fn_801F5790 compares it with getPlayerLayer_8023DE58(player).
     /* 0x000 vtable */
-    /* 0x004 */ s32 field_0x4;
+    /* 0x004 */ s32 mLayer_0x4;
     /* 0x008 */ s32 field_0x8; // also the spawner's 3rd argument; the update
                                // loop counts actors with 0 here and
-                               // field_0x1a8 == 1
+                               // mParamDstr_0x1a8 == 1
     /* 0x00C */ JGeometry::TVec3f mPos;      // spawn position; the actor's
                                              // sound object follows it
     /* 0x018 */ JGeometry::TVec3f mPrevPos;  // copy of mPos before update()
     /* 0x024 */ JGeometry::TVec3f mSpawnPos; // set only by the spawner
     /* 0x030 */ JGeometry::TVec3f field_0x30;
-    /* 0x03C */ JGeometry::TVec3f field_0x3c; // knock-back velocity (fn_801F37AC, fn_801F3D94)
+    /* 0x03C */ JGeometry::TVec3f mVel_0x3c; // knock-back velocity (fn_801F37AC, fn_801F3D94)
     /* 0x048 */ JGeometry::TVec3f field_0x48; // 1.0f
     /* 0x054 */ JGeometry::TVec3f field_0x54; // 1.0f
     /* 0x060 */ JGeometry::TBox2f mBox;  // (-8, -8)-(8, 8)
     /* 0x070 */ JGeometry::TBox2f mBox2; // zero; the spawner copies mBox here if
                                 // init() left it all zero
     // A third box (min i, max f), relative to mPos like mBox: fn_801F2618
-    // sweeps it against the map (it hands &field_0x80 to fn_801F23BC as the
+    // sweeps it against the map (it hands &mMapBox_0x80 to fn_801F23BC as the
     // box), fn_801F11B4 tests its width and height, and 182
     // actor units set it with four stfs (act_log_monitor_npc's init sets it
     // to the same values as mBox).
-    /* 0x080 */ JGeometry::TBox2f field_0x80;
+    /* 0x080 */ JGeometry::TBox2f mMapBox_0x80;
     // The spawner's 5th argument, a bit field each actor decodes. Unsigned:
     // getScreenFlagBit_0x3C takes its top 5 bits with srwi (0x801F4710), act_rat's draw
     // tests it with cmplwi (0x800F3D7C), and the written units shift it as
     // u32.
-    /* 0x090 */ u32 field_0x90;
+    /* 0x090 */ u32 mSpawnParam_0x90;
     // u16: 311 of the 324 game loads of an actor's 0x94 are lhz (e.g.
     // fn_801CC910's cmplwi tests against 0 and 3).
     /* 0x094 */ u16 field_0x94;
-    /* 0x098 */ s32 field_0x98;
+    /* 0x098 */ s32 mDir_0x98;
     /* 0x09C */ s32 field_0x9c;
     /* 0x0A0 */ s32 field_0xa0;
     /* 0x0A4 */ s32 field_0xa4;
@@ -576,28 +576,28 @@ public:
     /* 0x0B4 */ s32 field_0xb4;
     /* 0x0B8 */ s32 field_0xb8;
     /* 0x0BC */ s32 field_0xbc;
-    /* 0x0C0 */ s32 field_0xc0; // EnemyParam.csv column "efsz"
+    /* 0x0C0 */ s32 mParamEfsz_0xc0; // EnemyParam.csv column "efsz"
     /* 0x0C4 */ bool field_0xc4;  // update loop: updates the actor if set
     /* 0x0C8 */ s32 field_0xc8;
     /* 0x0CC */ u8 field_0xcc;  // update loop: updates the actor if set
     /* 0x0D0 */ s32 field_0xd0;
     /* 0x0D4 */ u8 field_0xd4;
-    /* 0x0D5 */ u8 field_0xd5; // players that hit during field_0xd8 (1 << player; fn_801F37AC)
-    /* 0x0D8 */ s32 field_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / fn_801F3D94)
-    /* 0x0DC */ s32 field_0xdc; // its start value
-    /* 0x0E0 */ s32 field_0xe0; // death timer (1 or 30; die_0x24 at 0)
-    /* 0x0E4 */ s32 field_0xe4; // frames to the next hit spark
-    /* 0x0E8 */ s32 field_0xe8; // hit sparks left
-    /* 0x0EC */ JGeometry::TVec3f field_0xec; // direction of the last hit (attacker to actor)
-    /* 0x0F8 */ s32 field_0xf8; // knock-back kind (0, 1 slide, 2 thrown)
-    /* 0x0FC */ s32 field_0xfc; // type of the last hit
+    /* 0x0D5 */ u8 mHitPlayers_0xd5; // players that hit during mHitTimer_0xd8 (1 << player; fn_801F37AC)
+    /* 0x0D8 */ s32 mHitTimer_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / fn_801F3D94)
+    /* 0x0DC */ s32 mHitTimerStart_0xdc; // its start value
+    /* 0x0E0 */ s32 mDeathTimer_0xe0; // death timer (1 or 30; die_0x24 at 0)
+    /* 0x0E4 */ s32 mSparkTimer_0xe4; // frames to the next hit spark
+    /* 0x0E8 */ s32 mSparksLeft_0xe8; // hit sparks left
+    /* 0x0EC */ JGeometry::TVec3f mHitDir_0xec; // direction of the last hit (attacker to actor)
+    /* 0x0F8 */ s32 mKnockbackKind_0xf8; // knock-back kind (0, 1 slide, 2 thrown)
+    /* 0x0FC */ s32 mHitType_0xfc; // type of the last hit
     /* 0x100 */ JPABaseEmitter* mEmitter100; // released by the destructor
     /* 0x104 */ JPABaseEmitter* mEmitter104; // released by the destructor
     /* 0x108 */ s32 mLife;       // EnemyParam.csv column "life"
-    /* 0x10C */ s32 field_0x10c; // the last attacking player (fn_801F37AC; die_0x24 credits it)
+    /* 0x10C */ s32 mLastAttacker_0x10c; // the last attacking player (fn_801F37AC; die_0x24 credits it)
     /* 0x110 */ s32 field_0x110; // spawner's 7th argument (default -1)
-    /* 0x114 */ s32 field_0x114; // EnemyParam.csv column "atcp"
-    /* 0x118 */ s32 field_0x118; // EnemyParam.csv column "atcn"
+    /* 0x114 */ s32 mParamAtcp_0x114; // EnemyParam.csv column "atcp"
+    /* 0x118 */ s32 mParamAtcn_0x118; // EnemyParam.csv column "atcn"
     // mAlive: the manager's update pass deletes the actor (virtual dtor)
     // when it is false, and its collision queries (fn_801F8108,
     // fn_801F82CC, ...) and draw pass skip it; fn_801F3668 clears it. Some
@@ -605,7 +605,7 @@ public:
     /* 0x11C */ bool mAlive;
     /* 0x11D */ bool mDrawEnabled; // the draw loop skips the actor when false
     /* 0x11E */ u8 field_0x11e;    // update loop: updates the actor if set
-    /* 0x11F */ u8 field_0x11f;    // draw/update loops: still drawn/updated
+    /* 0x11F */ u8 mUpdateWhilePaused_0x11f;    // draw/update loops: still drawn/updated
                                    // while the game is paused (fn_80134CC8)
     /* 0x120 */ SpriteParams_801F5AE0 mSpriteParams; // the actor's own
     /* 0x15C */ ActorBase_804A5770* mListPrev; // the manager's actor list at
@@ -621,9 +621,9 @@ public:
     /* 0x17D */ u8 field_0x17d;
     /* 0x180 */ s32 field_0x180; // 20
     /* 0x184 */ f32 field_0x184; // 40.0f
-    /* 0x188 */ s32 field_0x188; // death-explosion countdown, -1 when idle (updateBossDeath_0x2C)
-    /* 0x18C */ s32 field_0x18c; // EnemyParam.csv column "dasu"
-    /* 0x190 */ s32 field_0x190; // EnemyParam.csv column "voic"
+    /* 0x188 */ s32 mBossDeathTimer_0x188; // death-explosion countdown, -1 when idle (updateBossDeath_0x2C)
+    /* 0x18C */ s32 mParamDasu_0x18c; // EnemyParam.csv column "dasu"
+    /* 0x190 */ s32 mParamVoic_0x190; // EnemyParam.csv column "voic"
     /* 0x194 */ u8 field_0x194;
     /* 0x195 */ u8 field_0x195;
     /* 0x196 */ u8 field_0x196;
@@ -631,8 +631,8 @@ public:
     /* 0x19C */ s32 mSlot;    // index into ActorManager_804A5800::mActors
     /* 0x1A0 */ u32 mActorId; // ActorId; 'NULL' until spawned
     /* 0x1A4 */ s32 field_0x1a4;
-    /* 0x1A8 */ bool field_0x1a8; // EnemyParam.csv column "dstr" != 0
-    /* 0x1AC */ JGeometry::TVec3f field_0x1ac[4];
+    /* 0x1A8 */ bool mParamDstr_0x1a8; // EnemyParam.csv column "dstr" != 0
+    /* 0x1AC */ JGeometry::TVec3f mPlayerPos_0x1ac[4];
     /* 0x1DC */ ActorSub1DC_801EAD68 field_0x1dc;
 }; // Size: 0x230
 

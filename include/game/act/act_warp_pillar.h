@@ -17,8 +17,8 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230; // state: update()'s switch; init zeroes it
     /* 0x234 */ s32 field_0x234; // counter: init zeroes it, update adds 1
-    /* 0x238 */ s32 field_0x238; // field_0x90 bits 4-7 (init)
-    /* 0x23C */ s32 field_0x23c; // field_0x90 bits 8-11 (init)
+    /* 0x238 */ s32 field_0x238; // mSpawnParam_0x90 bits 4-7 (init)
+    /* 0x23C */ s32 field_0x23c; // mSpawnParam_0x90 bits 8-11 (init)
     /* 0x240 */ s32 field_0x240; // counter: init zeroes it, update sets 50
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248[4]; // one per player (init zeroes them; update's loop reads them)

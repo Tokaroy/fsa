@@ -31,8 +31,8 @@ void Poe_8049F330::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x94 = field_0x90 & 0xFF;
-    field_0x26c = (field_0x90 >> 8) & 0xFFFF;
+    field_0x94 = mSpawnParam_0x90 & 0xFF;
+    field_0x26c = (mSpawnParam_0x90 >> 8) & 0xFFFF;
     field_0x238[0] = 0;
     field_0x238[1] = 0;
     field_0x238[2] = 0;
@@ -67,8 +67,8 @@ void Poe_8049F330::init() {
         field_0x270 = 0.0f;
         mPos.z = 24.0f;
         field_0x238[0] = 30;
-        field_0x3c.x = 5.0f * JMASinShort(field_0x26c);
-        field_0x3c.y = 5.0f * JMACosShort(field_0x26c);
+        mVel_0x3c.x = 5.0f * JMASinShort(field_0x26c);
+        mVel_0x3c.y = 5.0f * JMACosShort(field_0x26c);
         field_0x230 = 0;
         break;
     case 4:
@@ -101,7 +101,7 @@ void Poe_8049F330::init() {
         break;
     }
     s32 row = 0;
-    if (field_0x3c.x < 0.0f) {
+    if (mVel_0x3c.x < 0.0f) {
         row = 1;
     }
     field_0x25c = lbl_8049F2B8[row * 8 + field_0x238[8]];
@@ -136,13 +136,13 @@ void Poe_8049F330::update() {
         field_0x234 = 0;
     }
     if (fn_801F3D94(1) != 0) {
-        if (field_0xe0 == 0x1D) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x1FF, 1, 1, NULL, NULL, true, 1.0f);
+        if (mDeathTimer_0xe0 == 0x1D) {
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1FF, 1, 1, NULL, NULL, true, 1.0f);
             if (field_0x94 == 9) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.7f) {
-                    getActorManager_801F856C()->spawnActor_801F9484('MTBO', field_0x4, &mPos, 1, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484('MTBO', mLayer_0x4, &mPos, 1, -1, -1);
                 } else {
-                    getActorManager_801F856C()->spawnActor_801F9484('HART', field_0x4, &mPos, 0, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484('HART', mLayer_0x4, &mPos, 0, -1, -1);
                 }
             }
         }
@@ -151,11 +151,11 @@ void Poe_8049F330::update() {
     switch (field_0x230) {
     case 0:
         addCalc2_801F71A4(&field_0x270, 255.0f, 0.3f, 10.0f);
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         if (field_0x238[0] != 0) {
             break;
         }
-        field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         field_0x230 = 1;
     case 1:
         addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x238[5]) + 20.0f, 0.3f, 1.0f);
@@ -210,7 +210,7 @@ void Poe_8049F330::update() {
         }
         fn_801EEC98(mSerial, &angle, &dir, NULL, NULL, 0, 0);
         if (dir < 0 || field_0x94 == 3 || field_0x94 == 7) {
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             f32 dx = mPos.x - field_0x260.x;
             if (std::sqrtf(dx * dx) > 64.0f) {
                 if (mPos.x > field_0x260.x) {
@@ -223,15 +223,15 @@ void Poe_8049F330::update() {
             JGeometry::TVec3f d;
             fn_801EE8F4(&d, NULL, 0);
             if (d.x < 0.0f) {
-                field_0x3c.x -= 0.01f;
+                mVel_0x3c.x -= 0.01f;
             } else {
-                field_0x3c.x += 0.01f;
+                mVel_0x3c.x += 0.01f;
             }
             if (field_0x94 != 2 && field_0x94 != 6) {
                 if (d.y < 0.0f) {
-                    field_0x3c.y -= 0.01f;
+                    mVel_0x3c.y -= 0.01f;
                 } else {
-                    field_0x3c.y += 0.01f;
+                    mVel_0x3c.y += 0.01f;
                 }
             }
             field_0x260.x = mPos.x;
@@ -239,12 +239,12 @@ void Poe_8049F330::update() {
             field_0x260.z = mPos.z;
         }
         if (field_0x238[6] != 0) {
-            field_0x3c.x -= 0.05f;
+            mVel_0x3c.x -= 0.05f;
         } else {
-            field_0x3c.x += 0.05f;
+            mVel_0x3c.x += 0.05f;
         }
-        field_0x3c.scale(0.97f);
-        mPos.add(field_0x3c);
+        mVel_0x3c.scale(0.97f);
+        mPos.add(mVel_0x3c);
         if (field_0x94 >= 4 && field_0x94 <= 7) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }
@@ -255,7 +255,7 @@ void Poe_8049F330::update() {
         fn_801EE8F4(NULL, &dist, 0);
         if (dist < 16.0f) {
             field_0x270 = 200.0f;
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x1FD, 1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1FD, 1, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x4001D, 0);
             field_0x230 = 1;
         }
@@ -264,7 +264,7 @@ void Poe_8049F330::update() {
     }
     if (field_0x238[3] == 0) {
         dir = 0;
-        if (field_0x3c.x < 0.0f) {
+        if (mVel_0x3c.x < 0.0f) {
             dir = 1;
         }
         field_0x238[3] = lbl_8049F2F8[field_0x238[8]];
@@ -298,7 +298,7 @@ void Poe_8049F330::draw() {
     if (field_0x230 == 1 || field_0x230 == 0) {
         SpriteParams_801F5AE0 params;
         Mtx mtx;
-        drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 40.0f);
+        drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 40.0f);
         params.field_0x10.a = (u8)field_0x270;
         params.field_0x30 = 9;
         if (field_0x94 == 3 || field_0x94 == 7) {

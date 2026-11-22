@@ -526,7 +526,7 @@ void cls_804B1634::scaleFrames(f32 w, f32 h) {
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
 void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     MessageInf1_804AF070* inf1 =
-        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->field_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
+        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[id].textOffset + 8);
     // The font width of the text box 'Twt01' (J2DTextBox::mFontSize at 0x11C).
     f32 fontSize = static_cast<J2DTextBox*>(field_0x8->search('Twt01'))->mFontSize.x;

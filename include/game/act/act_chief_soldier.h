@@ -18,16 +18,16 @@ public:
     /* 0x08 */ virtual ~ChiefSoldier_804A0B90();
     // 0x80172900 (game/act_chief_soldier.cpp): the draw override. Draws the
     // "enemy_gc_sob.bin" sprite at mPos, through the visible box and a
-    // SpriteParams, unless field_0x90 is 7 or 8 (fn_80172BC8) or lbl_8053AB60 is 1.
+    // SpriteParams, unless mSpawnParam_0x90 is 7 or 8 (fn_80172BC8) or lbl_8053AB60 is 1.
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24();
     // 0x801744E4 (game/act_chief_soldier.cpp): vtable slot 0x44, where
-    // ActorBase has vfunc_0x44. Runs the spawned state (field_0x90 2 or 3)
+    // ActorBase has vfunc_0x44. Runs the spawned state (mSpawnParam_0x90 2 or 3)
     // and, once mLife is 0 or less, clears the actor at field_0x238.
     /* 0x44 */ virtual void vfunc_0x44();
     // 0x80172BC8 (game/act_chief_soldier.cpp): draws the "enemy_gc_sob.bin"
     // sprite at mPos with a 3x3 scale matrix (2.0, or 1.0 while field_0x23c
-    // is 0), unless field_0x90 is 7 or the layer (field_0x4) is 8 or more.
+    // is 0), unless mSpawnParam_0x90 is 7 or the layer (mLayer_0x4) is 8 or more.
     void fn_80172BC8();
     // 0x80154490-0x801544C0 (game/act_sword_soldier.cpp, the first unit to need
     // them): the sword soldier (SLR1) calls them on the SLR4 actor it found.
@@ -36,8 +36,8 @@ public:
     s32 fn_801544AC() const;
     void fn_801544B4();
     s32 fn_801544C0();
-    // The spawn type, the low byte of field_0x90 (compared signed: cmpwi).
-    s32 getType() const { return field_0x90 & 0xFF; }
+    // The spawn type, the low byte of mSpawnParam_0x90 (compared signed: cmpwi).
+    s32 getType() const { return mSpawnParam_0x90 & 0xFF; }
 
     /* 0x0C */ virtual void init();   // fn_80174B44
     /* 0x14 */ virtual void update(); // 0x80172DC4

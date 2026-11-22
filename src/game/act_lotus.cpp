@@ -32,11 +32,11 @@ void Lotus_804AC330::init() {
     for (int i = 0; i < 4; i++) {
         field_0x25e[i] = 0;
     }
-    field_0x244 = field_0x90 & 0xF;
-    field_0x248 = (field_0x90 >> 4) & 0xF;
-    field_0x250 = (field_0x90 >> 8) & 0xF;
+    field_0x244 = mSpawnParam_0x90 & 0xF;
+    field_0x248 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x250 = (mSpawnParam_0x90 >> 8) & 0xF;
     field_0x254 = field_0x250;
-    field_0x258 = (field_0x90 >> 12) & 0xFF;
+    field_0x258 = (mSpawnParam_0x90 >> 12) & 0xFF;
     field_0x24c = 0;
     field_0x25c = 0;
     field_0x262 = 0;
@@ -65,7 +65,7 @@ void Lotus_804AC330::init() {
 // FIXME: 97.17 % (missing/extra: 422 vs 421 instrs). Register allocation in the player loop copies i into r26 (1 extra mr), and contains() loads mBox.i.y/f.x/f.y per branch instead of upfront.
 void Lotus_804AC330::update() {
     if (field_0x230 == 1) {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
     }
     if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
         field_0x230 = 2;
@@ -75,16 +75,16 @@ void Lotus_804AC330::update() {
         if (field_0x248 != 0 && field_0x24c <= 0) {
             switch (field_0x254) {
             case 0:
-                field_0x3c.set(0.5f * (f32)field_0x248, 0.0f, 0.0f);
+                mVel_0x3c.set(0.5f * (f32)field_0x248, 0.0f, 0.0f);
                 break;
             case 1:
-                field_0x3c.set(0.5f * -(f32)field_0x248, 0.0f, 0.0f);
+                mVel_0x3c.set(0.5f * -(f32)field_0x248, 0.0f, 0.0f);
                 break;
             case 2:
-                field_0x3c.set(0.0f, 0.5f * (f32)field_0x248, 0.0f);
+                mVel_0x3c.set(0.0f, 0.5f * (f32)field_0x248, 0.0f);
                 break;
             case 3:
-                field_0x3c.set(0.0f, 0.5f * -(f32)field_0x248, 0.0f);
+                mVel_0x3c.set(0.0f, 0.5f * -(f32)field_0x248, 0.0f);
                 break;
             }
             field_0x24c = 1;
@@ -94,9 +94,9 @@ void Lotus_804AC330::update() {
     case 1:
         if ((field_0x254 == field_0x250 && PSVECDistance(&mPos, &(mSpawnPos + field_0x234)) >= 16.0f * (f32)field_0x258) ||
             (field_0x254 != field_0x250 && PSVECDistance(&mPos, &(mSpawnPos + field_0x234)) <= 0.0f)) {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x254 ^= 1;
             field_0x24c = 60;
             field_0x230 = 0;

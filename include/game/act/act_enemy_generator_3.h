@@ -16,11 +16,11 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;     // 0 wait, 1/2 spawn timers, 4 cooldown
-    /* 0x234 */ u32 mTypeIndex; // field_0x90 & 0x7F: index of the spawned actor type
-    /* 0x238 */ s32 mInterval;  // field_0x90 bits 7-15: frames between spawns
-    /* 0x23C */ s32 mCount;     // field_0x90 bits 16-19: spawns per round
-    /* 0x240 */ s32 mMode;      // field_0x90 bits 20-23
-    /* 0x244 */ s32 mFlag;      // field_0x90 bit 24
+    /* 0x234 */ u32 mTypeIndex; // mSpawnParam_0x90 & 0x7F: index of the spawned actor type
+    /* 0x238 */ s32 mInterval;  // mSpawnParam_0x90 bits 7-15: frames between spawns
+    /* 0x23C */ s32 mCount;     // mSpawnParam_0x90 bits 16-19: spawns per round
+    /* 0x240 */ s32 mMode;      // mSpawnParam_0x90 bits 20-23
+    /* 0x244 */ s32 mFlag;      // mSpawnParam_0x90 bit 24
     /* 0x248 */ s32 mRemaining; // spawns left in this round
     /* 0x24C */ s32 mTimer;
     /* 0x250 */ u32 mActorId;   // ActorId of the spawned type

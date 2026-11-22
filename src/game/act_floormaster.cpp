@@ -86,10 +86,10 @@ Floormaster_804A6004::~Floormaster_804A6004() {
 
 void Floormaster_804A6004::init() {
     EnemyBase_804A4808::init();
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         mFlags |= 0x2000;
-        f32 y = 8.0f + (f32)(((field_0x90 >> 8) & 0x3F) * 8);
-        f32 x = 8.0f + (f32)(((field_0x90 >> 16) & 0x3F) * 8);
+        f32 y = 8.0f + (f32)(((mSpawnParam_0x90 >> 8) & 0x3F) * 8);
+        f32 x = 8.0f + (f32)(((mSpawnParam_0x90 >> 16) & 0x3F) * 8);
         field_0x2a8 = x;
         field_0x2ac = y;
     }
@@ -99,9 +99,9 @@ void Floormaster_804A6004::init() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x50303;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -145,7 +145,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         mTargetSpeed = 1.0f;
-        mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter2b0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 1.0f);
         if (mEmitter2b0 != NULL) {
             setEmitterColor();
         }
@@ -464,8 +464,8 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
                 mFlags |= 0x4000;
                 field_0x2c0 = field_0x2b8;
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x1B0, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x548, 0, -1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1B0, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x548, 0, -1, NULL, NULL, true, 1.0f);
             fn_8020ED5C(10);
         }
         break;
@@ -528,14 +528,14 @@ void Floormaster_804A6004::updateAnim_0x94() {
 }
 
 void Floormaster_804A6004::calcVelocity_0x88() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     switch (mState) {
     case 1:
         if (field_0x2b8 >= 0) {
             JGeometry::TVec2f vec;
             fn_801D00B4(field_0x2b8, &vec, 1.0f);
-            field_0x3c.x = vec.x;
-            field_0x3c.y = vec.y;
+            mVel_0x3c.x = vec.x;
+            mVel_0x3c.y = vec.y;
         }
         break;
     }
@@ -556,19 +556,19 @@ bool Floormaster_804A6004::vfunc_0x58() {
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
 
-    hit = fn_8023AE34(&box, field_0x4, &hitPos);
+    hit = fn_8023AE34(&box, mLayer_0x4, &hitPos);
     if (hit >= 0) {
         b1 = fn_801CC820(hit, &vel48);
     } else {
-        hit = fn_8023AA18(&box, field_0x4, &hitPos);
+        hit = fn_8023AA18(&box, mLayer_0x4, &hitPos);
         if (hit >= 0) {
             b2 = true;
         } else {
-            hit = fn_8023AC74(&box, field_0x4, &hitPos);
+            hit = fn_8023AC74(&box, mLayer_0x4, &hitPos);
             if (hit >= 0) {
                 fn_801CC538(hit, &hitPos, &vel54, &actorSerial);
             } else {
-                hit = fn_8023AD54(&box, field_0x4, &hitPos);
+                hit = fn_8023AD54(&box, mLayer_0x4, &hitPos);
                 if (hit >= 0) {
                     fn_801CC640(hit, &actorSerial, &vel48);
                 }
@@ -593,7 +593,7 @@ bool Floormaster_804A6004::vfunc_0x58() {
 
         if (hitOccurred) {
             JGeometry::TVec3f effectPos(hitPos.x, hitPos.y, 0.0f);
-            fn_801CB538(field_0x4, &effectPos, 0, 0);
+            fn_801CB538(mLayer_0x4, &effectPos, 0, 0);
         }
         if (hitOccurred) {
             startSound_801F0E34(0x5007D, 0);
@@ -626,7 +626,7 @@ u8 Floormaster_804A6004::checkHitByPlayer_0x5C() {
                 if (field_0x1dc.fn_801EAC20(i)) {
                     JGeometry::TVec3f effectPos(pos.x, pos.y, 0.0f);
                     result = 1;
-                    fn_801CB538(field_0x4, &effectPos, 0, 0);
+                    fn_801CB538(mLayer_0x4, &effectPos, 0, 0);
                 }
             }
         }
@@ -676,7 +676,7 @@ void Floormaster_804A6004::draw() {
             params.mMtx = mtx;
         }
         s32 frame = mAnim.mCel + 0x321;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         }

@@ -24,8 +24,8 @@ public:
     // fn_80125648 in the vtable; fn_80131D98 (game/tu_80131D98.cpp) calls it
     // and converts the byte result to bool.
     /* 0x60 */ virtual u8 vfunc_0x60();
-    // fn_8012562C: copies the low byte of field_0x90 to field_0x35c and bits
-    // 5-9 (from the top) of field_0x90 to field_0x3cc.
+    // fn_8012562C: copies the low byte of mSpawnParam_0x90 to field_0x35c and bits
+    // 5-9 (from the top) of mSpawnParam_0x90 to field_0x3cc.
     /* 0x64 */ virtual void vfunc_0x64();
     /* 0x68 */ virtual void vfunc_0x68();
     /* 0x6C */ virtual s32 vfunc_0x6C(s32 state);
@@ -48,7 +48,7 @@ public:
 
     /* 0x3C4 */ s32 field_0x3c4; // cleared by the constructor
     /* 0x3C8 */ s32 field_0x3c8; // cleared by the constructor
-    /* 0x3CC */ s32 field_0x3cc; // field_0x90 bits 5-9 (from the top), set by vfunc_0x64
+    /* 0x3CC */ s32 field_0x3cc; // mSpawnParam_0x90 bits 5-9 (from the top), set by vfunc_0x64
     /* 0x3D0 */ s32 field_0x3d0;
 }; // Size: 0x3D4
 

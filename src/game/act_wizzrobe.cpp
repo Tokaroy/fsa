@@ -77,10 +77,10 @@ void Wizzrobe_804A0EDC::vfunc_0x44() {
 }
 
 void Wizzrobe_804A0EDC::init() {
-    field_0x2c8 = (field_0x90 >> 22) & 0x1F;
-    field_0x94 = field_0x90 & 0xFF;
+    field_0x2c8 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x94 = mSpawnParam_0x90 & 0xFF;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x24c = 0;
     field_0x250 = 0;
     field_0x254 = 0;
@@ -114,9 +114,9 @@ void Wizzrobe_804A0EDC::init() {
     field_0x2e8.z = 0.0f;
     field_0x2e8.y = 0.0f;
     field_0x2e8.x = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x2f4.set(mPos);
     field_0x2e5 = 0;
     switch (field_0x94) {
@@ -124,9 +124,9 @@ void Wizzrobe_804A0EDC::init() {
     default:
         field_0x250 = 3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         field_0x250 &= 3;
-        if (field_0x90 >> 27) {
+        if (mSpawnParam_0x90 >> 27) {
             if (!isScreenFlagSet_0x34()) {
-                field_0x1a8 = 0;
+                mParamDstr_0x1a8 = 0;
                 field_0x2e5 = 1;
             }
         }
@@ -134,9 +134,9 @@ void Wizzrobe_804A0EDC::init() {
         break;
     case 10:
     case 11:
-        field_0x1a8 = 0;
+        mParamDstr_0x1a8 = 0;
         mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
-        field_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
+        mMapBox_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
         mLife = 10000;
         field_0x238 = 10;
         field_0x23c = 10;
@@ -148,10 +148,10 @@ void Wizzrobe_804A0EDC::init() {
         field_0x2dc = 1.2f;
         // fallthrough
     case 21:
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x506, 0, 1, NULL, NULL, true, field_0x2dc);
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x507, 0, 1, NULL, NULL, true, field_0x2dc);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x508, 0, 1, NULL, NULL, true, 1.0f);
-        field_0x1a8 = 0;
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x506, 0, 1, NULL, NULL, true, field_0x2dc);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x507, 0, 1, NULL, NULL, true, field_0x2dc);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x508, 0, 1, NULL, NULL, true, 1.0f);
+        mParamDstr_0x1a8 = 0;
         field_0x238 = 10;
         mLife = 10000;
         field_0x230 = 13;
@@ -161,18 +161,18 @@ void Wizzrobe_804A0EDC::init() {
         field_0x2dc = 1.2f;
         // fallthrough
     case 23:
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x506, 0, 1, NULL, NULL, true, field_0x2dc);
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x507, 0, 1, NULL, NULL, true, field_0x2dc);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x508, 0, 1, NULL, NULL, true, 1.0f);
-        field_0x1a8 = 0;
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x506, 0, 1, NULL, NULL, true, field_0x2dc);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x507, 0, 1, NULL, NULL, true, field_0x2dc);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x508, 0, 1, NULL, NULL, true, 1.0f);
+        mParamDstr_0x1a8 = 0;
         field_0x238 = 30;
         mLife = 10000;
         field_0x230 = 15;
         break;
     case 30:
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x50d, 1, 1, NULL, NULL, true, field_0x2dc);
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x50e, 1, 1, NULL, NULL, true, field_0x2dc);
-        field_0x1a8 = 0;
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50d, 1, 1, NULL, NULL, true, field_0x2dc);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50e, 1, 1, NULL, NULL, true, field_0x2dc);
+        mParamDstr_0x1a8 = 0;
         field_0x23c = 40;
         mLife = 10000;
         field_0x230 = 16;
@@ -187,11 +187,11 @@ void Wizzrobe_804A0EDC::update() {
     u16 angle = 0;
     f32 dist = 0.0f;
 
-    if (field_0x2e5 == 1 && (field_0x90 >> 27) != 0) {
+    if (field_0x2e5 == 1 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
             return;
         }
-        field_0x1a8 = 1;
+        mParamDstr_0x1a8 = 1;
         field_0x2e5 = 0;
     }
 
@@ -213,8 +213,8 @@ void Wizzrobe_804A0EDC::update() {
             if (prevLife != mLife) {
                 hit = true;
             } else {
-                field_0xd8 = 0;
-                field_0xdc = 0;
+                mHitTimer_0xd8 = 0;
+                mHitTimerStart_0xdc = 0;
             }
         }
         if (hit == true || fn_801F2FAC()) {
@@ -258,7 +258,7 @@ void Wizzrobe_804A0EDC::update() {
             while (field_0x2c4 > 0 && count < 100 && idx >= 0) {
                 if (field_0x2c4 >= lbl_804A0EBC[idx]) {
                     field_0x2c4 -= lbl_804A0EBC[idx];
-                    s32 s = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, idx | 0x220000);
+                    s32 s = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, idx | 0x220000);
                     if (s >= 0) {
                         ActorBase_804A5770* rupy = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (rupy != NULL) {
@@ -266,7 +266,7 @@ void Wizzrobe_804A0EDC::update() {
                             vel.x = 2.0f - 4.0f * fn_80154744();
                             vel.y = 2.0f - 4.0f * fn_80154744();
                             vel.z = 5.0f * fn_80154744() + 10.0f;
-                            rupy->field_0x3c = vel;
+                            rupy->mVel_0x3c = vel;
                         }
                     }
                 } else {
@@ -279,12 +279,12 @@ void Wizzrobe_804A0EDC::update() {
     }
 
     if (field_0x94 != 10 && field_0x94 != 11 && field_0x94 != 22 && field_0x94 != 23 && field_0x94 != 31) {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2e8.x, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2e8.y, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2e8.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2e8.y, 0.3f, 1.0f);
         addCalc2_801F71A4(&field_0x2d0, field_0x2d4, 0.5f, field_0x2d8);
     }
 
-    mPos.add(field_0x3c);
+    mPos.add(mVel_0x3c);
 
     if (field_0x2e4 == 1 || field_0x94 == 10 || field_0x94 == 11) {
         fn_801F2B7C(-100, -1, 1);
@@ -334,7 +334,7 @@ void Wizzrobe_804A0EDC::update() {
     case 1:
         if (field_0x23c == 30) {
             fn_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 1);
-            fn_80154590(&field_0x80, -2.0f, -2.0f, 2.0f, 2.0f);
+            fn_80154590(&mMapBox_0x80, -2.0f, -2.0f, 2.0f, 2.0f);
             JGeometry::TVec3f savedPos;
             fn_80178F10(&savedPos, &mPos);
             bool found = false;
@@ -350,22 +350,22 @@ void Wizzrobe_804A0EDC::update() {
                     if (!fn_801F2618(NULL, false)) {
                         fn_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 1);
                         if (dir != -1) {
-                            field_0x98 = dir;
+                            mDir_0x98 = dir;
                         }
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x50A, 0, 1, NULL, NULL, true, 1.0f);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x50B, 0, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50A, 0, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50B, 0, 1, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x40077, 0);
-                        fn_80154590(&field_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
+                        fn_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
                         return;
                     }
                 }
             }
-            fn_80154590(&field_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
+            fn_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
             field_0x23c = 31;
             fn_80178F10(&mPos, &savedPos);
         }
         if (field_0x23c == 0) {
-            field_0x260 = lbl_804A0DFC[field_0x98 * 4 + field_0x24c];
+            field_0x260 = lbl_804A0DFC[mDir_0x98 * 4 + field_0x24c];
             field_0x2d0 = 255.0f;
             field_0x2d4 = 255.0f;
             field_0x2d8 = 5.0f;
@@ -404,7 +404,7 @@ void Wizzrobe_804A0EDC::update() {
                     }
                 }
                 if (dir >= 0) {
-                    field_0x98 = dir;
+                    mDir_0x98 = dir;
                 }
                 if (field_0x94 == 3) {
                     if (field_0x248 == 0) {
@@ -494,15 +494,15 @@ void Wizzrobe_804A0EDC::update() {
                 }
                 switch (kind) {
                 case 5: {
-                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BOIB, field_0x4, &mPos, 0, -1, -1);
+                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BOIB, mLayer_0x4, &mPos, 0, -1, -1);
                     if (s >= 0) {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         startSound_801F0E34(0x30035, 0);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(field_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(field_0x98));
-                            a->field_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
-                            a->field_0x98 = field_0x98;
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                            a->mDir_0x98 = mDir_0x98;
                         }
                         field_0x244 = 60;
                         field_0x230 = 8;
@@ -513,14 +513,14 @@ void Wizzrobe_804A0EDC::update() {
                     spawnArg = 11;
                     // fallthrough
                 case 0: {
-                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, field_0x4, &mPos, spawnArg, -1, -1);
+                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, mLayer_0x4, &mPos, spawnArg, -1, -1);
                     if (s >= 0) {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(field_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(field_0x98));
-                            a->field_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
-                            a->field_0x98 = field_0x98;
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                            a->mDir_0x98 = mDir_0x98;
                         }
                         startSound_801F0E34(0x40079, 0);
                         field_0x244 = 60;
@@ -545,7 +545,7 @@ void Wizzrobe_804A0EDC::update() {
                     } else {
                         field_0x238 += 10;
                     }
-                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, field_0x4, &spawnPos, spawnArg2, -1, -1);
+                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, mLayer_0x4, &spawnPos, spawnArg2, -1, -1);
                     if (field_0x268 >= 0) {
                         if (field_0x270[0] < 0) {
                             field_0x270[0] = field_0x268;
@@ -577,16 +577,16 @@ void Wizzrobe_804A0EDC::update() {
             }
         }
         if (field_0x23c == 0) {
-            field_0x260 = lbl_804A0D50[field_0x98 * 5 + field_0x24c];
+            field_0x260 = lbl_804A0D50[mDir_0x98 * 5 + field_0x24c];
         }
         break;
     case 8:
         field_0x2e8.z = 0.0f;
         field_0x2e8.y = 0.0f;
         field_0x2e8.x = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         if (field_0x244 != 0) {
             break;
         }
@@ -597,7 +597,7 @@ void Wizzrobe_804A0EDC::update() {
         if (field_0x238 == 0) {
             field_0x2e4 = 0;
             field_0xb0 = 0;
-            field_0x260 = lbl_804A0E4C[field_0x98 * 4 + field_0x24c];
+            field_0x260 = lbl_804A0E4C[mDir_0x98 * 4 + field_0x24c];
             field_0x238 = lbl_804A0E8C[field_0x24c];
             field_0x24c++;
             field_0x2d4 = 0.0f;
@@ -625,16 +625,16 @@ void Wizzrobe_804A0EDC::update() {
         if (mEmitters[0] == NULL) {
             switch (field_0x94) {
             case 10:
-                mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x50C, 1, 1, NULL, NULL, true, 1.0f);
+                mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50C, 1, 1, NULL, NULL, true, 1.0f);
                 break;
             case 11:
-                mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x19B, 1, 1, NULL, NULL, true, 1.0f);
-                mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x19B, 1, 1, NULL, NULL, true, 1.0f);
+                mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19B, 1, 1, NULL, NULL, true, 1.0f);
+                mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19B, 1, 1, NULL, NULL, true, 1.0f);
                 break;
             }
             if (mEmitters[0] != NULL) {
                 if (field_0x94 == 10) {
-                    switch (field_0x98) {
+                    switch (mDir_0x98) {
                     case 0: {
                         JGeometry::TVec3f v;
                         fn_80178F00(&v, 1.0f, 0.0f, 0.0f);
@@ -662,13 +662,13 @@ void Wizzrobe_804A0EDC::update() {
                     }
                 } else {
                     JGeometry::TVec3<s16> rot;
-                    fn_80178ED4(&rot, 0, lbl_804A0EAC[field_0x98], 0);
+                    fn_80178ED4(&rot, 0, lbl_804A0EAC[mDir_0x98], 0);
                     mEmitters[0]->setGlobalRotation(rot);
                 }
             }
             if (field_0x94 == 11 && mEmitters[1] != NULL) {
                 JGeometry::TVec3<s16> rot;
-                fn_80178ED4(&rot, 0, lbl_804A0EAC[field_0x98], 0);
+                fn_80178ED4(&rot, 0, lbl_804A0EAC[mDir_0x98], 0);
                 mEmitters[1]->setGlobalRotation(rot);
             }
         } else {
@@ -678,20 +678,20 @@ void Wizzrobe_804A0EDC::update() {
                 if (field_0x238 == 0) {
                     JGeometry::TVec3f p;
                     fn_80178F10(&p, &mPos);
-                    if ((field_0x98 & 2) == 0) {
+                    if ((mDir_0x98 & 2) == 0) {
                         p.y += 8.0f;
                     }
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, field_0x4, &p, 0xE0C0, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &p, 0xE0C0, -1, -1);
                     field_0x238 = 5;
                 }
             }
         }
         {
             u8 hitWall = fn_801F2618(NULL, false);
-            if (field_0x240 == 0 || (field_0x23c == 0 && fn_801F6758(&mPos, field_0x4, 0.0f)) || hitWall) {
+            if (field_0x240 == 0 || (field_0x23c == 0 && fn_801F6758(&mPos, mLayer_0x4, 0.0f)) || hitWall) {
                 mAlive = false;
                 if (field_0x94 == 11) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
                 }
                 if (mEmitters[0] != NULL) {
                     mEmitters[0]->becomeInvalidEmitter();
@@ -710,7 +710,7 @@ void Wizzrobe_804A0EDC::update() {
             if (mEmitters[1] != NULL) {
                 mEmitters[1]->becomeInvalidEmitter();
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
             mAlive = false;
         } else if (field_0x238 == 0) {
             fn_801EEC98(mSerial, &angle, &dir, NULL, &player, 0, 1);
@@ -726,7 +726,7 @@ void Wizzrobe_804A0EDC::update() {
                 if (mEmitters[1] != NULL) {
                     mEmitters[1]->becomeInvalidEmitter();
                 }
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
                 mAlive = false;
             }
         }
@@ -746,7 +746,7 @@ void Wizzrobe_804A0EDC::update() {
             if (mEmitters[1] != NULL) {
                 mEmitters[1]->becomeInvalidEmitter();
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
             mAlive = false;
         } else {
             if (dir != -1) {
@@ -757,9 +757,9 @@ void Wizzrobe_804A0EDC::update() {
                 field_0x2e8.z = 0.0f;
                 field_0x2e8.y = 0.0f;
                 field_0x2e8.x = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x24c = 0;
                 field_0x250 = 0;
                 s32 num = 4;
@@ -769,7 +769,7 @@ void Wizzrobe_804A0EDC::update() {
                     num = 20;
                 }
                 for (s32 i = 0; i < num; i++) {
-                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, field_0x4, &mPos, spawnArg, -1, -1);
+                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_WIZR, mLayer_0x4, &mPos, spawnArg, -1, -1);
                     s32 s = field_0x268;
                     if (s >= 0) {
                         Wizzrobe_804A0EDC* a = (Wizzrobe_804A0EDC*)getActorManager_801F856C()->findActorBySerial_801F666C(s);
@@ -785,7 +785,7 @@ void Wizzrobe_804A0EDC::update() {
                 if (mEmitters[1] != NULL) {
                     mEmitters[1]->becomeInvalidEmitter();
                 }
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
                 if (spawnArg == 22) {
                     s32 parentSerial = field_0x26c;
                     if (parentSerial >= 0) {
@@ -815,7 +815,7 @@ void Wizzrobe_804A0EDC::update() {
             JGeometry::TVec3f p;
             fn_80178F10(&p, &mPos);
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_801F2618(NULL, false) && !fn_801F6758(&p, field_0x4, 0.0f)) {
+                if (!fn_801F2618(NULL, false) && !fn_801F6758(&p, mLayer_0x4, 0.0f)) {
                     u32 spawnId = ACTOR_POPO;
                     s32 spawnArg = 1;
                     if (field_0x94 == 22) {
@@ -825,7 +825,7 @@ void Wizzrobe_804A0EDC::update() {
                         spawnId = ACTOR_POOH;
                         spawnArg = 0;
                     }
-                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(spawnId, field_0x4, &p, spawnArg, -1, -1);
+                    field_0x268 = getActorManager_801F856C()->spawnActor_801F9484(spawnId, mLayer_0x4, &p, spawnArg, -1, -1);
                     if (field_0x268 >= 0) {
                         if (mEmitters[0] != NULL) {
                             mEmitters[0]->becomeInvalidEmitter();
@@ -833,11 +833,11 @@ void Wizzrobe_804A0EDC::update() {
                         if (mEmitters[1] != NULL) {
                             mEmitters[1]->becomeInvalidEmitter();
                         }
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
                         if (field_0x94 == 22) {
                             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x268);
                             if (a != NULL) {
-                                a->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -0.1f);
+                                a->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -0.1f);
                             }
                         }
                         s32 parentSerial = field_0x26c;
@@ -881,7 +881,7 @@ void Wizzrobe_804A0EDC::update() {
                 dist = -1.0f;
                 dir = -1;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && field_0x4 == getPlayerLayer_8023DE58(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
+                    if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
                         f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                         f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                         if (-1.0f == dist || dist > fn_80154378(dx * dx + dy * dy)) {
@@ -897,12 +897,12 @@ void Wizzrobe_804A0EDC::update() {
                     }
                 }
                 if (dir != -1) {
-                    field_0x98 = dir;
+                    mDir_0x98 = dir;
                 }
                 if (player >= 0 && fn_80236228(player) > 0) {
                     fn_802362C4(player, -1);
                     const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(bestPlayer);
-                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, pPos, 0x1B0000, -1, -1);
+                    s32 s = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, pPos, 0x1B0000, -1, -1);
                     if (s >= 0) {
                         Wizzrobe_804A0EDC* rupy = (Wizzrobe_804A0EDC*)getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (rupy != NULL) {

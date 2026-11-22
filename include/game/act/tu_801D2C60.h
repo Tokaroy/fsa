@@ -19,8 +19,8 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
 
-    // 0x801D2CF0, no caller in the written units. Sets field_0x3c to
-    // (v->x, v->y, 0) and field_0x98 to its direction (fn_801CF0F4).
+    // 0x801D2CF0, no caller in the written units. Sets mVel_0x3c to
+    // (v->x, v->y, 0) and mDir_0x98 to its direction (fn_801CF0F4).
     void fn_801D2CF0(const JGeometry::TVec2f* v);
 
     // update() counts it down after the shot connects; the actor

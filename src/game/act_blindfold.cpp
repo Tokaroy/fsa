@@ -15,15 +15,15 @@ static inline bool contains(const JGeometry::TBox2f& box, JGeometry::TVec3f p) {
 }
 
 void Blindfold_804A8EF8::init() {
-    field_0x234 = field_0x90 & 0xFF;
-    field_0x238 = (field_0x90 >> 8 & 0xFF) + 1;
-    field_0x23c = (field_0x90 >> 16 & 0xFF) + 1;
-    if (field_0x90 & 0x1000000) {
+    field_0x234 = mSpawnParam_0x90 & 0xFF;
+    field_0x238 = (mSpawnParam_0x90 >> 8 & 0xFF) + 1;
+    field_0x23c = (mSpawnParam_0x90 >> 16 & 0xFF) + 1;
+    if (mSpawnParam_0x90 & 0x1000000) {
         field_0x240 = true;
     } else {
         field_0x240 = false;
     }
-    if (field_0x90 & 0x2000000) {
+    if (mSpawnParam_0x90 & 0x2000000) {
         field_0x241 = true;
     } else {
         field_0x241 = false;
@@ -34,7 +34,7 @@ void Blindfold_804A8EF8::init() {
     mBox.i.y = -halfHeight;
     mBox.f.x = halfWidth;
     mBox.f.y = halfHeight;
-    if (field_0x90 & 0x4000000) {
+    if (mSpawnParam_0x90 & 0x4000000) {
         field_0x242 = true;
         field_0x230 = 4;
     } else {
@@ -78,8 +78,8 @@ void Blindfold_804A8EF8::update() {
         break;
     case 1:
         if (field_0x240) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30003, 0);
             field_0x240 = false;
             mAlive = false;
@@ -154,7 +154,7 @@ void Blindfold_804A8EF8::draw() {
     params.field_0x14.a = field_0x244;
     params.mMtx = mtx;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "black.bti");
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
 }

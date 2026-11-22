@@ -16,11 +16,11 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230;  // not touched by this unit
-    /* 0x234 */ s32 mType;        // field_0x90 & 0x3F: 0 sets the cell tile, 1 tile from table, 2 actor-id slot, 3 despawn
-    /* 0x238 */ s32 field_0x238;  // (field_0x90 >> 6) & 0xF, unused here
-    /* 0x23C */ s32 mTileIndex;   // (field_0x90 >> 10) & 0xF: index into the first tile table
-    /* 0x240 */ s32 mTable;       // (field_0x90 >> 14) & 0xF: index into the 2nd/3rd tile tables
-    /* 0x244 */ s32 mSound;       // (field_0x90 >> 18) & 0xF: selects the sound played in update()
+    /* 0x234 */ s32 mType;        // mSpawnParam_0x90 & 0x3F: 0 sets the cell tile, 1 tile from table, 2 actor-id slot, 3 despawn
+    /* 0x238 */ s32 field_0x238;  // (mSpawnParam_0x90 >> 6) & 0xF, unused here
+    /* 0x23C */ s32 mTileIndex;   // (mSpawnParam_0x90 >> 10) & 0xF: index into the first tile table
+    /* 0x240 */ s32 mTable;       // (mSpawnParam_0x90 >> 14) & 0xF: index into the 2nd/3rd tile tables
+    /* 0x244 */ s32 mSound;       // (mSpawnParam_0x90 >> 18) & 0xF: selects the sound played in update()
     /* 0x248 */ s32 mDelay;       // frames to wait before acting (set to 0x32 by init() for type 3 / sound 0)
     /* 0x24C */ s32 mCell;        // fn_80226BC4's packed cell index of (mPos.x, mPos.y)
     // Out-parameter of GameView::fn_802D4874 (mBit, type 0) or fn_802D4768
@@ -30,7 +30,7 @@ public:
         s64 mSlot;
     };
     /* 0x258 */ u64 mMask;  // the screen's mask (the other out-parameter)
-    /* 0x260 */ bool mEffects;    // field_0x90 bit 26: spawn effects and sound when done
+    /* 0x260 */ bool mEffects;    // mSpawnParam_0x90 bit 26: spawn effects and sound when done
 }; // Size: 0x268
 
 #endif

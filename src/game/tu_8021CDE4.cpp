@@ -32,7 +32,7 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
     switch (state) {
     case 1: {
         JGeometry::TVec3f rail;
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             field_0x58c = 2;
             JGeometry::TVec3f pos(field_0x570.x, 24.0f + field_0x570.y, 0.0f);
             fn_801CD150(&pos, &field_0x580);
@@ -41,9 +41,9 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
             fn_801CD150(&mPos, &field_0x580);
         }
         field_0x57c = 8;
-        field_0x56c = field_0x4;
+        field_0x56c = mLayer_0x4;
         field_0x570.set(mPos);
-        field_0x358.fn_8021425C(1, (field_0x90 >> 12) & 0xF, field_0x580, field_0x57c);
+        field_0x358.fn_8021425C(1, (mSpawnParam_0x90 >> 12) & 0xF, field_0x580, field_0x57c);
         field_0x358.fn_80214254(1);
         fn_800FE294(&rail, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(rail);
@@ -57,7 +57,7 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
             field_0x58c = 1;
             field_0x57c = 0;
             fn_801CD0D0(&mPos, &field_0x580);
-            field_0x56c = field_0x4;
+            field_0x56c = mLayer_0x4;
             field_0x570.set(mPos);
             field_0x358.fn_80214254(0);
             fn_801C3B7C(0x1A);

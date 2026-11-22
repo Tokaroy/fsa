@@ -19,9 +19,9 @@ public:
     /* 0x234 */ s32 mTimer;               // counts up every update
     /* 0x238 */ s32 mLifeTime;            // counts down from 180; the actor ends at 0
     /* 0x23C */ s32 mFrame;               // sprite frame offset 0..2 (0x5e + mFrame)
-    /* 0x240 */ s32 mPlayer;              // field_0x90 & 3: the player it flies to
+    /* 0x240 */ s32 mPlayer;              // mSpawnParam_0x90 & 3: the player it flies to
     /* 0x244 */ s16 mAngle;               // from the player to the fairy
-    /* 0x248 */ JGeometry::TVec3f mTargetVel; // field_0x3c approaches x and y; mPos.z approaches z
+    /* 0x248 */ JGeometry::TVec3f mTargetVel; // mVel_0x3c approaches x and y; mPos.z approaches z
     /* 0x254 */ JPABaseEmitter* mEmitter254; // effect 0x183
     /* 0x258 */ JPABaseEmitter* mEmitter258; // effect 0x184
 }; // Size: 0x25C

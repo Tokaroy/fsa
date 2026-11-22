@@ -41,7 +41,7 @@ static inline void releaseTarget(cls_804A51E4* self) {
 // FIXME: 82.61 %, scheduling; behaviour clean.
 bool cls_804A51E4::fn_801E2F40() {
     bool result = false;
-    switch (fn_8022461C(&mPos, field_0x4)) {
+    switch (fn_8022461C(&mPos, mLayer_0x4)) {
     case 3:
     case 13:
     case 14:
@@ -54,7 +54,7 @@ bool cls_804A51E4::fn_801E2F40() {
 // FIXME(shotgun): 44.70 %, scheduling; behaviour clean.
 void cls_804A51E4::fn_801E2EE4() {
     JGeometry::TBox2f box(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
-    fn_802397B4(&box, field_0x4, mSerial);
+    fn_802397B4(&box, mLayer_0x4, mSerial);
 }
 
 void cls_804A51E4::fn_801E2D88() {
@@ -116,19 +116,19 @@ bool cls_804A51E4::vfunc_0x58() {
     fn_801F317C(&box);
     JGeometry::TVec2f pos2;
     JGeometry::TVec3f bombVel;
-    s32 player = fn_8023AE34(&box, field_0x4, &pos2);
+    s32 player = fn_8023AE34(&box, mLayer_0x4, &pos2);
     if (player >= 0) {
         arrow = fn_801CC820(player, &arrowVel);
     } else {
-        player = fn_8023AA18(&box, field_0x4, &pos2);
+        player = fn_8023AA18(&box, mLayer_0x4, &pos2);
         if (player >= 0) {
             direct = true;
         } else {
-            player = fn_8023AC74(&box, field_0x4, &pos2);
+            player = fn_8023AC74(&box, mLayer_0x4, &pos2);
             if (player >= 0) {
                 bomb = fn_801CC538(player, &pos2, &bombVel, NULL);
             } else {
-                player = fn_8023AD54(&box, field_0x4, &pos2);
+                player = fn_8023AD54(&box, mLayer_0x4, &pos2);
                 if (player >= 0) {
                     other = fn_801CC640(player, NULL, &arrowVel);
                 }
@@ -166,14 +166,14 @@ u8 cls_804A51E4::checkHitByActor_0x60() {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
         if (actor != NULL) {
             bool landed;
-            if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor)) {
+            if (!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor)) {
                 landed = false;
             } else if (!fn_801E1CF8()) {
                 landed = true;
             } else {
                 JGeometry::TVec3f dir = mPos;
-                dir.sub(actor->field_0x3c);
-                landed = fn_801F37AC(actor->field_0x118, &dir, 0, actor->field_0x168, -1);
+                dir.sub(actor->mVel_0x3c);
+                landed = fn_801F37AC(actor->mParamAtcn_0x118, &dir, 0, actor->field_0x168, -1);
                 if (landed) {
                     hit = 1;
                 }
@@ -192,7 +192,7 @@ u8 cls_804A51E4::checkHitByPlayer_0x5C() {
     s32 player = fn_801F285C(NULL, NULL, true, -1);
     if (player >= 0) {
         if (fn_801E1CF8() && (fn_80235448(player) || fn_80235310(player))) {
-            fn_801CB688(field_0x4, &mPos, 0, 0);
+            fn_801CB688(mLayer_0x4, &mPos, 0, 0);
             releaseTarget(this);
             hit = 1;
         } else if (fn_801E1D7C()) {
@@ -214,7 +214,7 @@ u8 cls_804A51E4::checkHitByPlayer_0x5C() {
 u8 cls_804A51E4::sweepMap_0x64() {
     u8 hit = 0;
     if (!(mFlags & 0x1000)) {
-        JGeometry::TBox2f* box = layerBox(field_0x4);
+        JGeometry::TBox2f* box = layerBox(mLayer_0x4);
         f32 upper = box->f.y - 8.0f;
         if (mPos.y > upper) {
             mPos.y = upper;

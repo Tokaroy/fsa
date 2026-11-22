@@ -34,9 +34,9 @@ public:
     /* 0x250 */ s32 field_0x250[3]; // -1 at init; slots of the GMTB chests found (vfunc_0x10)
     /* 0x25C */ s32 field_0x25c; // fn_8030FDC0's value; -1 at init
     /* 0x260 */ s32 field_0x260; // 0x12C or 0x64 at init (from field_0x264)
-    /* 0x264 */ u32 field_0x264; // bit 31 of field_0x90
-    /* 0x268 */ u32 field_0x268; // bits 24-27 of field_0x90
-    /* 0x26C */ u32 field_0x26c; // bits 0-3 of field_0x90
+    /* 0x264 */ u32 field_0x264; // bit 31 of mSpawnParam_0x90
+    /* 0x268 */ u32 field_0x268; // bits 24-27 of mSpawnParam_0x90
+    /* 0x26C */ u32 field_0x26c; // bits 0-3 of mSpawnParam_0x90
     /* 0x270 */ u32 field_0x270; // field_0x26c + bits 4-7
     /* 0x274 */ u32 field_0x274; // field_0x270 + bits 8-11
     /* 0x278 */ s32 field_0x278[4];

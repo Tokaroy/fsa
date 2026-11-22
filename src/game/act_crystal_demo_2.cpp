@@ -130,8 +130,8 @@ static const u8 lbl_80474E34[6][3] = {
 // FIXME: 96.54 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
-    field_0x23c = field_0x90 & 0x1F;
-    field_0x248 = (field_0x90 >> 22) & 0x1F;
+    field_0x23c = mSpawnParam_0x90 & 0x1F;
+    field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (field_0x23c != 4 && field_0x23c != 5) {
         fn_801F3668();
         return;
@@ -168,7 +168,7 @@ void cls_804AE088::init() {
         JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f),
     };
     for (s32 i = 0; i < 5; i++) {
-        field_0x384[i] = spawnEmitter_8013CC50(field_0x4, &pts[i], sEmitterIds[i], 0, sEmitterDepths[i], NULL,
+        field_0x384[i] = spawnEmitter_8013CC50(mLayer_0x4, &pts[i], sEmitterIds[i], 0, sEmitterDepths[i], NULL,
                                                NULL, true, 1.0f);
     }
     getGameView_802D6A9C()->fn_802D7440(0);
@@ -283,10 +283,10 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         field_0x238 = 1;
         field_0x244 = 1;
         field_0x254 = lbl_80474C8C[1];
-        field_0x378[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AE, 0, 1, NULL, NULL, true, 0.5f);
-        field_0x378[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D30[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x378[2] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x358 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
+        field_0x378[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AE, 0, 1, NULL, NULL, true, 0.5f);
+        field_0x378[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D30[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x378[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x358 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D5, 0);
         s32 count = getActorManager_801F856C()->mActorEnd;
         for (s32 i = 0; i < count; i++) {
@@ -311,7 +311,7 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 5: {
         field_0x25c = getActorManager_801F856C()->spawnActor_801F9484(
-            ACTOR_DNAV, field_0x4, &(mPos + JGeometry::TVec3f(0.0f, 160.0f, 20.0f)), 0, -1, -1);
+            ACTOR_DNAV, mLayer_0x4, &(mPos + JGeometry::TVec3f(0.0f, 160.0f, 20.0f)), 0, -1, -1);
         mNaviActor = static_cast<Navi54MaidenCrystalCutscene_804ADFE8*>(
             getActorManager_801F856C()->findActorBySerial_801F666C(field_0x25c));
         field_0x258 = 0x3C;
@@ -321,8 +321,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
         field_0x268++;
         mNaviActor->field_0x230 = 1;
         break;
@@ -331,8 +331,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, field_0x25c, true, false);
-        fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+        fn_8022FE80(0, mLayer_0x4, field_0x25c, true, false);
+        fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
         field_0x268++;
         break;
     }
@@ -340,8 +340,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
         field_0x268++;
         break;
     }
@@ -349,8 +349,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
         field_0x268++;
         break;
     }
@@ -360,12 +360,12 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
     case 14:
         field_0x237 = 0;
         for (s32 i = 0; i < 7; i++) {
-            field_0x35c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
+            field_0x35c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
         }
         field_0x2f0 = 300;
         startSound_801F0E34(0x30082, 0);
-        field_0x350 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D10[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x354 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D20[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
+        field_0x350 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D10[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x354 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D20[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         field_0x26c = 400;
         break;
     case 15:
@@ -384,7 +384,7 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         fn_8036A65C();
         playerPos.set(mSpawnPos);
         playerPos.z += 20.0f;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRNV, field_0x4, &playerPos, field_0x23c, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRNV, mLayer_0x4, &playerPos, field_0x23c, -1, -1);
         break;
     }
     case 17: {
@@ -408,10 +408,10 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         field_0x238 = 1;
         field_0x244 = 1;
         field_0x254 = lbl_80474C8C[1];
-        field_0x378[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AE, 0, 1, NULL, NULL, true, 0.5f);
-        field_0x378[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D30[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x378[2] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x358 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
+        field_0x378[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AE, 0, 1, NULL, NULL, true, 0.5f);
+        field_0x378[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D30[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x378[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x358 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D5, 0);
         s32 count = getActorManager_801F856C()->mActorEnd;
         for (s32 i = 0; i < count; i++) {
@@ -436,14 +436,14 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 24: {
         if (field_0x398 == NULL) {
-            field_0x398 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
+            field_0x398 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
         }
         JGeometry::TVec3f pos;
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62)) {
             field_0x268++;
             fn_8011921C()->fn_80118454();
         }
@@ -457,12 +457,12 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
     case 26:
         field_0x237 = 0;
         for (s32 i = 0; i < 7; i++) {
-            field_0x35c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
+            field_0x35c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
         }
         field_0x2f0 = 300;
         startSound_801F0E34(0x30082, 0);
-        field_0x350 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D10[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
-        field_0x354 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80474D20[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
+        field_0x350 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D10[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
+        field_0x354 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D20[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         field_0x26c = 400;
         break;
     case 27:
@@ -491,11 +491,11 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         field_0x288 = 0.0f;
         field_0x28c = 0;
         for (s32 i = 0; i < 6; i++) {
-            field_0x39c[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_80474D60[i], 0, 1, NULL, NULL, true, 1.0f);
+            field_0x39c[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_80474D60[i], 0, 1, NULL, NULL, true, 1.0f);
             field_0x39c[i]->setGlobalAlpha(field_0x288);
         }
-        field_0x3b4[0] = spawnEmitter_8013CC50(field_0x4, &pos, 0x540, 0, 1, NULL, NULL, true, 1.0f);
-        field_0x3b4[1] = spawnEmitter_8013CC50(field_0x4, &pos, 0x541, 0, 1, NULL, NULL, true, 1.0f);
+        field_0x3b4[0] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x540, 0, 1, NULL, NULL, true, 1.0f);
+        field_0x3b4[1] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x541, 0, 1, NULL, NULL, true, 1.0f);
         field_0x258 = 0x96;
         gAudioMgr_8053AF80->fn_8045873C(1);
         break;
@@ -520,8 +520,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                 (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
         field_0x268++;
         break;
     }
@@ -566,19 +566,19 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
         if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
             s32 frame = field_0x264 + 0x1B3;
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+                fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         } else {
             s32 frame = arg + field_0x318.mCel;
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+                fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         }
     } else {
         if (field_0x24c < 0xC0) {
             s32 frame = arg + field_0x318.mCel;
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+                fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         }
         params.field_0x10.set(0xFF, 0xFF, 0xFF, 0xFF - field_0x24c);
@@ -586,19 +586,19 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
         JGeometry::TVec3f* pos = getPos();
         s32 frame = field_0x264 + 0x1B3;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
     } else {
         JGeometry::TVec3f* pos = getPos();
         s32 frame = arg + field_0x318.mCel;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, field_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
     }
 }
 
@@ -670,7 +670,7 @@ void cls_804AE088::fn_8036A894() {
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
         void* res = field_0x310;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
@@ -744,7 +744,7 @@ void cls_804AE088::fn_80369DDC() {
         }
     }
     if (field_0x240 <= 5 && fn_8016A3AC()->field_0x1ef == 0 && field_0x398 == NULL) {
-        field_0x398 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
+        field_0x398 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
     }
     JGeometry::TVec3f pos;
     JGeometry::TVec3f camPos;
@@ -810,14 +810,14 @@ void cls_804AE088::fn_80369DDC() {
                 pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
                         (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                 pos.y += -16.0f;
-                fn_8022FE80(0, field_0x4, mSerial, true, false);
-                if (fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62)) {
+                fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+                if (fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62)) {
                     field_0x268++;
                     fn_8011921C()->fn_80118454();
                 }
             }
         } else {
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
             if (fn_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(6);
@@ -837,7 +837,7 @@ void cls_804AE088::fn_80369DDC() {
     }
     case 7:
         field_0x24c = 0xE1;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x60(8);
@@ -867,7 +867,7 @@ void cls_804AE088::fn_80369DDC() {
         if (PSVECDistance(&pos, &camPos) >= 0.1f) {
             break;
         }
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x60(0xB);
@@ -889,7 +889,7 @@ void cls_804AE088::fn_80369DDC() {
         if (fn_8011921C()->field_0x1 == 0) {
             fn_801CD950(&field_0x284, 0.0f, -0.0002f);
         }
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -952,7 +952,7 @@ void cls_804AE088::fn_80368CD8() {
         }
     }
     if (field_0x240 <= 0x18 && fn_8016A3AC()->field_0x1ef == 0 && field_0x398 == NULL) {
-        field_0x398 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
+        field_0x398 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
     }
     JGeometry::TVec3f pos;
     if (field_0x240 >= 0x15 && field_0x240 != 0x26) {
@@ -1019,7 +1019,7 @@ void cls_804AE088::fn_80368CD8() {
             if (fn_8011921C()->field_0x1 == 0) {
                 fn_801CD950(&field_0x284, 0.0f, -0.0002f);
             }
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
             if (fn_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(0x19);
@@ -1034,9 +1034,9 @@ void cls_804AE088::fn_80368CD8() {
                     field_0x294[i]--;
                     if (field_0x294[i] == 0) {
                         const JGeometry::TVec3f& p = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                        field_0x3bc[i] = spawnEmitter_8013CC50(field_0x4, &p, 0x32C, 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x3bc[i] = spawnEmitter_8013CC50(mLayer_0x4, &p, 0x32C, 0, -1, NULL, NULL, true, 1.0f);
                         const JGeometry::TVec3f& q = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                        field_0x3d4[i] = spawnEmitter_8013CC50(field_0x4, &q, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x3d4[i] = spawnEmitter_8013CC50(mLayer_0x4, &q, 0x184, 0, -1, NULL, NULL, true, 1.0f);
                         if (field_0x3bc[i] != NULL) {
                             field_0x3bc[i]->setGlobalEnvColor(lbl_80474D84[i][0], lbl_80474D84[i][1],
                                                               lbl_80474D84[i][2]);
@@ -1045,9 +1045,9 @@ void cls_804AE088::fn_80368CD8() {
                 }
                 if (field_0x294[i] == 0x28) {
                     const JGeometry::TVec3f& p = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                    field_0x3ec[i] = spawnEmitter_8013CC50(field_0x4, &p, lbl_80474D6C[i], 1, 0, NULL, NULL, true, 1.0f);
+                    field_0x3ec[i] = spawnEmitter_8013CC50(mLayer_0x4, &p, lbl_80474D6C[i], 1, 0, NULL, NULL, true, 1.0f);
                     const JGeometry::TVec3f& q = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                    field_0x400[i] = spawnEmitter_8013CC50(field_0x4, &q, lbl_80474D78[i], 1, 0, NULL, NULL, true, 1.0f);
+                    field_0x400[i] = spawnEmitter_8013CC50(mLayer_0x4, &q, lbl_80474D78[i], 1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x400D9, 0);
                 }
             }
@@ -1067,10 +1067,10 @@ void cls_804AE088::fn_80368CD8() {
                 pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
                         (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                 pos.y += -16.0f;
-                fn_8022FE80(0, field_0x4, mSerial, true, false);
-                fn_8038BD08(0, 0x848, field_0x4, pos, 0x62);
+                fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+                fn_8038BD08(0, 0x848, mLayer_0x4, pos, 0x62);
             } else if (field_0x258 == 49) {
-                fn_8022FE80(0, field_0x4, mSerial, true, false);
+                fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                 if (!fn_803865B8(0)) {
                     field_0x258++;
                 } else {
@@ -1099,12 +1099,12 @@ void cls_804AE088::fn_80368CD8() {
                     pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                             (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
                     pos.y += -16.0f;
-                    fn_8022FE80(0, field_0x4, mSerial, true, false);
-                    fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+                    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+                    fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
                     field_0x268++;
                 }
             } else {
-                fn_8022FE80(0, field_0x4, mSerial, true, false);
+                fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                 if (fn_803865B8(0)) {
                     fn_80388EEC(0);
                     vfunc_0x60(0x20);
@@ -1122,7 +1122,7 @@ void cls_804AE088::fn_80368CD8() {
             }
             break;
         case 0x22:
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
             if (fn_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(0x23);
@@ -1134,12 +1134,12 @@ void cls_804AE088::fn_80368CD8() {
                     pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                             (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
                     pos.y += -16.0f;
-                    fn_8022FE80(0, field_0x4, mSerial, true, false);
-                    fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62);
+                    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+                    fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
                     field_0x268++;
                 }
             } else {
-                fn_8022FE80(0, field_0x4, mSerial, true, false);
+                fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                 if (fn_803865B8(0)) {
                     fn_80388EEC(0);
                     vfunc_0x60(0x24);
@@ -1152,15 +1152,15 @@ void cls_804AE088::fn_80368CD8() {
                     field_0x2f8[i] = 1;
                     JGeometry::TVec3f p = field_0x2a8[i];
                     p.z += 6.0f;
-                    spawnEmitter_8013CC50(field_0x4, &p, lbl_80474E1C[i], 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &p, lbl_80474E1C[i], 0, 0, NULL, NULL, true, 1.0f);
                     p.z += 7.0f;
-                    spawnEmitter_8013CC50(field_0x4, &p, lbl_80474E28[i], 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &p, lbl_80474E28[i], 0, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x400D9, 0);
                     field_0x2a8[i].z = 16.0f;
                 } else if (field_0x258 == lbl_80474D94[i] - 0x28) {
                     field_0x2f8[i] = 2;
-                    field_0x3bc[i] = spawnEmitter_8013CC50(field_0x4, &field_0x2a8[i], 0x32C, 0, -1, NULL, NULL, true, 1.0f);
-                    field_0x3d4[i] = spawnEmitter_8013CC50(field_0x4, &field_0x2a8[i], 0x184, 0, -1, NULL, NULL, true, 1.0f);
+                    field_0x3bc[i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2a8[i], 0x32C, 0, -1, NULL, NULL, true, 1.0f);
+                    field_0x3d4[i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2a8[i], 0x184, 0, -1, NULL, NULL, true, 1.0f);
                     if (field_0x3bc[i] != NULL) {
                         field_0x3bc[i]->setGlobalEnvColor(lbl_80474E34[i][0], lbl_80474E34[i][1],
                                                           lbl_80474E34[i][2]);
@@ -1308,17 +1308,17 @@ void cls_804AE088::fn_80368660() {
                     if (field_0x24c < 0xc0) {
                         s32 frame = field_0x264 + lbl_80474DC4[i];
                         if (mSpriteParams.mMtx == NULL) {
-                            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+                            fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
                         }
                     }
                     params.field_0x10.set(255, 255, 255, 255 - field_0x24c);
                     JGeometry::TVec3f* pos = getPos();
                     s32 frame = field_0x264 + lbl_80474DC4[i];
-                    if (field_0x4 < 8) {
+                    if (mLayer_0x4 < 8) {
                         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
                     }
-                    fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
+                    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
                     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
                 }
@@ -1363,7 +1363,7 @@ void cls_804AE088::fn_803683AC() {
             }
             s32 frame = field_0x264 + lbl_80474E04[i];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+                fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
     }

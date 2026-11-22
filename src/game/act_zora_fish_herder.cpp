@@ -15,7 +15,7 @@
 void ZoraFishHerding_804A2E30::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -28,7 +28,7 @@ void ZoraFishHerding_804A2E30::init() {
     field_0x25c = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    field_0x3c.zero();
+    mVel_0x3c.zero();
     field_0x264 = -1;
     field_0x268 = -1;
     field_0x250 = 0;
@@ -37,7 +37,7 @@ void ZoraFishHerding_804A2E30::init() {
         field_0x234 = 0;
         field_0x240 = 0;
     }
-    mKind = field_0x90 & 0xF;
+    mKind = mSpawnParam_0x90 & 0xF;
     if (isScreenFlagSet_0x34()) {
         fn_801F3668();
         return;
@@ -145,7 +145,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x250 != 1) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     box = mBox2;
     box.i.x += mPos.x;
@@ -206,24 +206,24 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (field_0x250 != 0) {
             break;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x268 = fn_8022FD8C(mSerial);
         if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
             u32 msg = mKind == 0 ? 0x41A : 0x422;
-            if (fn_8038AD24(field_0x268, msg, mSerial, field_0x4, msgPos, 0x100)) {
+            if (fn_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                 JGeometry::TVec3f delta;
                 f32 dist;
                 fn_801EE8F4(&delta, &dist, field_0x268 + 1);
                 if (dist < 100.0f) {
                     u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
                     if (angle < 0x2000 || angle >= 0xE000) {
-                        field_0x98 = 3;
+                        mDir_0x98 = 3;
                     } else if (angle >= 0x2000 && angle < 0x6000) {
-                        field_0x98 = 1;
+                        mDir_0x98 = 1;
                     } else if (angle >= 0x6000 && angle <= 0xA000) {
-                        field_0x98 = 2;
+                        mDir_0x98 = 2;
                     } else {
-                        field_0x98 = 0;
+                        mDir_0x98 = 0;
                     }
                 }
                 mState = 2;
@@ -240,7 +240,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x268)) {
             switch (fn_8037EFB4(field_0x268)) {
             case 0:
@@ -263,7 +263,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x268, mSerial)) {
             fn_80230534(false);
             field_0x258 = 3600;
@@ -289,7 +289,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x270 = -1;
         if ((field_0x258 & 0xF) == 0) {
             ActorBase_804A5770* fishes[0x400];
-            field_0x270 = getActorManager_801F856C()->fn_801F7818('FISH', field_0x4, fishes, -1);
+            field_0x270 = getActorManager_801F856C()->fn_801F7818('FISH', mLayer_0x4, fishes, -1);
         }
         if (field_0x258 < 0 || field_0x270 == 0) {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
@@ -323,7 +323,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                         field_0x26c = -1;
                     } else {
                         JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                        fish->field_0x3c = zero;
+                        fish->mVel_0x3c = zero;
                     }
                 }
             }
@@ -341,13 +341,13 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                         field_0x240 = 0;
                     }
                     startSound_801F0E34(0x4005C, 0);
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x54E, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54E, 0, 0, NULL, NULL, true, 1.0f);
                     field_0x25c++;
                     fish->mAlive = false;
                     field_0x26c = -1;
                 } else {
                     JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                    fish->field_0x3c = zero;
+                    fish->mVel_0x3c = zero;
                     dropPos.set(fish->mPos.x, fish->mPos.y, fish->mPos.z);
                     addCalc2_801F71A4(&dropPos.x, mPos.x, 0.3f, 1.0f);
                     addCalc2_801F71A4(&dropPos.y, mPos.y, 0.3f, 1.0f);
@@ -371,7 +371,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             s32 layer = getPlayerLayer_8023DE58(0);
             fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                fn_8038AD24(fn_8022EA0C(0), 0x41D, mSerial, field_0x4, msgPos, 0x102);
+                fn_8038AD24(fn_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
                 mState = 6;
             }
         }
@@ -405,11 +405,11 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x244 = 50;
             if (field_0x25c >= 10) {
                 ActorBase_804A5770* sayas[0x400];
-                s32 n = getActorManager_801F856C()->fn_801F7818('SAYA', field_0x4, sayas, -1);
+                s32 n = getActorManager_801F856C()->fn_801F7818('SAYA', mLayer_0x4, sayas, -1);
                 JGeometry::TVec3f spots[8];
                 s32 spotCount = 0;
                 for (s32 i = 0; i < n && spotCount < 7; i++) {
-                    if (sayas[i] != NULL && sayas[i]->field_0x90 == 2) {
+                    if (sayas[i] != NULL && sayas[i]->mSpawnParam_0x90 == 2) {
                         spots[spotCount].set(sayas[i]->mPos.x, sayas[i]->mPos.y, sayas[i]->mPos.z);
                         spotCount++;
                     }
@@ -426,7 +426,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 } else if (field_0x25c > 20) {
                     arg = 0x80001;
                 }
-                s32 hnrySerial = getActorManager_801F856C()->spawnActor_801F9484('HNRY', field_0x4, &mPos, arg, -1, -1);
+                s32 hnrySerial = getActorManager_801F856C()->spawnActor_801F9484('HNRY', mLayer_0x4, &mPos, arg, -1, -1);
                 if (hnrySerial >= 0) {
                     WingedForceGem_804AB098* hnry = static_cast<WingedForceGem_804AB098*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(hnrySerial));
@@ -481,7 +481,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 field_0x240 = 0;
             }
             if (field_0x270 == 0) {
-                getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, 0x230007);
+                getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 0x230007);
             }
             field_0x258 = -1;
             mState = 10;
@@ -490,24 +490,24 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
     }
     case 10:
         if (field_0x250 != 3 && field_0x250 != 1) {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             field_0x268 = fn_8022FD8C(mSerial);
             if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
                 u32 msg = field_0x25c < 10 ? 0x421 : 0x41F;
-                if (fn_8038AD24(field_0x268, msg, mSerial, field_0x4, msgPos, 0x100)) {
+                if (fn_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                     JGeometry::TVec3f delta;
                     f32 dist;
                     fn_801EE8F4(&delta, &dist, field_0x268 + 1);
                     if (dist < 100.0f) {
                         u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
                         if (angle < 0x2000 || angle >= 0xE000) {
-                            field_0x98 = 3;
+                            mDir_0x98 = 3;
                         } else if (angle >= 0x2000 && angle < 0x6000) {
-                            field_0x98 = 1;
+                            mDir_0x98 = 1;
                         } else if (angle >= 0x6000 && angle <= 0xA000) {
-                            field_0x98 = 2;
+                            mDir_0x98 = 2;
                         } else {
-                            field_0x98 = 0;
+                            mDir_0x98 = 0;
                         }
                     }
                     mState = 11;
@@ -523,7 +523,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x268, mSerial)) {
             mState = 10;
         }
@@ -537,7 +537,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x268, mSerial)) {
             fn_80230534(false);
             mState = 0;

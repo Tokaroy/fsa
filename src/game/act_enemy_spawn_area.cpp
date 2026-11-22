@@ -4,15 +4,15 @@
 #include "game/GameGlobals.h"
 #include "game/act/act_enemy_spawn_area.h"
 
-// Pairs of (actor ID, field_0x90). init indexes it by pair (field_0x90 & 0xFF);
+// Pairs of (actor ID, mSpawnParam_0x90). init indexes it by pair (mSpawnParam_0x90 & 0xFF);
 // update's random pick indexes it by word (so it can straddle two pairs).
 static u32 lbl_804A2C80[] = {
     'SLR1', 0x00, 'SLR1', 0x06, 'STAL', 0x04, 'STAL', 0x14, 'KETH', 0x100, 'KETH', 0x110,
 };
 
-// FIXME: 92%. The original loads field_0x90 once (clrlslwi 24,1 -> r5) before the
+// FIXME: 92%. The original loads mSpawnParam_0x90 once (clrlslwi 24,1 -> r5) before the
 // 0x234 store and keeps the zero in r4 for the timer stores; here the zero is in r0
-// and the index shift is scheduled after the second load of field_0x90.
+// and the index shift is scheduled after the second load of mSpawnParam_0x90.
 void EnemySpawnArea_804A2CB0::init() {
     field_0x28c = 0;
     field_0x290 = 0;
@@ -22,17 +22,17 @@ void EnemySpawnArea_804A2CB0::init() {
     mTimer2 = 0;
     mEnemyId = 0;
     mEnemyParam = 0;
-    s32 idx = (field_0x90 & 0xFF) * 2;
-    if ((field_0x90 & 0xFF) != 0xFF) {
+    s32 idx = (mSpawnParam_0x90 & 0xFF) * 2;
+    if ((mSpawnParam_0x90 & 0xFF) != 0xFF) {
         mEnemyId = lbl_804A2C80[idx];
         mEnemyParam = lbl_804A2C80[idx + 1];
     }
-    if (((field_0x90 >> 8) & 0xF) == 0) {
+    if (((mSpawnParam_0x90 >> 8) & 0xF) == 0) {
         mMode = 0;
     } else {
         mMode = 1;
     }
-    mCount = (field_0x90 >> 12) & 0xF;
+    mCount = (mSpawnParam_0x90 >> 12) & 0xF;
     if (mCount == 0) {
         mCount = 3;
     }
@@ -82,9 +82,9 @@ void EnemySpawnArea_804A2CB0::update() {
                     }
                     pos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     pos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                    mSerials[i] = getActorManager_801F856C()->spawnActor_801F9484(id, field_0x4, &pos, param, -1, -1);
+                    mSerials[i] = getActorManager_801F856C()->spawnActor_801F9484(id, mLayer_0x4, &pos, param, -1, -1);
                     if (mSerials[i] != 0) {
-                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x4, &pos, 0xB, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, mLayer_0x4, &pos, 0xB, -1, -1);
                     }
                 }
             }

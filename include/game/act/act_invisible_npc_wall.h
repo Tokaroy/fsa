@@ -12,7 +12,7 @@ public:
     /* 0x08 */ virtual ~InvisibleNPCWallForLink_804AE780();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    /* 0x230 */ s32 field_0x230; // top 5 bits of field_0x90
+    /* 0x230 */ s32 field_0x230; // top 5 bits of mSpawnParam_0x90
 }; // Size: 0x234
 
 #endif

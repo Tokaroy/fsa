@@ -15,9 +15,9 @@ void BuriedForceGem_804AB258::init() {
         fn_801F3668();
         return;
     }
-    field_0x244 = field_0x90 & 3;
-    field_0x248 = (field_0x90 >> 8) & 0xFF;
-    field_0x94 = (field_0x90 >> 16) & 0xFF;
+    field_0x244 = mSpawnParam_0x90 & 3;
+    field_0x248 = (mSpawnParam_0x90 >> 8) & 0xFF;
+    field_0x94 = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x26c = 0;
     field_0x238 = 0;
     field_0x234 = 0;
@@ -33,7 +33,7 @@ void BuriedForceGem_804AB258::init() {
     mPos.y = 16.0f * ((s32)mPos.y / 16) + 8.0f;
     if (field_0x94 == 1 || field_0x94 == 4) {
         field_0x230 = 1;
-        field_0x26c = fn_80226850(&mPos, field_0x4);
+        field_0x26c = fn_80226850(&mPos, mLayer_0x4);
     }
     if (field_0x94 == 2) {
         field_0x230 = 2;
@@ -41,13 +41,13 @@ void BuriedForceGem_804AB258::init() {
     if (field_0x94 == 3 || field_0x94 == 5) {
         field_0x230 = 2;
     }
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     mBox.i.x = -4.0f;
     mBox.i.y = -4.0f;
     mBox.f.x = 4.0f;
@@ -56,7 +56,7 @@ void BuriedForceGem_804AB258::init() {
 
 void BuriedForceGem_804AB258::update() {
     JGeometry::TVec2f p(mPos.x, mPos.y);
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     JGeometry::TBox2f box(mBox);
     box.addPos(p);
     switch (field_0x230) {
@@ -68,7 +68,7 @@ void BuriedForceGem_804AB258::update() {
             }
         }
         JGeometry::TVec2f out;
-        s32 player = fn_8023A89C(&box, field_0x4, &out);
+        s32 player = fn_8023A89C(&box, mLayer_0x4, &out);
         if (player >= 0) {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
             JGeometry::TVec3f vel;
@@ -97,14 +97,14 @@ void BuriedForceGem_804AB258::update() {
             }
             s32 serial;
             if (field_0x248 == 0) {
-                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &pos, field_0x244 + 4);
+                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &pos, field_0x244 + 4);
             } else if (field_0x248 == 1) {
-                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_ESRY, field_0x4, &pos, field_0x244 + 0x10000);
+                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_ESRY, mLayer_0x4, &pos, field_0x244 + 0x10000);
             }
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x3c = vel;
+                    actor->mVel_0x3c = vel;
                 }
             }
             fn_801F3668();
@@ -118,7 +118,7 @@ void BuriedForceGem_804AB258::update() {
                 break;
             }
         }
-        if (field_0x26c != fn_80226850(&mPos, field_0x4)) {
+        if (field_0x26c != fn_80226850(&mPos, mLayer_0x4)) {
             if (field_0x94 == 4 || field_0x94 == 5) {
                 fn_801F0D20(3);
                 fn_801F3668();
@@ -192,7 +192,7 @@ void BuriedForceGem_804AB258::update() {
                 fn_801F0D20(3);
                 field_0x230 = 0;
             } else if (field_0x94 == 3 || field_0x94 == 5) {
-                field_0x26c = fn_80226850(&mPos, field_0x4);
+                field_0x26c = fn_80226850(&mPos, mLayer_0x4);
                 field_0x230 = 1;
             }
         }
@@ -226,11 +226,11 @@ void BuriedForceGem_804AB258::draw() {
     params.field_0x2d = 1;
     if (field_0x230 == 0) {
         s32 frame = field_0x238 + lbl_804AB248[field_0x244];
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x238 + lbl_804AB248[field_0x244], 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 + lbl_804AB248[field_0x244], 0, 0, -1);
     }
 }
 

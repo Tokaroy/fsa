@@ -13,7 +13,7 @@
 #include "game/act/tu_8010089C.h"
 
 void WhackAMoleShop_8049C8EC::init() {
-    if (field_0x90 & 0x10000) {
+    if (mSpawnParam_0x90 & 0x10000) {
         fn_80100A90();
         return;
     }
@@ -44,7 +44,7 @@ void WhackAMoleShop_8049C8EC::init() {
     field_0x260[3] = 0;
     field_0x268[3] = 0;
     field_0x244 = gGameRoot_8053AAF8->fn_80138A30();
-    field_0x248 = (field_0x90 >> 22) & 0x1F;
+    field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (isScreenFlagSet_0x34()) {
         field_0x230 = 9;
         field_0x234 = 0;
@@ -55,7 +55,7 @@ void WhackAMoleShop_8049C8EC::init() {
 }
 
 void WhackAMoleShop_8049C8EC::update() {
-    if (field_0x90 & 0x10000) {
+    if (mSpawnParam_0x90 & 0x10000) {
         field_0x245++;
         if (field_0x245 == 8) {
             field_0x246++;
@@ -125,11 +125,11 @@ static inline void spawnMole(WhackAMoleShop_8049C8EC* shop) {
     pos.y = 80.0f * (f32)(n / 3) + (shop->field_0x250 - 75.0f) +
             (60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 30.0f);
     pos.z = 0.0f;
-    getActorManager_801F856C()->spawnActor_801F9484('MGYA', shop->field_0x4, &pos, shop->mSerial + 0x10000, -1, -1);
+    getActorManager_801F856C()->spawnActor_801F9484('MGYA', shop->mLayer_0x4, &pos, shop->mSerial + 0x10000, -1, -1);
 }
 
 void WhackAMoleShop_8049C8EC::draw() {
-    if (field_0x90 & 0x10000) {
+    if (mSpawnParam_0x90 & 0x10000) {
         SpriteParams_801F5AE0 params;
         if (field_0x244 == 1) {
             params.field_0x0[11] = 6;
@@ -158,7 +158,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     field_0x245++;
     if (field_0x245 == lbl_80539EB0[field_0x246]) {
         field_0x246++;
@@ -169,10 +169,10 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     }
     switch (field_0x230) {
     case 0:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x238 = fn_8022FD8C(mSerial);
         if (field_0x238 >= 0 && fn_802300EC(field_0x238)) {
-            if (fn_8038AD24(field_0x238, field_0x244 == 1 ? 0x328 : 0x31F, mSerial, field_0x4, msgPos, 0)) {
+            if (fn_8038AD24(field_0x238, field_0x244 == 1 ? 0x328 : 0x31F, mSerial, mLayer_0x4, msgPos, 0)) {
                 for (s32 i = 0; i < 4; i++) {
                     fn_802308E0(i);
                 }
@@ -187,7 +187,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         break;
     case 1:
         focusCamera(focus);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x238)) {
             switch (fn_8037EFB4(field_0x238)) {
             case 0: {
@@ -211,7 +211,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         break;
     case 2:
         focusCamera(focus);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x238, mSerial)) {
             field_0x230 = 0;
             field_0x234 = 0;
@@ -288,7 +288,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
             field_0x238 = fn_8022EA0C(field_0x238);
             fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                fn_8038AD24(field_0x238, 0x322, mSerial, field_0x4, msgPos, 2);
+                fn_8038AD24(field_0x238, 0x322, mSerial, mLayer_0x4, msgPos, 2);
                 field_0x230 = 7;
                 field_0x234 = 0;
                 fn_8022B214();
@@ -364,16 +364,16 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         }
         break;
     case 9:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x238 = fn_8022FD8C(mSerial);
-        if (field_0x238 >= 0 && fn_8038AD24(field_0x238, 0x328, mSerial, field_0x4, msgPos, 0)) {
+        if (field_0x238 >= 0 && fn_8038AD24(field_0x238, 0x328, mSerial, mLayer_0x4, msgPos, 0)) {
             field_0x230 = 10;
             field_0x234 = 0;
             faceTowards(this, field_0x238);
         }
         break;
     case 10:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x238, mSerial)) {
             field_0x230 = 9;
             field_0x234 = 0;
@@ -396,7 +396,7 @@ void WhackAMoleShop_8049C8EC::showTimer() {
 }
 
 void WhackAMoleShop_8049C8EC::fn_80100A90() {
-    field_0x290 = static_cast<WhackAMoleShop_8049C8EC*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x90 & 0xFFFF));
+    field_0x290 = static_cast<WhackAMoleShop_8049C8EC*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSpawnParam_0x90 & 0xFFFF));
     mBox.i.x = -12.0f;
     mBox.i.y = -12.0f;
     mBox.f.x = 12.0f;
@@ -469,7 +469,7 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
 
 // FIXME(shotgun): 99.80 %, regalloc-only; behaviour clean.
 void WhackAMoleShop_8049C8EC::vfunc_0x44() {
-    s32 player = field_0x10c;
+    s32 player = mLastAttacker_0x10c;
     if (player < 0) {
         return;
     }
@@ -480,9 +480,9 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
     if (field_0x244 == 1) {
         JGeometry::TVec3f pos = mPos;
         pos.x += -15.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x59, 1, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x5A, 1, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x59, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5A, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30001, 0);
         JGeometry::TVec2f pos2(pos.x, pos.y);
         fn_80238548(player, 0, &pos2, 0xb);
@@ -503,7 +503,7 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
 // A plain function that update and fn_80100A90 inline; the linker dropped its own copy. Its 1.0f is
 // the first literal of the pool.
 void WhackAMoleShop_8049C8EC::spawnSmoke() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
 }
 
 WhackAMoleShop_8049C8EC::~WhackAMoleShop_8049C8EC() {}

@@ -13,30 +13,30 @@ void Armos_8049F260::init() {
     mBox.f.set(7.0f, 7.0f);
     mBox2.i.set(-12.0f, -16.0f);
     mBox2.f.set(12.0f, 12.0f);
-    field_0x80.i.set(-7.0f, -7.0f);
-    field_0x80.f.set(7.0f, 7.0f);
+    mMapBox_0x80.i.set(-7.0f, -7.0f);
+    mMapBox_0x80.f.set(7.0f, 7.0f);
     field_0x300 = 0;
     field_0x30c = 0;
     field_0xb0 = 0xA040004;
     field_0x310 = -1;
     field_0x314 = -1;
-    field_0x31c = (field_0x90 >> 4) & 1;
+    field_0x31c = (mSpawnParam_0x90 >> 4) & 1;
     if (field_0x31c != 0) {
         mBox.i.set(-12.0f, -12.0f);
         mBox.f.set(12.0f, 12.0f);
-        field_0xc0 = 3;
+        mParamEfsz_0xc0 = 3;
     }
-    field_0x94 = field_0x90 & 0xF;
-    field_0x308 = (field_0x90 >> 8) & 0xFF;
+    field_0x94 = mSpawnParam_0x90 & 0xF;
+    field_0x308 = (mSpawnParam_0x90 >> 8) & 0xFF;
     field_0x318 = 1;
     field_0x304 = 0;
     field_0xbc = 3;
     if (field_0x94 == 3 || field_0x94 == 4 || field_0x94 == 5 || field_0x94 == 7) {
-        field_0xc0 = 3;
+        mParamEfsz_0xc0 = 3;
         mBox.i.set(-14.0f, -20.0f);
         mBox.f.set(14.0f, 6.0f);
-        field_0x80.i.set(-14.0f, -20.0f);
-        field_0x80.f.set(14.0f, 6.0f);
+        mMapBox_0x80.i.set(-14.0f, -20.0f);
+        mMapBox_0x80.f.set(14.0f, 6.0f);
         mBox2.i.set(-16.0f, -22.0f);
         mBox2.f.set(16.0f, 8.0f);
     }
@@ -47,11 +47,11 @@ void Armos_8049F260::init() {
     case 6:
     case 7:
         field_0x196 = 1;
-        field_0x1a8 = 0;
+        mParamDstr_0x1a8 = 0;
         break;
     case 5:
         field_0x196 = 1;
-        field_0x1a8 = 0;
+        mParamDstr_0x1a8 = 0;
         field_0xb8 = 1;
         field_0x318 = 0;
         field_0x2f8 = 4;
@@ -102,8 +102,8 @@ void Armos_8049F260::update() {
                 }
                 JGeometry::TVec2f mid(0.5f * (box.i.x - box.f.x) + box.f.x, 0.5f * (box.i.y - box.f.y) + box.f.y);
                 if (fn_80237948(player, &mid)) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x400D1, 0);
                 }
             }
@@ -111,7 +111,7 @@ void Armos_8049F260::update() {
     }
     switch (field_0x2f8) {
     case 0:
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         fn_801EF510();
         if (field_0x94 == 2) {
             if (isScreenFlagSet_0x34()) {
@@ -125,7 +125,7 @@ void Armos_8049F260::update() {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 JGeometry::TVec3f d;
                 d.sub(*playerPos, mPos);
@@ -152,7 +152,7 @@ void Armos_8049F260::update() {
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         if (!(field_0x2fc & 2)) {
             field_0x318 = field_0x318 ^ 1;
         }
@@ -170,16 +170,16 @@ void Armos_8049F260::update() {
         if (field_0x300 > 0) {
             field_0x300--;
         }
-        field_0x3c.z += -0.2f;
-        mPos += field_0x3c;
+        mVel_0x3c.z += -0.2f;
+        mPos += mVel_0x3c;
         if (mPos.z <= 0.0f) {
             JGeometry::TVec3f p = mPos;
             p.y += 8.0f;
             if (field_0x304 != 0) {
                 if (field_0x94 == 3 || field_0x94 == 4) {
-                    spawnEmitter_8013CC50(field_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
                 } else {
-                    spawnEmitter_8013CC50(field_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
                 }
                 startSound_801F0E34(0x40007, 0);
             }
@@ -197,13 +197,13 @@ void Armos_8049F260::update() {
                 }
                 if (away) {
                     field_0x304 = 0;
-                    field_0x3c.set(0.0f, 0.0f, 0.0f);
+                    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
                     box = mBox;
                     box.i.x += mPos.x;
                     box.i.y += mPos.y;
                     box.f.x += mPos.x;
                     box.f.y += mPos.y;
-                    fn_80239914(&box, field_0x4, mSerial);
+                    fn_80239914(&box, mLayer_0x4, mSerial);
                     fn_801EF510();
                     fn_801F2B7C(-100, -1, 1);
                     fn_801F2618(NULL, false);
@@ -212,9 +212,9 @@ void Armos_8049F260::update() {
             }
             fn_801EE8F4(&p, NULL, 0);
             p.scale(0.5f);
-            field_0x3c.x = p.x;
-            field_0x3c.y = p.y;
-            field_0x3c.z = 2.0f;
+            mVel_0x3c.x = p.x;
+            mVel_0x3c.y = p.y;
+            mVel_0x3c.z = 2.0f;
         }
         fn_801F2B7C(-100, -1, 1);
         fn_801F2618(NULL, false);
@@ -228,73 +228,73 @@ void Armos_8049F260::update() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_80239914(&box, field_0x4, mSerial);
+            fn_80239914(&box, mLayer_0x4, mSerial);
             return;
         }
         if (PSVECDistance(&mPos, &field_0x320) >= 15.9f) {
             mPos.x = (f32)((((s32)mPos.x + 4) / 8) * 8);
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             JGeometry::TBox2f moved = mBox;
             moved.i.x += mPos.x;
             moved.i.y += mPos.y;
             moved.f.x += mPos.x;
             moved.f.y += mPos.y;
-            fn_80239914(&moved, field_0x4, mSerial);
+            fn_80239914(&moved, mLayer_0x4, mSerial);
             mPrevPos = mPos;
             field_0x300 = 8;
             return;
         }
-        if ((field_0x3c.x != 0.0f || field_0x3c.y != 0.0f) && fn_801F2618(NULL, false)) {
+        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && fn_801F2618(NULL, false)) {
             mPos.x = (f32)((((s32)mPos.x + 4) / 8) * 8);
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             JGeometry::TBox2f moved = mBox;
             moved.i.x += mPos.x;
             moved.i.y += mPos.y;
             moved.f.x += mPos.x;
             moved.f.y += mPos.y;
-            fn_80239914(&moved, field_0x4, mSerial);
+            fn_80239914(&moved, mLayer_0x4, mSerial);
             mPrevPos = mPos;
             field_0x300 = 8;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         } else {
             JGeometry::TVec3f savedPos = mPos;
-            JGeometry::TVec3f savedVel = field_0x3c;
-            field_0x3c.normalize();
+            JGeometry::TVec3f savedVel = mVel_0x3c;
+            mVel_0x3c.normalize();
             if (field_0x314 >= 0) {
-                field_0x3c.scale(24.0f);
+                mVel_0x3c.scale(24.0f);
             } else if (field_0x310 >= 0) {
-                field_0x3c.scale(8.0f);
+                mVel_0x3c.scale(8.0f);
             } else {
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
+                mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             }
-            mPos.x += field_0x3c.x;
-            mPos.y += field_0x3c.y;
-            field_0x3c = savedVel;
-            if (fn_802265DC(&mPos, field_0x4, false) == 1 || fn_80226850(&mPos, field_0x4) == 0x8F) {
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
-            } else if (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f) {
+            mPos.x += mVel_0x3c.x;
+            mPos.y += mVel_0x3c.y;
+            mVel_0x3c = savedVel;
+            if (fn_802265DC(&mPos, mLayer_0x4, false) == 1 || fn_80226850(&mPos, mLayer_0x4) == 0x8F) {
+                mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+            } else if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 ActorBase_804A5770* actors[1024];
-                s32 count = getActorManager_801F856C()->fn_801F7818('AMOS', field_0x4, actors, -1);
+                s32 count = getActorManager_801F856C()->fn_801F7818('AMOS', mLayer_0x4, actors, -1);
                 for (s32 i = 0; i < count; i++) {
                     ActorBase_804A5770* actor = actors[i];
                     if (actor != NULL && actor->mSerial != mSerial) {
                         f32 dy = actor->mPos.y - mPos.y;
                         f32 dx = actor->mPos.x - mPos.x;
                         if (std::sqrtf(dx * dx + dy * dy) < 8.0f) {
-                            field_0x3c.set(0.0f, 0.0f, 0.0f);
+                            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
                             break;
                         }
                     }
                 }
             }
             mPos = savedPos;
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
         }
-        if (field_0x30c < 2 && (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f)) {
+        if (field_0x30c < 2 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
             field_0x30c++;
             if (field_0x30c == 2) {
                 startSound_801F0E34(0x30004, 0);
@@ -305,7 +305,7 @@ void Armos_8049F260::update() {
         moved.i.y += mPos.y;
         moved.f.x += mPos.x;
         moved.f.y += mPos.y;
-        fn_80239914(&moved, field_0x4, mSerial);
+        fn_80239914(&moved, mLayer_0x4, mSerial);
         if (field_0x300 > 0) {
             field_0x300--;
             return;
@@ -313,16 +313,16 @@ void Armos_8049F260::update() {
         if (field_0x300 != 0) {
             return;
         }
-        if (!field_0x3c.isZero()) {
+        if (!mVel_0x3c.isZero()) {
             return;
         }
         s32 dir = -1;
-        field_0x310 = fn_80239558(&moved, field_0x4, mSerial);
+        field_0x310 = fn_80239558(&moved, mLayer_0x4, mSerial);
         if (field_0x310 >= 0) {
             dir = fn_80230CFC(field_0x310);
             field_0x314 = -1;
         } else {
-            field_0x314 = fn_80239470(&moved, field_0x4, mSerial);
+            field_0x314 = fn_80239470(&moved, mLayer_0x4, mSerial);
             if (field_0x314 >= 0) {
                 field_0x310 = -1;
                 dir = fn_80230CFC(field_0x314);
@@ -345,42 +345,42 @@ void Armos_8049F260::update() {
                 { 0.0f, -0.5f, 0.0f },
             };
             field_0x30c = 0;
-            field_0x3c.set(lbl_80465A98[dir][0], lbl_80465A98[dir][1], lbl_80465A98[dir][2]);
+            mVel_0x3c.set(lbl_80465A98[dir][0], lbl_80465A98[dir][1], lbl_80465A98[dir][2]);
             field_0x320.set(mPos);
         }
         break;
     }
     case 4:
-        if (!field_0x230.fn_800FE3EC(field_0x308, mPos, field_0x4)) {
+        if (!field_0x230.fn_800FE3EC(field_0x308, mPos, mLayer_0x4)) {
             break;
         }
         field_0x2f8 = 5;
         // fall through
     case 5: {
-        if ((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34()) {
+        if ((mSpawnParam_0x90 >> 27) != 0 && isScreenFlagSet_0x34()) {
             die_0x24();
             return;
         }
         fn_801EF510();
-        field_0x3c.z += -0.2f;
-        mPos += field_0x3c;
+        mVel_0x3c.z += -0.2f;
+        mPos += mVel_0x3c;
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             JGeometry::TVec3f p = mPos;
             p.y += 8.0f;
             if (field_0x304 != 0) {
-                spawnEmitter_8013CC50(field_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
                 startSound_801F0E34(0x40007, 0);
             }
             field_0x304 = 1;
             JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             u16 angle;
             JGeometry::TVec3f pos = mPos;
             field_0x230.fn_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
-            field_0x3c.x = step.x;
-            field_0x3c.y = step.y;
-            field_0x3c.z = 2.0f;
+            mVel_0x3c.x = step.x;
+            mVel_0x3c.y = step.y;
+            mVel_0x3c.z = 2.0f;
         }
         fn_801F2B7C(-100, -1, 1);
         fn_801F2618(NULL, false);

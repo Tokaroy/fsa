@@ -16,10 +16,10 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230; // cleared by init
-    /* 0x234 */ s32 mType; // field_0x90 & 0xF; picks the box and the tile-block counts
-    /* 0x238 */ s32 field_0x238; // (field_0x90 >> 4) & 0xF
+    /* 0x234 */ s32 mType; // mSpawnParam_0x90 & 0xF; picks the box and the tile-block counts
+    /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 4) & 0xF
     /* 0x23C */ s32 field_0x23c; // 1: only players passing fn_80234F68 count; 2: stays down
-    /* 0x240 */ s32 field_0x240; // (field_0x90 >> 12) & 0xFFF
+    /* 0x240 */ s32 field_0x240; // (mSpawnParam_0x90 >> 12) & 0xFFF
     /* 0x244 */ s32 field_0x244; // 20 after init
     /* 0x248 */ f32 field_0x248; // 0, or -0.06 for types 4 and 5
     /* 0x24C */ f32 field_0x24c; // sink speed of states 6 and 7

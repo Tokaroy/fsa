@@ -20,20 +20,20 @@ void SpawnerGenerator_804A9328::init() {
         field_0x274[i] = -1;
     }
     mBox.set(-16.0f, -16.0f, 16.0f, 16.0f);
-    field_0x234[0] = (field_0x90 >> 22) & 0x1F;
-    field_0x234[1] = (field_0x90 >> 17) & 0x1F;
-    field_0x234[2] = (field_0x90 >> 12) & 0x1F;
-    field_0x24c = ((field_0x90 >> 7) & 0x1F) * 30;
+    field_0x234[0] = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x234[1] = (mSpawnParam_0x90 >> 17) & 0x1F;
+    field_0x234[2] = (mSpawnParam_0x90 >> 12) & 0x1F;
+    field_0x24c = ((mSpawnParam_0x90 >> 7) & 0x1F) * 30;
     if (field_0x24c == 0) {
         field_0x24c = 10;
     }
     field_0x248 = 1;
-    field_0x244 = field_0x90 & 0x7F;
+    field_0x244 = mSpawnParam_0x90 & 0x7F;
     if (field_0x244 == 0) {
         field_0x244 = 256;
     }
     field_0x240 = 0;
-    field_0x250 = field_0x90 >> 27;
+    field_0x250 = mSpawnParam_0x90 >> 27;
     field_0x230 = 0;
     field_0x264 = 3;
     field_0x268 = 0;
@@ -79,7 +79,7 @@ void SpawnerGenerator_804A9328::update() {
                 if (field_0x240 < field_0x244) {
                     switch (field_0x234[field_0x254]) {
                     case 0:
-                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('HINO', field_0x4, &field_0x258, 0, -1, -1);
+                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('HINO', mLayer_0x4, &field_0x258, 0, -1, -1);
                         break;
                     case 1:
                     case 2:
@@ -92,7 +92,7 @@ void SpawnerGenerator_804A9328::update() {
                     case 14:
                     case 18: {
                         s32 arg = lbl_8046DFE0[field_0x234[field_0x254]];
-                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('SLR1', field_0x4, &field_0x258, arg, -1, -1);
+                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('SLR1', mLayer_0x4, &field_0x258, arg, -1, -1);
                         break;
                     }
                     case 6:
@@ -100,24 +100,24 @@ void SpawnerGenerator_804A9328::update() {
                     case 8:
                     case 9: {
                         s32 arg = lbl_8046DFE0[field_0x234[field_0x254]];
-                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('RUPY', field_0x4, &field_0x258, arg, -1, -1);
+                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &field_0x258, arg, -1, -1);
                         break;
                     }
                     case 12:
                     case 15:
                     case 17: {
                         s32 arg = lbl_8046DFE0[field_0x234[field_0x254]];
-                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('BMTY', field_0x4, &field_0x258, arg, -1, -1);
+                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('BMTY', mLayer_0x4, &field_0x258, arg, -1, -1);
                         break;
                     }
                     case 19: {
                         s32 arg = lbl_8046DFE0[field_0x234[field_0x254]];
-                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('HNRY', field_0x4, &field_0x258, arg, -1, -1);
+                        field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('HNRY', mLayer_0x4, &field_0x258, arg, -1, -1);
                         break;
                     }
                     case 16:
                         if (getActorManager_801F856C()->fn_801F7A08('BMTY') < 0) {
-                            field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('BMTY', field_0x4, &field_0x258, 20, -1, -1);
+                            field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('BMTY', mLayer_0x4, &field_0x258, 20, -1, -1);
                         }
                         break;
                     }
@@ -146,11 +146,11 @@ void SpawnerGenerator_804A9328::update() {
                 s32 t = field_0x234[field_0x254];
                 if (!((t == 10 || (u32)(t - 11) <= 4 || t == 17 || t == 19 || t == 16) && flag < 0)) {
                     JGeometry::TVec3f emitterPos1(field_0x258.x, field_0x258.y - 2.0f, field_0x258.z);
-                    spawnEmitter_8013CC50(field_0x4, &emitterPos1, 0x1D3, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &emitterPos1, 0x1D3, 0, 0, NULL, NULL, true, 1.0f);
                     JGeometry::TVec3f emitterPos2(field_0x258.x, field_0x258.y - 2.0f, field_0x258.z);
-                    spawnEmitter_8013CC50(field_0x4, &emitterPos2, 0x1D4, 0, -1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &emitterPos2, 0x1D4, 0, -1, NULL, NULL, true, 1.0f);
                     JGeometry::TVec3f emitterPos3(field_0x258.x, field_0x258.y - 2.0f, field_0x258.z);
-                    spawnEmitter_8013CC50(field_0x4, &emitterPos3, 0x1D5, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &emitterPos3, 0x1D5, 0, 0, NULL, NULL, true, 1.0f);
                 }
             }
         } else {
@@ -200,20 +200,20 @@ void SpawnerGenerator_804A9328::draw() {
     params.field_0x10.a = 255.0 - field_0x270;
     s32 frame = field_0x264 + 0x175;
     JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
     }
     params.field_0x10.a = field_0x270;
     s32 frame2 = lbl_8046DFD0[field_0x264] + 0x175;
     JGeometry::TVec3f pos2(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos2, res, frame2, &params, 1.0f, 1.0f);
     }
     JGeometry::TVec3f shadowPos(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
     JUtility::TColor color(0, 0, 0, 128);
-    drawShadow(field_0x4, &shadowPos, color, 30.0f);
+    drawShadow(mLayer_0x4, &shadowPos, color, 30.0f);
 }
 
 SpawnerGenerator_804A9328::~SpawnerGenerator_804A9328() {}

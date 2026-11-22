@@ -14,11 +14,11 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
 
 void AllEnemiesDefeatedCheckSwitch_804A8AC8::init() {
     field_0x230 = 0;
-    field_0x234 = field_0x90 & 0x1F;
-    field_0x238 = (field_0x90 >> 7) & 0x1F;
-    field_0x258 = ((field_0x90 >> 22) & 0x1F) + 1;
-    field_0x25c = ((field_0x90 >> 17) & 0x1F) + 1;
-    field_0x254 = (field_0x90 >> 12) & 0x1F;
+    field_0x234 = mSpawnParam_0x90 & 0x1F;
+    field_0x238 = (mSpawnParam_0x90 >> 7) & 0x1F;
+    field_0x258 = ((mSpawnParam_0x90 >> 22) & 0x1F) + 1;
+    field_0x25c = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
+    field_0x254 = (mSpawnParam_0x90 >> 12) & 0x1F;
     field_0x250 = 0;
 
     switch (field_0x234) {
@@ -42,8 +42,8 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::init() {
 }
 
 void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
-    if (field_0x4 < 8) {
-        field_0x23c = *layerBox(field_0x4);
+    if (mLayer_0x4 < 8) {
+        field_0x23c = *layerBox(mLayer_0x4);
     } else {
         JGeometry::TVec3f pos = mPos;
         u32 x = (u32)pos.x & ~7;
@@ -57,7 +57,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.x = 512.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, field_0x4);
+            u16 tile = fn_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 break;
             }
@@ -71,7 +71,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.x = 0.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, field_0x4);
+            u16 tile = fn_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 pos.x += 8.0f;
                 break;
@@ -88,7 +88,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.y = 512.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, field_0x4);
+            u16 tile = fn_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 break;
             }
@@ -102,7 +102,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.y = 0.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, field_0x4);
+            u16 tile = fn_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 pos.y += 8.0f;
                 break;
@@ -157,7 +157,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
             bool found = false;
             for (s32 i = 0; i < 4; i++) {
                 if (contains(field_0x23c, *getPlayerPos_8023E724(i)) == true) {
-                    if (field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         found = true;
                     }
                 }
@@ -171,7 +171,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
         case 7:
         case 8:
         case 9:
-            if (getActorManager_801F856C()->fn_801F75B4(field_0x4, &field_0x23c) == true) {
+            if (getActorManager_801F856C()->fn_801F75B4(mLayer_0x4, &field_0x23c) == true) {
                 if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
                     setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 2 || field_0x234 == 4 || field_0x234 == 6 || field_0x234 == 8) {

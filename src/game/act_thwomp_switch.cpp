@@ -20,7 +20,7 @@ void ThwompSwitch_804A8940::update() {
             if (square(dx) + square(dy) > 6400.0f) {
                 continue;
             }
-            if (field_0x4 != 0) {
+            if (mLayer_0x4 != 0) {
                 setScreenFlag_0x30(0xFF, true);
                 return;
             }

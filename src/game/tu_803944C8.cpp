@@ -3364,7 +3364,7 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
 
     field_0x3c0 = this;
     field_0x3b8 = window;
-    field_0x18 = gGameRoot_8053AAF8->field_0xa8->getResource('????', bmgName);
+    field_0x18 = gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', bmgName);
     field_0x1c = NULL;
     field_0x15c = 0;
     field_0x164 = 0;

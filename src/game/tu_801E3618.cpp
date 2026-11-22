@@ -27,10 +27,10 @@ void VaatiBoss_804A4958::fn_801E4790(bool big) {
 }
 
 void VaatiBoss_804A4958::fn_801E4758() {
-    field_0x80.i.x = -16.0f * lbl_8053F0BC;
-    field_0x80.i.y = -26.0f * lbl_8053F0BC;
-    field_0x80.f.x = 16.0f * lbl_8053F0BC;
-    field_0x80.f.y = 4.0f * lbl_8053F0BC;
+    mMapBox_0x80.i.x = -16.0f * lbl_8053F0BC;
+    mMapBox_0x80.i.y = -26.0f * lbl_8053F0BC;
+    mMapBox_0x80.f.x = 16.0f * lbl_8053F0BC;
+    mMapBox_0x80.f.y = 4.0f * lbl_8053F0BC;
 }
 
 // FIXME(shotgun): 91.05 %, scheduling+regalloc; behaviour clean.
@@ -50,7 +50,7 @@ void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
 
 // FIXME(shotgun): 87.64 %, missing/extra; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec3f* pos, JGeometry::TVec3f* outDir) {
-    JGeometry::TBox2f box = field_0x80;
+    JGeometry::TBox2f box = mMapBox_0x80;
     box.i.x += pos->x;
     box.i.y += pos->y;
     box.f.x += pos->x;
@@ -93,7 +93,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
         JGeometry::TBox2f box;
         fn_801F317C(&box);
         JGeometry::TVec2f xy;
-        s32 player = fn_8023AE34(&box, field_0x4, &xy);
+        s32 player = fn_8023AE34(&box, mLayer_0x4, &xy);
         if (player >= 0) {
             switch (mState) {
             case 0xc:
@@ -106,7 +106,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
             default:
                 if (fn_801CC820(player, NULL)) {
                     JGeometry::TVec3f pos(xy.x, xy.y + mPos.z, mPos.z);
-                    fn_801CB688(field_0x4, &pos, 1, 1);
+                    fn_801CB688(mLayer_0x4, &pos, 1, 1);
                     startSound_801F0E34(0x5003C, 0);
                     switch (mState) {
                     case 0xa:
@@ -162,14 +162,14 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
             ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (bomb != NULL && bomb->mActorId == 'HBMB' && bomb->field_0x94 == 1) {
                 JGeometry::TVec3f d(mPos);
-                d.sub(bomb->field_0x3c);
+                d.sub(bomb->mVel_0x3c);
                 result = fn_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
                 if (result) {
                     bomb->field_0x164 = 1;
-                    field_0xf8 = 0;
-                    field_0x3c.set(0.0f, 0.0f, 0.0f);
-                    field_0xd8 = 0xB4;
-                    field_0xdc = 0xB4;
+                    mKnockbackKind_0xf8 = 0;
+                    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                    mHitTimer_0xd8 = 0xB4;
+                    mHitTimerStart_0xdc = 0xB4;
                     mSpeed = 0.0f;
                     fn_801D63D0();
                     startSound_801F0E34(0x40005, 0);
@@ -219,7 +219,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         mBox.f.y - mBox.i.y > 0.0f) {
         // one hit type for both loops below: the original keeps it in a single stack slot (0x8)
         s32 type;
-        if (gGameRoot_8053AAF8->field_0x7e && !fn_801CD2F8(field_0x4) && mState != 0xB && !field_0x5d1) {
+        if (gGameRoot_8053AAF8->field_0x7e && !fn_801CD2F8(mLayer_0x4) && mState != 0xB && !field_0x5d1) {
             JGeometry::TBox2f box;
             fn_801F31C4(&box);
             box.i.x -= 8.0f;
@@ -250,7 +250,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                 }
             }
         }
-        if (fn_801CD2F8(field_0x4)) {
+        if (fn_801CD2F8(mLayer_0x4)) {
             for (s32 i = 0; i < 4; i++) {
                 if (i == fn_801F285C(NULL, &type, true, i)) {
                     if (fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
@@ -263,7 +263,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                 }
             }
             if (result) {
-                field_0xf8 = 0;
+                mKnockbackKind_0xf8 = 0;
                 startSound_801F0E34(0x40005, 0);
                 if (field_0x4c4.field_0x44 != 4) {
                     field_0x4c4.fn_801D7638();
@@ -283,21 +283,21 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                     if (i == fn_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
                         fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         mFlags |= 0x10000;
-                        field_0xf8 = 0;
-                        field_0x3c.set(0.0f, 0.0f, 0.0f);
+                        mKnockbackKind_0xf8 = 0;
+                        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
                         mSpeed = 0.0f;
                         field_0x52c.fn_801D6D08();
                         field_0x448.fn_80217A74();
                         startSound_801F0E34(0x40005, 0);
                         if (mLife <= 0) {
-                            field_0xd8 = 16;
-                            field_0xdc = 16;
+                            mHitTimer_0xd8 = 16;
+                            mHitTimerStart_0xdc = 16;
                             fn_801D5D84(0x18);
                             field_0x4c4.fn_801D7638();
                             field_0x4c4.fn_801D76B4();
                         } else {
-                            field_0xd8 = 0xB4;
-                            field_0xdc = 0xB4;
+                            mHitTimer_0xd8 = 0xB4;
+                            mHitTimerStart_0xdc = 0xB4;
                             fn_801D63D0();
                             if (field_0x4c4.field_0x44 != 4) {
                                 field_0x4c4.fn_801D7638();
@@ -340,9 +340,9 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
         stateOk = false;
         break;
     }
-    if (stateOk && (mFlags & 0x2000) && fn_801CD2F8(field_0x4) && mBox.f.x - mBox.i.x > 0.0f &&
+    if (stateOk && (mFlags & 0x2000) && fn_801CD2F8(mLayer_0x4) && mBox.f.x - mBox.i.x > 0.0f &&
         mBox.f.y - mBox.i.y > 0.0f) {
-        result = fn_801F2B7C(field_0x114, -1, 1);
+        result = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
     return result;
 }
@@ -369,10 +369,10 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
         stateOk = false;
         break;
     }
-    if (stateOk && !(mFlags & 0x1000) && !(mFlags & 0x2000) && field_0x80.f.x - field_0x80.i.x > 0.0f &&
-        field_0x80.f.y - field_0x80.i.y > 0.0f) {
+    if (stateOk && !(mFlags & 0x1000) && !(mFlags & 0x2000) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f &&
+        mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
         JGeometry::TBox2f area;
-        fn_801E4618(&area, fn_801CD2F8(field_0x4));
+        fn_801E4618(&area, fn_801CD2F8(mLayer_0x4));
         result = fn_801E44CC(&area, &mPos, &mMapHitDir);
     }
     return result;

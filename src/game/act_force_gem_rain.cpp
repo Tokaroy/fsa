@@ -12,13 +12,13 @@ void ForceGemRain_804A8010::init() {
     field_0x230 = 0;
     field_0x23c = 0;
     field_0x240 = 0;
-    field_0x244 = field_0x90 & 0xFF;
+    field_0x244 = mSpawnParam_0x90 & 0xFF;
     if (!(field_0x244 == 3 || field_0x244 == 0xC)) {
         if (isScreenFlagSet_0x34()) {
             mAlive = false;
         }
     }
-    field_0x240 = (field_0x90 >> 12) & 0xFF;
+    field_0x240 = (mSpawnParam_0x90 >> 12) & 0xFF;
     if (field_0x240 == 0) {
         field_0x240 = 0x100;
     }
@@ -46,7 +46,7 @@ void ForceGemRain_804A8010::init() {
 // original; layer, spawnId and angle sit in r25, r30 and r28 instead of r27,
 // r28 and r30. Data: jumptable_804A8064 vs @NNN and sdata2 literals (@NNN vs lbl_).
 void ForceGemRain_804A8010::update() {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = (layer < 8) ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TVec3f pos;
@@ -164,7 +164,7 @@ void ForceGemRain_804A8010::update() {
                         pos.set(mPos);
                         pos.z = 400.0f;
                     } else if (field_0x244 == 0xB || field_0x244 == 0xD) {
-                        u32 n = (field_0x90 >> 8) & 0xF;
+                        u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                         f32 range = 8.0f * (f32)n;
                         if (range == 0.0f) {
                             range = 64.0f;
@@ -179,15 +179,15 @@ void ForceGemRain_804A8010::update() {
                         f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
                         pos.set(mPos.x + 32.0f * s, mPos.y + 32.0f * c, 1000.0f);
                     }
-                    if (viewLayerFlag(field_0x4)) {
+                    if (viewLayerFlag(mLayer_0x4)) {
                         pos.y = mPos.y;
                         pos.z = 0.0f;
                     }
-                    s32 serial = getActorManager_801F856C()->spawnActor_801F9484(spawnId, field_0x4, &pos, spawnArg, -1, -1);
+                    s32 serial = getActorManager_801F856C()->spawnActor_801F9484(spawnId, mLayer_0x4, &pos, spawnArg, -1, -1);
                     if (serial >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                         if (actor != NULL) {
-                            actor->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
+                            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
                         }
                     }
                     angle += 0x2000;
@@ -241,9 +241,9 @@ void ForceGemRain_804A8010::update() {
         pos.z = mPos.z;
         s32 k = 0;
         do {
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
-                    u32 n = (field_0x90 >> 8) & 0xF;
+                    u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                     f32 range = 8.0f * (f32)n;
                     if (range == 0.0f) {
                         range = 64.0f;
@@ -256,7 +256,7 @@ void ForceGemRain_804A8010::update() {
                 pos.z = 0.0f;
             } else {
                 if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
-                    u32 n = (field_0x90 >> 8) & 0xF;
+                    u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                     f32 range = 8.0f * (f32)n;
                     if (range == 0.0f) {
                         range = 64.0f;
@@ -282,7 +282,7 @@ void ForceGemRain_804A8010::update() {
             } else {
                 pick = 0;
             }
-            getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &pos, pick);
+            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, pick);
             field_0x23c++;
         } while (++k < 2 && field_0x23c < field_0x240);
         if (field_0x23c < field_0x240) {
@@ -292,11 +292,11 @@ void ForceGemRain_804A8010::update() {
             pos.x = mPos.x;
             pos.y = mPos.y;
             pos.z = mPos.z;
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 pos.y = mPos.y;
                 pos.z = 0.0f;
             } else if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
-                u32 n = (field_0x90 >> 8) & 0xF;
+                u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                 f32 range = 8.0f * (f32)n;
                 if (range == 0.0f) {
                     range = 64.0f;
@@ -313,10 +313,10 @@ void ForceGemRain_804A8010::update() {
                     50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 300.0f);
             }
             if (field_0x244 == 7) {
-                getActorManager_801F856C()->spawnActor_801F9484('LPLK', field_0x4, &mPos, 0x400, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('LPLK', mLayer_0x4, &mPos, 0x400, -1, -1);
                 break;
             }
-            getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &pos, 4);
+            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, 4);
         }
         break;
     }
@@ -331,22 +331,22 @@ void ForceGemRain_804A8010::update() {
             box->i.x + (box->f.x - box->i.x) * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
             box->i.y + (box->f.y - box->i.y) * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
             50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 300.0f);
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             pos.y = mPos.y;
             pos.z = 0.0f;
         }
         if (field_0x248 == 0) {
             if (field_0x244 == 1) {
-                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('HBMB', field_0x4, &pos, 3, -1, -1);
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('HBMB', mLayer_0x4, &pos, 3, -1, -1);
                 if (serial >= 0) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 1.0f);
+                        actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 1.0f);
                     }
                 }
                 field_0x248 = 0x1E;
             } else {
-                getActorManager_801F856C()->spawnActor_801F9484('POPO', field_0x4, &pos, 1, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('POPO', mLayer_0x4, &pos, 1, -1, -1);
             }
             field_0x23c++;
         }
@@ -381,7 +381,7 @@ void ForceGemRain_804A8010::update() {
         return;
     }
     GameView_804A9950* v = getGameView_802D6A9C();
-    v->fn_802D8050((field_0x90 >> 22) & 0x1F, true, 0xFF);
+    v->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
     fn_801F3668();
 }
 

@@ -30,11 +30,11 @@ WarpCannon_8049EAE0::~WarpCannon_8049EAE0() {}
 
 // FIXME: 99.83 %, reloc-name; behaviour clean.
 void WarpCannon_8049EAE0::init() {
-    field_0x274 = field_0x90 >> 8 & 0xFF;
-    field_0x270 = field_0x90 >> 16 & 0xFF;
+    field_0x274 = mSpawnParam_0x90 >> 8 & 0xFF;
+    field_0x270 = mSpawnParam_0x90 >> 16 & 0xFF;
     mBox.set(-16.0f, -16.0f, 16.0f, -12.0f);
     mBox2.set(mBox);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
     mAnim.fn_801D2608(lbl_80539F48, 1);
@@ -196,7 +196,7 @@ s32 WarpCannon_8049EAE0::findPlayer() {
     probe.f.x += mPos.x;
     probe.f.y += dy;
     for (s32 p = 0; p < 4; p++) {
-        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1000.0f) &&
+        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, mLayer_0x4, false, 1000.0f) &&
             !fn_80230188(p) && field_0x26c < 0) {
             return p;
         }

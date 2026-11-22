@@ -15,10 +15,10 @@ void cls_804B0478::init() {
     mBox.i.y = -1280.0f;
     mBox.f.x = 1280.0f;
     mBox.f.y = 1280.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -32,8 +32,8 @@ void cls_804B0478::init() {
     mEmitters[2] = NULL;
     mEmitters[3] = NULL;
     field_0x251 = 0;
-    field_0x11f = 1;
-    if ((s32)field_0x90 == 0) {
+    mUpdateWhilePaused_0x11f = 1;
+    if ((s32)mSpawnParam_0x90 == 0) {
         s32 player = fn_8022EA0C(0);
         if (player >= 0) {
             const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
@@ -41,7 +41,7 @@ void cls_804B0478::init() {
             mPos.y = p->y;
             mPos.z = p->z;
             mPos.y += 16.0f;
-            field_0x4 = getPlayerLayer_8023DE58(player);
+            mLayer_0x4 = getPlayerLayer_8023DE58(player);
         }
     }
     for (int i = 0; i < 4; i++) {
@@ -54,7 +54,7 @@ void cls_804B0478::init() {
     field_0x254.x = mPos.x;
     field_0x254.y = mPos.y;
     field_0x254.z = mPos.z;
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         field_0x248 = 1;
         mState = 0;
     } else {
@@ -135,10 +135,10 @@ void cls_804B0478::update() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             field_0x244 = fn_8022FD8C(mSerial);
             if (field_0x244 >= 0) {
-                if (fn_8038BD08(field_0x244, 0x406, field_0x4, pos, 0x28)) {
+                if (fn_8038BD08(field_0x244, 0x406, mLayer_0x4, pos, 0x28)) {
                     mState = 2;
                 }
             }
@@ -301,7 +301,7 @@ void cls_804B0478::draw() {
     if (fn_80237060(0) >= 2) {
         base = 0x364;
     }
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         f32 x = mPos.x;
         f32 y = mPos.y;
         f32 z = mPos.z;
@@ -318,6 +318,6 @@ void cls_804B0478::draw() {
         mPos.y = y;
         mPos.z = z;
     } else {
-        fn_803075AC(mSerial, field_0x4, &mPos, base + field_0x24c, false, 2, -1, true, 0, 1);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, base + field_0x24c, false, 2, -1, true, 0, 1);
     }
 }

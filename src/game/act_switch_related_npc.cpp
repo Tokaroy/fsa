@@ -6,29 +6,29 @@
 #include "game/act/act_switch_related_npc.h"
 
 void SwitchRelatedNpc_804A8C28::init() {
-    mType = field_0x90 & 0x3F;
-    field_0x238 = (field_0x90 >> 6) & 0xF;
-    mTileIndex = (field_0x90 >> 10) & 0xF;
-    mTable = (field_0x90 >> 14) & 0xF;
-    mSound = (field_0x90 >> 18) & 0xF;
-    if (field_0x90 & 0x04000000) {
+    mType = mSpawnParam_0x90 & 0x3F;
+    field_0x238 = (mSpawnParam_0x90 >> 6) & 0xF;
+    mTileIndex = (mSpawnParam_0x90 >> 10) & 0xF;
+    mTable = (mSpawnParam_0x90 >> 14) & 0xF;
+    mSound = (mSpawnParam_0x90 >> 18) & 0xF;
+    if (mSpawnParam_0x90 & 0x04000000) {
         mEffects = true;
     } else {
         mEffects = false;
     }
     JGeometry::TVec2f cell(mPos.x, mPos.y);
-    mCell = fn_80226BC4(&cell, field_0x4);
+    mCell = fn_80226BC4(&cell, mLayer_0x4);
     mDelay = 0;
     switch (mType) {
     case 0:
-        getGameView_802D6A9C()->fn_802D4874(field_0x4, mCell, &mBit, &mMask);
-        if (getGameView_802D6A9C()->fn_802D4ADC(field_0x4, mCell) == true) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, mCell, 0x10);
+        getGameView_802D6A9C()->fn_802D4874(mLayer_0x4, mCell, &mBit, &mMask);
+        if (getGameView_802D6A9C()->fn_802D4ADC(mLayer_0x4, mCell) == true) {
+            gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, mCell, 0x10);
             mAlive = false;
         }
         break;
     case 2:
-        getGameView_802D6A9C()->fn_802D4768(field_0x4 + 1, mCell, &mSlot, &mMask);
+        getGameView_802D6A9C()->fn_802D4768(mLayer_0x4 + 1, mCell, &mSlot, &mMask);
         break;
     case 3:
         if (mSound == 0) {
@@ -59,17 +59,17 @@ void SwitchRelatedNpc_804A8C28::update() {
         {0x1D, 0x2D}, {0x1E, 0x2E}, {0x1F, 0x2F}, {0xA0, 0xB0}, {0xA1, 0xB1},
         {0xA2, 0xB2}, {0xA3, 0xB3}, {0xFFF, 0x100F}};
 
-    if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
+    if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
         if (mDelay == 0) {
             switch (mType) {
             case 0:
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, mCell, 0x30);
+                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, mCell, 0x30);
                 break;
             case 1:
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, mCell, lbl_8046D470[mTileIndex]);
+                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, mCell, lbl_8046D470[mTileIndex]);
                 break;
             case 2: {
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 u8 step = 8;
                 if (layer < 8) {
                     step = 1;
@@ -79,27 +79,27 @@ void SwitchRelatedNpc_804A8C28::update() {
                 if (slot == 0) {
                     u32 tile = lbl_8046D498[mTable];
                     if (tile < 0xA0) {
-                        getGameView_802D6A9C()->fn_802D7BE8(field_0x4, (s32)mSlot, tile - 0x26);
+                        getGameView_802D6A9C()->fn_802D7BE8(mLayer_0x4, (s32)mSlot, tile - 0x26);
                     } else {
-                        getGameView_802D6A9C()->fn_802D7BE8(field_0x4, (s32)mSlot, tile - 0xA6);
+                        getGameView_802D6A9C()->fn_802D7BE8(mLayer_0x4, (s32)mSlot, tile - 0xA6);
                     }
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4 + step, cell, lbl_8046D498[mTable]);
+                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + step, cell, lbl_8046D498[mTable]);
                     if ((cell & 0x100) != ((cell - 0x10) & 0x100)) {
                         cell -= 0x110;
                     } else {
                         cell -= 0x10;
                     }
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4 + step, cell, lbl_8046D47C[mTable]);
+                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + step, cell, lbl_8046D47C[mTable]);
                 } else {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4 + step, cell, lbl_8046D4B4[slot][1]);
+                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + step, cell, lbl_8046D4B4[slot][1]);
                     if ((cell & 0x100) != ((cell - 0x10) & 0x100)) {
                         cell -= 0x110;
                     } else {
                         cell -= 0x10;
                     }
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4 + step, cell, lbl_8046D4B4[slot][0]);
+                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + step, cell, lbl_8046D4B4[slot][0]);
                 }
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, mCell, 0x17);
+                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, mCell, 0x17);
                 break;
             }
             case 3:
@@ -125,8 +125,8 @@ void SwitchRelatedNpc_804A8C28::update() {
                 break;
             }
             if (mEffects) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x30003, 0);
             }
             mAlive = false;

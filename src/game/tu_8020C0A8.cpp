@@ -25,16 +25,16 @@ cls_804A5F40::cls_804A5F40() {
 
 void cls_804A5F40::init() {
     EnemyBase_804A4808::init();
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         mFlags |= 0x2000;
     }
     field_0xb0 = 0x31101;
-    if (field_0x98 == 3) {
+    if (mDir_0x98 == 3) {
         if (fn_801CF144()) {
-            field_0x98 = fn_801CF720(3);
+            mDir_0x98 = fn_801CF720(3);
         }
     }
-    field_0x2ae = fn_801F6874(field_0x98);
+    field_0x2ae = fn_801F6874(mDir_0x98);
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
@@ -45,12 +45,12 @@ void cls_804A5F40::init() {
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
     if (mFlags & 0x2000) {
-        if (isBlocked_0x4C(field_0x4, &mPos)) {
+        if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
             fn_801F3668();
         } else {
-            JGeometry::TBox2f* box = layerBox(field_0x4);
-            JGeometry::TBox2f bounds(field_0x80.i.x + mPos.x, field_0x80.i.y + mPos.y,
-                                     field_0x80.f.x + mPos.x, field_0x80.f.y + mPos.y);
+            JGeometry::TBox2f* box = layerBox(mLayer_0x4);
+            JGeometry::TBox2f bounds(mMapBox_0x80.i.x + mPos.x, mMapBox_0x80.i.y + mPos.y,
+                                     mMapBox_0x80.f.x + mPos.x, mMapBox_0x80.f.y + mPos.y);
             bool inside = false;
             if (bounds.i.x >= box->i.x && bounds.i.y >= box->i.y &&
                 bounds.f.x < box->f.x && bounds.f.y < box->f.y) {
@@ -127,11 +127,11 @@ void cls_804A5F40::updateState_0x90(u8 mapHit) {
             field_0x2a8 = -1;
             field_0x2ac = 0;
             if (fn_801CF144()) {
-                field_0x98 = fn_801CF720(3);
+                mDir_0x98 = fn_801CF720(3);
             } else {
-                field_0x98 = fn_801CF6B8();
+                mDir_0x98 = fn_801CF6B8();
             }
-            field_0x2ae = fn_801F6874(field_0x98);
+            field_0x2ae = fn_801F6874(mDir_0x98);
             mStateTimer = 0;
             mState = 1;
         }
@@ -139,13 +139,13 @@ void cls_804A5F40::updateState_0x90(u8 mapHit) {
     case 1:
         if (mapHit) {
             if (fn_801CF144()) {
-                if (field_0x98 == 3) {
-                    field_0x98 = fn_801CF720(3);
+                if (mDir_0x98 == 3) {
+                    mDir_0x98 = fn_801CF720(3);
                 } else {
-                    field_0x98 = fn_801CF798(3, field_0x98);
+                    mDir_0x98 = fn_801CF798(3, mDir_0x98);
                 }
             } else {
-                field_0x98 = fn_801CF720(field_0x98);
+                mDir_0x98 = fn_801CF720(mDir_0x98);
             }
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
@@ -162,21 +162,21 @@ void cls_804A5F40::updateState_0x90(u8 mapHit) {
                 field_0x2a8 = -1;
                 field_0x2ac = 0;
                 if (fn_801CF144()) {
-                    field_0x98 = fn_801CF720(3);
+                    mDir_0x98 = fn_801CF720(3);
                 } else {
-                    field_0x98 = fn_801CF6B8();
+                    mDir_0x98 = fn_801CF6B8();
                 }
-                field_0x2ae = fn_801F6874(field_0x98);
+                field_0x2ae = fn_801F6874(mDir_0x98);
                 mStateTimer = 0;
                 mState = 1;
             }
         }
-        field_0x2ae = fn_801F6874(field_0x98);
+        field_0x2ae = fn_801F6874(mDir_0x98);
         break;
     case 2:
         field_0x2ae = fn_801D0280(field_0x2a8) - 0x8000;
-        if (viewLayerFlag(field_0x4)) {
-            if (!(fn_801D0DD4() && fn_801CC9F8(&mPos, field_0x4))) {
+        if (viewLayerFlag(mLayer_0x4)) {
+            if (!(fn_801D0DD4() && fn_801CC9F8(&mPos, mLayer_0x4))) {
                 if (field_0x2ae > 0) {
                     field_0x2ae = 0x4000;
                 } else {
@@ -200,15 +200,15 @@ void cls_804A5F40::calcVelocity_0x88() {
     f32 cosV = JMath::sincosTable_.cosShort(field_0x2ae);
     f32 x = sinV * mSpeed;
     f32 y = cosV * mSpeed;
-    field_0x3c.x = x;
-    field_0x3c.y = y;
+    mVel_0x3c.x = x;
+    mVel_0x3c.y = y;
     applyGravity_0x84();
 }
 
 void cls_804A5F40::move_0x98() {
     if (!(mFlags & 7)) {
         fn_801CE32C();
-    } else if (viewLayerFlag(field_0x4)) {
+    } else if (viewLayerFlag(mLayer_0x4)) {
         fn_801CE5D4();
     }
 }

@@ -14,10 +14,10 @@ void cls_804A2EC0::init() {
     mBox.i.y = -10.0f;
     mBox.f.x = 10.0f;
     mBox.f.y = 10.0f;
-    field_0x80.i.x = 0.0f;
-    field_0x80.i.y = 0.0f;
-    field_0x80.f.x = 0.0f;
-    field_0x80.f.y = 0.0f;
+    mMapBox_0x80.i.x = 0.0f;
+    mMapBox_0x80.i.y = 0.0f;
+    mMapBox_0x80.f.x = 0.0f;
+    mMapBox_0x80.f.y = 0.0f;
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -66,7 +66,7 @@ void cls_804A2EC0::init() {
         field_0x294[i * 8 + 7].z = mPos.z;
     }
     field_0x268 = 0;
-    field_0x190 = 0;
+    mParamVoic_0x190 = 0;
     field_0x278 = 0.0f;
     field_0x264 = mLife;
     mLife = 10000;
@@ -78,7 +78,7 @@ void cls_804A2EC0::init() {
 // sqrtf expansion and trail-collision loop
 void cls_804A2EC0::update() {
     s32 player = -1;
-    if (field_0x258 == 0 && (field_0x90 >> 27) != 0) {
+    if (field_0x258 == 0 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
             return;
         }
@@ -121,7 +121,7 @@ void cls_804A2EC0::update() {
                 f32 dist = std::sqrtf(dx * dx + dy * dy);
                 if (dist < 16.0f) {
                     mPos.set(field_0x294[i].x, field_0x294[i].y, 0.0f);
-                    fn_801F2B7C(field_0x114, -1, 5);
+                    fn_801F2B7C(mParamAtcp_0x114, -1, 5);
                 }
             }
         }
@@ -200,7 +200,7 @@ void cls_804A2EC0::update() {
         case 2:
             if (field_0x274 < 1.0f) {
                 for (s32 i = 0; i < 40; i++) {
-                    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &field_0x294[i], 0);
+                    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &field_0x294[i], 0);
                 }
                 die_0x24();
             }
@@ -226,7 +226,7 @@ void cls_804A2EC0::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (field_0x258 == 0 && (field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
+    if (field_0x258 == 0 && (mSpawnParam_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     params.field_0x0[4] = 3;

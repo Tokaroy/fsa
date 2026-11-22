@@ -34,20 +34,20 @@ void cls_804A4BB0::init() {
     EnemyBase_804A4808::init();
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 4;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x300;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     field_0x194 = 1;
-    if (fn_801CD2F8(field_0x4)) {
+    if (fn_801CD2F8(mLayer_0x4)) {
         mAnim.fn_801D2608(lbl_8053A140, 1);
         mAnim.startAnim_801D22DC(0, 2, false);
     } else {
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x226, 1, 2, NULL, NULL, true, 1.0f);
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x227, 1, 2, NULL, NULL, true, 1.0f);
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x226, 1, 2, NULL, NULL, true, 1.0f);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x227, 1, 2, NULL, NULL, true, 1.0f);
     }
-    if (fn_801CD2F8(field_0x4)) {
+    if (fn_801CD2F8(mLayer_0x4)) {
         fn_801D7DB4(1.0f);
     } else {
         fn_801D7DB4(0.0f);
@@ -69,36 +69,36 @@ void cls_804A4BB0::fn_801D7DB4(f32 scale) {
 void cls_804A4BB0::update() {
     s32 i;
     s32 mode;
-    if (isTiny(field_0x3c)) {
-        fn_801F2B7C(field_0x114, -1, 1);
+    if (isTiny(mVel_0x3c)) {
+        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
     } else {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
         if (!contains(box, mPos)) {
             mAlive = false;
         } else {
             mode = 1;
-            if (!fn_801CD2F8(field_0x4)) {
+            if (!fn_801CD2F8(mLayer_0x4)) {
                 mode = 3;
             }
             u8 hits = fn_801F2740(-1);
             if (hits) {
                 for (i = 0; i < 4; i++) {
                     if (hits & (1 << i)) {
-                        JGeometry::TVec2f p(getPlayerPos_8023E724(i)->x - field_0x3c.x,
-                                            getPlayerPos_8023E724(i)->y - getPlayerPos_8023E724(i)->z - field_0x3c.y);
-                        fn_80238548(i, field_0x114, &p, mode);
+                        JGeometry::TVec2f p(getPlayerPos_8023E724(i)->x - mVel_0x3c.x,
+                                            getPlayerPos_8023E724(i)->y - getPlayerPos_8023E724(i)->z - mVel_0x3c.y);
+                        fn_80238548(i, mParamAtcp_0x114, &p, mode);
                     }
                 }
             }
             if (hits) {
                 mAlive = false;
             } else {
-                if (fn_801CD2F8(field_0x4)) {
+                if (fn_801CD2F8(mLayer_0x4)) {
                     mAnim.fn_801D1C18();
                 }
-                mPos += field_0x3c;
+                mPos += mVel_0x3c;
             }
         }
     }
@@ -108,8 +108,8 @@ void cls_804A4BB0::update() {
 
 void cls_804A4BB0::draw() {
     if (isTiny(field_0x54) == false) {
-        if (fn_801CD2F8(field_0x4)) {
-            fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x1C7, false, 2, -1, 1, 0, 0);
+        if (fn_801CD2F8(mLayer_0x4)) {
+            fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C7, false, 2, -1, 1, 0, 0);
         }
     }
 }

@@ -25,16 +25,16 @@ static const f32 lbl_8046C3B8[4][3] = {
 void BurningBlockWoodenCrate_804A7B90::init() {
     mPos.x += (s32)(8.0f - (f32)((s32)mPos.x % 8));
     mPos.y += (s32)(8.0f - (f32)((s32)mPos.y % 8));
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     mSpawnPos = mPos;
     field_0x230 = mSpawnPos;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x1a4 = 1;
     field_0x23c = 0;
     field_0xb8 = 2;
-    field_0x240 = fn_80226850(&mPos, field_0x4);
-    gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x159);
+    field_0x240 = fn_80226850(&mPos, mLayer_0x4);
+    gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x159);
 }
 
 void BurningBlockWoodenCrate_804A7B90::update() {
@@ -43,7 +43,7 @@ void BurningBlockWoodenCrate_804A7B90::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if (PSVECDistance(&mPos, &field_0x230) >= 15.9f) {
         if (mPos.x <= 15.5f + mSpawnPos.x && mPos.x >= mSpawnPos.x - 15.5f) {
             mPos.x = mSpawnPos.x;
@@ -56,26 +56,26 @@ void BurningBlockWoodenCrate_804A7B90::update() {
             mPos.y = (s32)(((s32)mPos.y + 4) / 8) * 8;
         }
         field_0x230 = mPos;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         mPrevPos = mPos;
         field_0x23c = 8;
-        field_0x240 = fn_80226850(&mPos, field_0x4);
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x159);
+        field_0x240 = fn_80226850(&mPos, mLayer_0x4);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x159);
     } else {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         if (field_0x23c > 0) {
             field_0x23c--;
-        } else if (field_0x3c.isZero()) {
-            if (fn_80226850(&mPos, field_0x4) != 0x159) {
-                switch (field_0x90 & 0xFF) {
+        } else if (mVel_0x3c.isZero()) {
+            if (fn_80226850(&mPos, mLayer_0x4) != 0x159) {
+                switch (mSpawnParam_0x90 & 0xFF) {
                 case 1:
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &mPos, 2, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &mPos, 2, -1, -1);
                     break;
                 case 2:
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &mPos, 4, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &mPos, 4, -1, -1);
                     break;
                 case 3:
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &mPos, 7, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &mPos, 7, -1, -1);
                     break;
                 }
                 mAlive = false;
@@ -85,15 +85,15 @@ void BurningBlockWoodenCrate_804A7B90::update() {
                     JGeometry::TVec2f probe(lbl_8046C398[dir][0], lbl_8046C398[dir][1]);
                     probe.x += mPos.x;
                     probe.y += mPos.y;
-                    if (!fn_802260DC(&probe, field_0x4, false)) {
+                    if (!fn_802260DC(&probe, mLayer_0x4, false)) {
                         fn_80238E08(mSerial);
-                        field_0x3c.set(lbl_8046C3B8[dir][0], lbl_8046C3B8[dir][1],
+                        mVel_0x3c.set(lbl_8046C3B8[dir][0], lbl_8046C3B8[dir][1],
                                        lbl_8046C3B8[dir][2]);
                         field_0x230.x = mPos.x;
                         field_0x230.y = mPos.y;
                         field_0x230.z = mPos.z;
                         startSound_801F0E34(0x30004, 0);
-                        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, field_0x240);
+                        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, field_0x240);
                     }
                 }
             }

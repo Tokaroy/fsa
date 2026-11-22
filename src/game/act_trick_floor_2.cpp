@@ -46,7 +46,7 @@ static inline void setRotMtx(Mtx m, const JGeometry::TVec3f& rot) {
 // Draws the 'SMP ' sprite `name` at pos with the floor's params, below layer 8.
 static inline void drawSmp(TrickFloor2_804AA628* self, const JGeometry::TVec3f* pos, const char* name,
                            SpriteParams_801F5AE0* params) {
-    if (self->field_0x4 < 8) {
+    if (self->mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
     }
@@ -72,7 +72,7 @@ static inline s32 tileIndex(s32 tx, s32 ty) {
 // Sets every tile of the floor's block (counts by mType) from x to `tile` (update's four
 // copies; init's loop with tile 6).
 static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
-    s32 layer = self->field_0x4;
+    s32 layer = self->mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TBox2f box;
@@ -82,7 +82,7 @@ static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
         f32 y = self->mPos.y;
         for (s32 j = 0; j < lbl_8046F7A4[self->mType]; j++) {
             s32 ty = (s32)(y - box.i.y);
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(self->field_0x4, tileIndex(tx, ty), tile);
+            gGameRoot2_8053AB10->field_0x20->fn_802F9974(self->mLayer_0x4, tileIndex(tx, ty), tile);
             y += 16.0f;
         }
         x += 16.0f;
@@ -91,41 +91,41 @@ static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
 
 // The tile under a position, read from the map.
 static inline u16 tileAt(TrickFloor2_804AA628* self, f32 x, f32 y) {
-    s32 layer = self->field_0x4;
+    s32 layer = self->mLayer_0x4;
     GameView_804A9950* gv = getGameView_802D6A9C();
     const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
     JGeometry::TBox2f vbox;
     vbox = view;
     s32 tx = (s32)(x - vbox.i.x);
     s32 ty = (s32)(y - vbox.i.y);
-    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->field_0x4, tileIndex(tx, ty));
+    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->mLayer_0x4, tileIndex(tx, ty));
 }
 
 // The four dust emitters 0x381-0x384 at the floor's corner.
 static inline void spawnDust(TrickFloor2_804AA628* self, s32 a) {
     {
         JGeometry::TVec3f pos(32.0f + self->mPos.x, 32.0f + self->mPos.y, 0.0f);
-        spawnEmitter_8013CC50(self->field_0x4, &pos, 0x381, a, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x381, a, 0, NULL, NULL, true, 1.0f);
     }
     {
         JGeometry::TVec3f pos(32.0f + self->mPos.x, 32.0f + self->mPos.y, 0.0f);
-        spawnEmitter_8013CC50(self->field_0x4, &pos, 0x382, a, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x382, a, 0, NULL, NULL, true, 1.0f);
     }
     {
         JGeometry::TVec3f pos(32.0f + self->mPos.x, 32.0f + self->mPos.y, 0.0f);
-        spawnEmitter_8013CC50(self->field_0x4, &pos, 0x383, a, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x383, a, 0, NULL, NULL, true, 1.0f);
     }
     {
         JGeometry::TVec3f pos(32.0f + self->mPos.x, 32.0f + self->mPos.y, 0.0f);
-        spawnEmitter_8013CC50(self->field_0x4, &pos, 0x384, a, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x384, a, 0, NULL, NULL, true, 1.0f);
     }
 }
 
 // FIXME(shotgun): 97.57 %, scheduling+regalloc + reloc-name; behaviour clean.
 void TrickFloor2_804AA628::init() {
-    mType = field_0x90 & 0xF;
-    field_0x238 = (field_0x90 >> 4) & 0xF;
-    field_0x240 = (field_0x90 >> 12) & 0xFFF;
+    mType = mSpawnParam_0x90 & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x240 = (mSpawnParam_0x90 >> 12) & 0xFFF;
     field_0x248 = 0.0f;
     switch (mType) {
     case 6:
@@ -183,14 +183,14 @@ void TrickFloor2_804AA628::update() {
         break;
     case 4:
     case 5: {
-        field_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
+        mMapBox_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
         JGeometry::TBox2f box4;
-        box4 = field_0x80;
+        box4 = mMapBox_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
         p.set(mPos.x, mPos.y);
         box4.addPos(p);
-        fn_80239914(&box4, field_0x4, mSerial);
+        fn_80239914(&box4, mLayer_0x4, mSerial);
         mPos = saved;
         mPos.y += 48.0f;
         mBox.set(-16.0f, -50.0f, 24.0f, 50.0f);
@@ -200,7 +200,7 @@ void TrickFloor2_804AA628::update() {
     p.set(mPos.x, mPos.y);
     JGeometry::TBox2f box = mBox;
     box.addPos(p);
-    s32 player = fn_8023AF14(&box, field_0x4, false, 4.5f);
+    s32 player = fn_8023AF14(&box, mLayer_0x4, false, 4.5f);
     if (player >= 0 && fn_8022F514(player) == true && fn_8022F478(player) == player) {
         player = -1;
     }
@@ -208,10 +208,10 @@ void TrickFloor2_804AA628::update() {
         player = -1;
     }
     s32 ball = fn_801F2718('SBAL');
-    fn_8023A89C(&box, field_0x4, &p);
+    fn_8023A89C(&box, mLayer_0x4, &p);
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023A97C(i, &box, field_0x4, &p)) {
+        if (fn_8023A97C(i, &box, mLayer_0x4, &p)) {
             count++;
         }
     }
@@ -285,7 +285,7 @@ void TrickFloor2_804AA628::update() {
         if (field_0x248 < 0.0f) {
             field_0x248 = 0.0f;
             f32 x = mPos.x;
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             GameView_804A9950* gv = getGameView_802D6A9C();
             const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
             JGeometry::TBox2f vbox;
@@ -297,9 +297,9 @@ void TrickFloor2_804AA628::update() {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
                     if (mType != 1) {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, index, field_0x250);
+                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, field_0x250);
                     } else {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, index, lbl_8046F7C0[i][j]);
+                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, lbl_8046F7C0[i][j]);
                     }
                     y += 16.0f;
                 }
@@ -330,18 +330,18 @@ void TrickFloor2_804AA628::update() {
             if (field_0x248 <= -3.2f) {
                 field_0x248 = -3.2f;
                 field_0x230 = 8;
-                getGameView_802D6A9C()->fn_802D79E8(field_0x4, 8.0f, 0.0f, true);
+                getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, true);
                 JGeometry::TVec3f pos(48.0f + (96.0f + mPos.x), 48.0f + mPos.y, 0.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x263, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x263, 0, 0, NULL, NULL, true, 1.0f);
                 if (mType == 4) {
                     const char* name = getGameView_802D6A9C()->fn_802D9C4C();
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x82, 1, 0, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x83, 1, 0, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x84, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x82, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x83, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x84, 1, 0, NULL, NULL, true, 1.0f);
                     if (name[0] == 'r' || name[0] == 's' || name[0] == 'y') {
-                        spawnEmitter_8013CC50(field_0x4, &pos, 0x80, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x80, 1, 0, NULL, NULL, true, 1.0f);
                     } else {
-                        spawnEmitter_8013CC50(field_0x4, &pos, 0x81, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x81, 1, 0, NULL, NULL, true, 1.0f);
                     }
                     startSound_801F0E34(0x30001, 0);
                 } else {
@@ -390,7 +390,7 @@ void TrickFloor2_804AA628::draw() {
     sp.mMtx = m;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
     JGeometry::TVec3f hole(mPos.x + lbl_8046F7E0[mType], mPos.y + lbl_8046F7FC[mType], mPos.z);
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&hole, res, &sp);
     }
 

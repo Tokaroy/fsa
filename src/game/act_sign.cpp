@@ -13,10 +13,10 @@ void Sign_804A94D8::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = -4.0f;
-    field_0x80.i.y = -4.0f;
-    field_0x80.f.x = 4.0f;
-    field_0x80.f.y = 4.0f;
+    mMapBox_0x80.i.x = -4.0f;
+    mMapBox_0x80.i.y = -4.0f;
+    mMapBox_0x80.f.x = 4.0f;
+    mMapBox_0x80.f.y = 4.0f;
     field_0x230 = 0;
 }
 
@@ -24,12 +24,12 @@ void Sign_804A94D8::update() {
     field_0x234 = 0xFF;
     if (field_0xc4) {
         mPos.set(*fn_8023E7B0(field_0xc8));
-        field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+        mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
         field_0x234 = fn_8023BCD4(field_0xc8);
     } else {
-        field_0x3c.z += -0.1f;
-        mPos += field_0x3c;
-        s32 damage = field_0x114;
+        mVel_0x3c.z += -0.1f;
+        mPos += mVel_0x3c;
+        s32 damage = mParamAtcp_0x114;
         if (gGameRoot_8053AAF8->field_0x7f) {
             damage = 0;
         }
@@ -55,27 +55,27 @@ void Sign_804A94D8::draw() {
 }
 
 void Sign_804A94D8::die_0x24() {
-    if (field_0x4 >= 8) {
+    if (mLayer_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, mLayer_0x4, &pos, 0, -1, -1);
         startSound_801F0E34(0x30018, 0);
-    } else if (fn_8022461C(&mPos, field_0x4) == 0xD || fn_8022461C(&mPos, field_0x4) == 0x39) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
+    } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xD || fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30022, 0);
-    } else if (fn_8022461C(&mPos, field_0x4) == 0xE) {
+    } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xE) {
         if (fn_802DE9A0()) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
         } else {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5003F, 0);
         }
     } else {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x91, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x92, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x91, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x92, 1, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30018, 0);
     }
     mAlive = false;

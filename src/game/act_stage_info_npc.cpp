@@ -10,7 +10,7 @@
 #include "game/act/act_stage_info_npc.h"
 
 void StageInfoNpc_804AA7A8::init() {
-    getGameView_802D6A9C()->fn_802D7934(field_0x90 & 0xF);
+    getGameView_802D6A9C()->fn_802D7934(mSpawnParam_0x90 & 0xF);
     mAlive = false;
 }
 

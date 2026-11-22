@@ -54,9 +54,9 @@ void Fairy_804A03B8::init() {
     field_0x280 = 10.0f;
     mCounters[2] = 10;
     mCounters[3] = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
-    field_0x260 = (field_0x90 >> 22) & 0x1F;
-    field_0x258 = (field_0x90 >> 4) & 0xF;
-    field_0x25c = field_0x90 & 0xF;
+    field_0x260 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x258 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x25c = mSpawnParam_0x90 & 0xF;
     field_0x264 = 0;
     field_0x268 = 0;
     field_0x270 = 255.0f;
@@ -70,7 +70,7 @@ void Fairy_804A03B8::init() {
     field_0xb0 = 0x20000;
     field_0x254 = -1;
     if (field_0x258 == 2) {
-        field_0x11f = 1;
+        mUpdateWhilePaused_0x11f = 1;
     }
     mEmitter290 = NULL;
     mEmitter294 = NULL;
@@ -93,12 +93,12 @@ void Fairy_804A03B8::init() {
         startSound_801F0E34(0x400E5, 0);
         field_0x230 = 5;
     }
-    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
+    if ((mSpawnParam_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         field_0xb0 = 0;
         return;
     }
-    mEmitter290 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
-    mEmitter294 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter290 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter294 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.0f);
     if (field_0x230 == 0 || field_0x230 == 5) {
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
             // FAKEMATCH(crack-pass): row view (tu_803B8C74.h SaveFileRow_CrackPass).
@@ -114,7 +114,7 @@ void Fairy_804A03B8::init() {
 // 0x8016088C.
 // FIXME(shotgun): 94.67 %, different + reloc-name
 void Fairy_804A03B8::update() {
-    if (field_0x268 == 0 && (field_0x90 >> 27) != 0) {
+    if (field_0x268 == 0 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
             return;
         }
@@ -129,17 +129,17 @@ void Fairy_804A03B8::update() {
         }
         field_0xb0 = 0x20000;
         if (mEmitter290 == NULL) {
-            mEmitter290 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter290 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitter294 == NULL) {
-            mEmitter294 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter294 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.0f);
         }
     }
     if (field_0x258 != 2) {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x278, 0.1f, 0.5f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x27c, 0.1f, 0.5f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x278, 0.1f, 0.5f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c, 0.1f, 0.5f);
         addCalc2_801F71A4(&mPos.z, field_0x280, 0.3f, 0.5f);
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
     }
     setEmitterPos_8013CB44(mEmitter290, &mPos, 0, 0, true);
     setEmitterPos_8013CB44(mEmitter294, &mPos, 0, 0, true);
@@ -177,9 +177,9 @@ void Fairy_804A03B8::update() {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
                 strict = false;
             }
-            s32 player = fn_8023AF14(&box, field_0x4, strict, 0.0f);
+            s32 player = fn_8023AF14(&box, mLayer_0x4, strict, 0.0f);
             if (player < 0) {
-                player = fn_8023B8E4(&box, field_0x4, &center, true);
+                player = fn_8023B8E4(&box, mLayer_0x4, &center, true);
             }
             if (player >= 0) {
                 field_0x244 = 0;
@@ -188,7 +188,7 @@ void Fairy_804A03B8::update() {
                 mCounters[0] = 500;
                 field_0x244 = player;
                 fn_80236554(field_0x244, 0x20, false);
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, layer, &mPos,
                                                                    (field_0x244 & 3) | 4, -1, -1);
@@ -229,7 +229,7 @@ void Fairy_804A03B8::update() {
         field_0x24c = 0;
         field_0xb0 = 0;
         field_0x11e = 1;
-        field_0x264 = field_0x4;
+        field_0x264 = mLayer_0x4;
         field_0x230 = 3;
         // fall through
     case 3: {
@@ -251,7 +251,7 @@ void Fairy_804A03B8::update() {
         } else {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (target != NULL) {
-                if (field_0x264 == target->field_0x4) {
+                if (field_0x264 == target->mLayer_0x4) {
                     targetX = target->mPos.x;
                     targetY = target->mPos.y;
                     field_0x284 = target->mPos;
@@ -341,7 +341,7 @@ void Fairy_804A03B8::update() {
 // 0x80160650.
 void Fairy_804A03B8::draw() {
     SpriteParams_801F5AE0 params;
-    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
+    if ((mSpawnParam_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     if (field_0x258 != 2) {
@@ -354,12 +354,12 @@ void Fairy_804A03B8::draw() {
             params.field_0x30 = 0x11;
         }
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x5E, &params, 1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 1);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 1);
     } else {
         s32 frame = 0x5E;
         if (field_0x248 != 0) {
             frame = 0x7D;
         }
-        fn_803075AC(mSerial, field_0x4, &mPos, frame + field_0x250, false, 2, -1, 1, 0, 1);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame + field_0x250, false, 2, -1, 1, 0, 1);
     }
 }

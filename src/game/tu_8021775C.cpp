@@ -47,7 +47,7 @@ void cls_80217F80::fn_80217ED4() {
     const JGeometry::TVec3f* pos = &owner->mPos;
     for (s32 i = 0; i < 6; i++) {
         JPABaseEmitter* emitter =
-            spawnEmitter_8013CC50(owner->field_0x4, pos, lbl_8046A5A0[i], 1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(owner->mLayer_0x4, pos, lbl_8046A5A0[i], 1, 1, NULL, NULL, true, 1.0f);
         if (emitter != NULL) {
             emitter->setGlobalScale(lbl_804CD838);
         }
@@ -58,9 +58,9 @@ void cls_80217F80::fn_80217ED4() {
 // FIXME: 96.61 %, scheduling; behaviour clean.
 void cls_80217F80::fn_80217DE8() {
     JPABaseEmitter* emitter =
-        spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x231, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x231, 1, 1, NULL, NULL, true, 1.0f);
     JPABaseEmitter* emitter2 =
-        spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x232, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x232, 1, 1, NULL, NULL, true, 1.0f);
     if (emitter != NULL) {
         emitter->setGlobalScale(lbl_804CD838);
     }
@@ -71,13 +71,13 @@ void cls_80217F80::fn_80217DE8() {
 
 void cls_80217F80::fn_80217CD8() {
     if (mEmitters[0] == NULL) {
-        mEmitters[0] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x228, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[0] = spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x228, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[0] != NULL) {
             mEmitters[0]->setGlobalScale(lbl_804CD838);
         }
     }
     if (mEmitters[1] == NULL) {
-        mEmitters[1] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x229, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[1] = spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x229, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[1] != NULL) {
             mEmitters[1]->setGlobalScale(lbl_804CD838);
         }
@@ -86,13 +86,13 @@ void cls_80217F80::fn_80217CD8() {
 
 void cls_80217F80::fn_80217BC8() {
     if (mEmitters[2] == NULL) {
-        mEmitters[2] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x22F, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[2] = spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x22F, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[2] != NULL) {
             mEmitters[2]->setGlobalScale(lbl_804CD838);
         }
     }
     if (mEmitters[3] == NULL) {
-        mEmitters[3] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x230, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[3] = spawnEmitter_8013CC50(mOwner->mLayer_0x4, mOwner->getPos(), 0x230, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[3] != NULL) {
             mEmitters[3]->setGlobalScale(lbl_804CD838);
         }

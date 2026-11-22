@@ -14,13 +14,13 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
 
 // The two burst effects (0x1E, 0x1F) and their sound.
 inline void cls_804A4188::spawnBurst() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x1E, 0, -1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x1F, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1E, 0, -1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1F, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30061, 0);
     mFlags |= FLAG_BURST;
 }
 
-// The effect follows the actor; its angle is the direction of field_0x3c.
+// The effect follows the actor; its angle is the direction of mVel_0x3c.
 inline void cls_804A4188::moveEmitter() {
     if (mEmitter2a8 != NULL) {
         s32 depth = 1;
@@ -28,7 +28,7 @@ inline void cls_804A4188::moveEmitter() {
             depth = field_0x94;
         }
         setEmitterPos_8013CB44(mEmitter2a8, &mPos, 0, depth, true);
-        s16 angle = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) *
+        s16 angle = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) *
                     (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
         fn_8013CAA4(mEmitter2a8, 0.017453294f * (0.005493164f * angle));
     }
@@ -37,22 +37,22 @@ inline void cls_804A4188::moveEmitter() {
 // Whether the point (dx, dy) from the actor is blocked.
 inline bool cls_804A4188::blockedAt(f32 dx, f32 dy) {
     JGeometry::TVec3f p(mPos.x + dx, mPos.y + dy, mPos.z);
-    return isBlocked_0x4C(field_0x4, &p);
+    return isBlocked_0x4C(mLayer_0x4, &p);
 }
 
 // Burns the tiles under the box (a 2x2 grid of points over it).
 inline void cls_804A4188::burnTiles() {
     JGeometry::TVec3f p(mPos);
-    p.x = mPos.x + field_0x80.i.x;
+    p.x = mPos.x + mMapBox_0x80.i.x;
     for (s32 i = 0; i < 2; i++) {
-        p.y = mPos.y + field_0x80.i.y;
+        p.y = mPos.y + mMapBox_0x80.i.y;
         for (s32 j = 0; j < 2; j++) {
-            if (fn_801CCC78(&p, field_0x4)) {
-                gBgRewrite_8053AC98->fn_802A20F0(&p, -1, field_0x4, 0, 0);
+            if (fn_801CCC78(&p, mLayer_0x4)) {
+                gBgRewrite_8053AC98->fn_802A20F0(&p, -1, mLayer_0x4, 0, 0);
             }
-            p.y += field_0x80.f.y - field_0x80.i.y;
+            p.y += mMapBox_0x80.f.y - mMapBox_0x80.i.y;
         }
-        p.x += field_0x80.f.x - field_0x80.i.x;
+        p.x += mMapBox_0x80.f.x - mMapBox_0x80.i.x;
     }
 }
 
@@ -66,19 +66,19 @@ void cls_804A4188::init() {
     EnemyBase_804A4808::init();
     mBox.set(-2.0f, -2.0f, 2.0f, 2.0f);
     mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x80.set(-1.0f, -1.0f, 1.0f, 1.0f);
+    mMapBox_0x80.set(-1.0f, -1.0f, 1.0f, 1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
     field_0x194 = 1;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     mStateTimer = 0;
 }
 
 void cls_804A4188::onFirstUpdate_0x54() {
-    mEmitter2a8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1B, 0, field_0x94, NULL, NULL, true, 1.0f);
+    mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1B, 0, field_0x94, NULL, NULL, true, 1.0f);
     moveEmitter();
 }
 
@@ -101,21 +101,21 @@ void cls_804A4188::update() {
         onFirstUpdate_0x54();
         return;
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     moveEmitter();
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
     if (!contains(box, mPos)) {
         mFlags |= FLAG_BURST;
         return;
     }
-    if (blockedAt(field_0x80.i.x, field_0x80.i.y) || blockedAt(field_0x80.f.x, field_0x80.i.y) ||
-        blockedAt(field_0x80.i.x, field_0x80.f.y) || blockedAt(field_0x80.f.x, field_0x80.f.y)) {
+    if (blockedAt(mMapBox_0x80.i.x, mMapBox_0x80.i.y) || blockedAt(mMapBox_0x80.f.x, mMapBox_0x80.i.y) ||
+        blockedAt(mMapBox_0x80.i.x, mMapBox_0x80.f.y) || blockedAt(mMapBox_0x80.f.x, mMapBox_0x80.f.y)) {
         burnTiles();
         spawnBurst();
     } else {
-        fn_801F2B7C(field_0x114, -1, 1);
+        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
 }
 
@@ -132,7 +132,7 @@ bool cls_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     bool blocked = true;
     if (!fn_802265DC(pos, layer, false)) {
-        s32 serial = field_0x90;
+        s32 serial = mSpawnParam_0x90;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
         if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
             blocked = false;

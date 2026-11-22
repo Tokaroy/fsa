@@ -21,7 +21,7 @@ void BeeManager_804AC810::init() {
     field_0x234 = 0;
     field_0x238 = -1;
     field_0x23c = -1;
-    field_0x278 = field_0x90 & 0xF;
+    field_0x278 = mSpawnParam_0x90 & 0xF;
     field_0x280 = 0;
     field_0x282 = 0;
     for (int i = 0; i < 14; i++) {
@@ -80,9 +80,9 @@ void BeeManager_804AC810::update() {
             if (bee != NULL) {
                 bee->field_0x230 = 4;
                 // Explicit copy+scale matches the original single stack temporary at 0x2c(r1) (without operator*'s second return temporary).
-                JGeometry::TVec3f vel = bee->field_0x3c;
+                JGeometry::TVec3f vel = bee->mVel_0x3c;
                 vel.scale(0.85f);
-                bee->field_0x3c = vel;
+                bee->mVel_0x3c = vel;
                 if (bee->field_0x264 == 0) {
                     allReady = false;
                 }
@@ -132,7 +132,7 @@ void BeeManager_804AC810::update() {
         }
         if (field_0x230 == 1) {
             for (int i = 0; i < 14; i++) {
-                field_0x240[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FOBE, field_0x4, &mPos, 0, -1, -1);
+                field_0x240[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FOBE, mLayer_0x4, &mPos, 0, -1, -1);
                 BeeFormation_804AC7B8* bee = (BeeFormation_804AC7B8*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x240[i]);
                 if (bee != NULL) {
                     bee->field_0x250 = mSerial;
@@ -232,11 +232,11 @@ void BeeManager_804AC810::update() {
             s16 baseAngle = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
             for (int i = 0; i < 14; i++) {
                 u32 arg = (i & 1) + 1;
-                s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &pos, arg | 0x1000000, -1, -1);
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &pos, arg | 0x1000000, -1, -1);
                 ActorBase_804A5770* rupy = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (rupy != NULL) {
                     s16 angle = baseAngle + (i << 16) / 14;
-                    rupy->field_0x3c = JGeometry::TVec3f(
+                    rupy->mVel_0x3c = JGeometry::TVec3f(
                         2.0f * JMath::sincosTable_.sinShort(angle),
                         2.0f * JMath::sincosTable_.cosShort(angle),
                         4.0f

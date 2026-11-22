@@ -12,7 +12,7 @@
 // 0x12 when the view's bit for the running id is already set.
 void Pot2Generator_804AA6F8::init() {
     JGeometry::TVec3f pos;
-    u32 id = field_0x90;
+    u32 id = mSpawnParam_0x90;
 
     field_0x230 = 0;
     for (s32 i = 0; i < 32; i++) {

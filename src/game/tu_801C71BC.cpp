@@ -50,7 +50,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
             JGeometry::TVec2f prev(cur.x, cur.y);
             cur.x += stepX;
             cur.y += stepY;
-            if (fn_801CF888(&prev, (const JGeometry::TVec3f*)&cur, field_0x4)) {
+            if (fn_801CF888(&prev, (const JGeometry::TVec3f*)&cur, mLayer_0x4)) {
                 break;
             }
             JGeometry::TVec2f toGoal(field_0x32c.x - cur.x, field_0x32c.y - cur.y);
@@ -58,7 +58,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
             toGoal.x *= 14.0f;
             toGoal.y *= 14.0f;
             probe.set(cur.x + toGoal.x, cur.y + toGoal.y);
-            if (!fn_801CF888(&cur, (const JGeometry::TVec3f*)&probe, field_0x4)) {
+            if (!fn_801CF888(&cur, (const JGeometry::TVec3f*)&probe, mLayer_0x4)) {
                 dir->set(cur.x - startX, cur.y - startY);
                 return;
             }
@@ -82,7 +82,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
 void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 nx = mMapHitDir.x;
     f32 ny = mMapHitDir.y;
-    s16 velAngle = (s32)(JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+    s16 velAngle = (s32)(JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     f32 c1 = JMACosShort(0x4000);
     f32 s1 = JMASinShort(0x4000);
     f32 c2 = JMACosShort(-0x4000);
@@ -116,13 +116,13 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         field_0x32c.x = railPos.x;
         field_0x32c.y = railPos.y;
         field_0x32c.z = railPos.z;
-        if (viewLayerFlag(field_0x4)) {
-            if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
+        if (viewLayerFlag(mLayer_0x4)) {
+            if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
                 !field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
                 JGeometry::TVec3f pos2;
                 fn_800FE294(&pos2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f p = pos2;
-                if (fn_801CC9F8(&mPos, field_0x4) && fn_8022461C(&p, field_0x4) == 0) {
+                if (fn_801CC9F8(&mPos, mLayer_0x4) && fn_8022461C(&p, mLayer_0x4) == 0) {
                     field_0x32c.x = p.x;
                     field_0x32c.y = p.y;
                     field_0x32c.z = p.z;
@@ -152,7 +152,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             JGeometry::TVec3f saved = field_0x32c;
             field_0x32c.x += 16.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
             field_0x32c.y += 16.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-            if (fn_801CAEF4(&field_0x32c, field_0x4)) {
+            if (fn_801CAEF4(&field_0x32c, mLayer_0x4)) {
                 field_0x32c.x = saved.x;
                 field_0x32c.y = saved.y;
                 field_0x32c.z = saved.z;
@@ -160,7 +160,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         }
     } else {
         bool ok = true;
-        if (field_0x59b != 0 || viewLayerFlag(field_0x4) ||
+        if (field_0x59b != 0 || viewLayerFlag(mLayer_0x4) ||
             ((field_0x524.field_0x0 & 0x100) && field_0x358.fn_80214244()->fn_800FD5E8(0xFF))) {
             ok = false;
         }
@@ -170,7 +170,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         JGeometry::TVec2f detour;
         fn_801C9234(&detour);
         if ((field_0x524.field_0x0 & 0x800) && !(mFlags & 0x2000000) && !(mFlags & 0x100000) &&
-            fn_801CF888(&detour, &field_0x32c, field_0x4)) {
+            fn_801CF888(&detour, &field_0x32c, mLayer_0x4)) {
             bool moved = false;
             u8 next;
             u8 current;
@@ -214,7 +214,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
 void ShadowLink2_804A43E8::fn_801C8BC4(u8 flag) {
     if (flag != 0) {
         u8 buf[0x30];
-        s32 result = field_0x358.fn_80214244()->fn_800FD894(field_0x4, buf, 0x30);
+        s32 result = field_0x358.fn_80214244()->fn_800FD894(mLayer_0x4, buf, 0x30);
         if (result <= 3) {
             field_0x55c[1] = 1;
         } else {
@@ -251,7 +251,7 @@ void ShadowLink2_804A43E8::fn_801C8B50() {
 void ShadowLink2_804A43E8::fn_801C887C() {
     JGeometry::TVec3f railPos;
     fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
-    if (fn_801CCB1C(&railPos, field_0x4)) {
+    if (fn_801CCB1C(&railPos, mLayer_0x4)) {
         u8 prev, cur, next;
         getRailNeighbours(&next, &cur, &prev);
         if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(prev)) {
@@ -261,7 +261,7 @@ void ShadowLink2_804A43E8::fn_801C887C() {
         } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             JGeometry::TVec3f p2;
             fn_800FE294(&p2, field_0x358.fn_80214244(), prev);
-            if (fn_801CCB1C(&p2, field_0x4)) {
+            if (fn_801CCB1C(&p2, mLayer_0x4)) {
                 field_0x358.fn_80214244()->setIndex(next);
             } else {
                 field_0x358.fn_80214244()->setIndex(prev);
@@ -269,7 +269,7 @@ void ShadowLink2_804A43E8::fn_801C887C() {
         } else {
             JGeometry::TVec3f p0;
             fn_800FE294(&p0, field_0x358.fn_80214244(), next);
-            if (fn_801CCB1C(&p0, field_0x4)) {
+            if (fn_801CCB1C(&p0, mLayer_0x4)) {
                 field_0x358.fn_80214244()->setIndex(prev);
             } else {
                 field_0x358.fn_80214244()->setIndex(next);
@@ -284,7 +284,7 @@ void ShadowLink2_804A43E8::fn_801C887C() {
 // FIXME(shotgun): 98.91 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C844C() {
     JGeometry::TVec3f pos = mPos;
-    field_0x358.fn_80214244()->fn_800FE2E4(&pos, field_0x4);
+    field_0x358.fn_80214244()->fn_800FE2E4(&pos, mLayer_0x4);
     if (mFlags & 0x2000000) {
         return;
     }
@@ -295,7 +295,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
     if (mFlags & 0x200000) {
         return;
     }
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         fn_801C887C();
         return;
     }
@@ -308,7 +308,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
                 JGeometry::TVec3f p1;
                 fn_800FE294(&p1, field_0x358.fn_80214244(), prev);
                 JGeometry::TVec3f copy1 = p1;
-                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, field_0x4)) {
+                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(prev);
                 }
             }
@@ -317,7 +317,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
                 JGeometry::TVec3f p0;
                 fn_800FE294(&p0, field_0x358.fn_80214244(), next);
                 JGeometry::TVec3f copy0 = p0;
-                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, field_0x4)) {
+                if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(next);
                 }
             }
@@ -386,8 +386,8 @@ void ShadowLink2_804A43E8::fn_801C7F98() {
 void ShadowLink2_804A43E8::fn_801C7EE4() {
     if (!(mFlags & 0x2000000)) {
         if (field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
-            if ((viewLayerFlag(field_0x4) && __fabsf(mPos.y - field_0x32c.y) > 1.0f) ||
-                fn_801CF888((const JGeometry::TVec2f*)&mPos, &field_0x32c, field_0x4)) {
+            if ((viewLayerFlag(mLayer_0x4) && __fabsf(mPos.y - field_0x32c.y) > 1.0f) ||
+                fn_801CF888((const JGeometry::TVec2f*)&mPos, &field_0x32c, mLayer_0x4)) {
                 mFlags |= 0x400000;
             }
         }
@@ -424,12 +424,12 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
         bool blocked = false;
         f32 gy = field_0x32c.y;
         f32 radius = 10.0f;
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             radius = 0.001f + lbl_8053EDF0;
             JGeometry::TVec3f p1;
             fn_800FE294(&p1, field_0x358.fn_80214244(), 0xFF);
             JGeometry::TVec3f copy1 = p1;
-            if (!fn_801CCB1C(&copy1, field_0x4)) {
+            if (!fn_801CCB1C(&copy1, mLayer_0x4)) {
                 gx = copy1.x;
                 gy = copy1.y;
             } else {
@@ -440,7 +440,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
                 JGeometry::TVec3f p2;
                 fn_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f copy2 = p2;
-                if (fn_801CC9F8(&mPos, field_0x4) && fn_8022461C(&copy2, field_0x4) == 0) {
+                if (fn_801CC9F8(&mPos, mLayer_0x4) && fn_8022461C(&copy2, mLayer_0x4) == 0) {
                     field_0x32c.x = copy2.x;
                     field_0x32c.y = copy2.y;
                     field_0x32c.z = copy2.z;
@@ -481,12 +481,12 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     // Copies through set() where the original copies field by field;
     // operator= (the psq pairs) gives other code.
     field_0x32c.set(railPos);
-    field_0x56c = field_0x4;
+    field_0x56c = mLayer_0x4;
     field_0x570.set(mPos);
-    field_0x4 = field_0x358.fn_80214244()->fn_800FE25C(0xFF);
+    mLayer_0x4 = field_0x358.fn_80214244()->fn_800FE25C(0xFF);
     mPos = field_0x32c;
     mPrevPos = field_0x32c;
-    field_0x57c = field_0x4;
+    field_0x57c = mLayer_0x4;
     field_0x580.set(mPos);
     if (field_0x358.fn_80214244()->fn_800FD594(0xFF)) {
         mFlags |= 0x20000;
@@ -503,7 +503,7 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     fn_801C8BC4(1);
 
     if (field_0x524.field_0x0 & 0x4) {
-        field_0x4 = field_0x56c;
+        mLayer_0x4 = field_0x56c;
         mPos.set(field_0x570);
         if (fn_801CD2F8(field_0x56c)) {
             field_0x58c = 1;
@@ -550,12 +550,12 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     u8 stepped = fn_801C7BD0();
     if ((field_0x524.field_0x0 & 0x1000) && field_0x358.fn_80214244()->fn_800FD5E8(0xFF)) {
-        if (!gBgRewrite_8053AC98->fn_8029E248(&mPos, field_0x4)) {
+        if (!gBgRewrite_8053AC98->fn_8029E248(&mPos, mLayer_0x4)) {
             JGeometry::TVec3f below(mPos.x, mPos.y - 16.0f, mPos.z);
-            gBgRewrite_8053AC98->fn_8029E248(&below, field_0x4);
+            gBgRewrite_8053AC98->fn_8029E248(&below, mLayer_0x4);
         }
     }
-    if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
+    if (mLayer_0x4 != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
         fn_801C79A0();
         return;
     }
@@ -569,7 +569,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
         }
         JGeometry::TVec3f railPos;
         fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
-        if (fn_801CCB1C(&railPos, field_0x4)) {
+        if (fn_801CCB1C(&railPos, mLayer_0x4)) {
             fn_801C8B50();
             if (!fn_801D0DD4()) {
                 return;
@@ -597,7 +597,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             opt[0] = prev;
             opt[1] = next;
             if (field_0x358.fn_80214244()->field_0x1 != 0) {
-                if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
+                if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
                     JGeometry::TVec3f p0;
                     fn_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
                     if (mPos.x < p0.x) {
@@ -611,7 +611,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
                     field_0x33c = -0x4000;
                 }
             } else {
-                if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[1])) {
+                if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[1])) {
                     JGeometry::TVec3f p1;
                     fn_800FE294(&p1, field_0x358.fn_80214244(), opt[1]);
                     if (mPos.x < p1.x) {

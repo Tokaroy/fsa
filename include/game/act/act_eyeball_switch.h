@@ -24,11 +24,11 @@ public:
     /* 0x230 */ JPABaseEmitter* mEmitter;
     /* 0x234 */ s32 field_0x234; // state: 0 idle, 1 closing, 2 just switched
     /* 0x238 */ s32 field_0x238; // countdown
-    /* 0x23C */ s32 field_0x23c; // kind, field_0x90 bits 12-14
-    /* 0x240 */ s32 field_0x240; // player-count condition, field_0x90 bits 25-26
+    /* 0x23C */ s32 field_0x23c; // kind, mSpawnParam_0x90 bits 12-14
+    /* 0x240 */ s32 field_0x240; // player-count condition, mSpawnParam_0x90 bits 25-26
     /* 0x244 */ bool field_0x244; // switched on
-    /* 0x248 */ s32 field_0x248; // switch index, field_0x90 >> 27
-    /* 0x24C */ s32 field_0x24c; // delay, field_0x90 & 0xFFF
+    /* 0x248 */ s32 field_0x248; // switch index, mSpawnParam_0x90 >> 27
+    /* 0x24C */ s32 field_0x24c; // delay, mSpawnParam_0x90 & 0xFFF
     /* 0x250 */ s32 field_0x250; // serial of the arrow that hit it, -1 for none
     /* 0x254 */ s32 field_0x254; // view bit of the monitor's switch
 }; // Size: 0x258

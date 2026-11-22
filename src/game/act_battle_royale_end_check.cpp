@@ -42,7 +42,7 @@ void BattleRoyaleEndCheck_804B0380::init() {
     for (s32 i = 3; i >= 0; i--) {
         mPlayerFlag[i] = 0;
     }
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
     lbl_80529DEC.field_0x1a8 = -1;
 }
 
@@ -164,9 +164,9 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6730() {
                     } else if (field_0x238 == 0xD) {
                         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                         JGeometry::TVec3f p(pos.x + 7.0f, pos.y - 27.0f, pos.z);
-                        spawnEmitter_8013CC50(field_0x4, &p, 0xCB, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &p, 0xCB, 1, 0, NULL, NULL, true, 1.0f);
                         JGeometry::TVec3f q(pos.x + 7.0f, pos.y - 27.0f, pos.z);
-                        spawnEmitter_8013CC50(field_0x4, &q, 0xCC, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &q, 0xCC, 1, 0, NULL, NULL, true, 1.0f);
                         fn_80230FD0(mWinner, 0x2000E);
                     }
                 }

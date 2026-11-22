@@ -6,9 +6,9 @@ static const u32 sSoundIds[4] = {0x00030033, 0x0004004D, 0x00030030, 0};
 static const u8 sVariants[8] = {0, 1, 2, 3, 0, 0, 0, 0};
 
 void AdvanceNoticeSE_804A9C78::init() {
-    mSoundIndex = field_0x90 & 0xFFF;
-    mVariant = (field_0x90 >> 24) & 7;
-    mFlag = (field_0x90 >> 23) & 1;
+    mSoundIndex = mSpawnParam_0x90 & 0xFFF;
+    mVariant = (mSpawnParam_0x90 >> 24) & 7;
+    mFlag = (mSpawnParam_0x90 >> 23) & 1;
     update();
 }
 

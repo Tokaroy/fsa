@@ -37,10 +37,10 @@ void Cucco_804AB8C0::init() {
     mBox.i.y = -7.0f;
     mBox.f.x = 7.0f;
     mBox.f.y = 7.0f;
-    field_0x80.i.x = -7.0f;
-    field_0x80.i.y = -7.0f;
-    field_0x80.f.x = 7.0f;
-    field_0x80.f.y = 7.0f;
+    mMapBox_0x80.i.x = -7.0f;
+    mMapBox_0x80.i.y = -7.0f;
+    mMapBox_0x80.f.x = 7.0f;
+    mMapBox_0x80.f.y = 7.0f;
     field_0x254 = 0;
     field_0x258 = 0;
     field_0x25c = 0;
@@ -53,19 +53,19 @@ void Cucco_804AB8C0::init() {
     field_0x248 = 0;
     field_0x24c = 0;
     field_0x250 = 0;
-    field_0x94 = (field_0x90 >> 4) & 0xF;
-    field_0x25c = (field_0x90 >> 8) & 3;
-    field_0x2a1 = (field_0x90 >> 12) & 1;
-    field_0x2a2 = (field_0x90 >> 13) & 1;
-    field_0x2a3 = (field_0x90 >> 15) & 1;
-    field_0x2a7 = (field_0x90 >> 14) & 1;
+    field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 8) & 3;
+    field_0x2a1 = (mSpawnParam_0x90 >> 12) & 1;
+    field_0x2a2 = (mSpawnParam_0x90 >> 13) & 1;
+    field_0x2a3 = (mSpawnParam_0x90 >> 15) & 1;
+    field_0x2a7 = (mSpawnParam_0x90 >> 14) & 1;
     field_0x2a8 = 0;
     if (isScreenFlagSet_0x34() == true) {
         field_0x2a7 = 0;
     }
     field_0x2a4[0] = 1;
     field_0x2a4[1] = 1;
-    field_0x290 = field_0x90 & 0xF;
+    field_0x290 = mSpawnParam_0x90 & 0xF;
     setVec(field_0x2d0, mPos);
     mLife = 1000;
     field_0x264 = 0;
@@ -82,7 +82,7 @@ void Cucco_804AB8C0::init() {
     field_0x27c = 0x32;
     field_0x280 = 0;
     setVec(field_0x2dc, mPos);
-    field_0x294 = field_0x4;
+    field_0x294 = mLayer_0x4;
     field_0x268 = 10;
     mEmitter2f4 = NULL;
     mEmitter2f8 = NULL;
@@ -107,7 +107,7 @@ void Cucco_804AB8C0::init() {
     field_0x2b8.x = 0.0f;
     field_0x2b8.y = 0.0f;
     field_0x2b8.z = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x2c4.x = 0.0f;
     field_0x2c4.y = 0.0f;
     field_0x2c4.z = 0.0f;
@@ -128,9 +128,9 @@ void Cucco_804AB8C0::init() {
         field_0x2b8.x = 3.0f * JMath::sincosTable_.sinShort(angle);
         field_0x2b8.y = 3.0f * JMath::sincosTable_.cosShort(angle);
         if (field_0x2b8.x >= 0.0f) {
-            field_0x98 = 0;
+            mDir_0x98 = 0;
         } else {
-            field_0x98 = 1;
+            mDir_0x98 = 1;
         }
         field_0x2a4[2] = 1;
         field_0x230 = 7;
@@ -200,7 +200,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
         if (other->field_0x16c != field_0x16c) {
             continue;
         }
-        if (fn_801F6758(&other->mPos, other->field_0x4, 16.0f) && other->field_0xc4 != 1) {
+        if (fn_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
             continue;
         }
         mAlive = false;
@@ -224,8 +224,8 @@ inline bool Cucco_804AB8C0::checkActorHit() {
         if (isFlame) {
             JGeometry::TVec3f from(0.0f, 0.0f, 0.0f);
             other->fn_801F3128((JGeometry::TVec2f*)&from);
-            from -= other->field_0x3c;
-            hit = fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110);
+            from -= other->mVel_0x3c;
+            hit = fn_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110);
         }
         if (hit) {
             other->field_0x164 = 1;
@@ -260,13 +260,13 @@ void Cucco_804AB8C0::fn_80332A60() {
                 } else {
                     field_0x240 = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x64;
                 }
-                if (!(getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 2)) {
+                if (!(getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 2)) {
                     field_0x268--;
                 }
                 if (field_0x2a1 == 0) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
                 } else {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
                 }
                 startSound_801F0E34(0x40001, 0);
                 if (field_0x268 == 0) {
@@ -276,17 +276,17 @@ void Cucco_804AB8C0::fn_80332A60() {
                     field_0x238 = 0;
                     field_0x258 = 0;
                     mPos.z = 0.0f;
-                    field_0x3c.z = 0.0f;
-                    if (PSVECMag(&field_0x3c) > 4.0f) {
-                        field_0x3c.normalize();
-                        field_0x3c.scale(4.0f);
+                    mVel_0x3c.z = 0.0f;
+                    if (PSVECMag(&mVel_0x3c) > 4.0f) {
+                        mVel_0x3c.normalize();
+                        mVel_0x3c.scale(4.0f);
                     }
                 } else {
                     field_0x238 = field_0x240;
                     field_0x258 = 0;
                     mPos.z = 0.0f;
-                    field_0x3c.z = 0.0f;
-                    field_0x2b8 = field_0x3c;
+                    mVel_0x3c.z = 0.0f;
+                    field_0x2b8 = mVel_0x3c;
                     field_0x2b8.normalize();
                     f32 speed = 2.0f;
                     if (field_0x2a3 == 1) {
@@ -314,17 +314,17 @@ void Cucco_804AB8C0::fn_803324A8() {
                 field_0x240 = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x64;
             }
             if (field_0x2a1 == 0) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x40001, 0);
             field_0x238 = 0;
             field_0x258 = 0;
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             field_0x2dc = mPos;
-            field_0x294 = field_0x4;
+            field_0x294 = mLayer_0x4;
             field_0x230 = 1;
         } else {
             field_0x280 = 0;
@@ -335,10 +335,10 @@ void Cucco_804AB8C0::fn_803324A8() {
         if (field_0x240 % 4 == 0 && field_0x290 == 6) {
             f32 dx = mPos.x - field_0x2dc.x;
             f32 dy = mPos.y - field_0x2dc.y;
-            field_0x294 = field_0x4;
+            field_0x294 = mLayer_0x4;
             field_0x2dc = mPos;
             f32 distSq = square(dx) + square(dy);
-            if (field_0x294 != field_0x4 || !(distSq < 5.0f)) {
+            if (field_0x294 != mLayer_0x4 || !(distSq < 5.0f)) {
                 field_0x280 = 0;
                 return;
             }
@@ -355,16 +355,16 @@ void Cucco_804AB8C0::fn_803324A8() {
                     field_0x240 = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x64;
                 }
                 if (field_0x2a1 == 0) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
                 } else {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
                 }
                 startSound_801F0E34(0x40001, 0);
                 f32 speed = 2.0f;
                 if (field_0x2a3 == 1) {
                     speed = 4.0f;
                 }
-                if (!viewLayerFlag(field_0x4) || field_0x2b4 == 0.0f) {
+                if (!viewLayerFlag(mLayer_0x4) || field_0x2b4 == 0.0f) {
                     outAngle += (s32)(5461.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f));
                     field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
@@ -387,7 +387,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
     u8 r = fn_801F2618(&out, false);
     if (r == 1) {
         fn_801F11B4();
-        if (viewLayerFlag(field_0x4) == 1 && out.y < 0.0f) {
+        if (viewLayerFlag(mLayer_0x4) == 1 && out.y < 0.0f) {
             field_0x2b8.y = 0.0f;
         }
     } else {
@@ -403,8 +403,8 @@ u8 Cucco_804AB8C0::fn_80332378() {
                 }
             }
         }
-        if (viewLayerFlag(field_0x4) == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
-            field_0x3c.y = 0.0f;
+        if (viewLayerFlag(mLayer_0x4) == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
+            mVel_0x3c.y = 0.0f;
             field_0x2b8.y = 0.0f;
         }
     }
@@ -426,7 +426,7 @@ void Cucco_804AB8C0::fn_80331E6C() {
     for (s32 i = 0; i < count; i++) {
         other = getActorManager_801F856C()->mActors[i];
         if (other != NULL && (other->mActorId == ACTOR_WARP || other->mActorId == ACTOR_CIRC) &&
-            field_0x4 == other->field_0x4)
+            mLayer_0x4 == other->mLayer_0x4)
         {
             f32 dx = other->mPos.x - mPos.x;
             f32 dy = other->mPos.y - mPos.y;
@@ -455,11 +455,11 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
         target = warp->field_0x238;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (!getGameView_802D6A9C()->field_0x131df[layer]) {
             target.z = mPos.z;
         }
-        u32 arg = warp->field_0x90;
+        u32 arg = warp->mSpawnParam_0x90;
         s32 hi = (arg >> 24) & 7;
         newLayer = hi == 0 ? hi : hi + 7;
         code = arg & 0x7F;
@@ -469,11 +469,11 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
         target = circle->field_0x268;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (!getGameView_802D6A9C()->field_0x131df[layer]) {
             target.z = mPos.z;
         }
-        s32 hi = (circle->field_0x90 >> 24) & 7;
+        s32 hi = (circle->mSpawnParam_0x90 >> 24) & 7;
         newLayer = hi == 0 ? hi : hi + 7;
         code = 6;
     }
@@ -482,27 +482,27 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
     } else if (code == 0 || code == 3 || code == 0x15 || code == 0x23) {
-        if (field_0x3c.y >= 0.0f) {
+        if (mVel_0x3c.y >= 0.0f) {
             return;
         }
     }
     if (code == 1 || code == 2) {
-        if (field_0x3c.y <= 0.0f) {
+        if (mVel_0x3c.y <= 0.0f) {
             return;
         }
     }
     if (code == 0x17) {
-        if (field_0x3c.x <= 0.0f) {
+        if (mVel_0x3c.x <= 0.0f) {
             return;
         }
     }
     if (code == 0x18) {
-        if (field_0x3c.x >= 0.0f) {
+        if (mVel_0x3c.x >= 0.0f) {
             return;
         }
     }
     mPos = target;
-    field_0x4 = newLayer;
+    mLayer_0x4 = newLayer;
     field_0x284 = 0x14;
     field_0x2e8 = target;
     field_0x2d0 = target;
@@ -516,7 +516,7 @@ void Cucco_804AB8C0::fn_80331E6C() {
     }
     f32 half = 0.5f * mag;
     if (code != 6 && code != 0x14) {
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         field_0x2b8.zero();
         field_0x238 = 0x14;
         field_0x258 = 0;
@@ -524,20 +524,20 @@ void Cucco_804AB8C0::fn_80331E6C() {
     switch (code) {
     case 0:
     case 3:
-        field_0x3c.y = -half;
+        mVel_0x3c.y = -half;
         field_0x2b8.y = -mag;
         break;
     case 1:
     case 2:
-        field_0x3c.y = half;
+        mVel_0x3c.y = half;
         field_0x2b8.y = mag;
         break;
     case 0x17:
-        field_0x3c.x = half;
+        mVel_0x3c.x = half;
         field_0x2b8.x = mag;
         break;
     case 0x18:
-        field_0x3c.x = -half;
+        mVel_0x3c.x = -half;
         field_0x2b8.x = -mag;
         break;
     }
@@ -568,7 +568,7 @@ void Cucco_804AB8C0::fn_80331D38() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80239C00(i, &box, field_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
+            if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
                 mPos.z = 0.0f;
                 field_0x258 = 0;
                 field_0x238 = 0;
@@ -576,9 +576,9 @@ void Cucco_804AB8C0::fn_80331D38() {
                 field_0x2b8.x = 0.0f;
                 field_0x2b8.y = 0.0f;
                 field_0x2b8.z = 0.0f;
-                field_0x3c.x = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.x = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.z = 0.0f;
                 field_0x25c = field_0xc8;
                 field_0xb8 = 2;
                 field_0x230 = 3;
@@ -592,12 +592,12 @@ void Cucco_804AB8C0::fn_80331D38() {
 #pragma auto_inline off
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
-        s32 tile = fn_8022461C(&mPos, field_0x4);
+        s32 tile = fn_8022461C(&mPos, mLayer_0x4);
         if (tile == 0x39) {
             if (((field_0x230 == 0 && field_0x258 == 0) || field_0x230 == 1) && mPos.z < 4.0f) {
                 startSound_801F0E34(0x4007F, 0);
                 if (mEmitter2f8 == NULL) {
-                    mEmitter2f8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4D2, 0, 3, NULL, NULL, true, 1.0f);
+                    mEmitter2f8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4D2, 0, 3, NULL, NULL, true, 1.0f);
                 } else {
                     setEmitterPos_8013CB44(mEmitter2f8, &mPos, 0, 3, true);
                 }
@@ -615,7 +615,7 @@ void Cucco_804AB8C0::fn_80331B40() {
     if (field_0x2a3 == 1) {
         if (field_0x230 == 1) {
             if (mEmitter2fc == NULL) {
-                mEmitter2fc = spawnEmitter_8013CC50(field_0x4, &mPos, 0x116, 0, 3, NULL, NULL, true, 1.0f);
+                mEmitter2fc = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x116, 0, 3, NULL, NULL, true, 1.0f);
             } else {
                 setEmitterPos_8013CB44(mEmitter2fc, &mPos, 0, 3, true);
             }
@@ -634,7 +634,7 @@ void Cucco_804AB8C0::fn_80331B40() {
 
 void Cucco_804AB8C0::fn_803319B8() {
     const s32 tbl[4] = {0, 1, 0, 1};
-    field_0x264 = ((field_0x98 & 1) << 1) + tbl[field_0x254];
+    field_0x264 = ((mDir_0x98 & 1) << 1) + tbl[field_0x254];
     if (field_0x230 == 9) {
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
             field_0x264 += 4;
@@ -643,7 +643,7 @@ void Cucco_804AB8C0::fn_803319B8() {
         }
     } else if (field_0x2a3 == 1 && field_0x2a8 == 0 && (mPos.z > 8.0f || field_0x230 == 1)) {
         if (field_0x254 == 0) {
-            if (field_0x98 & 1) {
+            if (mDir_0x98 & 1) {
                 field_0x264 = 13;
             } else {
                 field_0x264 = 12;
@@ -652,9 +652,9 @@ void Cucco_804AB8C0::fn_803319B8() {
         }
         if (!(field_0x254 & 1)) {
             if (field_0x2a1 == 0) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
             }
         }
     }
@@ -747,11 +747,11 @@ void Cucco_804AB8C0::update() {
             fn_803324A8();
         }
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x2b8.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x2b8.y, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.z, field_0x2b8.z, 0.05f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x2b8.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b8.y, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.z, field_0x2b8.z, 0.05f, 1.0f);
     u8 r27 = 0;
-    mPos.add(field_0x3c);
+    mPos.add(mVel_0x3c);
     if (!field_0xc4 && (field_0x290 == 0 || field_0x290 == 6)) {
         r27 = fn_80332378();
         fn_80331E6C();
@@ -762,11 +762,11 @@ void Cucco_804AB8C0::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x23c != 0) {
-            if (field_0x23c < 10 && fn_801F2B7C(field_0x114, -1, 5)) {
-                if (field_0x3c.x != 0.0f) {
+            if (field_0x23c < 10 && fn_801F2B7C(mParamAtcp_0x114, -1, 5)) {
+                if (mVel_0x3c.x != 0.0f) {
                     field_0x2b8.y = -3.0f;
                     field_0x2b8.z = 3.0f;
-                } else if (field_0x3c.y != 0.0f) {
+                } else if (mVel_0x3c.y != 0.0f) {
                     if ((s32)(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) != 0) {
                         field_0x2b8.x = 3.0f;
                     } else {
@@ -778,9 +778,9 @@ void Cucco_804AB8C0::update() {
                 field_0x2b8.z = 0.0f;
                 field_0x2b8.y = 0.0f;
                 field_0x2b8.x = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 setVec(field_0x2d0, mPos);
                 field_0x23c = 0x14;
                 if (field_0x290 != 6) {
@@ -821,21 +821,21 @@ void Cucco_804AB8C0::update() {
                     if (field_0x2a3 == 1) {
                         speed = 2.0f;
                     }
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 || field_0x2b4 == 0.0f) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0 || field_0x2b4 == 0.0f) {
                         field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                         field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
                     } else {
                         field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     }
                     if (field_0x2b8.x >= 0.0f) {
-                        field_0x98 = 0;
+                        mDir_0x98 = 0;
                     } else {
-                        field_0x98 = 1;
+                        mDir_0x98 = 1;
                     }
                 }
             }
             if (mPos.z > 0.0f) {
-                field_0x3c.z -= 1.0f;
+                mVel_0x3c.z -= 1.0f;
             }
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
@@ -843,10 +843,10 @@ void Cucco_804AB8C0::update() {
                 field_0xb8 = 2;
                 fn_803319B8();
                 if (field_0x258 == 0) {
-                    field_0x3c.z = 3.0f;
+                    mVel_0x3c.z = 3.0f;
                 }
             }
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
                 if (field_0x23c <= 0) {
                     field_0x2b8.y += field_0x2b4;
@@ -870,9 +870,9 @@ void Cucco_804AB8C0::update() {
                 field_0x2b8.y = -3.0f * JMath::sincosTable_.cosShort(outAngle);
                 field_0x2b8.z = 0.3f;
                 if (field_0x2b8.x >= 0.0f) {
-                    field_0x98 = 0;
+                    mDir_0x98 = 0;
                 } else {
-                    field_0x98 = 1;
+                    mDir_0x98 = 1;
                 }
                 field_0x230 = 7;
                 field_0x290 = 1;
@@ -922,7 +922,7 @@ void Cucco_804AB8C0::update() {
                 if (field_0x2a3 == 1) {
                     speed = 4.0f;
                 }
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 || field_0x2b4 == 0.0f) {
+                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0 || field_0x2b4 == 0.0f) {
                     field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
                 } else {
@@ -931,9 +931,9 @@ void Cucco_804AB8C0::update() {
             }
             if (field_0x250 <= 0) {
                 if (field_0x2b8.x >= 0.0f) {
-                    field_0x98 = 0;
+                    mDir_0x98 = 0;
                 } else {
-                    field_0x98 = 1;
+                    mDir_0x98 = 1;
                 }
                 field_0x250 = 10;
             }
@@ -965,7 +965,7 @@ void Cucco_804AB8C0::update() {
                 }
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, 0, &spawnPos, (field_0x2a1 << 12) | 1, -1, -1);
             }
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
                 field_0x2b8.y += field_0x2b4;
                 if (field_0x2b4 == 0.0f) {
@@ -984,17 +984,17 @@ void Cucco_804AB8C0::update() {
             switch (field_0x290) {
             default: {
                 field_0x23c = 0x12;
-                field_0x2b8.x = field_0x3c.x;
-                field_0x2b8.y = field_0x3c.y;
-                field_0x2b8.z = field_0x3c.z;
-                s32 layer = field_0x4;
+                field_0x2b8.x = mVel_0x3c.x;
+                field_0x2b8.y = mVel_0x3c.y;
+                field_0x2b8.z = mVel_0x3c.z;
+                s32 layer = mLayer_0x4;
                 if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
                     mPos.y -= mPos.z;
                     mPos.z = 0.0f;
                     field_0x2b8.y -= field_0x2b8.z;
                     field_0x2b8.z = 0.0f;
-                    field_0x3c.y -= field_0x3c.z;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.y -= mVel_0x3c.z;
+                    mVel_0x3c.z = 0.0f;
                 }
                 if (fn_8022F514(field_0x25c) == 1) {
                     field_0x25c = fn_8022F3DC(field_0x25c);
@@ -1021,7 +1021,7 @@ void Cucco_804AB8C0::update() {
                             if (field_0x94 == 0xFFFF) {
                                 field_0x94 = i;
                             } else {
-                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, field_0x4, &mPos, (field_0x25c << 8) | shift | 4, -1, -1);
+                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &mPos, (field_0x25c << 8) | shift | 4, -1, -1);
                             }
                         }
                     }
@@ -1033,9 +1033,9 @@ void Cucco_804AB8C0::update() {
             if (field_0x2a8 == 0) {
                 field_0x25c = field_0xc8;
             }
-            field_0x98 = fn_80230CFC(field_0xc8);
+            mDir_0x98 = fn_80230CFC(field_0xc8);
             mPos.set(*fn_8023E7B0(field_0xc8));
-            field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+            mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             field_0x288 = fn_8023BCD4(field_0xc8);
         }
         break;
@@ -1046,7 +1046,7 @@ void Cucco_804AB8C0::update() {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && i != field_0x25c && !fn_8022E438(i, field_0x25c) && !fn_8022F514(i) &&
                     ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) &&
-                    (field_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !fn_80236B50(i))
+                    (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !fn_80236B50(i))
                 {
                     if (gGameRoot_8053AAF8->field_0x7f == 1) {
                         if (r29 < fn_80236228(i)) {
@@ -1106,19 +1106,19 @@ void Cucco_804AB8C0::update() {
                 }
             }
         }
-        if (fn_801F6758(&mPos, field_0x4, 0.0f)) {
+        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
             if (field_0x94 <= 3) {
-                if (field_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
+                if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
                     if (getPlayerLayer_8023DE58(field_0x94) < 8) {
-                        field_0x4 = getPlayerLayer_8023DE58(field_0x94);
+                        mLayer_0x4 = getPlayerLayer_8023DE58(field_0x94);
                         s32 pLayer = getPlayerLayer_8023DE58(field_0x94);
                         GameView_804A9950* view = getGameView_802D6A9C();
                         JGeometry::TBox2f* box = pLayer < 8 ? &view->mVisibleBox : &view->field_0xdc;
                         mPos.x = box->i.x;
                         mPos.y = box->i.y;
-                        field_0x3c.z = 0.0f;
-                        field_0x3c.y = 0.0f;
-                        field_0x3c.x = 0.0f;
+                        mVel_0x3c.z = 0.0f;
+                        mVel_0x3c.y = 0.0f;
+                        mVel_0x3c.x = 0.0f;
                         field_0x238 = 1;
                         field_0x29c = 0;
                         field_0x29e = 0;
@@ -1131,7 +1131,7 @@ void Cucco_804AB8C0::update() {
             }
         }
         if (field_0x238 == 0) {
-            if (outDir >= 0 && field_0x94 <= 3 && field_0x4 == getPlayerLayer_8023DE58(field_0x94)) {
+            if (outDir >= 0 && field_0x94 <= 3 && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x94)) {
                 addCalcAngle2_801F714C((u16*)&field_0x29c, field_0x29e, 1, 0x1000);
             }
             field_0x238 = (s32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 2;
@@ -1140,9 +1140,9 @@ void Cucco_804AB8C0::update() {
         field_0x2b8.x = 3.0f * JMath::sincosTable_.sinShort((u16)field_0x29c);
         field_0x2b8.y = 3.0f * JMath::sincosTable_.cosShort((u16)field_0x29c);
         if (field_0x2b8.x >= 0.0f) {
-            field_0x98 = 0;
+            mDir_0x98 = 0;
         } else {
-            field_0x98 = 1;
+            mDir_0x98 = 1;
         }
         if (outDir >= 0 && field_0x94 <= 3) {
             u8 mask = fn_801F2740(field_0x25c);
@@ -1209,7 +1209,7 @@ void Cucco_804AB8C0::update() {
         }
         break;
     case 7: {
-        s32 dmg = field_0x114;
+        s32 dmg = mParamAtcp_0x114;
         if (field_0x2a4[2] == 1) {
             dmg = 1;
         }
@@ -1220,13 +1220,13 @@ void Cucco_804AB8C0::update() {
         if (field_0x290 == 0xFFFF) {
             field_0x2b8.z += 0.1;
         }
-        if (fn_801F6758(&mPos, field_0x4, 16.0f) || r27) {
+        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
             mAlive = false;
         }
         break;
     case 9:
         if (field_0x238 == 0) {
-            if (field_0x4 == getPlayerLayer_8023DE58(field_0x25c) && fn_8023F264(field_0x25c) &&
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && fn_8023F264(field_0x25c) &&
                 !fn_8022DCD8(field_0x25c) && !fn_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
@@ -1245,17 +1245,17 @@ void Cucco_804AB8C0::update() {
                 outDist = 10000.0f;
             }
         }
-        if (fn_801F6758(&mPos, field_0x4, 0.0f)) {
-            if (field_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
-                field_0x4 = getPlayerLayer_8023DE58(field_0x25c);
+        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
+                mLayer_0x4 = getPlayerLayer_8023DE58(field_0x25c);
                 s32 pLayer = getPlayerLayer_8023DE58(field_0x25c);
                 GameView_804A9950* view = getGameView_802D6A9C();
                 JGeometry::TBox2f* box = pLayer < 8 ? &view->mVisibleBox : &view->field_0xdc;
                 mPos.x = box->i.x;
                 mPos.y = box->i.y;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x238 = 1;
                 field_0x29c = 0;
                 field_0x29e = 0;
@@ -1275,9 +1275,9 @@ void Cucco_804AB8C0::update() {
             field_0x2b8.y = 0.0f;
         }
         if (field_0x2b8.x >= 0.0f) {
-            field_0x98 = 0;
+            mDir_0x98 = 0;
         } else {
-            field_0x98 = 1;
+            mDir_0x98 = 1;
         }
         if (outDir >= 0 && outDist <= 16.0f) {
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
@@ -1299,9 +1299,9 @@ void Cucco_804AB8C0::update() {
         }
         break;
     case 10:
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         mPos.z = 0.0f;
         if (fn_8023F264(field_0x25c)) {
             mPos.x = getPlayerPos_8023E724(field_0x25c)->x;
@@ -1345,9 +1345,9 @@ void Cucco_804AB8C0::update() {
         }
         if (emit == 1) {
             if (field_0x290 == 2 || field_0x2a1 == 1) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xD2, 0, 0, NULL, NULL, true, 1.0f);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x348, 0, 0, NULL, NULL, true, 1.0f);
             }
         }
         field_0x24c = 0x1E;
@@ -1390,7 +1390,7 @@ void Cucco_804AB8C0::draw() {
     s32 flags = 7;
     s32 tint = 0;
     if (mPos.z == 0.0f) {
-        s32 ground = fn_8022461C(&mPos, field_0x4);
+        s32 ground = fn_8022461C(&mPos, mLayer_0x4);
         if (ground == 0x39) {
             flags = 0;
         }
@@ -1452,19 +1452,19 @@ void Cucco_804AB8C0::draw() {
         params.field_0x1c = fn_8023CA88(field_0x25c);
         if (field_0x290 != 2) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x11, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, field_0x4, &mPos, 0x11, 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x11, 0, 2, -1, 1, 0, 0);
         } else {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x1D, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, field_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
         }
         return;
     }
     if (field_0x290 == 2 || ((field_0x290 == 0 || field_0x290 == 6 || field_0x290 == 1) && field_0x2a1 == 1)) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x2C7, &params, flags, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + 0x2C7, 0, 2, -1, held, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2C7, 0, 2, -1, held, 0, 0);
     } else {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x2AF, &params, flags, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + 0x2AF, 0, 2, -1, held, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2AF, 0, 2, -1, held, 0, 0);
     }
 }
 

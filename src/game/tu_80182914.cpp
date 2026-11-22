@@ -45,15 +45,15 @@ JUtility::TColor fn_8018330C() {
 
 void cls_804A1718::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x248 = 0;
     field_0x24c = 0;
     field_0x250 = 0;
     field_0x23c = 0;
     field_0x240 = 0;
     field_0x244 = 0;
-    field_0x25c = field_0x90 & 1;
-    field_0x260 = (field_0x90 >> 8) & 1;
+    field_0x25c = mSpawnParam_0x90 & 1;
+    field_0x260 = (mSpawnParam_0x90 >> 8) & 1;
     field_0x254 = 0;
     field_0x238[0] = 0;
     field_0x238[1] = 0;
@@ -65,7 +65,7 @@ void cls_804A1718::init() {
         field_0x238[2] = (field_0x234.toUInt32() >> 8) & 0xFF;
     }
     field_0x268.zero();
-    field_0x3c.zero();
+    mVel_0x3c.zero();
     field_0x258 = 0;
     field_0x264 = 0;
     field_0x195 = 1;
@@ -108,9 +108,9 @@ void cls_804A1718::update() {
         return;
     }
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x268.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x268.y, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     fn_80212AC0()->fn_80212AF0(&mPos);
     fn_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
     if (field_0x258 != 0) {
@@ -140,15 +140,15 @@ void cls_804A1718::update() {
     case 2:
         field_0xb8 = 1;
         if (mEmitter274 == NULL) {
-            JPABaseEmitter* puff = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
+            JPABaseEmitter* puff = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
             setEmitterColour(this, puff);
-            mEmitter274 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1DB, 0, 1, NULL, NULL, true, 1.0f);
+            mEmitter274 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1DB, 0, 1, NULL, NULL, true, 1.0f);
             if (viewLayerFlag(0x13) == 1) {
                 mEmitter274->setGlobalPrmColor(field_0x238[0], field_0x238[1], field_0x238[2]);
             }
         }
         field_0x268.zero();
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         field_0x23c = 6;
         field_0x248 = 0;
         field_0x254 = 0;
@@ -204,7 +204,7 @@ void cls_804A1718::update() {
         followEmitter(this);
         field_0xb0 = 0x1000;
         field_0x268.zero();
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         field_0x258 = 0;
         field_0x23c = 4;
         field_0x248 = 0;
@@ -218,7 +218,7 @@ void cls_804A1718::update() {
             field_0x23c = 6;
             if (field_0x254 <= 0) {
                 if (mEmitter274 != NULL) {
-                    JPABaseEmitter* puff = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
+                    JPABaseEmitter* puff = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
                     setEmitterColour(this, puff);
                     JPABaseEmitter* emitter = mEmitter274;
                     emitter->stopCreateParticle();

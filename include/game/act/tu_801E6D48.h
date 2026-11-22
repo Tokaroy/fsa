@@ -22,7 +22,7 @@ public:
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0x14 */ virtual void update();
     // 0x801E6DE8: unless mFlags has 0x8000, or mState is not 0 or 2, puts
-    // mPos's (x, y) offset by the direction field_0x98 into a TVec2f and
+    // mPos's (x, y) offset by the direction mDir_0x98 into a TVec2f and
     // calls cls_801E9AFC::fn_801EA108 with it, field_0x2b0 and a static scale of 128.
     void fn_801E6DE8();
     // 0x801E6EAC: with mFlags bit 0x8000, reports field_0x2b4 (if set) to the

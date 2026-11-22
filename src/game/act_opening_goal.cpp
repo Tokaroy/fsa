@@ -39,8 +39,8 @@ cls_8049DB30::~cls_8049DB30() {
 
 void cls_8049DB30::init() {
     cls_8049D140::init();
-    field_0x238 = field_0x90 & 0xF;
-    field_0x23c = (field_0x90 >> 4) & 0xF;
+    field_0x238 = mSpawnParam_0x90 & 0xF;
+    field_0x23c = (mSpawnParam_0x90 >> 4) & 0xF;
     mAnim.fn_801D2608(lbl_80539F18, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1F14(0.0f);
@@ -59,10 +59,10 @@ void cls_8049DB30::update() {
     case 2:
         if (isScreenFlagSet_0x34()) {
             if (mEmitter254 == NULL) {
-                mEmitter254 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x111, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter254 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x111, 0, 0, NULL, NULL, true, 1.0f);
             }
             if (mEmitter258 == NULL) {
-                mEmitter258 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x112, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter258 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x112, 0, 0, NULL, NULL, true, 1.0f);
             }
         } else {
             if (mEmitter254 != NULL) {
@@ -81,7 +81,7 @@ void cls_8049DB30::update() {
             box.f.x += mPos.x;
             box.f.y += mPos.y;
             bool flag;
-            s32 player = fn_8023AF14(&box, field_0x4, false, 0.0f);
+            s32 player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
             if (player < 0) {
                 flag = false;
             } else {
@@ -127,18 +127,18 @@ void cls_8049DB30::vfunc_0x54() {
         if (fn_8011921C()->field_0x8 < 0x47E) {
             break;
         }
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4D7, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4D8, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4D9, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DA, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DB, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DC, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DD, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4D7, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4D8, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4D9, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DA, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DB, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DC, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DD, 0, 0, NULL, NULL, true, 1.0f);
         if (mEmitter24c == NULL) {
-            mEmitter24c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DE, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DE, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitter250 == NULL) {
-            mEmitter250 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4DF, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4DF, 0, 0, NULL, NULL, true, 1.0f);
         }
         field_0x240 = 0xB4;
         field_0x234 = 1;

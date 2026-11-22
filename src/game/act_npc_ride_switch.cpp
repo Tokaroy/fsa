@@ -7,7 +7,7 @@
 #include "game/act/act_npc_ride_switch.h"
 
 void NPCRideSwitch_804AD220::init() {
-    field_0x80.set(-12.0f, -12.0f, 12.0f, 12.0f);
+    mMapBox_0x80.set(-12.0f, -12.0f, 12.0f, 12.0f);
     mBox.set(-12.0f, -12.0f, 12.0f, 12.0f);
     mPos.x = 16.0f * ((s32)mPos.x / 16);
     mPos.y = 16.0f * ((s32)mPos.y / 16);

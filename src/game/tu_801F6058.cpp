@@ -172,7 +172,7 @@ void ActorManager_804A5800::fn_801F871C() {
                     mActors[i]->fn_801EE508();
                 }
                 mSounds[i]->fn_80456154();
-                if (mActors[i]->field_0x8 == 0 && mActors[i]->field_0x1a8 == true) {
+                if (mActors[i]->field_0x8 == 0 && mActors[i]->mParamDstr_0x1a8 == true) {
                     count++;
                 }
             }
@@ -190,10 +190,10 @@ void ActorManager_804A5800::fn_801F871C() {
                 s32 skip = false;
                 if (paused == true) {
                     skip = true;
-                    if (mActors[i]->field_0x11f) {
+                    if (mActors[i]->mUpdateWhilePaused_0x11f) {
                         skip = false;
                     }
-                    if (mActors[i]->field_0x8 == 0 && mActors[i]->field_0x1a8 == true) {
+                    if (mActors[i]->field_0x8 == 0 && mActors[i]->mParamDstr_0x1a8 == true) {
                         count++;
                     }
                     if (gGameRoot_8053AAF8->field_0x88 == 2 && mActors[i]->mActorId == 'SWDL') {
@@ -226,7 +226,7 @@ void ActorManager_804A5800::fn_801F871C() {
                         }
                     }
                     mSounds[i]->fn_80456154();
-                    if (mActors[i]->field_0x8 == 0 && mActors[i]->field_0x1a8 == true) {
+                    if (mActors[i]->field_0x8 == 0 && mActors[i]->mParamDstr_0x1a8 == true) {
                         count++;
                     }
                 }
@@ -234,12 +234,12 @@ void ActorManager_804A5800::fn_801F871C() {
             ActorBase_804A5770* actor = mActors[i];
             if (!actor->mAlive) {
                 deleteSlot(i);
-            } else if (actor->field_0x1a8 && !actor->field_0x196 &&
-                       actor->field_0x80.f.x - actor->field_0x80.i.x > 0.0f &&
-                       actor->field_0x80.f.y - actor->field_0x80.i.y > 0.0f && actor->mLife > 0)
+            } else if (actor->mParamDstr_0x1a8 && !actor->field_0x196 &&
+                       actor->mMapBox_0x80.f.x - actor->mMapBox_0x80.i.x > 0.0f &&
+                       actor->mMapBox_0x80.f.y - actor->mMapBox_0x80.i.y > 0.0f && actor->mLife > 0)
             {
                 s32 serial = actor->mSerial;
-                s32 layer = actor->field_0x4;
+                s32 layer = actor->mLayer_0x4;
                 CollisionBoxes_8020D58C* boxes = fn_8020D58C();
                 if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, &actor->mPos, serial, NULL)) {
                     mActors[i]->die_0x24();
@@ -272,7 +272,7 @@ void ActorManager_804A5800::fn_801F8658() {
     }
     for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->mDrawEnabled &&
-            (!paused || mActors[i]->field_0x11f))
+            (!paused || mActors[i]->mUpdateWhilePaused_0x11f))
         {
             mActors[i]->fn_801A3CFC();
             mActors[i]->draw();
@@ -356,9 +356,9 @@ s32 ActorManager_804A5800::fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij
     JGeometry::TBox2f box;
     s32 found = -1;
     actor->fn_801F31C4(&box);
-    u8 anyZ = viewLayerFlag(actor->field_0x4);
+    u8 anyZ = viewLayerFlag(actor->mLayer_0x4);
     for (ActorBase_804A5770* other = mListHead; other != NULL; other = other->mListNext) {
-        if (!other->mAlive || other->field_0x4 != actor->field_0x4 || other->field_0xc4) {
+        if (!other->mAlive || other->mLayer_0x4 != actor->mLayer_0x4 || other->field_0xc4) {
             continue;
         }
         if (!includeArij && other->mActorId == ACTOR_ARIJ) {
@@ -387,10 +387,10 @@ extern "C" s32 fn_801F8108(const ActorBase_804A5770* actor, u32 id, s32 excludeS
 s32 ActorManager_804A5800::fn_801F7F58(ActorBase_804A5770* actor, const u32* ids, s32 excludeSerial,
                                        f32 maxDz) const {
     s32 found = -1;
-    u8 anyZ = viewLayerFlag(actor->field_0x4);
+    u8 anyZ = viewLayerFlag(actor->mLayer_0x4);
     for (s32 i = 0; i < mActorEnd; i++) {
         ActorBase_804A5770* other = mActors[i];
-        if (other == NULL || !other->mAlive || other->field_0x4 != actor->field_0x4 ||
+        if (other == NULL || !other->mAlive || other->mLayer_0x4 != actor->mLayer_0x4 ||
             excludeSerial == other->mSerial)
         {
             continue;
@@ -423,7 +423,7 @@ void ActorManager_804A5800::fn_801F7E88() {
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
         if (actor != NULL && actor->mAlive &&
-            (actor->field_0x4 != 0 || (actor->field_0x194 && !contains(view->mVisibleBox, actor->mPos))))
+            (actor->mLayer_0x4 != 0 || (actor->field_0x194 && !contains(view->mVisibleBox, actor->mPos))))
         {
             actor->mAlive = false;
         }
@@ -443,7 +443,7 @@ void ActorManager_804A5800::fn_801F7CAC() {
     }
     s32 end = mActorEnd;
     for (i = 0; i < end; i++) {
-        if (mActors[i] == NULL || !mActors[i]->mAlive || mActors[i]->field_0x4 != 0) {
+        if (mActors[i] == NULL || !mActors[i]->mAlive || mActors[i]->mLayer_0x4 != 0) {
             continue;
         }
         if (mActors[i]->mActorId == ACTOR_TZOK || mActors[i]->mActorId == ACTOR_FAZR ||
@@ -537,7 +537,7 @@ s32 ActorManager_804A5800::fn_801F7AB8(u32 id, s32 excludeSerial) {
 s32 ActorManager_804A5800::fn_801F7A6C() {
     s32 count = 0;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->field_0x1a8) {
+        if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->mParamDstr_0x1a8) {
             count++;
         }
     }
@@ -581,7 +581,7 @@ s32 ActorManager_804A5800::fn_801F78F4(u32 id, s32 afterSerial) {
 
 s32 ActorManager_804A5800::fn_801F7884(u32 id, s32 layer) {
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             id == mActors[i]->mActorId)
         {
             return mActors[i]->mSerial;
@@ -597,7 +597,7 @@ s32 ActorManager_804A5800::fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** o
     s32 count = 0;
     s32 end = mActorEnd;
     for (s32 i = 0; i < end; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             id == mActors[i]->mActorId && excludeSerial != mActors[i]->mSerial)
         {
             *out++ = mActors[i];
@@ -637,7 +637,7 @@ s32 ActorManager_804A5800::fn_801F76F0(u32 id, s32 layer, const JGeometry::TVec3
     f32 best = FLT_MAX;
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && id == mActors[i]->mActorId &&
-            layer == mActors[i]->field_0x4 && excludeSerial != mActors[i]->mSerial)
+            layer == mActors[i]->mLayer_0x4 && excludeSerial != mActors[i]->mSerial)
         {
             f32 dist = square(mActors[i]->mPos.x - pos->x) + square(mActors[i]->mPos.y - pos->y);
             if (dist < best) {
@@ -657,7 +657,7 @@ s32 ActorManager_804A5800::fn_801F7664(const JGeometry::TVec3f* pos, f32* outDis
     s32 serial = -1;
     f32 best = 1000000.0f;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->field_0x1a8 == true) {
+        if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->mParamDstr_0x1a8 == true) {
             f32 dx = pos->x - mActors[i]->mPos.x;
             f32 dy = pos->y - mActors[i]->mPos.y;
             f32 dist = square(dx) + square(dy);
@@ -676,8 +676,8 @@ s32 ActorManager_804A5800::fn_801F7664(const JGeometry::TVec3f* pos, f32* outDis
 u8 ActorManager_804A5800::fn_801F75B4(s32 layer, const JGeometry::TBox2f* box) {
     BOOL clear = TRUE;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive == true && layer == mActors[i]->field_0x4 &&
-            mActors[i]->field_0x1a8 == true && contains(*box, mActors[i]->mPos) == true)
+        if (mActors[i] != NULL && mActors[i]->mAlive == true && layer == mActors[i]->mLayer_0x4 &&
+            mActors[i]->mParamDstr_0x1a8 == true && contains(*box, mActors[i]->mPos) == true)
         {
             clear = FALSE;
             break;
@@ -689,7 +689,7 @@ u8 ActorManager_804A5800::fn_801F75B4(s32 layer, const JGeometry::TBox2f* box) {
 s32 ActorManager_804A5800::fn_801F750C(s32 layer, s32 excludeSerial) const {
     s32 serial = -1;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             excludeSerial != mActors[i]->mSerial && fn_801CC910(mActors[i]))
         {
             serial = mActors[i]->mSerial;
@@ -702,7 +702,7 @@ s32 ActorManager_804A5800::fn_801F750C(s32 layer, s32 excludeSerial) const {
 s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
     s32 serial = -1;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             excludeSerial != mActors[i]->mSerial && fn_801CC960(mActors[i]))
         {
             serial = mActors[i]->mSerial;
@@ -722,7 +722,7 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
     f32 best = FLT_MAX;
     s32 serial = -1;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
             fn_801CC9B0(mActors[i]))
         {
@@ -744,7 +744,7 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
 s32 ActorManager_804A5800::fn_801F7274(s32 layer, ActorBase_804A5770** out, s32 excludeSerial) const {
     s32 count = 0;
     for (s32 i = 0; i < mActorEnd; i++) {
-        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
+        if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->mLayer_0x4 &&
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
             fn_801CC9B0(mActors[i]))
         {
@@ -763,7 +763,7 @@ bool ActorManager_804A5800::fn_801F71E8(u32 group, ActorBase_804A5770** out, s32
     *count = 0;
     for (s32 i = 0; i < end; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->mActorId == ACTOR_RAIL &&
-            group == ((mActors[i]->field_0x90 >> 8) & 0xFF))
+            group == ((mActors[i]->mSpawnParam_0x90 >> 8) & 0xFF))
         {
             out[*count] = mActors[i];
             (*count)++;
@@ -824,7 +824,7 @@ void ActorManager_804A5800::fn_801F6A4C() {
             if (b == NULL || !b->mAlive) {
                 continue;
             }
-            if (a->field_0x4 != b->field_0x4 || a->mSerial == b->mSerial ||
+            if (a->mLayer_0x4 != b->mLayer_0x4 || a->mSerial == b->mSerial ||
                 a->field_0xbc > b->field_0xbc)
             {
                 continue;
@@ -852,16 +852,16 @@ void ActorManager_804A5800::fn_801F6A4C() {
                 pos.x += JMath::sincosTable_.sinShort(angle);
                 pos.y += JMath::sincosTable_.cosShort(angle);
                 if (b->mActorId == 'BOYO') {
-                    f32 z = a->field_0x3c.z;
+                    f32 z = a->mVel_0x3c.z;
                     f32 c = JMath::sincosTable_.cosShort(
                         (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
                     f32 s = JMath::sincosTable_.sinShort(
                         (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
                     JGeometry::TVec3f v(5.0f * s, 5.0f * c, z);
-                    a->field_0x3c = v;
+                    a->mVel_0x3c = v;
                     b->field_0x94 = 1;
                 }
-                if (!a->fn_801F23BC(a->field_0x4, &pos, &a->mPos, &a->field_0x80, NULL, NULL, false)) {
+                if (!a->fn_801F23BC(a->mLayer_0x4, &pos, &a->mPos, &a->mMapBox_0x80, NULL, NULL, false)) {
                     tries++;
                     a->mPos = pos;
                     boxA.addPos(a->mPos.x, a->mPos.y);
@@ -968,7 +968,7 @@ ActorBase_804A5770* ActorManager_804A5800::findActorBySerial_801F666C(s32 serial
 }
 
 ActorSoundObj_804578F4* ActorManager_804A5800::fn_801F6644(s32 slot) {
-    if (mActors[slot]->field_0x4 == 0) {
+    if (mActors[slot]->mLayer_0x4 == 0) {
         return mSounds[slot];
     }
     return field_0x200c;

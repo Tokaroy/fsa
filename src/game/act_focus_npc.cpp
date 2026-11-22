@@ -3,8 +3,8 @@
 #include "game/GameGlobals.h"
 
 void FocusNPC_804A8EA0::init() {
-    mSwitch = (field_0x90 >> 22) & 0x1F;
-    mDuration = field_0x90 & 0xFFF;
+    mSwitch = (mSpawnParam_0x90 >> 22) & 0x1F;
+    mDuration = mSpawnParam_0x90 & 0xFFF;
     mTimer = 0;
     if (mDuration == 0) {
         mState = 2;
@@ -21,7 +21,7 @@ void FocusNPC_804A8EA0::update() {
         if (sw == 0 || getGameView_802D6A9C()->fn_802D800C(sw)) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
             if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
-                if ((field_0x90 >> 27) != 0) {
+                if ((mSpawnParam_0x90 >> 27) != 0) {
                     setScreenFlag_0x30(0xFF, true);
                 }
                 mState = 1;
@@ -42,7 +42,7 @@ void FocusNPC_804A8EA0::update() {
         if (sw == 0 || getGameView_802D6A9C()->fn_802D800C(sw)) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
             if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
-                if ((field_0x90 >> 27) != 0) {
+                if ((mSpawnParam_0x90 >> 27) != 0) {
                     setScreenFlag_0x30(0xFF, true);
                 }
             }

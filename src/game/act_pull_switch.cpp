@@ -14,7 +14,7 @@ static inline void difference(JGeometry::TVec3f& result, JGeometry::TVec3f a,
 
 void PullSwitch_804A7908::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0x23c = 0;
     field_0x240 = isScreenFlagSet_0x34();
@@ -24,9 +24,9 @@ void PullSwitch_804A7908::init() {
     } else {
         field_0x244 = 0.0f;
     }
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     field_0x248 = 0;
     field_0x24c = -1;
 }
@@ -37,9 +37,9 @@ void PullSwitch_804A7908::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     if (field_0x248 > 0) {
         field_0x248--;
     }
@@ -60,10 +60,10 @@ void PullSwitch_804A7908::update() {
             }
         }
     }
-    s32 player = fn_80239470(&box, field_0x4, mSerial);
+    s32 player = fn_80239470(&box, mLayer_0x4, mSerial);
     if (player >= 0) {
         JGeometry::TVec3f playerPos;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         if (__fabsf(dx) >= 2.0f) {
             JGeometry::TVec3f push(dx, 0.0f, 0.0f);
@@ -80,9 +80,9 @@ void PullSwitch_804A7908::update() {
                 startSound_801F0E34(0x3004B, 0);
                 setScreenFlag_0x30(0xFF, true);
                 mPos.y = mSpawnPos.y + field_0x244;
-                field_0x3c.x = 0.0f;
-                field_0x3c.y = 4.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.x = 0.0f;
+                mVel_0x3c.y = 4.0f;
+                mVel_0x3c.z = 0.0f;
                 if (fn_802300EC(player)) {
                     fn_80230AD4(player);
                     field_0x248 = 30;
@@ -101,9 +101,9 @@ void PullSwitch_804A7908::update() {
                 fn_8023DFF4(player, &diff);
             }
             field_0x244 += 0.25f;
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.25f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.25f;
+            mVel_0x3c.z = 0.0f;
             mPos.y = mSpawnPos.y + field_0x244;
         }
     } else if (field_0x240) {
@@ -114,9 +114,9 @@ void PullSwitch_804A7908::update() {
         if (field_0x244 < 0.0f) {
             field_0x244 = 0.0f;
         }
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = -0.25f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = -0.25f;
+        mVel_0x3c.z = 0.0f;
         mPos.y = mSpawnPos.y + field_0x244;
     }
     if (field_0x244 < 1.0f) {
@@ -132,11 +132,11 @@ void PullSwitch_804A7908::update() {
 
 void PullSwitch_804A7908::draw() {
     s32 frame = field_0x23c + 0x147;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mSpawnPos, res, frame, NULL, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mSpawnPos, field_0x23c + 0x147, false, 1, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mSpawnPos, field_0x23c + 0x147, false, 1, -1, 0, 0, 0);
 }
 
 PullSwitch_804A7908::~PullSwitch_804A7908() {}

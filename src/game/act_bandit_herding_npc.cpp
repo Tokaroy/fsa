@@ -7,12 +7,12 @@
 #include "game/act/act_bandit_herding_npc.h"
 
 void BanditHerdingNPC_804ACB40::init() {
-    field_0x234 = field_0x90 & 0xFF;
-    field_0x23c = (field_0x90 >> 22) & 0x1F;
+    field_0x234 = mSpawnParam_0x90 & 0xFF;
+    field_0x23c = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x238 = 0;
     mPos.x = 16.0f * ((s32)mPos.x / 16);
     mPos.y = 16.0f * ((s32)mPos.y / 16);
-    mBox.set(0.0f, 0.0f, ((field_0x90 >> 8) & 0x3F) * 8, ((field_0x90 >> 16) & 0x3F) * 8);
+    mBox.set(0.0f, 0.0f, ((mSpawnParam_0x90 >> 8) & 0x3F) * 8, ((mSpawnParam_0x90 >> 16) & 0x3F) * 8);
     field_0x240 = mBox;
     field_0x240.i.x += mPos.x;
     field_0x240.i.y += mPos.y;
@@ -32,7 +32,7 @@ void BanditHerdingNPC_804ACB40::update() {
         if (thief == NULL) {
             continue;
         }
-        if (field_0x4 == thief->field_0x4 && (thief->mPos.z < 8.0f || thief->field_0xd8 > 0) &&
+        if (mLayer_0x4 == thief->mLayer_0x4 && (thief->mPos.z < 8.0f || thief->mHitTimer_0xd8 > 0) &&
             thief->field_0xc4 == 0) {
             if (containsPoint(field_0x240, thief->mPos) == true && !getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
                 thief->field_0x94 = 1;

@@ -27,7 +27,7 @@ void PushSwitchInPyramid_804AE8F4::init() {
     field_0x243 = 0;
     field_0x242 = 0;
     field_0x241 = 0;
-    if (((field_0x90 >> 4) & 1) == 0) {
+    if (((mSpawnParam_0x90 >> 4) & 1) == 0) {
         if (getGameView_802D6A9C()->fn_802D7544(field_0x16c)) {
             field_0x241 = 3;
             mBox.set(-7.5f, -7.5f, 0.0f, 7.5f);
@@ -43,7 +43,7 @@ void PushSwitchInPyramid_804AE8F4::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     fn_8020D58C()->addBox(mSerial);
     switch (field_0x23c) {
     case 0: {
@@ -52,7 +52,7 @@ void PushSwitchInPyramid_804AE8F4::update() {
             player >= 0 && player < 4) {
             field_0x242++;
             if (field_0x242 >= 20) {
-                if (((field_0x90 >> 4) & 1) == 0) {
+                if (((mSpawnParam_0x90 >> 4) & 1) == 0) {
                     getGameView_802D6A9C()->fn_802D7584(field_0x16c, player + 1);
                 }
                 fn_80238E08(mSerial);
@@ -115,7 +115,7 @@ void PushSwitchInPyramid_804AE8F4::draw() {
     pos.set(mPos);
     pos.x += 8.0f;
     void* res = fn_804032E8('TIMG', lbl_804AE8E0[field_0x241]);
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
     }
 }

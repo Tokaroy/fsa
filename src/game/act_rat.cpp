@@ -17,8 +17,8 @@ static u8 lbl_80539E68[] = {0, 3, 1, 2};
 void Rat_8049C400::init() {
     mBox.i.set(-8.0f, -8.0f);
     mBox.f.set(8.0f, 8.0f);
-    field_0x80.i.set(-10.0f, -10.0f);
-    field_0x80.f.set(10.0f, 10.0f);
+    mMapBox_0x80.i.set(-10.0f, -10.0f);
+    mMapBox_0x80.f.set(10.0f, 10.0f);
     field_0xb0 = 0x11101;
     mFrameBase = 0;
     mStep = 0;
@@ -27,7 +27,7 @@ void Rat_8049C400::init() {
     field_0x23c = 0;
     mDir = 0;
     field_0x244 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32;
-    field_0x90 &= 1;
+    mSpawnParam_0x90 &= 1;
 }
 
 // Wanders in the four directions (states 0, 1, 3 and the chase 2: a player nearer than 120 turns it his way).
@@ -47,14 +47,14 @@ void Rat_8049C400::update() {
         field_0x238 = 0;
     }
     bool bumped;
-    if (field_0x90 != 0) {
-        bumped = fn_801F2B7C(field_0x114, -1, 4) != 0;
+    if (mSpawnParam_0x90 != 0) {
+        bumped = fn_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
     } else {
-        bumped = fn_801F2B7C(field_0x114, -1, 1) != 0;
+        bumped = fn_801F2B7C(mParamAtcp_0x114, -1, 1) != 0;
     }
     u8 hit = fn_801F2618(NULL, false);
     if (hit) {
-        if (ActorBase_804A5770::isBlocked_0x4C(field_0x4, &mPos) == 1) {
+        if (ActorBase_804A5770::isBlocked_0x4C(mLayer_0x4, &mPos) == 1) {
             die_0x24();
             return;
         }
@@ -68,7 +68,7 @@ void Rat_8049C400::update() {
         }
         mStep &= 3;
         bool chasing = false;
-        if (field_0x90 != 0 && field_0x230 == 0) {
+        if (mSpawnParam_0x90 != 0 && field_0x230 == 0) {
             u16 angle = 0;
             f32 dist = 0.0f;
             s32 dir = 0;
@@ -152,7 +152,7 @@ void Rat_8049C400::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (field_0x90 != 0) {
+    if (mSpawnParam_0x90 != 0) {
         mtx[0][0] = 1.2f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;

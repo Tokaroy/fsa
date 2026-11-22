@@ -80,7 +80,7 @@ inline bool Terrorpin_804A3B10::hasLanded() const {
     switch (mState) {
     case 1:
     case 4:
-        if ((mStateTimer > 1 && mPos.z <= 0.0f && field_0x3c.z == 0.0f) || mStateTimer >= 120) {
+        if ((mStateTimer > 1 && mPos.z <= 0.0f && mVel_0x3c.z == 0.0f) || mStateTimer >= 120) {
             landed = true;
         }
         break;
@@ -94,10 +94,10 @@ Terrorpin_804A3B10::Terrorpin_804A3B10() {
 
 void Terrorpin_804A3B10::init() {
     EnemyBase_804A4808::init();
-    // field_0x90 bit 0 enables the scaled box; bits 1..3 pick field_0x2a8.
-    if (field_0x90 & 1) {
+    // mSpawnParam_0x90 bit 0 enables the scaled box; bits 1..3 pick field_0x2a8.
+    if (mSpawnParam_0x90 & 1) {
         mFlags |= 0x2000;
-        u32 sel = (field_0x90 >> 1) & 7;
+        u32 sel = (mSpawnParam_0x90 >> 1) & 7;
         if (sel >= 1 && sel <= 4) {
             mFlags |= 0x4000;
             field_0x2a8 = sel - 1;
@@ -112,10 +112,10 @@ void Terrorpin_804A3B10::init() {
         mBox.i.y *= scale;
         mBox.f.x *= scale;
         mBox.f.y *= scale;
-        field_0x80.i.x = mBox.i.x;
-        field_0x80.i.y = mBox.i.y;
-        field_0x80.f.x = mBox.f.x;
-        field_0x80.f.y = mBox.f.y;
+        mMapBox_0x80.i.x = mBox.i.x;
+        mMapBox_0x80.i.y = mBox.i.y;
+        mMapBox_0x80.f.x = mBox.f.x;
+        mMapBox_0x80.f.y = mBox.f.y;
     } else {
         mLife = 1;
     }
@@ -137,7 +137,7 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
         field_0x250 = fn_801CD664(16) + 30;
         mTargetSpeed = 0.35f;
         if (mState != 4) {
-            field_0x98 = fn_801CF6B8();
+            mDir_0x98 = fn_801CF6B8();
         }
         break;
     case 1:
@@ -156,13 +156,13 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
             }
         }
         field_0x250 = -1;
-        field_0x98 = fn_801CD354(field_0x98);
+        mDir_0x98 = fn_801CD354(mDir_0x98);
         mTargetSpeed = 0.6f;
         mSpeed = 0.6f;
         if (mFlags & 0x2000) {
-            field_0x3c.z = 2.0f;
+            mVel_0x3c.z = 2.0f;
         } else {
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.z = 3.0f;
         }
         break;
     case 2:
@@ -175,10 +175,10 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
         break;
     case 5:
         field_0x250 = fn_801CD664(1) + 540;
-        field_0x98 = fn_801CD354(field_0x98);
+        mDir_0x98 = fn_801CD354(mDir_0x98);
         mTargetSpeed = 2.5f;
         mSpeed = 2.5f;
-        field_0x3c.z = 2.0f;
+        mVel_0x3c.z = 2.0f;
         break;
     }
     mStateTimer = 0;
@@ -198,11 +198,11 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
         player = -1;
         JGeometry::TVec2f out;
         if (mFlags & 0x4000) {
-            if (fn_8023AAF8(field_0x2a8, &box, field_0x4, &out)) {
+            if (fn_8023AAF8(field_0x2a8, &box, mLayer_0x4, &out)) {
                 player = field_0x2a8;
             }
         } else {
-            player = fn_8023AA18(&box, field_0x4, &out);
+            player = fn_8023AA18(&box, mLayer_0x4, &out);
         }
         if (player >= 0) {
             f32 dx = out.x - mPos.x;
@@ -227,7 +227,7 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mapHit) {
-            field_0x98 = fn_801CF720(field_0x98);
+            mDir_0x98 = fn_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
             fn_801B91A8(0);
@@ -235,7 +235,7 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
         break;
     case 1:
         if (hasLanded()) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             fn_801B91A8(2);
         }
@@ -252,24 +252,24 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
         break;
     case 4:
         if (hasLanded()) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             fn_801B91A8(0);
         }
         break;
     case 5:
         if (mapHit) {
-            fn_801CC350(&mMapHitDir, &field_0x3c);
+            fn_801CC350(&mMapHitDir, &mVel_0x3c);
             startSound_801F0E34(0x4003C, 0);
         } else if (mPlayersHit != 0) {
             s32 player = firstHitPlayer(mPlayersHit);
             normal.set(mPos.x - getPlayerPos_8023E724(player)->x,
                        mPos.y - getPlayerPos_8023E724(player)->y, 0.0f);
-            fn_801CC350(&normal, &field_0x3c);
+            fn_801CC350(&normal, &mVel_0x3c);
             startSound_801F0E34(0x4003C, 0);
         }
         if (mStateTimer >= field_0x250) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             mSpeed = 0.0f;
             fn_801B91A8(2);
@@ -319,22 +319,22 @@ void Terrorpin_804A3B10::updateAnim_0x94() {
 
 void Terrorpin_804A3B10::calcVelocity_0x88() {
     if (mState == 5) {
-        field_0x3c.z += lbl_8053EFB8;
+        mVel_0x3c.z += lbl_8053EFB8;
         s32 rem = field_0x250 - mStateTimer;
         if (rem > 0 && rem < 30) {
-            approach(field_0x3c.x, 0.0f, rem);
-            approach(field_0x3c.y, 0.0f, rem);
+            approach(mVel_0x3c.x, 0.0f, rem);
+            approach(mVel_0x3c.y, 0.0f, rem);
         } else {
-            JGeometry::TVec3f vel(field_0x3c.x, field_0x3c.y, 0.0f);
+            JGeometry::TVec3f vel(mVel_0x3c.x, mVel_0x3c.y, 0.0f);
             if (vel.squared() < 1.8f * 1.8f) {
                 if (vel.isZero()) {
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = 1.8f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = 1.8f;
                 } else {
                     vel.normalize();
                     vel.scale(1.8f);
-                    field_0x3c.x = vel.x;
-                    field_0x3c.y = vel.y;
+                    mVel_0x3c.x = vel.x;
+                    mVel_0x3c.y = vel.y;
                 }
             }
         }
@@ -370,7 +370,7 @@ void Terrorpin_804A3B10::vfunc_0x44() {
 }
 
 void Terrorpin_804A3B10::onBounce_0x7C() {
-    if (__fabsf(field_0x3c.z) >= 0.5f) {
+    if (__fabsf(mVel_0x3c.z) >= 0.5f) {
         if (mFlags & 0x2000) {
             startSound_801F0E34(0x50014, 0);
         } else {
@@ -390,13 +390,13 @@ u8 Terrorpin_804A3B10::checkHitByActor_0x60() {
 }
 
 // While mState is 5, spawns two 'RUPY' actors at mPos and sets each one's
-// field_0x3c: x is 1.5f for the first and its negation for the second,
+// mVel_0x3c: x is 1.5f for the first and its negation for the second,
 // y and z are fixed.
 void Terrorpin_804A3B10::onHitByPlayer_0x6C() {
     if (mState == 5) {
         f32 speed = 1.5f;
         for (s32 i = 0; i < 2; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 2);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
@@ -404,7 +404,7 @@ void Terrorpin_804A3B10::onHitByPlayer_0x6C() {
                     if (i != 0) {
                         x = -speed;
                     }
-                    actor->field_0x3c = JGeometry::TVec3f(x, 0.0f, 4.5f);
+                    actor->mVel_0x3c = JGeometry::TVec3f(x, 0.0f, 4.5f);
                 }
             }
         }
@@ -424,13 +424,13 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
                 dir.y = mPos.y - getPlayerPos_8023E724(player)->y;
                 dir.x = mPos.x - getPlayerPos_8023E724(player)->x;
                 if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = mSpeed;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = mSpeed;
                 } else {
                     dir.normalize();
                     dir.scale(mSpeed);
-                    field_0x3c.x = dir.x;
-                    field_0x3c.y = dir.y;
+                    mVel_0x3c.x = dir.x;
+                    mVel_0x3c.y = dir.y;
                 }
                 startSound_801F0E34(0x4003B, 0);
             }
@@ -458,9 +458,9 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
         if (inState) {
             JGeometry::TBox2f box;
             fn_801F31C4(&box);
-            fn_802397B4(&box, field_0x4, mSerial);
+            fn_802397B4(&box, mLayer_0x4, mSerial);
         } else {
-            hit = fn_801F2B7C(field_0x114, -1, 1);
+            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
             if (hit != 0 && mState == 5) {
                 for (s32 i = 0; i < 4; i++) {
                     if (hit & (1 << i)) {
@@ -474,11 +474,11 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
 }
 
 void Terrorpin_804A3B10::die_0x24() {
-    // The original reads field_0x10c here, not mState (0x248) as the other vfuncs do.
-    if ((mFlags & 0x2000) && (mFlags & 0x4000) && field_0x10c >= 0 && field_0x10c < 4 && field_0x10c == field_0x2a8) {
+    // The original reads mLastAttacker_0x10c here, not mState (0x248) as the other vfuncs do.
+    if ((mFlags & 0x2000) && (mFlags & 0x4000) && mLastAttacker_0x10c >= 0 && mLastAttacker_0x10c < 4 && mLastAttacker_0x10c == field_0x2a8) {
         f32 speed = 1.5f;
         for (s32 i = 0; i < 2; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 2);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
@@ -486,7 +486,7 @@ void Terrorpin_804A3B10::die_0x24() {
                     if (i != 0) {
                         x = -speed;
                     }
-                    actor->field_0x3c = JGeometry::TVec3f(x, 0.0f, 4.5f);
+                    actor->mVel_0x3c = JGeometry::TVec3f(x, 0.0f, 4.5f);
                 }
             }
         }

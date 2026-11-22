@@ -9,7 +9,7 @@
 // 0x803450AC.
 // FIXME(shotgun): 95.32 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC600::init() {
-    field_0x270 = field_0x90 & 1;
+    field_0x270 = mSpawnParam_0x90 & 1;
     mLife = 1;
     for (s32 i = 0; i < 7; i++) {
         field_0x2a4[i].set(0.0f, 0.0f, 0.0f);
@@ -84,10 +84,10 @@ void cls_804AC600::update() {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL && actor->field_0x94 != 0) {
                         JGeometry::TVec3f from = mPos;
-                        from -= actor->field_0x3c;
+                        from -= actor->mVel_0x3c;
                         handled = true;
                         field_0x274 = 1;
-                        fn_801F37AC(actor->field_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
+                        fn_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
                     }
                 }
                 if (!handled) {
@@ -96,10 +96,10 @@ void cls_804AC600::update() {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial2);
                         if (actor != NULL && actor->field_0x168 == 5) {
                             JGeometry::TVec3f from = mPos;
-                            from -= actor->field_0x3c;
+                            from -= actor->mVel_0x3c;
                             handled = true;
                             field_0x274 = 2;
-                            fn_801F37AC(actor->field_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
+                            fn_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
                         }
                     }
                 }
@@ -207,8 +207,8 @@ void cls_804AC600::update() {
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-                if (actor != NULL && actor->mActorId == ACTOR_HBMB && actor->mAlive == 1 && actor->field_0x90 != 1 &&
-                    actor->field_0x90 != 2 && actor->field_0x90 != 4) {
+                if (actor != NULL && actor->mActorId == ACTOR_HBMB && actor->mAlive == 1 && actor->mSpawnParam_0x90 != 1 &&
+                    actor->mSpawnParam_0x90 != 2 && actor->mSpawnParam_0x90 != 4) {
                     f32 d = PSVECDistance(&mPos, &actor->mPos);
                     if (d < best) {
                         found = actor->mSerial;
@@ -304,10 +304,10 @@ void cls_804AC600::update() {
         steerPieces(this);
         break;
     case 6:
-        if (fn_801F6758(&mPos, field_0x4, 16.0f)) {
+        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             bool gone = true;
             for (s32 i = 1; i < 7; i++) {
-                if (!fn_801F6758(&field_0x2a4[i], field_0x4, 16.0f)) {
+                if (!fn_801F6758(&field_0x2a4[i], mLayer_0x4, 16.0f)) {
                     gone = false;
                     break;
                 }
@@ -362,7 +362,7 @@ void cls_804AC600::die_0x24() {
     } else if (field_0x274 == 2) {
         kind = 1;
     }
-    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, kind | 0x261E00);
+    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind | 0x261E00);
     ActorBase_804A5770::die_0x24();
 }
 

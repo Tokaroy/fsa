@@ -16,7 +16,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;     // 0 waiting, 1 counting down
-    /* 0x234 */ s32 mDuration;  // field_0x90 & 0xFFF, set by init
+    /* 0x234 */ s32 mDuration;  // mSpawnParam_0x90 & 0xFFF, set by init
     /* 0x238 */ s32 mTimer;
 }; // Size: 0x23C
 
