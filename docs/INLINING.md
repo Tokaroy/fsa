@@ -54,12 +54,12 @@ docs/RULES_CARD.md ("Source order and inlining").
   data defined anywhere in a file is addressed off `...data.0`; the original
   addresses each table on its own (an extern), and the tables lead `.data`
   ahead of the unit's jump tables. They are now defined in the preceding unit,
-  tu_80457C08 (whose functions were all dead-stripped), and fn_80458744 and
-  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around fn_80458744, not
+  tu_80457C08 (whose functions were all dead-stripped), and setVolumeMode_80458744 and
+  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
   the whole-file `off` (startBgm_80458FF0 inlines fn_80458408).
   tu_80457C08 (whose functions were all dead-stripped), and setVolumeMode_80458744 and
-  fn_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
-  the whole-file `off` (fn_80458FF0 inlines fn_80458408).
+  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
+  the whole-file `off` (startBgm_80458FF0 inlines fn_80458408).
 - tu_802684A4: the verifier's single region over fn_8026EB1C..fn_8026F54C also
   covers fn_8026EE60, which fn_8026F000-F54C inline in the original (they drop
   90 → 14.5 %). The switch uses two regions (fn_8026F54C..F000, and
@@ -133,20 +133,20 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to fn_8023F264 / fn_8018A614 | r11 |
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
-| tu_8028FBA0 | fn_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
-| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, fn_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
-| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
-| tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
-| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
-| tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
-| tu_80457DFC | fn_80457E54, fn_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
+| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
+| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
+| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
-| tu_8023FBF0 | fn_80248FF0 | L | fn_80249070 | progress |
+| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
+| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
+| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
 | tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
 | tu_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
 | tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
@@ -246,8 +246,8 @@ initial `auto_inline` state.)
 
 Reversed tu_801CDC8C, `-inline auto,deferred`:
 
-- No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and fn_801CF720 (wrong).
-- No pragma: fn_801CF6B8 inlines fn_801CFCF0 and pickNewDir_801CF720 (wrong).
+- No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and pickNewDir_801CF720 (wrong).
+- No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and pickNewDir_801CF720 (wrong).
 - Global `inline_max_size(5..40)`: fn_801CF6B8's calls match. But the same flag on
   the whole game destroys header inlining (N=10 → 2884, 40 → 3267, 100 → 3814
   functions): the draws inline large header inlines. **Rejected**: a callee-size
@@ -269,17 +269,17 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
 fn_80222668 (50 instr), fn_801EDC0C (64), fn_8021AFB8 (125), fn_8026EB1C (91),
-fn_8043E7CC (16), fn_80458744 (79), fn_80128C58 (4), getShadowColor_8018330C (5),
-fn_801CF6B8 / fn_801CF720 / isStepBlocked_801CFCF0 / fn_801CF798 (26-60), stepAngle_801CD930/950.
-fn_8043E7CC (16), setVolumeMode_80458744 (79), fn_80128C58 (4), fn_8018330C (5),
-fn_801CF6B8 / pickNewDir_801CF720 / fn_801CFCF0 / fn_801CF798 (26-60), fn_801CD930/950.
+fn_8043E7CC (16), setVolumeMode_80458744 (79), fn_80128C58 (4), getShadowColor_8018330C (5),
+fn_801CF6B8 / pickNewDir_801CF720 / isStepBlocked_801CFCF0 / fn_801CF798 (26-60), stepAngle_801CD930/950.
+fn_8043E7CC (16), setVolumeMode_80458744 (79), fn_80128C58 (4), getShadowColor_8018330C (5),
+fn_801CF6B8 / pickNewDir_801CF720 / isStepBlocked_801CFCF0 / fn_801CF798 (26-60), stepAngle_801CD930/950.
 There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.
 
 Gains under deferred: act_deadrock draw / update; act_shadow_link_bow and
 act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
-fn_801F2A10, fn_801F3128 (99.5-99.9 % register / scheduling near-misses that become
-act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, fn_801F26CC, fn_801F2718,
+fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
+act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
 fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
 exact); tu_802EF76C init.
 

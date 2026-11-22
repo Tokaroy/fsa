@@ -417,8 +417,8 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   return `if (x > hi || x < lo) return;` (a switch gives `cmpwi hi+1; bge`).
 - Positions built on the stack as 8-byte objects (y stored with x, frame
   slots of 8): the callee takes `const JGeometry::TVec2f*`
-  (hitPlayerGroup_80238548, fn_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
-  (fn_80238548, getCellIndex_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
+  (hitPlayerGroup_80238548, getCellIndex_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
+  (hitPlayerGroup_80238548, getCellIndex_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
   callers pass `(const JGeometry::TVec2f*)&mPos` with a one-line comment.
   Check the callee's body reads only +0/+4 first.
 - `cmpw` operands swapped against a call result (`cmpw r3, rN` in the
@@ -505,8 +505,8 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   getter drops it (94.02 -> 93.79); act_horse_race_man fn_801EC7B8 reuses one register for a layer read
   twice into the same local, and the getter drops it (98.28 -> 98.11).
 - Two calls compared, `cmpw r3, r29` with the FIRST call's result in r29: write the call made second
-  on the left, `if (fn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
-  on the left, `if (getGroupTurn_80240888() != fn_80248778())` (MWCC calls the right operand first); a local for
+  on the left, `if (getGroupTurn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
+  on the left, `if (getGroupTurn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
   the first result gives `cmpw r29, r3` (tu_80285E58). Same in tu_8027E5BC fn_8027E7E0 (to 100 %) and
   act_princess_zelda `getPlayerLayer_8023DE58(p) == getPlayerDestLayer_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;

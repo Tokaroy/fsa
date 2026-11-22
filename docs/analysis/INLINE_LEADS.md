@@ -30,10 +30,10 @@ The model case is 2290324a7: 14 copies of
 | Lead | Form tested | Units | Result |
 |---|---|---:|---|
 | `getActorManager_801F856C()->findActorBySerial_801F666C(x)` | one header inline `actorBySerial(serial)` at all 380 sites; once `return ...;`, once with a named local | 171 | +3 / -7 for both forms (losses: tu_8020B354 x3, tu_80209C14, tu_801E2540, act_sword_soldier dtor, act_ice_melted_by_four_players). **Not a game-wide header inline.** |
-| same, per file | file-local `static inline actorBySerial` at every site of the unit | 3 units gain | **kept**: tu_8020D58C (2 sites, fn_8020D6AC 97.67 -> 100 %), tu_801DE714 (36 sites, cls_804A51E4::calcVelocity_0x88 97.22 -> 100 %). act_life_meter gains too (update 99.32 -> 100 %) but has one site: not kept. |
+| same, per file | file-local `static inline actorBySerial` at every site of the unit | 3 units gain | **kept**: tu_8020D58C (2 sites, containsPointOfOther_8020D6AC 97.67 -> 100 %), tu_801DE714 (36 sites, cls_804A51E4::calcVelocity_0x88 97.22 -> 100 %). act_life_meter gains too (update 99.32 -> 100 %) but has one site: not kept. |
 | `getGameView_802D6A9C()->isInTransition_802DCD0C()` | file-local inline at every site | 31 | no change at all |
 | same, per file | file-local `static inline actorBySerial` at every site of the unit | 3 units gain | **kept**: tu_8020D58C (2 sites, containsPointOfOther_8020D6AC 97.67 -> 100 %), tu_801DE714 (36 sites, cls_804A51E4::calcVelocity_0x88 97.22 -> 100 %). act_life_meter gains too (update 99.32 -> 100 %) but has one site: not kept. |
-| `getGameView_802D6A9C()->fn_802DCD0C()` | file-local inline at every site | 31 | no change at all |
+| `getGameView_802D6A9C()->isInTransition_802DCD0C()` | file-local inline at every site | 31 | no change at all |
 | `getActorManager_801F856C()->fn_801F68E0()` | same | 25 | no change (one function +0.02) |
 | `getActorManager_801F856C()->fn_801F6884();` | same | 24 | no change |
 | `fn_8011921C()->fn_80118454();` / `->fn_801183BC();` | same | 9 / 8 | no change |
@@ -100,10 +100,10 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 |---:|---:|---:|---:|---:|---|
 | 1 | 175 | 387804 | 371 | 171 | `getActorManager_801F856C(…)->findActorBySerial_801F666C(…)` |
 | 2 | 139 | 364460 | 222 | 145 | `getActorManager_801F856C(…)->spawnActor_801F9484(…)` |
-| 3 | 28 | 77124 | 54 | 43 | `getGameView_802D6A9C(…)->fn_802D8050(…)` |
+| 3 | 28 | 77124 | 54 | 43 | `getGameView_802D6A9C(…)->setSwitchBit_802D8050(…)` |
 | 4 | 28 | 72844 | 36 | 32 | `getActorManager_801F856C(…)->spawnActorSimple_801F8544(…)` |
 | 3 | 28 | 77124 | 54 | 43 | `getGameView_802D6A9C(…)->setSwitchBit_802D8050(…)` |
-| 4 | 28 | 72844 | 36 | 32 | `getActorManager_801F856C(…)->fn_801F8544(…)` |
+| 4 | 28 | 72844 | 36 | 32 | `getActorManager_801F856C(…)->spawnActorSimple_801F8544(…)` |
 | 5 | 27 | 68020 | 44 | 32 | `getGameView_802D6A9C(…)->fn_802D79E8(…)` |
 | 6 | 26 | 84292 | 41 | 30 | `fn_80230498(…)` |
 | 7 | 24 | 82500 | 35 | 31 | `getGameView_802D6A9C(…)->isInTransition_802DCD0C(…)` |
@@ -112,8 +112,8 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 10 | 20 | 81416 | 25 | 24 | `getActorManager_801F856C(…)->fn_801F6884(…)` |
 | 11 | 17 | 40844 | 23 | 18 | `pos(…)` |
 | 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->startFade_80119998(…)` |
-| 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->fn_801F78F4(…)` |
-| 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->fn_80119998(…)` |
+| 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->findNextActorById_801F78F4(…)` |
+| 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->startFade_80119998(…)` |
 | 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->findNextActorById_801F78F4(…)` |
 | 14 | 14 | 62416 | 26 | 21 | `spawnEmitter_8013CC50(…)` |
 | 15 | 14 | 18712 | 34 | 23 | `getGameView_802D6A9C(…)->fn_802D7440(…)` |

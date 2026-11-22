@@ -70,10 +70,10 @@ Now: total 7187 / 11557, 1402608 bytes (31.58 %); unit 278/373.
   callee placeholders renamed to Player_804A6F38 members in symbols.txt.
 - Field getters (new Player.h fields 0x14, 0x2c4, 0x43f, 0xb18, 0xb78, 0xb9f, 0xcc8, 0xcd4, 0xce0; arrays
   field_0x38[0x31] TVec3f and field_0x284[0x31] u8 (counts from fn_80252CF0 shifting entries up: last stores at 0x278 and 0x284)).
-- fn_80230B70 / fn_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
+- fn_80230B70 / getPlayerFacing_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
 - fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters setPlayerFacing_80230BF4, fn_8023A654, fn_8023E690.
 - fn_80230B70 / getPlayerFacing_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
-- fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters fn_80230BF4, fn_8023A654, fn_8023E690.
+- fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters setPlayerFacing_80230BF4, fn_8023A654, fn_8023E690.
 
 ## gen_game.py
 Could not be run for this unit: it refuses units claimed in progress/claims.json (ours is). The 41 template
@@ -107,10 +107,10 @@ Baseline (progress.py): total 8571 / 11557; unit 283/373. Now (rebased on matchi
 - 1 generated: fn_8023A6CC (loop family), by `gen_game.py tu_8022AD64` with the claim check
   bypassed in-process (no claims.json edit); its manifest row is new (coordinator approval).
 - Types proven from the asm: fn_80230224 takes s32 (the call truncates it with clrlwi 24 into
-  fn_8024D058, whose parameter is therefore u8); fn_80236554's flag is bool (passed unextended to
+  fn_8024D058, whose parameter is therefore u8); healPlayerGroup_80236554's flag is bool (passed unextended to
   addLife_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
   fn_8024D058, whose parameter is therefore u8); healPlayerGroup_80236554's flag is bool (passed unextended to
-  fn_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
+  addLife_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
   fn_80230498 returns fn_8024DC00's bool.
 - Defined functions leave Player.h's extern "C" block (a section after it); symbols.txt renamed to
   the names our object emits, also the Player getters fn_8024CAC8, fn_80241BA0, fn_802422D0,
@@ -248,25 +248,25 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 
 ## Not done
 - updateScreenChange_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
-  Shape: loop over players with fn_802527B0 + arePlayersInSameGroup_8022E438 -> fn_80248DB8; then (no manager flag,
-  no game-root 0x96, no 0x73) a long chain of inline queries on each player, fn_802527B0 points
-- fn_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
-  Shape: loop over players with checkScreenExit_802527B0 + fn_8022E438 -> fn_80248DB8; then (no manager flag,
+  Shape: loop over players with checkScreenExit_802527B0 + arePlayersInSameGroup_8022E438 -> fn_80248DB8; then (no manager flag,
+  no game-root 0x96, no 0x73) a long chain of inline queries on each player, checkScreenExit_802527B0 points
+- updateScreenChange_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
+  Shape: loop over players with checkScreenExit_802527B0 + arePlayersInSameGroup_8022E438 -> fn_80248DB8; then (no manager flag,
   no game-root 0x96, no 0x73) a long chain of inline queries on each player, checkScreenExit_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
-  fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then fn_8025F590 / fn_8025F418 /
+  fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
   isDeadState_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
-  fn_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
+  isDeadState_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
 - fn_80235B68, fn_8023F390 unchanged.
 
 ## SHARED-EDITS
-- include/game/Player.h: Player::fn_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
-  symbols.txt renamed to fn_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
+- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
+  symbols.txt renamed to checkScreenExit_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
   fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_80231A50, fn_80237A80, hitPlayerGroup_80238548, fn_80239108 leave
 - include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
   symbols.txt renamed to checkScreenExit_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
-  fn_8022D534, fn_8022E438, fn_8022EA0C, fn_80231A50, fn_80237A80, fn_80238548, fn_80239108 leave
+  fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_80231A50, fn_80237A80, hitPlayerGroup_80238548, fn_80239108 leave
   the extern "C" block (C++ names; the empty nested extern "C" block is gone).
 - config/G4SE01/symbols.txt: the written functions renamed to the names our object emits.
 - config/G4SE01/gen_game.tsv: src_before re-pinned three times (pairs 99cf6d84/e06d7e33,

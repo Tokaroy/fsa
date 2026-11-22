@@ -114,8 +114,8 @@ did NOT move them (literals are pooled at use, not at parse). Open question.
 ### Next
 - blobs.txt array line for the two tag tables (coordinator).
 - fadeFileRow_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
-  fn_803BE3D8 / fn_803CE4CC for the string offsets.
-- fn_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
+  fn_803BE3D8 / refreshFileRows_803CE4CC for the string offsets.
+- fadeFileRow_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
   fn_803BE3D8 / refreshFileRows_803CE4CC for the string offsets.
 
 ### SHARED-EDITS

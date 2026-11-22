@@ -24,8 +24,8 @@ SHARED-EDITS:
   spinFacing, stepWalkCycle, setHeldPos, stepTransitionAnim, spawnEffect17D,
   followCamera, requestArrival, spawnEffect15B, life, fallStep,
   riseToTarget: unit-local inlines of tu_8028FBA0; updateCarryWalk_8026152C(bool) of
-  tu_8025EB18); fn_80290070 returns bool (was u8; callers test clrlwi.).
-  riseToTarget: unit-local inlines of tu_8028FBA0; fn_8026152C(bool) of
+  tu_8025EB18); startTransition_80290070 returns bool (was u8; callers test clrlwi.).
+  riseToTarget: unit-local inlines of tu_8028FBA0; updateCarryWalk_8026152C(bool) of
   tu_8025EB18); startTransition_80290070 returns bool (was u8; callers test clrlwi.).
 - include/game/GameGlobals.h: `bool fn_80301CD0(s32 layer);` (tu_80301CD0,
   already defined there with C++ linkage).

@@ -18,22 +18,22 @@ game/GameAudio.h (needs JAISound.h for the JAISoundHandle members); GameGlobals.
 declaration and gAudioMgr_8053AF80. Unit .sdata written (20 tuning values + 3 string pointers, 100 %).
 Matched: fn_80457F80 (bool, JAISoundID, s8), fn_80458408, fn_80458F04, fn_80459508 (member, renamed).
 Structural: fn_80458508 98.55 missing/extra (switch tree pivot 1 vs 2); fn_80458658 99.65 regalloc;
-fn_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so they are addressed
+setVolumeMode_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so they are addressed
 per symbol as in the original, which puts them after the jump tables in .data); startBgm_80458FF0 99.91
 setVolumeMode_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so they are addressed
-per symbol as in the original, which puts them after the jump tables in .data); fn_80458FF0 99.91
+per symbol as in the original, which puts them after the jump tables in .data); startBgm_80458FF0 99.91
 reloc-name (jumptable_804B1FB4, same cause; inlines fn_80458408).
 Left unwritten, with reasons:
 - fn_80457E54, setMusicSlow_8045815C: they inline fn_80458508 (defined later; sdata tempo read after the
   getTempoMgr call, per-branch handle check). Drafts in the scratchpad were 81.5 / 91.8 %.
-- resumeSe_80459274, fn_804593D4: with fn_80458744 written MWCC inlines it into both; the original calls it.
-- fn_80459274, fn_804593D4: with setVolumeMode_80458744 written MWCC inlines it into both; the original calls it.
+- resumeSe_80459274, fn_804593D4: with setVolumeMode_80458744 written MWCC inlines it into both; the original calls it.
+- resumeSe_80459274, fn_804593D4: with setVolumeMode_80458744 written MWCC inlines it into both; the original calls it.
   Bodies are simple (category pause / moveVolume 3); unknown why the original did not inline.
 - playSystemSound_80458880 (393 callers): inlines fn_80458F04 (defined later). Prototype corrected to (u32, s8):
   extsb on entry, cmplwi equality tests; symbol renamed FUlSc. No caller changed %.
 - fn_80459674 (per-frame update; calls 8880, inlines 959C and the music-start block shared with
-  fn_80458FF0's else branch: a dead-stripped helper candidate). init_80459AE4, the audience class
-  startBgm_80458FF0's else branch: a dead-stripped helper candidate). fn_80459AE4, the audience class
+  startBgm_80458FF0's else branch: a dead-stripped helper candidate). init_80459AE4, the audience class
+  startBgm_80458FF0's else branch: a dead-stripped helper candidate). init_80459AE4, the audience class
   (fn_8045A338 dtor, fn_8045A3D8; see GameAudio.h FIXME), fn_8045A0E4, __sinit.
 Fields: field_0x8b is bool (startBgm_80458FF0 passes it to setMusicSlow_8045815C without conversion).
 SHARED-EDITS: include/game/GameGlobals.h (struct moved out), include/game/GameAudio.h (+include),
@@ -42,8 +42,8 @@ new include/game/Unk_8045A080.h; symbols.txt renames (4 lines above).
 ## 2026-11-05 leverage wave 10 (Opus): AudioMgr round 2
 Baseline 8652 (honest). Unit 18/33 -> 19/33.
 Inlining resolved (reviewer's lead): fn_80458508 and fn_80458F04 are inlined into earlier
-functions (fn_80457E54, fn_8045815C; playSystemSound_80458880) while 7 / 6 other units call them out of
-functions (fn_80457E54, setMusicSlow_8045815C; fn_80458880) while 7 / 6 other units call them out of
+functions (fn_80457E54, setMusicSlow_8045815C; playSystemSound_80458880) while 7 / 6 other units call them out of
+functions (fn_80457E54, setMusicSlow_8045815C; playSystemSound_80458880) while 7 / 6 other units call them out of
 line. Tested on MWCC GC/2.6 -inline auto: a later definition is never inlined, whether the
 class declaration and/or the definition say `inline` (no copy emitted either), so the bodies
 were inline ahead of their users. Written as the playerFlags_802413F0 / fn_802413F0
@@ -62,9 +62,9 @@ Written:
   do). Left: case 1 / default of getPlayerPan reload 0.5f in the original. Try budget spent.
 Not written:
 - resumeSe_80459274, fn_804593D4: bodies drafted (category pause / moveVolume 3, structure clear),
-  but MWCC auto-inlines fn_80458744 into them. Probe: adding one statement to fn_80458744
-  still inlines, two stop it, so the original fn_80458744 is a little longer by MWCC's
-- fn_80459274, fn_804593D4: bodies drafted (category pause / moveVolume 3, structure clear),
+  but MWCC auto-inlines setVolumeMode_80458744 into them. Probe: adding one statement to setVolumeMode_80458744
+  still inlines, two stop it, so the original setVolumeMode_80458744 is a little longer by MWCC's
+- resumeSe_80459274, fn_804593D4: bodies drafted (category pause / moveVolume 3, structure clear),
   but MWCC auto-inlines setVolumeMode_80458744 into them. Probe: adding one statement to setVolumeMode_80458744
   still inlines, two stop it, so the original setVolumeMode_80458744 is a little longer by MWCC's
   measure; static local tables, a table pointer, extra case labels do not change it. Without

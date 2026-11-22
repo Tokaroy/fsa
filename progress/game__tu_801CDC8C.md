@@ -14,14 +14,14 @@ directionTo, velocityToward, landStep) used by both the exported function and it
 Flipped: init, __ct__, isStepBlocked_801CFCF0 (literal order), fn_801CEA60, fn_801CF798, fn_801D0E58.
 Structurally done (regalloc/scheduling/operands): checkFloor_0x80 99.9, fn_801CE800 99.8 (frame: TVec2f-sized
 slots), fn_801CECF4 99.7, fn_801CF0F4 89.7, fn_801CFD68 99.4, fn_801D00B4 88.9, fn_801D0338 99.3,
-fn_801D05F8 98.9, fn_801D08B4 99.7, canTargetPlayer_801D0B44 99.9.
-Close: fn_801CF1B0 99.2, fn_801CFA70 98.5 (layer copy), isWayBlocked_801CF888 95.8 (bool materialised via mfcr),
-findNearestPlayer_801D05F8 98.9, fn_801D08B4 99.7, fn_801D0B44 99.9.
-Close: fn_801CF1B0 99.2, fn_801CFA70 98.5 (layer copy), fn_801CF888 95.8 (bool materialised via mfcr),
-fn_801D05F8 98.9, fn_801D08B4 99.7, fn_801D0B44 99.9.
-Close: fn_801CF1B0 99.2, isPathBlocked_801CFA70 98.5 (layer copy), fn_801CF888 95.8 (bool materialised via mfcr),
+findNearestPlayer_801D05F8 98.9, fn_801D08B4 99.7, canTargetPlayer_801D0B44 99.9.
+Close: fn_801CF1B0 99.2, isPathBlocked_801CFA70 98.5 (layer copy), isWayBlocked_801CF888 95.8 (bool materialised via mfcr),
+findNearestPlayer_801D05F8 98.9, fn_801D08B4 99.7, canTargetPlayer_801D0B44 99.9.
+Close: fn_801CF1B0 99.2, isPathBlocked_801CFA70 98.5 (layer copy), isWayBlocked_801CF888 95.8 (bool materialised via mfcr),
+findNearestPlayer_801D05F8 98.9, fn_801D08B4 99.7, canTargetPlayer_801D0B44 99.9.
+Close: fn_801CF1B0 99.2, isPathBlocked_801CFA70 98.5 (layer copy), isWayBlocked_801CF888 95.8 (bool materialised via mfcr),
 fn_801CF144 61.7 (1 extra mr reorders the body; structure right, needed for the 16.0f literal).
-Lead: fn_801CFA70 / isWayBlocked_801CF888 / getTileCollisionCodeAlt_802265FC / fn_801CCD34 probably take TVec2f in the original.
-Lead: isPathBlocked_801CFA70 / fn_801CF888 / fn_802265FC / fn_801CCD34 probably take TVec2f in the original.
+Lead: isPathBlocked_801CFA70 / isWayBlocked_801CF888 / getTileCollisionCodeAlt_802265FC / fn_801CCD34 probably take TVec2f in the original.
+Lead: isPathBlocked_801CFA70 / isWayBlocked_801CF888 / getTileCollisionCodeAlt_802265FC / fn_801CCD34 probably take TVec2f in the original.
 Tried: canTargetPlayer bool order (onLayer declared first) - no change.
 SHARED-EDITS: EnemyBase.h (inline helper decls; fn_801CCD34, oppositeDir_801CD354, extern "C" fn_801CCFE4 decls).
