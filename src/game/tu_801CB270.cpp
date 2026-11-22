@@ -683,7 +683,7 @@ void fn_801CC350(const JGeometry::TVec3f* normal, JGeometry::TVec3f* vel) {
 
 // The distance between two angles as a fraction of a half turn (0-1).
 static inline f32 angleDistance(s16 a, s16 b) {
-    return (1.0f / 32768.0f) * __fabsf((s16)(a - b));
+    return (1.0f / 32768.0f) * JMAAbs((s16)(a - b));
 }
 
 // How far box a sticks out of box b, as the move that puts it back (out); true if it does.
@@ -718,7 +718,7 @@ bool fn_801CC29C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b, JGeomet
 static inline f32 edgeSlope(s16 a) {
     f32 c = JMASCos(a);
     f32 t = 0.0f;
-    if (__fabsf(c) > FLT_EPSILON) {
+    if (JMAAbs(c) > FLT_EPSILON) {
         t = (1.0f / c) * JMASSin(a);
     }
     return __fabsf(t);
@@ -752,7 +752,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
     }
     u16 ua = angleArg;
     f32 sn = JMASSin(angleArg);
-    if (__fabsf(sn) <= FLT_EPSILON) {
+    if (JMAAbs(sn) <= FLT_EPSILON) {
         if (JMASCos(angleArg) > 0.0f) {
             out->y = box->f.y + speed;
         } else {
@@ -760,7 +760,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         }
         return;
     }
-    if (__fabsf(JMASCos(angleArg)) <= FLT_EPSILON) {
+    if (JMAAbs(JMASCos(angleArg)) <= FLT_EPSILON) {
         if (sn > 0.0f) {
             out->x = box->f.x + speed;
         } else {
