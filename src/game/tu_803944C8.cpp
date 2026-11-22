@@ -515,7 +515,7 @@ static const u32 lbl_805431D0[2] = {0, 0x1000007};
 // FIXME: 98.34 %, missing/extra; behaviour near.
 bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
     const u8* p = (const u8*)data;
-    s32 work[6]; // the original frame reserves 24 bytes of locals (0x8..0x1F)
+    s32 work[4];
     if (field_0x60->fn_803A313C() == 0) {
         switch (tag) {
         case 0:
