@@ -75,10 +75,6 @@ static inline bool overlapsInView(const Player_804A6F38* player, const JGeometry
     return own.f.x >= own.i.x && own.f.y >= own.i.y;
 }
 
-// Points 12 (fn_80272768) and 16 (fn_802728AC) in front of the player, by facing mFacing_0x3dc.
-static const f32 lbl_8046BD68[4][2] = {{12.0f, 0.0f}, {-12.0f, 0.0f}, {0.0f, 12.0f}, {0.0f, -12.0f}};
-static const f32 lbl_8046BD48[4][2] = {{16.0f, 0.0f}, {-16.0f, 0.0f}, {0.0f, 16.0f}, {0.0f, -16.0f}};
-
 static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
@@ -137,27 +133,27 @@ static const Vec lbl_8046BC38[8] = {
 // Facing -> emitter yaw (s16 angle in a word; fn_80279824).
 static const s32 lbl_8046BC98[4] = {0x4000, 0xC000, 0x0000, 0x8000};
 
-// lbl_8046BCA8 (0xA0 bytes, one symbol): the push per facing (checkAttackInput_80275D9C reads it by name),
-// then the charge poses and the charge emitter offsets, which fn_80274CB8 reads off its
-// .rodata base (0x8046BB48 + 0x180 / + 0x1A0): u8 [facing][8] by the pose counter 0x3F8 (the
-// up / down facings have their own last four), f32 [full charge][facing][3].
-static const struct {
-    f32 push[4][2];
-    u8 chargePose[4][8];
-    f32 chargeOffset[2][4][3];
-} lbl_8046BCA8 = {
-    {{1.5f, 0.0f}, {-1.5f, 0.0f}, {0.0f, 1.5f}, {0.0f, -1.5f}},
-    {
-        {0, 2, 4, 6, 0, 2, 4, 6},
-        {0, 2, 4, 6, 0, 2, 4, 6},
-        {0, 2, 4, 6, 0, 8, 10, 12},
-        {0, 2, 4, 6, 0, 8, 10, 12},
-    },
-    {
-        {{18.0f, 0.0f, 2.0f}, {-18.0f, 0.0f, 2.0f}, {4.0f, 18.0f, 2.0f}, {-4.0f, -18.0f, 2.0f}},
-        {{-24.0f, 3.0f, 2.0f}, {24.0f, 3.0f, 2.0f}, {1.0f, -24.0f, 2.0f}, {-5.0f, 22.0f, 2.0f}},
-    },
+// The push per facing (checkAttackInput_80275D9C).
+static const f32 lbl_8046BCA8[4][2] = {{1.5f, 0.0f}, {-1.5f, 0.0f}, {0.0f, 1.5f}, {0.0f, -1.5f}};
+
+// The charge poses of fn_80274CB8: [facing][8] by the pose counter 0x3F8 (the up / down facings
+// have their own last four). fn_80274CB8 reads this and the two tables below off the unit's
+// .rodata base, so they are separate objects.
+static const u8 lbl_8046BCC8[4][8] = {
+    {0, 2, 4, 6, 0, 2, 4, 6},
+    {0, 2, 4, 6, 0, 2, 4, 6},
+    {0, 2, 4, 6, 0, 8, 10, 12},
+    {0, 2, 4, 6, 0, 8, 10, 12},
 };
+
+// The charge emitter offsets by facing: while charging, and at full charge.
+static const f32 lbl_8046BCE8[4][3] = {{18.0f, 0.0f, 2.0f}, {-18.0f, 0.0f, 2.0f}, {4.0f, 18.0f, 2.0f}, {-4.0f, -18.0f, 2.0f}};
+
+static const f32 lbl_8046BD18[4][3] = {{-24.0f, 3.0f, 2.0f}, {24.0f, 3.0f, 2.0f}, {1.0f, -24.0f, 2.0f}, {-5.0f, 22.0f, 2.0f}};
+
+// Points 16 (fn_802728AC) and 12 (fn_80272768) in front of the player, by facing mFacing_0x3dc.
+static const f32 lbl_8046BD48[4][2] = {{16.0f, 0.0f}, {-16.0f, 0.0f}, {0.0f, 16.0f}, {0.0f, -16.0f}};
+static const f32 lbl_8046BD68[4][2] = {{12.0f, 0.0f}, {-12.0f, 0.0f}, {0.0f, 12.0f}, {0.0f, -12.0f}};
 
 // All four direction hold timers mInputTimers_0x117c[0..3] running.
 static inline bool allDirectionsHeld(const Player_804A6F38* player) {
@@ -282,8 +278,7 @@ static inline void walkToGroupSpot(Player_804A6F38* player) {
 }
 
 // Whether the tile at (x, y, z) blocks (fn_802265DC with flag 1).
-static inline bool blockedAt(f32 x, f32 y, f32 z, s32 layer) {
-    JGeometry::TVec3f pos(x, y, z);
+static inline bool blockedAt(const JGeometry::TVec3f& pos, s32 layer) {
     return fn_802265DC(&pos, layer, true);
 }
 
@@ -1080,51 +1075,68 @@ void Player_804A6F38::fn_8027B304() {
 // 0x3E8. BgRewrite runs at 0x30C (twice) and the probe points; sound 0x20029; the emitter 0x12B8
 // follows the player and 0x12BC circles it at 20 by the angle 0x11C0 (depths by fn_8024EE0C,
 // heights by fn_8024EE14); the step emitters 0x1378 (tile 0x39) / 0x1374.
-// FIXME: 99.60 %, operands; behaviour clean.
-// Stack offsets only: every temporary sits 0x18 higher in ours (the original
-// puts the probe and emitter vectors above the tile-test vectors).
+// FIXME: 99.90 %, scheduling+regalloc; behaviour clean.
+// The frame shows the walk-to-spot and probe vectors as locals of this function (0xE0, 0xD4,
+// 0xC8, above the emitter's 0xBC) and the tile-test vectors as temporaries (0xB0 down to 0x2C).
+// Left: the direction step loads y before x.
 void Player_804A6F38::fn_8027AAD0() {
     fn_80274728();
     updateFacing_8027EB04();
     if (fn_802486A0() == 3 && !fn_8023434C(mPlayerNo_0x4)) {
         if (fn_8022C82C(mPlayerNo_0x4) > 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.x += 2.0f;
             }
         } else if (fn_8022C82C(mPlayerNo_0x4) < 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.x -= 2.0f;
             }
         }
         if (fn_8022C76C(mPlayerNo_0x4) < 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.y += 2.0f;
             }
         } else if (fn_8022C76C(mPlayerNo_0x4) > 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.y -= 2.0f;
             }
         }
         if (mAnimTimer_0x3fa >= 11) {
-            walkToGroupSpot(this);
+            JGeometry::TVec3f to;
+            getFollowTargetPos_8027FA08(&to);
+            JGeometry::TVec3f dir = to - mPos;
+            dir.z = 0.0f;
+            if (magnitude(dir) >= 6.0f) {
+                dir.normalize();
+                dir.scale(6.0f);
+                mPos += dir;
+            } else {
+                mPos.set(to);
+            }
         }
     } else {
         const Vec& dirStep = lbl_8046BBD8[mMoveDir_0x3e8];
-        JGeometry::TVec3f step(dirStep.x, dirStep.y, dirStep.z);
-        mPos.add(step);
+        mPos.add(JGeometry::TVec3f(dirStep.x, dirStep.y, dirStep.z));
     }
     fn_802709C8();
     fn_802709C8();
     fn_80268B3C();
-    rewriteProbes(this);
+    for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec3f pos;
+        fn_8024B298(i, &pos);
+        pos.sub(mPos);
+        pos.scale(2.0f);
+        pos.add(mPos);
+        gBgRewrite_8053AC98->fn_802A20F0(&pos, mPlayerNo_0x4, mLayer_0x3b4, 0, 1);
+    }
     playSound_8024F0E8(0x20029);
     if (field_0x12b8 != NULL) {
         setEmitterPos_8013CB44(field_0x12b8, &mPos, fn_8024EE14(), fn_8024EE0C() - 1, false);
@@ -2441,8 +2453,8 @@ bool Player_804A6F38::checkAttackInput_80275D9C() {
             } else if (field_0xbf0->field_0xb4) {
                 if (fn_80243234()) {
                     if (requestState_80251AEC(7)) {
-                        mVel_0x344.x = lbl_8046BCA8.push[mFacing_0x3dc][0];
-                        mVel_0x344.y = lbl_8046BCA8.push[mFacing_0x3dc][1];
+                        mVel_0x344.x = lbl_8046BCA8[mFacing_0x3dc][0];
+                        mVel_0x344.y = lbl_8046BCA8[mFacing_0x3dc][1];
                         mVel_0x344.z = -4.0f;
                         return true;
                     }
@@ -2642,7 +2654,7 @@ void Player_804A6F38::fn_802756E4() {
 
 // The charge step of states 0x08 / 0x07 (fn_8027BE74 and others): in the air the jump poses
 // 0x3F9 by 0x3F8; standing still (epsilonEquals with the last position 0x14) resets the walk
-// counter 0x3F8, else it cycles 0-27; the pose 0x3F9 by it (lbl_8046BCA8.chargePose before full
+// counter 0x3F8, else it cycles 0-27; the pose 0x3F9 by it (lbl_8046BCC8 before full
 // charge; on GBA layers every other frame one later). The emitter point 0x12A4 (mPos + the
 // charge offset by facing) feeds the callbacks and the 'PEFF' 0x12C0. The charge 0x403 counts
 // up (past 48 only with fn_80241544() >= 2); at 48 the charge emitters 0xCB / 0xCC (immortal),
@@ -2652,12 +2664,7 @@ void Player_804A6F38::fn_802756E4() {
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
 // member out of step (mode 4) drops to state 0. Then the facing boxes (setFacingBoxes_80276E5C, or
 // fn_80276BB8 at full charge).
-// FIXME: 95.57 %, missing/extra; behaviour drift.
-// Structurally close: the original loads one .rodata base (0x8046BB48) into r3 at
-// entry and reaches lbl_8046BCA8's pose / offset members from it (+0x180 / +0x1A0); ours
-// re-materialises the table address (lis / addi) in every pose branch (9 instructions more in all)
-// and keeps mPos.z in f5. Neither separate static tables nor function-local ones give the
-// shared base.
+// FIXME: 99.75 %, same-text; behaviour drift.
 void Player_804A6F38::fn_80274CB8() {
     if (mPos.z > 0.0f) {
         if (mWalkAnimCounter_0x3f8 < 4) {
@@ -2699,30 +2706,30 @@ void Player_804A6F38::fn_80274CB8() {
             mWalkFrame_0x3f9 = 6;
         }
     } else if (mWalkAnimCounter_0x3f8 < 4) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][0];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][0];
     } else if (mWalkAnimCounter_0x3f8 < 6) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][1];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][1];
     } else if (mWalkAnimCounter_0x3f8 < 10) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][2];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][2];
     } else if (mWalkAnimCounter_0x3f8 < 14) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][3];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][3];
     } else if (mWalkAnimCounter_0x3f8 < 18) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][4];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][4];
     } else if (mWalkAnimCounter_0x3f8 < 20) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][5];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][5];
     } else if (mWalkAnimCounter_0x3f8 < 24) {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][6];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][6];
     } else {
-        mWalkFrame_0x3f9 = lbl_8046BCA8.chargePose[mFacing_0x3dc][7];
+        mWalkFrame_0x3f9 = lbl_8046BCC8[mFacing_0x3dc][7];
     }
     if (mLayer_0x3b4 >= 8 && mSwordCharge_0x403 >= 48 && !(field_0x404 & 2)) {
         mWalkFrame_0x3f9++;
     }
     if (mSwordCharge_0x403 < 167) {
-        const f32* offset = lbl_8046BCA8.chargeOffset[0][mFacing_0x3dc];
+        const f32* offset = lbl_8046BCE8[mFacing_0x3dc];
         mChargeEffectPos_0x12a4.set(offset[0], offset[1], offset[2]);
     } else {
-        const f32* offset = lbl_8046BCA8.chargeOffset[1][mFacing_0x3dc];
+        const f32* offset = lbl_8046BD18[mFacing_0x3dc];
         mChargeEffectPos_0x12a4.set(offset[0], offset[1], offset[2]);
     }
     mChargeEffectPos_0x12a4.add(mPos);
