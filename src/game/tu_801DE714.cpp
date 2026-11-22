@@ -186,6 +186,90 @@ static inline bool canChase(const cls_804A51E4* a) {
     return result;
 }
 
+// Takes `player` as the one to follow and moves to that player's layer; with no player, to
+// one of the players' layers that has something to collect, picked at random. An inline in
+// the original: fn_801E0CF4 stores -1 and tests the stored field, and starts the loop
+// counter with a copy of `count`.
+static inline void followPlayer(cls_804A51E4* a, s32 player) {
+    a->field_0x2a8 = player;
+    if (a->field_0x2a8 >= 0) {
+        a->mLayer_0x4 = getPlayerLayer_8023DE58(a->field_0x2a8);
+    } else {
+        s32 count = 0;
+        s32 layers[4];
+        for (s32 i = 0; i < 4; i++) {
+            s32 layer = getPlayerLayer_8023DE58(i);
+            if (isUpperLayer_801CD2F8(layer) && layer != 8 && !fn_801E3250(layer, false)) {
+                if (getActorManager_801F856C()->fn_801F750C(layer, -1) >= 0 ||
+                    getActorManager_801F856C()->fn_801F7464(layer, -1) >= 0) {
+                    layers[count] = layer;
+                    count++;
+                }
+            }
+        }
+        if (count == 0) {
+            a->mLayer_0x4 = 0;
+        } else {
+            a->mLayer_0x4 = layers[randInt_801CD664(count)];
+        }
+    }
+}
+
+// Turns round (state 6) when the place it is heading for lies behind it. An inline in the
+// original: fn_801E0CF4 keeps its `cross` in the register of behind()'s result with no copy,
+// which MWCC only does between two locals of inlined bodies.
+static inline void turnIfBehind(cls_804A51E4* a) {
+    bool cross = false;
+    switch (a->mState) {
+    case 0:
+    case 5:
+    case 6:
+    case 7:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+        break;
+    default:
+        if (a->fn_801E1DB4() && !a->fn_801E1D9C()) {
+            if (a->mFlags & 0x4000) {
+                cross = behind(a, a->field_0x2c4.x);
+            } else if (a->mFlags & 0x20000) {
+                s32 player = a->field_0x2a8;
+                if (player >= 0 && player == -1) {
+                    cross = behind(a, getPlayerPos_8023E724(player)->x);
+                }
+            } else {
+                ActorBase_804A5770* t = NULL;
+                s32 serial = a->field_0x2ac;
+                if (serial >= 0) {
+                    t = actorBySerial(serial);
+                }
+                if (t == NULL) {
+                    serial = a->field_0x2b0;
+                    if (serial >= 0) {
+                        t = actorBySerial(serial);
+                    }
+                }
+                if (t == NULL) {
+                    serial = a->field_0x2b4;
+                    if (serial >= 0) {
+                        t = actorBySerial(serial);
+                    }
+                }
+                if (t != NULL) {
+                    cross = behind(a, t->mPos.x);
+                }
+            }
+            if (cross) {
+                a->field_0x2d0 = a->mState;
+                a->setState_801E1594(6);
+            }
+        }
+        break;
+    }
+}
+
 // tu_801DE714 (0x801E22A4): the constructor, after EnemyBase's (a plain bl).
 cls_804A51E4::cls_804A51E4() {
     field_0x2a8 = -1;
@@ -341,8 +425,10 @@ bool cls_804A51E4::fn_801E1DB4() const {
 // tu_801DE714 (0x801E1D9C)
 bool cls_804A51E4::fn_801E1D9C() const {
     bool result = false;
-    if (mAnim.mAnim == 2) {
+    switch (mAnim.mAnim) {
+    case 2:
         result = true;
+        break;
     }
     return result;
 }
@@ -644,28 +730,7 @@ void cls_804A51E4::fn_801E1300() {
 // FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
-        field_0x2a8 = -1;
-        if (field_0x2a8 >= 0) {
-            mLayer_0x4 = getPlayerLayer_8023DE58(field_0x2a8);
-        } else {
-            s32 count = 0;
-            s32 layers[4];
-            for (s32 i = 0; i < 4; i++) {
-                s32 layer = getPlayerLayer_8023DE58(i);
-                if (isUpperLayer_801CD2F8(layer) && layer != 8 && !fn_801E3250(layer, false)) {
-                    if (getActorManager_801F856C()->fn_801F750C(layer, -1) >= 0 ||
-                        getActorManager_801F856C()->fn_801F7464(layer, -1) >= 0) {
-                        layers[count] = layer;
-                        count++;
-                    }
-                }
-            }
-            if (count == 0) {
-                mLayer_0x4 = 0;
-            } else {
-                mLayer_0x4 = layers[randInt_801CD664(count)];
-            }
-        }
+        followPlayer(this, -1);
     } else {
         if ((mFlags & 0x4000) && __fabsf(field_0x2c4.x - mPos.x) < 0.1f && __fabsf(field_0x2c4.y - mPos.y) < 0.1f) {
             setState_801E1594(0);
@@ -675,7 +740,7 @@ void cls_804A51E4::fn_801E0CF4() {
             setState_801E1594(0);
             return;
         }
-        if (mFlags & 0x10000) {
+        if (checkFlag(0x10000)) {
             mFlags &= ~0x10000;
             switch (mState) {
             case 5:
@@ -735,55 +800,7 @@ void cls_804A51E4::fn_801E0CF4() {
             }
         }
         fn_8021FDB8();
-        bool cross = false;
-        switch (mState) {
-        case 0:
-        case 5:
-        case 6:
-        case 7:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-            break;
-        default:
-            if (fn_801E1DB4() && !fn_801E1D9C()) {
-                if (mFlags & 0x4000) {
-                    cross = behind(this, field_0x2c4.x);
-                } else if (mFlags & 0x20000) {
-                    s32 player = field_0x2a8;
-                    if (player >= 0 && player == -1) {
-                        cross = behind(this, getPlayerPos_8023E724(player)->x);
-                    }
-                } else {
-                    ActorBase_804A5770* t = NULL;
-                    s32 serial = field_0x2ac;
-                    if (serial >= 0) {
-                        t = actorBySerial(serial);
-                    }
-                    if (t == NULL) {
-                        serial = field_0x2b0;
-                        if (serial >= 0) {
-                            t = actorBySerial(serial);
-                        }
-                    }
-                    if (t == NULL) {
-                        serial = field_0x2b4;
-                        if (serial >= 0) {
-                            t = actorBySerial(serial);
-                        }
-                    }
-                    if (t != NULL) {
-                        cross = behind(this, t->mPos.x);
-                    }
-                }
-                if (cross) {
-                    field_0x2d0 = mState;
-                    setState_801E1594(6);
-                }
-            }
-            break;
-        }
+        turnIfBehind(this);
         if (fn_801E1D7C()) {
             if (fn_801E2F40()) {
                 setState_801E1594(0xE);
