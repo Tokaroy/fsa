@@ -368,7 +368,7 @@ void Bee_804AC600::draw() {
 // 0x80343AD0.
 // FIXME(shotgun): 96.67 %, missing/extra; behaviour clean.
 void Bee_804AC600::die_0x24() {
-    s32 kind = 0;
+    s32 kind;
     if (field_0x274 == 1) {
         kind = 3;
     } else if (field_0x274 == 2) {
