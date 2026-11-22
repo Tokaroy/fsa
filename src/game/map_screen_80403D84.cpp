@@ -1067,7 +1067,7 @@ void MapScreen_804B1288::update_804108B4() {
     }
 }
 
-// FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.22 %, scheduling+regalloc; behaviour clean.
 // (mLevel_0x348 reloads) + pool literals
 void MapScreen_804B1288::fn_8040F480() {
     u8 mode = 0;
