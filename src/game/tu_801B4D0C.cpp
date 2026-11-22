@@ -174,7 +174,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                 break;
             }
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                     field_0x264[i].x = ppos->x;
                     field_0x264[i].y = ppos->y;
@@ -196,7 +196,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
             target.z = mPos.z;
             s32 done = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
+                if (isPlayerActive_8023F264(i)) {
                     if (i != 0) {
                         target.y -= 0.2f;
                     }
@@ -226,7 +226,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                 target.y = mPos.y;
                 target.z = mPos.z;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         if (i != 0) {
                             target.y -= 0.2f;
                         }
@@ -273,7 +273,7 @@ void TinglesTowerWarp_804A38D4::fn_801B5228() {
     case 8:
         mDir_0x98 = lbl_804A38C8[field_0x250 - 1];
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
                 field_0x264[i].x = pos->x;
                 field_0x264[i].y = pos->y;
@@ -307,7 +307,7 @@ void TinglesTowerWarp_804A38D4::fn_801B5228() {
         if (std::sqrtf(dx * dx + dz * dz) < 1.0f) {
             if (--lbl_8053A118 == 0) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+                    if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                         fn_80230498(i, &field_0x264[i], 0x3E, 0xFF, -0x80, -0x80, true);
                     }
                 }
@@ -325,7 +325,7 @@ void TinglesTowerWarp_804A38D4::fn_801B5228() {
             } else if (field_0x250 == 2) {
                 f32 z = mPos.z;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+                    if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                         addCalc2_801F71A4(&field_0x264[i].z, z, 0.3f, field_0x25c);
                         fn_80230498(i, &field_0x264[i], 0xB0, 0xFF, -0x80, -0x80, true);
                     }

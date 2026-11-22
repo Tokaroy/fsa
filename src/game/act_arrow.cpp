@@ -224,7 +224,7 @@ void ArrowPlayer_804A05E0::update() {
         box.set(mBox);
         box.addPos(mPos.x, mPos.y);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+            if (isPlayerActive_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                 fn_8022E1A0(i, mSerial);
             }
         }
@@ -364,7 +364,7 @@ void ArrowPlayer_804A05E0::update() {
             box.addPos(mPos.x, mPos.y);
             if (field_0x274 == 0) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+                    if (isPlayerActive_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                         JGeometry::TVec2f c;
                         c.x = 0.5f * (box.i.x - box.f.x) + box.f.x;
                         c.y = 0.5f * (box.i.y - box.f.y) + box.f.y;

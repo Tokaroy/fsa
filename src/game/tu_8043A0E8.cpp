@@ -697,7 +697,7 @@ void HudMgr_804B1920::fn_8043D8B4() {
         }
     } else {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
+            if (isPlayerActive_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 fn_804408F0(&pos);
             }

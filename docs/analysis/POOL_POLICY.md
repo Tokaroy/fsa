@@ -158,7 +158,7 @@ Figures:
 | act_shadow_link_demo | hopDown | `{ s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9]; field_0x3c.z = 4` | 8 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_shovel_old_timer | findDigSpot | `{ JGeometry::TBox2f box = field_0x230; box.i.x += 64.0f; box.i.y += 32` | 31 | 1 | 2 | 2 | pool only | - | - | - |  |
 | act_small_key | fallOnTile | `{ if (tile == 3) { if (fn_801EE24C() == true) { field_0x240 = 4; retur` | 22 | 3 | 0 | 1 | 3 call sites | y | y | y |  |
-| act_small_key | dropAtPlayer | `{ if (!field_0x2b0) { return true; } mPos.z = 400.0f; if (!fn_8023F264` | 37 | 1 | 0 | 1 | pool only | - | - | - |  |
+| act_small_key | dropAtPlayer | `{ if (!field_0x2b0) { return true; } mPos.z = 400.0f; if (!isPlayerActive_8023F264` | 37 | 1 | 0 | 1 | pool only | - | - | - |  |
 | act_small_key | bounceOffTile | `{ JGeometry::TVec3f checkPos; checkPos.x = mPos.x + 6.0f; checkPos.y =` | 19 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_snow_wall | shrink | `{ mDrawEnabled = false; bool done; if (field_0x238 >= 0.5f && fn_801CD` | 16 | 1 | 2 | 3 | pool only | - | - | - |  |
 | act_snow_wall | melt | `{ if (field_0x234 == 0) { JGeometry::TVec3f pos = mPos; pos.y += 16.0f` | 19 | 1 | 3 | 3 | pool only | - | - | - |  |

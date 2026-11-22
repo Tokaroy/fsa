@@ -18,10 +18,10 @@
 // in fn_8022B7C4, fn_8022B860, getPlayerLayer_8023DE58 and getPlayerPos_8023E724:
 //
 //     if (gPlayerManager_8053AC90 == NULL) return <fallback>;
-//     if (fn_8023F264(player)) return gPlayerManager_8053AC90->mPlayers[player]-><query>;
+//     if (isPlayerActive_8023F264(player)) return gPlayerManager_8053AC90->mPlayers[player]-><query>;
 //     return <fallback>;
 //
-// fn_8023F264 (the player test, a plain function of tu_8022AD64.cpp) is inlined
+// isPlayerActive_8023F264 (the player test, a plain function of tu_8022AD64.cpp) is inlined
 // into each of them; its own test of gPlayerManager_8053AC90 is the dead `bne`
 // right after the outer test in every one (e.g. 0x8022B7E4). Game code is
 // compiled -inline auto,deferred, so the queries inline it although they come
@@ -206,7 +206,7 @@ public:
     void setGroupMode_80248004(s32 a, bool b); // via fn_8022CA6C
     s32 fn_802486A0() const; // via fn_8022CAF8
     s32 getFollowerIndex_80248778() const; // via fn_8022E8D4
-    s32 fn_80248970() const; // via getPlayerGroupSize_8022E970
+    s32 getGroupSize_80248970() const; // via getPlayerGroupSize_8022E970
     void fn_80248DB8(); // via fn_802381B8
     void fn_80248DCC(); // via fn_80238244
     void endFormActor_80248FF0(); // via fn_8022CD48
@@ -1323,7 +1323,7 @@ bool fn_8022B244(void); // 0x6C
 void fn_8022B260(void); // 0x6C = false
 
 // Whether `player` is a valid index of an existing, active player. 81 units.
-bool fn_8023F264(s32 player);
+bool isPlayerActive_8023F264(s32 player);
 
 // Per-player queries, by address. "N units": other units that call it;
 // "->": the player's getter (tu_8023FBF0 unless said) or field it returns.
@@ -1489,7 +1489,7 @@ bool fn_8022DEAC(s32 player); // -> fn_8024B24C; else false
 void fn_8022DF48(s32 player); // -> fn_8024B274
 bool fn_8022E39C(s32 player, s32 arg); // -> fn_80240840; else false
 s32 fn_8022E8D4(s32 player); // -> getFollowerIndex_80248778; else 0
-s32 getPlayerGroupSize_8022E970(s32 player); // -> fn_80248970; else 0
+s32 getPlayerGroupSize_8022E970(s32 player); // -> getGroupSize_80248970; else 0
 bool fn_8022F5B0(s32 player); // -> fn_8024C35C; else false
 bool fn_8022F64C(s32 player); // -> fn_80240DCC; else false
 bool fn_8022F6E8(s32 player, s32 arg); // -> fn_8025EF68; else false

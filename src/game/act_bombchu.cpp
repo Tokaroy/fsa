@@ -203,7 +203,7 @@ void Bombchu_804AB464::update() {
         mVel_0x3c.z = 0.0f;
         mPos.z = 0.0f;
         for (i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
+            if (isPlayerActive_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
                 field_0x258 = 0;
                 field_0x230 = 2;
             }

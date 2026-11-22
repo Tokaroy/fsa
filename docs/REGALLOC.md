@@ -83,12 +83,12 @@ original and in ours. Then:
 
 ## Worked example: the Player group loops
 
-`fn_80248970` counts a player's group; it keeps the leader (`field_0xd60`) and its own number in
+`getGroupSize_80248970` counts a player's group; it keeps the leader (`field_0xd60`) and its own number in
 registers across calls. On its own it matched; its ~100 inlined copies did not: ours gave `leader`
 the register of `self`, the original the caller's lowest callee-saved register. By rule 3 that needs
 `leader` coloured after every loop counter of the caller, so by rules 1, 2 and 4 created after them:
 not with the loop's locals but one inlining pass later. Reading the field through an inline with a
-local of its own (`leaderOf(player)`), in `fn_80248970` and in `getFollowerIndex_80248778`, does exactly that.
+local of its own (`leaderOf(player)`), in `getGroupSize_80248970` and in `getFollowerIndex_80248778`, does exactly that.
 
 A second step by the same reasoning: `self` through an inline of its own (`selfOf`) and the leader
 one level deeper (`groupLeader` wrapping `leaderOf`) matched six more. Still open (docs/PLAYER.md):

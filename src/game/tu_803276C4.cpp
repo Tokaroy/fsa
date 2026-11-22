@@ -134,7 +134,7 @@ void OshinUnidentified_804AB528::update() {
         field_0x254[2] = 0;
         field_0x254[3] = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && !fn_8023EA28(i) && field_0x254[i] == 0) {
+            if (isPlayerActive_8023F264(i) && !fn_8023EA28(i) && field_0x254[i] == 0) {
                 field_0x254[i] = fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f);
                 if (field_0x254[i] != 0 && getPlayerPos_8023E724(i)->y < mPos.y) {
                     if (fn_8022CAF8(i) == 4) {
@@ -203,7 +203,7 @@ void OshinUnidentified_804AB528::update() {
                     if (fn_80233EDC(i) == 1) {
                         break;
                     }
-                    if (fn_8023F264(i) && !fn_8023EA28(i)) {
+                    if (isPlayerActive_8023F264(i) && !fn_8023EA28(i)) {
                         field_0x254[i] = fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f);
                         if (field_0x254[i] != 0 && getPlayerPos_8023E724(i)->y <= worldBox.i.y) {
                             field_0x238++;
@@ -277,7 +277,7 @@ void OshinUnidentified_804AB528::update() {
             break;
         case 4:
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !fn_8023EA28(i)) {
+                if (isPlayerActive_8023F264(i) && !fn_8023EA28(i)) {
                     field_0x254[i] = fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f);
                     if (field_0x254[i] != 0 && getPlayerPos_8023E724(i)->y <= worldBox.i.y) {
                         field_0x238++;

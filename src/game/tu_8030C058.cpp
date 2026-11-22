@@ -310,7 +310,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
         }
         f32 px, py;
         if (i < 4) {
-            if (!fn_8023F264(i)) {
+            if (!isPlayerActive_8023F264(i)) {
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(i);

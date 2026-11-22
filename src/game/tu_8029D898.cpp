@@ -1207,7 +1207,7 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
         s32 blocked = false;
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             for (s32 i = 0; i < 4; i++) {
-                if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true && fn_8023F264(i) == true && fn_80303750(i) == 1 && fn_8022C8EC(i) == 1) {
+                if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true && isPlayerActive_8023F264(i) == true && fn_80303750(i) == 1 && fn_8022C8EC(i) == 1) {
                     blocked = true;
                 }
             }

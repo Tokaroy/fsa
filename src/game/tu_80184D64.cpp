@@ -207,7 +207,7 @@ void ChainChomp_804A18E0::update() {
         }
         if (field_0x240 == 0 && field_0x23c != 0) {
             for (int i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
                     if (diff.squared() < 4096.0f) {
                         findTargetPlayer_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
@@ -311,7 +311,7 @@ void ChainChomp_804A18E0::update() {
     case 7:
         if (field_0x248 == 0 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             for (int i = 0; i < 4; i++) {
-                if (i != field_0x260 && fn_8023F264(i) && !fn_8022F478(i) &&
+                if (i != field_0x260 && isPlayerActive_8023F264(i) && !fn_8022F478(i) &&
                     mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
                     if (diff.squared() < 6400.0f) {
@@ -404,7 +404,7 @@ void ChainChomp_804A18E0::update() {
                 mDir_0x98 = outDir;
             } else if (field_0x258 == 0) {
                 for (int i = 0; i < 4; i++) {
-                    if (i != field_0x260 && fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (i != field_0x260 && isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         field_0x238 = 0;
                         field_0x254 = i;
                     }

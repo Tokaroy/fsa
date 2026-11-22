@@ -1274,7 +1274,7 @@ bool Player_804A6F38::fn_802604CC() {
         ahead += mPos;
         ahead.z = 0.0f;
         for (int i = 0; i < 4; i++) {
-            if (i == mPlayerNo_0x4 || !fn_8023F264(i) || fn_8023EFEC(i) || fn_8023EA28(i) || fn_80233DA4(i)
+            if (i == mPlayerNo_0x4 || !isPlayerActive_8023F264(i) || fn_8023EFEC(i) || fn_8023EA28(i) || fn_80233DA4(i)
                 || fn_80230188(i) || fn_80236AB4(i) || fn_802354E4(i) || fn_8022D894(i)) {
                 continue;
             }

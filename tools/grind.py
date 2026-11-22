@@ -385,7 +385,7 @@ def cmd_queue(_):
 
 def find_def(lines, demangled):
     """(first line, last line) of a function definition in a source file, 0-based, or None.
-    `demangled` is objdiff's name, e.g. `cls_804A4C58::fn_801D95F4()` or `fn_80139994(int, void*)`."""
+    `demangled` is objdiff's name, e.g. `Frostare_804A4C58::fn_801D95F4()` or `fn_80139994(int, void*)`."""
     parts = demangled.split("(")[0].strip().split("::")
     name, cls = parts[-1], (parts[-2].split("<")[0] if len(parts) > 1 else None)
     if not re.match(r"^[~\w]+$", name):

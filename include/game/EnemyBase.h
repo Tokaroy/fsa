@@ -390,7 +390,7 @@ void fn_801CD150(const JGeometry::TVec3f* in, JGeometry::TVec3f* out);
 // game/tu_801CB270.cpp. Spawns an effect on `layer` at *pos; the two s32
 // arguments are the effect's height and depth - 1.
 void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6);
-// game/tu_801CB270.cpp: the player (fn_8023F264) whose fn_80236228 value is
+// game/tu_801CB270.cpp: the player (isPlayerActive_8023F264) whose fn_80236228 value is
 // the lowest, or -1 (none, or the lowest shared). ActorBase's death
 // (die_0x24) compares it with the killer's fn_8022F340.
 s32 fn_801CCDA4();
@@ -425,7 +425,7 @@ bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 fa
 extern "C" {
 
 // game/tu_801CB270.cpp (not written yet; 0x801CCFE4, 0xEC bytes). Whether
-// player `player` is present: fn_8023F264 and none of a list of player
+// player `player` is present: isPlayerActive_8023F264 and none of a list of player
 // state tests (isPlayerDead_80236B50, fn_8022DCD8, ...). Callers test r3 with clrlwi.
 bool fn_801CCFE4(s32 player);
 

@@ -881,7 +881,7 @@ void Wizzrobe_804A0EDC::update() {
                 dist = -1.0f;
                 dir = -1;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
+                    if (isPlayerActive_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                         f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                         f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                         if (-1.0f == dist || dist > sqrtf_80154378(dx * dx + dy * dy)) {

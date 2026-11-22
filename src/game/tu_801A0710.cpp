@@ -802,7 +802,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
             fn_8023B6CC(field_0x278);
             fn_80230FD0(field_0x278, 0x2003F);
             if (field_0x248 < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
-                if (fn_8023F264(field_0x264) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x264) && !fn_80230188(field_0x264)) {
+                if (isPlayerActive_8023F264(field_0x264) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x264) && !fn_80230188(field_0x264)) {
                     u16 angle;
                     findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, NULL, field_0x264, 2);
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {

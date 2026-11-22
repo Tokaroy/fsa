@@ -8,7 +8,7 @@
 MWCC (-inline auto,deferred) inlines header inlines, same-file helpers and macros. Such a helper
 leaves the same instruction block, up to register numbers, in every function that used it. Finding
 those blocks breaks a big function into shared pieces: write the helper once and every function
-that contains the block gets closer. (Player_804A6F38::fn_80248970's 45-instruction loop sits
+that contains the block gets closer. (Player 0x80248970's 45-instruction loop sits
 inlined in about 50 functions of game/tu_8023FBF0, and how that one helper was written decided
 whether its callers match.)
 

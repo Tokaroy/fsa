@@ -180,7 +180,7 @@ void ForceGem2_804AB850::update() {
                 mPos.z = 0.0f;
             }
         }
-        if (fn_8023F264(field_0x260)) {
+        if (isPlayerActive_8023F264(field_0x260)) {
             mPos.x = getPlayerPos_8023E724(field_0x260)->x;
             mPos.y = getPlayerPos_8023E724(field_0x260)->y - 24.0f;
         }

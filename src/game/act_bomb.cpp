@@ -480,7 +480,7 @@ void Bomb_8049F784::update() {
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
+            if (isPlayerActive_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
                 field_0x244 = 5;
                 field_0x240 = 5;
                 field_0x254 = 0;

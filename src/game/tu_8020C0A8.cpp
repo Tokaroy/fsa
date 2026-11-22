@@ -69,7 +69,7 @@ void ZolSmallSlime_804A5F40::fn_8020C6E8() {
     if (mFlags & 0x2000) {
         f32 best = FLT_MAX;
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8023F264(i)) {
+            if (!isPlayerActive_8023F264(i)) {
                 continue;
             }
             if (fn_8022D75C(i)) {

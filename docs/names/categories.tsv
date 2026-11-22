@@ -166,7 +166,7 @@ game/tu_801D3CBC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no a
 game/act_vaati_boss.cpp	enemies	high	EnemyBase subclass (VaatiBoss_804A4958); actors.tsv (actor spawner): boss BOGF Vaati (boss)	auto
 game/tu_801D6CEC.cpp	enemies	med	Vaati's actor-serial table, called by act_vaati_boss	hand
 game/tu_801D7AFC.cpp	enemies	low	EnemyBase subclass (UnknownBGBL_804A4BB0); but actors.tsv (actor spawner): object BGBL unknown (BGBL)	auto
-game/tu_801D8400.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
+game/tu_801D8400.cpp	enemies	med	EnemyBase subclass (Frostare_804A4C58); no actors.tsv kind	auto
 game/tu_801DA7C0.cpp	enemies	med	strings 'boss_koori_*.bti': a boss's textures	hand
 game/tu_801DAC6C.cpp	enemies	low	called only by the ice boss units (tu_801D8400, act_frostare_tail)	hand
 game/tu_801DB18C.cpp	enemies	med	EnemyBase subclass (FrostareChildFrosteye_804A4EE8); actors.tsv (actor spawner): boss ICHL Frostare child (Frosteye?)	auto
@@ -179,7 +179,7 @@ game/act_tingle_buster.cpp	enemies	low	EnemyBase subclass (TingleBuster_804A5370
 game/tu_801E3618.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
 game/tu_801E4A18.cpp	enemies	low	called only by act_vaati_boss	hand
 game/tu_801E4D54.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
-game/tu_801E5FC8.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
+game/tu_801E5FC8.cpp	enemies	med	EnemyBase subclass (Frostare_804A4C58); no actors.tsv kind	auto
 game/tu_801E667C.cpp	enemies	low	called only by act_vaati_boss	hand
 game/tu_801E6D48.cpp	enemies	low	EnemyBase subclass (IronPot_804A5418); but actors.tsv (actor spawner): object IPOT Iron pot	auto
 game/act_fuse_point.cpp	enemies	low	EnemyBase subclass (FusePoint_804A54C0); but actors.tsv (actor spawner): system FSPO Fuse point	auto

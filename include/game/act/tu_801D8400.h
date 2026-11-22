@@ -40,12 +40,12 @@ struct Sequencer_801DAA24 {
 // keeps two pairs of effects (ids 0x25E/0x25F in mEmitter2c[0]/[1], 0x25C/0x25D
 // in mEmitter2c[2]/[3]).
 // Size: 0x340 (li r3, 0x340 before the constructor, 0x801DA504 here).
-class cls_804A4C58 : public EnemyBase_804A4808 {
+class Frostare_804A4C58 : public EnemyBase_804A4808 {
 public:
-    // 0x801DA504 (__ct__12cls_804A4C58Fv, game/tu_801D8400.cpp): EnemyBase's
+    // 0x801DA504 (__ct__17Frostare_804A4C58Fv, game/tu_801D8400.cpp): EnemyBase's
     // constructor, the vtable, the sequencer, the ceiling and the arrays.
-    cls_804A4C58();
-    /* 0x08 */ virtual ~cls_804A4C58();
+    Frostare_804A4C58();
+    /* 0x08 */ virtual ~Frostare_804A4C58();
     /* 0x0C */ virtual void init();   // fn_801DA124
     /* 0x14 */ virtual void update(); // fn_801D8430
     /* 0x20 */ virtual void draw();

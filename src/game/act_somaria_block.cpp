@@ -143,7 +143,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             field_0x244 = 0;
         } else {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) &&
+                if (isPlayerActive_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false))
                 {
                     mState = 4;

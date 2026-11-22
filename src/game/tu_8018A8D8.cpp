@@ -452,7 +452,7 @@ void BigPoe2_804A1E50::fn_8018DC70(s32 mode) {
         return;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023F264(i)) {
+        if (!isPlayerActive_8023F264(i)) {
             continue;
         }
         if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
@@ -529,7 +529,7 @@ bool BigPoe2_804A1E50::fn_8018DA6C() {
         getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 22) & 0x1F) &&
         getGameView_802D6A9C()->isScreenFlagSet_802D800C(mSpawnParam_0x90 >> 27)) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
                 fn_80230188(i) && field_0x29c == 1) {
                 fn_8023061C(i, false);
                 field_0x29c = 0;
@@ -833,7 +833,7 @@ void BigPoe2_804A1E50::update() {
         }
         if (field_0x284 != 255.0f && field_0x244 == 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
+                if (isPlayerActive_8023F264(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
                     !fn_80230188(i)) {
                     f32 dx = field_0x2c4[1].x - getPlayerPos_8023E724(i)->x;
                     f32 dy = field_0x2c4[1].y - getPlayerPos_8023E724(i)->y;
@@ -973,7 +973,7 @@ void BigPoe2_804A1E50::update() {
         // fallthrough
     case 9:
         if (field_0x27a != 0) {
-            if (field_0x254 >= 0 && fn_8023F264(field_0x254) &&
+            if (field_0x254 >= 0 && isPlayerActive_8023F264(field_0x254) &&
                 getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x254)) {
                 mState = 0x12;
                 break;
@@ -999,7 +999,7 @@ void BigPoe2_804A1E50::update() {
         // fallthrough
     case 11:
         if (field_0x27c >= 0) {
-            if (fn_8023F264(field_0x27c) && getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x27c)) {
+            if (isPlayerActive_8023F264(field_0x27c) && getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x27c)) {
                 copyVec_8018E8C0(&field_0x2c4[2], getPlayerPos_8023E724(field_0x27c));
             } else {
                 field_0x27c = -1;
@@ -1130,7 +1130,7 @@ void BigPoe2_804A1E50::update() {
     case 18:
         field_0x2ac.x = 0.0f;
         field_0x2ac.y = 0.0f;
-        if (field_0x254 >= 0 && fn_8023F264(field_0x254) &&
+        if (field_0x254 >= 0 && isPlayerActive_8023F264(field_0x254) &&
             getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x254)) {
             mState = 19;
         } else {
@@ -1138,7 +1138,7 @@ void BigPoe2_804A1E50::update() {
         }
         break;
     case 19:
-        if (field_0x254 >= 0 && fn_8023F264(field_0x254) &&
+        if (field_0x254 >= 0 && isPlayerActive_8023F264(field_0x254) &&
             getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x254)) {
             f32 dx = getPlayerPos_8023E724(field_0x254)->x - mPos.x;
             f32 dy = (getPlayerPos_8023E724(field_0x254)->y - 64.0f) - mPos.y;
@@ -1163,7 +1163,7 @@ void BigPoe2_804A1E50::update() {
         }
         break;
     case 20:
-        if (field_0x254 >= 0 && fn_8023F264(field_0x254) &&
+        if (field_0x254 >= 0 && isPlayerActive_8023F264(field_0x254) &&
             getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x254)) {
             copyVec_8018E8C0(&field_0x2c4[0], getPlayerPos_8023E724(field_0x254));
         }
@@ -1199,7 +1199,7 @@ void BigPoe2_804A1E50::update() {
                 }
                 fn_80230498(field_0x254, &field_0x2c4[0], field_0x258 + 0xAF, 0xFF, -0x80, -0x80, true);
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i) &&
+                    if (isPlayerActive_8023F264(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i) &&
                         hasPlayerLeader_8022F514(i) && field_0x254 == getPlayerLeader_8022F3DC(i)) {
                         copyVec_8018E8C0(&pos38, getPlayerPos_8023E724(i));
                         addCalc2_801F71A4(&pos38.x, pos44.x, 0.1f, 2.0f * field_0x290);
@@ -1255,7 +1255,7 @@ void BigPoe2_804A1E50::update() {
             field_0x32c = NULL;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (i != field_0x254 && fn_8023F264(i) && hasPlayerLeader_8022F514(i) &&
+            if (i != field_0x254 && isPlayerActive_8023F264(i) && hasPlayerLeader_8022F514(i) &&
                 field_0x254 == getPlayerLeader_8022F3DC(i)) {
                 copyVec_8018E8C0(&pos38, getPlayerPos_8023E724(i));
                 addCalc2_801F71A4(&pos38.x, field_0x2c4[0].x, 0.1f, 2.0f * field_0x290);
@@ -1285,7 +1285,7 @@ void BigPoe2_804A1E50::update() {
         mPos.z = 0.0f;
         damagePlayersInBox_801F2B7C(getParamAtcp_80154510(), -1, 6);
         copyVec_8018E8C0(&mPos, &pos44);
-        if (field_0x254 >= 0 && fn_8023F264(field_0x254) && lbl_80539FCC == field_0x254) {
+        if (field_0x254 >= 0 && isPlayerActive_8023F264(field_0x254) && lbl_80539FCC == field_0x254) {
             if (!fn_80230188(field_0x254)) {
                 field_0x2ac.x = 2.0f * fn_8022C82C(field_0x254);
                 field_0x2ac.y = -2.0f * fn_8022C76C(field_0x254);
@@ -1371,7 +1371,7 @@ void BigPoe2_804A1E50::update() {
             mVel_0x3c.z = 3.0f;
             startSound_801F0E34(0x50086, 0);
         }
-        if (lbl_80539FCC >= 0 && fn_8023F264(lbl_80539FCC)) {
+        if (lbl_80539FCC >= 0 && isPlayerActive_8023F264(lbl_80539FCC)) {
             findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, &outDist, NULL, lbl_80539FCC, 2);
             if (r28 == 1 || outDist > 80.0f) {
                 field_0x2ac.x = 0.0f;

@@ -170,7 +170,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D958() {
         gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
         s32 layer;  // Declared outside the loop: matches the original's register allocation.
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 layer = mLayer_0x4;
                 if (layer == getPlayerLayer_8023DE58(i)) {
                     spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(i), 0x424, 1, 4, NULL, NULL, true, 1.0f);

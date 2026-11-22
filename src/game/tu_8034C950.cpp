@@ -135,7 +135,7 @@ void TwoPersonLiftableRock_804AC950::update() {
         field_0x244[3] = 0;
         field_0x388 = -1;
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8023F264(i)) {
+            if (!isPlayerActive_8023F264(i)) {
                 continue;
             }
             const JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);

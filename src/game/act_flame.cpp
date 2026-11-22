@@ -316,7 +316,7 @@ void Flame_804A0330::fn_8015DF7C() {
             fn_801F2B20(5);
             if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9)) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) != 8) {
+                    if (isPlayerActive_8023F264(i) && getPlayerLayer_8023DE58(i) != 8) {
                         JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                         JGeometry::TVec2f d(ppos->x, ppos->y);
                         d.x -= mPos.x;

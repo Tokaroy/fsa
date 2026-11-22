@@ -329,7 +329,7 @@ void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
 
 bool fn_801CCFE4(s32 player) {
     bool result = false;
-    if (fn_8023F264(player)) {
+    if (isPlayerActive_8023F264(player)) {
         if (!isPlayerDead_80236B50(player) && !fn_8022DCD8(player) && !fn_80234C5C(player) && !fn_8023EA28(player) &&
             !fn_80230188(player) && !fn_8022D534(player) && !fn_802349EC(player)) {
             switch (fn_8022CAF8(player)) {
@@ -373,7 +373,7 @@ s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer) {
     s32 best = -1;
     f32 bestDist = FLT_MAX;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && layer == getPlayerLayer_8023DE58(i) && !hasPlayerLeader_8022F514(i)) {
+        if (isPlayerActive_8023F264(i) && layer == getPlayerLayer_8023DE58(i) && !hasPlayerLeader_8022F514(i)) {
             f32 d = square(getPlayerPos_8023E724(i)->x - pos->x) +
                     square(getPlayerPos_8023E724(i)->y - pos->y);
             if (d < bestDist) {
@@ -385,7 +385,7 @@ s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer) {
     return best;
 }
 
-// The player (fn_8023F264) whose fn_80236228 value is the lowest, or -1 when
+// The player (isPlayerActive_8023F264) whose fn_80236228 value is the lowest, or -1 when
 // none qualifies or the lowest is shared.
 s32 fn_801CCDA4() {
     // Declared in this order for the original's register assignment.
@@ -394,7 +394,7 @@ s32 fn_801CCDA4() {
     s32 lowest = tie;
     s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     for (s32 i = 0; i < count; i++) {
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             s32 value = fn_80236228(i);
             if (value < lowest) {
                 lowest = value;

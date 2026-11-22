@@ -721,7 +721,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) SlingshotSeed_804AB3A8;
             break;
         case 'BOIC':
-            mActors[i] = new (mHeap, 0) cls_804A4C58;
+            mActors[i] = new (mHeap, 0) Frostare_804A4C58;
             break;
         case ACTOR_BMTY:
             mActors[i] = new (mHeap, 0) Bombchu_804AB464;

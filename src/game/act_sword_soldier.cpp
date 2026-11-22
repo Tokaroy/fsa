@@ -1540,7 +1540,7 @@ void SwordSoldier_8049FCA0::update() {
 
     case 17:
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
+            if (isPlayerActive_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
                 getLayer_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022D534(i)) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;

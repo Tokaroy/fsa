@@ -130,7 +130,7 @@ void BlizzardBattle_8049E7F0::update() {
     case 2:
         startSound_801F0E34(0x30032, 0);
         for (s32 i = 0; i < 4; i++) {
-            if (mLayer_0x4 != getPlayerLayer_8023DE58(i) || !fn_8023F264(i) || fn_80230188(i) || fn_8022F478(i) ||
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(i) || !isPlayerActive_8023F264(i) || fn_80230188(i) || fn_8022F478(i) ||
                 fn_80236D14(i))
             {
                 continue;

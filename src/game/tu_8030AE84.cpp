@@ -118,7 +118,7 @@ void cls_804AA8D8::fn_8030B97C() {
 // Remaining difference: instruction scheduling of the d.set() operands only.
 // FIXME: 96.12 %, scheduling+regalloc; behaviour clean.
 void cls_804AA8D8::fn_8030B774() {
-    if (!fn_8023F264(field_0x288)) {
+    if (!isPlayerActive_8023F264(field_0x288)) {
         return;
     }
     if (field_0x28c != getPlayerLayer_8023DE58(field_0x288)) {
@@ -284,7 +284,7 @@ s32* cls_804AA8D8::fn_8030B1E8(u8 layer, u8 mode, u16 scroll) {
 }
 
 bool cls_804AA8D8::fn_8030B110(s32 index, JGeometry::TVec3f pos) {
-    if (!fn_8023F264(field_0x288) || index != field_0x28c) {
+    if (!isPlayerActive_8023F264(field_0x288) || index != field_0x28c) {
         return false;
     }
     if (index < 8) {

@@ -250,7 +250,7 @@ void CrystalBall_804AB308::fn_80322BC4() {
     } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
         s32 base = fn_80236228(field_0x23c);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) == 1 && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
+            if (isPlayerActive_8023F264(i) == 1 && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
                 base < fn_80236228(i)) {
                 rank++;
             }
@@ -258,7 +258,7 @@ void CrystalBall_804AB308::fn_80322BC4() {
     } else {
         s32 base = getPlayerLife_80237774(field_0x23c);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
+            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
                 base < getPlayerLife_80237774(i)) {
                 rank++;
             }

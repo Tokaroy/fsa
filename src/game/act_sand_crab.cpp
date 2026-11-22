@@ -75,7 +75,7 @@ void SandCrab_8049F3B0::update() {
             field_0x230 = 0;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
                 FABS(getPlayerPos_8023E724(i)->x - mPos.x) < 200.0f &&
                 FABS(getPlayerPos_8023E724(i)->y - mPos.y) < 40.0f) {
                 JGeometry::TVec3f outPos;

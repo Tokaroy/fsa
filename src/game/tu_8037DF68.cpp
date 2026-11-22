@@ -745,7 +745,7 @@ static inline void removeFromOrder(s32 index) {
 }
 
 // Lets the players go once the window closes: at once with option 8 or 0x80; with field_0x7e
-// == 1 through fn_8023061C, else fn_80230224 for every player fn_8023F264 holds for.
+// == 1 through fn_8023061C, else fn_80230224 for every player isPlayerActive_8023F264 holds for.
 static inline bool releasePlayers(s32 player) {
     s32 index = windowIndex(player);
     u16 opt = lbl_8053AD78->mWindows[index]->field_0x28;
@@ -758,7 +758,7 @@ static inline bool releasePlayers(s32 player) {
     s32 list[4];
     for (s32 i = 0; i < 4; i++) {
         list[i] = -1;
-        if (fn_8023F264(i) == 1) {
+        if (isPlayerActive_8023F264(i) == 1) {
             list[i] = i;
         }
     }
@@ -2257,7 +2257,7 @@ bool fn_8037EC98(s32 player, u16 flags) {
     s32 ready = 0;
     for (s32 i = 0; i < 4; i++) {
         players[i] = -1;
-        if (fn_8023F264(i) == true) {
+        if (isPlayerActive_8023F264(i) == true) {
             players[i] = i;
             count++;
         }

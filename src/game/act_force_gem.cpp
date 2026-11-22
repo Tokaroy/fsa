@@ -391,7 +391,7 @@ void ForceGem_804AB6D8::update() {
             mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         }
         if (field_0x282 == 0 && field_0x264 >= 0) {
-            if (fn_8023F264(field_0x264)) {
+            if (isPlayerActive_8023F264(field_0x264)) {
                 mPos.x = getPlayerPos_8023E724(field_0x264)->x;
                 mPos.y = getPlayerPos_8023E724(field_0x264)->y - 24.0f;
                 mPos.z = getPlayerPos_8023E724(field_0x264)->z;

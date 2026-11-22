@@ -180,7 +180,7 @@ void Stalfos_804A0CD8::update() {
 
     if ((mSpawnParam_0x90 == 1 || mSpawnParam_0x90 == 2) && field_0x230 == 1 && dist < 50.0f) {
         for (int i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
                 !fn_80230188(i) && getPlayerLayer_8023DE58(i) != 8 && fn_8022C3AC(i)) {
                 field_0x230 = 3;
                 break;

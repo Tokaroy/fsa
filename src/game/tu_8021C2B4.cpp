@@ -12,7 +12,7 @@ FlyingPiece_8021C5B0::FlyingPiece_8021C5B0()
 void FlyingPieces_8021C2B4::fn_8021C468() {
     for (int i = 0; i < 4; i++) {
         FlyingPiece_8021C5B0* piece = &mPieces[i];
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             JGeometry::TVec2f target;
             if (getShadowLinkFight_801C0D70()->fn_801C0FEC(getPlayerPos_8023E724(i), &target)) {
                 piece->mActive = true;

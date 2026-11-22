@@ -112,7 +112,7 @@ and nine units' `.data` and act_deadrock's `.rodata` go to 100 %. The only losse
 are the 4 THP functions in tu_80427D2C (see open items). The same build plus one
 `auto_inline off` region in tu_802684A4 recovers fn_8026E68C. On tu_8022AD64 it
 turns the three recursive leader queries from 99.95 % to 100 % (they now call
-fn_8023F264 at the depth limit, as the original does). It also makes the 17
+isPlayerActive_8023F264 at the depth limit, as the original does). It also makes the 17
 "inline later-defined" functions there writable as plain functions.
 
 Adopting it is an **owner decision**: a project-wide flag change, a mechanical
@@ -130,7 +130,7 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 |---|---|---|---|---|
 | tu_8022AD64 | fn_8022B334, fn_8022CFE8, fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50, updateScreenChange_80231DE4, fn_80237A80, hitPlayerGroup_80238548, fn_8023885C, fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (16, unwritten) | L | hasPlayerLeader_8022F514, fn_8023561C, getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_8023ED8C, fn_8023EA28, fn_80238A68 (35-87 instr) | progress/game__tu_8022AD64.md r11 |
 | tu_8022AD64 | fn_80232A0C (unwritten, 52.8 % draft) | E | fn_8022D75C, hasPlayerLeader_8022F514, getPlayerLeader_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C out of line; header inlines normalize / operator- / TBox2::set out of line too | r12 |
-| tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to fn_8023F264 / fn_8018A614 | r11 |
+| tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to isPlayerActive_8023F264 / fn_8018A614 | r11 |
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
 | tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
@@ -222,7 +222,7 @@ taken):
   int H(int) {…}`) under `-inline auto`: the earlier call stays out of line and
   the copy sits at H's source position.
 
-Consequence for (c): fn_8023F264 sits at its own source position between strong
+Consequence for (c): isPlayerActive_8023F264 sits at its own source position between strong
 functions (fn_8023F1D4, fn_8023F2BC). It is not right after its first
 out-of-line referencer (getRepresentativePlayer_8022EA0C). So it is **not** a header inline's weak copy.
 It is a plain function, and earlier functions inline it. Under `-inline auto` that
@@ -302,9 +302,9 @@ Sections, deferred model vs base (game units):
 ### 6. Real-function checks on tu_8022AD64 and tu_8026FC20 (deferred, reversed)
 
 - tu_8022AD64: replace the header inline `isPlayerActive` with the plain function
-  `fn_8023F264` (its body at its own address, every call site calling
-  `fn_8023F264`). Result: 349 → **352**/373. fn_8023434C, fn_8023BEA8 and
-  fn_8023C36C reach 100 % (their depth-limit call is now `bl fn_8023F264`), and
+  `isPlayerActive_8023F264` (its body at its own address, every call site calling
+  `isPlayerActive_8023F264`). Result: 349 → **352**/373. fn_8023434C, fn_8023BEA8 and
+  fn_8023C36C reach 100 % (their depth-limit call is now `bl isPlayerActive_8023F264`), and
   nothing is lost. Patch: scratchpad `inl/tu_8022AD64_deferred.diff`.
 - tu_8026FC20: delete the `isDown()` workaround inline, give isDeadState_80270A8C the body
   and call isDeadState_80270A8C everywhere. Still 97/120. The workaround is not needed
@@ -314,8 +314,8 @@ Sections, deferred model vs base (game units):
 
 | Hypothesis | Verdict |
 |---|---|
-| H1. Callees inlined "before their definition" are header / file inlines (current workaround) | Covers (a) mechanically, but **fails (c)**: a header inline's out-of-line copy is placed after its first out-of-line referencer, never at its own address between strong functions, and a wrapper's depth-limit call would target the inline's symbol, not fn_8023F264. Cannot give the `.data` order. |
-| H2. Unit is a concatenation of two source files | Not needed, and contradicted for tu_8022AD64: fn_8023434C (early) inlines fn_8023F264 (late) at two levels and calls it at the third. That needs the body in the same TU. Under H1-style headers the copy would sit elsewhere. |
+| H1. Callees inlined "before their definition" are header / file inlines (current workaround) | Covers (a) mechanically, but **fails (c)**: a header inline's out-of-line copy is placed after its first out-of-line referencer, never at its own address between strong functions, and a wrapper's depth-limit call would target the inline's symbol, not isPlayerActive_8023F264. Cannot give the `.data` order. |
+| H2. Unit is a concatenation of two source files | Not needed, and contradicted for tu_8022AD64: fn_8023434C (early) inlines isPlayerActive_8023F264 (late) at two levels and calls it at the third. That needs the body in the same TU. Under H1-style headers the copy would sit elsewhere. |
 | H3. Per-function `#pragma dont_inline` around callers (b) | Works under `-inline auto`, but is **impossible under deferred** (the state is read at end of file), and the deferred evidence (c), (D) is strong. Under deferred, (b) comes from the callee's `auto_inline` state or the caller's budget. |
 | H4. A different global size threshold (`inline_max_size`) | Rejected: kills header inlines (§4); 4-instruction callees stay out of line in the original. |
 | H5. A different global `inline_max_total_size` | Rejected under `-inline auto` (§1, -3..-46 functions). Under deferred the **default** budget already reproduces fn_80232A0C. |
@@ -341,7 +341,7 @@ original wrote those callees in a different way, are still needed in a few place
    with its real body. Callers inline it in either direction. Drop the
    "file inline + out-of-line wrapper" and "static inline copy" workarounds as
    units are touched: isDown / isDeadState_80270A8C, follows_80240670, playerFlags_802413F0,
-   tu_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → fn_8023F264.
+   tu_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → isPlayerActive_8023F264.
    Header `inline` stays for real header inlines (JGeometry, accessors used across
    units whose copy is placed after a caller).
 4. **Never-inlined callees**: when the original calls a small same-unit function

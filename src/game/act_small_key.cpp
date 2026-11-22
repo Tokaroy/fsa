@@ -479,7 +479,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     JGeometry::TBox2f box = mBox;
     box.addPos(mPos.x, mPos.y);
     for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023F264(i) || !fn_80239C00(i, &box, mLayer_0x4)) {
+        if (!isPlayerActive_8023F264(i) || !fn_80239C00(i, &box, mLayer_0x4)) {
             continue;
         }
         s32 kind = field_0x280;
@@ -887,7 +887,7 @@ bool SmallKey_804A8CD8::dropAtPlayer() {
         return true;
     }
     mPos.z = 400.0f;
-    if (!fn_8023F264(field_0x23c)) {
+    if (!isPlayerActive_8023F264(field_0x23c)) {
         return false;
     }
     if (fn_8022D75C(field_0x23c) == true) {

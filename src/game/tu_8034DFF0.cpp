@@ -46,7 +46,7 @@ void FourPersonSwitch_804AC9A8::update() {
     case 0: {
         for (s32 i = 0; i < 4; i++) {
             field_0x250[i] = field_0x24c[i];
-            if (fn_8023F264(i) && !fn_8023EA28(i)) {
+            if (isPlayerActive_8023F264(i) && !fn_8023EA28(i)) {
                 field_0x24c[i] = fn_8023B0F4(i, &box, mLayer_0x4, false, 4.0f);
                 if (field_0x24c[i] == 1) {
                     count++;
@@ -105,7 +105,7 @@ void FourPersonSwitch_804AC9A8::update() {
             setScreenFlag_0x30(0xFF, false);
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && !fn_8023EA28(i)) {
+            if (isPlayerActive_8023F264(i) && !fn_8023EA28(i)) {
                 JGeometry::TVec3f v(0.0f, 0.0f, 0.0f);
                 if (field_0x24c[i] == 1) {
                     v.y = lbl_804721C8[field_0x238];

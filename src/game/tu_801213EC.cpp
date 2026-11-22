@@ -231,7 +231,7 @@ s32 EscortBase_8049E0C8::vfunc_0x78() const {
         if (fn_80230188(fn_8012285C())) {
             return 0;
         }
-        if (!fn_8023F264(fn_8012285C())) {
+        if (!isPlayerActive_8023F264(fn_8012285C())) {
             return 0;
         }
     }

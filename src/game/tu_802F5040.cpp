@@ -318,7 +318,7 @@ void TileMap_804AA858::fn_802FF568() {
     field_0xe461 = 1;
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 // tu_80441A1C reads these 2-bit per-player fields the same way.
                 u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
                 if (mode == 2) {

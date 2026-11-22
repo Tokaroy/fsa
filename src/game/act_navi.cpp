@@ -257,7 +257,7 @@ void Navi_804A6708::setState_8021DFAC(s32 newState) {
         fn_801F3604();
         if (mFlags & 0x2000) {
             for (p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
+                if (isPlayerActive_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     for (s32 j = 0; j < 4; j++) {
                         spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8046A78C[p][j], 0, 0, NULL, NULL, true, 1.0f);
@@ -270,7 +270,7 @@ void Navi_804A6708::setState_8021DFAC(s32 newState) {
     case 2:
         if (mFlags & 0x2000) {
             for (p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
+                if (isPlayerActive_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     fn_80230498(p, &pos, getPlayerFacing_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
                 }
@@ -316,7 +316,7 @@ void Navi_804A6708::setState_8021DFAC(s32 newState) {
     case 6:
         if (mFlags & 0x2000) {
             for (p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
+                if (isPlayerActive_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     s32 v;
                     if (mFlags & 0x4000) {
                         v = 3;

@@ -1202,7 +1202,7 @@ void Player_804A6F38::fn_80286E10() {
     if (fn_80234E30(player)) {
         return;
     }
-    if (fn_80248970() < 2) {
+    if (getGroupSize_80248970() < 2) {
         return;
     }
     if (field_0x121e) {
@@ -1216,7 +1216,7 @@ void Player_804A6F38::fn_80286E10() {
         partner = getRepresentativePlayer_8022EA0C(getIndex());
         do {
             mGroupTurn_0x1224++;
-            if (mGroupTurn_0x1224 >= fn_80248970()) {
+            if (mGroupTurn_0x1224 >= getGroupSize_80248970()) {
                 mGroupTurn_0x1224 = 0;
             }
             other = getRepresentativePlayer_8022EA0C(getIndex());

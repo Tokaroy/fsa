@@ -118,7 +118,7 @@ void SpiralStaircase_804A7A68::update() {
         }
         s32 inside = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 if (!fn_802300EC(i)) {
                     return;
                 }
@@ -155,7 +155,7 @@ void SpiralStaircase_804A7A68::update() {
         s32 order[4];
         fn_8028DDD8(order);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(order[i])) {
+            if (isPlayerActive_8023F264(order[i])) {
                 lbl_8053AD70->fn_8037AE00();
                 fn_80230AD4(order[i]);
                 JGeometry::TVec3f p;
@@ -208,7 +208,7 @@ void SpiralStaircase_804A7A68::update() {
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 JGeometry::TVec3f start = *getPlayerPos_8023E724(i);
                 JGeometry::TVec3f pos = start;
                 JGeometry::TVec3f ahead;
@@ -348,7 +348,7 @@ void SpiralStaircase_804A7A68::update() {
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
@@ -403,7 +403,7 @@ void SpiralStaircase_804A7A68::update() {
     case 4:
         fn_80231368();
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
                 case 1:
