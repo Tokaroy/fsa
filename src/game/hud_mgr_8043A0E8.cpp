@@ -102,7 +102,6 @@ void fn_804408F0(JGeometry::TVec3f* pos) {
     lbl_8053AED0->fn_8043E7CC(*pos);
 }
 
-// Differs only in the two setFont calls: the original loads lbl_8053AD78->mFont before the search.
 // FIXME: 98.97 %, missing/extra; behaviour clean.
 HudMgr_804B1920::HudMgr_804B1920() {
     lbl_8053AED0 = this;
@@ -178,8 +177,10 @@ HudMgr_804B1920::HudMgr_804B1920() {
     field_0xf4 = 0.0f;
     field_0xf8 = 0.0f;
     field_0x10d = 0;
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(lbl_8053AD78->mFont);
+    JUTResFont* font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(font);
+    font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(font);
 
     for (s32 i = 0; i < 12; i++) {
         field_0x40[i] = new PaneCtrl_804AF86C;
