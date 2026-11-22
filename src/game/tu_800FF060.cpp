@@ -48,9 +48,9 @@ void HammerShopMinigame_8049C858::fn_801003F4() {
             getGameView_802D6A9C()->fn_802D7844(0, i);
         }
     }
-    for (rank = 0; rank != count; rank++) {
-        s32 best = -1;
+    while (rank != count) {
         s32 bestScore = 1000000;
+        s32 best = -1;
         for (s32 i = 0; i < count; i++) {
             if (bestScore > field_0x250[i] && used[i] == 0) {
                 bestScore = field_0x250[i];
@@ -59,6 +59,7 @@ void HammerShopMinigame_8049C858::fn_801003F4() {
         }
         field_0x264[rank] = best;
         used[best] = 1;
+        rank++;
     }
     field_0x274 = 0;
     if (field_0x250[field_0x264[0]] == field_0x250[field_0x264[1]]) {
@@ -78,6 +79,24 @@ void HammerShopMinigame_8049C858::fn_801003F4() {
             } else {
                 field_0x280 = 3;
             }
+        }
+    }
+}
+
+inline void HammerShopMinigame_8049C858::facePlayer_inline() {
+    JGeometry::TVec3f dir;
+    f32 dist;
+    fn_801EE558(&dir, &dist, field_0x240 + 1);
+    if (dist < 100.0f) {
+        u32 angle = (u16)(s32)(10430.378f * JMath::atanTable_.atan2_(-dir.x, -dir.y));
+        if (!(angle >= 0x2000 && angle < 0xE000)) {
+            field_0x235 = 3;
+        } else if (angle >= 0x2000 && angle < 0x6000) {
+            field_0x235 = 1;
+        } else if (angle >= 0x6000 && angle <= 0xA000) {
+            field_0x235 = 2;
+        } else {
+            field_0x235 = 0;
         }
     }
 }
@@ -111,21 +130,7 @@ void HammerShopMinigame_8049C858::update() {
                     fn_802308E0(i);
                 }
                 field_0x230 = 1;
-                JGeometry::TVec3f dir;
-                f32 dist;
-                fn_801EE558(&dir, &dist, field_0x240 + 1);
-                if (dist < 100.0f) {
-                    u32 angle = (u16)(s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
-                    if (!(angle >= 0x2000 && angle < 0xE000)) {
-                        field_0x235 = 3;
-                    } else if (angle >= 0x2000 && angle < 0x6000) {
-                        field_0x235 = 1;
-                    } else if (angle >= 0x6000 && angle <= 0xA000) {
-                        field_0x235 = 2;
-                    } else {
-                        field_0x235 = 0;
-                    }
-                }
+                facePlayer_inline();
             }
         }
         break;
@@ -363,21 +368,7 @@ void HammerShopMinigame_8049C858::update() {
         if (field_0x240 >= 0 && fn_8038AD24(field_0x240, 0x370, mSerial, field_0x4, msgPos, 0)) {
             field_0x230 = 9;
             field_0x248 = 0;
-            JGeometry::TVec3f dir;
-            f32 dist;
-            fn_801EE558(&dir, &dist, field_0x240 + 1);
-            if (dist < 100.0f) {
-                u32 angle = (u16)(s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
-                if (!(angle >= 0x2000 && angle < 0xE000)) {
-                    field_0x235 = 3;
-                } else if (angle >= 0x2000 && angle < 0x6000) {
-                    field_0x235 = 1;
-                } else if (angle >= 0x6000 && angle <= 0xA000) {
-                    field_0x235 = 2;
-                } else {
-                    field_0x235 = 0;
-                }
-            }
+            facePlayer_inline();
         }
         break;
     case 9:
