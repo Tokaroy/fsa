@@ -184,13 +184,13 @@ void cls_8049DA0C::update() {
         }
         if (fn_8011921C()->field_0x8 > 60) {
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (camera->field_0x840 == 0) {
-                camera->field_0x840 = 1;
-                camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
-                camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
-                camera->field_0x854 = 1.0f;
-                camera->field_0x1d4 = -1.0f;
-                camera->field_0x1d8 = -1.0f;
+            if (camera->mBlendBoxOn_0x840 == 0) {
+                camera->mBlendBoxOn_0x840 = 1;
+                camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = mPos.x;
+                camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = mPos.y;
+                camera->mBlendWeight_0x854 = 1.0f;
+                camera->mMargin_0x1d4 = -1.0f;
+                camera->mMinHalfWidth_0x1d8 = -1.0f;
             }
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }
@@ -495,13 +495,13 @@ void cls_8049DA0C::fn_80116E8C() {
         pos.y += field_0x240;
         fn_801CD950(&field_0x240, mPos.y + 32.0f, 0.5f);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.i.x = camera->field_0x844.f.x = pos.x;
-            camera->field_0x844.i.y = camera->field_0x844.f.y = pos.y;
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
+        if (camera->mBlendBoxOn_0x840 == 0) {
+            camera->mBlendBoxOn_0x840 = 1;
+            camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos.x;
+            camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos.y;
+            camera->mBlendWeight_0x854 = 1.0f;
+            camera->mMargin_0x1d4 = -1.0f;
+            camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
         break;
     }
@@ -510,25 +510,25 @@ void cls_8049DA0C::fn_80116E8C() {
         JGeometry::TVec3f pos = mPos;
         pos.y += field_0x240;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.i.x = camera->field_0x844.f.x = pos.x;
-            camera->field_0x844.i.y = camera->field_0x844.f.y = pos.y;
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
+        if (camera->mBlendBoxOn_0x840 == 0) {
+            camera->mBlendBoxOn_0x840 = 1;
+            camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos.x;
+            camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos.y;
+            camera->mBlendWeight_0x854 = 1.0f;
+            camera->mMargin_0x1d4 = -1.0f;
+            camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
         break;
     }
     default: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
-            camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
+        if (camera->mBlendBoxOn_0x840 == 0) {
+            camera->mBlendBoxOn_0x840 = 1;
+            camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = mPos.x;
+            camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = mPos.y;
+            camera->mBlendWeight_0x854 = 1.0f;
+            camera->mMargin_0x1d4 = -1.0f;
+            camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         break;

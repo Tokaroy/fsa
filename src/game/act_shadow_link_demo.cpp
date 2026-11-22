@@ -490,14 +490,14 @@ void cls_8049DB90::hopDown() {
 // Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
 static inline void setCameraBox(cls_8049DB90* self) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x7f5 == 0) {
-        cam->field_0x7f4 = 1;
-        cam->field_0x7f8 = 5;
-        cam->field_0x808.i.x = self->field_0x250;
-        cam->field_0x808.i.y = self->field_0x254;
-        cam->field_0x808.f.x = self->field_0x258;
-        cam->field_0x808.f.y = self->field_0x25c;
-        cam->field_0x7f6 = 0;
+    if (cam->mShowWholeArea_0x7f5 == 0) {
+        cam->mFocusOverride_0x7f4 = 1;
+        cam->mFocusMode_0x7f8 = 5;
+        cam->mFocusBox_0x808.i.x = self->field_0x250;
+        cam->mFocusBox_0x808.i.y = self->field_0x254;
+        cam->mFocusBox_0x808.f.x = self->field_0x258;
+        cam->mFocusBox_0x808.f.y = self->field_0x25c;
+        cam->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -555,11 +555,11 @@ void cls_8049DB90::fn_8011B3F0() {
     }
     case 8: {
         Camera_804AA9E4* c = gGameRoot2_8053AB10->field_0x24;
-        if (c->field_0x7f5 == 0) {
-            c->field_0x7f4 = 1;
-            c->field_0x7f8 = 4;
-            c->field_0x7fc.set(mPos);
-            c->field_0x7f6 = 0;
+        if (c->mShowWholeArea_0x7f5 == 0) {
+            c->mFocusOverride_0x7f4 = 1;
+            c->mFocusMode_0x7f8 = 4;
+            c->mFocusPos_0x7fc.set(mPos);
+            c->mOverrideBlend_0x7f6 = 0;
         }
         break;
     }
@@ -567,13 +567,13 @@ void cls_8049DB90::fn_8011B3F0() {
     case 10:
     case 11: {
         Camera_804AA9E4* c = gGameRoot2_8053AB10->field_0x24;
-        if (c->field_0x840 == 0) {
-            c->field_0x840 = 1;
-            c->field_0x844.i.x = c->field_0x844.f.x = mPos.x;
-            c->field_0x844.i.y = c->field_0x844.f.y = mPos.y;
-            c->field_0x854 = 1.0f;
-            c->field_0x1d4 = -1.0f;
-            c->field_0x1d8 = -1.0f;
+        if (c->mBlendBoxOn_0x840 == 0) {
+            c->mBlendBoxOn_0x840 = 1;
+            c->mBlendBox_0x844.i.x = c->mBlendBox_0x844.f.x = mPos.x;
+            c->mBlendBox_0x844.i.y = c->mBlendBox_0x844.f.y = mPos.y;
+            c->mBlendWeight_0x854 = 1.0f;
+            c->mMargin_0x1d4 = -1.0f;
+            c->mMinHalfWidth_0x1d8 = -1.0f;
         }
         break;
     }

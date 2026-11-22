@@ -20,10 +20,10 @@ extern u8 lbl_8053ABE8;
 static inline void takeCamera() {
     s32 player = fn_8022EA0C(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = player;
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = player;
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -100,8 +100,8 @@ void cls_804A39DC::update() {
             field_0x260 = field_0x25c;
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-                mPos.x = -camera->field_0x4[0][3];
-                mPos.y = -camera->field_0x4[1][3];
+                mPos.x = -camera->mViewMtx_0x4[0][3];
+                mPos.y = -camera->mViewMtx_0x4[1][3];
                 mPos.z = 0.0f;
                 for (s32 i = 0; i < 4; i++) {
                     spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(i), 0x3AE, 1, 1, NULL, NULL,

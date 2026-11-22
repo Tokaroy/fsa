@@ -85,13 +85,13 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         f32 y = mPos.y - mPos.z;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = mPos.x;
-            camera->field_0x7fc.y = y;
-            camera->field_0x7fc.z = 0.0f;
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.x = mPos.x;
+            camera->mFocusPos_0x7fc.y = y;
+            camera->mFocusPos_0x7fc.z = 0.0f;
+            camera->mOverrideBlend_0x7f6 = 0;
         }
     }
 

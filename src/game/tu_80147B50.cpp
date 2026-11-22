@@ -531,13 +531,13 @@ void cls_8049F6C8::update() {
     }
     case 2: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = mPos.x;
-            camera->field_0x7fc.y = mPos.y;
-            camera->field_0x7fc.z = mPos.z;
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.x = mPos.x;
+            camera->mFocusPos_0x7fc.y = mPos.y;
+            camera->mFocusPos_0x7fc.z = mPos.z;
+            camera->mOverrideBlend_0x7f6 = 0;
         }
         cls_804A03A8* obj = gGameRoot2_8053AB10->field_0x30;
         if (obj->field_0x284 == 0) {

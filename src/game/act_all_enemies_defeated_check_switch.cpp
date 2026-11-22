@@ -125,7 +125,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
         switch (field_0x234) {
         case 0:
         case 1:
-            if (getActorManager_801F856C()->field_0x305c == 1) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
                 if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
                     setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 0) {

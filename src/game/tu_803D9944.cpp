@@ -116,7 +116,7 @@ void cls_804B0478::update() {
         }
         break;
     case 1: {
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         for (s32 i = 0; i < 4; i++) {
             addCalc2_801F71A4(&field_0x260[i].y, getPlayerPos_8023E724(i)->y, 0.3f, 1.0f);
         }
@@ -146,7 +146,7 @@ void cls_804B0478::update() {
         break;
     }
     case 2:
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         if (fn_80388CAC(field_0x244, mSerial)) {
             if (gGameRoot_8053AAF8->fn_80138A30() == 1) {
                 startSound_801F0E34(0x5006c, 0);
@@ -165,7 +165,7 @@ void cls_804B0478::update() {
         }
         break;
     case 3:
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         if (field_0x23c == 30 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
             startSound_801F0E34(0x5006c, 0);
         }
@@ -190,7 +190,7 @@ void cls_804B0478::update() {
         }
         break;
     case 4:
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         if (field_0x238 == 0) {
             lbl_8053AEC8->field_0x59 = field_0x250;
             field_0x250 = 0xff;

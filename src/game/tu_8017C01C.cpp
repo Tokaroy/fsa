@@ -81,18 +81,18 @@ u8 fn_8017ECC0() {
 
 // FIXME: 93.55 %, missing/extra + reloc-name; behaviour clean.
 // The original stores the box corners in the order f.x, i.x, f.y, i.y (ours
-// i.x, i.y, f.x, f.y) and keeps the constant 1 of field_0x840 in the result's register.
+// i.x, i.y, f.x, f.y) and keeps the constant 1 of mBlendBoxOn_0x840 in the result's register.
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
+    if (camera->mBlendBoxOn_0x840 == 0) {
         result = 1;
-        camera->field_0x840 = 1;
-        camera->field_0x844.set(pos->x, pos->y, pos->x, pos->y);
-        camera->field_0x854 = value;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBox_0x844.set(pos->x, pos->y, pos->x, pos->y);
+        camera->mBlendWeight_0x854 = value;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
     return result;
 }
@@ -127,17 +127,17 @@ bool fn_8017EB94(const JGeometry::TBox2f* box) {
 
 // FIXME: 83.75 %, missing/extra; behaviour clean.
 // The original keeps the constant 1 (stb 0x7f4) in r4 and copies it to the result
-// (mr r5, r4), and stores the 0 for field_0x7f6 from the result's zero register; ours loads
+// (mr r5, r4), and stores the 0 for mOverrideBlend_0x7f6 from the result's zero register; ours loads
 // separate constants.
 // Starts a scripted camera move (mode 4) to pos unless one is already set.
 u8 fn_8017EB44(const JGeometry::TVec3f* pos) {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 4;
-        camera->field_0x7fc.set(*pos);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 4;
+        camera->mFocusPos_0x7fc.set(*pos);
+        camera->mOverrideBlend_0x7f6 = 0;
         result = 1;
     }
     return result;

@@ -149,13 +149,13 @@ cls_8030029C::cls_8030029C() {}
 TileMap_804AA858::TileMap_804AA858(JKRHeap* heap) {
     heap->getTotalFreeSize();
     for (s32 i = 0; i < 2; i++) {
-        field_0x4[i] = new (heap, 0x20) u8[0x8000];
+        mTileImages_0x4[i] = new (heap, 0x20) u8[0x8000];
     }
     for (s32 i = 0; i < 3; i++) {
-        field_0xc[i] = new (heap, 0x20) u8[0x200];
-        field_0x18[i] = new (heap, 0x20) u8[0x200];
+        mTilePalettesRaw_0xc[i] = new (heap, 0x20) u8[0x200];
+        mTilePalettes_0x18[i] = new (heap, 0x20) u8[0x200];
     }
-    field_0x24 = new (heap, 0x20) u16[0x1000];
+    mTileDefs_0x24 = new (heap, 0x20) u16[0x1000];
     for (s32 i = 0; i < 4; i++) {
         mLayerGrid[i] = new (heap, 0x20) u16[0x1000];
         mLayerGrid2[i] = new (heap, 0x20) u16[0x1000];
@@ -164,53 +164,53 @@ TileMap_804AA858::TileMap_804AA858(JKRHeap* heap) {
         field_0x48[i] = new (heap, 0x20) u16[0x1000];
     }
     for (s32 i = 0; i < 4; i++) {
-        field_0x88[i] = new (heap, 0x20) u8[0x8000];
+        mSpriteImages_0x88[i] = new (heap, 0x20) u8[0x8000];
     }
     for (s32 i = 0; i < 12; i++) {
-        field_0x98[i] = new (heap, 0x20) u8[0x200];
-        field_0xc8[i] = new (heap, 0x20) u8[0x200];
+        mSpritePalettesRaw_0x98[i] = new (heap, 0x20) u8[0x200];
+        mSpritePalettes_0xc8[i] = new (heap, 0x20) u8[0x200];
     }
-    field_0xf8 = new (heap, 0x20) u8[0x8000];
+    mDecodeBuf_0xf8 = new (heap, 0x20) u8[0x8000];
     for (s32 i = 0; i < 2; i++) {
-        field_0x100[i] = new (heap, 0) JGeometry::TVec3f[65][65];
-        field_0x108[i] = new (heap, 0) JUtility::TColor[65 * 65];
+        mHeightGrid_0x100[i] = new (heap, 0) JGeometry::TVec3f[65][65];
+        mHeightGridColors_0x108[i] = new (heap, 0) JUtility::TColor[65 * 65];
     }
-    field_0x110 = new (heap, 0) JGeometry::TVec2f[0x1000];
+    mTileTexCoords_0x110 = new (heap, 0) JGeometry::TVec2f[0x1000];
     for (s32 i = 0; i < 4; i++) {
         field_0x11c[i] = new (heap, 0) cls_804AA858Sub11C;
     }
     for (s32 i = 0; i < 10; i++) {
         char name[32];
         sprintf(name, "filter%d.bti", i == 0 ? 1 : i);
-        field_0xe428[i] = new (heap, 0) JUTTexture(
+        mFilterTex_0xe428[i] = new (heap, 0) JUTTexture(
             (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('????', name), 0);
     }
-    field_0xe454 = new (heap, 0) JUTTexture(
+    mCircleTex_0xe454 = new (heap, 0) JUTTexture(
         (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('????', "circle2.bti"), 0);
     field_0xfc = new (heap, 0) cls_804B1668();
-    field_0x238c = new (heap, 0x20) u8[0x100];
+    mAnimTileData_0x238c = new (heap, 0x20) u8[0x100];
 }
 
 // Frees what the constructor allocated, in reverse order. Only the first four
-// field_0x98 / field_0xc8 buffers are freed (in the loop of field_0x88).
+// mSpritePalettesRaw_0x98 / mSpritePalettes_0xc8 buffers are freed (in the loop of field_0x88).
 TileMap_804AA858::~TileMap_804AA858() {
-    delete field_0xe454;
+    delete mCircleTex_0xe454;
     for (s32 i = 9; i >= 0; i--) {
-        delete field_0xe428[i];
+        delete mFilterTex_0xe428[i];
     }
     for (s32 i = 3; i >= 0; i--) {
         delete field_0x11c[i];
     }
-    delete[] field_0x110;
+    delete[] mTileTexCoords_0x110;
     for (s32 i = 1; i >= 0; i--) {
-        delete[] field_0x108[i];
-        delete[] field_0x100[i];
+        delete[] mHeightGridColors_0x108[i];
+        delete[] mHeightGrid_0x100[i];
     }
-    delete[] field_0xf8;
+    delete[] mDecodeBuf_0xf8;
     for (s32 i = 3; i >= 0; i--) {
-        delete[] field_0xc8[i];
-        delete[] field_0x98[i];
-        delete[] field_0x88[i];
+        delete[] mSpritePalettes_0xc8[i];
+        delete[] mSpritePalettesRaw_0x98[i];
+        delete[] mSpriteImages_0x88[i];
     }
     for (s32 i = 15; i >= 0; i--) {
         delete[] field_0x48[i];
@@ -219,55 +219,55 @@ TileMap_804AA858::~TileMap_804AA858() {
         delete[] mLayerGrid2[i];
         delete[] mLayerGrid[i];
     }
-    delete[] field_0x24;
+    delete[] mTileDefs_0x24;
     for (s32 i = 2; i >= 0; i--) {
-        delete[] field_0x18[i];
-        delete[] field_0xc[i];
+        delete[] mTilePalettes_0x18[i];
+        delete[] mTilePalettesRaw_0xc[i];
     }
     for (s32 i = 1; i >= 0; i--) {
-        delete[] field_0x4[i];
+        delete[] mTileImages_0x4[i];
     }
     delete field_0xfc;
     field_0xfc = NULL;
-    delete field_0x238c;
+    delete mAnimTileData_0x238c;
 }
 
 void TileMap_804AA858::fn_802FF798() {
     for (s32 i = 0; i < 4; i++) {
-        field_0x235c[i] = 0;
-        field_0x2360[i] = 0;
+        mLayerVisible_0x235c[i] = 0;
+        mLayer2Visible_0x2360[i] = 0;
     }
-    field_0x2364 = 0;
+    mDrawSprites_0x2364 = 0;
     field_0x2365 = 1;
-    field_0x2368.x = field_0x2368.y = field_0x2368.z = 0.0f;
-    field_0x2374.x = field_0x2374.y = field_0x2374.z = 0.0f;
-    field_0x2380 = 0x40;
-    field_0x2384 = 0x40;
+    mLayerOrigin_0x2368.x = mLayerOrigin_0x2368.y = mLayerOrigin_0x2368.z = 0.0f;
+    mLayer2Origin_0x2374.x = mLayer2Origin_0x2374.y = mLayer2Origin_0x2374.z = 0.0f;
+    mHeightGridCellsX_0x2380 = 0x40;
+    mHeightGridCellsY_0x2384 = 0x40;
     for (int i = 0; i < 0x100; i++) {
-        field_0x2398[i].mTimer = 0;
+        mFadeSprites_0x2398[i].mTimer = 0;
     }
     field_0xbf98 = 0;
-    field_0x2388 = 0;
+    mHeightGridIndex_0x2388 = 0;
     for (int i = 0; i < 16; i++) {
-        field_0xbf9c[i].mKind = 0;
+        mHeightGridEffects_0xbf9c[i].mKind = 0;
     }
     for (s32 y = 0; y < 0x40; y++) {
         f32 v = 0.001953125f * (8.0f * y + 0.501f);
         for (s32 x = 0; x < 0x10; x++) {
             s32 index = y * 16 + x;
-            field_0x110[index].x = 0.0078125f * (8.0f * x + 0.501f);
-            field_0x110[index].y = v;
-            field_0x110[index + 0x400].x = 0.05453125f + field_0x110[index].x;
-            field_0x110[index + 0x400].y = field_0x110[index].y;
-            field_0x110[index + 0x800].x = field_0x110[index].x;
-            field_0x110[index + 0x800].y = 0.013632813f + field_0x110[index].y;
-            field_0x110[index + 0xC00].x = 0.05453125f + field_0x110[index].x;
-            field_0x110[index + 0xC00].y = 0.013632813f + field_0x110[index].y;
+            mTileTexCoords_0x110[index].x = 0.0078125f * (8.0f * x + 0.501f);
+            mTileTexCoords_0x110[index].y = v;
+            mTileTexCoords_0x110[index + 0x400].x = 0.05453125f + mTileTexCoords_0x110[index].x;
+            mTileTexCoords_0x110[index + 0x400].y = mTileTexCoords_0x110[index].y;
+            mTileTexCoords_0x110[index + 0x800].x = mTileTexCoords_0x110[index].x;
+            mTileTexCoords_0x110[index + 0x800].y = 0.013632813f + mTileTexCoords_0x110[index].y;
+            mTileTexCoords_0x110[index + 0xC00].x = 0.05453125f + mTileTexCoords_0x110[index].x;
+            mTileTexCoords_0x110[index + 0xC00].y = 0.013632813f + mTileTexCoords_0x110[index].y;
         }
     }
-    field_0xc21c = 0;
-    field_0xd320 = 0;
-    field_0xe424 = 0;
+    mHeightGridEffectNum_0xc21c = 0;
+    mQueuedSpriteNum_0xd320 = 0;
+    mLateQueuedSpriteNum_0xe424 = 0;
     fn_802FDDD4();
     for (s32 i = 0; i < 4; i++) {
         field_0x12c[i] = 0;
@@ -285,19 +285,19 @@ void TileMap_804AA858::fn_802FF798() {
     field_0x22c = -1;
     field_0x230 = -1;
     field_0x234 = 0;
-    field_0x248 = 0;
-    field_0xe450 = 1;
+    mUseScreenRect_0x248 = 0;
+    mUseFilterTex_0xe450 = 1;
     field_0xe451 = 1;
     field_0xe458 = 1.8f;
     field_0xe45c = -0.25f;
-    field_0x2390 = 0;
-    field_0x2394 = 0;
+    mAnimTileFrame_0x2390 = 0;
+    mAnimTileTimer_0x2394 = 0;
     field_0xe461 = 1;
     for (s32 i = 0; i < 3; i++) {
         for (s32 j = 0; j < 4; j++) {
             for (s32 k = 0; k < 16; k++) {
-                GXInitTlutObj(&field_0x25c[i][j][k], field_0xc8[i * 4 + j] + k * 0x20, GX_TL_RGB5A3, 16);
-                GXInitTexObjCI(&field_0xb5c[i][j][k], field_0x88[j], 0x100, 0x100, GX_TF_C4, GX_CLAMP,
+                GXInitTlutObj(&mSpriteTluts_0x25c[i][j][k], mSpritePalettes_0xc8[i * 4 + j] + k * 0x20, GX_TL_RGB5A3, 16);
+                GXInitTexObjCI(&mSpriteTexObjs_0xb5c[i][j][k], mSpriteImages_0x88[j], 0x100, 0x100, GX_TF_C4, GX_CLAMP,
                                GX_CLAMP, GX_FALSE, lbl_8046F940[k]);
             }
         }
@@ -310,8 +310,8 @@ void TileMap_804AA858::fn_802FF568() {
         fn_802FCE74();
     }
     for (s32 i = 0; i < 0x100; i++) {
-        if (field_0x2398[i].mTimer > 0) {
-            field_0x2398[i].mTimer--;
+        if (mFadeSprites_0x2398[i].mTimer > 0) {
+            mFadeSprites_0x2398[i].mTimer--;
         }
     }
     field_0xbf98 = 1;
@@ -334,11 +334,11 @@ void TileMap_804AA858::fn_802FF548() {
     fn_802FF798();
 }
 
-// The field_0xc220 queue's copy of drawQueuedSprites_802FF2D8 (the counter is
+// The mQueuedSprites_0xc220 queue's copy of drawQueuedSprites_802FF2D8 (the counter is
 // coloured before the strength-reduced pointer, as in an inlined loop).
 static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
-    for (s32 i = 0; i < self->field_0xd320; i++) {
-        cls_8030029C* sprite = &self->field_0xc220[i];
+    for (s32 i = 0; i < self->mQueuedSpriteNum_0xd320; i++) {
+        cls_8030029C* sprite = &self->mQueuedSprites_0xc220[i];
         if (sprite->mRes != NULL) {
             self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
@@ -347,19 +347,19 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
             self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
-    self->field_0xd320 = 0;
+    self->mQueuedSpriteNum_0xd320 = 0;
 }
 
 // The full-screen rect differs in register allocation only (r0/r3-r5).
 // FIXME: 98.90 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
-    if (field_0x248 && field_0x24c.f.x != 0) {
-        gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
+    if (mUseScreenRect_0x248 && mScreenRect_0x24c.f.x != 0) {
+        gGameRoot2_8053AB10->field_0x24->mScreenRect_0x144 = mScreenRect_0x24c;
     } else {
         JGeometry::TBox2<u32> rect;
         rect.i.set(0, 0);
         rect.f.set(JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight());
-        gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
+        gGameRoot2_8053AB10->field_0x24->mScreenRect_0x144 = rect;
     }
     fn_802FC80C();
     drawQueuedSprites_802FF3F0(this);
@@ -372,8 +372,8 @@ void TileMap_804AA858::fn_802FF3B0() {
 }
 
 static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
-    for (s32 i = 0; i < self->field_0xe424; i++) {
-        cls_8030029C* sprite = &self->field_0xd324[i];
+    for (s32 i = 0; i < self->mLateQueuedSpriteNum_0xe424; i++) {
+        cls_8030029C* sprite = &self->mLateQueuedSprites_0xd324[i];
         if (sprite->mRes != NULL) {
             self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
@@ -382,7 +382,7 @@ static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
             self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
-    self->field_0xe424 = 0;
+    self->mLateQueuedSpriteNum_0xe424 = 0;
 }
 
 void TileMap_804AA858::fn_802FF2D8() {
@@ -432,12 +432,12 @@ void TileMap_804AA858::fn_802FF0EC() {
     field_0xbf98 = 0;
 }
 
-// Draws the field_0x2398 effects, last first: params' alphas fade with the
+// Draws the mFadeSprites_0x2398 effects, last first: params' alphas fade with the
 // time left, and an effect with a scale shrinks from it to 1 (its matrix is
 // a scaled copy for the draw).
 void TileMap_804AA858::fn_802FEE68() {
     for (int i = 0xFF; i >= 0; i--) {
-        cls_803003AC* effect = &field_0x2398[i];
+        cls_803003AC* effect = &mFadeSprites_0x2398[i];
         if (effect->mTimer > 0) {
             f32 t = (f32)effect->mTimer / (f32)effect->mDuration;
             effect->mParams.field_0x10.r = effect->mColor.r;
@@ -482,37 +482,37 @@ void TileMap_804AA858::fn_802FEE68() {
     }
 }
 
-// Per frame: flips to the other field_0x100 / field_0x108 grid, flattens it,
-// lets each active field_0xbf9c effect deform its heights (1: a dip, 2: an
+// Per frame: flips to the other mHeightGrid_0x100 / mHeightGridColors_0x108 grid, flattens it,
+// lets each active mHeightGridEffects_0xbf9c effect deform its heights (1: a dip, 2: an
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
 // FIXME: 91.16 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FDDD4() {
-    field_0x2388++;
-    if (field_0x2388 >= 2) {
-        field_0x2388 = 0;
+    mHeightGridIndex_0x2388++;
+    if (mHeightGridIndex_0x2388 >= 2) {
+        mHeightGridIndex_0x2388 = 0;
     }
-    JGeometry::TVec3f* p = *field_0x100[field_0x2388];
+    JGeometry::TVec3f* p = *mHeightGrid_0x100[mHeightGridIndex_0x2388];
     s32 x;
     s32 y;
-    for (y = 0; y <= field_0x2384; y++) {
+    for (y = 0; y <= mHeightGridCellsY_0x2384; y++) {
         f32 fy = 8.0f * y;
-        for (x = 0; x <= field_0x2380; x++) {
+        for (x = 0; x <= mHeightGridCellsX_0x2380; x++) {
             p->set(8.0f * x, fy, 0.0f);
             p++;
         }
     }
 
-    field_0xc21c = 0;
+    mHeightGridEffectNum_0xc21c = 0;
     for (s32 i = 0; i < 16; i++) {
-        cls_803003A8* slot = &field_0xbf9c[i];
+        cls_803003A8* slot = &mHeightGridEffects_0xbf9c[i];
         if (slot->mKind == 0) {
             continue;
         }
         JGeometry::TVec3f d;
-        d.sub(slot->mPos, field_0x2368);
-        p = field_0x100[field_0x2388][1];
+        d.sub(slot->mPos, mLayerOrigin_0x2368);
+        p = mHeightGrid_0x100[mHeightGridIndex_0x2388][1];
         switch (slot->mKind) {
         case 2: {
             f32 t = slot->mTimer / 60.0f;
@@ -525,9 +525,9 @@ void TileMap_804AA858::fn_802FDDD4() {
                 inner *= inner;
             }
             outer *= outer;
-            for (y = 1; y < field_0x2384; y++) {
+            for (y = 1; y < mHeightGridCellsY_0x2384; y++) {
                 p++;
-                for (x = 1; x < field_0x2380; x++) {
+                for (x = 1; x < mHeightGridCellsX_0x2380; x++) {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
@@ -549,9 +549,9 @@ void TileMap_804AA858::fn_802FDDD4() {
             f32 h = 8.0f * (slot->field_0x18 * t);
             f32 k = 180.0f / r;
             f32 radiusSq = r * r;
-            for (y = 1; y < field_0x2384; y++) {
+            for (y = 1; y < mHeightGridCellsY_0x2384; y++) {
                 p++;
-                for (x = 1; x < field_0x2380; x++) {
+                for (x = 1; x < mHeightGridCellsX_0x2380; x++) {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
@@ -588,9 +588,9 @@ void TileMap_804AA858::fn_802FDDD4() {
             origin2.set(d);
             JGeometry::TVec3f dir2;
             dir2.set(side);
-            for (y = 1; y < field_0x2384; y++) {
+            for (y = 1; y < mHeightGridCellsY_0x2384; y++) {
                 p++;
-                for (x = 1; x < field_0x2380; x++) {
+                for (x = 1; x < mHeightGridCellsX_0x2380; x++) {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(q, d);
@@ -626,9 +626,9 @@ void TileMap_804AA858::fn_802FDDD4() {
             f32 k = 180.0f / r;
             f32 h = 8.0f * slot->field_0x18;
             f32 radiusSq = r * r;
-            for (y = 1; y < field_0x2384; y++) {
+            for (y = 1; y < mHeightGridCellsY_0x2384; y++) {
                 p++;
-                for (x = 1; x < field_0x2380; x++) {
+                for (x = 1; x < mHeightGridCellsX_0x2380; x++) {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
@@ -654,9 +654,9 @@ void TileMap_804AA858::fn_802FDDD4() {
             f32 innerSq = innerR * innerR;
             f32 outerSq = outerR * outerR;
             f32 h2 = 0.2f * h;
-            for (y = 1; y < field_0x2384; y++) {
+            for (y = 1; y < mHeightGridCellsY_0x2384; y++) {
                 p++;
-                for (x = 1; x < field_0x2380; x++) {
+                for (x = 1; x < mHeightGridCellsX_0x2380; x++) {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
@@ -683,28 +683,28 @@ void TileMap_804AA858::fn_802FDDD4() {
             break;
         }
         }
-        field_0xc21c++;
+        mHeightGridEffectNum_0xc21c++;
         slot->mTimer--;
         if (slot->mTimer == 0) {
             slot->mKind = 0;
         }
     }
 
-    p = *field_0x100[field_0x2388];
-    JUtility::TColor* c = field_0x108[field_0x2388];
-    for (y = 0; y <= field_0x2384; y++) {
+    p = *mHeightGrid_0x100[mHeightGridIndex_0x2388];
+    JUtility::TColor* c = mHeightGridColors_0x108[mHeightGridIndex_0x2388];
+    for (y = 0; y <= mHeightGridCellsY_0x2384; y++) {
         if (y == 0) {
-            for (x = 0; x <= field_0x2380; x++) {
+            for (x = 0; x <= mHeightGridCellsX_0x2380; x++) {
                 c->set(0x80, 0x80, 0x80, 0x80);
                 p++;
                 c++;
             }
         } else {
-            for (x = 0; x <= field_0x2380; x++) {
+            for (x = 0; x <= mHeightGridCellsX_0x2380; x++) {
                 if (x == 0) {
                     c->set(0x80, 0x80, 0x80, 0x80);
                 } else {
-                    f32 slope = 0.5f * ((p->z - p[-1].z) + (p->z - (p - field_0x2380)[-1].z));
+                    f32 slope = 0.5f * ((p->z - p[-1].z) + (p->z - (p - mHeightGridCellsX_0x2380)[-1].z));
                     if (slope >= 0.1f || slope <= -0.1f) {
                         f32 shade = (1.0f + slope) / JGeometry::TUtil<f32>::sqrt(2.0f * (slope * slope + 1.0f)) -
                                     0.70710677f;
@@ -723,15 +723,15 @@ void TileMap_804AA858::fn_802FDDD4() {
             }
         }
     }
-    DCStoreRange(field_0x100[field_0x2388], 0x1081 * sizeof(JGeometry::TVec3f));
-    DCStoreRange(field_0x108[field_0x2388], 0x1081 * sizeof(JUtility::TColor));
+    DCStoreRange(mHeightGrid_0x100[mHeightGridIndex_0x2388], 0x1081 * sizeof(JGeometry::TVec3f));
+    DCStoreRange(mHeightGridColors_0x108[mHeightGridIndex_0x2388], 0x1081 * sizeof(JUtility::TColor));
 }
 
 // Per frame: counts each player's field_0x138 up to 40 while its field_0x12c
 // flag is set (sound 0x52 when a counted player starts, 0x53 when it drops),
 // scales the panels by the sine of the counts and places the views
 // (field_0x150 / field_0x190, the field_0x21c window); then every 10 frames
-// copies the next of the four 0x40-byte blocks of field_0x238c to
+// copies the next of the four 0x40-byte blocks of mAnimTileData_0x238c to
 // field_0x4[1] + 0x200.
 // Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
 // with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
@@ -788,7 +788,7 @@ void TileMap_804AA858::fn_802FCE74() {
         }
     }
     field_0x22c = -1;
-    field_0x248 = 0;
+    mUseScreenRect_0x248 = 0;
     field_0x214 = 0;
 
     f32 scaleX[4];
@@ -903,8 +903,8 @@ void TileMap_804AA858::fn_802FCE74() {
             frame = field_0xfc->field_0x9e;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (!camera->field_0x7f4) {
-            camera->field_0x7f5 = 1;
+        if (!camera->mFocusOverride_0x7f4) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
         const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
         f32 x = dx + pos40.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
@@ -942,15 +942,15 @@ void TileMap_804AA858::fn_802FCE74() {
         sub->field_0xa0 = 0xFFFF;
         sub->field_0xa4 = 0;
     }
-    field_0x2394++;
-    if (field_0x2394 >= 10) {
-        field_0x2394 = 0;
-        field_0x2390++;
-        if (field_0x2390 >= 4) {
-            field_0x2390 = 0;
+    mAnimTileTimer_0x2394++;
+    if (mAnimTileTimer_0x2394 >= 10) {
+        mAnimTileTimer_0x2394 = 0;
+        mAnimTileFrame_0x2390++;
+        if (mAnimTileFrame_0x2390 >= 4) {
+            mAnimTileFrame_0x2390 = 0;
         }
-        u8* src = field_0x238c + field_0x2390 * 0x40;
-        u8* dst = field_0x4[1] + 0x200;
+        u8* src = mAnimTileData_0x238c + mAnimTileFrame_0x2390 * 0x40;
+        u8* dst = mTileImages_0x4[1] + 0x200;
         for (int j = 0; j < 0x40; j++) {
             *dst++ = *src++;
         }
@@ -958,11 +958,11 @@ void TileMap_804AA858::fn_802FCE74() {
 }
 
 // Draws the tile layers: indexed f32 positions / RGBA8 colours of the
-// field_0x2388 height grid and the texture coordinates of field_0x110, the
-// tile texture times the vertex colour; with field_0xe450 set, three more TEV
-// stages put the player's field_0xe428 texture over it. Then each layer whose
-// field_0x235c / field_0x2360 byte is set (layers 0-3 at field_0x2368, 4-7 at
-// field_0x2374), and with field_0x2365 layer 0 a second time as pass 8.
+// mHeightGridIndex_0x2388 height grid and the texture coordinates of mTileTexCoords_0x110, the
+// tile texture times the vertex colour; with mUseFilterTex_0xe450 set, three more TEV
+// stages put the player's mFilterTex_0xe428 texture over it. Then each layer whose
+// mLayerVisible_0x235c / mLayer2Visible_0x2360 byte is set (layers 0-3 at mLayerOrigin_0x2368, 4-7 at
+// mLayer2Origin_0x2374), and with field_0x2365 layer 0 a second time as pass 8.
 void TileMap_804AA858::fn_802FC80C() {
     gGameRoot2_8053AB10->fn_8013B1E8();
     gGameRoot2_8053AB10->fn_8013B438();
@@ -975,9 +975,9 @@ void TileMap_804AA858::fn_802FC80C() {
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGB, GX_RGBA8, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX1, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_POS, field_0x100[field_0x2388], sizeof(JGeometry::TVec3f));
-    GXSetArray(GX_VA_CLR0, field_0x108[field_0x2388], sizeof(JUtility::TColor));
-    GXSetArray(GX_VA_TEX0, field_0x110, sizeof(JGeometry::TVec2f));
+    GXSetArray(GX_VA_POS, mHeightGrid_0x100[mHeightGridIndex_0x2388], sizeof(JGeometry::TVec3f));
+    GXSetArray(GX_VA_CLR0, mHeightGridColors_0x108[mHeightGridIndex_0x2388], sizeof(JUtility::TColor));
+    GXSetArray(GX_VA_TEX0, mTileTexCoords_0x110, sizeof(JGeometry::TVec2f));
     GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
     GXSetNumChans(1);
     GXSetTexCoordGen2(GX_TEXCOORD1, GX_TG_MTX2x4, GX_TG_TEX1, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
@@ -989,14 +989,14 @@ void TileMap_804AA858::fn_802FC80C() {
     GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_SUBHALF, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTevDirect(GX_TEVSTAGE0);
-    if (field_0xe450) {
+    if (mUseFilterTex_0xe450) {
         s32 player;
         if (isGameModeSet() && gGameRoot_8053AAF8->field_0x4 != NULL) {
             player = getGameView_802D6A9C()->field_0x50;
         } else {
             player = 0;
         }
-        field_0xe428[player]->load(GX_TEXMAP1);
+        mFilterTex_0xe428[player]->load(GX_TEXMAP1);
         GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE1, GX_CC_ZERO, GX_CC_CPREV, GX_CC_TEXC, GX_CC_ZERO);
         GXSetTevAlphaIn(GX_TEVSTAGE1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -1027,7 +1027,7 @@ void TileMap_804AA858::fn_802FC80C() {
     GXInvalidateVtxCache();
     GXSetCullMode(GX_CULL_NONE);
     for (s32 i = 0; i <= 8; i++) {
-        if (i < 4 && field_0x235c[i]) {
+        if (i < 4 && mLayerVisible_0x235c[i]) {
             if (i == 0 && field_0x2365) {
                 GXSetAlphaCompare(GX_EQUAL, 0xFF, GX_AOP_OR, GX_NEVER, 0);
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
@@ -1035,15 +1035,15 @@ void TileMap_804AA858::fn_802FC80C() {
                 GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
             }
-            fn_802FC268(&field_0x2368, i, mLayerGrid[i]);
-        } else if (i >= 4 && i < 8 && field_0x2360[i - 4]) {
+            fn_802FC268(&mLayerOrigin_0x2368, i, mLayerGrid[i]);
+        } else if (i >= 4 && i < 8 && mLayer2Visible_0x2360[i - 4]) {
             GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
             GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
-            fn_802FC268(&field_0x2374, i - 4, mLayerGrid2[i - 4]);
-        } else if (field_0x2365 && i == 8 && field_0x235c[0]) {
+            fn_802FC268(&mLayer2Origin_0x2374, i - 4, mLayerGrid2[i - 4]);
+        } else if (field_0x2365 && i == 8 && mLayerVisible_0x235c[0]) {
             GXSetAlphaCompare(GX_LESS, 0xFF, GX_AOP_AND, GX_GREATER, 0);
             GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
-            fn_802FC268(&field_0x2368, 0, mLayerGrid[0]);
+            fn_802FC268(&mLayerOrigin_0x2368, 0, mLayerGrid[0]);
         }
     }
 }
@@ -1056,10 +1056,10 @@ void TileMap_804AA858::fn_802FC80C() {
 // orders the count loop's four field_0x24 loads differently. Literals and the
 // .rodata table (lbl_8046F9F0$NNN) are reloc-name.
 // Draws the tile grid `grid` of `layer` (2 x 2 blocks of 16 x 16 tiles, up to
-// the field_0x2380 x field_0x2384 cells of the height grid) at origin, raised
+// the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells of the height grid) at origin, raised
 // by (layer - 0.5) * 1024 in y and z, one palette at a time (field_0x18[0]):
 // each tile's 2 x 2 entries of field_0x24 are quads on the 65-wide height grid
-// vertices (position and colour indices), with field_0x110's corner texture
+// vertices (position and colour indices), with mTileTexCoords_0x110's corner texture
 // coordinates (the entry's tile and flips) and the screen position / 128.
 // fn_802FC80C sets up the vertex format.
 void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u16* grid) {
@@ -1076,7 +1076,7 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
     gGameRoot2_8053AB10->fn_8013B3CC(m);
     GXTlutObj tluts[16];
     for (int i = 0; i < 16; i++) {
-        GXInitTlutObj(&tluts[i], field_0x18[0] + i * 0x20, GX_TL_RGB5A3, 16);
+        GXInitTlutObj(&tluts[i], mTilePalettes_0x18[0] + i * 0x20, GX_TL_RGB5A3, 16);
         GXLoadTlut(&tluts[i], lbl_8046F9F0[i]);
     }
     s32 counts[16];
@@ -1086,13 +1086,13 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
     for (int by = 0; by < 2; by++) {
         for (int bx = 0; bx < 2; bx++) {
             s32 block = by * 2 + bx;
-            for (int y = 0; y < 16 && by * 16 + y < field_0x2384 / 2; y++) {
-                for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
+            for (int y = 0; y < 16 && by * 16 + y < mHeightGridCellsY_0x2384 / 2; y++) {
+                for (int x = 0; x < 16 && bx * 16 + x < mHeightGridCellsX_0x2380 / 2; x++) {
                     u16 tile = grid[(block * 16 + y) * 16 + x];
                     if (tile != 0) {
                         for (int j = 0; j < 2; j++) {
                             for (int i = 0; i < 2; i++) {
-                                counts[(field_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
+                                counts[(mTileDefs_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
                             }
                         }
                     }
@@ -1105,20 +1105,20 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
         if (counts[palette] <= 0) {
             continue;
         }
-        GXInitTexObjCI(&tex, field_0x4[0], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
+        GXInitTexObjCI(&tex, mTileImages_0x4[0], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
                        lbl_8046F9F0[palette]);
         GXLoadTexObj(&tex, GX_TEXMAP0);
         GXBegin(GX_QUADS, GX_VTXFMT0, counts[palette] * 4);
         for (int by = 0; by < 2; by++) {
             for (int bx = 0; bx < 2; bx++) {
                 s32 block = by * 2 + bx;
-                for (int y = 0; y < 16 && by * 16 + y < field_0x2384 / 2; y++) {
-                    for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
+                for (int y = 0; y < 16 && by * 16 + y < mHeightGridCellsY_0x2384 / 2; y++) {
+                    for (int x = 0; x < 16 && bx * 16 + x < mHeightGridCellsX_0x2380 / 2; x++) {
                         u16 tile = grid[(block * 16 + y) * 16 + x];
                         if (tile != 0) {
                             for (int j = 0; j < 2; j++) {
                                 for (int i = 0; i < 2; i++) {
-                                    u16 entry = field_0x24[tile * 4 + j * 2 + i];
+                                    u16 entry = mTileDefs_0x24[tile * 4 + j * 2 + i];
                                     if (((entry >> 12) & 0xF) == palette) {
                                         s32 cx = bx * 32 + x * 2 + i;
                                         s32 cy = by * 32 + y * 2 + j;
@@ -1167,11 +1167,11 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
 // slots differ; the literals are reloc-name.
 // One player's panel (fn_802FF0EC): the ortho box rect and viewport / scissor
 // rect2; with flag the record's tile layer mValid - 1 (on its palette set's
-// first colour, field_0x114) and, when the overlay flag (mEntries[3].mScrollBit) is set and the pause screen
+// first colour, mPaletteFirstColor_0x114) and, when the overlay flag (mEntries[3].mScrollBit) is set and the pause screen
 // (lbl_8053AEC8's alpha) is not fully up, layer mValid + 7 too, tinted by
 // field_0x130[player] (1 half grey, 2 black at 0xC0) and with the player's
 // line shifts (cls_804AA8D8::fn_8030B1E8); without flag a black quad of
-// field_0xe454. While paused a black box at the pause screen's alpha; count:
+// mCircleTex_0xe454. While paused a black box at the pause screen's alpha; count:
 // a mosaic of the panel (points of count + 1 pixels from the EFB); alpha: a
 // black box at 0xFF - alpha.
 void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_803004C0* rect,
@@ -1187,7 +1187,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
     cls_804AA8D8* shifts = fn_8022BCD4(player);
     if (flag) {
         bool first = ((record->f.mValid - 1) & 7) == 0 || field_0x134[player] != 0;
-        u16 c = field_0x114[first ? 1 : 2];
+        u16 c = mPaletteFirstColor_0x114[first ? 1 : 2];
         gGameRoot2_8053AB10->fn_8013B3F0();
         JGeometry::TBox2f fill(rect->field_0x0, rect->field_0x4, rect->field_0x0 + rect->field_0x8,
                                rect->field_0x4 + rect->field_0xc);
@@ -1211,7 +1211,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
         }
     } else {
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0xe454->load(GX_TEXMAP0);
+        mCircleTex_0xe454->load(GX_TEXMAP0);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXSetColorUpdate(GX_FALSE);
         GXSetAlphaUpdate(GX_TRUE);
@@ -1335,7 +1335,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_TEX0, field_0x110, sizeof(JGeometry::TVec2f));
+    GXSetArray(GX_VA_TEX0, mTileTexCoords_0x110, sizeof(JGeometry::TVec2f));
     if (grey == 0xFF && alpha == 0xFF) {
         GXSetTevColor(GX_TEVREG0, lbl_805414F0);
         GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
@@ -1368,7 +1368,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
     }
     GXTlutObj tluts[16];
     for (int i = 0; i < 16; i++) {
-        GXInitTlutObj(&tluts[i], field_0x18[set] + i * 0x20, GX_TL_RGB5A3, 16);
+        GXInitTlutObj(&tluts[i], mTilePalettes_0x18[set] + i * 0x20, GX_TL_RGB5A3, 16);
         GXLoadTlut(&tluts[i], lbl_8046FA30[i]);
     }
     s32 counts[16];
@@ -1392,7 +1392,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                     if (tile != 0) {
                         for (int j = 0; j < 2; j++) {
                             for (int i = 0; i < 2; i++) {
-                                counts[(field_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
+                                counts[(mTileDefs_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
                             }
                         }
                     }
@@ -1405,7 +1405,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
         if (counts[palette] <= 0) {
             continue;
         }
-        GXInitTexObjCI(&tex, field_0x4[1], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
+        GXInitTexObjCI(&tex, mTileImages_0x4[1], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
                        lbl_8046FA30[palette]);
         GXLoadTexObj(&tex, GX_TEXMAP0);
         GXBegin(GX_QUADS, GX_VTXFMT0, counts[palette] * 4);
@@ -1449,7 +1449,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                             }
                             for (int j = 0; j < 2; j++) {
                                 for (int i = 0; i < 2; i++) {
-                                    u16 entry = field_0x24[tile * 4 + j * 2 + i];
+                                    u16 entry = mTileDefs_0x24[tile * 4 + j * 2 + i];
                                     if (((entry >> 12) & 0xF) != palette) {
                                         continue;
                                     }
@@ -1479,7 +1479,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                             }
                             for (int j = 0; j < 2; j++) {
                                 for (int i = 0; i < 2; i++) {
-                                    u16 entry = field_0x24[tile * 4 + j * 2 + i];
+                                    u16 entry = mTileDefs_0x24[tile * 4 + j * 2 + i];
                                     if (((entry >> 12) & 0xF) != palette) {
                                         continue;
                                     }
@@ -1511,8 +1511,8 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
 // early in our .rodata (fn_802FCE74's tables and fn_802F6800's five are not
 // written), the GXColor temporaries' stack slots differ, and registers
 // r16-r29 / f20-f31 rotate.
-// Draws the stage's tile shades: for layer 0 at field_0x2368 (when
-// field_0x235c[0] is set) and layer 4 at field_0x2374 (field_0x2360[1]), every
+// Draws the stage's tile shades: for layer 0 at mLayerOrigin_0x2368 (when
+// mLayerVisible_0x235c[0] is set) and layer 4 at mLayer2Origin_0x2374 (mLayer2Visible_0x2360[1]), every
 // tile of the 2 x 2 blocks of 16 x 16 (up to half the height grid's cells) whose
 // code has entries in the stage's table (by the first letter of the stage name)
 // gets those shapes of "circle.bti" in black with the entry's alpha (TEV
@@ -1712,22 +1712,22 @@ void TileMap_804AA858::fn_802FA3FC() {
         f32 originY;
         u16* grid;
         if (pass == 0) {
-            originX = field_0x2368.x;
-            originY = field_0x2368.y;
+            originX = mLayerOrigin_0x2368.x;
+            originY = mLayerOrigin_0x2368.y;
             grid = mLayerGrid[0];
         } else {
-            originX = field_0x2374.x;
-            originY = field_0x2374.y;
+            originX = mLayer2Origin_0x2374.x;
+            originY = mLayer2Origin_0x2374.y;
             grid = mLayerGrid2[0];
         }
-        if ((pass != 0 || !field_0x235c[0]) && (pass != 1 || !field_0x2360[1])) {
+        if ((pass != 0 || !mLayerVisible_0x235c[0]) && (pass != 1 || !mLayer2Visible_0x2360[1])) {
             continue;
         }
         for (s32 by = 0; by < 2; by++) {
             for (s32 bx = 0; bx < 2; bx++) {
-                for (s32 y = 0; y < 16 && by * 16 + y < field_0x2384 / 2; y++) {
+                for (s32 y = 0; y < 16 && by * 16 + y < mHeightGridCellsY_0x2384 / 2; y++) {
                     f32 tileY = 614.4f + (16.0f * (by * 16 + y) + originY);
-                    for (s32 x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
+                    for (s32 x = 0; x < 16 && bx * 16 + x < mHeightGridCellsX_0x2380 / 2; x++) {
                         u16 tile = grid[((by * 2 + bx) * 16 + y) * 16 + x];
                         f32 tileX = 16.0f * (bx * 16 + x) + originX;
                         for (s32 i = 0; i < count; i++) {
@@ -1853,7 +1853,7 @@ void TileMap_804AA858::fn_802FA3FC() {
 // As in fn_802F9714: the original loads the next source bytes of the
 // unrolled nibble-swap loop before storing the previous ones; registers differ.
 // fn_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
-// also keeps bytes 0x200-0x2FF of that buffer in field_0x238c.
+// also keeps bytes 0x200-0x2FF of that buffer in mAnimTileData_0x238c.
 void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
     u8* dst;
     u8* src;
@@ -1873,10 +1873,10 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    dst = field_0x4[slot] + dstOffset;
+    dst = mTileImages_0x4[slot] + dstOffset;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
@@ -1887,8 +1887,8 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     }
     DCFlushRange(dst, len);
     if (slot == 1) {
-        u8* from = field_0x4[1] + 0x200;
-        u8* to = field_0x238c;
+        u8* from = mTileImages_0x4[1] + 0x200;
+        u8* to = mAnimTileData_0x238c;
         for (int i = 0; i < 0x100; i++) {
             *to++ = *from++;
         }
@@ -1903,7 +1903,7 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
 // decode and copies len after the loops (as in fn_802F93F4). Registers differ.
 // The 'SCL ' palettes of the sprite layer `slot` (0-2): fn_802F93F4 into
 // field_0xc[slot] (keeping the first colour, made transparent, in
-// field_0x114[slot]), colours 0xD8-0xDA made RGB4A3 with alpha 4 / 7, and the
+// mPaletteFirstColor_0x114[slot]), colours 0xD8-0xDA made RGB4A3 with alpha 4 / 7, and the
 // adjusted copy in field_0x18[slot].
 void TileMap_804AA858::fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag) {
     u32 len;
@@ -1924,13 +1924,13 @@ void TileMap_804AA858::fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOf
     }
     u8* src;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
     src += srcOffset;
-    u8* dst = field_0xc[slot] + dstOffset;
+    u8* dst = mTilePalettesRaw_0xc[slot] + dstOffset;
     u16 first;
     for (s32 i = 0; i < len; i += 2) {
         u16 color;
@@ -1948,16 +1948,16 @@ void TileMap_804AA858::fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOf
         dst[i + 1] = color;
         src += 2;
     }
-    field_0x114[slot] = first;
+    mPaletteFirstColor_0x114[slot] = first;
     for (int j = 0; j < 3; j++) {
-        u8* entry = field_0xc[slot] + 0x1B0 + j * 2;
+        u8* entry = mTilePalettesRaw_0xc[slot] + 0x1B0 + j * 2;
         u16 color = (entry[0] << 8) | entry[1];
         color = 0x4000 | ((color >> 3) & 0xF00) | ((color >> 2) & 0xF0) | ((color >> 1) & 0xF);
         entry[0] = color >> 8;
         entry[1] = color;
     }
-    u8* out = field_0x18[slot] + dstOffset;
-    u8* in = field_0xc[slot] + dstOffset;
+    u8* out = mTilePalettes_0x18[slot] + dstOffset;
+    u8* in = mTilePalettesRaw_0xc[slot] + dstOffset;
     for (s32 i = 0; i < len; i += 2) {
         u16 color = (in[i] << 8) | in[i + 1];
         if (color & 0x8000) {
@@ -2000,15 +2000,15 @@ void TileMap_804AA858::fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size
     }
     u8* src;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
     u8* data = src + srcOffset;
     u32 index = start / 2;
     for (u32 i = start; i < len; i += 2) {
-        field_0x24[index++] = (data[i + 1] << 8) | data[i];
+        mTileDefs_0x24[index++] = (data[i + 1] << 8) | data[i];
     }
 }
 
@@ -2037,8 +2037,8 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
     }
     u8* src;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
@@ -2103,10 +2103,10 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    dst = field_0x88[slot] + dstOffset;
+    dst = mSpriteImages_0x88[slot] + dstOffset;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
@@ -2124,8 +2124,8 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
 // loop and DCFlushRange (ours after it); its src + srcOffset is added later.
 // Converts the 'SCL ' palette resource res (little-endian BGR555, decoded
 // first when compressed; `size` bytes from srcOffset, else the resource's
-// size) into the GX RGB5A3 palettes field_0x98[slot] + dstOffset, the first
-// colour of every 16 transparent; then copies them to field_0xc8[slot] with
+// size) into the GX RGB5A3 palettes mSpritePalettesRaw_0x98[slot] + dstOffset, the first
+// colour of every 16 transparent; then copies them to mSpritePalettes_0xc8[slot] with
 // each opaque colour's channels adjusted (rotated to b, r, g with `flag`) and
 // flushes that copy.
 void TileMap_804AA858::fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag) {
@@ -2145,11 +2145,11 @@ void TileMap_804AA858::fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    u8* dst = field_0x98[slot] + dstOffset;
+    u8* dst = mSpritePalettesRaw_0x98[slot] + dstOffset;
     u8* src;
     if (JKRDecomp::checkCompressed((u8*)res)) {
-        JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
-        src = field_0xf8;
+        JKRDecomp::decode((u8*)res, mDecodeBuf_0xf8, 0x8000, 0);
+        src = mDecodeBuf_0xf8;
     } else {
         src = (u8*)res;
     }
@@ -2167,8 +2167,8 @@ void TileMap_804AA858::fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOf
         dst[i] = color >> 8;
         dst[i + 1] = color;
     }
-    u8* out = field_0xc8[slot] + dstOffset;
-    u8* in = field_0x98[slot] + dstOffset;
+    u8* out = mSpritePalettes_0xc8[slot] + dstOffset;
+    u8* in = mSpritePalettesRaw_0x98[slot] + dstOffset;
     for (s32 i = 0; i < len; i += 2) {
         u16 color = (in[i] << 8) | in[i + 1];
         if (color & 0x8000) {
@@ -2297,8 +2297,8 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
 // are not written yet). tmp's constructor stores are scheduled later.
 // Draws frame `frame` of the "SOB " resource res at pos: res + 2 holds the
 // little-endian start offsets of the frames, each frame 6-byte GBA OAM
-// entries, drawn last to first as quads of the 4-bit tile images (field_0xb5c,
-// palettes field_0x25c; the set is params' field_0x1e) scaled by (scaleX,
+// entries, drawn last to first as quads of the 4-bit tile images (mSpriteTexObjs_0xb5c,
+// palettes mSpriteTluts_0x25c; the set is params' field_0x1e) scaled by (scaleX,
 // scaleY). params' bytes 0x21 / 0x22 queue the sprite instead (fn_802F654C /
 // fn_802F6298); field_0x30 adds the effect of fn_802F6800.
 void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
@@ -2318,7 +2318,7 @@ void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 
         {{1, 2}, {1, 4}, {2, 4}, {4, 8}},
     };
 
-    if (!field_0x2364) {
+    if (!mDrawSprites_0x2364) {
         return;
     }
     if (params != NULL && params->field_0x21 && fn_802F654C(pos, res, frame, NULL, NULL, params)) {
@@ -2383,8 +2383,8 @@ void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 
             if (outParams != NULL) {
                 set = outParams->field_0x1e;
             }
-            GXLoadTlut(&field_0x25c[set][priority][lastPalette], lbl_80470F80[lastPalette]);
-            GXLoadTexObj(&field_0xb5c[set][priority][lastPalette], lbl_80470F60[(lastPalette & 1) << 2 | priority]);
+            GXLoadTlut(&mSpriteTluts_0x25c[set][priority][lastPalette], lbl_80470F80[lastPalette]);
+            GXLoadTexObj(&mSpriteTexObjs_0xb5c[set][priority][lastPalette], lbl_80470F60[(lastPalette & 1) << 2 | priority]);
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, lbl_80470F60[(lastPalette & 1) << 2 | priority], GX_COLOR_NULL);
         }
         f32 x, y, z, u0, v0, u1, v1, w, h;
@@ -2448,14 +2448,14 @@ static inline bool isOnScreen(const JGeometry::TVec3f* pos) {
 
 // Draws the "TIMG" image res centred on pos. With params' field_0x23 (and no
 // matrix, on screen) it is drawn as 8 x 8 cells lit by the ground grid
-// field_0x100 / field_0x108; with a matrix and field_0x25 as a quad turned by
+// mHeightGrid_0x100 / mHeightGridColors_0x108; with a matrix and field_0x25 as a quad turned by
 // the matrix and tilted by 45 degrees; else as an upright quad. With params'
-// field_0x24 and field_0xe450 a further TEV stage multiplies in the player's
-// field_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
+// field_0x24 and mUseFilterTex_0xe450 a further TEV stage multiplies in the player's
+// mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
 // field_0x30 adds the effect of fn_802F6800.
 // FIXME: 92.19 %, missing/extra; behaviour near.
 void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
-    if (!field_0x2364) {
+    if (!mDrawSprites_0x2364) {
         return;
     }
     if (params != NULL && params->field_0x21 && fn_802F654C(pos, NULL, 0, res, NULL, params)) {
@@ -2472,7 +2472,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
     if (params != NULL && params->field_0x24) {
         shaded = true;
     }
-    if (shaded && field_0xe450) {
+    if (shaded && mUseFilterTex_0xe450) {
         multiply = true;
     }
     gGameRoot2_8053AB10->fn_8013B1E8();
@@ -2527,7 +2527,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
             } else {
                 player = 0;
             }
-            field_0xe428[player]->load(GX_TEXMAP1);
+            mFilterTex_0xe428[player]->load(GX_TEXMAP1);
             GXSetTevOrder(GX_TEVSTAGE2, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
             GXSetTevColorIn(GX_TEVSTAGE2, GX_CC_ZERO, GX_CC_CPREV, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevAlphaIn(GX_TEVSTAGE2, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -2540,7 +2540,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
         GXBegin(GX_QUADS, GX_VTXFMT0, cols * rows * 4);
         for (s32 j = 0; j < rows; j++) {
             f32 v0 = j * dv;
-            s32 gy = 0.125f * (out.y + j * 8 - out.z - field_0x2368.y);
+            s32 gy = 0.125f * (out.y + j * 8 - out.z - mLayerOrigin_0x2368.y);
             if (gy < 0) {
                 gy = 0;
             } else if (gy > 64) {
@@ -2551,37 +2551,37 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
             f32 t3 = 0.0625f + t2;
             for (s32 i = 0; i < cols; i++) {
                 f32 u0 = i * du;
-                s32 gx = 0.125f * (out.x + i * 8 - field_0x2368.x);
+                s32 gx = 0.125f * (out.x + i * 8 - mLayerOrigin_0x2368.x);
                 if (gx < 0) {
                     gx = 0;
                 } else if (gx > 64) {
                     gx = 64;
                 }
                 s32 index = gy * 65 + gx;
-                JGeometry::TVec3f* pt = &field_0x100[field_0x2388][gy][gx];
-                JUtility::TColor* color = &field_0x108[field_0x2388][index];
+                JGeometry::TVec3f* pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx];
+                JUtility::TColor* color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index];
                 f32 s2 = (i * 8) / 128.0f + s0;
                 f32 s3 = 0.0625f + s2;
-                GXPosition3f32(pt->x + field_0x2368.x, out.z + (pt->y + field_0x2368.y), pt->z + out.z);
+                GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u0, v0);
                 GXTexCoord2f32(s2, t2);
-                pt = &field_0x100[field_0x2388][gy][gx] + 1;
-                color = &field_0x108[field_0x2388][index + 1];
-                GXPosition3f32(pt->x + field_0x2368.x, out.z + (pt->y + field_0x2368.y), pt->z + out.z);
+                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 1;
+                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 1];
+                GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 f32 u1 = u0 + du;
                 GXTexCoord2f32(u1, v0);
                 GXTexCoord2f32(s3, t2);
-                pt = &field_0x100[field_0x2388][gy][gx] + 66;
-                color = &field_0x108[field_0x2388][index + 66];
-                GXPosition3f32(pt->x + field_0x2368.x, out.z + (pt->y + field_0x2368.y), pt->z + out.z);
+                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 66;
+                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 66];
+                GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u1, v1);
                 GXTexCoord2f32(s3, t3);
-                pt = &field_0x100[field_0x2388][gy][gx] + 65;
-                color = &field_0x108[field_0x2388][index + 65];
-                GXPosition3f32(pt->x + field_0x2368.x, out.z + (pt->y + field_0x2368.y), pt->z + out.z);
+                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 65;
+                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 65];
+                GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u0, v1);
                 GXTexCoord2f32(s2, t3);
@@ -2606,7 +2606,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
             } else {
                 player = 0;
             }
-            field_0xe428[player]->load(GX_TEXMAP1);
+            mFilterTex_0xe428[player]->load(GX_TEXMAP1);
             GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
             GXSetTevColorIn(GX_TEVSTAGE1, GX_CC_ZERO, GX_CC_CPREV, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevAlphaIn(GX_TEVSTAGE1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -2692,7 +2692,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
             } else {
                 player = 0;
             }
-            field_0xe428[player]->load(GX_TEXMAP1);
+            mFilterTex_0xe428[player]->load(GX_TEXMAP1);
             GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR0A0);
             GXSetTevColorIn(GX_TEVSTAGE1, GX_CC_ZERO, GX_CC_CPREV, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevAlphaIn(GX_TEVSTAGE1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -2739,8 +2739,8 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
 // Draws the 16 x 16 block map res (little-endian u16 block numbers, 0 empty)
 // at pos: block n is the 2 x 2 tiles field_0x24[n * 4 ...] (GBA BG entries:
 // tile column / row of field_0x4[0], flips, palette), drawn one palette at a
-// time (field_0x18[0]) as 8 x 8 quads; with field_0xe450 a second TEV stage
-// multiplies in the player's field_0xe428 texture. params' bytes 0x21 / 0x22
+// time (field_0x18[0]) as 8 x 8 quads; with mUseFilterTex_0xe450 a second TEV stage
+// multiplies in the player's mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
 void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
@@ -2752,7 +2752,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
     GXTexObj tex;
     JGeometry::TVec3f out;
 
-    if (!field_0x2364) {
+    if (!mDrawSprites_0x2364) {
         return;
     }
     if (params != NULL && params->field_0x21 && fn_802F654C(pos, NULL, 0, NULL, res, params)) {
@@ -2772,14 +2772,14 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX1, GX_TEX_ST, GX_F32, 0);
     GXSetTexCoordGen2(GX_TEXCOORD1, GX_TG_MTX2x4, GX_TG_TEX1, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
     GXSetNumTexGens(2);
-    if (field_0xe450) {
+    if (mUseFilterTex_0xe450) {
         s32 player;
         if (isGameModeSet() && gGameRoot_8053AAF8->field_0x4 != NULL) {
             player = getGameView_802D6A9C()->field_0x50;
         } else {
             player = 0;
         }
-        field_0xe428[player]->load(GX_TEXMAP1);
+        mFilterTex_0xe428[player]->load(GX_TEXMAP1);
         GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE1, GX_CC_ZERO, GX_CC_CPREV, GX_CC_TEXC, GX_CC_ZERO);
         GXSetTevAlphaIn(GX_TEVSTAGE1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -2790,7 +2790,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
         GXSetNumTevStages(2);
     }
     for (int i = 0; i < 16; i++) {
-        GXInitTlutObj(&tluts[i], field_0x18[0] + i * 0x20, GX_TL_RGB5A3, 16);
+        GXInitTlutObj(&tluts[i], mTilePalettes_0x18[0] + i * 0x20, GX_TL_RGB5A3, 16);
         GXLoadTlut(&tluts[i], lbl_80471020[i]);
     }
     for (int i = 0; i < 16; i++) {
@@ -2804,7 +2804,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
             if (block != 0) {
                 for (int j = 0; j < 2; j++) {
                     for (int i = 0; i < 2; i++) {
-                        counts[(field_0x24[block * 4 + j * 2 + i] >> 12) & 0xF]++;
+                        counts[(mTileDefs_0x24[block * 4 + j * 2 + i] >> 12) & 0xF]++;
                     }
                 }
             }
@@ -2812,7 +2812,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
     }
     for (int palette = 0; palette < 16; palette++) {
         if (counts[palette] > 0) {
-            GXInitTexObjCI(&tex, field_0x4[0], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
+            GXInitTexObjCI(&tex, mTileImages_0x4[0], 0x80, 0x200, GX_TF_C4, GX_CLAMP, GX_CLAMP, GX_FALSE,
                            lbl_80471020[palette]);
             GXLoadTexObj(&tex, GX_TEXMAP0);
             GXBegin(GX_QUADS, GX_VTXFMT0, counts[palette] * 4);
@@ -2825,7 +2825,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
                     }
                     for (int j = 0; j < 2; j++) {
                         for (int i = 0; i < 2; i++) {
-                            u16 tile = field_0x24[block * 4 + j * 2 + i];
+                            u16 tile = mTileDefs_0x24[block * 4 + j * 2 + i];
                             if (((tile >> 12) & 0xF) != palette) {
                                 continue;
                             }
@@ -2937,7 +2937,7 @@ u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 fr
     s32 period = lbl_80471180[kind];
     if (field_0xbf98 && ((u32)res + (u32)image + (u32)res3) % (u32)period == (u32)(gGameRoot_8053AAF8->field_0x5c % period)) {
         for (int i = 0; i < 0x100; i++) {
-            cls_803003AC* effect = &field_0x2398[i];
+            cls_803003AC* effect = &mFadeSprites_0x2398[i];
             if (effect->mTimer == 0) {
                 effect->mTimer = lbl_804710F0[kind];
                 effect->mScale = lbl_80471138[params->field_0x30];
@@ -2982,13 +2982,13 @@ u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 fr
     return result;
 }
 
-// The same for field_0xc220 (drawn by fn_802FF3F0), clearing byte 0x21.
+// The same for mQueuedSprites_0xc220 (drawn by fn_802FF3F0), clearing byte 0x21.
 // The u8 return with a bool local gives the original's final clrlwi (both bool and both u8 measured as different).
 u8 TileMap_804AA858::fn_802F654C(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image,
                                    void* res3, SpriteParams_801F5AE0* params) {
     bool result = false;
-    if (field_0xd320 < 0x20) {
-        cls_8030029C* sprite = &field_0xc220[field_0xd320];
+    if (mQueuedSpriteNum_0xd320 < 0x20) {
+        cls_8030029C* sprite = &mQueuedSprites_0xc220[mQueuedSpriteNum_0xd320];
         sprite->mPos.set(*pos);
         sprite->mRes = res;
         sprite->mFrame = frame;
@@ -3004,21 +3004,21 @@ u8 TileMap_804AA858::fn_802F654C(const JGeometry::TVec3f* pos, void* res, s32 fr
         } else {
             sprite->mParams.reset();
         }
-        field_0xd320++;
+        mQueuedSpriteNum_0xd320++;
         result = true;
     }
     return result;
 }
 
-// Queues a sprite on field_0xd324 (drawn by fn_802FF2D8) with a copy of params
+// Queues a sprite on mLateQueuedSprites_0xd324 (drawn by fn_802FF2D8) with a copy of params
 // (its byte 0x22 cleared, its matrix copied into the entry), else the default
 // parameters; false when the queue is full.
 // The u8 return with a bool local gives the original's final clrlwi (both bool and both u8 measured as different).
 u8 TileMap_804AA858::fn_802F6298(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image,
                                    void* res3, SpriteParams_801F5AE0* params) {
     bool result = false;
-    if (field_0xe424 < 0x20) {
-        cls_8030029C* sprite = &field_0xd324[field_0xe424];
+    if (mLateQueuedSpriteNum_0xe424 < 0x20) {
+        cls_8030029C* sprite = &mLateQueuedSprites_0xd324[mLateQueuedSpriteNum_0xe424];
         sprite->mPos.set(*pos);
         sprite->mRes = res;
         sprite->mFrame = frame;
@@ -3034,13 +3034,13 @@ u8 TileMap_804AA858::fn_802F6298(const JGeometry::TVec3f* pos, void* res, s32 fr
         } else {
             sprite->mParams.reset();
         }
-        field_0xe424++;
+        mLateQueuedSpriteNum_0xe424++;
         result = true;
     }
     return result;
 }
 
-// Starts an effect of `kind` at pos in a free slot of field_0xbf9c, else in
+// Starts an effect of `kind` at pos in a free slot of mHeightGridEffects_0xbf9c, else in
 // the one with the smallest timer; kind 3 also keeps the normalized dir.
 void TileMap_804AA858::fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir,
                                f32 scaleX, f32 scaleY) {
@@ -3048,7 +3048,7 @@ void TileMap_804AA858::fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const
     s32 minIndex = 0;
     s32 index = -1;
     for (s32 i = 0; i < 16; i++) {
-        cls_803003A8* slot = &field_0xbf9c[i];
+        cls_803003A8* slot = &mHeightGridEffects_0xbf9c[i];
         if (slot->mKind == 0) {
             index = i;
             break;
@@ -3061,7 +3061,7 @@ void TileMap_804AA858::fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const
     if (index < 0) {
         index = minIndex;
     }
-    cls_803003A8* slot = &field_0xbf9c[index];
+    cls_803003A8* slot = &mHeightGridEffects_0xbf9c[index];
     slot->mKind = kind;
     slot->mPos.set(*pos);
     slot->field_0x14 = scaleX;
@@ -3104,20 +3104,20 @@ f32 fn_802F5FF4(f32 z) {
 }
 
 // FIXME: 99.01 %, regalloc-only; behaviour clean.
-// Register allocation only: the 8.0f literal and field_0x2368.y swap f5/f6 (and fy is in f6, not f7).
+// Register allocation only: the 8.0f literal and mLayerOrigin_0x2368.y swap f5/f6 (and fy is in f6, not f7).
 f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
-    if (field_0xc21c > 0 && pos->x >= field_0x2368.x &&
-        pos->x < field_0x2368.x + 8.0f * field_0x2380 && pos->y >= field_0x2368.y &&
-        pos->y < field_0x2368.y + 8.0f * field_0x2384)
+    if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
+        pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
+        pos->y < mLayerOrigin_0x2368.y + 8.0f * mHeightGridCellsY_0x2384)
     {
-        f32 dx = pos->x - field_0x2368.x;
-        f32 dy = pos->y - field_0x2368.y;
+        f32 dx = pos->x - mLayerOrigin_0x2368.x;
+        f32 dy = pos->y - mLayerOrigin_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
+        JGeometry::TVec3f* p = &mHeightGrid_0x100[mHeightGridIndex_0x2388][iy][ix];
         f32 top = p[0].z * (1.0f - fx) + p[1].z * fx;
         f32 bottom = (1.0f - fx) * p[65].z + fx * p[66].z;
         z += (1.0f - fy) * top + fy * bottom;
@@ -3131,19 +3131,19 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
 bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
     bool result = false;
-    if (field_0xc21c > 0 && pos->x >= field_0x2368.x &&
-        pos->x < field_0x2368.x + 8.0f * field_0x2380 && pos->y >= field_0x2368.y &&
-        pos->y < field_0x2368.y + 8.0f * field_0x2384)
+    if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
+        pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
+        pos->y < mLayerOrigin_0x2368.y + 8.0f * mHeightGridCellsY_0x2384)
     {
-        f32 dx = pos->x - field_0x2368.x;
-        f32 dy = pos->y - field_0x2368.y;
+        f32 dx = pos->x - mLayerOrigin_0x2368.x;
+        f32 dy = pos->y - mLayerOrigin_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
         f32 invFx = 1.0f - fx;
         f32 invFy = 1.0f - fy;
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
+        JGeometry::TVec3f* p = &mHeightGrid_0x100[mHeightGridIndex_0x2388][iy][ix];
         JGeometry::TVec3f v;
         v.set(p[0]);
         v.scale(invFx);

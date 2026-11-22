@@ -43,7 +43,7 @@ static const u64 lbl_80477710[20] = {
     'Pmbam02', 'Pmbam01', 'Pmbalk02', 'Pmbal02', 'Pmbalk01', 'Pmbal01',
     'Pmba02', 'Pmba01',
 };
-// No function of the unit reads it (field_0x100 would hold its alphas).
+// No function of the unit reads it (mHeightGrid_0x100 would hold its alphas).
 static const u64 lbl_804777B0[16] = {
     'Pmnvbb07', 'Pmnvbb06', 'Pmnvbb05', 'Pmnvbb04', 'Pmnvbb03', 'Pmnvbb02',
     'Pmnvbb01', 'Pmnvb05', 'Pmnvb04', 'Pmnvb03', 'Pmnvb02', 'Pmnvb01',
@@ -96,7 +96,7 @@ GameMode_804B0688::GameMode_804B0688() {
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs"), 0, 3, 0, 0);
         gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, false);
-        gGameRoot2_8053AB10->field_0x20->field_0x2364 = 1;
+        gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
     field_0x60 = new cls_804AF860;
     mMovie = new THPMovie_804B15D0;

@@ -182,8 +182,8 @@ void cls_8049DD68::setOverlayRect() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     Vec out;
     Vec in;
-    in.x = -cam->field_0x4[0][3];
-    in.y = -cam->field_0x4[1][3];
+    in.x = -cam->mViewMtx_0x4[0][3];
+    in.y = -cam->mViewMtx_0x4[1][3];
     in.z = 0.0f;
     cam->fn_8030C5F0(&in, false, false, &out);
     f32 size;

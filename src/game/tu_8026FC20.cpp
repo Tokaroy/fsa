@@ -908,8 +908,8 @@ void Player_804A6F38::fn_8027BE74() {
         field_0x40c++;
     } else {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (!camera->field_0x7f4) {
-            camera->field_0x7f5 = 1;
+        if (!camera->mFocusOverride_0x7f4) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
     }
     if ((field_0xcae == 1 || field_0xcaf == 1) && fn_80251AEC(0)) {
@@ -1713,10 +1713,10 @@ void Player_804A6F38::fn_80277F98() {
     if (!gGameRoot_8053AAF8->field_0x7e && !fn_80240670()) {
         s32 player = mPlayerNo_0x4;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (!camera->field_0x7f5) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = player;
-            camera->field_0x7f6 = 1;
+        if (!camera->mShowWholeArea_0x7f5) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = player;
+            camera->mOverrideBlend_0x7f6 = 1;
         }
     }
     if (mStateTimer_0x3fc < 72) {

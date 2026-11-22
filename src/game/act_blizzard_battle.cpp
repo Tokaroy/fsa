@@ -44,8 +44,8 @@ inline void cls_8049E7F0::notifySwev() {
 inline void cls_8049E7F0::spawnPuff() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    pos.x = -camera->field_0x4[0][3];
-    pos.y = -camera->field_0x4[1][3];
+    pos.x = -camera->mViewMtx_0x4[0][3];
+    pos.y = -camera->mViewMtx_0x4[1][3];
     startSound_801F0E34(0x30036, 0);
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
     field_0x238 = 0;

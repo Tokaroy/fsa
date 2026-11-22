@@ -368,12 +368,12 @@ static inline bool contains(const JGeometry::TVec3f* p, JGeometry::TBox2f box) {
 static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x840 == 0) {
-        cam->field_0x840 = 1;
-        cam->field_0x844.set(x0, y0, x1, y1);
-        cam->field_0x854 = 1.0f;
-        cam->field_0x1d4 = -1.0f;
-        cam->field_0x1d8 = -1.0f;
+    if (cam->mBlendBoxOn_0x840 == 0) {
+        cam->mBlendBoxOn_0x840 = 1;
+        cam->mBlendBox_0x844.set(x0, y0, x1, y1);
+        cam->mBlendWeight_0x854 = 1.0f;
+        cam->mMargin_0x1d4 = -1.0f;
+        cam->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -399,13 +399,13 @@ void cls_804AE4B0::fn_803717CC() {
         field_0x399 = 1;
         mState = 1;
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        field_0x244 = -cam->field_0x4[0][3];
-        field_0x248 = -cam->field_0x4[1][3];
+        field_0x244 = -cam->mViewMtx_0x4[0][3];
+        field_0x248 = -cam->mViewMtx_0x4[1][3];
         field_0x24c = 0.0f;
         field_0x250 = (2304.0f - field_0x244) / 60.0f;
         field_0x254 = (1696.0f - field_0x248) / 60.0f;
         JGeometry::TBox2f view;
-        view = gGameRoot2_8053AB10->field_0x24->field_0x164;
+        view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
         field_0x25c = view.getHeight() * 0.5f;
         field_0x260 = 144.0f - field_0x25c;
         camRange(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
@@ -690,8 +690,8 @@ void cls_804AE4B0::fn_803704E8() {
 #pragma auto_inline off
 void cls_804AE4B0::fn_803703C8() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    f32 a = -cam->field_0x4[0][3];
-    f32 b = -cam->field_0x4[1][3];
+    f32 a = -cam->mViewMtx_0x4[0][3];
+    f32 b = -cam->mViewMtx_0x4[1][3];
     if (fabs(a - 2304.0f) < fabs(field_0x250)) {
         field_0x250 = 0.0f;
         field_0x244 = 2304.0f;
@@ -712,12 +712,12 @@ void cls_804AE4B0::fn_803703C8() {
     }
     JGeometry::TBox2f box(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-    if (gGameRoot2_8053AB10->field_0x24->field_0x7f5 == 0) {
+    if (gGameRoot2_8053AB10->field_0x24->mShowWholeArea_0x7f5 == 0) {
         cam = gGameRoot2_8053AB10->field_0x24;
-        cam->field_0x7f4 = 1;
-        cam->field_0x7f8 = 5;
-        cam->field_0x808.set(box);
-        cam->field_0x7f6 = 0;
+        cam->mFocusOverride_0x7f4 = 1;
+        cam->mFocusMode_0x7f8 = 5;
+        cam->mFocusBox_0x808.set(box);
+        cam->mOverrideBlend_0x7f6 = 0;
     }
 }
 #pragma auto_inline reset

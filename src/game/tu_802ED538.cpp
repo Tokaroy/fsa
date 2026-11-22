@@ -127,13 +127,13 @@ cls_804AA350::~cls_804AA350() {
 
 static inline void setCameraScript(const JGeometry::TVec3f& pos) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 4;
-        camera->field_0x7fc.x = pos.x;
-        camera->field_0x7fc.y = pos.y;
-        camera->field_0x7fc.z = pos.z;
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 4;
+        camera->mFocusPos_0x7fc.x = pos.x;
+        camera->mFocusPos_0x7fc.y = pos.y;
+        camera->mFocusPos_0x7fc.z = pos.z;
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 

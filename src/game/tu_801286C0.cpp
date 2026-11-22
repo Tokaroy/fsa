@@ -39,12 +39,12 @@ void cls_8049E500::update() {
     cls_8049D140::update();
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
-        camera->field_0x844.set(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBox_0x844.set(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
     if (field_0x230 <= 9) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;

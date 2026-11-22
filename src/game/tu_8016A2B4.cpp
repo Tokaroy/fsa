@@ -268,9 +268,9 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
 
         if (field_0x1d1) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-            JGeometry::TVec3f pos = map->field_0x2368;
-            pos.x += 0.5f * (8.0f * map->field_0x2380);
-            pos.y += 0.5f * (8.0f * map->field_0x2384);
+            JGeometry::TVec3f pos = map->mLayerOrigin_0x2368;
+            pos.x += 0.5f * (8.0f * map->mHeightGridCellsX_0x2380);
+            pos.y += 0.5f * (8.0f * map->mHeightGridCellsY_0x2384);
             if (field_0x130 != NULL) {
                 field_0x130->setGlobalTranslation(pos);
                 field_0x134->setGlobalTranslation(pos);
@@ -292,12 +292,12 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
         if (field_0x1c4 && (getGameView_802D6A9C()->fn_802DCD0C() || !field_0x1bc)) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            f32 camX = -camera->field_0x4[0][3];
-            f32 camY = -camera->field_0x4[1][3];
+            f32 camX = -camera->mViewMtx_0x4[0][3];
+            f32 camY = -camera->mViewMtx_0x4[1][3];
             f32 halfX = 0.5f * camX;
             f32 halfY = 0.5f * camY;
-            f32 width = 8.0f * map->field_0x2380;
-            f32 height = 8.0f * map->field_0x2384;
+            f32 width = 8.0f * map->mHeightGridCellsX_0x2380;
+            f32 height = 8.0f * map->mHeightGridCellsY_0x2384;
             JGeometry::TVec3f pos(width * (s32)(halfX / width) + (camX - halfX),
                                   height * (s32)(halfY / height) + (camY - halfY), 0.0f);
             if (field_0x138 != NULL) {
@@ -312,9 +312,9 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
 
         if (field_0x1d3) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-            JGeometry::TVec3f pos = map->field_0x2368;
-            pos.x += 0.5f * (8.0f * map->field_0x2380);
-            pos.y += 0.5f * (8.0f * map->field_0x2384);
+            JGeometry::TVec3f pos = map->mLayerOrigin_0x2368;
+            pos.x += 0.5f * (8.0f * map->mHeightGridCellsX_0x2380);
+            pos.y += 0.5f * (8.0f * map->mHeightGridCellsY_0x2384);
             if (field_0x13c != NULL) {
                 setEmitterPos_8013CB44(field_0x13c, &pos, -1, 0, true);
             } else {
@@ -447,8 +447,8 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
 void GameRootSub24_8016A3AC::fn_8016DCEC() {
     if (isGameModeSet() && field_0x1cf && gGameRoot_8053AAF8->field_0x4c != 0xB) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        fn_8016D398(camera->field_0x4, field_0x1c0, false, !field_0x1d0, &field_0x140, &field_0x1b0,
-                    &field_0x1b8, &field_0x1b4, field_0x54, field_0x6c, 6.0f / camera->field_0x858);
+        fn_8016D398(camera->mViewMtx_0x4, field_0x1c0, false, !field_0x1d0, &field_0x140, &field_0x1b0,
+                    &field_0x1b8, &field_0x1b4, field_0x54, field_0x6c, 6.0f / camera->mZoom_0x858);
     }
 }
 
@@ -1019,7 +1019,7 @@ void GameRootSub24_8016A3AC::fn_8016B248() {
 void GameRootSub24_8016A3AC::fn_8016B0B0() {
     if (field_0x1cf) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        f32 scale = 6.0f / camera->field_0x858;
+        f32 scale = 6.0f / camera->mZoom_0x858;
         for (s32 i = 0; i < 6; i++) {
             if (field_0x3c[i] == NULL) {
                 continue;
@@ -1031,9 +1031,9 @@ void GameRootSub24_8016A3AC::fn_8016B0B0() {
                 continue;
             }
             Mtx mtx;
-            f32 x = -camera->field_0x4[0][3];
+            f32 x = -camera->mViewMtx_0x4[0][3];
             f32 z = -545.0f - 96.0f * (f32)i;
-            f32 y = 32.0f + (z - camera->field_0x4[1][3]);
+            f32 y = 32.0f + (z - camera->mViewMtx_0x4[1][3]);
             mtx[0][0] = 1.0f;
             mtx[0][1] = 0.0f;
             mtx[0][2] = 0.0f;
@@ -1195,7 +1195,7 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     f32 z = 1.5f * (f32)(dir << 10);
     if (followX) {
-        f32 c = -camera->field_0x4[0][3];
+        f32 c = -camera->mViewMtx_0x4[0][3];
         f32 d = c * parallax;
         f32 e = c - d;
         off.x = e + (f32)((s32)(d / 512.0f) << 9);
@@ -1203,7 +1203,7 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
         off.x = 0.0f;
     }
     if (followY) {
-        f32 c = -camera->field_0x4[1][3];
+        f32 c = -camera->mViewMtx_0x4[1][3];
         f32 d = c * parallax;
         f32 e = c - d;
         off.y = e + (f32)((s32)(d / 512.0f) << 9);
@@ -1241,15 +1241,15 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
 void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-    f32 sx = 0.125f / (f32)map->field_0x2380;
-    f32 sy = 0.125f / (f32)map->field_0x2384;
-    f32 inv = 1.0f / camera->field_0x858;
+    f32 sx = 0.125f / (f32)map->mHeightGridCellsX_0x2380;
+    f32 sy = 0.125f / (f32)map->mHeightGridCellsY_0x2384;
+    f32 inv = 1.0f / camera->mZoom_0x858;
     JUTVideo* video = JUTVideo::getManager();
     half.x = inv * (0.5f * (sx * (s32)video->getFbWidth()));
     half.y = inv * (0.5f * (sy * (s32)video->getEfbHeight()));
     half.z = 0.0f;
-    center.x = -camera->field_0x4[0][3] * sx;
-    center.y = -camera->field_0x4[1][3] * sy;
+    center.x = -camera->mViewMtx_0x4[0][3] * sx;
+    center.y = -camera->mViewMtx_0x4[1][3] * sy;
     center.z = 0.0f;
 }
 

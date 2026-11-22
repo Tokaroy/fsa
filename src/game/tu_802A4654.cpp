@@ -166,7 +166,7 @@ void cls_804A7EB0::update() {
     case 0:
         switch (field_0x238) {
         case 0:
-            if (getActorManager_801F856C()->field_0x305c == 1) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
                 burst(this);
             }
             break;
@@ -467,11 +467,11 @@ void cls_804A7EB0::update() {
         f32 x = mPos.x + (f32)lbl_8046C6C8.focus[field_0x234][0];
         f32 y = mPos.y + (f32)lbl_8046C6C8.focus[field_0x234][1];
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.set(x, y, 0.0f);
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.set(x, y, 0.0f);
+            camera->mOverrideBlend_0x7f6 = 0;
         }
     }
     if (field_0x30c == 0 && field_0x310 == 0) {

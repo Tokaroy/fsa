@@ -243,7 +243,7 @@ void UnknownFORM_804A7BE8::draw() {
     JGeometry::TBox2f box;
     JGeometry::TVec3f pos(mPos);
     if (mLayer_0x4 == 0) {
-        box = gGameRoot2_8053AB10->field_0x24->field_0x164;
+        box = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
         if (pos.y - pos.z < 28.0f + box.i.y) {
             pos.y += 52.0f;
         }

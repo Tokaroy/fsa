@@ -151,8 +151,8 @@ void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
 void AllEnemiesDefeated_804A2AB0::fn_8019D958() {
     JGeometry::TVec3f pos;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    pos.x = -camera->field_0x4[0][3];
-    pos.y = -camera->field_0x4[1][3];
+    pos.x = -camera->mViewMtx_0x4[0][3];
+    pos.y = -camera->mViewMtx_0x4[1][3];
     pos.z = 0.0f;
 
     switch (mField_0x230) {
@@ -207,8 +207,8 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D958() {
 void AllEnemiesDefeated_804A2AB0::fn_8019D2AC() {
     JGeometry::TVec3f pos;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    pos.x = -camera->field_0x4[0][3];
-    pos.y = -camera->field_0x4[1][3];
+    pos.x = -camera->mViewMtx_0x4[0][3];
+    pos.y = -camera->mViewMtx_0x4[1][3];
     pos.z = 0.0f;
 
     switch (mField_0x230) {
@@ -336,11 +336,11 @@ void AllEnemiesDefeated_804A2AB0::update() {
     localBox = *layerBox(mLayer_0x4);
 
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 5;
-        camera->field_0x808.set(localBox);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 5;
+        camera->mFocusBox_0x808.set(localBox);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 
     switch (mField_0x238) {

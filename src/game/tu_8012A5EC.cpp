@@ -81,15 +81,15 @@ void cls_8049E770::init() {
     f32 y1 = posY + halfH;
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x840 == 0) {
-        cam->field_0x840 = 1;
-        cam->field_0x844.i.x = posX;
-        cam->field_0x844.i.y = y0;
-        cam->field_0x844.f.x = posX;
-        cam->field_0x844.f.y = y1;
-        cam->field_0x854 = 1.0f;
-        cam->field_0x1d4 = -1.0f;
-        cam->field_0x1d8 = -1.0f;
+    if (cam->mBlendBoxOn_0x840 == 0) {
+        cam->mBlendBoxOn_0x840 = 1;
+        cam->mBlendBox_0x844.i.x = posX;
+        cam->mBlendBox_0x844.i.y = y0;
+        cam->mBlendBox_0x844.f.x = posX;
+        cam->mBlendBox_0x844.f.y = y1;
+        cam->mBlendWeight_0x854 = 1.0f;
+        cam->mMargin_0x1d4 = -1.0f;
+        cam->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -115,7 +115,7 @@ void cls_8049E770::update() {
         obj->field_0x284 = 1;
         obj->field_0x28c = 0.05f;
     }
-    gGameRoot2_8053AB10->field_0x24->field_0x17c = 1;
+    gGameRoot2_8053AB10->field_0x24->mWidenBounds_0x17c = 1;
     if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) &&
         field_0x230 >= 3 && field_0x230 <= 9) {
         gGameRoot_8053AAF8->field_0x85 = 2;
@@ -581,15 +581,15 @@ void cls_8049E770::fn_8012AA84() {
     f32 y1 = posY + halfH;
     f32 y0 = posY - halfH;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x840 == 0) {
-        cam->field_0x840 = 1;
-        cam->field_0x844.i.x = posX;
-        cam->field_0x844.i.y = y0;
-        cam->field_0x844.f.x = posX;
-        cam->field_0x844.f.y = y1;
-        cam->field_0x854 = 1.0f;
-        cam->field_0x1d4 = -1.0f;
-        cam->field_0x1d8 = -1.0f;
+    if (cam->mBlendBoxOn_0x840 == 0) {
+        cam->mBlendBoxOn_0x840 = 1;
+        cam->mBlendBox_0x844.i.x = posX;
+        cam->mBlendBox_0x844.i.y = y0;
+        cam->mBlendBox_0x844.f.x = posX;
+        cam->mBlendBox_0x844.f.y = y1;
+        cam->mBlendWeight_0x854 = 1.0f;
+        cam->mMargin_0x1d4 = -1.0f;
+        cam->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -704,32 +704,32 @@ bool cls_8049E770::fn_8012A5EC() {
     f32 y1 = halfH + posY;
     if (field_0x3fc != 0.0f || field_0x400 != 0.0f || field_0x230 == 0 || field_0x230 == 1) {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.i.x = posX;
-            cam->field_0x844.i.y = y0;
-            cam->field_0x844.f.x = posX;
-            cam->field_0x844.f.y = y1;
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
+        if (cam->mBlendBoxOn_0x840 == 0) {
+            cam->mBlendBoxOn_0x840 = 1;
+            cam->mBlendBox_0x844.i.x = posX;
+            cam->mBlendBox_0x844.i.y = y0;
+            cam->mBlendBox_0x844.f.x = posX;
+            cam->mBlendBox_0x844.f.y = y1;
+            cam->mBlendWeight_0x854 = 1.0f;
+            cam->mMargin_0x1d4 = -1.0f;
+            cam->mMinHalfWidth_0x1d8 = -1.0f;
         }
     } else {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 5;
-            cam->field_0x808.i.x = posX;
-            cam->field_0x808.i.y = y0;
-            cam->field_0x808.f.x = posX;
-            cam->field_0x808.f.y = y1;
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 5;
+            cam->mFocusBox_0x808.i.x = posX;
+            cam->mFocusBox_0x808.i.y = y0;
+            cam->mFocusBox_0x808.f.x = posX;
+            cam->mFocusBox_0x808.f.y = y1;
+            cam->mOverrideBlend_0x7f6 = 0;
         }
     }
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     Vec camPos;
-    camPos.x = -cam->field_0x4[0][3];
-    camPos.y = -cam->field_0x4[1][3];
+    camPos.x = -cam->mViewMtx_0x4[0][3];
+    camPos.y = -cam->mViewMtx_0x4[1][3];
     camPos.z = 0.0f;
     return PSVECDistance(&field_0x238, &camPos) < 0.1f;
 }

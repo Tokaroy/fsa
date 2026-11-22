@@ -136,13 +136,13 @@ void HammerShopMinigame_8049C858::update() {
         break;
     case 1: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 4;
-            cam->field_0x7fc.x = focus.x;
-            cam->field_0x7fc.y = focus.y;
-            cam->field_0x7fc.z = focus.z;
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 4;
+            cam->mFocusPos_0x7fc.x = focus.x;
+            cam->mFocusPos_0x7fc.y = focus.y;
+            cam->mFocusPos_0x7fc.z = focus.z;
+            cam->mOverrideBlend_0x7f6 = 0;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x240)) {
@@ -183,13 +183,13 @@ void HammerShopMinigame_8049C858::update() {
     }
     case 2: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 4;
-            cam->field_0x7fc.x = focus.x;
-            cam->field_0x7fc.y = focus.y;
-            cam->field_0x7fc.z = focus.z;
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 4;
+            cam->mFocusPos_0x7fc.x = focus.x;
+            cam->mFocusPos_0x7fc.y = focus.y;
+            cam->mFocusPos_0x7fc.z = focus.z;
+            cam->mOverrideBlend_0x7f6 = 0;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
@@ -201,13 +201,13 @@ void HammerShopMinigame_8049C858::update() {
     }
     case 3: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 4;
-            cam->field_0x7fc.x = focus.x;
-            cam->field_0x7fc.y = focus.y;
-            cam->field_0x7fc.z = focus.z;
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 4;
+            cam->mFocusPos_0x7fc.x = focus.x;
+            cam->mFocusPos_0x7fc.y = focus.y;
+            cam->mFocusPos_0x7fc.z = focus.z;
+            cam->mOverrideBlend_0x7f6 = 0;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
