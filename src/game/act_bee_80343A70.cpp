@@ -70,6 +70,26 @@ static inline void steerPieces(Bee_804AC600* self) {
     }
 }
 
+// Serial of the nearest live bomb ('HBMB') within 1024 units that is not in spawn state 1, 2 or 4,
+// else -1 (update, states 2 and 3). The original's loop counter copy (mr) shows the search was inlined.
+static inline s32 findNearestBomb(Bee_804AC600* self) {
+    f32 best = 1024.0f;
+    s32 found = -1;
+    s32 count = getActorManager_801F856C()->mActorEnd;
+    for (s32 i = 0; i < count; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+        if (actor != NULL && actor->mActorId == ACTOR_HBMB && actor->mAlive == 1 && actor->mSpawnParam_0x90 != 1 &&
+            actor->mSpawnParam_0x90 != 2 && actor->mSpawnParam_0x90 != 4) {
+            f32 d = PSVECDistance(&self->mPos, &actor->mPos);
+            if (d < best) {
+                found = actor->mSerial;
+                best = d;
+            }
+        }
+    }
+    return found;
+}
+
 // 0x80343D90.
 // FIXME(shotgun): 98.04 %, missing/extra; behaviour near.
 void Bee_804AC600::update() {
@@ -153,8 +173,8 @@ void Bee_804AC600::update() {
                     return;
                 }
                 field_0x238 = 0x78;
-                field_0x2f8[0].z = field_0x2f8[0].y = field_0x2f8[0].x = 0.0f;
-                field_0x34c[0].z = field_0x34c[0].y = field_0x34c[0].x = 0.0f;
+                field_0x2f8[0].zero();
+                field_0x34c[0].zero();
                 field_0x24c = -1;
                 field_0x244 = field_0x24c;
                 field_0x230 = 5;
@@ -202,23 +222,10 @@ void Bee_804AC600::update() {
     case 2:
     case 3:
         if (field_0x238 <= 0) {
-            f32 best = 1024.0f;
-            s32 found = -1;
-            s32 count = getActorManager_801F856C()->mActorEnd;
-            for (s32 i = 0; i < count; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-                if (actor != NULL && actor->mActorId == ACTOR_HBMB && actor->mAlive == 1 && actor->mSpawnParam_0x90 != 1 &&
-                    actor->mSpawnParam_0x90 != 2 && actor->mSpawnParam_0x90 != 4) {
-                    f32 d = PSVECDistance(&mPos, &actor->mPos);
-                    if (d < best) {
-                        found = actor->mSerial;
-                        best = d;
-                    }
-                }
-            }
-            field_0x248 = found;
-            if (field_0x248 >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x248);
+            field_0x248 = findNearestBomb(this);
+            s32 serial = field_0x248;
+            if (serial >= 0) {
+                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
                     JGeometry::TVec3f target = actor->mPos;
                     diff.x = target.x - mPos.x;
@@ -234,7 +241,12 @@ void Bee_804AC600::update() {
                         field_0x34c[0] = diff;
                         field_0x238 = 10;
                     }
-                    for (s32 i = 0; i < 7; i++) {
+                    if (target.x > field_0x2a4[0].x) {
+                        field_0x254[0] = 0;
+                    } else {
+                        field_0x254[0] = 2;
+                    }
+                    for (s32 i = 1; i < 7; i++) {
                         if (target.x > field_0x2a4[i].x) {
                             field_0x254[i] = 0;
                         } else {
