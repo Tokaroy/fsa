@@ -842,6 +842,42 @@ def name_map(wt):
             for u in rep["units"] for f in u.get("functions", [])}
 
 
+def credit_map(wt):
+    """{(unit, function): (credited bytes, match %, size)}: a 100 % function's credit is its size, a
+    structurally matched one's its partial credit (structural.json weighted_fns), else 0. Keyed by name."""
+    try:
+        rep = json.loads((wt / "build/G4SE01/report_honest.json").read_text())
+        wf = json.loads((wt / "build/G4SE01/structural.json").read_text()).get("weighted_fns", {})
+    except (OSError, ValueError):
+        return None
+    out = {}
+    for u in rep["units"]:
+        for f in u.get("functions", []):
+            pct, size = float(f.get("fuzzy_match_percent") or 0), int(f.get("size") or 0)
+            out[(u["name"], f["name"])] = (size if pct >= 100 else float(wf.get(u["name"], {}).get(f["name"], 0)), pct, size)
+    return out
+
+
+# A merge or publish is refused when a function loses this much: its structural credit (the weighted
+# metric; 2026-11-22 ten merges raised fuzzy % but lost credit, weighted fell 0.08) or its match % (an open
+# function fell 98.55 -> 61.65 % through the 100 %-only gate on 2026-11-15).
+CREDIT_DROP = (32, 0.02)   # bytes and fraction of the function's size: both exceeded = regression
+PCT_DROP = 2.0             # points of match %, for a function of 64 bytes or more
+
+
+def regressions(before, after, allow=()):
+    bad = []
+    for k, (c0, p0, size) in before.items():
+        c1, p1, _ = after.get(k, (0.0, 0.0, size))
+        if k[1] in allow:
+            continue
+        if c0 - c1 > CREDIT_DROP[0] and c0 - c1 > CREDIT_DROP[1] * size:
+            bad.append(f"{k[1]} credit {c0:.0f} -> {c1:.0f} B")
+        elif size >= 64 and p0 - p1 > PCT_DROP:
+            bad.append(f"{k[1]} {p0:.2f} -> {p1:.2f} %")
+    return bad
+
+
 def rule_problem(wt, unit):
     added = [l for l in sh(["git", "diff", "-U0", "--", "src", "include", "libs"], wt).stdout.splitlines()
              if l.startswith("+") and not l.startswith("+++")]
@@ -1197,6 +1233,7 @@ def integrate(wt, branch, unit):
         try:
             pre = head(INTEG)
             before = report_map(INTEG) or {}
+            cbefore = credit_map(INTEG) or {}
             if sh(["git", "merge", "-q", "--no-edit", branch], INTEG).returncode:
                 sh(["git", "merge", "--abort"], INTEG)
                 return "merge conflict"
@@ -1207,6 +1244,10 @@ def integrate(wt, branch, unit):
                 n0, n1 = sum(p >= 100 for p in before.values()), sum(p >= 100 for p in after.values())
                 if n1 < n0:
                     why = f"matched functions {n0} -> {n1}"
+                if not why:
+                    bad = regressions(cbefore, credit_map(INTEG) or {})
+                    if bad:
+                        why = f"{len(bad)} function(s) regressed: " + "; ".join(bad[:3])
             if not why and "check: ok" not in sh(["python3", "tools/gen_game.py", "--check"], INTEG).stdout:
                 why = "gen_game --check"
             if not why:
@@ -1669,6 +1710,7 @@ def publish_once(accept_loss=()):
         if sh(["git", "status", "--porcelain", "--untracked-files=no"], MAIN).stdout.strip():
             return "main checkout has local changes"
         before = report_map(MAIN) or {}
+        cbefore = credit_map(MAIN) or {}
         n0 = progress_numbers(MAIN)
         order0 = set(re.findall(r"game/\w+\.cpp", sh(["python3", "tools/order_check.py"], MAIN).stdout))
         if sh(["git", "merge", "-q", "--ff-only", BRANCH], MAIN).returncode:
@@ -1689,6 +1731,9 @@ def publish_once(accept_loss=()):
         if unexpected:
             return undo(f"{len(unexpected)} matched function(s) lost: {', '.join(unexpected[:3])}")
         accepted = [names.get(f, f) for f in lost]
+        bad = regressions(cbefore, credit_map(MAIN) or {}, allow=set(accept_loss) | {names.get(f, f) for f in lost})
+        if bad:
+            return undo(f"{len(bad)} function(s) regressed: " + "; ".join(bad[:3]))
         order1 = set(re.findall(r"game/\w+\.cpp", sh(["python3", "tools/order_check.py"], MAIN).stdout))
         if order1 - order0:
             return undo("out of address order: " + ", ".join(sorted(order1 - order0)[:3]))
