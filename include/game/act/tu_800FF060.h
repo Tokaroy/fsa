@@ -15,6 +15,7 @@ public:
     /* 0x20 */ virtual void draw();
     // Not written yet: the minigame's per-frame work.
     void fn_801003F4();
+    void facePlayer_inline();
 
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ u8 field_0x234;
