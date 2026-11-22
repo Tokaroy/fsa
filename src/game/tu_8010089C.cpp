@@ -384,6 +384,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
 
 // A plain function that draw inlines; the linker dropped its own copy. Its literals stand in the
 // pool before fn_80100D28's.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void WhackAMoleShop_8049C8EC::showTimer() {
     s32 timer = field_0x23c;
     lbl_8053AF18->field_0x30 = timer / 60;

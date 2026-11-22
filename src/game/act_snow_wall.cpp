@@ -143,6 +143,7 @@ void cls_8049E8A0::draw() {
 // 16.0f / 1.0f lowest, then shrink's run) and from inlining (update stays at
 // 100 % with no new bl; the whole switch as one helper is not inlined): each
 // is exactly the case body update inlines, nothing else is proven.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 16-line definition): split out only where the .sdata2 order needs it.
 void cls_8049E8A0::shrink() {
     mDrawEnabled = false;
     bool done;
@@ -160,6 +161,7 @@ void cls_8049E8A0::shrink() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 void cls_8049E8A0::melt() {
     if (field_0x234 == 0) {
         JGeometry::TVec3f pos = mPos;

@@ -369,6 +369,7 @@ void Block_804A7A10::update() {
 // .sdata2 has 19.9f and 7.9f between fn_8028C518's 0.0f and update's own literals, so it was
 // generated here (tools/pool.py). False when a block of kind 1-3 that was pushed 7.9 or more from
 // field_0x230 cannot go on in its direction (fn_8028C518, whose change of the velocity is undone).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 11-line definition): split out only where the .sdata2 order needs it.
 bool Block_804A7A10::keepsMoving(f32 threshold) {
     JGeometry::TVec3f vel = field_0x3c;
     if ((field_0x90 & 3) != 0 && threshold == 19.9f &&

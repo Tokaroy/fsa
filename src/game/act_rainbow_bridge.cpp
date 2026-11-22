@@ -108,6 +108,7 @@ void cls_8049E610::pool_8053CB48() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049E610::isPlayerOn(s32 player) {
     if (player < 0) {
         return false;

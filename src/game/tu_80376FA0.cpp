@@ -214,6 +214,7 @@ void cls_804AE7D8::update() {
 // Not in the binary: a plain function that update inlines. The pool puts the four
 // helpers here, between update and draw, in this order (the unit's literals 1.0f, -31.5f,
 // 31.5f, 0.0f, 24.0f, 16.0f come before update's own).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
 void cls_804AE7D8::rewriteTiles() {
     f32 x = mPos.x;
     x -= 24.0f;
@@ -239,6 +240,7 @@ void cls_804AE7D8::rewriteTiles() {
 
 // Whether one of the player's eight probe points (fn_8022E088) lies in the
 // actor's box; only players on the actor's layer count.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
     s32 layer = field_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
@@ -264,6 +266,7 @@ bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
 }
 
 // Not in the binary: a plain function that init inlines.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void cls_804AE7D8::setBoxes() {
     mBox.i.x = -31.5f;
     mBox.i.y = -31.5f;
@@ -277,6 +280,7 @@ void cls_804AE7D8::setBoxes() {
 
 // The effects of the rock breaking.
 // Not in the binary: a plain function that update inlines.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
 void cls_804AE7D8::spawnBreakEmitters() {
     if (mEmitter230 == NULL) {
         mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);

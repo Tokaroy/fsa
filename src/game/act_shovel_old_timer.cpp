@@ -149,6 +149,7 @@ void ShovelOldTimer_804AAB40::draw() {
 
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
 // dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 31-line definition): split out only where the .sdata2 order needs it.
 bool ShovelOldTimer_804AAB40::findDigSpot() {
     JGeometry::TBox2f box = field_0x230;
     box.i.x += 64.0f;

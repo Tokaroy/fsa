@@ -173,6 +173,7 @@ void VaatiTimeUp_804ACCC0::draw() {
 
 // Every 6 frames (or once past the target with the timer up) takes the angle to the target, then
 // turns towards it and eases the velocity to speed 6 in that direction.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void VaatiTimeUp_804ACCC0::steer() {
     if (field_0x2c4 <= 0 || (field_0x2c0 <= 0 && mPos.x >= field_0x290 && mPos.y >= field_0x294)) {
         pickTarget();
@@ -188,6 +189,7 @@ void VaatiTimeUp_804ACCC0::steer() {
 
 // With the timer up the target becomes the point 192 left of the view box; else tells whether the
 // target is reached (steer does not use the result; the 0.0f is this compare's).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 bool VaatiTimeUp_804ACCC0::pickTarget() {
     if (field_0x2c0 <= 0) {
         field_0x290 = mViewBox.i.x - 192.0f;

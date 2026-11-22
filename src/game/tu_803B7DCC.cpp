@@ -219,6 +219,7 @@ void cls_804AFAB0::fn_803B7DCC() {
 // .sdata2 starts with 0.0f and the int -> float bias, ahead of fn_803B7DCC's 800.0f and 640.0f, so
 // it was generated before it (tools/pool.py). Makes the whole frame buffer the ortho projection of the game root's camera, with the light
 // matrices.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void setFrameBufferOrtho() {
     JGeometry::TBox2f box(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
                           (s32)JUTVideo::getManager()->getEfbHeight());

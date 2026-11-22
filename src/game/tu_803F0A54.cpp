@@ -2564,6 +2564,7 @@ void ConnectScreen_804B0F10::fn_803F1C70() {
 // generated before it (tools/pool.py).
 // fn_803FC46C's fade overlay: steps the alpha (field_0x25d) up, runs the screen change at full
 // black, steps it down again, and draws field_0x5c over the screen.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void ConnectScreen_804B0F10::drawFade() {
     if (field_0x25e != 0) {
         switch (field_0x25e) {

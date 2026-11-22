@@ -339,6 +339,7 @@ f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
 // .sdata2 has its literals (19.9f, 8f) ahead of fn_8033D4AC's, so it was generated before it
 // (tools/pool.py). False when a size-2 block at its full reach, 8 or more away from where it
 // started, cannot go on in its direction; otherwise puts field_0x3c back and returns true.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
     JGeometry::TVec3f saved = field_0x3c;
     if (field_0x260 == 2 && reach == 19.9f &&

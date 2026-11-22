@@ -291,6 +291,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 bool ZoraEscort_8049DF78::hasNearbyBari() {
     if (fn_80131F0C()->mCount <= 1) {
         return false;
@@ -313,6 +314,7 @@ bool ZoraEscort_8049DF78::hasNearbyBari() {
     return true;
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 17-line definition): split out only where the .sdata2 order needs it.
 s32 ZoraEscort_8049DF78::findNearbyPlayer() {
     if (field_0x33c != 0) {
         return -1;
@@ -436,6 +438,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
     return EscortBase_8049E0C8::vfunc_0x6C(state);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 24-line definition): split out only where the .sdata2 order needs it.
 bool ZoraEscort_8049DF78::stepToPlayer() {
     JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(field_0x3cc);
     targetPos.z = 0.0f;

@@ -177,6 +177,7 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
 // .sdata2 has 373.0f, 500.0f, 0.5f, 20.0f and 40.0f between fn_8011CF48's literals and
 // fn_8011D1B8's, so it was generated here (tools/pool.py). Gives lbl_8053AED0 its rect, 40 high
 // and centred on the camera's position on the screen, with field_0x238 as the alpha.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DD68::setOverlayRect() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     Vec out;
@@ -267,6 +268,7 @@ void cls_8049DD68::fn_8011CF48() {
 // A plain function that fn_8011D1B8 inlines and whose own copy the linker dropped: the original's
 // .sdata2 starts with 0.0f, ahead of fn_8011CF48's literals, so it was generated before it
 // (tools/pool.py). Entering state 2: the scroll speed and the overlay's alpha start at zero.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DD68::startScroll() {
     field_0x23c = 0.0f;
     field_0x238 = 0.0f;

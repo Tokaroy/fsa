@@ -469,6 +469,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
 // between fn_8011B3F0's and fn_8011B878's.
 
 // Effect 0x33B at mPos with y offset by -8.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DB90::spawnFlash() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -8.0f;
@@ -476,6 +477,7 @@ void cls_8049DB90::spawnFlash() {
 }
 
 // State 9 of update: the hop of state 4 with field_0x3c.y -0.5 and field_0x3c.x left alone.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DB90::hopDown() {
     s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9];
     field_0x3c.z = 4.5f - 0.2f * t;

@@ -278,6 +278,7 @@ bool Icicle_8049CFC8::fn_8010B284() {
 // Its literals 0.1f, 0.5f and 9.8f lead the unit's .sdata2 pool, ahead of
 // fn_8010B284's
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
 void Icicle_8049CFC8::fall() {
     field_0x23c += 0.1f;
     mPos.y = mSpawnPos.y + 0.5f * (9.8f * square(field_0x23c));

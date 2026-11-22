@@ -245,6 +245,7 @@ void IceWall_8049DE18::draw() {
 // function is not inlined).
 
 // The wall starts to melt: the smoke emitters (on layer 0) and the sound.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void IceWall_8049DE18::startMelting() {
     deleteEmitter(&mEmitter100);
     deleteEmitter(&mEmitter104);
@@ -262,6 +263,7 @@ void IceWall_8049DE18::startMelting() {
 }
 
 // Whether the player probe fn_8023AB94 hits the wall's box or a 'FIRE' actor touches the wall.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 bool IceWall_8049DE18::hitByFire() {
     JGeometry::TBox2f box;
     JGeometry::TVec2f hitPos;
@@ -279,6 +281,7 @@ bool IceWall_8049DE18::hitByFire() {
 
 // Whether one of the four player probes hits the wall's box (at its height on the screen); the
 // arrow, bomb or 'PCDM' actor that hit is told so (fn_801CC820 / fn_801CC538 / fn_801CC640).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 30-line definition): split out only where the .sdata2 order needs it.
 bool IceWall_8049DE18::hitByWeapon() {
     JGeometry::TBox2f box;
     JGeometry::TVec3f stack40;

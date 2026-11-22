@@ -405,6 +405,7 @@ u16 fn_801123C8(s32 kind, s32 mode) {
 // Plain helpers inlined into update() (cases 12 and 13) whose out-of-line
 // copies the linker dropped; defined at the bottom so deferred inlining pools
 // their .sdata2 constants before draw().
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049D740::moveToGoal() {
     field_0x248 += 0.04f;
     fn_801CD950(&field_0x24c, 2.0f, 0.05f);

@@ -181,6 +181,7 @@ void InvincibilityFairy_804AB4C0::draw() {
 
 // A uniform scale as a 3x4 matrix (zero translation, then diagonal scale).
 // Below every other function: the pool has its 0.0f ahead of draw's 1.5f.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 void setUniformScaleMtx(Mtx m, f32 scale) {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;

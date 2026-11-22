@@ -365,6 +365,7 @@ s32 ZoraEscortGoal_8049E424::pool_8053CAB4(u32 msg) {
 
 // State 5: a step along the rail at speed 0.5, facing the way it goes. True at the rail's end
 // (or when field_0x238 gives no rail).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 25-line definition): split out only where the .sdata2 order needs it.
 bool ZoraEscortGoal_8049E424::walkRail() {
     bool flag;
     if (field_0x238 <= 0) {
@@ -410,6 +411,7 @@ void ZoraEscortGoal_8049E424::pool_8053CAA8() {
 }
 
 // The two emitters that follow the goal (hover moves them), 8 units right of mPos.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 6-line definition): split out only where the .sdata2 order needs it.
 void ZoraEscortGoal_8049E424::spawnEmitters() {
     JGeometry::TVec3f pos(mPos);
     pos.x += 8.0f;

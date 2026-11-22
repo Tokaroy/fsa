@@ -549,6 +549,7 @@ void WingedForceGem_804AB098::draw() {
 // Not in the binary (update inlines it); the pool has its literals ahead of every other function's.
 // State 0: rises (field_0x248, up to 20) while a bomb or a player is within 48; adds a random step
 // to field_0x260.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 32-line definition): split out only where the .sdata2 order needs it.
 void WingedForceGem_804AB098::updateRise() {
     if (field_0x286 == 1) {
         s32 serial = -1;

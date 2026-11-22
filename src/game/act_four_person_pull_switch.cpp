@@ -151,6 +151,7 @@ void FourPersonPullSwitch_804AE230::draw() {
 // A plain function at its place between fn_8036CBBC and draw, inlined into update; the
 // linker dropped its out-of-line copy. Compiled there it pools 8.0f between fn_8036CBBC's
 // 0 / 7 and draw's 1.0f, as in the original.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 bool FourPersonPullSwitch_804AE230::checkAllPulled() {
     if (((field_0x90 >> 4) & 3) != 0) {
         return false;

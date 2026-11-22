@@ -145,6 +145,7 @@ bool fn_80133B58() {
 // A plain function that init inlines and whose own copy the linker dropped: the original's .sdata2
 // starts with 1.0f, ahead of fn_80133B58's 0.0f, so it was generated before it (tools/pool.py).
 // Spawns the two emitters that are not there yet.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void cls_8049ED30::spawnEmitters() {
     if (mEmitters[0] == NULL) {
         mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);

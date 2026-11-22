@@ -508,6 +508,7 @@ void cls_8049EB8C::fn_801321E4() {
 // the order of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
 // Checks for a talking player and opens message 0x2B6 for `player`, 64 units above the fairy.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 s32 cls_8049EB8C::talkTo() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -532,6 +533,7 @@ s32 cls_8049EB8C::talkTo() {
 
 // State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
 // in a row 20 units apart at y + 64.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 20-line definition): split out only where the .sdata2 order needs it.
 void cls_8049EB8C::placeAtBarrier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
@@ -554,6 +556,7 @@ void cls_8049EB8C::placeAtBarrier() {
 }
 
 // Spawns a soldier ('SLR1') at a random place in an 80 x 32 box, y + 180 from the barrier.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void cls_8049EB8C::spawnSoldier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');

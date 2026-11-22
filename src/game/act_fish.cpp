@@ -326,6 +326,7 @@ void Fish_804AC658::draw() {
 }
 
 // Not in the binary (update inlines it); the pool has its 0.0f ahead of every other function's.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 6-line definition): split out only where the .sdata2 order needs it.
 void Fish_804AC658::stopSwim() {
     field_0x25c = 0.0f;
     field_0x258 = 0.0f;

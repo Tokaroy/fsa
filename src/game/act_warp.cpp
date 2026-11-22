@@ -441,6 +441,7 @@ void Warp_804A6DC8::draw() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 18-line definition): split out only where the .sdata2 order needs it.
 static void updateSandHole(Warp_804A6DC8* self) {
     for (s32 i = 0; i < 4; i++) {
         if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {

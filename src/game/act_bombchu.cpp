@@ -544,6 +544,7 @@ void Bombchu_804AB464::fn_8032506C() {
 // Turns the sprite to the crawl direction. Inlined into update (state 2);
 // the original defined it here, before fn_8032506C: its out-of-line copy was
 // dead-stripped, but its 0.0f, pi, 3pi/2 and pi/2 open the unit's .sdata2 pool.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void Bombchu_804AB464::faceMoveDirection() {
     if (field_0x276 == 1) {
         if (field_0x234 > 0.0f) {

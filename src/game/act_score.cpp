@@ -220,6 +220,7 @@ void Score_804AF4C0::fn_80393228() {
 #pragma auto_inline reset
 
 // Auto-inlined into update(); placed here to match the original .sdata2 literal pool order.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void Score_804AF4C0::updateState1() {
     if (mTimer >= 0x50) {
         s32 d = 90 - mTimer;
@@ -231,6 +232,7 @@ void Score_804AF4C0::updateState1() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void Score_804AF4C0::updateState2() {
     field_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << 10);
     mPos.add(field_0x3c);

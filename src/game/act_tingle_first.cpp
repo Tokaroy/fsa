@@ -277,6 +277,7 @@ void cls_804AADD8::draw() {
 // 65536.0f (lbl_805418C0) leads the unit's .sdata2 pool ahead of draw's 1.0f
 // (lbl_805418C4), so the code using it sat in a plain function below draw
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 void cls_804AADD8::selectNearestPlayer() {
     s32 count = gGameRoot_8053AAF8->fn_80138A30();
     s32 bestPlayer = 0;

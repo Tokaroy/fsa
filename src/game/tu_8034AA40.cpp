@@ -639,6 +639,7 @@ s32 cls_804AC8C0::fn_8034AAA0() {
 }
 
 // Not in the binary (vfunc_0x10 inlines it); the pool has its literals ahead of fn_8034AAA0's.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 static void markRandomCucco(s32* serials, s32 count) {
     f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
     Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(

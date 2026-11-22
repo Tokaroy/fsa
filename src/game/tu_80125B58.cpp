@@ -207,6 +207,7 @@ void cls_8049E350::fn_80125BF4() {
 // fn_80125BF4's, in the order of these functions from the bottom of the file up, so they were
 // generated before it (tools/pool.py).
 // Opens message `msg` for `player`, 64 units above the actor.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049E350::talkTo(s32 player, u16 msg) {
     JGeometry::TVec3f pos(mPos);
     pos.y -= 64.0f;
@@ -214,6 +215,7 @@ bool cls_8049E350::talkTo(s32 player, u16 msg) {
 }
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049E350::startSignAnim() {
     switch (field_0x238) {
     case 1:

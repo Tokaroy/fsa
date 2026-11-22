@@ -390,6 +390,7 @@ void cls_8049DA0C::fn_80117074(s32 index) {
 // whose own copies the linker dropped. The original's .sdata2 has their literals ahead of
 // fn_80117074's, in the order of these functions from the bottom up (tools/pool.py).
 // Entering state 11: effect 0x33a 16 above each player.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 11-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DA0C::spawnPlayerEffects() {
     JGeometry::TVec3f pos = mPos;
     for (s32 i = 0; i < 4; i++) {
@@ -403,6 +404,7 @@ void cls_8049DA0C::spawnPlayerEffects() {
 }
 
 // State 5: the players move apart sideways from field_0x244. True once the first is 24 away.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 16-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::spreadPlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
@@ -421,6 +423,7 @@ bool cls_8049DA0C::spreadPlayers() {
 }
 
 // State 9: the players rise to 80 above the actor. True once they are there.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::raisePlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
@@ -436,6 +439,7 @@ bool cls_8049DA0C::raisePlayers() {
 }
 
 // State 0: whether all four players stand in front of the actor, facing it.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::checkPlayers() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_8023561C(i)) {
@@ -460,6 +464,7 @@ bool cls_8049DA0C::checkPlayers() {
 }
 
 // State 0: opens the message (0x4b2 the first time, 0x4b3 after a "no").
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::showMessage() {
     u32 msg = 0x4b2;
     if (field_0x230 != 0) {

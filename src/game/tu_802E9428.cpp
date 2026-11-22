@@ -573,6 +573,7 @@ bool UnknownENDM_804AA0FC::fn_802E948C(f32 target, s32 frames) {
 // Moves the zoom one step (field_0x278) towards its target (field_0x274).
 // Not in the binary: a plain function that updateCamera inlines. The pool puts it below
 // fn_802E948C: its 0.0f is the unit's first literal.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void UnknownENDM_804AA0FC::stepZoom() {
 if (field_0x270 != field_0x274) {
     field_0x270 += field_0x278;

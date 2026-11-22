@@ -131,6 +131,7 @@ cls_8049CC40::~cls_8049CC40() {}
 // A plain function whose out-of-line copy the linker dropped (update inlines it).
 // Compiled first (the bottom of the file), it gives the .sdata2 pool its leading
 // 8.0f ahead of draw's 0.0f / 1.0f, as in the original.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049CC40::isInside(s32 player) const {
     s32 layer = field_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);

@@ -641,6 +641,7 @@ s32 cls_8049D83C::vfunc_0x58() {
 
 // Plain function init inlines (the linker dropped its own copy): its literals 80.0f and 0.0f
 // are pooled before those of fn_80113790.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnEmitters() {
     JGeometry::TVec3f pos[5] = {
         mPos,
@@ -656,6 +657,7 @@ void cls_8049D83C::spawnEmitters() {
 
 // Plain functions inlined by their callers (the linker dropped their out-of-line copies);
 // their order below spawnEmitters sets the .sdata2 float-literal pool order.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnSealEmitters() {
     for (s32 i = 0; i < 7; i++) {
         field_0x2a8[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
@@ -664,11 +666,13 @@ void cls_8049D83C::spawnSealEmitters() {
     field_0x2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnBurstEmitters() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::positionPlayers() {
     JGeometry::TVec3f pos = mSpawnPos;
     pos.y += 48.0f;
@@ -682,6 +686,7 @@ void cls_8049D83C::positionPlayers() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 44-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::updateCameraFocus() {
     switch (field_0x23c) {
     case 0:

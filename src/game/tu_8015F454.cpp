@@ -313,6 +313,7 @@ void fn_8015F454(JUTTexture* tex, const f32* pos, const f32* uv, GXColor color, 
 
 // Not in the binary (fn_8015F9C0 inlines it); the pool has its int->float bias ahead of fn_8015F454's
 // -1.0f. Black bars of height `bar` along the top and the bottom of the screen.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 static void drawLetterbox(f32 bar, JUtility::TColor color) {
     J2DFillBox(0.0f, 0.0f, (f32)(s32)JUTVideo::sManager->getFbWidth(), bar, color);
     J2DFillBox(0.0f, (f32)(s32)JUTVideo::sManager->getEfbHeight() - bar, (f32)(s32)JUTVideo::sManager->getFbWidth(),

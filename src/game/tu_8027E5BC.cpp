@@ -2303,6 +2303,7 @@ void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
 // or walking (2) on arrival. Dead-stripped: fn_8028538C inlines it. Its own copy created the pool's
 // 1.5, 0.5 and 3.0 (TUtilf::inv_sqrt in normalize) in that order, which sit before fn_8027FA08's 4.0
 // in the original .sdata2; inlined, its locals give fn_8028538C the original's stack slots.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void Player_804A6F38::followStep() {
     if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) {
         fn_802808E8(1.5f);

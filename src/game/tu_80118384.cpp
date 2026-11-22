@@ -253,6 +253,7 @@ void cls_80119E5C::fn_801194C4() {
 // A plain function that fn_80119628 inlines (fn_80119998 has the same code written out; calling
 // this there costs its match) and whose own copy the linker dropped: the original's .sdata2 has its 1.0f ahead of fn_801194C4's conversion constant, so it was
 // generated before it (tools/pool.py). The four emitters of the fade of kind 2 (field_0x24).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void spawnFadeEmitters() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     spawnEmitter_8013CC50(0, &pos, 0x3EC, 0, 0, NULL, NULL, true, 1.0f);

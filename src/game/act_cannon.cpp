@@ -292,6 +292,7 @@ void pool_8053C2F4(Cannon_8049CCF0* self) {
 }
 
 // Returns the first player that can take the cannon, or -1.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box) {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = 1 << i;
@@ -308,6 +309,7 @@ s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box) {
     return -1;
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void updateRise(Cannon_8049CCF0* self) {
     self->field_0x284 += 0.05f;
     {
@@ -317,6 +319,7 @@ void updateRise(Cannon_8049CCF0* self) {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 37-line definition): split out only where the .sdata2 order needs it.
 void updateRecoil(Cannon_8049CCF0* self) {
     static s32 lbl_8053AA70 = 0;
     static f32 lbl_8053AA78 = 0.0f;
@@ -355,6 +358,7 @@ void updateRecoil(Cannon_8049CCF0* self) {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
 void setBounceHeight(Cannon_8049CCF0* self, s16 a) {
     f32 sinv = JMath::sincosTable_.sinDegree(a);
     self->mPos.y = self->mHomePos.y + (f32)(12 * ((200 - (self->field_0x270 - 180)) / 200) + 2) * sinv;

@@ -571,6 +571,7 @@ bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
 // field_0x334 (the speed) towards 1.1 when `dist` is 32 or more, towards 0 below.
 // No copy of its own in the original: update inlines it and the linker dropped the body.
 // A plain function at this place: its literals stand in front of fn_80109AE0's in .sdata2.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::stepSpeed(f32 dist) {
     if (dist >= 32.0f) {
         fn_801CD950(&field_0x334, 1.1f, 0.02f);
@@ -746,6 +747,7 @@ void cls_8049CEE0::fn_80109534() {
 // 0, -24, 1, 16, 0.5, 5, 2 in the original's .sdata2.
 
 // State 9: `ppos` (the player's position) moved 16 to the side field_0x98, mPos towards it by 2.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
     switch (field_0x98) {
     case 0:
@@ -767,6 +769,7 @@ void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
 }
 
 // The same side position; mPos jumps to it on the player's layer, else moves towards it by 5.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 25-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
     switch (field_0x98) {
     case 0:

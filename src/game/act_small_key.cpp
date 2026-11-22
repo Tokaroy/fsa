@@ -881,6 +881,7 @@ bool SmallKey_804A8CD8::inl_802C2C30(u16 tile) {
 
 // Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
 // Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 37-line definition): split out only where the .sdata2 order needs it.
 bool SmallKey_804A8CD8::dropAtPlayer() {
     if (!field_0x2b0) {
         return true;
@@ -1065,6 +1066,7 @@ void SmallKey_804A8CD8::fn_802C24A8() {
 
 // Not in the binary (fn_802C2C30 inlines it); the pool puts it between fn_802C24A8 and fn_802C2154.
 // Landing on tile 0x16 throws the key up and towards its player.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 bool SmallKey_804A8CD8::bounceOffTile() {
     JGeometry::TVec3f checkPos;
     checkPos.x = mPos.x + 6.0f;

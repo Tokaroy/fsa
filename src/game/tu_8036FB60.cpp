@@ -724,6 +724,7 @@ void cls_804AE4B0::fn_803703C8() {
 
 // A plain function between fn_803703C8 and fn_80370200, inlined at both sites in fn_80370764
 // (its out-of-line copy was dead-stripped by the linker); pools 2232.0f, 1624.0f, 2.0f here.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 6-line definition): split out only where the .sdata2 order needs it.
 void cls_804AE4B0::guidePlayer_80370764() {
     JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
     if (PSVECMag(&d) > 2.0f) {

@@ -1065,6 +1065,7 @@ void EscortBase_8049E0C8::fn_801217EC(bool dead) {
 
 // Inlined into fn_801217EC only (its out-of-line copy was dead-stripped): spawns the life
 // meters whose serials are gone.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
 void EscortBase_8049E0C8::respawnLifeMeters() {
     if (field_0x332) {
         for (s32 i = 0; i < field_0x360; i++) {
@@ -1077,6 +1078,7 @@ void EscortBase_8049E0C8::respawnLifeMeters() {
 
 // Inlined into respawnLifeMeters only (dead-stripped): spawns meter `index`, hidden, 8 units
 // apart to the left of the escort.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 void EscortBase_8049E0C8::spawnLifeMeter(s32 index) {
     if (field_0x332 && index < field_0x360 && index >= 0) {
         JGeometry::TVec3f pos(mPos);

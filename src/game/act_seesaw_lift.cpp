@@ -726,6 +726,7 @@ void SeesawLift_804AD348::pool_80542878() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
 u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
     JGeometry::TBox2f box(mBox);

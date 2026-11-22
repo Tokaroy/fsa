@@ -426,6 +426,7 @@ void GamblingShop_804AAA70::draw() {
 
 // Not in the binary (update inlines it); the pool has its 3.0f ahead of draw's 1.0f.
 // Swaps two of the three chest slots at random.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 void GamblingShop_804AAA70::swapTwoChests() {
     s32 roll = (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     switch (roll) {

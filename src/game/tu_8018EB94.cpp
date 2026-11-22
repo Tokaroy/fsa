@@ -253,6 +253,7 @@ void cls_804A1FA0::draw() {
 // Not in the binary (update inlines it); the pool has its literals ahead of every other function's.
 // The velocity along heading field_0x98 (sixteenths of a turn) and the two points 6 away, two
 // steps to either side of it.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 void cls_804A1FA0::setHeading() {
     s16 angle = (s32)(4000.0f * (f32)field_0x98);
     field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);

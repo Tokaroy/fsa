@@ -1460,6 +1460,7 @@ void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void PrincessZeldaDemo_8049D208::standBelow(const JGeometry::TVec3f& target) {
     JGeometry::TVec3f pos = target;
     pos.y -= 16.0f;
@@ -1467,6 +1468,7 @@ void PrincessZeldaDemo_8049D208::standBelow(const JGeometry::TVec3f& target) {
 }
 
 // State 35: accelerates towards field_0x27c while shrinking; state 36 on arrival.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 24-line definition): split out only where the .sdata2 order needs it.
 void PrincessZeldaDemo_8049D208::flyToGoal() {
     field_0x268 += 0.04f;
     fn_801CD950(&field_0x26c, 2.0f, 0.05f);
@@ -1505,6 +1507,7 @@ void PrincessZeldaDemo_8049D208::pool_8053C570() {
 }
 
 // State 33: lowers the four players to the ground, 0.2 a frame faster.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 void PrincessZeldaDemo_8049D208::lowerPlayers() {
     f32 dz = 2.0f - 0.2f * (fn_8011921C()->field_0x8 - lbl_80464550[33]);
     for (s32 i = 0; i < 4; i++) {
@@ -1520,6 +1523,7 @@ void PrincessZeldaDemo_8049D208::lowerPlayers() {
 }
 
 // State 4: moves to 24 above player 0, then starts animation 2.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void PrincessZeldaDemo_8049D208::sinkToPlayer() {
     mAnim0.mFrameCtrl.setRate(1.0f);
     if (fn_801CD950(&mPos.y, getPlayerPos_8023E724(0)->y - 24.0f, 0.7f) == 0) {

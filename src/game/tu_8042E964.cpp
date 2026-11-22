@@ -498,6 +498,7 @@ void cls_804B1634::fn_8042F6DC() {
 // .sdata2 has 1.0f between fn_8042EF9C's literals and fn_8042F6DC's 48.0f, so it was generated here
 // (tools/pool.py). Scales the edge and centre panes of the two window frames (field_0x24 and
 // field_0x10) to the inner size w x h.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 void cls_804B1634::scaleFrames(f32 w, f32 h) {
     f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
     field_0x24[0]->fn_80402CE0(sx0, 1.0f);

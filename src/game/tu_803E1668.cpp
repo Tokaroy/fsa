@@ -2757,6 +2757,7 @@ void cls_804B0B00::fn_803E29C8() {
 // Updates and draws the fade overlay field_0x60. Dead-stripped: fn_803EDA2C
 // inlines it; its own copy created the unit's early .rodata ("kk_kettei_01.bti",
 // "kk_modoru_01.bti") and .sdata2 (800.0f, 640.0f) pool entries before fn_803E2A20.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 30-line definition): split out only where the .sdata2 order needs it.
 void cls_804B0B00::drawFade() {
     if (field_0x26e != 0) {
         switch (field_0x26e) {

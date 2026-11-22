@@ -384,6 +384,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
 // their literals before fn_8010C294's, in this order from the bottom of the file up.
 
 // Turns towards the player, picks the speed by the distance and rolls on.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::chase(s32 target) {
     u16 angle = 0;
     s32 dir = 0;
@@ -412,6 +413,7 @@ void cls_8049D020::chase(s32 target) {
 }
 
 // Moves along the rail and updates the trail emitter.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::followRail() {
     u16 angle = 0;
     JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
@@ -427,6 +429,7 @@ void cls_8049D020::followRail() {
 }
 
 // Grows with the distance rolled, up to twice the size; the boxes follow.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::grow() {
     field_0x260 += (0.002f * field_0x264) / 1.6f;
     if (field_0x260 >= 2.0f) {
@@ -464,6 +467,7 @@ bool cls_8049D020::pool_8053C4AC() {
 }
 
 // The rupee a destroyed snowball leaves, by its size.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::dropRupee() {
     s32 kind = 0;
     if (field_0x270 >= 2.0f) {
@@ -481,6 +485,7 @@ void cls_8049D020::dropRupee() {
 }
 
 // The three burst emitters, at the snowball's foot.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::spawnBurst() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 16.0f * field_0x260;

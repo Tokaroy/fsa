@@ -1627,6 +1627,7 @@ bool cls_804ADF28::pool_80542B20() {
 }
 
 // The four emitters of lbl_80542AE8 at the centre of the room (init's state 16).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void cls_804ADF28::spawnRoomEmitters() {
     // the centre of the room (512 x 384) the actor is in
     JGeometry::TVec3f center((s32)(mPos.x / 512.0f) * 512.0f + 256.0f,

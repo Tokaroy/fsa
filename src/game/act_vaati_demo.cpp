@@ -319,6 +319,7 @@ void cls_8049D940::pool_8053C724() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D940::updateDescent() {
     if (mSpawnPos.y - mPos.y <= 24.0f) {
         fn_801CD950(&field_0x3c.y, 0.4f, 0.002f);

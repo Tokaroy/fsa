@@ -1434,6 +1434,7 @@ void cls_804B146C::fn_80421D78(s32 player) {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
 void cls_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
     if (val >= 0x60) {
         field_0x4->search(lbl_8048E300[player][bar])->resize(field_0xf4, field_0x4->search(lbl_8048E300[player][bar])->getHeight());
