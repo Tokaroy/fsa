@@ -793,23 +793,10 @@ void MovingHouse_804A7AE0::fn_80298C18() {
             gBgRewrite_8053AC98->fn_802A1050(&p);
             p.y += 16.0f;
         }
-        JGeometry::TVec3f focus = mPos;
-        s32 idx = 0;
-        if (mSerialCountC > 0 && field_0x2cc == -1) {
-            idx ^= 1;
-        }
-        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
-        focus.add(offset);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        addCameraFocus(0);
         if (field_0x250.isZero()) {
             JGeometry::TVec3f push(16.0f, 0.0f, 0.0f);
-            for (s32 i = 0; i < mSerialCountD; i++) {
-                Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
-                if (door != NULL) {
-                    door->mPos = door->mPos + push;
-                    door->fn_802C59B0(&push);
-                }
-            }
+            moveDoors(push);
             field_0x248 = 0;
             field_0x2b8 = 0;
             mVel_0x3c.zero();
