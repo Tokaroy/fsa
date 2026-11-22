@@ -29,13 +29,11 @@ StateFunc_804B0288 lbl_804B0168[24] = {
 static inline void touchCurrentFile() {
     OSTime now = OSGetTime();
     lbl_8050EC80.getCurrentFile().field_0x0 = now;
-    SaveFile_803B950C& file = lbl_8050EC80.getCurrentFile();
-    if ((file.field_0x65 & 1) == 0) {
-        file.field_0x65 |= 1;
+    if ((lbl_8050EC80.getCurrentFile().field_0x65 & 1) == 0) {
+        lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x65 |= 1;
     }
-    SaveFile_803B950C& file2 = lbl_8050EC80.getCurrentFile();
-    if (file2.mFlags & 1) {
-        file2.field_0x65 |= 2;
+    if (lbl_8050EC80.getCurrentFile().mFlags & 1) {
+        lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x65 |= 2;
     }
 }
 
