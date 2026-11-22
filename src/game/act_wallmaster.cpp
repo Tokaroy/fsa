@@ -496,28 +496,15 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         }
         break;
     case 10: {
-        bool flag = false;
-        if (mParam.mIndex > 2) {
-            flag = true;
-        } else {
-            mParam.field_0x24++;
-            if (mParam.field_0x24 >= mParam.field_0x10[mParam.mIndex]) {
-                mParam.mIndex++;
-                if (mParam.mIndex > 2) {
-                    flag = true;
-                } else {
-                    mParam.mTarget = mParam.mOrder[mParam.mIndex];
-                    mParam.field_0x24 = 0;
-                }
-            }
-        }
+        bool flag = mParam.advance();
         if (flag) {
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
             setState_801BC554(9);
         } else {
             mDir_0x98 = mParam.mTarget;
-            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
-            if (field_0x2b8 >= 0) {
+            s32 p = findNearestPlayer_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = p;
+            if (p >= 0) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {
                         mDir_0x98 = 2;
