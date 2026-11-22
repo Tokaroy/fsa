@@ -33,7 +33,7 @@ static const s16 lbl_8046A5F0[] = {6, 4, 7, 4, 8, 7, 9, 5, 10, 4, 11, 5, 12, 4, 
 static const s16 lbl_8046A618[] = {14, 10, 13, 4, 12, 4, 11, 5, 10, 4, 9, 5, 8, 7, 7, 4, 6, 4, -1, -1};
 static const s16* lbl_804A6540[4] = {lbl_8046A5B0, lbl_8046A5BC, lbl_8046A5F0, lbl_8046A618};
 
-// FIXME(shotgun): 99.14 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.62 %, missing/extra; behaviour near.
 void KaeporaGaebora_804A6550::init() {
     EnemyBase_804A4808::init();
     bool cleared = isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) != FALSE;
@@ -48,11 +48,14 @@ void KaeporaGaebora_804A6550::init() {
     }
     if ((mSpawnParam_0x90 >> 19) & 1) {
         field_0x2b4 = 2;
-    } else if (cleared || viewFlag || (field_0x2b0 != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x2b0))) {
-        field_0x2b4 = 1;
-        mFlags &= ~0x10000;
     } else {
-        field_0x2b4 = 0;
+        s32 bit = field_0x2b0;
+        if (cleared || viewFlag || (bit != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit))) {
+            field_0x2b4 = 1;
+            mFlags &= ~0x10000;
+        } else {
+            field_0x2b4 = 0;
+        }
     }
     switch (field_0x2b4) {
     case 0:
@@ -144,7 +147,7 @@ bool KaeporaGaebora_804A6550::fn_80219E04() const {
     return ret;
 }
 
-// FIXME: 99.90 %, scheduling + reloc-name; behaviour drift.
+// FIXME: 99.97 %, scheduling; behaviour drift.
 // FIXME: jumptable reloc-name and one branch target (0xe88 vs 0xee8).
 void KaeporaGaebora_804A6550::setState_80219AFC(s32 state) {
     // The state tests (states 5 and 11) are written out as in the original's inlined helper; a shared helper drops to 91.68 %.
@@ -277,7 +280,7 @@ void KaeporaGaebora_804A6550::setState_80219AFC(s32 state) {
 // x, y offsets by facing
 static const f32 lbl_8046A640[4][2] = {{15.999f, 0.0f}, {-15.999f, 0.0f}, {0.0f, 15.999f}, {0.0f, -15.999f}};
 
-// FIXME(shotgun): 98.88 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.91 %, missing/extra; behaviour drift.
 void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     JGeometry::TBox2f box;
     if (mState == 3) {
