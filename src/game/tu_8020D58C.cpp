@@ -5,6 +5,13 @@
 #include "game/ActorManager.h"
 #include "game/GameGlobals.h"
 
+// The actor with this serial, or NULL. This file looks actors up through one inline
+// helper, used at all 2 sites: written out by hand, CollisionBoxList_8020D60C::fn_8020D6AC differs
+// (97.67 %) (docs/analysis/INLINE_LEADS.md).
+static inline ActorBase_804A5770* actorBySerial(s32 serial) {
+    return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+}
+
 
 static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
@@ -31,7 +38,7 @@ void CollisionBoxList_8020D60C::fn_8020D8C0(const JGeometry::TBox2f* box, s32 la
 // Register allocation only: the corner loads and adds land in
 // other fp registers than the original's.
 void CollisionBoxList_8020D60C::fn_8020D7D0(s32 serial) {
-    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    ActorBase_804A5770* actor = actorBySerial(serial);
     if (actor == NULL) {
         return;
     }
@@ -71,7 +78,7 @@ bool CollisionBoxList_8020D60C::fn_8020D6AC(s32 layer, const JGeometry::TVec3f* 
         if (mBoxes[i].mLayer == layer && mBoxes[i].mSerial != serial && contains(mBoxes[i].mBox, *pos)) {
             found = true;
             if (ignoreIds != NULL) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mBoxes[i].mSerial);
+                ActorBase_804A5770* actor = actorBySerial(mBoxes[i].mSerial);
                 if (actor == NULL) {
                     found = false;
                 } else {
