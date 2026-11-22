@@ -92,9 +92,9 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 v2x = nx * c2 - ny * s2;
     f32 v2y = nx * s2 + ny * c2;
     s32 a1 = (s32)(JMath::atanTable_.atan2_(v1x, v1y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-    f32 d1 = __fabsf((f32)(s16)(velAngle - a1));
+    f32 d1 = JMAAbs((f32)(s16)(velAngle - a1));
     s32 a2 = (s32)(JMath::atanTable_.atan2_(v2x, v2y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-    f32 d2 = __fabsf((f32)(s16)(velAngle - a2));
+    f32 d2 = JMAAbs((f32)(s16)(velAngle - a2));
     JGeometry::TVec2f dir;
     if (0.000030517578f * d2 < 0.000030517578f * d1) {
         dir.x = v2x;
