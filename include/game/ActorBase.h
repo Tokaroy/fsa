@@ -464,7 +464,7 @@ public:
     void fn_8019CEAC(s32 v);
     // 0x8019CEB4, out of line in game/act_princess_zelda_ganon_battle_80197070.cpp: returns field_0xb0.
     // Its caller (0x8019AA3C, 0x8019AC40) compares the result with 0xE.
-    s32 fn_8019CEB4() const;
+    u32 fn_8019CEB4() const;
     // 0x8017EAF8, out of line in game/act_phantom_ganon_8017C01C.cpp: mVel_0x3c = v (a whole
     // TVec3f copy, psq + stfs). Both callers in fn_8017C40C pass the actor
     // from findActorBySerial_801F666C and a stack TVec3f at 0x50(r1).
