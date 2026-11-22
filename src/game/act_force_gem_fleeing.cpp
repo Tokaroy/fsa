@@ -15,10 +15,10 @@
 static const s32 lbl_804716E0[] = {60, 62, 64, 66};
 
 // Sprite ids per kind (field_0x268), four per state group.
-static const s32 lbl_804AB130[] = {0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1D};
+static s32 lbl_804AB130[] = {0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1D};
 
 // Table indexed by field_0x268 (update, state 1).
-static const s32 lbl_804AB160[] = {100, 150, 200, 300};
+static s32 lbl_804AB160[] = {100, 150, 200, 300};
 
 void FleeingForceGem_804AB170::init() {
     field_0x268 = mSpawnParam_0x90 & 3;

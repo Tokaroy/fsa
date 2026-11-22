@@ -6,21 +6,18 @@
 #include "game/act/act_hinox.h"
 #include "JSystem/JMath/JMath.h"
 
-struct HinoxTables {
-    s32 dropAmounts[8];
-    s32 walkFrames[10];
-    s32 walkTimers[5];
-    s32 laughFrames[4];
-    s32 throwFrames[22];
-    s32 throwTimers[11];
-    s32 chargeFrames[12];
-    s32 chargeTimers[6];
-    s32 grabFrames[10];
-    s32 grabTimers[5];
-};
 
-// FIXME(shotgun): data table lbl_8049F840 not split into individual arrays
-extern HinoxTables lbl_8049F840;
+// The actor's tables (.data 0x8049F840 on), addressed off one base.
+static s32 dropAmounts_8049F840[8] = {1, 5, 20, 50, 100, 150, 200, 300};
+static s32 walkFrames_8049F860[10] = {0, 1, 2, 3, 28, 4, 5, 6, 7, 29};
+static s32 walkTimers_8049F888[5] = {8, 15, 8, 15, 8};
+static s32 laughFrames_8049F89C[4] = {20, 21, 22, 23};
+static s32 throwFrames_8049F8AC[22] = {16, 17, 16, 17, 16, 17, 16, 17, 9, 2, 25, 18, 19, 18, 19, 18, 19, 18, 19, 13, 6, 27};
+static s32 throwTimers_8049F904[11] = {7, 7, 7, 7, 7, 7, 7, 7, 2, 2, 10};
+static s32 chargeFrames_8049F930[12] = {8, 9, 10, 11, 10, 9, 12, 13, 14, 15, 14, 13};
+static s32 chargeTimers_8049F960[6] = {5, 2, 2, 5, 2, 2};
+static s32 grabFrames_8049F978[10] = {16, 17, 9, 2, 25, 18, 19, 13, 6, 27};
+static s32 grabTimers_8049F9A0[5] = {14, 14, 2, 2, 10};
 
 void Hinox_8049F9B4::init() {
     mBox.i.x = -14.0f;
@@ -310,9 +307,9 @@ void Hinox_8049F9B4::update() {
                 }
                 field_0x274 = 1.2f * JMath::sincosTable_.cosShort(moveAngle);
             }
-            field_0x234 = lbl_8049F840.walkTimers[field_0x248];
+            field_0x234 = walkTimers_8049F888[field_0x248];
         }
-        field_0x264 = lbl_8049F840.walkFrames[(mDir_0x98 == 2 ? 0 : 5) + field_0x248];
+        field_0x264 = walkFrames_8049F860[(mDir_0x98 == 2 ? 0 : 5) + field_0x248];
         if (field_0x264 == 28 || field_0x264 == 29) {
             break;
         }
@@ -351,7 +348,7 @@ void Hinox_8049F9B4::update() {
                 }
             }
         }
-        field_0x264 = lbl_8049F840.laughFrames[(mDir_0x98 == 2 ? 0 : 2) + field_0x248];
+        field_0x264 = laughFrames_8049F89C[(mDir_0x98 == 2 ? 0 : 2) + field_0x248];
         break;
 
     case 4:
@@ -402,15 +399,15 @@ void Hinox_8049F9B4::update() {
                 startSound_801F0E34(0x40093, 0);
                 field_0x248 = 0;
             }
-            field_0x234 = lbl_8049F840.chargeTimers[field_0x248];
+            field_0x234 = chargeTimers_8049F960[field_0x248];
         }
-        field_0x264 = lbl_8049F840.chargeFrames[(mDir_0x98 == 2 ? 0 : 6) + field_0x248];
+        field_0x264 = chargeFrames_8049F930[(mDir_0x98 == 2 ? 0 : 6) + field_0x248];
         break;
 
     case 6:
         field_0x248 = 0;
         field_0x250 = -1;
-        field_0x234 = lbl_8049F840.throwTimers[field_0x248];
+        field_0x234 = throwTimers_8049F904[field_0x248];
         field_0x278 = 0.0f;
         field_0x274 = 0.0f;
         field_0x270 = 0.0f;
@@ -463,9 +460,9 @@ void Hinox_8049F9B4::update() {
                 }
                 return;
             }
-            field_0x234 = lbl_8049F840.throwTimers[field_0x248];
+            field_0x234 = throwTimers_8049F904[field_0x248];
         }
-        field_0x264 = lbl_8049F840.throwFrames[(mDir_0x98 == 2 ? 0 : 11) + field_0x248];
+        field_0x264 = throwFrames_8049F8AC[(mDir_0x98 == 2 ? 0 : 11) + field_0x248];
         break;
 
     case 8:
@@ -480,7 +477,7 @@ void Hinox_8049F9B4::update() {
         field_0x24c = 0;
         field_0x25c = 0;
         field_0x260 = 0;
-        field_0x234 = lbl_8049F840.grabTimers[field_0x248];
+        field_0x234 = grabTimers_8049F9A0[field_0x248];
         field_0x238 = 0;
         field_0x284 = 0.0f;
         field_0x280 = 0.0f;
@@ -536,7 +533,7 @@ void Hinox_8049F9B4::update() {
                                          1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                          2.0f);
                 for (s32 i = 0; i < 8; i++) {
-                    if (field_0x254 >= 0 && fn_80236228(field_0x254) >= lbl_8049F840.dropAmounts[dropIdx]) {
+                    if (field_0x254 >= 0 && fn_80236228(field_0x254) >= dropAmounts_8049F840[dropIdx]) {
                         s32 gemSerial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, dropIdx);
                         if (gemSerial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(gemSerial);
@@ -550,7 +547,7 @@ void Hinox_8049F9B4::update() {
                                 }
                                 gem->mVel_0x3c = gemVel;
                             }
-                            fn_802362C4(field_0x254, -lbl_8049F840.dropAmounts[dropIdx]);
+                            fn_802362C4(field_0x254, -dropAmounts_8049F840[dropIdx]);
                             break;
                         }
                     }
@@ -619,12 +616,12 @@ void Hinox_8049F9B4::update() {
                     break;
                 }
             }
-            field_0x234 = lbl_8049F840.grabTimers[field_0x248];
+            field_0x234 = grabTimers_8049F9A0[field_0x248];
         }
         if (field_0x248 <= 2 && field_0x254 >= 0) {
             fn_8022F820(field_0x254, mSerial, &pos);
         }
-        field_0x264 = lbl_8049F840.grabFrames[(mDir_0x98 == 2 ? 0 : 5) + field_0x248];
+        field_0x264 = grabFrames_8049F978[(mDir_0x98 == 2 ? 0 : 5) + field_0x248];
         break;
     }
 

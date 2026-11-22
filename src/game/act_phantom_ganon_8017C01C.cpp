@@ -18,7 +18,7 @@
 // The 'FGAN' actor's .data tables (0x804A1210): emitter ids per slot, the frame counts of
 // each state, and the "FGAN" resource names / sprite offsets of each draw mode.
 struct FganTables_804A1210 {
-    u16 emitters[32];
+    u16 emitters[16];
     s32 frames1230[6];
     s32 frames1248[5];
     s32 frames125C[8];
