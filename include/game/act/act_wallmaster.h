@@ -14,6 +14,26 @@ struct WallmasterParam {
     /* 0x24 */ s32 field_0x24;
 
     void fn_801BCD70(s32 arg);
+
+    // Steps to the next entry of mOrder; true once all three are done.
+    bool advance() {
+        bool done = false;
+        if (mIndex > 2) {
+            done = true;
+        } else {
+            field_0x24++;
+            if (field_0x24 >= field_0x10[mIndex]) {
+                mIndex++;
+                if (mIndex > 2) {
+                    done = true;
+                } else {
+                    mTarget = mOrder[mIndex];
+                    field_0x24 = 0;
+                }
+            }
+        }
+        return done;
+    }
 }; // Size: 0x28
 
 // The FALL actor ("Wallmaster", docs/names/actors.tsv, high confidence):
@@ -34,6 +54,29 @@ public:
     void setState_801BC554(s32 state);
     u8 computeShadowAlpha();
     bool checkPlayerHit();
+    bool isState4Or6To8() const {
+        bool b = false;
+        switch (mState) {
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+            b = true;
+            break;
+        }
+        return b;
+    }
+    bool isState6To8() const {
+        bool b = false;
+        switch (mState) {
+        case 6:
+        case 7:
+        case 8:
+            b = true;
+            break;
+        }
+        return b;
+    }
 
     /* 0x2A8 */ s32 field_0x2a8;
     /* 0x2AC */ s32 field_0x2ac;

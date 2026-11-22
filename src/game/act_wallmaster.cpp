@@ -153,24 +153,13 @@ void Wallmaster_804A3E44::init() {
     mTargetSpeed = 0.0f;
     mAnim.setKeyTables_801D2608(lbl_804A3E30, 5);
     mAnim.startAnim_801D22DC(0, 0, false);
-    bool b = false;
-    switch (mState) {
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-        b = true;
-        break;
-    }
-    if (b) {
+    if (isState4Or6To8()) {
         field_0xb0 = 0x40004;
     } else {
         field_0xb0 = 0x41101;
     }
 }
 
-// FIXME: 99.62 %, missing/extra; behaviour drift.
-// (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
 void Wallmaster_804A3E44::setState_801BC554(s32 state) {
     switch (state) {
     case 0:
@@ -257,28 +246,11 @@ void Wallmaster_804A3E44::setState_801BC554(s32 state) {
     mStateTimer = 0;
     mState = state;
 
-    bool b = false;
-    switch (mState) {
-    case 6:
-    case 7:
-    case 8:
-        b = true;
-        break;
-    }
-    if (!b) {
+    if (!isState6To8()) {
         field_0x2c0 = 0;
     }
 
-    bool b2 = false;
-    switch (mState) {
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-        b2 = true;
-        break;
-    }
-    if (b2) {
+    if (isState4Or6To8()) {
         field_0xb0 = 0x40004;
     } else {
         field_0xb0 = 0x41101;
@@ -360,16 +332,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
     }
     }
 
-    bool b = false;
-    switch (mState) {
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-        b = true;
-        break;
-    }
-    if (b) {
+    if (isState4Or6To8()) {
         if (!fn_8022DCD8(field_0x2b8)) {
             setState_801BC554(5);
         } else {
@@ -382,15 +345,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
         }
     }
 
-    bool b2 = false;
-    switch (mState) {
-    case 6:
-    case 7:
-    case 8:
-        b2 = true;
-        break;
-    }
-    if (b2) {
+    if (isState6To8()) {
         field_0x2c0++;
         if (field_0x2c0 >= 120) {
             if (fn_80236228(field_0x2b8) >= 20) {
@@ -408,7 +363,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
     }
 }
 
-// FIXME: 99.53 %, missing/extra; behaviour drift.
+// FIXME: 99.77 %, missing/extra; behaviour drift.
 // (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
 void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
     fn_801BC244();
@@ -540,21 +495,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         }
         break;
     case 10: {
-        bool flag = false;
-        if (mParam.mIndex > 2) {
-            flag = true;
-        } else {
-            mParam.field_0x24++;
-            if (mParam.field_0x24 >= mParam.field_0x10[mParam.mIndex]) {
-                mParam.mIndex++;
-                if (mParam.mIndex > 2) {
-                    flag = true;
-                } else {
-                    mParam.mTarget = mParam.mOrder[mParam.mIndex];
-                    mParam.field_0x24 = 0;
-                }
-            }
-        }
+        bool flag = mParam.advance();
         if (flag) {
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
             setState_801BC554(9);
