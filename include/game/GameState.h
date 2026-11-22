@@ -303,6 +303,12 @@ public:
     bool pulseAlpha_8040245C(s16 frames, u8 from, u8 to, u8 mode);
 
     f32 getY() const { return field_0xc; }
+    // Inlined setters (MapScreen_804B1288::fn_804049DC / fn_80404648: one 0 shared by
+    // every store up to the end of the route-pane loop).
+    void setField_0x20(s16 value) { field_0x20 = value; }
+    void setField_0x22(s16 value) { field_0x22 = value; }
+    void setField_0x24(s16 value) { field_0x24 = value; }
+    void setField_0x26(s16 value) { field_0x26 = value; }
 
     /* 0x00 */ // vtable
     /* 0x04 */ J2DPane* mPane;

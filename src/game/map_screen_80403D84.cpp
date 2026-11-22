@@ -3121,29 +3121,25 @@ void MapScreen_804B1288::inl_80404D70(s32 stage) {
     }
 }
 
-// FIXME: 95.74 %, missing/extra; behaviour clean.
-// The original materialises one 0 (r4) for the stores to mTestMapPane_0xc8-0xd0 and
-// the mRoutePanes_0xd4 loop (loop pointer in r5) and a second li r0, 0 for mLevelCursorPanes_0x228; ours uses a new
-// li r0, 0 inside the loop (one instruction fewer); all else equal.
 void MapScreen_804B1288::fn_804049DC() {
     if (field_0x38c & 0x10) {
-        mTestMapPane_0xc8->field_0x20 = 0;
-        mTestMapPane_0xc8->field_0x22 = 0;
-        mTestMapPane_0xc8->field_0x24 = 0;
-        mTestMapPane_0xc8->field_0x26 = 0;
-        mTowerPane_0xcc->field_0x20 = 0;
-        mTowerPane_0xcc->field_0x22 = 0;
-        mTowerPane_0xcc->field_0x24 = 0;
-        mTowerPane_0xcc->field_0x26 = 0;
-        field_0xd0->field_0x20 = 0;
-        field_0xd0->field_0x22 = 0;
-        field_0xd0->field_0x24 = 0;
-        field_0xd0->field_0x26 = 0;
+        mTestMapPane_0xc8->setField_0x20(0);
+        mTestMapPane_0xc8->setField_0x22(0);
+        mTestMapPane_0xc8->setField_0x24(0);
+        mTestMapPane_0xc8->setField_0x26(0);
+        mTowerPane_0xcc->setField_0x20(0);
+        mTowerPane_0xcc->setField_0x22(0);
+        mTowerPane_0xcc->setField_0x24(0);
+        mTowerPane_0xcc->setField_0x26(0);
+        field_0xd0->setField_0x20(0);
+        field_0xd0->setField_0x22(0);
+        field_0xd0->setField_0x24(0);
+        field_0xd0->setField_0x26(0);
         for (int i = 0; i < 18; i++) {
-            mRoutePanes_0xd4[i]->field_0x20 = 0;
-            mRoutePanes_0xd4[i]->field_0x22 = 0;
-            mRoutePanes_0xd4[i]->field_0x24 = 0;
-            mRoutePanes_0xd4[i]->field_0x26 = 0;
+            mRoutePanes_0xd4[i]->setField_0x20(0);
+            mRoutePanes_0xd4[i]->setField_0x22(0);
+            mRoutePanes_0xd4[i]->setField_0x24(0);
+            mRoutePanes_0xd4[i]->setField_0x26(0);
         }
         mLevelCursorPanes_0x228[0][0]->field_0x22 = 0;
         mLevelCursorPanes_0x228[0][1]->field_0x22 = 0;
@@ -3181,29 +3177,25 @@ void MapScreen_804B1288::fn_804049DC() {
     }
 }
 
-// FIXME: 95.74 %, missing/extra; behaviour clean.
-// The original materialises one 0 (r4) for the stores to mTestMapPane_0xc8-0xd0 and
-// the mRoutePanes_0xd4 loop (loop pointer in r5) and a second li r0, 0 for mLevelCursorPanes_0x228; ours uses a new
-// li r0, 0 inside the loop (one instruction fewer); all else equal.
 void MapScreen_804B1288::fn_80404648() {
     if (field_0x38c & 0x10) {
-        mTestMapPane_0xc8->field_0x20 = 0;
-        mTestMapPane_0xc8->field_0x22 = 0;
-        mTestMapPane_0xc8->field_0x24 = 0;
-        mTestMapPane_0xc8->field_0x26 = 0;
-        mTowerPane_0xcc->field_0x20 = 0;
-        mTowerPane_0xcc->field_0x22 = 0;
-        mTowerPane_0xcc->field_0x24 = 0;
-        mTowerPane_0xcc->field_0x26 = 0;
-        field_0xd0->field_0x20 = 0;
-        field_0xd0->field_0x22 = 0;
-        field_0xd0->field_0x24 = 0;
-        field_0xd0->field_0x26 = 0;
+        mTestMapPane_0xc8->setField_0x20(0);
+        mTestMapPane_0xc8->setField_0x22(0);
+        mTestMapPane_0xc8->setField_0x24(0);
+        mTestMapPane_0xc8->setField_0x26(0);
+        mTowerPane_0xcc->setField_0x20(0);
+        mTowerPane_0xcc->setField_0x22(0);
+        mTowerPane_0xcc->setField_0x24(0);
+        mTowerPane_0xcc->setField_0x26(0);
+        field_0xd0->setField_0x20(0);
+        field_0xd0->setField_0x22(0);
+        field_0xd0->setField_0x24(0);
+        field_0xd0->setField_0x26(0);
         for (int i = 0; i < 18; i++) {
-            mRoutePanes_0xd4[i]->field_0x20 = 0;
-            mRoutePanes_0xd4[i]->field_0x22 = 0;
-            mRoutePanes_0xd4[i]->field_0x24 = 0;
-            mRoutePanes_0xd4[i]->field_0x26 = 0;
+            mRoutePanes_0xd4[i]->setField_0x20(0);
+            mRoutePanes_0xd4[i]->setField_0x22(0);
+            mRoutePanes_0xd4[i]->setField_0x24(0);
+            mRoutePanes_0xd4[i]->setField_0x26(0);
         }
         mLevelCursorPanes_0x228[0][0]->field_0x22 = 0;
         mLevelCursorPanes_0x228[0][1]->field_0x22 = 0;
