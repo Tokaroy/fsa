@@ -10,6 +10,13 @@
 #include "game/act/tu_801DE714.h"
 #include "game/tu_803B8C74.h"
 
+// The actor with this serial, or NULL. This file looks actors up through one inline
+// helper, used at all 35 sites: written out by hand, cls_804A51E4::vfunc_0x88 differs
+// (97.22 %) (docs/analysis/INLINE_LEADS.md).
+static inline ActorBase_804A5770* actorBySerial(s32 serial) {
+    return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+}
+
 // The animation tables: pairs of frame and duration, ended by -1.
 static const s16 lbl_80469AF8[] = { 0, 10, 1, 10, 2, 10, 1, 10, -1, -1 };
 static const s16 lbl_80469B0C[] = { 3, 10, 4, 10, 5, 10, 4, 10, -1, -1 };
@@ -195,7 +202,7 @@ cls_804A51E4::~cls_804A51E4() {
             }
             field_0x2c0 = 0;
         }
-        ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
+        ActorBase_804A5770* target = actorBySerial(mTargetSerial);
         if (target != NULL) {
             target->mAlive = false;
         }
@@ -256,7 +263,7 @@ void cls_804A51E4::fn_801E1E08() {
                 }
                 field_0x2c0 = 0;
             }
-            ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
+            ActorBase_804A5770* target = actorBySerial(mTargetSerial);
             if (target != NULL) {
                 target->mAlive = false;
             }
@@ -370,18 +377,18 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
         ActorBase_804A5770* target = NULL;
         s32 serial = field_0x2ac;
         if (serial >= 0) {
-            target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            target = actorBySerial(serial);
         }
         if (target == NULL) {
             serial = field_0x2b0;
             if (serial >= 0) {
-                target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                target = actorBySerial(serial);
             }
         }
         if (target == NULL) {
             serial = field_0x2b4;
             if (serial >= 0) {
-                target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                target = actorBySerial(serial);
             }
         }
         ForceGem_804AB6D8* gem = (ForceGem_804AB6D8*)target;
@@ -405,7 +412,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
             if (!arg && field_0x2b0 >= 0) {
                 mFlags |= 0x8000;
             }
-            ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
+            ActorBase_804A5770* gem = actorBySerial(mTargetSerial);
             if (gem != NULL) {
                 gem->field_0x194 = 1;
                 field_0x2c0 = gem->fn_8032D564(gem->field_0x90 & 0xFF);
@@ -445,18 +452,18 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
                 ActorBase_804A5770* target = NULL;
                 s32 serial = field_0x2ac;
                 if (serial >= 0) {
-                    target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    target = actorBySerial(serial);
                 }
                 if (target == NULL) {
                     serial = field_0x2b0;
                     if (serial >= 0) {
-                        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        target = actorBySerial(serial);
                     }
                 }
                 if (target == NULL) {
                     serial = field_0x2b4;
                     if (serial >= 0) {
-                        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        target = actorBySerial(serial);
                     }
                 }
                 tx = target->mPos.x;
@@ -585,21 +592,21 @@ void cls_804A51E4::fn_801E1300() {
     ActorBase_804A5770* actor;
     s32 serial = field_0x2ac;
     if (serial >= 0) {
-        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        actor = actorBySerial(serial);
         if (actor == NULL || !fn_801CC910(actor)) {
             lost = true;
         }
     } else {
         serial = field_0x2b0;
         if (serial >= 0) {
-            actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            actor = actorBySerial(serial);
             if (actor == NULL || !fn_801CC960(actor)) {
                 lost = true;
             }
         } else {
             serial = field_0x2b4;
             if (serial >= 0) {
-                actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                actor = actorBySerial(serial);
                 if (actor == NULL || !fn_801CC9B0(actor)) {
                     lost = true;
                 }
@@ -735,18 +742,18 @@ void cls_804A51E4::fn_801E0CF4() {
                     ActorBase_804A5770* t = NULL;
                     s32 serial = field_0x2ac;
                     if (serial >= 0) {
-                        t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        t = actorBySerial(serial);
                     }
                     if (t == NULL) {
                         serial = field_0x2b0;
                         if (serial >= 0) {
-                            t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                            t = actorBySerial(serial);
                         }
                     }
                     if (t == NULL) {
                         serial = field_0x2b4;
                         if (serial >= 0) {
-                            t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                            t = actorBySerial(serial);
                         }
                     }
                     if (t != NULL) {
@@ -788,18 +795,18 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
                 ActorBase_804A5770* found = NULL;
                 s32 serial = field_0x2ac;
                 if (serial >= 0) {
-                    found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    found = actorBySerial(serial);
                 }
                 if (found == NULL) {
                     serial = field_0x2b0;
                     if (serial >= 0) {
-                        found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        found = actorBySerial(serial);
                     }
                 }
                 if (found == NULL) {
                     serial = field_0x2b4;
                     if (serial >= 0) {
-                        found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        found = actorBySerial(serial);
                     }
                 }
                 if (found != NULL) {
@@ -827,18 +834,18 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     ActorBase_804A5770* found = NULL;
     s32 serial = field_0x2ac;
     if (serial >= 0) {
-        found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        found = actorBySerial(serial);
     }
     if (found == NULL) {
         serial = field_0x2b0;
         if (serial >= 0) {
-            found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            found = actorBySerial(serial);
         }
     }
     if (found == NULL) {
         serial = field_0x2b4;
         if (serial >= 0) {
-            found = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            found = actorBySerial(serial);
         }
     }
     if (mState == 3 && found != NULL && field_0x2ac == -1) {
@@ -848,11 +855,11 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
                 height = 20.0f;
             } else {
                 s32 s = field_0x2ac;
-                if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                if (s >= 0 && actorBySerial(s) != NULL) {
                     height = 20.0f;
                 } else {
                     s = field_0x2b0;
-                    if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                    if (s >= 0 && actorBySerial(s) != NULL) {
                         height = 20.0f;
                     }
                 }
@@ -916,18 +923,18 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     ActorBase_804A5770* target = NULL;
     s32 serial = field_0x2ac;
     if (serial >= 0) {
-        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        target = actorBySerial(serial);
     }
     if (target == NULL) {
         serial = field_0x2b0;
         if (serial >= 0) {
-            target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            target = actorBySerial(serial);
         }
     }
     if (target == NULL) {
         serial = field_0x2b4;
         if (serial >= 0) {
-            target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            target = actorBySerial(serial);
         }
     }
     switch (mState) {
@@ -946,14 +953,14 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
                 ActorBase_804A5770* found = NULL;
                 s32 s = field_0x2ac;
                 if (s >= 0) {
-                    found = getActorManager_801F856C()->findActorBySerial_801F666C(s);
+                    found = actorBySerial(s);
                 }
                 if (found == NULL) {
                     s = field_0x2b0;
                     if (s < 0) {
                         break;
                     }
-                    found = getActorManager_801F856C()->findActorBySerial_801F666C(s);
+                    found = actorBySerial(s);
                     if (found == NULL) {
                         break;
                     }
@@ -1016,9 +1023,9 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
         f32 height = 5.0f;
         if (mFlags & 0x20000) {
             height = 20.0f;
-        } else if (field_0x2ac >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2ac) != NULL) {
+        } else if (field_0x2ac >= 0 && actorBySerial(field_0x2ac) != NULL) {
             height = 20.0f;
-        } else if (field_0x2b0 >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2b0) != NULL) {
+        } else if (field_0x2b0 >= 0 && actorBySerial(field_0x2b0) != NULL) {
             height = 20.0f;
         }
         if (mPos.z <= height) {
@@ -1149,9 +1156,9 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
         f32 height = 5.0f;
         if (mFlags & 0x20000) {
             height = 20.0f;
-        } else if (field_0x2ac >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2ac) != NULL) {
+        } else if (field_0x2ac >= 0 && actorBySerial(field_0x2ac) != NULL) {
             height = 20.0f;
-        } else if (field_0x2b0 >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2b0) != NULL) {
+        } else if (field_0x2b0 >= 0 && actorBySerial(field_0x2b0) != NULL) {
             height = 20.0f;
         }
         if (mPos.z <= height) {
@@ -1217,18 +1224,18 @@ void cls_804A51E4::vfunc_0x88() {
                 ActorBase_804A5770* target = NULL;
                 s32 serial = field_0x2ac;
                 if (serial >= 0) {
-                    target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    target = actorBySerial(serial);
                 }
                 if (target == NULL) {
                     serial = field_0x2b0;
                     if (serial >= 0) {
-                        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        target = actorBySerial(serial);
                     }
                 }
                 if (target == NULL) {
                     serial = field_0x2b4;
                     if (serial >= 0) {
-                        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        target = actorBySerial(serial);
                     }
                 }
                 if (target != NULL) {
