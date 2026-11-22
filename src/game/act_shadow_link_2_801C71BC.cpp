@@ -77,7 +77,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
 // Not auto-inlined: fn_801C8C84 calls fn_801C9234 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 83.81 %, scheduling+regalloc; behaviour clean.
+// FIXME: 85.24 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): register order and scheduling differ; lbl_ constant reloc-name
 void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 nx = mMapHitDir.x;
@@ -108,7 +108,7 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.34 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.85 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
         JGeometry::TVec3f railPos;
@@ -247,7 +247,7 @@ void ShadowLink2_804A43E8::fn_801C8B50() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.65 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.42 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C887C() {
     JGeometry::TVec3f railPos;
     getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
@@ -516,7 +516,7 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     }
 }
 
-// FIXME(shotgun): 89.73 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     if (!(mFlags & 0x2000000)) {
         if (fn_801C5340()) {
