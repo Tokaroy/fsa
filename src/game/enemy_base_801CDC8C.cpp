@@ -617,7 +617,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
     return dir;
 }
 
-// FIXME: 99.41 %, missing/extra; behaviour clean.
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 // Float registers of the second directionTo differ.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
 // one when there is none): on the dominant axis, or the other one with
