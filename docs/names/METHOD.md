@@ -182,6 +182,46 @@ a wrong scope cannot pass: the compiler (no such member) and the link fail.
 `tools/gen_game.py` reads ActorBase's slot declarations from ActorBase.h, so
 it follows member renames.
 
+## Fields (kind `field`)
+
+A data member is named once, at the class that declares it; the row's
+address is that class's vtable (as for member rows), `old` its
+`field_0x<off>` placeholder. Grades as above. A field has no address, so
+below high the **offset** stays in the name as a trailing `_0x<off>` spelled
+as in the old name (`field_0xd8` -> `mHitTimer_0xd8`); only a proven name
+drops it. Style follows the named members (`mPos`, `mLife`, `mStateTimer`):
+`m` + CamelCase role, plain words (`mDeathTimer`, `mLastAttacker`,
+`mPlayerPos`), an EnemyParam.csv column as `mParam<Col>` (`mParamAtcp`).
+The `/* 0x0D8 */` comment stays as it is.
+
+Evidence for a field: what writes it (values, units, the constructor's
+initialiser), what reads it (tests, the call it is passed to), a getter
+whose name is already graded, and the header's reviewed comment, cited as
+`file fn: what it does with it`. med when that use shows the role (a timer
+counted down to an action, a pointer of a named class, a CSV column the
+loader stores); low when the role is read from one function or the uses
+could be read another way. A field whose uses say only "stored by fn_X"
+keeps `field_0x..`.
+
+Scope. The same placeholder is a member of hundreds of classes (408 declare
+`field_0x4`), so only the compiler can tell which `p->field_0x4` is the
+row's class. `tools/rename.py` (`tools/rename_fields.py`) renames the
+declaration and the bare / `this->` uses in the class's and its
+descendants' bodies, then compiles every game TU (ninja's command, more
+errors allowed, objects discarded, ~5 s): an error on the old name is a use
+of the row's class (the tree compiled before and only that member changed
+name), an error on the new name a use of another class; each is fixed and
+the TUs that include a fixed file recompiled until none fails (the first
+error of a TU is always taken, later ones only while they name our token:
+MWCC cascades). A macro whose body holds the name is fixed at its
+`#define`. Any other error restores every file. Comments are renamed in a
+class context or when every code use in the file was renamed; docs outside
+code files keep the placeholder. Rows sharing an old name run in separate
+passes. `--revert` is the same pass backwards, so it is exact too, and two
+unrelated classes may give the same new name. `--kind field` restricts a
+run to field rows. `tools/gen_game.py --check` compares its unit with
+applied field names put back (`rename.fields_to_placeholders`).
+
 ## Applying, re-applying, reverting
 
 ```sh
@@ -200,7 +240,7 @@ row's old name; symbols.txt places the old or new name at the row's address
 whole run.
 
 `rename.py` takes the manifest's `apply` column (7 columns:
-address, kind (class | function | global | member), old, new, confidence, apply, evidence) and nothing else decides
+address, kind (class | function | global | member | field), old, new, confidence, apply, evidence) and nothing else decides
 whether a row is applied; `to_current()` follows symbols.txt for those rows.
 
 Verification for an applied sweep: `ninja` (SHA-1 OK), `python3
