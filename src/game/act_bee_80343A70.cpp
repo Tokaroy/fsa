@@ -7,7 +7,7 @@
 #include "game/act/act_bee_80343A70.h"
 
 // 0x803450AC.
-// FIXME(shotgun): 95.32 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.45 %, scheduling+regalloc; behaviour clean.
 void Bee_804AC600::init() {
     field_0x270 = mSpawnParam_0x90 & 1;
     mLife = 1;
@@ -91,7 +91,7 @@ static inline s32 findNearestBomb(Bee_804AC600* self) {
 }
 
 // 0x80343D90.
-// FIXME(shotgun): 98.04 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.01 %, scheduling+regalloc; behaviour clean.
 void Bee_804AC600::update() {
     JGeometry::TVec3f diff;
     diff.x = diff.y = diff.z = 0.0f;
@@ -342,7 +342,7 @@ void Bee_804AC600::update() {
 }
 
 // 0x80343B48.
-// FIXME(shotgun): 93.18 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 97.66 %, scheduling+regalloc; behaviour clean.
 void Bee_804AC600::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1d = -1;
@@ -368,7 +368,6 @@ void Bee_804AC600::draw() {
 }
 
 // 0x80343AD0.
-// FIXME(shotgun): 96.67 %, missing/extra; behaviour clean.
 void Bee_804AC600::die_0x24() {
     s32 kind;
     if (field_0x274 == 1) {
