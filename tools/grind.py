@@ -906,7 +906,7 @@ def credit_map(wt):
         for f in u.get("functions", []):
             pct, size = float(f.get("fuzzy_match_percent") or 0), int(f.get("size") or 0)
             va = (f.get("metadata") or {}).get("virtual_address")
-            key = (u["name"], hex(int(va)) if va else f["name"])  # by address, as report_map: renames are not losses
+            key = hex(int(va)) if va else (u["name"], f["name"])  # by address alone: function and unit renames are not losses
             out[key] = (size if pct >= 100 else float(wf.get(u["name"], {}).get(f["name"], 0)), pct, size, f["name"])
     return out
 
@@ -922,7 +922,7 @@ def regressions(before, after, allow=()):
     bad = []
     for k, (c0, p0, size, name) in before.items():
         c1, p1 = after.get(k, (0.0, 0.0))[:2]
-        if name in allow or k[1] in allow:
+        if name in allow or (k[1] if isinstance(k, tuple) else k) in allow:
             continue
         if c0 - c1 > CREDIT_DROP[0] and c0 - c1 > CREDIT_DROP[1] * size:
             bad.append(f"{name} credit {c0:.0f} -> {c1:.0f} B")
@@ -1787,7 +1787,10 @@ def publish_once(accept_loss=()):
         if sh("python3 configure.py >/dev/null && timeout 3000 ninja >/dev/null 2>&1", MAIN).returncode:
             return undo("build or SHA-1")
         after = report_map(MAIN) or {}
-        lost = [f for (u, f), p in before.items() if p >= 100 and after.get((u, f), 0) < 100]
+        # by address alone where there is one: a renamed unit (tools/rename_unit.py) is not a loss
+        flat = lambda m: {(f if f.startswith("0x") else (u, f)): p for (u, f), p in m.items()}
+        fb, fa = flat(before), flat(after)
+        lost = [k if isinstance(k, str) else k[1] for k, p in fb.items() if p >= 100 and fa.get(k, 0) < 100]
         names = {f: n for f, n in name_map(MAIN).items()} if accept_loss else {}
         # --accept-loss: the owner named these functions; any other loss still fails the publish.
         unexpected = [f for f in lost if f not in accept_loss and names.get(f) not in accept_loss]
