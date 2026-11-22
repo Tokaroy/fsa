@@ -184,3 +184,43 @@ address	kind	old	new	confidence	apply	evidence
 8049EF20	field	field_0x24	mFileSelect_0x24	med	yes	GameGlobals.h GameRoot 0x24: FileSelect_804AFF60*, the object of mode 3 (0x1AC bytes)
 8049EF20	field	field_0x28	mGameMode_0x28	med	yes	GameGlobals.h GameRoot 0x28: GameMode_804B0688*, the object of modes 2 and 5 (0x120 bytes)
 8049EF20	field	field_0xa8	mMsgArchive_0xa8	med	yes	GameGlobals.h GameRoot 0xA8: JKRArchive* of msgus.arc (lbl_80529DEC's field_0x1c)
+804B1288	field	field_0xc	mMapScreen_0xc	med	yes	tu_80403D84 ctor: new J2DScreen, setPriority("map.blo") from the mode-6 archive; its panes 'Ptestmap', 'Ptower', 'P21'.. are searched on it
+804B1288	field	field_0x10	mMapAreaScreen_0x10	med	yes	tu_80403D84 ctor: new J2DScreen, setPriority("map_area.blo"); the Ppoint / Plv / Ttlv panes are searched on it
+804B1288	field	field_0x14	mMapTenScreen_0x14	med	yes	tu_80403D84 ctor: new J2DScreen, setPriority("map_ten.blo"); fn_80408F38 fades its lbl_8048C5D0 panes ('Penback', 'Psky', 'Pclo01'..)
+804B1288	field	field_0x18	mMessageWindowScreen_0x18	med	yes	tu_80403D84 ctor: new J2DScreen, setPriority("main_message_window.blo") from main2D.arc; 'Tmt01' / 'Tmt02' / 'Pmmw01'.. searched on it; fn_804111C4 draws it
+804B1288	field	field_0x1c	mMapAnmTransform_0x1c	med	yes	tu_80403D84 ctor: J2DAnmLoaderDataBase::load("map.bck"), set on map.blo's 'Ndata08' with setAnimation
+804B1288	field	field_0x20	mMapAnmColor_0x20	med	yes	tu_80403D84 ctor: J2DAnmLoaderDataBase::load("map.bpk"), set on the map.blo screen with setAnimation
+804B1288	field	field_0x28	mLevelRowPanes_0x28	med	yes	tu_80403D84 ctor: [stage 0-7][0-2] = PaneCtrl of map_area.blo lbl_8048C658[i*3+j] ('Plv<n>b02', 'Plv<n>b01', 'Tlv0<n>'; the Tlv text is message lbl_8048C218[i]); fn_804083D8 highlights row field_0x340
+804B1288	field	field_0xc8	mTestMapPane_0xc8	med	yes	tu_80403D84 ctor: PaneCtrl of map.blo 'Ptestmap'
+804B1288	field	field_0xcc	mTowerPane_0xcc	med	yes	tu_80403D84 ctor: PaneCtrl of map.blo 'Ptower' (hidden at construction)
+804B1288	field	field_0xd4	mRoutePanes_0xd4	med	yes	tu_80403D84 ctor: 18 PaneCtrl of map.blo lbl_8048CAC8 ('P21'-'P23', 'P31'-'P34', .. 'P71'-'P73': P<stage><n>), the route panes fn_80404D70 / inl_80404D70 hide per open stage
+804B1288	field	field_0x120	mPlanPanes_0x120	med	yes	tu_80403D84 ctor: PaneCtrl of map_area.blo 'Pplan02' / 'Pplan01', the pictures loadStageInfo fills with w0<stage>_0<sub>.bti; fn_804108B4 slides and fades the pair
+804B1288	field	field_0x128	mPointPanes_0x128	med	yes	tu_80403D84 ctor: 32 PaneCtrl of map_area.blo lbl_8048C2F8[i][0] ('Ppoint01', 'Ppoint03', ..), four per stage; fn_8040732C fades those of the selected stage
+804B1288	field	field_0x208	mTinkPanes_0x208	med	yes	tu_80403D84 ctor: 8 PaneCtrl of map_area.blo lbl_8048C4F8[8+i] ('Ptink01'-'Ptink08'), one per stage (fn_8040B5A0 reads [field_0x340]'s bounds)
+804B1288	field	field_0x228	mLevelCursorPanes_0x228	low	yes	tu_80403D84 ctor: PaneCtrl of map_area.blo 'Plvcu01'-'Plvcu04' in two pairs; fn_80409014 swaps which of each pair is shown every 15 frames. "cursor" is read from the 'cu' of the tag only
+804B1288	field	field_0x240	mMessageWindowPanes_0x240	med	yes	tu_80403D84 ctor: 12 PaneCtrl of main_message_window.blo 'Pmmwk02', 'Pmmwk01', 'Pmmw09'-'Pmmw01', 'Pmmtp'; fn_80403D84 / fn_80403EAC slide them 100 down / up together
+804B1288	field	field_0x270	mMessageTextPanes_0x270	med	yes	tu_80403D84 ctor: PaneCtrl of main_message_window.blo 'Tmt01' / 'Tmt02'; fn_80403F50 strcpy's the message text into both text boxes
+804B1288	field	field_0x2b8	mPlayerSoundObjs_0x2b8	low	yes	tu_80403D84 ctor: new cls_804B20F8(i, NULL, NULL, 8) for i 0-3; fn_804108B4 calls fn_80456154 on each every frame; the header calls the class a sound object (ResultScreen: one per player), not proven here
+804B1288	field	field_0x2c8	mSoundObj_0x2c8	med	yes	tu_80403D84 ctor: new ActorSoundObj_804578F4(NULL, NULL, 8); every use is startSound(JAISoundID(0x400E3 / 0x400E2 / 0x30039 / ..))
+804B1288	field	field_0x308	mCursorEmitters_0x308	med	yes	tu_80403D84 fn_80406634: the two emitters (0x32C / 0x184) kept on the cursor sprite it draws; becomeInvalidEmitter when the cursor goes (fn_80409FDC)
+804B1288	field	field_0x310	mRowWhiteColors_0x310	med	yes	tu_80403D84 ctor: getWhite() of the level-row panes [0-1][0-2] into [i*3+j]; fn_804083D8 sets the rows back from [0-2] / [3-5] (selected)
+804B1288	field	field_0x328	mRowBlackColors_0x328	med	yes	tu_80403D84 ctor: getBlack() of the same panes (alpha forced to 0xFF for the pictures); fn_804083D8 as 0x310
+804B1288	field	field_0x340	mStage_0x340	med	yes	tu_80403D84 ctor: = lbl_80529DEC.field_0x118 (the word GameView::mStage_0x4 is copied from); 0-7 index every per-stage table (lbl_8048C1F8 names, w0<stage+1>_ pictures), 8-12 the debug names "Test-1".."Boss5-8"
+804B1288	field	field_0x344	mPrevStage_0x344	med	yes	tu_80403D84 fn_8040D3D0 / fn_8040F480: = field_0x340 just before the selection moves; fn_80408114 fades that stage's Pwarea pane out
+804B1288	field	field_0x348	mLevel_0x348	med	yes	tu_80403D84 ctor: = lbl_80529DEC.field_0x11c (GameView::mLevel_0x8's source); loadStageInfo builds "w0%d_0%d.bti" from field_0x340 + 1, field_0x348 + 1
+804B1288	field	field_0x350	mState_0x350	med	yes	tu_80403D84 fn_804108B4: (this->*lbl_804B10F8[field_0x350])(), the 22 state handlers; every handler changes state by storing here
+804B1288	field	field_0x354	mPrevState_0x354	med	yes	tu_80403D84 fn_804108B4: if (field_0x350 != field_0x354) { field_0x354 = field_0x350; switch on the new state }
+804B1288	field	field_0x390	mMessageId_0x390	med	yes	tu_80403D84 fn_80403F50: fn_803837A4(text buffer, field_0x390, text box width) builds the message window's text from it
+804B1288	field	field_0x394	mCursorX_0x394	med	yes	tu_80403D84 fn_8040E3A0 steps (0x394, 0x398) toward the selected point of lbl_8048C95C; fn_80405FC0 draws the four players around it, fn_804054B8 puts 'Ndata10' there
+804B1288	field	field_0x398	mCursorY_0x398	med	yes	as field_0x394 (the y of the pair)
+804B1288	field	field_0x3bc	mArrowHomeX_0x3bc	med	yes	tu_80403D84 ctor: [dir][pane] = getBounds()->i.x of map_area.blo lbl_8048C618 ('Plicu01'-'Plicu08', a pair per stick direction); fn_804054B8 moves the arrows from it
+804B1288	field	field_0x3dc	mArrowHomeY_0x3dc	med	yes	tu_80403D84 ctor: getBounds()->i.y of the same lbl_8048C618 panes
+804B1288	field	field_0x40e	mAreaBlinkTimers_0x40e	med	yes	tu_80403D84 fn_80408114: per stage, counted up each frame (0-14 fade in, 15-114 looping) to give the alpha of that stage's Pwarea pane
+804B1288	field	field_0x420	mStickAnimTimer_0x420	low	yes	tu_80403D84 fn_80409014: 0-179 cycle that drives setBlendRatio and the 90 / 270 degree turn of 'Pms01' (the pane given kk_mStick_02.bti); "stick" from the texture name only
+804B1288	field	field_0x424	mArrowBlinkTimer_0x424	med	yes	tu_80403D84 fn_804054B8: ++, wraps at 15, swapping which pane of each Plicu arrow pair is shown
+804B1288	field	field_0x42a	mMessageTimer_0x42a	med	yes	tu_80403D84 fn_80403EAC sets 100 when the message window has slid in; fn_80403E24 counts it down and at 0 starts the slide out (0x659 = 3)
+804B1288	field	field_0x438	mStageName_0x438	med	yes	tu_80403D84 setStageName: getMessageText(field_0x438, lbl_8048C1F8[stage]) or "Test-1" / "ECTS" / "E3" / "Boss1-4" / "Boss5-8"; fn_8040C950 copies it into 'Ttlv11' / 'Ttlv12'
+804B1288	field	field_0x474	mStageNames_0x474	med	yes	tu_80403D84 ctor: getMessageText(field_0x474[i], lbl_8048C1F8[i]) for the eight stages, the same message table setStageName reads
+804B1288	field	field_0x5dc	mMessageText_0x5dc	med	yes	tu_80403D84 fn_80403F50: fn_803837A4 writes message field_0x390's text here, then it is strcpy'd into 'Tmt01' / 'Tmt02'
+804B1288	field	field_0x641	mPointAlpha_0x641	med	yes	tu_80403D84 ctor: = map_area.blo 'Ppoint02' getAlpha(); passed as the alpha when the Ppoint panes are shown again (setAlpha_804023D0, line 676)
+804B1288	field	field_0x659	mMessageState_0x659	med	yes	tu_80403D84 fn_804108B4: (this->*lbl_804B1230[field_0x659])(): 0 idle (fn_80403F50), 1 slide in, 2 wait, 3 slide out, the message window's own state machine

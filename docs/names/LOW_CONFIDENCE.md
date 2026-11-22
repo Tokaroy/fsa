@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-49 rows: 49 applied, 0 not applied.
+52 rows: 52 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -58,6 +58,9 @@ See METHOD.md.
 | `InvisibleNPCWallForLink_804AE780` | 804AE780 | class | `cls_804AE780` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `HorseRaceEndArea_804AE830` | 804AE830 | class | `cls_804AE830` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `mWalkAnimCounter_0x3f8` | 804A6F38 | field | `field_0x3f8` | yes | tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function | evidence that proves the role or the name |
+| `mLevelCursorPanes_0x228` | 804B1288 | field | `field_0x228` | yes | tu_80403D84 ctor: PaneCtrl of map_area.blo 'Plvcu01'-'Plvcu04' in two pairs; fn_80409014 swaps which of each pair is shown every 15 frames. "cursor" is read from the 'cu' of the tag only | evidence that proves the role or the name |
+| `mPlayerSoundObjs_0x2b8` | 804B1288 | field | `field_0x2b8` | yes | tu_80403D84 ctor: new cls_804B20F8(i, NULL, NULL, 8) for i 0-3; fn_804108B4 calls fn_80456154 on each every frame; the header calls the class a sound object (ResultScreen: one per player), not proven here | evidence that proves the role or the name |
+| `mStickAnimTimer_0x420` | 804B1288 | field | `field_0x420` | yes | tu_80403D84 fn_80409014: 0-179 cycle that drives setBlendRatio and the 90 / 270 degree turn of 'Pms01' (the pane given kk_mStick_02.bti); "stick" from the texture name only | evidence that proves the role or the name |
 | `gGameRoot_8053AAF8` | 8053AAF8 | global | `lbl_8053AAF8` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `gGameRoot2_8053AB10` | 8053AB10 | global | `lbl_8053AB10` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `updateState_0x90` | 804A4808 | member | `vfunc_0x90` | yes | EnemyBase base 0x801CE4E0 empty (include/game/EnemyBase.h); vfunc_0x9C calls it after mStateTimer++ with the map-hit flag; 36 overrides, which switch on the enemy's state (header: the per-state behaviour). Low: the role rests on the overrides' shape | evidence that proves the role or the name |
