@@ -11,7 +11,7 @@ class PaneCtrl_804AF86C;
 
 // The file select screen: vtable 0x804AFF60 (one slot, the destructor
 // fn_803CFFBC), constructor fn_803D0264 (game/tu_803BC6F0.cpp); 0x1AC bytes
-// (__nw__(0x1AC) in tu_80134C04's fn_80135020 path). The constructor loads
+// (__nw__(0x1AC) in tu_80134C04's createModeScreen_80135020 path). The constructor loads
 // "file_select.blo" and "file_select_huuin.blo" from lbl_80529DEC's
 // field_0x30 archive and stores `this` in lbl_8053ADB0 (the destructor
 // clears it). Three save files (the 'Pf1..', 'Pf2..', 'Pf3..' and 'Tf1date'

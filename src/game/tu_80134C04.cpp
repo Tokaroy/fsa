@@ -78,7 +78,7 @@ static u8 lbl_8049EF10[0x10] = {
 };
 
 // The stage music (sequence IDs) by GameView_804A9950::field_0x34
-// (fn_80138B7C).
+// (startStageMusic_80138B7C).
 static const u32 lbl_804652F0[39] = {
     0x01000000, 0x01000003, 0x0100000B, 0x0100000E, 0x01000010, 0x01000014,
     0x0100000A, 0x01000009, 0x01000008, 0x01000012, 0x01000011, 0x01000015,
@@ -106,7 +106,7 @@ u8 fn_8013997C(s32 index) {
 }
 #pragma auto_inline reset
 
-// Not auto-inlined: GameRoot_8049EF20::fn_80135020 calls fn_80139958 out of line in the original
+// Not auto-inlined: GameRoot_8049EF20::createModeScreen_80135020 calls fn_80139958 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void fn_80139958() {
@@ -185,7 +185,7 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
 }
 
 // Stops the rumble, deletes the screens and objects the constructor and
-// fn_80135020 made, unmounts the archives and destroys both heaps.
+// createModeScreen_80135020 made, unmounts the archives and destroys both heaps.
 GameRoot_8049EF20::~GameRoot_8049EF20() {
     JUTGamePad* pad = JUTGamePad::getGamePad(0);
     field_0x10c = 0;
@@ -305,7 +305,7 @@ void GameRoot_8049EF20::fn_80138C9C() {
 }
 
 // Starts the music of the current stage (GameView_804A9950::field_0x34).
-void GameRoot_8049EF20::fn_80138B7C() {
+void GameRoot_8049EF20::startStageMusic_80138B7C() {
     s32 count = getGameView_802D6A9C()->field_0x1328c;
     s32 id = getGameView_802D6A9C()->field_0x34;
     if (id == 0x11) {
@@ -615,7 +615,7 @@ void GameRoot_8049EF20::fn_80137300() {
                     field_0x90 -= 10.0f;
                     if (field_0x90 < 1.0f) {
                         field_0x90 = 1.0f;
-                        fn_80138B7C();
+                        startStageMusic_80138B7C();
                     }
                 }
             case 3:
@@ -781,7 +781,7 @@ void GameRoot_8049EF20::fn_80137300() {
         case 14:
             getGameView_802D6A9C()->fn_802DBD60();
             field_0xa0->fn_80458880(0x38, -1);
-            fn_80138B7C();
+            startStageMusic_80138B7C();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
@@ -1016,7 +1016,7 @@ void GameRoot_8049EF20::fn_80136828() {
                             strcpy(field_0xc0->getStringPtr(), field_0xc8);
                             field_0xc4->setAlpha(field_0x68);
                             field_0xc0->setAlpha(field_0x68);
-                            gGameRoot2_8053AB10->fn_8013B490();
+                            gGameRoot2_8053AB10->setPort_8013B490();
                             field_0xc4->draw(-29997.0f, 3.0f + y,
                                              60000.0f + (s32)JUTVideo::getManager()->getFbWidth(),
                                              J2DHBIND_Center);
@@ -1263,7 +1263,7 @@ void GameRoot_8049EF20::fn_80136500() {
     if (gGameRoot_8053AAF8->field_0x96 != 0) {
         stopped = true;
     }
-    if (gGameRoot_8053AAF8->field_0x7e == 0 && fn_8037F1E4(0)) {
+    if (gGameRoot_8053AAF8->field_0x7e == 0 && getMessageWindowState_8037F1E4(0)) {
         stopped = true;
     }
     if (field_0xfe == 1 && !stopped) {
@@ -1374,7 +1374,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         fn_801352F4(7);
         OSReport("Result　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
-        fn_80135020(12);
+        createModeScreen_80135020(12);
         break;
     case 1:
         fn_801352F4(7);
@@ -1385,7 +1385,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         fn_801352F4(12);
         OSReport("Title　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
-        fn_80135020(1);
+        createModeScreen_80135020(1);
         break;
     case 2:
     case 5:
@@ -1506,26 +1506,26 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
         case 7:
             lbl_80529DEC.mBossArchive_0x10 = field_0xac->field_0x14;
             lbl_80529DEC.mGame2DArchive_0x4c = field_0xb0->field_0x14;
-            fn_80135020(7);
+            createModeScreen_80135020(7);
             break;
         case 2:
         case 5:
             if (field_0x4c != 2 && field_0x4c != 5) {
                 lbl_80529DEC.mGameModeArchive_0x2c = field_0xac->field_0x14;
-                fn_80135020(2);
+                createModeScreen_80135020(2);
             }
             break;
         case 3:
             lbl_80529DEC.mFileArchive_0x30 = field_0xac->field_0x14;
-            fn_80135020(3);
+            createModeScreen_80135020(3);
             break;
         case 4:
             lbl_80529DEC.mEntryArchive_0x28 = field_0xac->field_0x14;
-            fn_80135020(4);
+            createModeScreen_80135020(4);
             break;
         case 6:
             lbl_80529DEC.mMapArchive_0x34 = field_0xac->field_0x14;
-            fn_80135020(6);
+            createModeScreen_80135020(6);
             lbl_8053AD80->fn_80390088();
             break;
         }
@@ -1579,7 +1579,7 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
     }
 }
 
-// Deletes the screen object of game mode `mode` (see fn_80135020).
+// Deletes the screen object of game mode `mode` (see createModeScreen_80135020).
 void GameRoot_8049EF20::fn_801352F4(s32 mode) {
     switch (mode) {
     case 7:
@@ -1631,7 +1631,7 @@ void GameRoot_8049EF20::fn_801352F4(s32 mode) {
 
 // Creates the screen object of game mode `mode` unless it exists; the menu
 // screens are made in field_0x98 under heap group ID 1.
-void GameRoot_8049EF20::fn_80135020(s32 mode) {
+void GameRoot_8049EF20::createModeScreen_80135020(s32 mode) {
     switch (mode) {
     case 7:
         if (field_0x4 == NULL) {

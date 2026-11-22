@@ -85,7 +85,7 @@ struct GameRootSub20_801902C0;
 
 struct GameRootSub04_801F856C {
     // 0x8013A538 (game/tu_80139BE8.cpp, not written yet): GameRoot's
-    // fn_80135020 makes it with __nw__(0x38) and passes GameRoot's heap.
+    // createModeScreen_80135020 makes it with __nw__(0x38) and passes GameRoot's heap.
     GameRootSub04_801F856C(JKRHeap* heap);
     // vtable at 0x0 (0x8049F080); its one slot is the destructor below.
     virtual ~GameRootSub04_801F856C();
@@ -197,7 +197,7 @@ struct GameRoot_8049EF20 {
     // vtable 0x8049EF20: one slot, the destructor (0x80138E78).
     virtual ~GameRoot_8049EF20();
 
-    // The screen objects fn_80135020 (0x80135020) creates for a game mode
+    // The screen objects createModeScreen_80135020 (0x80135020) creates for a game mode
     // (field_0x4c) and fn_801352F4 (0x801352F4) deletes again; each is made in
     // field_0x98 with its heap group ID set to 1.
     /* 0x04 */ GameRootSub04_801F856C* field_0x4; // mode 7 (0x38 bytes); -> 0x8: the actor manager
@@ -283,7 +283,7 @@ struct GameRoot_8049EF20 {
     // Toggled between 0 and 1 by fn_80134DC0 (game/tu_80134C04.cpp, 0x80134DC0,
     // stb of r3 at 0x86 only).
     /* 0x86 */ u8 field_0x86;
-    // Cleared when fn_80135020 creates the title screen (mode 1).
+    // Cleared when createModeScreen_80135020 creates the title screen (mode 1).
     /* 0x87 */ u8 field_0x87;
     // Stored by fn_80134D14 (game/tu_80134C04.cpp, 0x80134D14, stb of r4).
     /* 0x88 */ u8 field_0x88;
@@ -301,7 +301,7 @@ struct GameRoot_8049EF20 {
     // Stored by fn_80134FBC (game/tu_80134C04.cpp, 0x80134FBC, stb of r4).
     /* 0x96 */ u8 field_0x96;
     /* 0x97 */ u8 field_0x97[0x98 - 0x97];
-    // The heap the screens of fn_80135020 are made in (lbl_80529DEC's mHeap,
+    // The heap the screens of createModeScreen_80135020 are made in (lbl_80529DEC's mHeap,
     // copied by the constructor).
     /* 0x98 */ JKRHeap* field_0x98;
     /* 0x9C */ JKRSolidHeap* field_0x9c; // lbl_80529DEC's field_0x4; destroyed by the destructor
@@ -363,7 +363,7 @@ struct GameRoot_8049EF20 {
     void fn_80136798(s32 a, s32 b);
     // ~28 units. In tu_80134C04 with GameRoot's constructor; uses this->0xA0.
     // r3 only.
-    void fn_80138B7C();
+    void startStageMusic_80138B7C();
     // Flips this+0x86 between 0 and 1 (lbz, then stb of 1 or 0). Defined in
     // game/tu_80134C04.cpp (0x80134DC0); no callers found yet.
     void fn_80134DC0();
@@ -405,7 +405,7 @@ struct GameRoot_8049EF20 {
     void fn_80134DE4(s32 a, s32 b);
     // Owner: game/tu_80134C04.cpp (0x80135020, 0x801352F4). Create / delete
     // the screen object of game mode `mode` (switch on 0-12; see 0x04-0x30).
-    void fn_80135020(s32 mode);
+    void createModeScreen_80135020(s32 mode);
     void fn_801352F4(s32 mode);
     // Owner: game/tu_80134C04.cpp (0x80135A04). Deletes the other modes'
     // screens, reports the heap and starts loading the archives of `mode`.
@@ -434,7 +434,7 @@ struct GameRoot_8049EF20 {
     // Owner: game/tu_80134C04.cpp (0x80136500; called by tu_80139BE8). Counts
     // field_0xfc up to 60 frames, then field_0xf8 up by one, while field_0xfe
     // is 1 and none of field_0x94, field_0x96 or (with field_0x7e clear)
-    // fn_8037F1E4(0) holds the game.
+    // getMessageWindowState_8037F1E4(0) holds the game.
     void fn_80136500();
     // 0x80136364 (game/tu_80134C04.cpp): called by GameRootSub04's fn_80139D9C.
     // 0x80135494: applies the requested mode (field_0x50) once its archives are loaded.
@@ -860,7 +860,7 @@ struct GameRoot2_8049F108 {
     // field_0x24->fn_8030DFE8(0); `this` is gGameRoot2_8053AB10. Called twice by
     // fn_80139CC4 (game/tu_80139BE8.cpp).
     void fn_8013B438();
-    // 0x8013B460 (between fn_8013B438 and fn_8013B490; body not yet known).
+    // 0x8013B460 (between fn_8013B438 and setPort_8013B490; body not yet known).
     // Called with `this` = gGameRoot2_8053AB10 by ShadowCircle_804A0160::fn_80158F70
     // (game/tu_80158624.cpp), before its GX setup.
     void fn_8013B460();
@@ -869,7 +869,7 @@ struct GameRoot2_8049F108 {
     // constructor). Calls vtable slot 5 of field_0x10 (the J2DOrthoGraph);
     // `this` is gGameRoot2_8053AB10. Called by tu_803DA6B4's fn_803DA6B4 before
     // J2DScreen::draw.
-    void fn_8013B490();
+    void setPort_8013B490();
     // game/tu_8013AAD4.cpp. Called by GameRoot_8049EF20::fn_80137300
     // (tu_80134C04); calls field_0x20->fn_802FF0EC() in the modes
     // isGameModeSet() (game/GameMode.h) accepts.
@@ -1001,7 +1001,7 @@ public:
     // 0x8043D39C / 0x8043DB58 (tu_8043A0E8.cpp, not written yet): GameRoot's
     // per-frame draw (fn_80136828) calls both on lbl_8053AED0 after the game
     // view; the first tests gGameRoot_8053AAF8->field_0x7f, the second sets the
-    // ortho context (fn_8013B490) and switches on the byte at 0x256.
+    // ortho context (setPort_8013B490) and switches on the byte at 0x256.
     void fn_8043D39C();
     // 0x8043E80C: draws digit `digit` (0-9) at (x, y) scaled by `scale` in the two colours, with alpha.
     void fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, f32 y, f32 scale);
@@ -1193,7 +1193,7 @@ public:
     GameOverScreen_804B17A0(); // fn_80439C78 (game/tu_80438C68.cpp)
     /* 0x000 */ // vtable, whose one slot is the destructor below
     virtual ~GameOverScreen_804B17A0(); // owner game/tu_80438C68.cpp (not written yet)
-    // 0x804399A0 (not written yet): sets the ortho context (fn_8013B490) and
+    // 0x804399A0 (not written yet): sets the ortho context (setPort_8013B490) and
     // draws; GameRoot's fn_80136828 calls it in screen mode 11.
     void fn_804399A0();
     // 0x80439AB0 (game/tu_80438C68.cpp): the state reset; also what fn_80438E10(flag = 0) does.
@@ -1927,10 +1927,10 @@ void fn_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const c
                  J3DAnmTextureSRTKey** btk1Out, J3DAnmTextureSRTKey** btk2Out,
                  J3DAnmTevRegKey** brk1Out, J3DAnmTevRegKey** brk2Out);
 // game/tu_8013AAD4.cpp: draws gGameRoot2_8053AB10's two J3D draw buffers
-// (fn_8013AB2C), places and enters a model (fn_8013ABCC) and sets them and
+// (fn_8013AB2C), places and enters a model (calcAndEntryModel_8013ABCC) and sets them and
 // the J3D view matrix (fn_8013AC54).
 void fn_8013AB2C();
-void fn_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx);
+void calcAndEntryModel_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx);
 void fn_8013AC54(Mtx view);
 // Owner: game/tu_8022AD64.cpp (0x8023F728, 0x8023F78C). Called by fn_8013A1A4: each
 // runs a per-player routine on all four players (fn_8023F78C also stores -1 to lbl_8053A190).
@@ -2016,7 +2016,7 @@ public:
     void fn_8042F6DC();
     // Not in the binary: a plain function that fn_8042F6DC inlines.
     void scaleFrames(f32 w, f32 h);
-    // 0x80430368: appends the counted noun (the nouns of MessageSequenceProcessor_804AF774::fn_803A2CB0) to out; 0.0f.
+    // 0x80430368: appends the counted noun (the nouns of MessageSequenceProcessor_804AF774::addCountedNounLength_803A2CB0) to out; 0.0f.
     f32 fn_80430368(u8 noun, s32 count, char* out);
     // 0x804310BC: clears field_0xe8 and field_0xec (owner game/tu_8042E964.cpp).
     void fn_804310BC();

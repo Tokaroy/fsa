@@ -138,7 +138,7 @@ void Cloud_8049CBE0::update() {
             fn_8023DF68(i, &d);
         }
     }
-    mSprite.fn_801D1C18();
+    mSprite.update_801D1C18();
 }
 
 void Cloud_8049CBE0::draw() {
@@ -151,7 +151,7 @@ void Cloud_8049CBE0::draw() {
     }
     void* res = field_0x2f8[key];
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &mParams);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &mParams);
     }
 }
 

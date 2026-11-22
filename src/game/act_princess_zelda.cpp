@@ -206,7 +206,7 @@ void PrincessZelda_8049CEE0::update() {
         if (fn_801F26CC(lbl_80464204) >= 0) {
             mLife -= 2;
             if (mLife > 0) {
-                fn_801096C8(11);
+                setState_801096C8(11);
             }
         }
     }
@@ -231,7 +231,7 @@ void PrincessZelda_8049CEE0::update() {
         }
         if (player >= 0) {
             field_0x304 = player;
-            fn_801096C8(3);
+            setState_801096C8(3);
         }
     }
 
@@ -248,7 +248,7 @@ void PrincessZelda_8049CEE0::update() {
         if (field_0x2fc > 0 && field_0x320 == 1) {
             mRail.fn_800FE3EC(field_0x2fc, mPos, mLayer_0x4);
         }
-        fn_801096C8(1);
+        setState_801096C8(1);
         break;
 
     case 1:
@@ -258,7 +258,7 @@ void PrincessZelda_8049CEE0::update() {
                 if (fn_8022FD8C(mSerial) >= 0) {
                     if (talk(0, 0x170, mSerial, mLayer_0x4, mPos, 0x28)) {
                         lbl_8053AA81 = 0;
-                        fn_801096C8(4);
+                        setState_801096C8(4);
                     }
                 }
             }
@@ -283,7 +283,7 @@ void PrincessZelda_8049CEE0::update() {
                 if (player >= 0 && !fn_8022F514(player)) {
                     if (talk(player, 0x230, mSerial, mLayer_0x4, mPos, 0x28)) {
                         field_0x300 = player;
-                        fn_801096C8(2);
+                        setState_801096C8(2);
                     }
                 }
                 break;
@@ -297,14 +297,14 @@ void PrincessZelda_8049CEE0::update() {
     case 2:
         fn_8022FF8C(field_0x300, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x300, mSerial)) {
-            fn_801096C8(5);
+            setState_801096C8(5);
         }
         break;
 
     case 3:
         fn_8022FF8C(field_0x304, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x304, mSerial)) {
-            fn_801096C8(field_0x32c);
+            setState_801096C8(field_0x32c);
         }
         break;
 
@@ -325,18 +325,18 @@ void PrincessZelda_8049CEE0::update() {
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(0, mSerial)) {
             lbl_8053AA81 = 0;
-            fn_801096C8(1);
+            setState_801096C8(1);
         }
         break;
     }
 
     case 5: {
         if (field_0x300 < 0) {
-            fn_801096C8(1);
+            setState_801096C8(1);
             break;
         }
         if (isScreenFlagSet_0x34()) {
-            fn_801096C8(15);
+            setState_801096C8(15);
             break;
         }
         s32 player = field_0x300;
@@ -344,16 +344,16 @@ void PrincessZelda_8049CEE0::update() {
             break;
         }
         if (getGameView_802D6A9C()->fn_802DCD0C()) {
-            fn_801096C8(9);
+            setState_801096C8(9);
             break;
         }
         if (fn_8022D75C(player)) {
             if (fn_8023E10C(player) == 8) {
-                fn_801096C8(7);
+                setState_801096C8(7);
             } else {
                 mLayer_0x4 = getPlayerLayer_8023DE58(player);
                 field_0x339 = 0;
-                fn_801096C8(10);
+                setState_801096C8(10);
             }
             break;
         }
@@ -382,21 +382,21 @@ void PrincessZelda_8049CEE0::update() {
 
     case 7:
         if (field_0x300 < 0) {
-            fn_801096C8(1);
+            setState_801096C8(1);
         }
         if (!fn_8022D75C(field_0x300) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x300)) {
-            fn_801096C8(8);
+            setState_801096C8(8);
         }
         break;
 
     case 8:
         if (field_0x300 < 0) {
-            fn_801096C8(1);
+            setState_801096C8(1);
         }
         field_0x314++;
         if (field_0x314 >= 15) {
             field_0x314 = 0;
-            fn_801096C8(5);
+            setState_801096C8(5);
         }
         break;
 
@@ -404,11 +404,11 @@ void PrincessZelda_8049CEE0::update() {
         if (field_0x300 >= 0) {
             field_0x339 = 0;
             JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            mDir_0x98 = fn_80230CFC(field_0x300);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
             approachPlayerSide(ppos);
         }
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-            fn_801096C8(5);
+            setState_801096C8(5);
         }
         break;
 
@@ -417,17 +417,17 @@ void PrincessZelda_8049CEE0::update() {
         if (field_0x300 >= 0) {
             field_0x339 = 0;
             JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            mDir_0x98 = fn_80230CFC(field_0x300);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
             followPlayerSide(ppos);
         }
         if (!fn_8022D75C(field_0x300)) {
-            fn_801096C8(5);
+            setState_801096C8(5);
         }
         break;
 
     case 11:
         if (mSpriteAnim.fn_801D208C()) {
-            fn_801096C8(field_0x32c);
+            setState_801096C8(field_0x32c);
         }
         break;
 
@@ -435,23 +435,23 @@ void PrincessZelda_8049CEE0::update() {
         if (mSpriteAnim.fn_801D208C()) {
             field_0x308++;
             if (field_0x308 >= 90) {
-                fn_801096C8(13);
+                setState_801096C8(13);
             }
         }
         break;
 
     case 13:
-        mSpriteAnim.fn_801D1C18();
+        mSpriteAnim.update_801D1C18();
         if (lbl_8053AA80 != 0) {
-            fn_801096C8(14);
+            setState_801096C8(14);
         }
         break;
 
     case 14:
         if (field_0x300 < 0) {
-            fn_801096C8(1);
+            setState_801096C8(1);
         } else {
-            fn_801096C8(5);
+            setState_801096C8(5);
         }
         break;
 
@@ -459,7 +459,7 @@ void PrincessZelda_8049CEE0::update() {
         field_0x318++;
         if (field_0x318 < 15) {
             if (stepRail()) {
-                fn_801096C8(16);
+                setState_801096C8(16);
             }
         }
         break;
@@ -469,7 +469,7 @@ void PrincessZelda_8049CEE0::update() {
         field_0x31c = fn_8022FD8C(mSerial);
         if (field_0x31c >= 0 && (gGameRoot_8053AAF8->mPlayerMask & (1 << field_0x31c))) {
             if (talk(field_0x31c, 0x16E, mSerial, mLayer_0x4, mPos, 0x28)) {
-                fn_801096C8(17);
+                setState_801096C8(17);
             }
         }
         break;
@@ -477,7 +477,7 @@ void PrincessZelda_8049CEE0::update() {
     case 17:
         fn_8022FF8C(field_0x31c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x31c, mSerial)) {
-            fn_801096C8(16);
+            setState_801096C8(16);
         }
         break;
     }
@@ -501,12 +501,12 @@ void PrincessZelda_8049CEE0::update() {
     }
 
     mSpriteAnim.mFrameCtrl.setRate(field_0x330);
-    mSpriteAnim.fn_801D1C18();
+    mSpriteAnim.update_801D1C18();
     fn_80109534();
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 
     if (mLife == 0 && field_0x328 < 12 && field_0x2f8 == 0) {
-        fn_801096C8(12);
+        setState_801096C8(12);
     }
 }
 
@@ -574,15 +574,15 @@ bool PrincessZelda_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void PrincessZelda_8049CEE0::stepSpeed(f32 dist) {
     if (dist >= 32.0f) {
-        fn_801CD950(&field_0x334, 1.1f, 0.02f);
+        moveToward_801CD950(&field_0x334, 1.1f, 0.02f);
     } else {
-        fn_801CD950(&field_0x334, 0.0f, 0.04f);
+        moveToward_801CD950(&field_0x334, 0.0f, 0.04f);
     }
 }
 
 // FIXME: 99.54 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
-bool PrincessZelda_8049CEE0::fn_801096C8(s32 state) {
+bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
     field_0x32c = field_0x328;
     field_0x328 = state;
     field_0x338 = 0;
@@ -619,10 +619,10 @@ bool PrincessZelda_8049CEE0::fn_801096C8(s32 state) {
         break;
     }
     case 9:
-        mSpriteAnim.startAnim_801D22DC(fn_80230CFC(field_0x300), 2, false);
+        mSpriteAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(field_0x300), 2, false);
         break;
     case 10:
-        mSpriteAnim.startAnim_801D22DC(fn_80230CFC(field_0x300), 2, false);
+        mSpriteAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(field_0x300), 2, false);
         break;
     case 11:
         mSpriteAnim.startAnim_801D22DC(mDir_0x98 + 10, 0, false);
@@ -742,7 +742,7 @@ void PrincessZelda_8049CEE0::fn_80109534() {
 }
 
 // The four functions below have no copy of their own in the original either: update and
-// fn_801096C8 inline them and the linker dropped the bodies. They were plain functions
+// setState_801096C8 inline them and the linker dropped the bodies. They were plain functions
 // generated before fn_80109534, in this order from the bottom, which is the order of
 // 0, -24, 1, 16, 0.5, 5, 2 in the original's .sdata2.
 
@@ -764,8 +764,8 @@ void PrincessZelda_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
         break;
     }
     field_0x330 = 0.5f;
-    fn_801CD950(&mPos.x, ppos.x, 2.0f);
-    fn_801CD950(&mPos.y, ppos.y, 2.0f);
+    moveToward_801CD950(&mPos.x, ppos.x, 2.0f);
+    moveToward_801CD950(&mPos.y, ppos.y, 2.0f);
 }
 
 // The same side position; mPos jumps to it on the player's layer, else moves towards it by 5.
@@ -791,8 +791,8 @@ void PrincessZelda_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
         mPos.y = ppos.y;
         mPos.z = ppos.z;
     } else {
-        fn_801CD950(&mPos.x, ppos.x, 5.0f);
-        fn_801CD950(&mPos.y, ppos.y, 5.0f);
+        moveToward_801CD950(&mPos.x, ppos.x, 5.0f);
+        moveToward_801CD950(&mPos.y, ppos.y, 5.0f);
     }
 }
 

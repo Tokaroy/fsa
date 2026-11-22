@@ -20,21 +20,21 @@ Next: the remaining ~95 functions of the unit (die_0x24..0x50 first),
 then the .sdata2 order resolves the ctor.
 
 ## 2026-11-05 pass (Sonnet 5.5)
-Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, fn_801F3668, fn_801F4694 (const).
+Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, markDead_801F3668, fn_801F4694 (const).
 Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / fn_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
 SHARED-EDITS: include/game/ActorBase.h (fn_801EE3C0 moved out of extern "C"; fn_801F4694 / fn_801F317C const); symbols.txt renames fn_801EE3C0__FUs, fn_801F4694...CFv, fn_801F317C...CF....
-Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, fn_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
+Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, checkPlayerAttacks_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
 
 ## 2026-11-05 leverage wave 1 (Opus 5.5)
 Baseline 8397 -> 8401 (+4 honest). 100 %: releaseEmitter_801EE434 (now C++
 releaseEmitter_801EE434__FP14JPABaseEmitter; it replaces the destructor's inline copy, the
-destructor inlines it), fn_801F0D20, fn_801F32F4, fn_801F33C4.
+destructor inlines it), playSe_801F0D20, fn_801F32F4, fn_801F33C4.
 Structural (FIXME each): fn_801EE24C 99.95 reloc-name (200.0f), startSound_801F0E34
 99.25 regalloc, fn_801F2B7C 98.2 regalloc+reloc (inlines fn_801F2740),
-fn_801F2DB4 99.4, fn_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
+fn_801F2DB4 99.4, fn_801F2618 98.7, checkPlayerAttacks_801F2FAC 98.6 (bool narrowed with
 clrlwi at the return: a u8 return type matches the bodies 100 % but lowers ~20
 bool-using callers, EnemyBase vfunc_0x60/0x64 etc.; left bool), fn_801F305C
-97.9 (inlines fn_801F2FAC), isBlockedOrOutOfView_0x50 94.4 regalloc, fn_801F2740 85.0 (an
+97.9 (inlines checkPlayerAttacks_801F2FAC), isBlockedOrOutOfView_0x50 94.4 regalloc, fn_801F2740 85.0 (an
 unexplained clrlwi at the return + prologue scheduling).
 Constructor: cannot reach 100 % until the whole .sdata2 is in order. The pool
 starts with four aggregate objects emitted before the literals and in reverse
@@ -99,7 +99,7 @@ gone; fn_801F329C (now const, symbols.txt renamed) and fn_801F320C are plain
 functions their callers inline under deferred, every % kept.
 Re-measured under deferred, unchanged: the ctor (99.91, reloc-name only: 1.0f
 needs fn_801EF574 written first, 6.0f/doubles drawSprite, ...); the bool
-narrowing family (fn_801F2618, fn_801F2FAC, fn_801F2DB4, fn_801F305C, now also
+narrowing family (fn_801F2618, checkPlayerAttacks_801F2FAC, fn_801F2DB4, fn_801F305C, now also
 fn_801F23BC, fn_801F37AC): u8 returns make all five bodies 100 % (fn_801F305C
 with `u8 hit; if (hit == false)`), but 15 written callers drop (EnemyBase
 vfunc_0x5C/0x60/0x64 100 -> 84-86, Terrorpin/Beamos/Thief vfunc_0x60/0x64,
@@ -132,7 +132,7 @@ symbols.txt (fn_801F329C CFl, fn_801F172C member, fn_801F6718 FllPC...ll).
 ## 2026-11-06 leverage, ActorBase round 4 (Opus 5.5)
 Baseline 9018 honest -> 9020 (+2); unit 47 -> 49 / 75 at 100 %. No function anywhere
 drops (compared by address across the whole report against the main report_honest.json).
-- fn_801F132C 100 % (new; the isBlocked_0x4C of act_pot/rock/grass/sign/stone/coconut,
+- isBlockedCommon_801F132C 100 % (new; the isBlocked_0x4C of act_pot/rock/grass/sign/stone/coconut,
   countdown param renamed timer): s32 locals for both tile codes (cmpwi), the 0x10-0x13
   range as an `==` chain (folds to subi/cmplwi 3), and the 0x25 / 0x26 results narrowed
   as bytes `(u8)(... == 0)` (extrwi), the form act_bombchu / act_blade_trap use at 100 %.
@@ -153,9 +153,9 @@ Tried, not merged:
   stmw); a named temporary `tmp = *params; sp = tmp;` gives stmw r14 and load-all but a
   second stack struct (70 %); a pointer helper and a by-value helper: no change / worse.
   The target copies like a non-aliasing destination (all loads, spills, then stores)
-  although &sp goes to fn_802F86CC. Draft: scratchpad r4_draft_801EF574.cpp.
+  although &sp goes to drawSobSprite_802F86CC. Draft: scratchpad r4_draft_801EF574.cpp.
 - isBlocked_0x4C: getSerial() (layer fixed, pos/this swap), early returns, `||` with a box
   helper: none beat 89.5.
 SHARED-EDITS: ActorBase.h (fn_801F2740 / fn_801F285C const; fn_801F172C returns u8;
-fn_801F132C param timer; comments); symbols.txt renames fn_801F2740__18ActorBase_804A5770CFl,
+isBlockedCommon_801F132C param timer; comments); symbols.txt renames fn_801F2740__18ActorBase_804A5770CFl,
 fn_801F285C__18ActorBase_804A5770CFPQ29JGeometry8TVec2<f>Plbl. Layout unchanged.

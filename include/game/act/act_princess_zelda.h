@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
 
     void fn_80109534();
-    bool fn_801096C8(s32 state);
+    bool setState_801096C8(s32 state);
     bool fn_80109AE0(JGeometry::TVec3f* outPos);
     bool stepRail();
     // Plain functions without a copy of their own in the original (bottom of the .cpp).
@@ -27,9 +27,9 @@ public:
     void pool_8053C3E4();
     void pool_8053C3E0();
 
-    // fn_8038AD24 takes the position by value; serial and layer are loaded before that copy.
+    // openMessage_8038AD24 takes the position by value; serial and layer are loaded before that copy.
     bool talk(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038AD24(player, msg, serial, layer, pos, flags);
+        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
     }
 
     /* 0x230 */ cls_800FE3EC mRail;

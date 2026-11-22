@@ -21,14 +21,14 @@ static inline void releaseView(Quicksand_804A6270* sand) {
         }
         s32 viewSerial = sand->field_0x2b8;
         if (viewSerial != 0) {
-            getGameView_802D6A9C()->fn_802D8050(viewSerial, true, 0xff);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(viewSerial, true, 0xff);
         }
         break;
     }
     case 6: {
         s32 viewSerial = sand->field_0x2b8;
         if (viewSerial != 0) {
-            getGameView_802D6A9C()->fn_802D8050(viewSerial, false, 0xff);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(viewSerial, false, 0xff);
         }
         break;
     }
@@ -169,7 +169,7 @@ void Quicksand_804A6270::init() {
         }
         s32 viewSerial = field_0x2b8;
         if (viewSerial != 0) {
-            getGameView_802D6A9C()->fn_802D8050(viewSerial, true, 0xff);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(viewSerial, true, 0xff);
         }
         field_0x398 = 1.0f;
     } else {
@@ -405,9 +405,9 @@ void Quicksand_804A6270::updateState_0x90(u8 mapHit) {
             if (mFlags & 0x20000) {
                 s32 viewSerial = field_0x2b4;
                 if (viewSerial != 0) {
-                    getGameView_802D6A9C()->fn_802D8050(viewSerial, true, 0xff);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(viewSerial, true, 0xff);
                 }
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else {
             approach(field_0x398, 0.0f, 30 - mStateTimer);

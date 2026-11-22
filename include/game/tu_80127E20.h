@@ -25,14 +25,14 @@ struct ZoraEscortGoalList_80128460 {
     // The midpoint (x, y, 0) of the first two actors' positions, or the zero
     // vector with fewer than two. The result is a stack local.
     const JGeometry::TVec3f* fn_80127F90();
-    // Call fn_80126A4C(0x10) / fn_80126A4C(0xA) on every 'FZRA' actor.
+    // Call setState_80126A4C(0x10) / setState_80126A4C(0xA) on every 'FZRA' actor.
     void fn_80128074();
     void fn_801281A4();
     // True when an 'FZRA' actor's state word is 2, 3 or 9.
     bool fn_801280F8();
     // fn_80230534(false); the object is not used.
     void fn_80128228();
-    // fn_8023077C(), then fn_80126A4C(5) on each actor; false when one is
+    // fn_8023077C(), then setState_80126A4C(5) on each actor; false when one is
     // not an 'FZRA' actor.
     bool fn_8012824C();
     // True when there is at least one actor and every one is a live 'FZRA'

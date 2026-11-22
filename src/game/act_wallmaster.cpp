@@ -171,7 +171,7 @@ void Wallmaster_804A3E44::init() {
 
 // FIXME: 99.62 %, missing/extra; behaviour drift.
 // (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
-void Wallmaster_804A3E44::fn_801BC554(s32 state) {
+void Wallmaster_804A3E44::setState_801BC554(s32 state) {
     switch (state) {
     case 0:
         mFlags &= ~0x2000;
@@ -349,7 +349,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
         if (player != field_0x2b8) {
             if (player < 0) {
                 if (mState != 1 || mStateTimer >= 60) {
-                    fn_801BC554(5);
+                    setState_801BC554(5);
                 }
             } else if (field_0x2bc >= 45) {
                 field_0x2b8 = player;
@@ -371,7 +371,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
     }
     if (b) {
         if (!fn_8022DCD8(field_0x2b8)) {
-            fn_801BC554(5);
+            setState_801BC554(5);
         } else {
             JGeometry::TVec3f vec(mPos.x - getPlayerPos_8023E724(field_0x2b8)->x,
                                   mPos.y - getPlayerPos_8023E724(field_0x2b8)->y,
@@ -418,7 +418,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
             s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
             if (p >= 0) {
                 field_0x2b8 = p;
-                fn_801BC554(1);
+                setState_801BC554(1);
             }
         }
         break;
@@ -427,12 +427,12 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
             // Steering temporary: testing the call directly costs 0.8 % (98.37 vs 99.16).
             bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 80.0f);
             if (b) {
-                fn_801BC554(5);
+                setState_801BC554(5);
                 break;
             }
         }
         if (mPos.z <= 48.0f) {
-            fn_801BC554(2);
+            setState_801BC554(2);
             break;
         }
         if (mStateTimer >= 16) {
@@ -445,7 +445,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
                 break;
             }
             case 3:
-                if (mAnim.fn_801D21F0()) {
+                if (mAnim.isStopped_801D21F0()) {
                     mAnim.startAnim_801D22DC(0, 0, false);
                 }
                 break;
@@ -456,12 +456,12 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         // Steering temporary, as in state 1.
         bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 80.0f);
         if (b) {
-            fn_801BC554(5);
+            setState_801BC554(5);
         } else if (mPos.z <= 10.0f) {
             mPos.z = 10.0f;
-            fn_801BC554(3);
+            setState_801BC554(3);
         } else if (mAnim.mAnim == 3) {
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 mAnim.startAnim_801D22DC(0, 0, false);
             }
         }
@@ -470,21 +470,21 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
     case 3:
         if (checkPlayerHit()) {
             if (fn_8022DE10(field_0x2b8, 0)) {
-                fn_801BC554(4);
-            } else if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-                fn_801BC554(5);
+                setState_801BC554(4);
+            } else if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
+                setState_801BC554(5);
             }
-        } else if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_801BC554(5);
+        } else if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
+            setState_801BC554(5);
         }
         break;
     case 4:
         if (mPos.z >= 30.0f) {
             if (field_0x2ac != mLayer_0x4) {
-                fn_801BC554(7);
+                setState_801BC554(7);
             } else {
                 mPos.z = 30.0f;
-                fn_801BC554(6);
+                setState_801BC554(6);
             }
         }
         break;
@@ -492,12 +492,12 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
         if (mStateTimer >= 100 && !(mFlags & 0x2000) && p >= 0) {
             field_0x2b8 = p;
-            fn_801BC554(1);
+            setState_801BC554(1);
         } else if (mPos.z >= 100.0f) {
             if (field_0x2a8 == 0) {
-                fn_801BC554(0);
+                setState_801BC554(0);
             } else {
-                fn_801BC554(9);
+                setState_801BC554(9);
             }
         }
         break;
@@ -508,7 +508,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
                 mFlags |= 0x8000;
                 field_0x2c4 = field_0x2b8;
             }
-            fn_801BC554(5);
+            setState_801BC554(5);
         }
         break;
     case 7:
@@ -520,7 +520,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
             JGeometry::TVec3f pos;
             pos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z - 10.0f);
             fn_802316C8(field_0x2b8, field_0x2ac, &pos);
-            fn_801BC554(8);
+            setState_801BC554(8);
         }
         break;
     case 8:
@@ -530,13 +530,13 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
                 mFlags |= 0x8000;
                 field_0x2c4 = field_0x2b8;
             }
-            fn_801BC554(5);
+            setState_801BC554(5);
         }
         break;
     case 9:
         if (mStateTimer >= field_0x250) {
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
-            fn_801BC554(10);
+            setState_801BC554(10);
         }
         break;
     case 10: {
@@ -557,7 +557,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         }
         if (flag) {
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 3, -1, -1);
-            fn_801BC554(9);
+            setState_801BC554(9);
         } else {
             mDir_0x98 = mParam.mTarget;
             field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
@@ -565,7 +565,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {
                         mDir_0x98 = 2;
-                        fn_801BC554(4);
+                        setState_801BC554(4);
                     }
                 }
             }
@@ -598,7 +598,7 @@ void Wallmaster_804A3E44::calcVelocity_0x88() {
         break;
     case 6: {
         JGeometry::TVec2f d;
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, 0.5f);
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, 0.5f);
         mVel_0x3c.x = d.x;
         mVel_0x3c.y = d.y;
         break;
@@ -616,7 +616,7 @@ void Wallmaster_804A3E44::calcVelocity_0x88() {
 }
 
 // calcVelocity_0x88 left unwritten: state 6 passes field_0x2b0 (a TVec2f slot) to
-// fn_801D01A0, whose target parameter is typed TVec3f* in EnemyBase.
+// calcVelocityToward_801D01A0, whose target parameter is typed TVec3f* in EnemyBase.
 
 void Wallmaster_804A3E44::onDeath_0x78() {
     if (field_0x2b8 >= 0 && fn_8022DCD8(field_0x2b8)) {

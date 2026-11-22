@@ -395,7 +395,7 @@ void PaneCtrl_804AF86C::fn_80402CE0(f32 x, f32 y) {
     resizeKeepCentre(this, x, y);
 }
 
-u8 PaneCtrl_804AF86C::fn_80402B10(s16 frames, u8 mode, f32 x, f32 y) {
+u8 PaneCtrl_804AF86C::slideX_80402B10(s16 frames, u8 mode, f32 x, f32 y) {
     if (field_0x20 < frames - 1) {
         field_0x20++;
         f32 t;

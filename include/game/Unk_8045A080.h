@@ -54,8 +54,8 @@ struct AudioMgr_8045A080 {
     /* 0x40 */ GameAudio::CustomSoundTable* field_0x40; // fn_80459AE4 builds it (vtable __vt__Q29GameAudio16CustomSoundTable)
     /* 0x44 */ JAUSectionHeap* field_0x44; // fn_80458090 loads wave archives of it
     /* 0x48 */ u8 field_0x48[0x4C - 0x48];
-    /* 0x4C */ f32 field_0x4c; // music volume (fn_80458744 tables), times field_0x54
-    /* 0x50 */ f32 field_0x50; // second sequence volume (fn_80458744 tables)
+    /* 0x4C */ f32 field_0x4c; // music volume (setVolumeMode_80458744 tables), times field_0x54
+    /* 0x50 */ f32 field_0x50; // second sequence volume (setVolumeMode_80458744 tables)
     /* 0x54 */ f32 field_0x54; // music volume factor
     /* 0x58 */ u32 field_0x58; // the music id last started (fn_80458FF0)
     /* 0x5C */ u32 field_0x5c; // music id waiting for the current one to stop
@@ -85,7 +85,7 @@ struct AudioMgr_8045A080 {
     /* 0x8D */ u8 field_0x8d;
     /* 0x8E */ u8 field_0x8e; // set by fn_804593D4, cleared by fn_80459274
     /* 0x8F */ u8 field_0x8f;
-    // 0x80457E54: stores flag at 0x8c, sets the mode (fn_80458744 2 / 0)
+    // 0x80457E54: stores flag at 0x8c, sets the mode (setVolumeMode_80458744 2 / 0)
     // and the music tempo (moveMusicTempo_80458508 2 / 0, inlined).
     void fn_80457E54(bool flag);
     // 0x80458508: the music tempo: lbl_8053A260 (kind 1) or lbl_8053A268
@@ -113,7 +113,7 @@ struct AudioMgr_8045A080 {
     // (0x1000021, 1, 0) when field_0x58 differs from 0x1000021; the body
     // compares r4 against 0x1000000+n, tests r5 with clrlwi. 24 (0x8045908C) and
     // stores r6 (a byte) at 0x8d. The third argument is a u8: GameRoot's
-    // fn_80138B7C (tu_80134C04) passes an s32 count with clrlwi 24.
+    // startStageMusic_80138B7C (tu_80134C04) passes an s32 count with clrlwi 24.
     void fn_80458FF0(s32 id, bool arg1, u8 flag);
     // game/tu_80457DFC.cpp (0x8045A080): the constructor main calls on the
     // 0x90-byte object it allocates in the main heap.
@@ -169,10 +169,10 @@ struct AudioMgr_8045A080 {
     // game/tu_80457DFC.cpp (0x80457DFC): stores r4 (a byte) at 0x6.
     void fn_80457DFC(u8 value);
     // game/tu_80457DFC.cpp (0x80457E04): when 0x8c and 0x8b are 0, calls
-    // fn_80458744 with 3 (flag set) or 0.
+    // setVolumeMode_80458744 with 3 (flag set) or 0.
     void fn_80457E04(bool flag);
     // game/tu_80457DFC.cpp (0x80458744): switch on r4 (0-3).
-    void fn_80458744(s32 mode);
+    void setVolumeMode_80458744(s32 mode);
     // game/tu_80457DFC.cpp (0x80457F60): sets the byte at 0x74.
     void fn_80457F60();
     // game/tu_80457DFC.cpp (0x80457F6C): clears the byte at 0x74, sets 0x6d to 0xB4.

@@ -1,7 +1,7 @@
 
 ## 2026-11-05 small-function pass (Sonnet 5.5)
 Baseline progress.py: 7622 / 11557. After: 7669 (unit 7 -> 54 of 120).
-Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the fn_8024F0E8 argument setup),
+Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the playSound_8024F0E8 argument setup),
 fn_802729F0 81.51 % (72-entry compare loop: original unrolls 8 trips of 9 with a pointer bump).
 Left unwritten on purpose:
 - fn_80276538, fn_8027A0D4-style literal users (fn_80279FE8): new float literals (7, -15, 15, 6) enter our .sdata2 pool

@@ -125,14 +125,14 @@ void RecoveryHeart_8049F4F0::update() {
         }
         if (player >= 0) {
             s32 owner = fn_80237810(player);
-            if (owner == fn_80237774(player)) {
+            if (owner == getPlayerLife_80237774(player)) {
                 fn_80230EB8(player, 9);
             }
             fn_80236554(player, 4, 0);
             mAlive = false;
         } else if (hitPlayer >= 0) {
             s32 owner = fn_80237810(hitPlayer);
-            if (owner == fn_80237774(hitPlayer)) {
+            if (owner == getPlayerLife_80237774(hitPlayer)) {
                 fn_80230EB8(hitPlayer, 9);
             }
             fn_80236554(hitPlayer, 4, 0);

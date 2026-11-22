@@ -3,7 +3,7 @@
 Baseline: total: 5853 / 11557 functions, 1171280 / 4442032 bytes of code (26.37 %)
 After: 5854 / 11557, 1171332 bytes.
 
-Matched: fn_800FEB78__12cls_800FEB78Fi (100 %).
+Matched: setState_800FEB78__12cls_800FEB78Fi (100 %).
 Resistant: fn_800FE8C0__12cls_800FEB78Fv 99.22 % regalloc-only: in the preamble
 the original has `lwz r4,0(r3); lis r5,rodata@ha`, ours has r5/r4 swapped
 (tried: file-scope vs local tables, swapping the compare operands, moving the

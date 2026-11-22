@@ -154,7 +154,7 @@ Gohma_804A307C::~Gohma_804A307C() {
     if (field_0x254 == 2 || field_0x254 == 3) {
         if (--lbl_8053ABD8[0] == 0) {
             if (gGameRoot_8053AAF8->field_0x4c != 9) {
-                gGameRoot_8053AAF8->fn_80138B7C();
+                gGameRoot_8053AAF8->startStageMusic_80138B7C();
             }
         }
     }
@@ -184,8 +184,8 @@ void Gohma_804A307C::vfunc_0x44() {
         return;
     }
     u16 angle = (u16)((u16)mDir_0x98 + 0x8000);
-    mVel_0x3c.x = -10.0f * JMASinShort(fn_801F6874(angle));
-    mVel_0x3c.y = -10.0f * JMACosShort(fn_801F6874(angle));
+    mVel_0x3c.x = -10.0f * JMASinShort(dirToAngle_801F6874(angle));
+    mVel_0x3c.y = -10.0f * JMACosShort(dirToAngle_801F6874(angle));
     field_0x230 = 5;
 }
 

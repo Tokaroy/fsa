@@ -210,7 +210,7 @@ void GameRoot2_8049F108::fn_8013B4C0() {
     field_0x20->fn_802FF548();
 }
 
-void GameRoot2_8049F108::fn_8013B490() {
+void GameRoot2_8049F108::setPort_8013B490() {
     field_0x10->setPort();
 }
 
@@ -387,7 +387,7 @@ void fn_8013AC54(Mtx view) {
     j3dSys.setViewMtx(view);
 }
 
-void fn_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx) {
+void calcAndEntryModel_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx) {
     model->setBaseScale(scale);
     PSMTXCopy(mtx, model->mPosMtx);
     model->calc();

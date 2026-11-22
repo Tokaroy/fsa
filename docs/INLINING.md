@@ -54,8 +54,8 @@ docs/RULES_CARD.md ("Source order and inlining").
   data defined anywhere in a file is addressed off `...data.0`; the original
   addresses each table on its own (an extern), and the tables lead `.data`
   ahead of the unit's jump tables. They are now defined in the preceding unit,
-  tu_80457C08 (whose functions were all dead-stripped), and fn_80458744 and
-  fn_80458FF0 reach 100 %. tu_80457DFC needs a region around fn_80458744, not
+  tu_80457C08 (whose functions were all dead-stripped), and setVolumeMode_80458744 and
+  fn_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
   the whole-file `off` (fn_80458FF0 inlines fn_80458408).
 - tu_802684A4: the verifier's single region over fn_8026EB1C..fn_8026F54C also
   covers fn_8026EE60, which fn_8026F000-F54C inline in the original (they drop
@@ -73,7 +73,7 @@ docs/RULES_CARD.md ("Source order and inlining").
 - More over-inlined callees than the doc found: fn_801BE86C (act_beamos),
   fn_801158B8 (act_vaati_demo, now also at its own address: the unit is in
   address order), fn_8013C394 (tu_8013AAD4), fn_8037AA7C (tu_80379F84),
-  fn_80139958 (tu_80134C04, fn_80135020's small drop). Each has a region.
+  fn_80139958 (tu_80134C04, createModeScreen_80135020's small drop). Each has a region.
 - tu_8045A640's namespace block was reversed by hand (reverse_funcs doesn't
   reorder inside namespace / extern "C" blocks).
 
@@ -133,7 +133,7 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_8028FBA0 | fn_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
 | tu_80457DFC | fn_80457E54, fn_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
-| tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
+| tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
 | tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
 | tu_8023FBF0 | fn_80248FF0 | L | fn_80249070 | progress |
 | tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
@@ -257,7 +257,7 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
 fn_80222668 (50 instr), fn_801EDC0C (64), fn_8021AFB8 (125), fn_8026EB1C (91),
-fn_8043E7CC (16), fn_80458744 (79), fn_80128C58 (4), fn_8018330C (5),
+fn_8043E7CC (16), setVolumeMode_80458744 (79), fn_80128C58 (4), fn_8018330C (5),
 fn_801CF6B8 / fn_801CF720 / fn_801CFCF0 / fn_801CF798 (26-60), fn_801CD930/950.
 There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.

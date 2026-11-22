@@ -13,11 +13,11 @@ static const s32 lbl_804713C0[8][3] = {
     {0, 1, 2}, {0, 1, 3}, {0, 2, 3}, {1, 2, 3}, {0, 1, 3}, {0, 1, 4}, {0, 3, 4}, {1, 3, 4},
 };
 
-// fn_8038AD24 / fn_8038BD08 take the position by value; the original copies
+// openMessage_8038AD24 / fn_8038BD08 take the position by value; the original copies
 // mPos after loading the serial and layer, and loads the flags after the copy.
 static inline bool talkAt(s32 player, u32 msg, s32 serial, s32 layer,
                           const JGeometry::TVec3f& pos) {
-    return fn_8038AD24(player, msg, serial, layer, pos, 0x28);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, 0x28);
 }
 
 static inline bool talkAtFlags21(s32 player, u32 msg, s32 layer, const JGeometry::TVec3f& pos) {
@@ -216,7 +216,7 @@ void GamblingShop_804AAA70::update() {
     }
     case 1: {
         fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
-        if (!fn_803865B8(field_0x248)) {
+        if (!stepMessageWindow_803865B8(field_0x248)) {
             break;
         }
         if (fn_8037EFB4(field_0x248) == 0) {

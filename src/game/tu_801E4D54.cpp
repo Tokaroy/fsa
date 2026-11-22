@@ -124,7 +124,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 fn_80230C6C(i);
                 fn_80230AD4(i);
                 field_0x2a8[i].field_0x0 = 1;
-                field_0x2a8[i].field_0xc.fn_8021BD18(fn_80230CFC(i));
+                field_0x2a8[i].field_0xc.fn_8021BD18(getPlayerFacing_80230CFC(i));
             }
             if (!fn_80230188(i)) {
                 if (mFlags & 0x4000) {

@@ -161,7 +161,7 @@ bool cls_804A51E4::vfunc_0x58() {
 
 u8 cls_804A51E4::checkHitByActor_0x60() {
     u8 hit = 0;
-    s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 other = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (other >= 0 && other != mSerial) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
         if (actor != NULL) {

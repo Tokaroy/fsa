@@ -10,7 +10,7 @@
 
 // Passes the position on by value (the original loads the other arguments before its copy).
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 // The escort's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
@@ -261,7 +261,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 11:
-        mAnim.fn_801D1C18();
+        mAnim.update_801D1C18();
         if (lbl_8053AAA0) {
             vfunc_0x6C(12);
         }
@@ -295,7 +295,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
 
     case 16:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x6C(13);
         }
@@ -343,12 +343,12 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
         mAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 7:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         field_0x333 = 0;
         field_0x354 = 0;
         break;
     case 8:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 9:
         mAnim.startAnim_801D22DC(mDir_0x98 + 10, 0, false);
@@ -379,7 +379,7 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
         field_0x331 = 0;
         break;
     case 17:
-        getGameView_802D6A9C()->fn_802D8050(field_0x3cc, 1, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x3cc, 1, 0xFF);
         mAlive = false;
         break;
     }

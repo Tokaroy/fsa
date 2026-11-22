@@ -191,7 +191,7 @@ void KaeporaGaebora_804A6550::fn_80219AFC(s32 state) {
     case 9: {
         s32 id = field_0x2b0;
         if (id != 0) {
-            getGameView_802D6A9C()->fn_802D8050(id, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(id, true, 0xFF);
         }
         if (mFlags & 0x10000) {
             fn_8043A0E8(true);
@@ -291,7 +291,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         break;
     case 1:
         fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
-        if (fn_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
             fn_80219AFC(4);
         }
         break;
@@ -314,8 +314,8 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             if (fn_801D0B44(i)) {
                 if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i), 0x100)) {
                     JGeometry::TVec2f p;
-                    p.y = lbl_8046A640[fn_80230CFC(i)][1];
-                    p.x = lbl_8046A640[fn_80230CFC(i)][0];
+                    p.y = lbl_8046A640[getPlayerFacing_80230CFC(i)][1];
+                    p.x = lbl_8046A640[getPlayerFacing_80230CFC(i)][0];
                     const JGeometry::TVec3f* pp = getPlayerPos_8023E724(i);
                     p.x += pp->x;
                     p.y += pp->y;
@@ -338,7 +338,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             mPos.y = mSpawnPos.y;
             fn_80219AFC(5);
         } else {
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 if (mAnim.mAnim == 0) {
                     mAnim.startAnim_801D22DC(1, 0, false);
                 } else {
@@ -353,7 +353,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     case 5:
         if (mPos.z <= 16.0f) {
             mPos.z = 16.0f;
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 if (field_0x2b4 == 0) {
                     fn_80219AFC(8);
                 } else {
@@ -367,7 +367,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x2b8 = fn_8022FD8C(mSerial);
             if (field_0x2b8 >= 0) {
-                if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0)) {
+                if (openMessageById_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0)) {
                     fn_80219AFC(7);
                 }
             }
@@ -386,9 +386,9 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     case 8:
         fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (field_0x2b8 == fn_8022FD8C(mSerial)) {
-            if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
+            if (openMessageById_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
                 if (mFlags & 0x10000) {
-                    gGameRoot_8053AAF8->fn_80138B7C();
+                    gGameRoot_8053AAF8->startStageMusic_80138B7C();
                     s32 count = gGameRoot_8053AAF8->fn_80138A30();
                     for (s32 i = 0; i < count; i++) {
                         s32 dir = fn_801CD354(fn_801D0020(&mPos, i, false));
@@ -402,7 +402,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         break;
     case 9:
         fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
-        if (fn_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
             if (mFlags & 0x10000) {
                 s32 count = gGameRoot_8053AAF8->fn_80138A30();
                 for (s32 i = 0; i < count; i++) {
@@ -426,7 +426,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     case 11:
         if (mPos.z >= 35.0f) {
             mPos.z = 35.0f;
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 fn_80219AFC(12);
             }
         }
@@ -434,7 +434,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     case 12:
         if (__fabsf(field_0x2bc.x - mPos.x) < 0.1f && __fabsf(field_0x2bc.y - mPos.y) < 0.1f) {
             mAlive = false;
-        } else if (mAnim.fn_801D21F0()) {
+        } else if (mAnim.isStopped_801D21F0()) {
             if (mAnim.mAnim == 0) {
                 mAnim.startAnim_801D22DC(1, 0, false);
             } else {
@@ -481,7 +481,7 @@ void KaeporaGaebora_804A6550::updateBehavior_0x9C(u8 mapHit) {
         if (mFlags & 0x10000) {
             if (mState >= 2 || mState < 0) {
                 if (field_0x2d8 != 255.0f) {
-                    if (fn_801CD950(&field_0x2d8, 255.0f, 1.0f) == 0) {
+                    if (moveToward_801CD950(&field_0x2d8, 255.0f, 1.0f) == 0) {
                         s32 playerCount = gGameRoot_8053AAF8->fn_80138A30();
                         for (int i = 0; i < playerCount; i++) {
                             fn_80230BF4(i, 1);
@@ -502,7 +502,7 @@ void KaeporaGaebora_804A6550::calcVelocity_0x88() {
     mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     switch (mState) {
     case 4:
-        fn_801D01A0(&mSpawnPos, &vel, mSpeed);
+        calcVelocityToward_801D01A0(&mSpawnPos, &vel, mSpeed);
         mVel_0x3c.x = vel.x;
         mVel_0x3c.y = vel.y;
         break;
@@ -516,7 +516,7 @@ void KaeporaGaebora_804A6550::calcVelocity_0x88() {
         break;
     case 12:
         // (const JGeometry::TVec3f*)&field_0x2bc: 2D target position at +0x2BC passed to 3D query
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2bc, &vel, mSpeed);
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2bc, &vel, mSpeed);
         mVel_0x3c.x = vel.x;
         mVel_0x3c.y = vel.y;
         break;

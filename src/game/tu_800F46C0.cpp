@@ -287,7 +287,7 @@ void Boulder_8049C4C0::fn_800F555C() {
                 getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3CF, 0, 0, NULL, NULL, true, 1.2f);
                 startSound_801F0E34(0x4002C, 0);
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 field_0x240 = 2;
                 field_0x232 = -1;
                 for (s32 i = 0; i < 8; i++) {

@@ -46,7 +46,7 @@ public:
     u8 fn_800FD894(s32 layer, u8* out, s32 max);
     bool fn_800FD5E8(u8 index);
     // RailBase.cpp (0x800FE2E4, not written yet): the entry index of the
-    // point nearest to *pos on `layer`, as fn_800FE294 takes it; game/
+    // point nearest to *pos on `layer`, as getRailPointPos_800FE294 takes it; game/
     // tu_801C5B08.cpp (fn_801C5B08) calls it on the current buffer.
     u8 fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer);
     void fn_800FDE38();
@@ -97,7 +97,7 @@ extern "C" {
 // game/RailBase.cpp: *out = the position of entry
 // `index` (0xFF: the current one, entry field_0x3) of the buffer, read from
 // the entry's +0xC. r3 out, r4 buffer, r5 index (clrlwi 24).
-void fn_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index);
+void getRailPointPos_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index);
 
 }
 

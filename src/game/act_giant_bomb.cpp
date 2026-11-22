@@ -24,7 +24,7 @@ GiantBomb_804AC588::~GiantBomb_804AC588() {
     if (field_0x261 == 1) {
         s32 mode = gGameRoot_8053AAF8->field_0x4c;
         if (mode != 9 && mode != 0xB) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
     }
 }
@@ -290,7 +290,7 @@ void GiantBomb_804AC588::update() {
         if (mTimer <= 0) {
             if (field_0x24c == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 &&
                 getGameView_802D6A9C()->mLevel_0x8 == 0) {
-                fn_801F3668();
+                markDead_801F3668();
             } else {
                 mAlive = false;
             }
@@ -377,7 +377,7 @@ void GiantBomb_804AC588::draw() {
         params.field_0x2c = 0;
         void* numberRes = fn_804030C4('TIMG', lbl_804AC558[count]);
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, numberRes, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, numberRes, &params);
         }
     }
 }
@@ -434,7 +434,7 @@ void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s3
     pos.y += offsetY;
     pos.z = mPos.z + offsetZ;
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &sp);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &sp);
     }
 }
 

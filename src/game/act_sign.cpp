@@ -82,7 +82,7 @@ void Sign_804A94D8::die_0x24() {
 }
 
 bool Sign_804A94D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x230);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x230);
 }
 
 void Sign_804A94D8::vfunc_0x48() {

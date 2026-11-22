@@ -27,7 +27,7 @@ public:
     // 11 units / 11 calls (enemy init()s). mFrameCtrl.update(), then mCel and
     // mKey for the new frame; skipped once after setAnim(.., false) and while
     // no animation is set (mAnim outside [0, mTableCount)).
-    void fn_801D1C18();
+    void update_801D1C18();
     // 11 units / 11 calls. fn_801D1F14 at a random frame in [0, mLength]
     // (fn_801CD664(mLength + 1)).
     void fn_801D1D60();
@@ -35,7 +35,7 @@ public:
     // clamped to [0, mLength] and kept below mLength (0 for a looping
     // animation, mode 2), and updates mCel and mKey.
     void fn_801D1F14(f32 frame);
-    // 4 units / 9 calls; callers test r3 with clrlwi 24. fn_801D21F0 for
+    // 4 units / 9 calls; callers test r3 with clrlwi 24. isStopped_801D21F0 for
     // mode 0, fn_801D217C for mode 2, else 0.
     bool fn_801D208C();
     // 5 units / 8 calls (clrlwi 24). A looping animation passed its last
@@ -43,7 +43,7 @@ public:
     bool fn_801D217C();
     // 15 units / 53 calls (clrlwi 24). Stopped (J3DFrameCtrl state bit 1),
     // or a mode 0 animation with rate 0 within 0.002 of its end.
-    bool fn_801D21F0();
+    bool isStopped_801D21F0();
     // 3 units / 4 calls and 12 units / 22 calls. setAnim(anim, mode, true /
     // false) if anim is not the current one; returns whether it was set.
     // Callers pass lwz or addi values for anim and li 0 or 2 for mode.
@@ -61,9 +61,9 @@ public:
     // @l) and its count (li). The tables are read-only (.rodata).
     void fn_801D2608(const s16** tables, s32 count);
 
-    // Inline helpers: their code is repeated in fn_801D1C18, fn_801D1D60,
+    // Inline helpers: their code is repeated in update_801D1C18, fn_801D1D60,
     // fn_801D1F14 and startAnim_801D22DC (fn_801D208C repeats fn_801D217C and
-    // fn_801D21F0 the same way). Not called out of line anywhere.
+    // isStopped_801D21F0 the same way). Not called out of line anywhere.
     void calcCel();
     void setFrameInline(f32 frame);
     bool isLoopEnd();
@@ -77,7 +77,7 @@ public:
     /* 0x14 */ s32 mMinCel;  // 0x7FFFFFFF
     /* 0x18 */ s32 mMaxCel;  // 0x80000000
     /* 0x1C */ s32 mKey;     // index of the current key
-    /* 0x20 */ u8 mHold;     // skip the next fn_801D1C18
+    /* 0x20 */ u8 mHold;     // skip the next update_801D1C18
     /* 0x24 */ J3DFrameCtrl mFrameCtrl;
 }; // Size: 0x38
 

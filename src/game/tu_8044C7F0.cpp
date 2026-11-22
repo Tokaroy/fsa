@@ -333,7 +333,7 @@ void CollectScreen_804B1D58::fn_80452350() {
 }
 
 void CollectScreen_804B1D58::fn_80452308() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
@@ -363,11 +363,11 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 for (s32 i = 0; i < 3; i++) {
                     if (field_0xfe >= start + i * step) {
                         if (i == 2) {
-                            done = field_0x48[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                            done = field_0x48[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         } else {
-                            field_0x48[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                            field_0x48[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         }
-                        field_0x60[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                        field_0x60[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         field_0x48[i]->fn_80402628(frames, 0, field_0x48[i]->field_0x28);
                         field_0x54[i]->fn_80402628(frames, 0, field_0x54[i]->field_0x28);
                         field_0x60[i]->fn_80402628(frames, 0, field_0x60[i]->field_0x28);

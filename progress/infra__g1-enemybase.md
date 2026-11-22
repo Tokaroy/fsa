@@ -8,7 +8,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   inline virtual dtor (weak copy in act_rope, dtor_801B7E1C), fields
   0x230-0x26C + `SpriteAnim_801D267C mAnim` at 0x270, size 0x2A8 (spawner
   __nw__(0x2A8) for FSPO), `EnemyFlag_804A4808` bits, 37 exported members of
-  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), fn_801CD2F8, fn_801CD950.
+  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), fn_801CD2F8, moveToward_801CD950.
 - `include/game/SpriteAnim.h`: the 0x270 member (tu_801D1C18), 0x38 bytes.
 - `libs/sdk/include/JSystem/J3D/J3DFrameCtrl.h` (mkdd): tww's enums and accessors added; one definition.
 - `include/game/act/act_fuse_point.h`: FusePoint_804A54C0.
@@ -30,7 +30,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   99.8 regalloc; fn_801D0DA0 / fn_801D0D50 (target does not fuse
   dx*dx + dy*dy into fmadds); fn_801D0280 / 02E0 (atan2 operand order);
   fn_801D0DD4; fn_801CDCD0 / fn_801CE010; SpriteAnim calcCel regalloc
-  (four functions at ~98.5), fn_801D208C 94.4, fn_801D21F0 86.2,
+  (four functions at ~98.5), fn_801D208C 94.4, isStopped_801D21F0 86.2,
   fn_801D2608 91.7. init / ctor / vfunc_0x84 / fn_801CFCF0 differ only in
   .sdata2 literal order, which completes once the unwritten functions
   (fn_801CE694 uses 8.0f, fn_801CEA60 32.0f, ...) are in.

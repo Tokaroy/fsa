@@ -141,7 +141,7 @@ void UnknownSWBM_804A1160::update() {
     mPos += mVel_0x3c;
 
     if (field_0x25c == 1) {
-        s16 angle = fn_801F6874(mDir_0x98);
+        s16 angle = dirToAngle_801F6874(mDir_0x98);
         angle += 0x2000;
         const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
         for (s32 i = 0; i < 2; i++) {
@@ -258,7 +258,7 @@ void UnknownSWBM_804A1160::draw() {
     s32 frame = field_0x254 + 0x12d;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f,
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f,
                                               1.0f);
     }
     fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + 0x12d, false, 2, -1, 0, 0, 0);

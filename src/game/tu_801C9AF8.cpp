@@ -106,7 +106,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 fn_80230FD0(player, 0x20002);
                 fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
-            fn_801C3B7C(0x20);
+            setState_801C3B7C(0x20);
             mFlags |= 0x80000;
             return false;
         }
@@ -219,7 +219,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 startSound_801F0E34(0x400D1, 0);
                 fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
-            fn_801C3B7C(0x20);
+            setState_801C3B7C(0x20);
             return false;
         }
     }
@@ -240,7 +240,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         if (touched) {
             startSound_801F0E34(0x400C0, 0);
             startSound_801F0E34(0x400C7, 0);
-            fn_801C3B7C(0x2A);
+            setState_801C3B7C(0x2A);
             if (field_0x564 == 3) {
                 fn_8021CDE4(2);
             }
@@ -276,7 +276,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                     mHitTimer_0xd8 = 0x18;
                     mHitTimerStart_0xdc = 0x18;
                 }
-                fn_801C3B7C(0x21);
+                setState_801C3B7C(0x21);
             }
         }
     }
@@ -315,7 +315,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             dy *= 3.0f;
                             mVel_0x3c.x = dx;
                             mVel_0x3c.y = dy;
-                            fn_801C3B7C(0x20);
+                            setState_801C3B7C(0x20);
                             mFlags |= 0x80000;
                         }
                         mask &= ~bit;
@@ -378,7 +378,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
     }
     s32 serial;
     bool hit = false;
-    serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (serial >= 0 && serial != mSerial) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (other != NULL) {
@@ -395,7 +395,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
                 if (mState == 16) {
                     mFlags |= 0x800000;
                 } else {
-                    fn_801C3B7C(16);
+                    setState_801C3B7C(16);
                 }
             }
         }
@@ -456,7 +456,7 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
             if (mState == 16) {
                 mFlags |= 0x800000;
             } else {
-                fn_801C3B7C(16);
+                setState_801C3B7C(16);
             }
         }
     }

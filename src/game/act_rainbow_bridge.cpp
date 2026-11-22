@@ -60,7 +60,7 @@ void RainbowBridge_8049E610::update() {
             }
         }
         if (field_0x230 >= 0) {
-            getGameView_802D6A9C()->fn_802D8050(field_0x230, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x230, true, 0xFF);
         }
         break;
     }

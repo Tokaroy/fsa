@@ -61,7 +61,7 @@ void MapEdOverlay_804B1AE8::fn_80443638() {
 
 void MapEdOverlay_804B1AE8::fn_804435E4() {
     if (mState != 3) {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
@@ -80,7 +80,7 @@ void MapEdOverlay_804B1AE8::fn_804435B8() {
 // other way round.
 void MapEdOverlay_804B1AE8::fn_804434B8() {
     mTimer++;
-    mPtestmap->fn_80402B10(30, 0, 0.0f, (f32)lbl_8048FBA4[mKind]);
+    mPtestmap->slideX_80402B10(30, 0, 0.0f, (f32)lbl_8048FBA4[mKind]);
     mPtestmap->fn_80402940(30, 0, 0.0f, (f32)lbl_8048FBB4[mKind]);
     mPtestmap->fn_8040271C(30, 1.0f, lbl_8048FB88[mKind] / mPtestmap->field_0x18);
     if (mTimer >= 30) {

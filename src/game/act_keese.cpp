@@ -83,15 +83,15 @@ void Keese_804A02B8::update() {
             if (getGameView_802D6A9C()->fn_802DCD0C()) {
                 return;
             }
-            // fn_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
+            // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
             s32 layer = mLayer_0x4;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            field_0x26a = fn_80226998((const JGeometry::TVec3f*)&pos, layer);
+            field_0x26a = getTileAt_80226998((const JGeometry::TVec3f*)&pos, layer);
             return;
         }
         s32 layer = mLayer_0x4;
         JGeometry::TVec2f pos(mPos.x, mPos.y);
-        if (field_0x26a == fn_80226998((const JGeometry::TVec3f*)&pos, layer)) {
+        if (field_0x26a == getTileAt_80226998((const JGeometry::TVec3f*)&pos, layer)) {
             return;
         }
         field_0x264 = 0;
@@ -99,7 +99,7 @@ void Keese_804A02B8::update() {
     if (fn_801F3D94(1) != 0) {
         return;
     }
-    if (fn_801F2FAC()) {
+    if (checkPlayerAttacks_801F2FAC()) {
         if (field_0x25e == 1 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
         }

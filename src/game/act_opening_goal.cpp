@@ -104,7 +104,7 @@ void GoalOpening_8049DB30::update() {
         field30->field_0x284 = 1;
         field30->field_0x28c = 0.05f;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
     fn_8011A4BC();
 }
 

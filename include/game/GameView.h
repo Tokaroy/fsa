@@ -72,7 +72,7 @@ public:
     // 0x990 bytes; this unit only (fn_802D9CD8, vfunc_0xC). Reads the map
     // CSV tables lbl_804A9710 / lbl_804A9830; r3 is the view.
     void fn_802D3D48();
-    // 0x1DD0 bytes; this unit only (fn_802D8D50 passes 0 and 8-14). Rebuilds the
+    // 0x1DD0 bytes; this unit only (loadScreenTiles_802D8D50 passes 0 and 8-14). Rebuilds the
     // layer's slot list (field_0x131b8[layer], field_0x131df[layer] cleared first).
     void fn_802D4CCC(s32 layer);
     // 0x92C bytes; this unit only (fn_802D9CD8, fn_802DBD60, vfunc_0xC). Loads
@@ -95,7 +95,7 @@ public:
     // ('M' + stage name resources, layers 0/1 and 8-22) and sets mVisibleBox and
     // the tile map's cell counts; with reload, first copies layers 0/1 to 4/5
     // (tested with clrlwi.; fn_802DCD1C passes 1, the reload paths 0).
-    void fn_802D8D50(bool reload);
+    void loadScreenTiles_802D8D50(bool reload);
     // 1 unit. Entry field_0x44 of the 16-entry table lbl_804A96D0, or the
     // .sdata2 default lbl_805410DC.
     const char* fn_802D9C1C();
@@ -108,7 +108,7 @@ public:
     // 2 units. Calls fn_8030C85C on gGameRoot2_8053AB10->0x24 (this unused).
     void fn_802D9CB0();
     // 1 unit. 0x2E4 bytes; no arguments. Clears the per-screen bit and byte
-    // tables, rebuilds the screen (fn_802D3D48, fn_802D92F0, fn_802D8D50,
+    // tables, rebuilds the screen (fn_802D3D48, fn_802D92F0, loadScreenTiles_802D8D50,
     // fn_802D8328) and hands mVisibleBox to the camera and the tile map.
     void fn_802D9CD8();
     // 1 unit. field_0xc4 = 0x8CA0 if gGameRoot_8053AAF8->0x7F == 1, else 0x2A30.
@@ -121,7 +121,7 @@ public:
     // fn_802DCD0C. Returns the byte as is: the caller converts it to bool.
     u8 fn_802DA000();
     // 1 unit; no arguments. Enters the screen (field_0x24, field_0x28):
-    // resets its state, rebuilds it (fn_802D8D50, fn_802D8328), places the
+    // resets its state, rebuilds it (loadScreenTiles_802D8D50, fn_802D8328), places the
     // players and the camera and restarts the time limit.
     void fn_802DA010();
     // Inlined by fn_802DA010, fn_802DA8DC (with field_0x131f1-0x131f3 stored
@@ -153,7 +153,7 @@ public:
     u8 fn_802DCD0C();
     // 2 units / 5 calls. Unless fn_802DCD0C(), steps mScreenX_0x14 by the sign
     // of dir[0] or mScreenY_0x18 by that of dir[1], reloads the screen
-    // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
+    // (loadScreenTiles_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
     // is a guess, a two-int struct passed by value would look the same.
     u8 fn_802DCD1C(const s32* dir);
@@ -258,7 +258,7 @@ public:
     // field_0x308[bit] (saturating at 0xFF) and stores value in
     // field_0x328[bit]; else clears the bit and stores 0xFF there.
     // ActorBase_804A5770::setScreenFlag_0x30 passes (getScreenFlagBit_0x3C(), set, value).
-    void fn_802D8050(s32 bit, bool set, u8 value);
+    void setSwitchBit_802D8050(s32 bit, bool set, u8 value);
     // 1 unit (this unused). field_0x308[index] (lbz). An int: ActorBase's
     // getScreenFlagCount_0x38 returns it without the clrlwi a u8 return would need.
     s32 fn_802D7E04(s32 index);
@@ -362,9 +362,9 @@ public:
     /* 0x00170 */ u8 field_0x170; // fn_802D7920; 21 units read it
     /* 0x00171 */ u8 field_0x171; // fn_802D790C; 21 units read it
     /* 0x00174 */ u32 field_0x174; // bits: fn_802D7888 / fn_802D78B4
-    /* 0x00178 */ u32 field_0x178[10][10]; // bits per screen: fn_802D800C / fn_802D8050
-    /* 0x00308 */ u8 field_0x308[0x20]; // counters per bit: fn_802D8050, fn_802D7E04
-    /* 0x00328 */ u8 field_0x328[0x20]; // values per bit: fn_802D8050, fn_802D7E1C
+    /* 0x00178 */ u32 field_0x178[10][10]; // bits per screen: fn_802D800C / setSwitchBit_802D8050
+    /* 0x00308 */ u8 field_0x308[0x20]; // counters per bit: setSwitchBit_802D8050, fn_802D7E04
+    /* 0x00328 */ u8 field_0x328[0x20]; // values per bit: setSwitchBit_802D8050, fn_802D7E1C
     /* 0x00348 */ u32 field_0x348[8][4]; // bits per (stage, level): fn_802D7F40
     // Four 64-bit masks per screen: fn_802DEE2C clears [0..3][row][col]
     // (0x3C8, 0x6E8, 0xA08, 0xD28 + row * 0x50 + col * 8); fn_802D7E5C /

@@ -225,8 +225,8 @@ void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 1: {
-        fn_801CD950(&mRadius, mTargetRadius, 1.0f);
-        fn_801CD950(&field_0x2e0, 0.4f, 0.01f);
+        moveToward_801CD950(&mRadius, mTargetRadius, 1.0f);
+        moveToward_801CD950(&field_0x2e0, 0.4f, 0.01f);
         if (mAngleSpeed != 0x200) {
             s32 step = 0x20;
             if (mAngleSpeed > 0x200) {

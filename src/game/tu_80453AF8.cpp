@@ -126,7 +126,7 @@ void PauseScreen_804B1DA8::fn_80454A6C() {
 }
 
 void PauseScreen_804B1DA8::fn_80454A00() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x1e == 7 || field_0x1e == 8 || field_0x1e == 9) {
         lbl_8053AEC0->fn_804316EC();

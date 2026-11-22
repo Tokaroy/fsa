@@ -80,7 +80,7 @@ void FleeingForceGem_804AB170::init() {
     mBox.f.x = 6.0f;
     mBox.f.y = 6.0f;
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        fn_801F3668();
+        markDead_801F3668();
     } else {
         field_0x194 = 1;
     }
@@ -222,7 +222,7 @@ void FleeingForceGem_804AB170::update() {
             mVel_0x3c.x = 0.0f;
             field_0x94 = 0;
             if (field_0x278 == 1) {
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
                 field_0x278 = 0;
             }
         }
@@ -256,7 +256,7 @@ void FleeingForceGem_804AB170::update() {
                         }
                         getActorManager_801F856C()->spawnActor_801F9484(
                             'IMUP', mLayer_0x4, &effectPos, (mSpawnParam_0x90 & 3) + 0xA00000 + (hit << 24) + (hit << 26) + 4, -1, -1);
-                        fn_801F3668();
+                        markDead_801F3668();
                         return;
                     }
                 } else {
@@ -314,7 +314,7 @@ void FleeingForceGem_804AB170::update() {
             }
             if (field_0x240[1] == 0) {
                 setScreenFlag_0x30(0xFF, true);
-                fn_801F3668();
+                markDead_801F3668();
             }
             break;
         case 3:
@@ -364,7 +364,7 @@ void FleeingForceGem_804AB170::update() {
                         }
                         if (rect.i.x - 20.0f > mPos.x || rect.f.x + 20.0f < mPos.x || rect.i.y - 20.0f > mPos.y ||
                             rect.f.y + 20.0f < mPos.y) {
-                            fn_801F3668();
+                            markDead_801F3668();
                         }
                         if (field_0x240[4] <= 0) {
                             field_0x274 = angle + 0x8000;
@@ -473,7 +473,7 @@ void FleeingForceGem_804AB170::update() {
                 field_0x238 -= 0.02f;
             }
             if (field_0x238 < 0.1f) {
-                fn_801F3668();
+                markDead_801F3668();
             }
             break;
         case 8:
@@ -487,7 +487,7 @@ void FleeingForceGem_804AB170::update() {
                 field_0x268 = mSpawnParam_0x90 & 3;
                 field_0x230 = 10;
                 field_0x240[3] = 30;
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
             }
             break;
         case 10:
@@ -554,7 +554,7 @@ void FleeingForceGem_804AB170::draw() {
         s32 frame = field_0x254 + lbl_804AB130[field_0x268];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         return;
     }
@@ -578,7 +578,7 @@ void FleeingForceGem_804AB170::draw() {
         s32 frame = field_0x254 + lbl_804AB130[field_0x268];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
     }

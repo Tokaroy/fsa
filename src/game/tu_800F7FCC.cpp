@@ -497,7 +497,7 @@ void StoneArrghus_8049C718::fn_800FBD90() {
     f32 s = mScale;
     mBox.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
     mMapBox_0x80.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
-    if (fn_801F2FAC()) {
+    if (checkPlayerAttacks_801F2FAC()) {
         mHitTimer_0xd8 = 10;
         mHitTimerStart_0xdc = 10;
         mState = 9;
@@ -765,7 +765,7 @@ void StoneArrghus_8049C718::fn_800FB070() {
                 }
             }
             startSound_801F0E34(0x4002B, 0);
-        } else if (fn_801F2FAC()) {
+        } else if (checkPlayerAttacks_801F2FAC()) {
             mHitTimer_0xd8 = 20;
             mHitTimerStart_0xdc = 20;
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);

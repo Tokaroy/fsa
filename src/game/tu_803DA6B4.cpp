@@ -45,7 +45,7 @@ void PressStartOverlay_804B04F8::fn_803DA6B4() {
             mPane2->move(field_0x10, field_0x14 + lbl_804774A0[field_0x21]);
             mPane1->setAlpha(field_0x1e * field_0x18);
             mPane2->setAlpha(field_0x1f * field_0x18);
-            gGameRoot2_8053AB10->fn_8013B490();
+            gGameRoot2_8053AB10->setPort_8013B490();
             mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
         }
         field_0x20 = 0;

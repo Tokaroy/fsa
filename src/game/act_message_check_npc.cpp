@@ -30,7 +30,7 @@ void MessageCheckNPC_8049D0E8::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, mLayer_0x4, mSerial);
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void MessageCheckNPC_8049D0E8::draw() {
@@ -39,7 +39,7 @@ void MessageCheckNPC_8049D0E8::draw() {
     const JGeometry::TVec3f* pos = &mPos;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x386, false, 1, -1, 0, 0, 0);
 }

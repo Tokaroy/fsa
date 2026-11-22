@@ -30,7 +30,7 @@ public:
     /* 0x230 */ s32 field_0x230; // 0, 2 or 3 by field_0x238
     /* 0x234 */ s32 field_0x234; // the low byte of mSpawnParam_0x90, zeroed for some kinds
     /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ s32 mCell;       // fn_80226BC4's packed cell index of (mPos.x, mPos.y)
+    /* 0x23C */ s32 mCell;       // getCellIndex_80226BC4's packed cell index of (mPos.x, mPos.y)
     /* 0x240 */ s32 field_0x240; // not yet known
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248; // -1 after init

@@ -192,7 +192,7 @@ void OBJLift_804ACA00::init() {
             if (taken >= 4) {
                 break;
             }
-            serial = getActorManager_801F856C()->fn_801F78F4('OBLF', serial);
+            serial = getActorManager_801F856C()->findNextActorById_801F78F4('OBLF', serial);
             if (serial < 0) {
                 break;
             }
@@ -690,7 +690,7 @@ void OBJLift_804ACA00::update() {
         if (isScreenFlagSet_0x34() == 1) {
             showBreakEffect(mLayer_0x4);
             startSound_801F0E34(0x30003, 0);
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x25c = 0;
             if (field_0x258 == 0xB) {
                 field_0x230 = 7;

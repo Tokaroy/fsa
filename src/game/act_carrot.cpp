@@ -214,7 +214,7 @@ void Carrot_804AC6B0::update() {
                         field_0x240 = mPos;
                         break;
                     } else if (field_0x270 == 0) {
-                        fn_801F3668();
+                        markDead_801F3668();
                         break;
                     } else {
                         mAlive = false;
@@ -241,7 +241,7 @@ void Carrot_804AC6B0::update() {
         field_0x268 += 0.1f;
         field_0x26c -= 0.02f;
         if (field_0x26c < 0.1f) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 4:

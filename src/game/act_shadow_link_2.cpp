@@ -126,7 +126,7 @@ void ShadowLink2_804A43E8::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    field_0x340.fn_800FEB78(0);
+    field_0x340.setState_800FEB78(0);
     field_0x32c.set(mPos);
 }
 
@@ -237,7 +237,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
 // 0x801C3B7C.
 // FIXME: 95.91 %, missing/extra + reloc-name; behaviour drift.
 // FIXME(shotgun): behaviour drift remains (see fingerprint).
-void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
+void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
     fn_801C50A8(state);
     switch (state) {
     case 0:
@@ -265,7 +265,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             mPos.y += 32.0f;
         }
         mVel_0x3c.z = 4.5f;
-        field_0x340.fn_800FEB78(4);
+        field_0x340.setState_800FEB78(4);
         startSound_801F0E34(0x40035, 0);
         if (viewLayerFlag(mLayer_0x4) != 0) {
             mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -277,7 +277,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         } else {
             field_0x250 = 0xF;
         }
-        field_0x340.fn_800FEB78(0);
+        field_0x340.setState_800FEB78(0);
         break;
     case 6: {
         if (fn_801C0D70()->field_0x0 & 2) {
@@ -303,11 +303,11 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             if (fn_801C0D70()->field_0x0 & 2) {
                 mVel_0x3c.z = 0.0f;
                 field_0x33c = 0;
-                field_0x340.fn_800FEB78(0);
+                field_0x340.setState_800FEB78(0);
             } else if (fn_801C0D70()->field_0x0 & 4) {
                 mVel_0x3c.z = -lbl_8053EFB8 * (f32)field_0x250 * 0.5f;
                 field_0x33c = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
-                field_0x340.fn_800FEB78(4);
+                field_0x340.setState_800FEB78(4);
             }
         }
         break;
@@ -327,7 +327,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             }
         }
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         break;
     case 0xA:
@@ -335,7 +335,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mTargetSpeed = 1.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 1) {
-            field_0x340.fn_800FEB78(1);
+            field_0x340.setState_800FEB78(1);
         }
         break;
     case 0xC:
@@ -389,7 +389,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         field_0x5a4 = (f32)(fn_801CD664(0x1F) + 0x46);
         field_0x5a0 = fn_801CD664(0x12D) + 0x12C;
@@ -399,7 +399,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (mState != 0x17 && mState != 0x18) {
             mTargetSpeed = 1.0f;
             if (field_0x340.mState != 1) {
-                field_0x340.fn_800FEB78(1);
+                field_0x340.setState_800FEB78(1);
             }
             if (mState != 0x16) {
                 field_0x5a8 = (f32)(fn_801CD664(0x51) + 0x78);
@@ -418,7 +418,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         field_0x33c = JMath::atanTable_.atan2_(field_0x32c.x - mPos.x, field_0x32c.y - mPos.y) * 10430.378f;
         mFlags &= ~0x20000;
@@ -430,7 +430,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x250 = 0x1E;
         }
         mSpeed = 0.0f;
-        field_0x340.fn_800FEB78(4);
+        field_0x340.setState_800FEB78(4);
         break;
     case 0x14:
         mSpeed = 0.0f;
@@ -468,7 +468,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mTargetSpeed = 1.0f;
         if (field_0x340.mState != 1) {
-            field_0x340.fn_800FEB78(1);
+            field_0x340.setState_800FEB78(1);
         }
         field_0x5ac = (f32)(fn_801CD664(0x10) + 0x41);
         field_0x595 = 0;
@@ -476,7 +476,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 0x1C:
         mTargetSpeed = 0.0f;
-        field_0x340.fn_800FEB78(4);
+        field_0x340.setState_800FEB78(4);
         mVel_0x3c.z = 4.5f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -494,7 +494,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x4ec.fn_80214E50();
             field_0x59c = 0x3C;
             if (field_0x340.mState != 0) {
-                field_0x340.fn_800FEB78(0);
+                field_0x340.setState_800FEB78(0);
             }
         }
         break;
@@ -522,7 +522,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
-        field_0x340.fn_800FEB78(4);
+        field_0x340.setState_800FEB78(4);
         if (mState == 0xD) {
             s16 angle = -((s16)field_0x94 / 4 + 0x2000);
             f32 s = JMath::sincosTable_.sinShort(angle);
@@ -571,7 +571,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         break;
     case 0x20:
@@ -584,12 +584,12 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mTargetSpeed = 0.0f;
         if (mFlags & 0x04000000) {
             if (field_0x340.mState != 0) {
-                field_0x340.fn_800FEB78(0);
+                field_0x340.setState_800FEB78(0);
             }
         } else {
             s16 ang = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
             field_0x33c = ang - 0x8000;
-            field_0x340.fn_800FEB78(5);
+            field_0x340.setState_800FEB78(5);
         }
         startSound_801F0E34(0x400C2, 0);
         break;
@@ -597,7 +597,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x250 = fn_801CD664(0x10) + 5;
         mTargetSpeed = 1.0f;
         if (field_0x340.mState != 1) {
-            field_0x340.fn_800FEB78(1);
+            field_0x340.setState_800FEB78(1);
         }
         mPathCount = 0;
         mFlags |= 0x1000;
@@ -612,9 +612,9 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (state == 0x23) {
             startSound_801F0E34(0x40000, 0);
             startSound_801F0E34(0x400CC, 0);
-            field_0x340.fn_800FEB78(2);
+            field_0x340.setState_800FEB78(2);
         } else {
-            field_0x340.fn_800FEB78(9);
+            field_0x340.setState_800FEB78(9);
         }
         field_0x594 = 0;
         break;
@@ -627,13 +627,13 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 3 && field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         break;
     case 0x29:
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         mLife = mLifeBackup;
         mFlags |= 0x300;
@@ -660,7 +660,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mTargetSpeed = 0.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 7) {
-            field_0x340.fn_800FEB78(7);
+            field_0x340.setState_800FEB78(7);
         }
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -671,7 +671,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mTargetSpeed = 0.0f;
         if (mState == 0x2B || mState == 0x1E) {
             if (field_0x340.mState != 0) {
-                field_0x340.fn_800FEB78(0);
+                field_0x340.setState_800FEB78(0);
             }
         }
         if (field_0x560 == 4) {
@@ -689,7 +689,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         field_0x33c = 0;
-        field_0x340.fn_800FEB78(8);
+        field_0x340.setState_800FEB78(8);
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
@@ -699,7 +699,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mTargetSpeed = 0.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 7) {
-            field_0x340.fn_800FEB78(7);
+            field_0x340.setState_800FEB78(7);
         }
         break;
     case 0x2F:
@@ -709,7 +709,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
         if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
+            field_0x340.setState_800FEB78(0);
         }
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -730,7 +730,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             mPos.x = mPrevPos.x;
             mPos.y = mPrevPos.y;
             JGeometry::TVec2f nudge;
-            fn_801D01A0(&field_0x32c, &nudge, 8.0f);
+            calcVelocityToward_801D01A0(&field_0x32c, &nudge, 8.0f);
             mPos.x += nudge.x;
             mPos.y += nudge.y;
         }
@@ -747,10 +747,10 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             if (fn_801C0D70()->fn_801C0FEC(&mPos, &out)) {
                 if (fn_801C0D70()->field_0x0 & 0x800) {
                     field_0x32c.set(out.x, out.y, 0.0f);
-                    fn_801C3B7C(0x1D);
+                    setState_801C3B7C(0x1D);
                 }
             } else {
-                fn_801C3B7C(0x2F);
+                setState_801C3B7C(0x2F);
             }
             break;
         }
@@ -783,7 +783,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0:
         if ((mFlags & 0x2000) && fn_801CD228(mLayer_0x4)) {
             if (fn_801D05F8(&mPos, 16.0f * (f32)field_0x55c[2]) >= 0) {
-                fn_801C3B7C(1);
+                setState_801C3B7C(1);
             }
         }
         break;
@@ -795,17 +795,17 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (mStateTimer >= field_0x250) {
-            fn_801C3B7C(3);
+            setState_801C3B7C(3);
         }
         break;
     case 3:
         if (mStateTimer >= field_0x250) {
-            fn_801C3B7C(4);
+            setState_801C3B7C(4);
         }
         break;
     case 4:
         if (mStateTimer > 1 && fn_801D0DD4()) {
-            fn_801C3B7C(5);
+            setState_801C3B7C(5);
         }
         break;
     case 5:
@@ -818,39 +818,39 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         if (mStateTimer >= field_0x250) {
             field_0x33c = 0;
             if (!(fn_801C0D70()->field_0x0 & 1)) {
-                fn_801C3B7C(9);
+                setState_801C3B7C(9);
             } else {
-                fn_801C3B7C(7);
+                setState_801C3B7C(7);
             }
         }
         break;
     case 7:
         if (mStateTimer >= 0x1E) {
-            fn_801C3B7C(8);
+            setState_801C3B7C(8);
         }
         break;
     case 8:
         if (mStateTimer >= 0x5A) {
-            fn_801C3B7C(9);
+            setState_801C3B7C(9);
         }
         break;
     case 9:
         if (mStateTimer >= 0x3C) {
             if (field_0x524.field_0x0 & 2) {
-                fn_801C3B7C(0xA);
+                setState_801C3B7C(0xA);
             } else {
-                fn_801C3B7C(0xC);
+                setState_801C3B7C(0xC);
             }
         }
         break;
     case 0xA:
         if (mStateTimer >= 0x73) {
-            fn_801C3B7C(0xB);
+            setState_801C3B7C(0xB);
         }
         break;
     case 0xB:
         if (mStateTimer >= 0x3C) {
-            fn_801C3B7C(0xC);
+            setState_801C3B7C(0xC);
         }
         break;
     case 0xC:
@@ -861,7 +861,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0xD:
         if (mStateTimer >= 0xA0) {
             mPos.y += 32.0f;
-            fn_801C3B7C(0x1E);
+            setState_801C3B7C(0x1E);
         }
         break;
     case 0xE:
@@ -871,11 +871,11 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
                 field_0x4ec.fn_80214E50();
                 field_0x59c = 0x3C;
             }
-            fn_801C3B7C(0x11);
+            setState_801C3B7C(0x11);
         } else {
             bool hit = fn_801CD2F8(mLayer_0x4);
             if ((!hit && mStateTimer >= field_0x5a0) || (hit == 1 && mStateTimer >= field_0x5a2)) {
-                fn_801C3B7C(0x11);
+                setState_801C3B7C(0x11);
                 fn_801C8BC4(0);
             } else {
                 field_0x33c = field_0x550.fn_80217374(field_0x33c);
@@ -885,9 +885,9 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x10:
         if (mStateTimer >= field_0x250) {
             if (field_0x564 == 3) {
-                fn_801C3B7C(0x2E);
+                setState_801C3B7C(0x2E);
             } else {
-                fn_801C3B7C(0xF);
+                setState_801C3B7C(0xF);
             }
         } else if (mStateTimer % 6 == 0) {
             field_0x33c += 0x4000;
@@ -898,13 +898,13 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 0x12:
         if (mStateTimer >= field_0x250 || mHelper540.fn_802189AC()) {
-            fn_801C3B7C(0x13);
+            setState_801C3B7C(0x13);
         }
         break;
     case 0x13:
         if (fn_801D0DD4()) {
             if (mStateTimer >= field_0x250 || (mStateTimer >= 2 && mHelper540.fn_802189AC())) {
-                fn_801C3B7C(0x14);
+                setState_801C3B7C(0x14);
             }
         }
         break;
@@ -918,22 +918,22 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         }
         if (mStateTimer > 1 && mPos.z <= 0.0f) {
             field_0x4ec.fn_802144F0();
-            fn_801C3B7C(0x15);
+            setState_801C3B7C(0x15);
         }
         break;
     case 0x15:
         if (mStateTimer >= field_0x250) {
-            fn_801C3B7C(0x16);
+            setState_801C3B7C(0x16);
         }
         break;
     case 0x16:
         if (mStateTimer >= field_0x250) {
-            fn_801C3B7C(0x11);
+            setState_801C3B7C(0x11);
         }
         break;
     case 0x17:
         if (mStateTimer >= 0x6E) {
-            fn_801C3B7C(0x11);
+            setState_801C3B7C(0x11);
         }
         break;
     case 0x18:
@@ -941,7 +941,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x1A:
         if (mStateTimer >= 0x73) {
             if (mState == 0x19 || mState == 0x1A) {
-                fn_801C3B7C(0xF);
+                setState_801C3B7C(0xF);
             } else {
                 JGeometry::TVec3f savedPos = mPos;
                 s32 savedLayer = mLayer_0x4;
@@ -955,9 +955,9 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
                 mPos.y = savedPos.y;
                 mPos.z = savedPos.z;
                 if (p >= 0) {
-                    fn_801C3B7C(0x1E);
+                    setState_801C3B7C(0x1E);
                 } else {
-                    fn_801C3B7C(0x11);
+                    setState_801C3B7C(0x11);
                 }
             }
         } else {
@@ -981,18 +981,18 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             }
         }
         if (mStateTimer > 1 && fn_801D0DD4()) {
-            fn_801C3B7C(0x1F);
+            setState_801C3B7C(0x1F);
         }
         break;
     case 0x1D:
         if (fn_801D0DD4()) {
             if (fn_801C0D70()->field_0x0 & 0x400) {
                 if (mStateTimer > 0x1E) {
-                    fn_801C3B7C(0x1E);
+                    setState_801C3B7C(0x1E);
                 }
             } else {
                 if (mStateTimer > 1) {
-                    fn_801C3B7C(0x1E);
+                    setState_801C3B7C(0x1E);
                 }
             }
         }
@@ -1002,17 +1002,17 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             field_0x4ec.fn_802144F0();
             if (mFlags & 0x01000000) {
                 mFlags &= ~0x01000000;
-                fn_801C3B7C(0x2C);
+                setState_801C3B7C(0x2C);
             } else if (mFlags & 0x02000000) {
-                fn_801C3B7C(0x11);
+                setState_801C3B7C(0x11);
             } else {
-                fn_801C3B7C(0x1F);
+                setState_801C3B7C(0x1F);
             }
         }
         break;
     case 0x1F:
         if (mStateTimer >= field_0x250) {
-            fn_801C3B7C(0x1B);
+            setState_801C3B7C(0x1B);
         }
         break;
     case 0x21:
@@ -1037,10 +1037,10 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         if (mStateTimer >= field_0x250) {
             if ((field_0x524.field_0x0 & 8) && field_0x597 == 0 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.7f &&
                 fn_801D183C(64.0f)) {
-                fn_801C3B7C(0x22);
+                setState_801C3B7C(0x22);
             } else {
                 field_0x597 = 0x3C;
-                fn_801C3B7C(0x1B);
+                setState_801C3B7C(0x1B);
             }
         }
         break;
@@ -1062,20 +1062,20 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x2A:
         if (fn_801D0DD4()) {
             fn_801C6784();
-            fn_801C3B7C(0x1C);
+            setState_801C3B7C(0x1C);
         }
         break;
     case 0x2B:
         if (mStateTimer >= 0x78) {
             mFlags |= 0x01000000;
-            fn_801C3B7C(0x1D);
+            setState_801C3B7C(0x1D);
         }
         break;
     case 0x2C: {
         s32 prev = field_0x560;
         if (field_0x548.fn_802153A8()) {
             startSound_801F0E34(0x400BF, 0);
-            fn_801C3B7C(0x2D);
+            setState_801C3B7C(0x2D);
         }
         field_0x560 = field_0x548.cur;
         if (mState == 0x2C && prev != field_0x560 && field_0x560 >= 0 && field_0x560 <= 3) {
@@ -1085,7 +1085,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     }
     case 0x2D:
         if (mStateTimer >= 0x4A) {
-            fn_801C3B7C(0x1B);
+            setState_801C3B7C(0x1B);
         }
         break;
     case 0x2E:
@@ -1095,7 +1095,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 0x2F:
         if (!(fn_801C0D70()->field_0x0 & 0x400)) {
-            fn_801C3B7C(0xF);
+            setState_801C3B7C(0xF);
         }
         break;
     }
@@ -1258,7 +1258,7 @@ void ShadowLink2_804A43E8::onHitReactionEnd_0x74() {
             switch (field_0x564) {
             case 0:
                 if (!(mFlags & 0x10000)) {
-                    fn_801C3B7C(0x29);
+                    setState_801C3B7C(0x29);
                 } else if (field_0x524.field_0x0 & 0x80) {
                     fn_8021CDE4(1);
                 } else {
@@ -1272,11 +1272,11 @@ void ShadowLink2_804A43E8::onHitReactionEnd_0x74() {
                 fn_8021CDE4(3);
                 break;
             case 3:
-                fn_801C3B7C(0x29);
+                setState_801C3B7C(0x29);
                 break;
             }
         } else {
-            fn_801C3B7C(0x1B);
+            setState_801C3B7C(0x1B);
         }
         break;
     }
@@ -1337,28 +1337,28 @@ void ShadowLink2_804A43E8::fn_801C27A8() {
     if (mState >= 2 || mState < 0) {
         return;
     }
-    fn_801C3B7C(2);
+    setState_801C3B7C(2);
 }
 
 void ShadowLink2_804A43E8::fn_801C272C() {
     mDrawEnabled = true;
     if (fn_801C0D70()->fn_801C11F0()) {
-        fn_801C3B7C(6);
+        setState_801C3B7C(6);
     } else if (fn_801C0D70()->field_0x0 & 1) {
-        fn_801C3B7C(7);
+        setState_801C3B7C(7);
     } else {
-        fn_801C3B7C(9);
+        setState_801C3B7C(9);
     }
 }
 
 // Member: switches to state 0xE unless the actor is already in it.
 void ShadowLink2_804A43E8::fn_801C26FC() {
     if (mState != 0xE) {
-        fn_801C3B7C(0xE);
+        setState_801C3B7C(0xE);
     }
 }
 
-// Member: r3 (this) is passed straight through to fn_801C3B7C.
+// Member: r3 (this) is passed straight through to setState_801C3B7C.
 void ShadowLink2_804A43E8::fn_801C26D8() {
-    fn_801C3B7C(0xD);
+    setState_801C3B7C(0xD);
 }

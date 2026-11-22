@@ -185,7 +185,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
     while (true) {
         // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
-        s32 next = getActorManager_801F856C()->fn_801F78F4(ACTOR_NIWA, serial);
+        s32 next = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_NIWA, serial);
         serial = next;
         if (serial < 0) {
             return;
@@ -211,7 +211,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
 // Not in the binary: fn_80332A60 inlines it.
 inline bool Cucco_804AB8C0::checkActorHit() {
     bool hit = false;
-    s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (serial >= 0 && serial != mSerial) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         bool isFlame = false;
@@ -248,7 +248,7 @@ void Cucco_804AB8C0::fn_80332A60() {
             s32 result = 0;
             if (checkActorHit()) {
                 result = 2;
-            } else if (fn_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
+            } else if (fn_801F2DB4('NULL', ACTOR_FLME, NULL) || checkPlayerAttacks_801F2FAC() ||
                        fn_801A4D1C(mSerial, &box, &center) || fn_801A6108(mSerial, &box, &center) ||
                        fn_801A4F5C(mSerial, &box, &center) || fn_801A46FC(mSerial, &box, &center))
             {
@@ -1007,7 +1007,7 @@ void Cucco_804AB8C0::update() {
             case 8:
                 field_0x238 = 0;
                 field_0x240 = 1000;
-                field_0x29c = fn_801F6874((u16)fn_80230CFC(field_0x25c));
+                field_0x29c = dirToAngle_801F6874((u16)getPlayerFacing_80230CFC(field_0x25c));
                 field_0x29e = field_0x29c;
                 if (field_0x290 == 2) {
                     field_0x230 = 4;
@@ -1033,7 +1033,7 @@ void Cucco_804AB8C0::update() {
             if (field_0x2a8 == 0) {
                 field_0x25c = field_0xc8;
             }
-            mDir_0x98 = fn_80230CFC(field_0xc8);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0xc8);
             mPos.set(*fn_8023E7B0(field_0xc8));
             mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             field_0x288 = fn_8023BCD4(field_0xc8);
@@ -1054,8 +1054,8 @@ void Cucco_804AB8C0::update() {
                             field_0x94 = i;
                         }
                     } else {
-                        if (r28 < fn_80237774(i)) {
-                            r28 = fn_80237774(i);
+                        if (r28 < getPlayerLife_80237774(i)) {
+                            r28 = getPlayerLife_80237774(i);
                             field_0x94 = i;
                         }
                     }
@@ -1176,7 +1176,7 @@ void Cucco_804AB8C0::update() {
                             field_0x298 = v;
                         }
                     } else {
-                        field_0x298 = fn_80237774(hitPlayer);
+                        field_0x298 = getPlayerLife_80237774(hitPlayer);
                         if (field_0x290 == 2) {
                             if (field_0x298 >= 4) {
                                 field_0x298 = 4;
@@ -1308,7 +1308,7 @@ void Cucco_804AB8C0::update() {
             mPos.y = getPlayerPos_8023E724(field_0x25c)->y - 24.0f;
         }
         if (field_0x248 == 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 11:

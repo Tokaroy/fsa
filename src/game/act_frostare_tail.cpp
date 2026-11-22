@@ -61,7 +61,7 @@ void FrostareTail_804A4F90::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (mStateTimer >= 120) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }

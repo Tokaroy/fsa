@@ -233,7 +233,7 @@ s32 RuleScreen_804B16A8::fn_804366B8() {
 }
 
 void RuleScreen_804B16A8::fn_80436668() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->fn_80440EE8();
 }

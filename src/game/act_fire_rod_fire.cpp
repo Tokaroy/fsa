@@ -304,7 +304,7 @@ void FireRodFire_804A89F0::update() {
             if (field_0x293 == 1) {
                 field_0x28c -= 0.03f;
                 if (field_0x28c < 0.05f) {
-                    fn_801F3668();
+                    markDead_801F3668();
                     return;
                 }
                 mEmitter230->mGlobalPScl.set(field_0x28c, field_0x28c);
@@ -606,7 +606,7 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
 
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('ICEB', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('ICEB', serial);
         if (serial < 0) {
             return false;
         }

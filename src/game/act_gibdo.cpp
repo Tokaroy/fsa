@@ -235,7 +235,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 1:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             bool turn = false;
             if (mFlags & 0x2000) {
                 mFlags &= ~0x2000;
@@ -251,7 +251,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             s32 dir = 0;
             switch (mAnim.mAnim) {
             case 0:

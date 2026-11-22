@@ -98,7 +98,7 @@ void FlyingTile_804AC100::vfunc_0x10() {
     s32 serial = -1;
     s32 best = 0;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_FLYO, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_FLYO, serial);
         if (serial < 0) {
             break;
         }

@@ -116,7 +116,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
                     case 0x11:
                     case 0x12:
                     case 0x14:
-                        fn_801D5D84(0xb);
+                        setState_801D5D84(0xb);
                         break;
                     }
                     result = true;
@@ -155,7 +155,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
         JGeometry::TVec2f savedF(mBox.f);
         mBox.i.scale(1.5f);
         mBox.f.scale(1.5f);
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 48.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 48.0f);
         mBox.i = savedI;
         mBox.f = savedF;
         if (serial >= 0 && serial != mSerial) {
@@ -181,7 +181,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
                     field_0x52c.fn_801D6D38(&shake);
                     field_0x5cd++;
                     if (field_0x5cd >= field_0x5cc) {
-                        fn_801D5D84(6);
+                        setState_801D5D84(6);
                     }
                 }
             }
@@ -292,7 +292,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                         if (mLife <= 0) {
                             mHitTimer_0xd8 = 16;
                             mHitTimerStart_0xdc = 16;
-                            fn_801D5D84(0x18);
+                            setState_801D5D84(0x18);
                             field_0x4c4.fn_801D7638();
                             field_0x4c4.fn_801D76B4();
                         } else {
@@ -304,7 +304,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                                 field_0x4c4.fn_801D76B4();
                             }
                             if (mLife <= lbl_8053F0C0) {
-                                fn_801D5D84(10);
+                                setState_801D5D84(10);
                             } else {
                                 mFlags |= 0x8000;
                             }

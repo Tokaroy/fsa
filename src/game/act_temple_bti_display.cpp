@@ -88,7 +88,7 @@ TempleBTIDisplay_8049CB04::~TempleBTIDisplay_8049CB04() {
         if (gGameRoot_8053AAF8->field_0x4c != 9 && gGameRoot_8053AAF8->field_0x4c != 11) {
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x1328c = 0;
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
     }
 }

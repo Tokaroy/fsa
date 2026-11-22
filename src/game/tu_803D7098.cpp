@@ -247,7 +247,7 @@ void TotalScreen_804B03D8::fn_803D8718() {
 }
 
 void TotalScreen_804B03D8::fn_803D8670() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0x1c->setAlpha(field_0x77);
@@ -307,7 +307,7 @@ void TotalScreen_804B03D8::fn_803D8364() {
 }
 
 void TotalScreen_804B03D8::fn_803D82EC() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x1c->setAlpha(field_0x77);
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }

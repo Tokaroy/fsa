@@ -32,7 +32,7 @@ static const char* lbl_8053A248 = "GC4Sword_usa/AudioRes/Waves/";
 static const char* lbl_8053A24C = "GC4Sword_usa/AudioRes/Seqs/JaiSeqs.arc";
 static u32 lbl_8053A250 = 5;
 static u32 lbl_8053A254 = 0x14;
-static u32 lbl_8053A258 = 5; // the music / second sequence volume fade (fn_80458744)
+static u32 lbl_8053A258 = 5; // the music / second sequence volume fade (setVolumeMode_80458744)
 static u32 lbl_8053A25C = 0x5A; // the music fade-out when another is queued (fn_80458FF0)
 static f32 lbl_8053A260 = 1.3f; // fast tempo (fn_80458508 kind 1)
 static u32 lbl_8053A264 = 0x1E; // its frames
@@ -365,7 +365,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
     field_0x8e = 0;
     field_0x75 = 0;
     field_0x78 = 0;
-    fn_80458744(0);
+    setVolumeMode_80458744(0);
 }
 
 // 0x80459674
@@ -531,7 +531,7 @@ void AudioMgr_8045A080::fn_804594E4(u32 mode) {
 
 void AudioMgr_8045A080::fn_804593D4() {
     field_0x8e = 1;
-    fn_80458744(1);
+    setVolumeMode_80458744(1);
     field_0x34->getCategory(1)->pause(true);
     field_0x34->getCategory(2)->pause(true);
     field_0x34->getCategory(3)->pause(true);
@@ -549,9 +549,9 @@ void AudioMgr_8045A080::fn_804593D4() {
 void AudioMgr_8045A080::fn_80459274() {
     field_0x8e = 0;
     if (field_0x8c != 0) {
-        fn_80458744(2);
+        setVolumeMode_80458744(2);
     } else {
-        fn_80458744(0);
+        setVolumeMode_80458744(0);
     }
     field_0x34->getCategory(1)->pause(false);
     field_0x34->getCategory(2)->pause(false);
@@ -766,10 +766,10 @@ extern f32 lbl_804B1E84[9];
 extern f32 lbl_804B1EA8[9];
 extern f32 lbl_804B1ECC[9];
 
-// Not auto-inlined: fn_80457E04 and fn_80457E54 call fn_80458744 out of line in the original
+// Not auto-inlined: fn_80457E04 and fn_80457E54 call setVolumeMode_80458744 out of line in the original
 // (so do the unwritten fn_80459274 / fn_804593D4; docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void AudioMgr_8045A080::fn_80458744(s32 mode) {
+void AudioMgr_8045A080::setVolumeMode_80458744(s32 mode) {
     f32 musicVolume;
     f32 seqVolume;
     f32 seVolume;
@@ -1008,10 +1008,10 @@ void AudioMgr_8045A080::fn_80457F60() {
 void AudioMgr_8045A080::fn_80457E54(bool flag) {
     field_0x8c = flag;
     if (flag) {
-        fn_80458744(2);
+        setVolumeMode_80458744(2);
         moveMusicTempo_80458508(2);
     } else {
-        fn_80458744(0);
+        setVolumeMode_80458744(0);
         moveMusicTempo_80458508(0);
     }
 }
@@ -1020,9 +1020,9 @@ void AudioMgr_8045A080::fn_80457E54(bool flag) {
 void AudioMgr_8045A080::fn_80457E04(bool flag) {
     if (field_0x8c == 0 && field_0x8b == 0) {
         if (flag) {
-            fn_80458744(3);
+            setVolumeMode_80458744(3);
         } else {
-            fn_80458744(0);
+            setVolumeMode_80458744(0);
         }
     }
 }

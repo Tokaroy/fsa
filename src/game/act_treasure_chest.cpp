@@ -44,7 +44,7 @@ void TreasureChest_804AA178::init() {
     }
 
     JGeometry::TVec2f cell(field_0x25c.x, field_0x25c.y);
-    mCell = fn_80226BC4(&cell, mLayer_0x4);
+    mCell = getCellIndex_80226BC4(&cell, mLayer_0x4);
     if (getGameView_802D6A9C()->fn_802D49A8(mLayer_0x4, (u16)mCell) == true) {
         mAlive = false;
     }
@@ -95,10 +95,10 @@ void TreasureChest_804AA178::update() {
         bool result = false;
         if (field_0x240 >= 0) {
             if (viewLayerFlag(mLayer_0x4)) {
-                if (fn_80230CFC(field_0x240) == 3 || fn_80230CFC(field_0x240) == 0 || fn_80230CFC(field_0x240) == 1) {
+                if (getPlayerFacing_80230CFC(field_0x240) == 3 || getPlayerFacing_80230CFC(field_0x240) == 0 || getPlayerFacing_80230CFC(field_0x240) == 1) {
                     result = true;
                 }
-            } else if (fn_80230CFC(field_0x240) == 3) {
+            } else if (getPlayerFacing_80230CFC(field_0x240) == 3) {
                 result = true;
             }
             if (result == true) {

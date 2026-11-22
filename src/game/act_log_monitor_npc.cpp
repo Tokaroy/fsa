@@ -2,7 +2,7 @@
 // (spawnActor_801F9484) allocates 0x238 bytes for it (0x801FF370) and calls its
 // constructor fn_801FF780, which stores the vtable 0x804AD278. It watches
 // for a log (MRTA) on top of it, or beside it, and when there is none plays
-// sound id 3 through fn_801F0D20 and removes itself.
+// sound id 3 through playSe_801F0D20 and removes itself.
 
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
@@ -67,8 +67,8 @@ void LogMonitorNpc_804AD278::update() {
     case 0:
     case 1:
         if (findLog() < 0) {
-            fn_801F0D20(3);
-            fn_801F3668();
+            playSe_801F0D20(3);
+            markDead_801F3668();
         }
         break;
     case 2:
@@ -85,8 +85,8 @@ void LogMonitorNpc_804AD278::update() {
         }
         for (s32 i = 0; i < 2; i++) {
             if (findLog() < 0) {
-                fn_801F0D20(3);
-                fn_801F3668();
+                playSe_801F0D20(3);
+                markDead_801F3668();
                 break;
             }
             switch (mMode) {

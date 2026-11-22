@@ -215,7 +215,7 @@ void BigPoe_804A0440::update() {
         if (field_0x230 == 4) {
             f32 half = 10.0f * (f32)field_0x25c;
             mBox.set(-half, -half, half, half);
-            if (fn_801F2FAC()) {
+            if (checkPlayerAttacks_801F2FAC()) {
                 mVel_0x3c.set(0.0f, 0.0f, 0.0f);
                 field_0x25c--;
                 getGameView_802D6A9C()->fn_802D7E34((mSpawnParam_0x90 >> 7) & 0x1F);
@@ -248,9 +248,9 @@ void BigPoe_804A0440::update() {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
             bool visible = false;
             JGeometry::TVec3f p1(x0, y0, 0.0f);
-            if (cam->fn_8030C2A8(&p1)) {
+            if (cam->isOnScreen_8030C2A8(&p1)) {
                 JGeometry::TVec3f p2(x1, y1, 0.0f);
-                if (cam->fn_8030C2A8(&p2)) {
+                if (cam->isOnScreen_8030C2A8(&p2)) {
                     visible = true;
                 }
             }
@@ -269,7 +269,7 @@ void BigPoe_804A0440::update() {
             cam->mOverrideBlend_0x7f6 = 0;
         }
         if (field_0x258 == 1 && field_0x234 == 1) {
-            getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 7) & 0x1F, false, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 7) & 0x1F, false, 0xFF);
         }
         if (field_0x238 == 0) {
             field_0x258++;
@@ -656,7 +656,7 @@ void BigPoe_804A0440::die_0x24() {
     startBossDeath_0x28(7, 0.0f, 16.0f);
     s32 bit = field_0x270;
     if (bit != 0) {
-        getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
     }
 }
 

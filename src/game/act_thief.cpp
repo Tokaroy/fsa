@@ -155,7 +155,7 @@ void Thief_804A5A30::init() {
     field_0x32c.x = mPos.x;
     field_0x32c.y = mPos.y;
     field_0x32c.z = mPos.z;
-    field_0x33c = fn_801F6874(mDir_0x98);
+    field_0x33c = dirToAngle_801F6874(mDir_0x98);
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -701,7 +701,7 @@ void Thief_804A5A30::calcVelocity_0x88() {
             mVel_0x3c.y = dir.y * mSpeed;
             break;
         default:
-            fn_801D01A0(&field_0x32c, &dir, mSpeed);
+            calcVelocityToward_801D01A0(&field_0x32c, &dir, mSpeed);
             mVel_0x3c.x = dir.x;
             mVel_0x3c.y = dir.y;
             break;
@@ -729,8 +729,8 @@ void Thief_804A5A30::onMoved_0x8C() {
 void Thief_804A5A30::move_0x98() {
     if (mState == 3) {
         if (field_0xc4 != 0) {
-            mDir_0x98 = fn_80230CFC(field_0xc8);
-            field_0x33c = fn_801F6874(mDir_0x98);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0xc8);
+            field_0x33c = dirToAngle_801F6874(mDir_0x98);
             JGeometry::TVec3f* pos = fn_8023E7B0(field_0xc8);
             mPos.x = pos->x;
             mPos.y = pos->y;

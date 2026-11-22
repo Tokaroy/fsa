@@ -150,7 +150,7 @@ void InextinguishableFlame_804A9D28::update() {
         break;
     case 2:
         if (field_0x94 == 2 || (mKind == 2 && isScreenFlagSet_0x34() == true)) {
-            getGameView_802D6A9C()->fn_802D8050(mViewBit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(mViewBit, true, 0xFF);
             vfunc_0x54();
             s32 n = 0;
             for (s32 i = 0; i < mCountX; i++) {

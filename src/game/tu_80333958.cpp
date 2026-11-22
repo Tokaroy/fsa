@@ -72,24 +72,24 @@ void IronBall_804AB968::draw() {
         JGeometry::TVec3f p(mPos.x, 3.0f + mPos.y, 0.0f);
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&p, res, 0, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&p, res, 0, &params, 1.0f, 1.0f);
         }
         s32 frame = field_0x238 + 0x25;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 + 0x25, 0, 0, -1);
     } else {
         JGeometry::TVec3f p(mPos.x, 12.0f + mPos.y, 0.0f);
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&p, res, 3, &params, 2.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&p, res, 3, &params, 2.0f, 1.0f);
         }
         s32 frame = field_0x238 + 0x27;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 + 0x27, 0, 0, -1);
     }

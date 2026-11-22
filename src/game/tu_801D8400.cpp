@@ -128,7 +128,7 @@ void cls_804A4C58::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mSeq2a8.fn_801DA9E8(0, 2);
+    mSeq2a8.start_801DA9E8(0, 2);
     fn_801E63D8();
     fn_801DAC6C()->fn_801DAF44(mSerial);
     getGameView_802D6A9C()->fn_802D7440(false);
@@ -148,11 +148,11 @@ void cls_804A4C58::fn_801D9C58(int state) {
     }
     switch (state) {
     case 2:
-        mSeq2a8.fn_801DA9E8(3, 0);
+        mSeq2a8.start_801DA9E8(3, 0);
         startSound_801F0E34(0x40052, 0);
         break;
     case 3:
-        mSeq2a8.fn_801DA9E8(4, 0);
+        mSeq2a8.start_801DA9E8(4, 0);
         startSound_801F0E34(0x4005D, 0);
         break;
     case 4:
@@ -166,10 +166,10 @@ void cls_804A4C58::fn_801D9C58(int state) {
         switch (mState) {
         case 6:
         case 7:
-            mSeq2a8.fn_801DA9E8(2, 0);
+            mSeq2a8.start_801DA9E8(2, 0);
             break;
         default:
-            mSeq2a8.fn_801DA9E8(1, 0);
+            mSeq2a8.start_801DA9E8(1, 0);
             break;
         }
         startSound_801F0E34(0x40052, 0);
@@ -177,13 +177,13 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 6:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(3, 0);
+        mSeq2a8.start_801DA9E8(3, 0);
         startSound_801F0E34(0x40052, 0);
         break;
     case 7:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(4, 0);
+        mSeq2a8.start_801DA9E8(4, 0);
         startSound_801F0E34(0x4005D, 0);
         if (mState == 5) {
             mFlags |= 0x4000;
@@ -194,7 +194,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 8:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(5, 0);
+        mSeq2a8.start_801DA9E8(5, 0);
         startSound_801F0E34(0x40056, 0);
         fn_801E6394();
         fn_801E631C();
@@ -203,14 +203,14 @@ void cls_804A4C58::fn_801D9C58(int state) {
         mFlags &= ~0x280;
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(6, 0);
+        mSeq2a8.start_801DA9E8(6, 0);
         startSound_801F0E34(0x40057, 0);
         fn_801E631C();
         break;
     case 10:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(7, 0);
+        mSeq2a8.start_801DA9E8(7, 0);
         break;
     case 11:
         field_0x250 = -1;
@@ -223,28 +223,28 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 12:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(9, 0);
+        mSeq2a8.start_801DA9E8(9, 0);
         break;
     case 13:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(0xE, 0);
+        mSeq2a8.start_801DA9E8(0xE, 0);
         break;
     case 14:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(0xF, 0);
+        mSeq2a8.start_801DA9E8(0xF, 0);
         break;
     case 15:
         field_0x33f = 0;
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(0xA, 0);
+        mSeq2a8.start_801DA9E8(0xA, 0);
         break;
     case 16:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(0xB, 0);
+        mSeq2a8.start_801DA9E8(0xB, 0);
         break;
     case 17:
         mFlags |= 0x80;
@@ -258,7 +258,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 18:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        mSeq2a8.fn_801DA9E8(0xD, 0);
+        mSeq2a8.start_801DA9E8(0xD, 0);
         break;
     case 19:
         mBox.i.x = 1.0f;

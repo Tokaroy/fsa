@@ -8,8 +8,8 @@
 // "BgRewrite_804A7C98" is a provisional descriptive name carrying its
 // vtable address (docs/PLAN.md, "Placeholder names"). Evidence for "BG
 // rewrite": nearly every function of the unit writes tile codes into the
-// map's tile layers (gGameRoot2_8053AB10->0x20, TileMap_804AA858::fn_802F9974, 0x2C
-// calls in fn_802A20F0 alone; the packed cell index comes from fn_80226BC4)
+// map's tile layers (gGameRoot2_8053AB10->0x20, TileMap_804AA858::setTile_802F9974, 0x2C
+// calls in fn_802A20F0 alone; the packed cell index comes from getCellIndex_80226BC4)
 // and then sets GameView_804A9950::field_0x131de through fn_802D782C(1),
 // which the BGWC actor ("BG-rewrite check switch", docs/names/actors.tsv,
 // game/act_bg_rewrite_check_switch.cpp) polls; the per-screen actor masks
@@ -26,7 +26,7 @@
 // parameter type is a symbols.txt rename too. "N units" counts the other
 // game units calling the function. "layer" is an actor layer
 // (ActorBase_804A5770::field_0x4). Not declared yet: the 2-unit tile
-// pattern writers fn_8029DB2C, fn_8029DD50, fn_8029DEBC, fn_8029DF80,
+// pattern writers fn_8029DB2C, fn_8029DD50, writeTilePair_8029DEBC, fn_8029DF80,
 // fn_8029EC84 (act_door, tu_802D39B8),
 // fn_802A20F0 (10 units; spreads fire over burnable tiles) and the 1-unit
 // ones; their argument types need their bodies read first.
@@ -54,7 +54,7 @@ public:
 
     // 2 units (tu_8022AD64, act_knight_of_hyrule). Saves the view's
     // field_0x34, sets it to value (GameView_804A9950::fn_802D7970), calls
-    // GameRoot::fn_80138B7C on gGameRoot_8053AAF8 and restores it. this unused.
+    // GameRoot::startStageMusic_80138B7C on gGameRoot_8053AAF8 and restores it. this unused.
     void fn_8029D898(s32 value);
     // 1 unit (act_liftable_wood, 2 calls). Writes 4 x 4 blocks of tile codes
     // from lbl_8046C5A0 (on layer + layerOffset) and lbl_8046C528 (on layer)
@@ -64,9 +64,9 @@ public:
     // tu_8028FBA0). Reads pos x/y; player and layer follow.
     bool fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     // 15 units / 78 calls. Writes tile code `tile` into the cell at pos on
-    // `layer` (fn_80226BC4(pos', layer & 0xFE), then fn_802F9974(layer,
+    // `layer` (getCellIndex_80226BC4(pos', layer & 0xFE), then setTile_802F9974(layer,
     // cell, tile)); nothing else. this unused. pos: callers pass
-    // &mPos; the body copies x and y to a stack TVec3f for fn_80226BC4.
+    // &mPos; the body copies x and y to a stack TVec3f for getCellIndex_80226BC4.
     // tile: u16, as for fn_802A3884.
     // `const TVec3f*` (here and below) is a guess: the asm can't tell it from
     // a reference or a non-const pointer.
@@ -89,7 +89,7 @@ public:
     void writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set);
     // 1 unit besides tu_8029D898 (act_gravestone). Writes the four tile
     // codes a..d (u16, clrlwi 16 / lhz) into the cells at and after pos on
-    // `layer` (two fn_802F9974 calls per pair, like fn_802A3948).
+    // `layer` (two setTile_802F9974 calls per pair, like fn_802A3948).
     void fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d);
     // 2 units (act_bomb, act_bombchu), 4 calls. Called with pos = &mPos,
     // player 0 and layer = the actor's field_0x4; the fourth argument is a
@@ -118,7 +118,7 @@ public:
     // 1 unit (tu_802957CC); body unwritten (tu_8029D898).
     void fn_802A1050(const JGeometry::TVec3f* pos);
     // 1 unit (tu_80256C74, the dig of state 0x47 at frame 12). Reads the map tile
-    // under pos (fn_80226BC4 into field_0x20, fn_802F9908 into field_0x24) and
+    // under pos (getCellIndex_80226BC4 into field_0x20, fn_802F9908 into field_0x24) and
     // returns a result code that the caller tests for 1-4 and 8.
     s32 fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     // 1 unit (tu_80256C74, the ground smash of state 0x3C). Reads the tile under pos
@@ -141,13 +141,13 @@ public:
     // cell and its right neighbour (vertical == 0, wrapping +0xF0 into the
     // next 16-column block) or the cell below (+0x10, +0x110 across the
     // 0x100 boundary). this unused.
-    void fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b);
-    // 2 units (see above). As fn_8029DEBC for four (DD50) or six (DB2C) tile codes in a row
+    void writeTilePair_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b);
+    // 2 units (see above). As writeTilePair_8029DEBC for four (DD50) or six (DB2C) tile codes in a row
     // or column. this unused.
     void fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
     void fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
     // 2 units (act_door, tu_802D39B8). The 2 x 2 block of tile codes a..d at
-    // cell (right neighbour and the row below as in fn_8029DEBC). this unused.
+    // cell (right neighbour and the row below as in writeTilePair_8029DEBC). this unused.
     void fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s32 d);
     // 1 unit (act_block). fn_802A3948 on gBgRewrite_8053AC98 with player 0;
     // this unused.

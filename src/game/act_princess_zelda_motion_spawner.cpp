@@ -58,7 +58,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::init() {
 
 static inline void setViewBit(s32 bit) {
     if (bit != 0) {
-        getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
     }
 }
 
@@ -85,7 +85,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
                 if (field_0x248 >= 0 && fn_802300EC(field_0x248)) {
                     JGeometry::TVec3f pos = mPos;
                     pos.x -= 50.0f;
-                    if (fn_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0)) {
+                    if (openMessage_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0)) {
                         mState = 3;
                     }
                 }
@@ -110,7 +110,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         break;
     case 3:
         fn_8022FE80(field_0x248, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x248)) {
+        if (stepMessageWindow_803865B8(field_0x248)) {
             if (fn_80384C58(field_0x248, mSerial)) {
                 mState = 0;
             }
@@ -184,7 +184,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         }
         pos.set(0.0f, 0.0f, 0.0f);
         pos.y = -10.0f;
-        if (fn_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0x4102)) {
             mState = 7;
         }
         break;
@@ -221,13 +221,13 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
     case 8:
         if (field_0x234 != 0) {
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
-            fn_801F0D20(0x50);
+            playSe_801F0D20(0x50);
             if (field_0x234 == 1) {
                 setScreenFlag_0x30(0xFF, true);
             }
         } else if (!isScreenFlagSet_0x34()) {
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
-            fn_801F0D20(0x50);
+            playSe_801F0D20(0x50);
             getActorManager_801F856C()->fn_801F6884();
             setViewBit(field_0x254);
             fn_80119DD0()->fn_80119998(200, 0, 2, 0, 0, 100, 0);
@@ -253,7 +253,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
             spot->field_0x28c = 0.05f;
         }
         getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
-        fn_801F0D20(0x50);
+        playSe_801F0D20(0x50);
         if (field_0x234 == 0) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {

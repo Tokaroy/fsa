@@ -17,7 +17,7 @@ s32 lbl_804A2B08[4] = {0, 1, 2, 1};
 s32 lbl_804C6330[4];
 
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 static inline void facePlayer(ShootingGallery_804A2B18* self, s32 player) {
@@ -129,7 +129,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
         if (mState == 3 || mState == 4) {
             fn_8022B17C();
             if (gGameRoot_8053AAF8->field_0x4c != 9) {
-                gGameRoot_8053AAF8->fn_80138B7C();
+                gGameRoot_8053AAF8->startStageMusic_80138B7C();
                 gAudioMgr_8053AF80->fn_80458508(0);
             }
             restorePlayerItems(this);
@@ -140,7 +140,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
 // FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
-// the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
+// the by-value position temporaries for openMessage_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
 // and 5 differ; lbl_8053ABB8 is referenced via @sda21 in the original (split into act_all_enemies_defeated.cpp).
 void ShootingGallery_804A2B18::fn_8019F3AC() {
     JGeometry::TVec3f pos = mPos;
@@ -203,7 +203,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
     }
     case 1:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (!fn_803865B8(field_0x250)) {
+        if (!stepMessageWindow_803865B8(field_0x250)) {
             break;
         }
         switch (fn_8037EFB4(field_0x250)) {
@@ -221,7 +221,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x250, mSerial)) {
             fn_80230534(false);
-            fn_801F0D20(0x3a);
+            playSe_801F0D20(0x3a);
             gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
             fn_8022B194();
             mDir_0x98 = 2;
@@ -290,7 +290,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
                     for (int i = 0; i < 4; i++) {
                         fn_80230C6C(i);
                     }
-                    fn_801F0D20(0x3b);
+                    playSe_801F0D20(0x3b);
                     gAudioMgr_8053AF80->fn_80458508(0);
                     mDir_0x98 = 2;
                     field_0x24c = 0;
@@ -316,7 +316,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
                 }
             }
             if (halfCount >= 4) {
-                fn_801F0D20(0x3f);
+                playSe_801F0D20(0x3f);
                 gAudioMgr_8053AF80->fn_80458508(1);
                 field_0x258 = 1;
             }
@@ -399,14 +399,14 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         break;
     case 5:
         fn_8022FE80(field_0x2ac, getPlayerLayer_8023DE58(field_0x2ac), mSerial, false, false);
-        if (fn_803865B8(field_0x2ac) && fn_80384C58(field_0x2ac, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2ac) && fn_80384C58(field_0x2ac, mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
             for (int i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     fn_802372F8(i, field_0x26c[i], field_0x27c[i]);
                 }
             }
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             setScreenFlag_0x30(0xff, true);
             fn_8022B17C();
             mState = 6;
@@ -505,7 +505,7 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
                     lbl_8053AED0->fn_8043D874(field_0x248, 20, 0);
                 }
                 mTimers[2] = 2;
-                fn_801F0D20(4);
+                playSe_801F0D20(4);
                 return;
             }
         }
@@ -722,7 +722,7 @@ void ShootingGallery_804A2B18::fn_8019E480() {
     frame += field_0x264;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
 }
 

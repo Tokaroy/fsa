@@ -107,7 +107,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
             field_0x230 = 0;
         } else {
             mSpawnParam_0x90 = 2;
-            getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(1, true, 0xFF);
             field_0x230 = 0x14;
         }
         break;
@@ -322,7 +322,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D6, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2D6, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 4;
         }
         break;
@@ -349,7 +349,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         field_0x244 = 0;
         startSound_801F0E34(0x400B5, 0);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
-        getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(1, true, 0xFF);
         field_0x230 = 6;
     case 6:
         field_0x244++;
@@ -382,7 +382,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D7, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2D7, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x244 = 0;
             field_0x230 = 9;
         }
@@ -437,7 +437,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             break;
         }
         fn_80119DD0()->fn_80119998(100, 0, 1, 0, 0, 101, 0);
-        getGameView_802D6A9C()->fn_802D8050(0x10, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(0x10, true, 0xFF);
         field_0x244 = 100;
         field_0x230 = 14;
     case 14:
@@ -474,7 +474,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2E1, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2E1, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 18;
         }
         break;

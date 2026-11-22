@@ -8,7 +8,7 @@ SHARED-EDITS: include/game/GameView.h moved fn_802DE764/7CC/93C/EB58/EBA0/EBF8 o
 
 ## Second pass (Sonnet 5.5)
 Baseline 8093 / 11557, unit 43/109. After 8103, unit 53/109 (+10). Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok.
-Matched: fn_802D6B24, fn_802D7618, fn_802D766C (`layer < 8 ? 0 : layer - 7`; the `>= 8 ? ... : 0` form compiles differently), fn_802D7704, fn_802D7AC4, fn_802D7F84, fn_802D8050, fn_802DCDF4, fn_802DEDFC (free, forwards to view->fn_802DCE5C), __dt__17GameView_804A9950Fv (empty dtor).
+Matched: fn_802D6B24, fn_802D7618, fn_802D766C (`layer < 8 ? 0 : layer - 7`; the `>= 8 ? ... : 0` form compiles differently), fn_802D7704, fn_802D7AC4, fn_802D7F84, setSwitchBit_802D8050, fn_802DCDF4, fn_802DEDFC (free, forwards to view->fn_802DCE5C), __dt__17GameView_804A9950Fv (empty dtor).
 Below 100 %: fn_802D75BC / fn_802D76A8 91.3 (same scheduling as fn_802D6AC4), fn_802D7B34 99.0 (regalloc only: shift count r31 / index r30 swapped; idx declared first), fn_802DEA34 93.5 (same family as fn_802DEABC: target reloads the view before the 2nd pair).
 Unwritten: fn_802D9C1C/9C4C/9C7C and fn_802D46D8 (tables in the unit's own .data/.rodata, not split), fn_802D79A4/79E8 (unit .sdata2 literals), fn_802D7E5C/7EB0 (u64 mask at 0x3c8 + i*0x320 needs a struct carve; high word sign-extension), fn_802D7440 (lbl_8050EC80 table, 0x7c/0x7d), larger functions.
 Note: the 0x1048-based u64 reads are field_0x1010[row][col][max(layer,7)]; fn_802D7AC4 as an explicit if, fn_802D7B34 as 7 + (layer < 8 ? 0 : layer - 7).
@@ -23,7 +23,7 @@ sched+regalloc (view + i*2 before the row); fn_802D6C10 98.1 regalloc; fn_802D6D
 mView reloaded before the id test); fn_802D6F38 96.4 (free-slot loop has no entry test in the target; a for/break
 gets unrolled); fn_802D7BE8 99.4 regalloc (as 7B34); fn_802D8128 / 8228 96.5 sched+regalloc (field_0x18 read after
 the column checks, field_0x8 before field_0x4: looks like an inlined (stage, level) lookup, cf. fn_802D9C7C, whose
-default "500" differs from fn_802D8D50's "001"); fn_802DCD1C 94.2 / fn_802DD3D4 99.0 (result returned via
+default "500" differs from loadScreenTiles_802D8D50's "001"); fn_802DCD1C 94.2 / fn_802DD3D4 99.0 (result returned via
 clrlwi r3, rN, 24 in the target).
 Data: .data 73 % (string tables lbl_804A9530/9660/96D0/9710/9830 as source), .sdata2 94 % (their literals open
 the pool), .rodata 85 % (lbl_8046E1CC masks + the map CSV strings). Still to write: lbl_8046E148 (4 x
@@ -33,7 +33,7 @@ Layout proven: the u64 screen masks start at 0x1048 (was field_0x1010 [..][7]); 
 out of the name buffer (vfunc_0x10 / vfunc_0xC asm); field_0x131fa is fn_802D8228's buffer; field_0x130c8 u32.
 SHARED-EDITS: include/game/GameView.h (field_0x1010 -> field_0x1048 [same bytes 0x1048-0x2948, padding
 0x3C8-0x1048]; field_0x130c8 s32 -> u32; field_0x131fa u8 -> char; field_0x1321a 0x32 -> 0x22 + f32
-field_0x1323c[4]; fn_802D7BE8 value s32 -> u32; declared fn_802D3A18, fn_802D8328(bool, bool), fn_802D8D50(bool)).
+field_0x1323c[4]; fn_802D7BE8 value s32 -> u32; declared fn_802D3A18, fn_802D8328(bool, bool), loadScreenTiles_802D8D50(bool)).
 symbols.txt: fn_802D7BE8 Flll -> FllUl, fn_802D3A18 / 8328 / 8D50 -> member names; .sdata2 string objects
 merged to their real sizes: lbl_80540FDC "001" (dropped dtk's lbl_80540FDD), lbl_8054106C "a" (size 2),
 lbl_80541128 "500" (dropped lbl_80541129) — no code referenced the dropped labels.
@@ -95,7 +95,7 @@ order_check OK; no function anywhere drops (by address against the baseline and 
   fn_802DA788 100 %).
 - New: fn_802DA8DC 98.6, fn_802DBD60 98.8, vfunc_0xC 97.6 (structurally close, FIXMEs), fn_802DEE2C 100 %.
 - Unwritten: fn_802DED40 / fn_802DEC40 = view->fn_802D7B34 / fn_802D7BE8 inlined into free functions, 78 / 80 %
-  as forwards (the fn_802DE9A0 view-reload family); fn_802D3D48, fn_802D4CCC, fn_802D8328, fn_802D8D50, fn_802D92F0.
+  as forwards (the fn_802DE9A0 view-reload family); fn_802D3D48, fn_802D4CCC, fn_802D8328, loadScreenTiles_802D8D50, fn_802D92F0.
 SHARED-EDITS: include/game/GameView.h (fn_802D7440 bool -> u8; removed screenMask / clearScreen inline decls; added
 clearStageTables, clearSlots, placePlayers inline decls and fn_802DEE2C(void)); include/game/GameGlobals.h
 (extern "C" fn_80303870(s32) [tu_80301CD0], extern "C" bool fn_803B8EBC(s32) [tu_803B8C74], void fn_8023F6C4()
@@ -108,7 +108,7 @@ gate --base matching, gen_game --check, order_check OK; no function anywhere dro
 report_honest.json); 10 functions rise.
 - fn_802D92F0 99.6 (structurally close, 2 missing: the inlined fn_802DEBA0's view reload); slots 4-11 are eight calls
   (a loop is not unrolled by MWCC here).
-- fn_802D8D50 98.3 (close): the resource type is `u32 type = 'M   '; type += (c0 - ' ') << 16 ...` (a single
+- loadScreenTiles_802D8D50 98.3 (close): the resource type is `u32 type = 'M   '; type += (c0 - ' ') << 16 ...` (a single
   expression folds the constant: 87.7 / 85.5); the tile map through an inlined accessor getTileMap() (written out,
   the map load comes after the resource lookup: 92.7 -> 87.7; fn_802D92F0, which uses gGameRoot_8053AAF8->0xA4,
   loads it after, as written out). Left: regalloc of the type copy, the fn_802DEBA0 family, float-temp slots.

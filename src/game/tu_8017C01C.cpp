@@ -44,7 +44,7 @@ u8 lbl_80539F88[8] = {2, 6, 1, 5, 11, 0, 0, 0};
 u16 lbl_80539F90[4] = {0x37D, 0x37F, 0x37C, 0x37E}; // emitter id per player
 
 // Not auto-inlined: update (0x8017C40C) calls every helper from fn_8017ED08 down to
-// fn_8017EAB4 out of line in the original (docs/INLINING.md, pragma rule 1).
+// invalidateEmitter_8017EAB4 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Sets the map's field_0x216 flag (gGameRoot2_8053AB10->0x20, TileMap_804AA858; 9 units
 // set it to 1). Takes no arguments; the caller is the fn_8017C4C8 branch of
@@ -116,9 +116,9 @@ bool fn_8017EB94(const JGeometry::TBox2f* box) {
     bool result = false;
     JGeometry::TVec3f corner2;
     JGeometry::TVec3f corner(box->i.x, box->i.y, 0.0f);
-    if (camera->fn_8030C2A8(&corner)) {
+    if (camera->isOnScreen_8030C2A8(&corner)) {
         corner2.set(box->f.x, box->f.y, 0.0f);
-        if (camera->fn_8030C2A8(&corner2)) {
+        if (camera->isOnScreen_8030C2A8(&corner2)) {
             result = true;
         }
     }
@@ -175,7 +175,7 @@ void fn_8017EACC(JPABaseEmitter* emitter, u8 r, u8 g, u8 b) {
 }
 
 // Out-of-line copy of JPABaseEmitter::becomeInvalidEmitter().
-void fn_8017EAB4(JPABaseEmitter* emitter) {
+void invalidateEmitter_8017EAB4(JPABaseEmitter* emitter) {
     emitter->becomeInvalidEmitter();
 }
 #pragma auto_inline reset
@@ -379,7 +379,7 @@ void PhantomGanon_804A1318::update() {
             mState = 0x15;
             return;
         }
-        if (fn_801F2FAC()) {
+        if (checkPlayerAttacks_801F2FAC()) {
             if (mPos.z == 0.0f && field_0x254 != 0) {
                 field_0x268 = 0;
                 field_0x254 = 0;
@@ -806,7 +806,7 @@ void PhantomGanon_804A1318::update() {
         field_0x234 = lbl_804A1210.frames127C[field_0x268];
         fn_8017EADC(&pos, &mPos);
         if (mEmitter2dc != NULL) {
-            fn_8017EAB4(mEmitter2dc);
+            invalidateEmitter_8017EAB4(mEmitter2dc);
             mEmitter2dc = NULL;
         }
         if (getActorManager_801F856C()->fn_801F68E0() == 0) {
@@ -1082,7 +1082,7 @@ void PhantomGanon_804A1318::update() {
     case 23:
         if (FABS(mPos.z - field_0x288) <= 1.0f) {
             if (mEmitter2dc != NULL) {
-                fn_8017EAB4(mEmitter2dc);
+                invalidateEmitter_8017EAB4(mEmitter2dc);
                 mEmitter2dc = NULL;
             }
             getActorManager_801F856C()->fn_801F6884();

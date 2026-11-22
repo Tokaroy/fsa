@@ -139,7 +139,7 @@ void FourPersonPullSwitchBTIVersion_804AE574::update() {
 void FourPersonPullSwitchBTIVersion_804AE574::draw() {
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804AE560[field_0x23c]);
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, NULL);
     }
 }
 

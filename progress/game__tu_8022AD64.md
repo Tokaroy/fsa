@@ -23,7 +23,7 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
 - Template: `if (gPlayerManager_8053AC90 == NULL) return F; if (isPlayerActive(player))
   return gPlayerManager_8053AC90->mPlayers[player]->getter(args); return F;` (void:
   `return;` and no final return).
-- Inverted layout (fn_80230B70, fn_80230CFC): the null test's `bne` skips
+- Inverted layout (fn_80230B70, getPlayerFacing_80230CFC): the null test's `bne` skips
   `li r3, F; blr`, then the guard's `bne` skips a second `li r3, F; blr`,
   and the field load comes last. Source: `if (gPlayerManager_8053AC90 == NULL) return
   F; if (!isPlayerActive(player)) return F; return mPlayers[player]->field;`.
@@ -70,7 +70,7 @@ Now: total 7187 / 11557, 1402608 bytes (31.58 %); unit 278/373.
   callee placeholders renamed to Player_804A6F38 members in symbols.txt.
 - Field getters (new Player.h fields 0x14, 0x2c4, 0x43f, 0xb18, 0xb78, 0xb9f, 0xcc8, 0xcd4, 0xce0; arrays
   field_0x38[0x31] TVec3f and field_0x284[0x31] u8 (counts from fn_80252CF0 shifting entries up: last stores at 0x278 and 0x284)).
-- fn_80230B70 / fn_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
+- fn_80230B70 / getPlayerFacing_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
 - fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters fn_80230BF4, fn_8023A654, fn_8023E690.
 
 ## gen_game.py
@@ -247,7 +247,7 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
   Shape: loop over players with fn_802527B0 + fn_8022E438 -> fn_80248DB8; then (no manager flag,
   no game-root 0x96, no 0x73) a long chain of inline queries on each player, fn_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
-  fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then fn_8025F590 / fn_8025F418 /
+  fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
   fn_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
 - fn_80235B68, fn_8023F390 unchanged.
 

@@ -12,7 +12,7 @@ s32 lbl_804AB248[4] = {0x114, 0x117, 0x11A, 0x11D};
 
 void BuriedForceGem_804AB258::init() {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        fn_801F3668();
+        markDead_801F3668();
         return;
     }
     field_0x244 = mSpawnParam_0x90 & 3;
@@ -73,7 +73,7 @@ void BuriedForceGem_804AB258::update() {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
             JGeometry::TVec3f vel;
             fn_8023A654(player);
-            s32 dir = fn_80230CFC(player);
+            s32 dir = getPlayerFacing_80230CFC(player);
             if (dir == 0) {
                 pos.x += 14.0f;
                 vel.x = 1.0f;
@@ -107,7 +107,7 @@ void BuriedForceGem_804AB258::update() {
                     actor->mVel_0x3c = vel;
                 }
             }
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -120,18 +120,18 @@ void BuriedForceGem_804AB258::update() {
         }
         if (field_0x26c != fn_80226850(&mPos, mLayer_0x4)) {
             if (field_0x94 == 4 || field_0x94 == 5) {
-                fn_801F0D20(3);
-                fn_801F3668();
+                playSe_801F0D20(3);
+                markDead_801F3668();
                 return;
             }
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x230 = 0;
             break;
         }
         for (int i = 0; i < 4; i++) {
             if (!fn_8022F478(i) && fn_802373EC(i) == 9 && fn_8023725C(i) == 2) {
                 JGeometry::TVec3f pPos = *getPlayerPos_8023E724(i);
-                switch (fn_80230CFC(i)) {
+                switch (getPlayerFacing_80230CFC(i)) {
                 case 0:
                     pPos += JGeometry::TVec3f(16.0f, 0.0f, 0.0f);
                     break;
@@ -189,7 +189,7 @@ void BuriedForceGem_804AB258::update() {
     case 2: {
         if (isScreenFlagSet_0x34() == true) {
             if (field_0x94 == 2) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 field_0x230 = 0;
             } else if (field_0x94 == 3 || field_0x94 == 5) {
                 field_0x26c = fn_80226850(&mPos, mLayer_0x4);
@@ -228,7 +228,7 @@ void BuriedForceGem_804AB258::draw() {
         s32 frame = field_0x238 + lbl_804AB248[field_0x244];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 + lbl_804AB248[field_0x244], 0, 0, -1);
     }

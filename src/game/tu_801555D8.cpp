@@ -189,8 +189,8 @@ bool BowSoldier_804A00C8::vfunc_0x54() {
     field_0x2b8.x = (f32)((s32)field_0x2b8.x & 0xFFF8);
     field_0x2b8.y = (f32)((s32)field_0x2b8.y & 0xFFF8);
     const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-    field_0x2b8.x += -12.0f * sincos.sinShort(fn_801F6874(mDir_0x98));
-    field_0x2b8.y += -12.0f * sincos.cosShort(fn_801F6874(mDir_0x98));
+    field_0x2b8.x += -12.0f * sincos.sinShort(dirToAngle_801F6874(mDir_0x98));
+    field_0x2b8.y += -12.0f * sincos.cosShort(dirToAngle_801F6874(mDir_0x98));
     s32 kind = fn_8022461C(&field_0x2b8, mLayer_0x4);
     if (kind == 2 || kind == 3 || kind == 0xE) {
         if (kind == 0xE && fn_802DE9A0() == true) {
@@ -229,13 +229,13 @@ void BowSoldier_804A00C8::update() {
             JGeometry::TVec3f tmpPos;
             tmpPos.x = mPos.x;
             tmpPos.y = mPos.y;
-            field_0x2aa = fn_80226998(&tmpPos, mLayer_0x4);
+            field_0x2aa = getTileAt_80226998(&tmpPos, mLayer_0x4);
             return;
         }
         JGeometry::TVec3f tmpPos;
         tmpPos.x = mPos.x;
         tmpPos.y = mPos.y;
-        if ((u16)field_0x2aa == fn_80226998(&tmpPos, mLayer_0x4)) {
+        if ((u16)field_0x2aa == getTileAt_80226998(&tmpPos, mLayer_0x4)) {
             return;
         }
         field_0x254 = 40;
@@ -326,7 +326,7 @@ void BowSoldier_804A00C8::update() {
             }
         }
         if (field_0x290 != 2 && field_0x290 != 3 && field_0x290 != 4 && field_0x290 != 5) {
-            if (fn_801F2FAC() || fn_801F2DB4('NULL', excludeId, NULL)) {
+            if (checkPlayerAttacks_801F2FAC() || fn_801F2DB4('NULL', excludeId, NULL)) {
                 if (mLife <= 0) {
                     field_0xbc = 2;
                 }
@@ -607,7 +607,7 @@ void BowSoldier_804A00C8::update() {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
-            field_0x234 = fn_801F6874(mDir_0x98);
+            field_0x234 = dirToAngle_801F6874(mDir_0x98);
             field_0x248 = 40;
             if (field_0x26c == 0) {
                 if (fn_80154744() < 0.5f) {
@@ -854,7 +854,7 @@ void BowSoldier_804A00C8::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30047, 0);
-                    fn_801F3668();
+                    markDead_801F3668();
                 }
                 return;
             }
@@ -865,7 +865,7 @@ void BowSoldier_804A00C8::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x5005F, 0);
                 }
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else if (field_0x238 == 0 && mSpawnParam_0x90 != 2) {
             field_0x25c++;
@@ -1088,13 +1088,13 @@ void BowSoldier_804A00C8::draw() {
             s32 frame = field_0x274 + 0x4F;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         } else {
             s32 frame = field_0x274 + 0x8F;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         }
         return;
@@ -1134,7 +1134,7 @@ void BowSoldier_804A00C8::draw() {
         params.mMtx = mtx;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x6F, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0x6F, &params, 1.0f, 1.0f);
         }
     }
 }

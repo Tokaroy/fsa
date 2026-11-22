@@ -97,7 +97,7 @@ void ReaperShinigami_804A886C::update() {
                             while (true) {
                                 field_0x298 = field_0x2a0[field_0x27c];
                                 if (playerInGame(field_0x298) == 1 && fn_8023F264(field_0x298) == 1 &&
-                                    fn_80237774(field_0x298) > 1) {
+                                    getPlayerLife_80237774(field_0x298) > 1) {
                                     break;
                                 }
                                 field_0x27c++;
@@ -309,7 +309,7 @@ void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
         s32 damage = mParamAtcp_0x114;
         s32 arg3 = 0x12;
         if (gGameRoot_8053AAF8->field_0x7f == 0) {
-            s32 n = fn_80237774(field_0x298);
+            s32 n = getPlayerLife_80237774(field_0x298);
             damage = 0;
             if (n > 1) {
                 damage = n - 1;

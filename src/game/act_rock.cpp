@@ -82,7 +82,7 @@ void Rock_804A9480::die_0x24() {
 }
 
 bool Rock_804A9480::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x234);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x234);
 }
 
 Rock_804A9480::~Rock_804A9480() {}

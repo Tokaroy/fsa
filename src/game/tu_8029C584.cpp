@@ -28,7 +28,7 @@ void UnknownFORM_804A7BE8::init() {
     field_0x240 = field_0x23c = fn_8022CAF8(mSpawnParam_0x90 & 3);
     field_0x244 = true;
     mUpdateWhilePaused_0x11f = 1;
-    fn_801F0D20(0x45);
+    playSe_801F0D20(0x45);
     field_0x248 = mSpawnParam_0x90 & 3;
 
     s32 count = 3;
@@ -160,14 +160,14 @@ void UnknownFORM_804A7BE8::update() {
                         dir = 3;
                     }
                 } else if (fn_8022C5EC(mSpawnParam_0x90 & 3, 1)) {
-                    fn_801F0D20(0x46);
+                    playSe_801F0D20(0x46);
                     if (field_0x24c) {
                         field_0x23c = kShoulderLeft[0][field_0x23c];
                     } else {
                         field_0x23c = kShoulderLeft[1][field_0x23c];
                     }
                 } else if (fn_8022C5EC(mSpawnParam_0x90 & 3, 2)) {
-                    fn_801F0D20(0x46);
+                    playSe_801F0D20(0x46);
                     if (field_0x24c) {
                         field_0x23c = kShoulderRight[0][field_0x23c];
                     } else {
@@ -277,7 +277,7 @@ void UnknownFORM_804A7BE8::draw() {
     s32 id = field_0x230;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     }
     if (fn_8022C8EC(mSpawnParam_0x90 & 3)) {
         fn_80307AC8(mSerial, mLayer_0x4, &pos, field_0x230, 0, 0, -1);

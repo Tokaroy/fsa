@@ -76,7 +76,7 @@ void LogicSwitchControl_8049CB58::update() {
     if (field_0x24c) {
         field_0x24d++;
         if (field_0x24d == 0x32) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x24c = 0;
         }
     }

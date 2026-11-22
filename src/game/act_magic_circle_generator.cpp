@@ -176,7 +176,7 @@ void MagicCircleGenerator_804A9FB0::update() {
     case 3:
         field_0x24c--;
         if (field_0x24c == 0) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             if (mEmitter230 != NULL) {
                 mEmitter230->becomeInvalidEmitter();
                 mEmitter230 = NULL;
@@ -209,7 +209,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     int serial = -1;
     JGeometry::TVec3f pos;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_KEY0, serial);
         if (serial < 0) {
             break;
         }
@@ -276,7 +276,7 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
 
     s32 serial = -1;
     for (;;) {
-        s32 found = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        s32 found = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_KEY0, serial);
         serial = found;
         if (found < 0) {
             return false;

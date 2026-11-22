@@ -47,7 +47,7 @@ void Shutter_804A8118::update() {
         break;
     case 1:
         if (getGameView_802D6A9C()->fn_802D800C(mSwitch)) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             mState = 4;
         }
         break;

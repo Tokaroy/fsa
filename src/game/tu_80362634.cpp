@@ -1462,7 +1462,7 @@ void OtherCharactersEnding_804ADF28::fn_80362B74() {
 void OtherCharactersEnding_804ADF28::fn_80362B14() {
     void* res = fn_804032E8('TIMG', "fune.bti");
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, NULL);
     }
 }
 

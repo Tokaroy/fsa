@@ -128,7 +128,7 @@ bool SpriteAnim_801D267C::fn_801D2264(s32 anim, s32 mode) {
 // Only the order of the first instructions differs: the
 // target loads mState (lbz 0x29) and sets result = 0 before the stack frame
 // is made; ours does it after. Splitting the || into two ifs was worse.
-bool SpriteAnim_801D267C::fn_801D21F0() {
+bool SpriteAnim_801D267C::isStopped_801D21F0() {
     return isStopped();
 }
 
@@ -159,7 +159,7 @@ void SpriteAnim_801D267C::fn_801D1D60() {
     setFrameInline(fn_801CD664(mLength + 1));
 }
 
-void SpriteAnim_801D267C::fn_801D1C18() {
+void SpriteAnim_801D267C::update_801D1C18() {
     if (mAnim >= 0 && mAnim < mTableCount) {
         if (mHold) {
             mHold = 0;

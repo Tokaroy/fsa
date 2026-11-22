@@ -165,7 +165,7 @@ void ForceLike_8049C578::update() {
                         target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                         s32 st = static_cast<ForceGem_804AB6D8*>(target)->field_0x230;
                         if (st == 0 || (u32)(st - 0xF) <= 1 || (u32)(st - 1) <= 1 || st == 9 || st == 0xD) {
-                            target->fn_801F3668();
+                            target->markDead_801F3668();
                         }
                     }
                 }

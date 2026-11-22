@@ -120,7 +120,7 @@ void IceWall_8049DE18::update() {
         break;
     }
     case 1:
-        if (fn_801CD950(&field_0x240, 0.1f, -0.02f) == 0) {
+        if (moveToward_801CD950(&field_0x240, 0.1f, -0.02f) == 0) {
             if (field_0x27c != NULL) {
                 field_0x27c->becomeInvalidEmitter();
             }
@@ -128,13 +128,13 @@ void IceWall_8049DE18::update() {
             case 0:
                 break;
             case 1:
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 break;
             case 2:
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
                 break;
             case 3:
-                fn_801F0D20(6);
+                playSe_801F0D20(6);
                 break;
             }
             if (field_0x23c != 0) {
@@ -142,7 +142,7 @@ void IceWall_8049DE18::update() {
                 u32 actorId = lbl_80464BE8[field_0x23c];
                 getActorManager_801F856C()->spawnActor_801F9484(actorId, mLayer_0x4, &mPos, arg, -1, -1);
             }
-            fn_801F3668();
+            markDead_801F3668();
             field_0x234 = 2;
         }
         break;
@@ -150,7 +150,7 @@ void IceWall_8049DE18::update() {
         break;
     }
     field_0x54.z = field_0x54.y = field_0x54.x = field_0x240;
-    mSprite.fn_801D1C18();
+    mSprite.update_801D1C18();
 }
 
 static inline void setScaleMtx(Mtx mtx, f32 x, f32 y, f32 z) {
@@ -185,20 +185,20 @@ void IceWall_8049DE18::draw() {
         case 1:
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0xE9, NULL, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pPos, res, 0xE9, NULL, 1.0f, 1.0f);
             }
             break;
         case 2:
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0x11, NULL, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pPos, res, 0x11, NULL, 1.0f, 1.0f);
             }
             break;
         case 3:
             params2.field_0x0[2] = 4;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pPos, res, 0x200, &params2, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pPos, res, 0x200, &params2, 1.0f, 1.0f);
             }
             break;
         case 4:
@@ -206,25 +206,25 @@ void IceWall_8049DE18::draw() {
             params2.field_0x1d = -1;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x14C, &params2, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x14C, &params2, 1.0f, 1.0f);
             }
             break;
         case 5:
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x5E, &params2, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x5E, &params2, 1.0f, 1.0f);
             }
             break;
         case 6:
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x31, &params2, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x31, &params2, 1.0f, 1.0f);
             }
             break;
         case 8:
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x2C, &params2, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x2C, &params2, 1.0f, 1.0f);
             }
             break;
         }

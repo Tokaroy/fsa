@@ -129,18 +129,18 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
                 if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
                     setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 0) {
-                        fn_801F0D20(3);
+                        playSe_801F0D20(3);
                     }
                     if (field_0x238 == 0) {
                         field_0x230 = 1;
                     }
                     if (field_0x254 == 0) {
                         if (field_0x24c != gAudioMgr_8053AF80->field_0x58) {
-                            gGameRoot_8053AAF8->fn_80138B7C();
+                            gGameRoot_8053AAF8->startStageMusic_80138B7C();
                             field_0x254 = 1;
                         }
                     } else if (field_0x254 == 2) {
-                        gGameRoot_8053AAF8->fn_80138B7C();
+                        gGameRoot_8053AAF8->startStageMusic_80138B7C();
                         field_0x254 = 1;
                     }
                 }
@@ -175,18 +175,18 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
                 if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
                     setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 2 || field_0x234 == 4 || field_0x234 == 6 || field_0x234 == 8) {
-                        fn_801F0D20(3);
+                        playSe_801F0D20(3);
                     }
                     if (field_0x238 == 0) {
                         field_0x230 = 1;
                     }
                     if (field_0x254 == 0) {
                         if (field_0x24c != gAudioMgr_8053AF80->field_0x58) {
-                            gGameRoot_8053AAF8->fn_80138B7C();
+                            gGameRoot_8053AAF8->startStageMusic_80138B7C();
                             field_0x254 = 1;
                         }
                     } else if (field_0x254 == 2) {
-                        gGameRoot_8053AAF8->fn_80138B7C();
+                        gGameRoot_8053AAF8->startStageMusic_80138B7C();
                         field_0x254 = 1;
                     }
                 }

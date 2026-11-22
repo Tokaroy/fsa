@@ -197,7 +197,7 @@ void RockDroppedIntoTheRiver11_804AE7D8::update() {
         if (field_0x25c != 0) {
             field_0x25c--;
             if (field_0x25c == 0) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
             }
         }
         for (s32 player = 0; player < 4; player++) {
@@ -313,14 +313,14 @@ void RockDroppedIntoTheRiver11_804AE7D8::draw() {
     case 0: {
         void* res = fn_804032E8('TIMG', "yy_1_1_iwa1.bti");
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
         }
         break;
     }
     case 1: {
         void* res = fn_804032E8('TIMG', "yy_1_1_iwa2.bti");
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
         }
         break;
     }

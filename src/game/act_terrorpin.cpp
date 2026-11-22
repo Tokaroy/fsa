@@ -436,7 +436,7 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
             }
         }
     } else {
-        hit = fn_801F2FAC();
+        hit = checkPlayerAttacks_801F2FAC();
     }
     return hit;
 }

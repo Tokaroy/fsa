@@ -38,7 +38,7 @@ void WoodenForceGem_804AB1F0::init() {
         field_0x240 = 1.0f;
     }
     if (isScreenFlagSet_0x34()) {
-        fn_801F3668();
+        markDead_801F3668();
         return;
     }
     field_0x234 = 30.0f;
@@ -54,7 +54,7 @@ void WoodenForceGem_804AB1F0::init() {
     mBox.f.x = 7.0f;
     mBox.f.y = 7.0f;
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        fn_801F3668();
+        markDead_801F3668();
     }
 }
 
@@ -127,7 +127,7 @@ void WoodenForceGem_804AB1F0::update() {
             s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, arg);
             s32 bit = field_0x260;
             if (bit > 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -137,7 +137,7 @@ void WoodenForceGem_804AB1F0::update() {
                 }
             }
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 0.1f);
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -151,7 +151,7 @@ void WoodenForceGem_804AB1F0::update() {
         field_0x23c += 0.1f;
         field_0x238 -= 0.02f;
         if (field_0x238 < 0.1f) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -191,7 +191,7 @@ void WoodenForceGem_804AB1F0::draw() {
         params.mMtx = mtxA;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         return;
     }

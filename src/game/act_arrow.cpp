@@ -346,7 +346,7 @@ void ArrowPlayer_804A05E0::update() {
             } else {
                 setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
             }
-            s32 angle = (s16)fn_801F6874(mDir_0x98) + 0x2000;
+            s32 angle = (s16)dirToAngle_801F6874(mDir_0x98) + 0x2000;
             for (s32 n = 0; n < 2; n++) {
                 JGeometry::TVec3f p;
                 p.x = mPos.x;
@@ -518,7 +518,7 @@ void ArrowPlayer_804A05E0::draw() {
             s32 frame = field_0x268 + 0x4C;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
             s32 base = 0x4C;
             if ((field_0x94 == 0 || field_0x94 == 4) && field_0x230 == 0) {

@@ -116,7 +116,7 @@ void MgOniScreen_804B1BE8::fn_80446DB0() {
 }
 
 void MgOniScreen_804B1BE8::fn_80446D68() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 

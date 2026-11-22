@@ -323,7 +323,7 @@ BattleStageSelect_804B1378::~BattleStageSelect_804B1378() {
 void BattleStageSelect_804B1378::fn_804170EC() {
     s32 stage = field_0xc * 5 + field_0x10;
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x109 != 0) {
         u8 alpha;
         if (stage < 10) {

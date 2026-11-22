@@ -16,7 +16,7 @@ Sequencer_801DAA24::Sequencer_801DAA24() {
     field_0x14 = 0;
 }
 
-void Sequencer_801DAA24::fn_801DA9E8(s32 a, s32 b) {
+void Sequencer_801DAA24::start_801DA9E8(s32 a, s32 b) {
     field_0x0 = a;
     field_0x8 = 0;
     field_0xc = 0;

@@ -45,7 +45,7 @@ public:
     /* 0x254 */ s32 field_0x254[4]; // -1 after init
     /* 0x264 */ u8 field_0x264[4];  // 0 after init
     /* 0x268 */ LogSlot_804ACD70 field_0x268[4];
-    /* 0x2B8 */ s32 field_0x2b8; // the timer fn_8035533C hands to fn_801F132C
+    /* 0x2B8 */ s32 field_0x2b8; // the timer fn_8035533C hands to isBlockedCommon_801F132C
     /* 0x2BC */ s32 field_0x2bc;
     /* 0x2C0 */ s32 field_0x2c0; // bit 0 of mSpawnParam_0x90 (axis)
     /* 0x2C4 */ s32 field_0x2c4; // bit 4 of mSpawnParam_0x90 (size)

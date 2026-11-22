@@ -311,7 +311,7 @@ void Pot_804A9428::die_0x24() {
 }
 
 bool Pot_804A9428::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x248);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x248);
 }
 
 void Pot_804A9428::vfunc_0x48() {

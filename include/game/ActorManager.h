@@ -224,7 +224,7 @@ public:
     // next one after the actor afterSerial (from the start when
     // afterSerial < 0 or it is gone), or -1 at the end. The slot found is
     // cached in lbl_8053A168 for the next call.
-    s32 fn_801F78F4(u32 id, s32 afterSerial);
+    s32 findNextActorById_801F78F4(u32 id, s32 afterSerial);
     // 18 units / 28 calls. The serial of the first live `id` actor, or -1.
     s32 fn_801F7A08(u32 id);
     // 1 unit / 1 call (tu_801EE24C). The number of live actors with
@@ -257,7 +257,7 @@ public:
     // clear, within maxDz in z (unless the view's layer flag is set) and
     // whose box overlaps actor's, skipping 'ARIJ' (Antlion) actors unless
     // `includeArij` (clrlwi. 24; callers pass their byte at 0x195); or -1.
-    s32 fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz);
+    s32 findOverlappingActor_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz);
     // Unlink an actor from the manager's list (1 if it was linked). Returns
     // the u8 flag widened (clrlwi r3, r6, 24), not a bool test.
     // 1 unit / 1 call (ActorBase's destructor).
@@ -368,7 +368,7 @@ s32 fn_801F681C(u16 angle);
 
 // 23 units / 43 calls. The angle of direction dir: lbl_8053F800[dir & 3]
 // (lhzx), fn_801F681C's inverse.
-u16 fn_801F6874(s32 dir);
+u16 dirToAngle_801F6874(s32 dir);
 
 // 9 units / 13 calls. Moves *value toward target by (s16)(target -
 // *value) / step, at most maxStep either way (lhz/sth; callers pass a

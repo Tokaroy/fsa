@@ -233,7 +233,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
             field_0x24c = fn_8022FD8C(mSerial);
             if (field_0x24c >= 0 && getPlayerPos_8023E724(field_0x24c)->z == 0.0f &&
                 fn_802300EC(field_0x24c) &&
-                fn_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0))
+                openMessageById_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0))
             {
                 field_0x230 = 4;
             }
@@ -246,7 +246,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
             if (getPlayerPos_8023E724(field_0x24c)->z != 0.0f || !fn_802300EC(field_0x24c)) {
                 break;
             }
-            if (fn_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0)) {
+            if (openMessageById_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0)) {
                 field_0x230 = 4;
                 break;
             }

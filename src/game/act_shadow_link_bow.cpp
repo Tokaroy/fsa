@@ -118,7 +118,7 @@ void ShadowLinkBowMinor_804A6B70::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             fn_80222668(6);
         } else if (mStateTimer == 25) {
             startSound_801F0E34(0x400c6, 0);

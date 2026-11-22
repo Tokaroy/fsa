@@ -50,7 +50,7 @@ u8 cls_800FE3EC::fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer) {
     return field_0x3;
 }
 
-void fn_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index) {
+void getRailPointPos_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index) {
     if (index == 0xFF) {
         *out = buffer->field_0x4[buffer->field_0x3]->mPos;
     } else {

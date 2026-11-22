@@ -237,12 +237,12 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                     OctorokRock_8049F5D8* rock =
                         static_cast<OctorokRock_8049F5D8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                     if (rock != NULL && rock->field_0x230 != 4) {
-                        u16 dir = fn_801F6874(mDir_0x98);
+                        u16 dir = dirToAngle_801F6874(mDir_0x98);
                         f32 dx = 0.8f * (mPos.x - rock->mPos.x);
                         f32 dy = 0.8f * (mPos.y - rock->mPos.y);
                         rock->field_0x254 = std::sqrtf(dx * dx + dy * dy);
                         u16 angle = JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f;
-                        u16 target = fn_801F6874(arrow->mDir_0x98) + 0x8000;
+                        u16 target = dirToAngle_801F6874(arrow->mDir_0x98) + 0x8000;
                         while (fn_801F681C(angle) != fn_801F681C(target)) {
                             addCalcAngle2_801F714C(&angle, target, 1, 0x1000);
                         }

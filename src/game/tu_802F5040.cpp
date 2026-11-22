@@ -43,7 +43,7 @@ static const GXColor lbl_805414F4 = {0xFF, 0xFF, 0xFF, 0xFF}; // fn_802F8F0C, TE
 // The draw offset of a sprite with params at pos: field_0x1c / field_0x1d
 // in 0x400 / 0x80 units, one step up (0x1c + 1, 0x1d - 1) for a raised sprite
 // (the map's field_0xe461, params' field_0x20, above the ground) below step 1.
-// fn_802F5040 and fn_802F86CC inline it; both read the map through
+// fn_802F5040 and drawSobSprite_802F86CC inline it; both read the map through
 // gGameRoot2_8053AB10, also in the member.
 static inline f32 getDrawOffset(const SpriteParams_801F5AE0* params, const JGeometry::TVec3f* pos) {
     u8 raised = gGameRoot2_8053AB10->field_0x20->field_0xe461;
@@ -62,7 +62,7 @@ static inline f32 getDrawOffset(const SpriteParams_801F5AE0* params, const JGeom
     return (a << 10) + (b << 7);
 }
 
-// One GBA OAM entry (attributes 0-2 and the affine halfword) as fn_802F86CC
+// One GBA OAM entry (attributes 0-2 and the affine halfword) as drawSobSprite_802F86CC
 // unpacks the 6-byte little-endian entries of a "SOB " frame; the bit fields
 // in the GBA's order (big-endian bit fields, so the first is the high bits).
 struct SpriteObj_802F86CC {
@@ -340,9 +340,9 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mQueuedSpriteNum_0xd320; i++) {
         QueuedSprite_8030029C* sprite = &self->mQueuedSprites_0xc220[i];
         if (sprite->mRes != NULL) {
-            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->drawSobSprite_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
             self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
@@ -375,9 +375,9 @@ static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mLateQueuedSpriteNum_0xe424; i++) {
         QueuedSprite_8030029C* sprite = &self->mLateQueuedSprites_0xd324[i];
         if (sprite->mRes != NULL) {
-            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->drawSobSprite_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
             self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
@@ -469,9 +469,9 @@ void TileMap_804AA858::fn_802FEE68() {
                 effect->mParams.mMtx = m;
             }
             if (effect->mRes != NULL) {
-                fn_802F86CC(&effect->mPos, effect->mRes, effect->mFrame, &effect->mParams, 1.0f, 1.0f);
+                drawSobSprite_802F86CC(&effect->mPos, effect->mRes, effect->mFrame, &effect->mParams, 1.0f, 1.0f);
             } else if (effect->mImage != NULL) {
-                fn_802F745C(&effect->mPos, effect->mImage, &effect->mParams);
+                drawTimgImage_802F745C(&effect->mPos, effect->mImage, &effect->mParams);
             } else if (effect->field_0x24 != NULL) {
                 fn_802F6CF4(&effect->mPos, effect->field_0x24, &effect->mParams);
             }
@@ -2056,7 +2056,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
     }
 }
 
-void TileMap_804AA858::fn_802F9974(s32 layer, s32 index, u16 value) {
+void TileMap_804AA858::setTile_802F9974(s32 layer, s32 index, u16 value) {
     if (layer >= 0 && layer < 4) {
         mLayerGrid[layer][index] = value;
     } else if (layer >= 4 && layer < 8) {
@@ -2236,7 +2236,7 @@ void TileMap_804AA858::fn_802F91AC(const JGeometry::TVec3f* pos, SpriteParams_80
 // The GX state of a textured sprite quad (direct f32 position and texture
 // coordinates, one TEV stage of the texture times the register colours): the
 // TEV colours, blend mode, z mode and alpha update of params, else white /
-// zero, the plain blend and the default z mode. fn_802F86CC calls it after
+// zero, the plain blend and the default z mode. drawSobSprite_802F86CC calls it after
 // fn_802F91AC.
 void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXClearVtxDesc();
@@ -2301,7 +2301,7 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
 // palettes mSpriteTluts_0x25c; the set is params' field_0x1e) scaled by (scaleX,
 // scaleY). params' bytes 0x21 / 0x22 queue the sprite instead (fn_802F654C /
 // fn_802F6298); field_0x30 adds the effect of fn_802F6800.
-void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
+void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
                                    SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY) {
     // The GX texture maps of the (palette & 1, priority) images.
     static const GXTexMapID lbl_80470F60[8] = {
@@ -2454,7 +2454,7 @@ static inline bool isOnScreen(const JGeometry::TVec3f* pos) {
 // mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
 // field_0x30 adds the effect of fn_802F6800.
 // FIXME: 92.19 %, missing/extra; behaviour near.
-void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (!mDrawSprites_0x2364) {
         return;
     }

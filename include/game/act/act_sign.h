@@ -18,7 +18,7 @@ public:
     /* 0x24 */ virtual void die_0x24();
     /* 0x48 */ virtual void vfunc_0x48();
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x230 */ s32 field_0x230; // state word handed to ActorBase::fn_801F132C by isBlocked_0x4C; 0 in init
+    /* 0x230 */ s32 field_0x230; // state word handed to ActorBase::isBlockedCommon_801F132C by isBlocked_0x4C; 0 in init
     /* 0x234 */ u8 field_0x234;  // 0xFF unless carried by a player (update): the player's fn_8023BCD4 value; draw uses it as the sprite alpha
     /* 0x235 */ u8 field_0x235[3]; // padding
 }; // Size: 0x238

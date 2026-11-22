@@ -113,13 +113,13 @@ void GBAAppear_804B16E0::draw() {
             if (mState[i] == 0) {
                 void* res = fn_804030C4('TIMG', lbl_804B16C0[i]);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
                                                          &params);
                 }
             } else if (mState[i] == 1) {
                 void* res = fn_804030C4('TIMG', lbl_804B16D0[i]);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
                                                          &params);
                 }
             }

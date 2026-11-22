@@ -9,7 +9,7 @@
 // Its code is game/tu_801CDC8C.cpp; its vtable is at 0x804A4808
 // (__vt__18EnemyBase_804A4808). "EnemyBase" is provisional (docs/PLAN.md,
 // "Placeholder names"): its update() runs the hit handling of ActorBase
-// (fn_801F3D94, fn_801F2FAC, fn_801F2DB4, fn_801F2B7C) and a death hook once
+// (fn_801F3D94, checkPlayerAttacks_801F2FAC, fn_801F2DB4, fn_801F2B7C) and a death hook once
 // mLife reaches 0, and most descendants are enemies in docs/names/actors.tsv.
 //
 // Destructor: inline. The vtable's slot 0x08 is __dt__18EnemyBase_804A4808Fv
@@ -88,7 +88,7 @@ public:
     // 0x801CECEC, returns 0. 9 overrides, no arguments read, all return 0
     // or 1 (li/mr r3 of a 0/1 value); update() ignores r3 (0x801CDE04).
     /* 0x58 */ virtual bool vfunc_0x58();
-    // 0x801CEB78: fn_801F2FAC() (hit by a player) when mBox is not empty,
+    // 0x801CEB78: checkPlayerAttacks_801F2FAC() (hit by a player) when mBox is not empty,
     // else 0. 16 overrides, no arguments read; update() tests r3 with
     // clrlwi. and then sets ENEMY_FLAG_HIT_PLAYER and calls onHitByPlayer_0x6C.
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
@@ -101,7 +101,7 @@ public:
     // false) when mMapBox_0x80 is not empty, else 0. 5 overrides, no
     // arguments read; update() passes r3 on to updateBehavior_0x9C (clrlwi 24).
     // checkHitByPlayer_0x5C/0x60/0x64 are u8 like the ActorBase hit tests they return
-    // (fn_801F2FAC / fn_801F2DB4 / fn_801F2618 results go out with mr, no
+    // (checkPlayerAttacks_801F2FAC / fn_801F2DB4 / fn_801F2618 results go out with mr, no
     // bool conversion; overrides likewise).
     /* 0x64 */ virtual u8 sweepMap_0x64();
     // 0x801CE928: fn_801F2B7C(mParamAtcp_0x114, -1, 1) (the players hit, a
@@ -146,11 +146,11 @@ public:
     // 0x801B9AC4, act_shadow_link_2 0x801C2EE0); updateBehavior_0x9C and fn_801CE2BC
     // call it with their own r4 still in place.
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
-    // 0x801CE4BC: mAnim.fn_801D1C18() (advance the sprite animation). 13
+    // 0x801CE4BC: mAnim.update_801D1C18() (advance the sprite animation). 13
     // overrides, no arguments read; 11 units call the base.
     /* 0x94 */ virtual void updateAnim_0x94();
     // 0x801CE120, the movement step, unless one of the hit bits is set:
-    // mSpeed toward mTargetSpeed (fn_801CD950), calcVelocity_0x88, mPos +=
+    // mSpeed toward mTargetSpeed (moveToward_801CD950), calcVelocity_0x88, mPos +=
     // mVel_0x3c, onMoved_0x8C, then the ground: checkFloor_0x80 on floor layers,
     // a bounce (ENEMY_FLAG_BOUNCE: velocity * -0.6f, onBounce_0x7C) or a stop
     // at z = 0. 7 overrides, no arguments read; fn_801CE32C is the same
@@ -208,7 +208,7 @@ public:
     // sets ENEMY_FLAG_LANDED.
     void fn_801CE800();
     // 2 units / 2 calls (act_vulture, act_wallmaster vfunc_0x60s). Hit by
-    // the overlapping actor (fn_801F82CC) unless it is a live 'BMTY'
+    // the overlapping actor (findOverlappingActor_801F82CC) unless it is a live 'BMTY'
     // (fn_801CC8E4): fn_801F37AC with its attack and direction; sets its
     // field_0x164 when it landed. Returns 0 or 1.
     bool fn_801CEA60();
@@ -273,7 +273,7 @@ public:
     // TVec2f is a guess (TVec3f is as likely).
     void fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed);
     // 9 units / 12 calls. The same toward *target (x, y).
-    void fn_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed);
+    void calcVelocityToward_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed);
     // 8 units / 11 calls. The 16-bit angle (atan2 * 10430.378f, fctiwz) from
     // mPos to `player` (mPlayerPos_0x1ac[player]); callers store it with sth or
     // extsh it, the body returns it unnarrowed.
@@ -364,7 +364,7 @@ bool fn_801CD2F8(s32 layer);
 // fn_801CD9F0). EnemyBase_804A4808's movement step passes &mSpeed,
 // mTargetSpeed and mAccel or mDecel. Returns nonzero while the value has
 // not reached the target (cls_804A61C8::fn_80210A6C tests r3 with cmpwi).
-s32 fn_801CD950(f32* value, f32 target, f32 step);
+s32 moveToward_801CD950(f32* value, f32 target, f32 step);
 // game/tu_801CB270.cpp: finds the closest active player on layer `layer` to *pos, or -1.
 extern "C" s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer);
 // Moves *value towards target by the fraction `factor` (at most 1) of the
@@ -380,7 +380,7 @@ void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out);
 void fn_801CCCC4(JGeometry::TVec3f* pos);
 // game/tu_801CB270.cpp. The opposite direction: 0 <-> 1, 2 <-> 3 (else 0).
 s32 fn_801CD354(s32 dir);
-// game/tu_801CB270.cpp: the step fn_801CD950 wraps.
+// game/tu_801CB270.cpp: the step moveToward_801CD950 wraps.
 s32 fn_801CD9F0(f32* value, f32 target, f32 step);
 // Convert a position between the two view-box spaces: out = (in.x, in.y)
 // minus the view's 0xCC/0xD0 box corner plus its 0xDC/0xE0 one (fn_801CD150),
@@ -433,7 +433,7 @@ bool fn_801CCFE4(s32 player);
 // tu_80206B30 vfunc_0x58). Each fetches the actor a player's getter
 // (fn_8023B2B0 / fn_8023B22C / fn_8023B358) names, with r3 (the player index)
 // forwarded untouched, and tests its kind at 0x1A0 (and that it is alive).
-// 'ARRW' with field_0x108 > 0: *out = its mVel_0x3c, then fn_801F3668 on
+// 'ARRW' with field_0x108 > 0: *out = its mVel_0x3c, then markDead_801F3668 on
 // it; `out` is zeroed first. Returns whether it was found.
 bool fn_801CC820(s32 player, JGeometry::TVec3f* out);
 // 'BOME': *outPlayer = the index (-1 first), its field_0x254 = 1 and, when

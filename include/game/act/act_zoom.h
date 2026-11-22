@@ -17,7 +17,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;      // 0 waiting for a player, 1 and 3 camera hold, 2 counting down
-    /* 0x234 */ s32 field_0x234; // (mSpawnParam_0x90 >> 23) & 3; index into the id table passed to fn_801F0D20
+    /* 0x234 */ s32 field_0x234; // (mSpawnParam_0x90 >> 23) & 3; index into the id table passed to playSe_801F0D20
     /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 22) & 1
     /* 0x23C */ s32 mDuration;   // mSpawnParam_0x90 & 0xFFF
     /* 0x240 */ s32 mTimer;

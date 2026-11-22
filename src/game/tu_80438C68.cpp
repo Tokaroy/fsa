@@ -121,7 +121,7 @@ void GameOverScreen_804B17A0::fn_80439AB0() {
 }
 
 void GameOverScreen_804B17A0::fn_804399A0() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x34->setAlpha((u8)field_0x50);
     field_0x34->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
     field_0x8->mCurrentFrame = field_0x3c;

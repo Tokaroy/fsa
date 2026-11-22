@@ -764,7 +764,7 @@ void HelmarocKing_804A1630::update() {
                 field_0x25c = 0;
                 field_0x238 = 10;
                 mState = 3;
-            } else if (lbl_80539F98 <= 0 && fn_801F2FAC()) {
+            } else if (lbl_80539F98 <= 0 && checkPlayerAttacks_801F2FAC()) {
                 mVel_0x3c.zero();
                 field_0x27c.zero();
                 lbl_80539F9C -= 10000 - mLife;
@@ -825,7 +825,7 @@ void HelmarocKing_804A1630::update() {
                         if (serial >= 0) {
                             HelmarocKing_804A1630* piece = static_cast<HelmarocKing_804A1630*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                             if (piece != NULL) {
-                                s16 angle = fn_801F6874(dirInv);
+                                s16 angle = dirToAngle_801F6874(dirInv);
                                 angle += (s32)(12288.0f - 24576.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                                 f32 sinVal = JMASinShort(angle);
                                 f32 cosVal = JMACosShort(angle);
@@ -1002,7 +1002,7 @@ void HelmarocKing_804A1630::update() {
             if (serial >= 0) {
                 ActorBase_804A5770* piece = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (piece != NULL) {
-                    fn_801F6874(mDir_0x98);
+                    dirToAngle_801F6874(mDir_0x98);
                     JGeometry::TVec3f vel;
                     vel.x = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     if (mDir_0x98 == 1) {

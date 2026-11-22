@@ -18,13 +18,13 @@ game/GameAudio.h (needs JAISound.h for the JAISoundHandle members); GameGlobals.
 declaration and gAudioMgr_8053AF80. Unit .sdata written (20 tuning values + 3 string pointers, 100 %).
 Matched: fn_80457F80 (bool, JAISoundID, s8), fn_80458408, fn_80458F04, fn_80459508 (member, renamed).
 Structural: fn_80458508 98.55 missing/extra (switch tree pivot 1 vs 2); fn_80458658 99.65 regalloc;
-fn_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so they are addressed
+setVolumeMode_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so they are addressed
 per symbol as in the original, which puts them after the jump tables in .data); fn_80458FF0 99.91
 reloc-name (jumptable_804B1FB4, same cause; inlines fn_80458408).
 Left unwritten, with reasons:
 - fn_80457E54, fn_8045815C: they inline fn_80458508 (defined later; sdata tempo read after the
   getTempoMgr call, per-branch handle check). Drafts in the scratchpad were 81.5 / 91.8 %.
-- fn_80459274, fn_804593D4: with fn_80458744 written MWCC inlines it into both; the original calls it.
+- fn_80459274, fn_804593D4: with setVolumeMode_80458744 written MWCC inlines it into both; the original calls it.
   Bodies are simple (category pause / moveVolume 3); unknown why the original did not inline.
 - fn_80458880 (393 callers): inlines fn_80458F04 (defined later). Prototype corrected to (u32, s8):
   extsb on entry, cmplwi equality tests; symbol renamed FUlSc. No caller changed %.
@@ -57,11 +57,11 @@ Written:
   do). Left: case 1 / default of getPlayerPan reload 0.5f in the original. Try budget spent.
 Not written:
 - fn_80459274, fn_804593D4: bodies drafted (category pause / moveVolume 3, structure clear),
-  but MWCC auto-inlines fn_80458744 into them. Probe: adding one statement to fn_80458744
-  still inlines, two stop it, so the original fn_80458744 is a little longer by MWCC's
+  but MWCC auto-inlines setVolumeMode_80458744 into them. Probe: adding one statement to setVolumeMode_80458744
+  still inlines, two stop it, so the original setVolumeMode_80458744 is a little longer by MWCC's
   measure; static local tables, a table pointer, extra case labels do not change it. Without
   a natural longer form, left unwritten.
-- -inline deferred (rejected anyway) reverses function order and inlines fn_80458744 into
+- -inline deferred (rejected anyway) reverses function order and inlines setVolumeMode_80458744 into
   fn_80457E04, which the original calls: not the original's mode.
 SHARED-EDITS: include/game/Unk_8045A080.h (inline decls moveMusicTempo_80458508,
 startSecondSeq_80458F04, getPlayerPan; comments), libs/sdk/include/JSystem/JAudio/Interface/

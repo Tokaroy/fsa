@@ -218,7 +218,7 @@ void BladeTrap_804A04D8::draw() {
     if (field_0x258 == 0) {
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
         }
         fn_801F02BC("enemy_both2_sob.bin", 0x154, &params, 0, mode, false, 1.0f, 1.0f);
     } else {

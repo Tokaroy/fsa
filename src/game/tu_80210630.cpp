@@ -46,7 +46,7 @@ cls_804A61C8::cls_804A61C8() {
 
 bool cls_804A61C8::fn_80210A6C() {
     bool arrived = false;
-    if (fn_801CD950(&field_0x2a8, 128.0f, 2.0f) == 0) {
+    if (moveToward_801CD950(&field_0x2a8, 128.0f, 2.0f) == 0) {
         arrived = true;
     }
     return arrived;
@@ -127,6 +127,6 @@ void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
     pos.x += mtx[0][0] * (0.5f * res->mSizeX - lbl_8046A470[mDir_0x98]);
     pos.y += mtx[1][1] * (0.5f * res->mSizeY - lbl_8046A480[mDir_0x98]);
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
     }
 }

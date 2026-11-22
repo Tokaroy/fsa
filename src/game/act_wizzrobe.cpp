@@ -217,7 +217,7 @@ void Wizzrobe_804A0EDC::update() {
                 mHitTimerStart_0xdc = 0;
             }
         }
-        if (hit == true || fn_801F2FAC()) {
+        if (hit == true || checkPlayerAttacks_801F2FAC()) {
             field_0x238 = 0;
             field_0x2e4 = 0;
             field_0x244 = 0;
@@ -248,7 +248,7 @@ void Wizzrobe_804A0EDC::update() {
             }
             s32 bit = field_0x2c8;
             if (bit != 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
             if (field_0x94 != 3) {
                 return;
@@ -499,8 +499,8 @@ void Wizzrobe_804A0EDC::update() {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         startSound_801F0E34(0x30035, 0);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
                             a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                             a->mDir_0x98 = mDir_0x98;
                         }
@@ -517,8 +517,8 @@ void Wizzrobe_804A0EDC::update() {
                     if (s >= 0) {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
                             a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                             a->mDir_0x98 = mDir_0x98;
                         }

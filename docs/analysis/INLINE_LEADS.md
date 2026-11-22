@@ -98,7 +98,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 |---:|---:|---:|---:|---:|---|
 | 1 | 175 | 387804 | 371 | 171 | `getActorManager_801F856C(…)->findActorBySerial_801F666C(…)` |
 | 2 | 139 | 364460 | 222 | 145 | `getActorManager_801F856C(…)->spawnActor_801F9484(…)` |
-| 3 | 28 | 77124 | 54 | 43 | `getGameView_802D6A9C(…)->fn_802D8050(…)` |
+| 3 | 28 | 77124 | 54 | 43 | `getGameView_802D6A9C(…)->setSwitchBit_802D8050(…)` |
 | 4 | 28 | 72844 | 36 | 32 | `getActorManager_801F856C(…)->fn_801F8544(…)` |
 | 5 | 27 | 68020 | 44 | 32 | `getGameView_802D6A9C(…)->fn_802D79E8(…)` |
 | 6 | 26 | 84292 | 41 | 30 | `fn_80230498(…)` |
@@ -108,7 +108,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 10 | 20 | 81416 | 25 | 24 | `getActorManager_801F856C(…)->fn_801F6884(…)` |
 | 11 | 17 | 40844 | 23 | 18 | `pos(…)` |
 | 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->fn_80119998(…)` |
-| 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->fn_801F78F4(…)` |
+| 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->findNextActorById_801F78F4(…)` |
 | 14 | 14 | 62416 | 26 | 21 | `spawnEmitter_8013CC50(…)` |
 | 15 | 14 | 18712 | 34 | 23 | `getGameView_802D6A9C(…)->fn_802D7440(…)` |
 | 16 | 12 | 51728 | 29 | 14 | `getMessageText_803832BC(…)` |
@@ -123,7 +123,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 25 | 9 | 18700 | 16 | 8 | `fn_8011921C(…)->fn_801183BC(…)` |
 | 26 | 9 | 15912 | 22 | 18 | `getActorManager_801F856C(…)->fn_801F7A08(…)` |
 | 27 | 9 | 14028 | 10 | 10 | `fn_8011921C(…)->fn_801186B0(…)` |
-| 28 | 9 | 10124 | 11 | 4 | `fn_800FE294(…)` |
+| 28 | 9 | 10124 | 11 | 4 | `getRailPointPos_800FE294(…)` |
 | 29 | 8 | 34168 | 9 | 9 | `addCalc2_801F71A4(…)` |
 | 30 | 8 | 25888 | 9 | 8 | `sqrt(…)` |
 
@@ -138,7 +138,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 5 | 12 | 24588 | 16 | 14 | `getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false)` |
 | 6 | 11 | 26608 | 15 | 15 | `fn_8020D58C()->addBox(mSerial)` |
 | 7 | 11 | 26512 | 16 | 9 | `fn_8011921C()->fn_80118454()` |
-| 8 | 9 | 21552 | 17 | 15 | `getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF)` |
+| 8 | 9 | 21552 | 17 | 15 | `getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF)` |
 | 9 | 9 | 18700 | 16 | 8 | `fn_8011921C()->fn_801183BC()` |
 | 10 | 6 | 19664 | 8 | 3 | `getActorManager_801F856C()->fn_801F6204(0)` |
 | 11 | 6 | 12772 | 7 | 6 | `sqrt(square(dx)+ square(dy))` |
@@ -151,7 +151,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 
 | # | non-100 fns | their bytes | fns | units | lead |
 |---:|---:|---:|---:|---:|---|
-| 1 | 51 | 125844 | 87 | 71 | `fn_801F3668();` |
+| 1 | 51 | 125844 | 87 | 71 | `markDead_801F3668();` |
 | 2 | 48 | 102652 | 117 | 64 | `ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);` |
 | 3 | 44 | 94284 | 77 | 69 | `JGeometry::TBox2f box(mBox);` |
 | 4 | 43 | 114256 | 72 | 64 | `fn_80239914(&box, field_0x4, mSerial);` |
@@ -171,9 +171,9 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 3 | 16 | 27812 | 25 | 21 | `s32 layer = field_0x4; GameView_804A9950* view = getGameView_802D6A9C();` |
 | 4 | 15 | 29764 | 29 | 23 | `JGeometry::TBox2f box(mBox); box.i.x += mPos.x;` |
 | 5 | 14 | 40544 | 30 | 23 | `box.f.y += mPos.y; fn_80239914(&box, field_0x4, mSerial);` |
-| 6 | 12 | 18716 | 16 | 16 | `fn_801F3668(); break;` |
+| 6 | 12 | 18716 | 16 | 16 | `markDead_801F3668(); break;` |
 | 7 | 11 | 41768 | 13 | 13 | `spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f); spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, ...` |
-| 8 | 10 | 37200 | 16 | 15 | `fn_801F3668(); return;` |
+| 8 | 10 | 37200 | 16 | 15 | `markDead_801F3668(); return;` |
 | 9 | 9 | 23188 | 9 | 9 | `s32 count = getActorManager_801F856C()->mActorEnd; for(s32 i = 0;` |
 | 10 | 9 | 15724 | 11 | 11 | `JGeometry::TBox2f box(mBox); box.addPos(mPos.x, mPos.y);` |
 

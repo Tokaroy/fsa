@@ -332,7 +332,7 @@ public:
     // flag is set.
     /* 0x20 */ s32 field_0x20;
     // Window state byte (fn_80384C58 compares it with 5 and 8; callers of
-    // fn_8037F1E4, which returns it, compare with 1, 3 and 5).
+    // getMessageWindowState_8037F1E4, which returns it, compare with 1, 3 and 5).
     /* 0x24 */ u8 field_0x24;
     /* 0x25 */ u8 field_0x25;
     /* 0x26 */ u16 field_0x26; // fn_80390C6C's result
@@ -419,7 +419,7 @@ public:
     MessageManager_804AF070();
     /* 0x08 */ virtual ~MessageManager_804AF070(); // fn_8038D90C
 
-    // 2 uses (this unit's fn_8038AD24 / fn_8038BD08 / fn_8038C678). Whether every
+    // 2 uses (this unit's openMessage_8038AD24 / fn_8038BD08 / openMessageById_8038C678). Whether every
     // player is ready for a message: players that do not take part, and
     // `exclude`, count as ready; the others need their window idle (state 0) and
     // fn_80230188 (flags 2 / 4 or msg 0x265) or fn_802300EC to hold for them and
@@ -486,7 +486,7 @@ public:
     /* 0x0ED */ u8 field_0xed;
     /* 0x0EE */ u8 field_0xee;
     /* 0x0EF */ u8 field_0xef;
-    /* 0x0F0 */ s16 field_0xf0[4]; // fn_8038D870 clears them; fn_803865B8 counts them down (lha)
+    /* 0x0F0 */ s16 field_0xf0[4]; // fn_8038D870 clears them; stepMessageWindow_803865B8 counts them down (lha)
     /* 0x0F8 */ s32 field_0xf8;
     /* 0x0FC */ s32 field_0xfc[4]; // fn_8038D870 sets them to -1
     /* 0x10C */ s32 field_0x10c; // act_bandit_herding_npc reads it
@@ -561,7 +561,7 @@ void fn_8037EB4C();
 // each of them).
 bool fn_8037EC98(s32 player, u16 flags);
 // 20 units. True when the player's window is idle (field_0x24 == 0);
-// otherwise fn_803865B8(player) && fn_80385960(player).
+// otherwise stepMessageWindow_803865B8(player) && fn_80385960(player).
 bool fn_80388EEC(s32 player);
 // The manager's per-frame update (0x8038D570): steps the windows (fn_80390EBC),
 // the countdown field_0x7c (with field_0xe4 cleared when a player of
@@ -590,7 +590,7 @@ void fn_803894BC(s32 player, s32 value);
 u16 fn_8037F0CC(s32 player);
 // 4 units. Returns field_0x114[window]->field_0x24, the window's state byte
 // (lbz with no bool conversion; tu_80301CD0 compares it with 3, 1 and 5).
-u8 fn_8037F1E4(s32 player);
+u8 getMessageWindowState_8037F1E4(s32 player);
 // The message text of entry `index` when it starts with the control code 0x1A
 // (size 2) and its command byte (at +4) is one of twelve values (7, 0x10,
 // 0x17, 0x18, 0x1D, 0x20, 0x21, 0x23, 0x2A, 0x2C, 0x30, 0x33): *out gets the
@@ -625,11 +625,11 @@ u32 fn_80383EB0(s32 window, u32 msg);
 // msg into out (lines wrapped to width / height, the two counters are
 // getMessageText_803832BC-style arguments); returns a line count that starts at 1.
 s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 height);
-// 16 units (act_talking_npc calls it once fn_8038AD24 has succeeded).
+// 16 units (act_talking_npc calls it once openMessage_8038AD24 has succeeded).
 // Returns 0 or 1.
 bool fn_80384C58(s32 player, s32 serial);
 // 31 units. Returns 0 or 1; fn_80388EEC calls it.
-bool fn_803865B8(s32 player);
+bool stepMessageWindow_803865B8(s32 player);
 // Returns 0 or 1 (fn_80388EEC returns it).
 bool fn_80385960(s32 player);
 // 0x80387494; act_maiden_demo calls it with player 0 and ignores the result. Ends the
@@ -642,13 +642,13 @@ bool fn_80387494(s32 player);
 // fn_8038A42C; flags bits 0x40 / 0x2000 select variants (rlwinm tests; the
 // low 16 bits are passed on). Returns 0 or 1. act_talking_npc passes the
 // top 4 bits of its spawn parameter as player and the low 28 as msg.
-bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
+bool openMessage_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 // 22 units. The same without an actor (callers pass an id, layer, pos and
 // small flags such as 0x21).
 bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags);
-// 10 units. fn_8038AD24's argument shape, another variant (flags 0x10 in
+// 10 units. openMessage_8038AD24's argument shape, another variant (flags 0x10 in
 // tu_80441A1C).
-bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
+bool openMessageById_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 }
 
 #endif

@@ -277,7 +277,7 @@ void GbaWindow_804B1668::fn_80432AF8() {
 
 // FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void GbaWindow_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0xa4 == 0) {
         f32 scaleX = w / field_0x18[2]->field_0x18;
         f32 scaleY = h / field_0x18[2]->field_0x1c;
@@ -339,7 +339,7 @@ void GbaWindow_804B1668::fn_80432638() {
         f32 left = field_0x18[0]->field_0x8;
         f32 y = field_0x18[0]->mPane->getBounds()->i.y;
         f32 top = field_0x18[0]->field_0xc;
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         f32 dx = x - left;
         f32 dy = y - top;
         field_0x3c->moveFromCentre_80402E08(dx + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],

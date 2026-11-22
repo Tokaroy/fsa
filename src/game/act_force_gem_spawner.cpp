@@ -57,7 +57,7 @@ void ForceGemSpawner_804AB660::init() {
     }
     if (field_0x230 == 1 || field_0x230 == 3 || field_0x230 == 4) {
         if (isScreenFlagSet_0x34()) {
-            fn_801F3668();
+            markDead_801F3668();
         }
     }
 }
@@ -103,7 +103,7 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
 void ForceGemSpawner_804AB660::update() {
     switch (field_0x230) {
     case 0: {
-        u16 baseAngle = fn_801F6874(mDir_0x98);
+        u16 baseAngle = dirToAngle_801F6874(mDir_0x98);
         JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
         for (s32 i = 0; i < 100 && field_0x238 > 0; i++) {
             s32 idx = field_0x240;
@@ -180,7 +180,7 @@ void ForceGemSpawner_804AB660::update() {
                 gem->mVel_0x3c = vel;
             }
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
     case 1: {
@@ -218,7 +218,7 @@ void ForceGemSpawner_804AB660::update() {
             if (mEmitter254 != NULL) {
                 mEmitter254->becomeInvalidEmitter();
             }
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -230,7 +230,7 @@ void ForceGemSpawner_804AB660::update() {
                 if (mEmitter24c != NULL) {
                     mEmitter24c->becomeInvalidEmitter();
                 }
-                fn_801F3668();
+                markDead_801F3668();
                 break;
             }
         }
@@ -299,7 +299,7 @@ void ForceGemSpawner_804AB660::update() {
                 gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, vz);
             }
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
     }
@@ -323,7 +323,7 @@ void ForceGemSpawner_804AB660::draw() {
         JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, mPos.z);
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x2a, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x2a, &params, 1.0f, 1.0f);
         }
     }
 }

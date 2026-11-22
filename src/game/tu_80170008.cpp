@@ -117,7 +117,7 @@ void BallAndChainSoldier_804A0810::init() {
 BallAndChainSoldier_804A0810::~BallAndChainSoldier_804A0810() {
     if (field_0x94 != 5) {
         if (gGameRoot_8053AAF8->field_0x4c != 9 && gGameRoot_8053AAF8->field_0x4c != 0xB && mLife != 0) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
         s32 serial = field_0x26c;
         if (serial != 0) {
@@ -307,7 +307,7 @@ void BallAndChainSoldier_804A0810::update() {
         if (field_0x270 == 0 && dir == -1) {
             hit = true;
         }
-        if (fn_801F2FAC()) {
+        if (checkPlayerAttacks_801F2FAC()) {
             hit = true;
         }
         if (hit) {
@@ -428,9 +428,9 @@ void BallAndChainSoldier_804A0810::update() {
                 bottom += y;
                 JGeometry::TVec3f corner1(left, top, 0.0f);
                 bool visible = false;
-                if (camera->fn_8030C2A8(&corner1)) {
+                if (camera->isOnScreen_8030C2A8(&corner1)) {
                     JGeometry::TVec3f corner2(right, bottom, 0.0f);
-                    if (camera->fn_8030C2A8(&corner2)) {
+                    if (camera->isOnScreen_8030C2A8(&corner2)) {
                         visible = true;
                     }
                 }

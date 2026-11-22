@@ -57,7 +57,7 @@ void ShadowLinkHammerMinor_804A6AA8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mAnim.startAnim_801D22DC(0x19, 0, false);
             JGeometry::TVec3f pos = mPos;
             pos.y -= 22.0f;
@@ -69,14 +69,14 @@ void ShadowLinkHammerMinor_804A6AA8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 6:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mAnim.startAnim_801D22DC(0x1a, 0, false);
             mStateTimer = 0;
             mState = 7;
         }
         break;
     case 7:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mLandings++;
             if (mLandings >= 3) {
                 mAnim.startAnim_801D22DC(mDir_0x98, 0, false);

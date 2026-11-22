@@ -136,28 +136,28 @@ void TingleTimeUpManager_804ACBF0::update() {
                         s32 state = gem->field_0x230;
                         // Range tests written as (u32)(state - N) <= K: the natural == / >= && <= forms compile to different code (tried: 90.9 % and 90.0 % vs 91.2 %).
                         if (state == 0 || (u32)(state - 15) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 13) {
-                            actor->fn_801F3668();
+                            actor->markDead_801F3668();
                         }
                     } else if (id == ACTOR_ESRY) {
                         FleeingForceGem_804AB170* gem = static_cast<FleeingForceGem_804AB170*>(actor);
                         s32 state = gem->field_0x230;
                         if (state == 0 || (u32)(state - 3) <= 1 || state == 10) {
-                            actor->fn_801F3668();
+                            actor->markDead_801F3668();
                         }
                     } else if (id == ACTOR_HNRY) {
                         WingedForceGem_804AB098* gem = static_cast<WingedForceGem_804AB098*>(actor);
                         s32 state = gem->field_0x230;
                         if (state == 0 || state == 3 || state == 4) {
                             if (gem->field_0x281 == 0) {
-                                actor->fn_801F3668();
+                                actor->markDead_801F3668();
                             }
                         }
                     } else if (id == ACTOR_WDRY) {
-                        actor->fn_801F3668();
+                        actor->markDead_801F3668();
                     } else if (id == ACTOR_BRRY) {
                         BuriedForceGem_804AB258* gem = static_cast<BuriedForceGem_804AB258*>(actor);
                         if (gem->field_0x230 == 0) {
-                            actor->fn_801F3668();
+                            actor->markDead_801F3668();
                         }
                     }
                 }
@@ -224,7 +224,7 @@ void TingleTimeUpManager_804ACBF0::update() {
                 u32 color = field_0x240;
                 fn_8013A884(&color);
             }
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         field_0x244 += field_0x254;

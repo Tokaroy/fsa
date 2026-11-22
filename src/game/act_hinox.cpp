@@ -198,7 +198,7 @@ void Hinox_8049F9B4::update() {
         }
     }
 
-    if (fn_801F2DB4('HBMB', 'NULL', NULL) || fn_801F2FAC() || hitByActor == true) {
+    if (fn_801F2DB4('HBMB', 'NULL', NULL) || checkPlayerAttacks_801F2FAC() || hitByActor == true) {
         field_0xbc = 3;
         if (mLife > 0) {
             mVel_0x3c.set(savedVel);
@@ -256,7 +256,7 @@ void Hinox_8049F9B4::update() {
     mPos += mVel_0x3c;
 
     if (field_0x240 == 0 && field_0x268 >= 0 && playerDist < 24.0f &&
-        fn_80237774(field_0x268) > 0 && fn_80236228(field_0x268) > 0 &&
+        getPlayerLife_80237774(field_0x268) > 0 && fn_80236228(field_0x268) > 0 &&
         !fn_80236BEC(field_0x268) && mState == 5 && mState != 9) {
         field_0x254 = field_0x268;
         field_0xbc = 4;
@@ -438,7 +438,7 @@ void Hinox_8049F9B4::update() {
             if (field_0x248 == 8) {
                 ActorBase_804A5770* rock = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x250);
                 if (rock != NULL) {
-                    s32 throwAngle = (s16)fn_801F6874(mDir_0x98);
+                    s32 throwAngle = (s16)dirToAngle_801F6874(mDir_0x98);
                     f32 speed = 2.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     throwAngle += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     JGeometry::TVec3f vel(speed * JMath::sincosTable_.sinShort(throwAngle),
@@ -529,7 +529,7 @@ void Hinox_8049F9B4::update() {
             field_0x24c++;
             field_0x24c &= 1;
             if (field_0x25c < 10 && field_0x254 >= 0 && fn_80236228(field_0x254) > 0) {
-                s32 dropAngle = (s16)fn_801F6874(mDir_0x98) - (s16)(0x1000 - (field_0x24c << 13));
+                s32 dropAngle = (s16)dirToAngle_801F6874(mDir_0x98) - (s16)(0x1000 - (field_0x24c << 13));
                 s32 dropIdx = (s32)(7.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 dropAngle -= (s32)(1280.0f - 4096.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 JGeometry::TVec3f gemVel(1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
@@ -561,7 +561,7 @@ void Hinox_8049F9B4::update() {
         if (field_0x254 >= 0) {
             if (fn_80236B50(field_0x254) || fn_80230188(field_0x254) ||
                 fn_8022DCD8(field_0x254) || fn_8022F478(field_0x254) ||
-                fn_80237774(field_0x254) <= 0 || fn_8022D534(field_0x254)) {
+                getPlayerLife_80237774(field_0x254) <= 0 || fn_8022D534(field_0x254)) {
                 if (releasePlayer()) {
                     field_0x254 = -1;
                     field_0x234 = 0;

@@ -24,7 +24,7 @@ void ShovelOldTimer_804AAB40::init() {
         GameView_804A9950* view = getGameView_802D6A9C();
         gBgRewrite_8053AC98->fn_802A3948(&view->field_0x13280, 0, 0, 0x7A);
     } else {
-        getGameView_802D6A9C()->fn_802D8050(0x15, false, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(0x15, false, 0xFF);
     }
 }
 
@@ -188,9 +188,9 @@ void ShovelOldTimer_804AAB40::fn_8031179C() {
     for (int i = 0; i < 4; i++) {
         JGeometry::TVec2f pos;
         if (fn_8023A97C(i, &field_0x230, 0, &pos)) {
-            // fn_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f
+            // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f
             // (as act_keese does).
-            if (fn_80226998((const JGeometry::TVec3f*)&pos, 0) == 0x1B0) {
+            if (getTileAt_80226998((const JGeometry::TVec3f*)&pos, 0) == 0x1B0) {
                 if (!field_0x259) {
                     showHint(field_0x250, 0x826);
                 } else {
@@ -221,7 +221,7 @@ void ShovelOldTimer_804AAB40::fn_8031179C() {
                     } else if (dx > 8) {
                         showHint(i, 0x830);
                     } else {
-                        getGameView_802D6A9C()->fn_802D8050(0x14, true, 0xFF);
+                        getGameView_802D6A9C()->setSwitchBit_802D8050(0x14, true, 0xFF);
                     }
                 }
             }

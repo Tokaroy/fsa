@@ -12,7 +12,7 @@ Now:      total: 4449 / 11561 functions, 800036 / 4442088 bytes of code (18.01 %
   (template: act_talking_npc_2 / act_tutorial_old_man).
 - init splits the spawn parameter (0x90): bit 26 -> 0x230, low 8 bits ->
   0x234 (index), bits 8-19 -> 0x238 (frame delay). update counts 0x238 down;
-  at 0, unless 0x230 is set, calls fn_801F0D20(this, lbl_80541250[0x234]),
+  at 0, unless 0x230 is set, calls playSe_801F0D20(this, lbl_80541250[0x234]),
   then clears mAlive.
 - lbl_80541250 (.sdata2) is a one-entry `static const u32[]` {3}; kept as a
   placeholder name (no evidence that it is a sound-id table beyond the
@@ -32,7 +32,7 @@ Now:      total: 4449 / 11561 functions, 800036 / 4442088 bytes of code (18.01 %
 
 ## Rebase onto headers v2 (3729a91)
 - Local `// TODO(shared)` declarations removed; the unit uses ActorBase.h /
-  GameGlobals.h (fn_801F0D20 and fn_801F3668 are now ActorBase members).
+  GameGlobals.h (playSe_801F0D20 and markDead_801F3668 are now ActorBase members).
 - The former FIXME'd update (setScreenFlag_0x30(u8, bool) / bool isScreenFlagSet_0x34()) now
   matches; the vtable matches with the renamed slot functions.
 

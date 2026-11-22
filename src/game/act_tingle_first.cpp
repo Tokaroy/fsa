@@ -138,7 +138,7 @@ void TingleFirstAppearance_804AADD8::update() {
 
     case 6:
         fn_8022FE80(field_0x234, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x234)) {
+        if (stepMessageWindow_803865B8(field_0x234)) {
             field_0x230 = 7;
         }
         break;
@@ -197,7 +197,7 @@ void TingleFirstAppearance_804AADD8::update() {
         mVel_0x3c.z = 0.3f;
         field_0x230 = 12;
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         break;
 
     case 12:

@@ -83,13 +83,13 @@ void ZoraEscortGoal_8049E424::init() {
     fn_801283E8()->fn_80128398(this);
     if (field_0x234 > 0) {
         if (!isScreenFlagSet_0x34() && getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
-            fn_80126A4C(1);
+            setState_80126A4C(1);
         }
     }
 }
 
 // FIXME: 98.09 %, missing/extra; behaviour drift.
-// ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for fn_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
+// ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for openMessage_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
 void ZoraEscortGoal_8049E424::update() {
     ActorBase_804A5770::update();
     field_0x260 = 1.0f;
@@ -103,22 +103,22 @@ void ZoraEscortGoal_8049E424::update() {
     case 0:
         if (field_0x234 > 0) {
             if (isScreenFlagSet_0x34()) {
-                fn_80126A4C(1);
-                fn_80126A4C(11);
+                setState_80126A4C(1);
+                setState_80126A4C(11);
             } else if (getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
-                fn_80126A4C(1);
+                setState_80126A4C(1);
             }
         }
         break;
     case 1:
         if (!fn_801283E8()->fn_801280F8()) {
             if (fn_801283E8()->fn_801282E0()) {
-                fn_80126A4C(12);
+                setState_80126A4C(12);
             } else {
                 s32 player = pool_8053CAB4(0x2B7);
                 if (player >= 0) {
                     field_0x23c = player;
-                    fn_80126A4C(2);
+                    setState_80126A4C(2);
                 }
             }
         }
@@ -126,32 +126,32 @@ void ZoraEscortGoal_8049E424::update() {
     case 2:
         fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
-            fn_80126A4C(1);
+            setState_80126A4C(1);
         }
         break;
     case 3:
         fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
-            fn_80126A4C(4);
+            setState_80126A4C(4);
         }
         break;
     case 5: {
         if (walkRail()) {
-            fn_80126A4C(6);
+            setState_80126A4C(6);
         }
         break;
     }
     case 6:
         field_0x240++;
         if (field_0x240 >= 30) {
-            fn_80126A4C(7);
+            setState_80126A4C(7);
         }
         break;
     case 7: {
         field_0x244++;
         field_0x254 = (60 - field_0x244) * 255 / 60;
         if (field_0x244 >= 60) {
-            fn_80126A4C(8);
+            setState_80126A4C(8);
         }
         break;
     }
@@ -161,7 +161,7 @@ void ZoraEscortGoal_8049E424::update() {
             s32 player = pool_8053CAB4(0x3FB);
             if (player >= 0) {
                 field_0x23c = player;
-                fn_80126A4C(9);
+                setState_80126A4C(9);
             }
         }
         break;
@@ -178,16 +178,16 @@ void ZoraEscortGoal_8049E424::update() {
         field_0x24c++;
         field_0x254 -= 10;
         if (field_0x24c >= 30) {
-            fn_80126A4C(16);
+            setState_80126A4C(16);
         }
         break;
     case 11:
-        fn_80126A4C(8);
+        setState_80126A4C(8);
         break;
     case 12:
         field_0x250++;
         if (field_0x250 >= 60) {
-            fn_80126A4C(13);
+            setState_80126A4C(13);
         }
         break;
     case 13:
@@ -195,13 +195,13 @@ void ZoraEscortGoal_8049E424::update() {
         approach(field_0x254, 0xFF, (f32)field_0x250);
         approach(mPos.x, field_0x270.x, (f32)field_0x250);
         if (field_0x250 <= 0) {
-            fn_80126A4C(14);
+            setState_80126A4C(14);
         }
         break;
     case 14:
         field_0x250++;
         if (field_0x250 >= 60) {
-            fn_80126A4C(15);
+            setState_80126A4C(15);
         }
         break;
     case 15:
@@ -213,7 +213,7 @@ void ZoraEscortGoal_8049E424::update() {
         fn_80239914(&box, mLayer_0x4, mSerial);
     }
     mAnim27c.mFrameCtrl.setRate(field_0x260);
-    mAnim27c.fn_801D1C18();
+    mAnim27c.update_801D1C18();
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
@@ -236,7 +236,7 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
 }
 
 // FIXME: 99.30 %, missing/extra; behaviour drift.
-void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
+void ZoraEscortGoal_8049E424::setState_80126A4C(s32 arg) {
     field_0x230 = arg;
     switch (arg) {
     case 0:
@@ -273,7 +273,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         if (field_0x258) {
             spawnEmitters();
         }
-        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
         fn_801283E8()->fn_80128228();
         break;
     }
@@ -329,13 +329,13 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         if (field_0x380 != NULL) {
             field_0x380->becomeInvalidEmitter();
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
 }
 
-// From here down: plain functions that update and fn_80126A4C inline and whose own copies the
-// linker dropped. The original's .sdata2 has their literals ahead of fn_80126A4C's, in the order
+// From here down: plain functions that update and setState_80126A4C inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals ahead of setState_80126A4C's, in the order
 // of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
 // Shared by update's states 1 and 8, which differ only in the message: the player who
@@ -357,7 +357,7 @@ s32 ZoraEscortGoal_8049E424::pool_8053CAB4(u32 msg) {
     }
     JGeometry::TVec3f msgPos(mPos);
     msgPos.y -= 64.0f;
-    if (fn_8038AD24(player, msg, mSerial, mLayer_0x4, msgPos, 0x28)) {
+    if (openMessage_8038AD24(player, msg, mSerial, mLayer_0x4, msgPos, 0x28)) {
         return player;
     }
     return -1;

@@ -146,7 +146,7 @@ bool fn_803A3168(u8 index, s32 bit) {
 }
 
 void fn_803A3144() {
-    gGameRoot_8053AAF8->fn_80138B7C();
+    gGameRoot_8053AAF8->startStageMusic_80138B7C();
 }
 
 u8 cls_804AF5A0::fn_803A313C() {
@@ -281,7 +281,7 @@ void MessageSequenceProcessor_804AF774::fn_803A2F74() {
 
 // Adds the number of characters `value` prints as (a sign, then its digits
 // without leading zeros, at most five) to the column count.
-void MessageSequenceProcessor_804AF774::fn_803A2E48(s32 value) {
+void MessageSequenceProcessor_804AF774::addNumberLength_803A2E48(s32 value) {
     bool started = false;
     if (value < 0) {
         field_0x50++;
@@ -314,7 +314,7 @@ void MessageSequenceProcessor_804AF774::fn_803A2E48(s32 value) {
 // Adds the length of the counted noun that follows a number (singular when
 // count is 1): the unit's " Force Gem" / " Force Gems" ... " Force Fairy" /
 // " Force Fairies" strings (lbl_80475DC8), plus one.
-void MessageSequenceProcessor_804AF774::fn_803A2CB0(u8 noun, s32 count) {
+void MessageSequenceProcessor_804AF774::addCountedNounLength_803A2CB0(u8 noun, s32 count) {
     switch (noun) {
     case 1:
         if (count == 1) {
@@ -1063,36 +1063,36 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x30000:
-            fn_803A2E48(field_0x60->fn_803A3068());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3068());
+            addNumberLength_803A2E48(field_0x60->fn_803A3068());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3068());
             return true;
         case 0x30001:
             return true;
         case 0x30002:
-            fn_803A2E48(field_0x60->fn_803A3060());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3060());
+            addNumberLength_803A2E48(field_0x60->fn_803A3060());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3060());
             return true;
         case 0x30003:
-            fn_803A2E48(field_0x60->fn_803A3058());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3058());
+            addNumberLength_803A2E48(field_0x60->fn_803A3058());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3058());
             return true;
         case 0x30004:
-            fn_803A2E48(field_0x60->fn_803A3050());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3050());
+            addNumberLength_803A2E48(field_0x60->fn_803A3050());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3050());
             return true;
         case 0x30005:
             return true;
         case 0x30006:
-            fn_803A2E48(fn_803A3034());
-            fn_803A2CB0(4, fn_803A3034());
+            addNumberLength_803A2E48(fn_803A3034());
+            addCountedNounLength_803A2CB0(4, fn_803A3034());
             return true;
         case 0x30007:
-            fn_803A2E48(fn_803A3018());
-            fn_803A2CB0(4, fn_803A3018());
+            addNumberLength_803A2E48(fn_803A3018());
+            addCountedNounLength_803A2CB0(4, fn_803A3018());
             return true;
         case 0x30008:
-            fn_803A2E48(fn_803A2FE0());
-            fn_803A2CB0(6, fn_803A2FE0());
+            addNumberLength_803A2E48(fn_803A2FE0());
+            addCountedNounLength_803A2CB0(6, fn_803A2FE0());
             return true;
         }
     } else {
@@ -1645,36 +1645,36 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x30000:
-            fn_803A2E48(field_0x60->fn_803A3068());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3068());
+            addNumberLength_803A2E48(field_0x60->fn_803A3068());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3068());
             return true;
         case 0x30001:
             return true;
         case 0x30002:
-            fn_803A2E48(field_0x60->fn_803A3060());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3060());
+            addNumberLength_803A2E48(field_0x60->fn_803A3060());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3060());
             return true;
         case 0x30003:
-            fn_803A2E48(field_0x60->fn_803A3058());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3058());
+            addNumberLength_803A2E48(field_0x60->fn_803A3058());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3058());
             return true;
         case 0x30004:
-            fn_803A2E48(field_0x60->fn_803A3050());
-            fn_803A2CB0(p[0], field_0x60->fn_803A3050());
+            addNumberLength_803A2E48(field_0x60->fn_803A3050());
+            addCountedNounLength_803A2CB0(p[0], field_0x60->fn_803A3050());
             return true;
         case 0x30005:
             return true;
         case 0x30006:
-            fn_803A2E48(fn_803A3034());
-            fn_803A2CB0(4, fn_803A3034());
+            addNumberLength_803A2E48(fn_803A3034());
+            addCountedNounLength_803A2CB0(4, fn_803A3034());
             return true;
         case 0x30007:
-            fn_803A2E48(fn_803A3018());
-            fn_803A2CB0(4, fn_803A3018());
+            addNumberLength_803A2E48(fn_803A3018());
+            addCountedNounLength_803A2CB0(4, fn_803A3018());
             return true;
         case 0x30008:
-            fn_803A2E48(fn_803A2FE0());
-            fn_803A2CB0(6, fn_803A2FE0());
+            addNumberLength_803A2E48(fn_803A2FE0());
+            addCountedNounLength_803A2CB0(6, fn_803A2FE0());
             return true;
         }
     }
@@ -4014,7 +4014,7 @@ void cls_804AF5A0::fn_8039499C(bool flag) {
         tm01->resize(100.0f + field_0xe8, field_0xec);
         tm02->move(field_0xc8 + field_0xd0, field_0xd4 + (field_0xcc + offset));
         tm02->resize(100.0f + field_0xe8, field_0xec);
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         screen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 
         // The pictures placed in the text (cls_804AF72C::fn_8039CDF8).
@@ -4138,7 +4138,7 @@ void cls_804AF5A0::fn_80394690() {
         strcpy(static_cast<J2DTextBox*>(field_0x20[3]->search('Tm02'))->getStringPtr(), line2);
         field_0x20[3]->search('Tm01')->move(field_0xd8, lbl_8050DB0C.field_0x30[3] + (field_0x98.y + offset));
         field_0x20[3]->search('Tm02')->move(field_0xd8 + field_0xe0, field_0xe4 + (lbl_8050DB0C.field_0x30[3] + (field_0x98.y + offset)));
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         field_0x20[3]->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }

@@ -164,7 +164,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             } else {
                 fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
                 if (field_0x3cc == fn_8022FD8C(mSerial)) {
-                    if (fn_8038AD24(field_0x3cc, 0x2B3, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                    if (openMessage_8038AD24(field_0x3cc, 0x2B3, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                         vfunc_0x6C(3);
                         field_0x3c8 = 0;
                     }
@@ -190,7 +190,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
                 if (fn_80131F0C()->mCount == 1) {
                     msg = 0x2B4;
                 }
-                if (fn_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                if (openMessage_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     vfunc_0x6C(5);
                 }
             }
@@ -365,7 +365,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         field_0x11e = 1;
         break;
     case 8: {
-        fn_801F3668();
+        markDead_801F3668();
         u32 arg = mSpawnParam_0x90;
         arg |= 4;
         arg |= fn_8012285C() << 3;
@@ -380,17 +380,17 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         mAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 11:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 12:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 13: {
         JGeometry::TVec3f pos2;
         JGeometry::TVec3f pos1(mPos);
         pos2 = mPos;
         for (s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_RAIL); serial != -1;
-             serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_RAIL, serial)) {
+             serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_RAIL, serial)) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (!actor) {
                 break;
@@ -426,7 +426,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         field_0x3c8 = 0;
         break;
     case 15:
-        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
         field_0x11e = 0;
         mDrawEnabled = false;
         mAlive = false;
@@ -453,11 +453,11 @@ bool ZoraEscort_8049DF78::stepToPlayer() {
     f32 stepX = 0.7f * JMath::sincosTable_.sinShort(angle);
     f32 stepY = 0.7f * JMath::sincosTable_.cosShort(angle);
     bool arrived = true;
-    if (fn_801CD950(&mPos.x, targetPos.x, stepX) != 0 && stepX != 0.0f) {
+    if (moveToward_801CD950(&mPos.x, targetPos.x, stepX) != 0 && stepX != 0.0f) {
         arrived = false;
     }
     if (!viewLayerFlag(mLayer_0x4)) {
-        if (fn_801CD950(&mPos.y, targetPos.y, stepY) != 0 && stepY != 0.0f) {
+        if (moveToward_801CD950(&mPos.y, targetPos.y, stepY) != 0 && stepY != 0.0f) {
             arrived = false;
         }
     }

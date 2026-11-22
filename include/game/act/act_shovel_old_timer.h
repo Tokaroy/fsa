@@ -21,7 +21,7 @@ public:
     void setDigPos(const JGeometry::TVec3f& pos);
 
     bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038C678(player, msg, serial, layer, pos, flags);
+        return openMessageById_8038C678(player, msg, serial, layer, pos, flags);
     }
 
     /* 0x230 */ JGeometry::TBox2f field_0x230;

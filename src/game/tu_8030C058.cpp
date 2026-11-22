@@ -853,7 +853,7 @@ static inline f32 projectRow(const f32* row, f32 x, f32 y, f32 z, f32 w) {
     return x * row[0] + y * row[1] + z * row[2] + w * row[3];
 }
 
-// Not inlined into its caller fn_8030C2A8 in the original (bl fn_8030C5F0).
+// Not inlined into its caller isOnScreen_8030C2A8 in the original (bl fn_8030C5F0).
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
@@ -900,7 +900,7 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
 }
 
 // A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
-// .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
+// .sdata2 has 1.0f between isOnScreen_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
@@ -913,7 +913,7 @@ void Camera_804AA9E4::setScreenRectViewport() {
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
-bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
+bool Camera_804AA9E4::isOnScreen_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     fn_8030C5F0(pos, true, false, &screen);
     return screen.x >= (f32)(mScreenRect_0x144.i.x + 14) && screen.x < (f32)(mScreenRect_0x144.f.x - 14) &&

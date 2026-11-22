@@ -96,9 +96,9 @@ inline void StrangeBlock_804AC2D8::checkTalk() {
         field_0x258 = fn_8022FD8C(mSerial);
         if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
             fn_802300EC(field_0x258)) {
-            if (fn_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+            if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
                 field_0x234 = 1;
-                field_0x254 = fn_80230CFC(field_0x258);
+                field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                 field_0x254 = field_0x254 ^ 1;
             }
         }
@@ -154,7 +154,7 @@ void StrangeBlock_804AC2D8::update() {
                 field_0x244 = -1;
                 setScreenFlag_0x30(0xFF, true);
                 if (field_0x25c != 4) {
-                    fn_801F0D20(3);
+                    playSe_801F0D20(3);
                 }
             } else {
                 field_0x244 = 8;
@@ -316,9 +316,9 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x258 = fn_8022FD8C(mSerial);
             if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f && fn_802300EC(field_0x258)) {
-                if (fn_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+                if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
                     field_0x234 = 1;
-                    field_0x254 = fn_80230CFC(field_0x258);
+                    field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                     field_0x254 = field_0x254 ^ 1;
                 }
             }

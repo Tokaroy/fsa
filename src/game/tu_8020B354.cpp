@@ -116,7 +116,7 @@ bool BirdFormation_804A5E98::vfunc_0x58() {
 
 u8 BirdFormation_804A5E98::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 other = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (other >= 0 && other != mSerial) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
             if (actor != NULL && !(!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor))) {
@@ -194,7 +194,7 @@ void BirdFormation_804A5E98::draw() {
     }
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
 }
 

@@ -11,7 +11,7 @@
 
 
 // Values that vfunc_0x54 compares the object's field_0x8 with, by the index it
-// passes to fn_8011B878. Entries 0, 5, 13, 21-26, 30 and 34 are never compared.
+// passes to setState_8011B878. Entries 0, 5, 13, 21-26, 30 and 34 are never compared.
 static const s32 lbl_80464AF8[35] = {
     0x00000000, 0x0000083E, 0x0000087A, 0x000008DE, 0x00000901, 0x00000956, 0x00000A8C,
     0x00000AF0, 0x00000E1A, 0x00000E56, 0x00000E92, 0x00000ECE, 0x00000F0A, 0x00000000,
@@ -41,18 +41,18 @@ void ShadowLinkCutscene_8049DB90::init() {
     mDir_0x98 = (s8)((mSpawnParam_0x90 >> 4) & 3);
     switch (field_0x234) {
     case 1:
-        fn_8011B878(0xD);
+        setState_8011B878(0xD);
         mDir_0x98 = 3;
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         break;
     case 2:
-        fn_8011B878(0x16);
+        setState_8011B878(0x16);
         mDir_0x98 = 3;
-        mSequencer.fn_800FEB78(1);
+        mSequencer.setState_800FEB78(1);
         mPos.y += 80.0f;
         break;
     default:
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         break;
     }
     mSequencer.mDir = mDir_0x98;
@@ -84,7 +84,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         break;
     case 4:
         if (hop(this, fn_8011921C()->field_0x8 - lbl_80464AF8[4], 4.5f, 0.5f, 0.0f)) {
-            fn_8011B878(5);
+            setState_8011B878(5);
         }
         break;
     case 9:
@@ -111,7 +111,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         mPos.y -= 1.2f;
         if (mPos.y <= mSpawnPos.y - 282.0f) {
             mPos.y = mSpawnPos.y - 282.0f;
-            fn_8011B878(23);
+            setState_8011B878(23);
         } else if (fn_8011921C()->field_0x8 >= 0x52D) {
             JGeometry::TVec3f pos(*getPlayerPos_8023E724(0));
             pos.y -= 1.6f;
@@ -128,7 +128,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         mPos.y -= 1.2f;
         if (mPos.y <= mSpawnPos.y) {
             mPos.y = mSpawnPos.y;
-            fn_8011B878(23);
+            setState_8011B878(23);
         } else {
             JGeometry::TVec3f pos(mPos);
             pos.y += 32.0f;
@@ -140,12 +140,12 @@ void ShadowLinkCutscene_8049DB90::update() {
     case 23:
         field_0x23c++;
         if (hop(this, field_0x23c, 4.5f, -0.8f, 1.45f)) {
-            fn_8011B878(24);
+            setState_8011B878(24);
         }
         break;
     case 24:
         startSound_801F0E34(0x400C7, 0);
-        fn_8011B878(25);
+        setState_8011B878(25);
         break;
     case 25:
         field_0x23c++;
@@ -153,7 +153,7 @@ void ShadowLinkCutscene_8049DB90::update() {
             field_0x23c = 0;
         }
         if (fn_801F2B7C(0, -1, 1)) {
-            fn_8011B878(26);
+            setState_8011B878(26);
         }
         break;
     case 26: {
@@ -163,7 +163,7 @@ void ShadowLinkCutscene_8049DB90::update() {
             vx = 2.9f;
         }
         if (hop(this, field_0x23c, 4.5f, 0.0f, vx)) {
-            fn_8011B878(25);
+            setState_8011B878(25);
             if (field_0x231) {
                 mPos.x = mSpawnPos.x - 64.0f;
             } else {
@@ -187,7 +187,7 @@ void ShadowLinkCutscene_8049DB90::update() {
             vx = -1.45f;
         }
         if (hop(this, fn_8011921C()->field_0x8 - lbl_80464AF8[29], 4.5f, 1.1f, vx)) {
-            fn_8011B878(30);
+            setState_8011B878(30);
         }
         break;
     }
@@ -224,7 +224,7 @@ static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s3
 static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame) {
     if (layer < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
     }
 }
 
@@ -242,59 +242,59 @@ void ShadowLinkCutscene_8049DB90::vfunc_0x54() {
     switch (field_0x234) {
     case 0:
         if (value == lbl_80464AF8[1]) {
-            fn_8011B878(1);
+            setState_8011B878(1);
         } else if (value == lbl_80464AF8[2]) {
-            fn_8011B878(2);
+            setState_8011B878(2);
         } else if (value == lbl_80464AF8[3]) {
-            fn_8011B878(3);
+            setState_8011B878(3);
         } else if (value == lbl_80464AF8[4]) {
-            fn_8011B878(4);
+            setState_8011B878(4);
         } else if (value == lbl_80464AF8[6]) {
-            fn_8011B878(6);
+            setState_8011B878(6);
         } else if (value == lbl_80464AF8[7]) {
-            fn_8011B878(7);
+            setState_8011B878(7);
         } else if (value == lbl_80464AF8[8]) {
-            fn_8011B878(8);
+            setState_8011B878(8);
         } else if (value == lbl_80464AF8[9]) {
-            fn_8011B878(9);
+            setState_8011B878(9);
         } else if (value == lbl_80464AF8[10]) {
-            fn_8011B878(10);
+            setState_8011B878(10);
         } else if (value == lbl_80464AF8[11]) {
-            fn_8011B878(11);
+            setState_8011B878(11);
         } else if (value == lbl_80464AF8[12]) {
-            fn_8011B878(12);
+            setState_8011B878(12);
         }
         break;
     case 1:
         if (fn_8011921C()->field_0x4 == 0x11) {
             if (value == lbl_80464AF8[14]) {
-                fn_8011B878(14);
+                setState_8011B878(14);
             } else if (value == lbl_80464AF8[15]) {
-                fn_8011B878(15);
+                setState_8011B878(15);
             } else if (value == lbl_80464AF8[16]) {
-                fn_8011B878(16);
+                setState_8011B878(16);
             } else if (value == lbl_80464AF8[17]) {
-                fn_8011B878(17);
+                setState_8011B878(17);
             } else if (value == lbl_80464AF8[18]) {
-                fn_8011B878(18);
+                setState_8011B878(18);
             } else if (value == lbl_80464AF8[19]) {
-                fn_8011B878(19);
+                setState_8011B878(19);
             } else if (value == lbl_80464AF8[20]) {
-                fn_8011B878(20);
+                setState_8011B878(20);
             }
         } else if (fn_8011921C()->field_0x4 == 2) {
             if (value == lbl_80464AF8[27]) {
-                fn_8011B878(27);
+                setState_8011B878(27);
             } else if (value == lbl_80464AF8[28]) {
-                fn_8011B878(28);
+                setState_8011B878(28);
             } else if (value == lbl_80464AF8[29]) {
-                fn_8011B878(29);
+                setState_8011B878(29);
             } else if (value == lbl_80464AF8[31]) {
-                fn_8011B878(31);
+                setState_8011B878(31);
             } else if (value == lbl_80464AF8[32]) {
-                fn_8011B878(32);
+                setState_8011B878(32);
             } else if (value == lbl_80464AF8[33]) {
-                fn_8011B878(33);
+                setState_8011B878(33);
             }
         }
         break;
@@ -337,7 +337,7 @@ static inline void spawnAppearEmitters(ShadowLinkCutscene_8049DB90* self) {
     self->startSound_801F0E34(0x30091, 0);
 }
 
-void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
+void ShadowLinkCutscene_8049DB90::setState_8011B878(s32 index) {
     switch (index) {
     case 0:
         mDrawEnabled = false;
@@ -350,18 +350,18 @@ void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
         sub->field_0x7c0 = 1;
         sub->field_0x7bc = 1;
         startSound_801F0E34(0x40035, 0);
-        mSequencer.fn_800FEB78(4);
+        mSequencer.setState_800FEB78(4);
         mDrawEnabled = true;
         break;
     }
     case 5:
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         break;
     case 6:
         startSound_801F0E34(0x400C7, 0);
         break;
     case 9:
-        mSequencer.fn_800FEB78(4);
+        mSequencer.setState_800FEB78(4);
         break;
     case 10: {
         setScreenFlag_0x30(0xFF, false);
@@ -403,18 +403,18 @@ void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
         break;
     case 20:
         mDir_0x98 = 3;
-        mSequencer.fn_800FEB78(1);
+        mSequencer.setState_800FEB78(1);
         break;
     case 21:
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         break;
     case 22:
         mDir_0x98 = 3;
-        mSequencer.fn_800FEB78(1);
+        mSequencer.setState_800FEB78(1);
         mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         break;
     case 23:
-        mSequencer.fn_800FEB78(4);
+        mSequencer.setState_800FEB78(4);
         field_0x23c = 0;
         for (s32 i = 0; i < 4; i++) {
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0xFF, -0x80, -0x80, true);
@@ -422,41 +422,41 @@ void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
         break;
     case 24:
         mDir_0x98 = 2;
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         field_0x23c = 0;
         break;
     case 25:
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         field_0x23c = 0;
         break;
     case 26:
-        mSequencer.fn_800FEB78(4);
+        mSequencer.setState_800FEB78(4);
         field_0x231 = !field_0x231;
         field_0x23c = 0;
         mPos.z = 0.0f;
         startSound_801F0E34(0x400C7, 0);
         break;
     case 27:
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         break;
     case 28:
         startSound_801F0E34(0x400C7, 0);
         break;
     case 29:
-        mSequencer.fn_800FEB78(4);
+        mSequencer.setState_800FEB78(4);
         mPos.z = 0.0f;
         break;
     case 30:
         mDir_0x98 = 3;
-        mSequencer.fn_800FEB78(0);
+        mSequencer.setState_800FEB78(0);
         break;
     case 31:
         startSound_801F0E34(0x400C7, 0);
         break;
     case 32:
         mDir_0x98 = 2;
-        mSequencer.fn_800FEB78(1);
+        mSequencer.setState_800FEB78(1);
         break;
     case 33:
     case 34:
@@ -465,8 +465,8 @@ void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
     field_0x238 = index;
 }
 
-// Not in the binary: fn_8011B878 and update inline these two, and the pool has their literals
-// between fn_8011B3F0's and fn_8011B878's.
+// Not in the binary: setState_8011B878 and update inline these two, and the pool has their literals
+// between fn_8011B3F0's and setState_8011B878's.
 
 // Effect 0x33B at mPos with y offset by -8.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
@@ -523,12 +523,12 @@ void ShadowLinkCutscene_8049DB90::fn_8011B3F0() {
             setCameraBox(this);
         } else {
             if (diff > 0x19A && diff != 0) {
-                fn_801CD950(&field_0x244, 0.0f, -0.007f);
+                moveToward_801CD950(&field_0x244, 0.0f, -0.007f);
             } else {
-                fn_801CD950(&field_0x244, 0.1f, 0.0035f);
+                moveToward_801CD950(&field_0x244, 0.1f, 0.0035f);
             }
-            fn_801CD950(&field_0x254, (mPos.y - 32.0f) - 24.0f, -field_0x244);
-            fn_801CD950(&field_0x25c, (32.0f + mPos.y) + 24.0f, field_0x244);
+            moveToward_801CD950(&field_0x254, (mPos.y - 32.0f) - 24.0f, -field_0x244);
+            moveToward_801CD950(&field_0x25c, (32.0f + mPos.y) + 24.0f, field_0x244);
             setCameraBox(this);
         }
         break;
@@ -542,14 +542,14 @@ void ShadowLinkCutscene_8049DB90::fn_8011B3F0() {
     case 5: {
         JGeometry::TVec3f p(mPos);
         p.y += field_0x248;
-        fn_801CD950(&field_0x248, 32.0f, 0.8f);
+        moveToward_801CD950(&field_0x248, 32.0f, 0.8f);
         setCameraBoxPos(this, p.x, p.y);
         break;
     }
     case 6: {
         JGeometry::TVec3f p(mPos);
         p.y += field_0x248;
-        fn_801CD950(&field_0x248, 0.0f, 0.8f);
+        moveToward_801CD950(&field_0x248, 0.0f, 0.8f);
         setCameraBoxPos(this, p.x, p.y);
         break;
     }

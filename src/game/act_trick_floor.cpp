@@ -88,7 +88,7 @@ void TrickFloor_804A83A0::init() {
                     y = 0x1FF;
                 }
                 s32 idx =(x & 0x100) | ((y << 1) & 0x200) | (y & 0xF0) | ((x >> 4) & 0xF);
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, idx, 6);
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, idx, 6);
                 py += 16.0f;
             }
             px += 16.0f;
@@ -158,7 +158,7 @@ static inline s32 tileIndex(s32 tx, s32 ty) {
             f32 y = mPos.y;                                                                        \
             for (s32 j = 0; j < lbl_8046C8CC[field_0x234]; j++) {                                  \
                 s32 ty = (s32)(y - (vbox).i.y);                                                    \
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, tileIndex(tx, ty), (tile));\
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, tileIndex(tx, ty), (tile));\
                 y += 16.0f;                                                                        \
             }                                                                                      \
             x += 16.0f;                                                                            \
@@ -360,9 +360,9 @@ void TrickFloor_804A83A0::update() {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
                     if (field_0x234 == 1) {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
                     } else {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, field_0x250);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
                     }
                     y += 16.0f;
                 }
@@ -454,7 +454,7 @@ void TrickFloor_804A83A0::draw() {
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
     JGeometry::TVec3f hole(mPos.x + lbl_8046C908[field_0x234], mPos.y + lbl_8046C924[field_0x234], mPos.z);
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&hole, res, &sp);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&hole, res, &sp);
     }
 
     m[0][3] = 0.0f;

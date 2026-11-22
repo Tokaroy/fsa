@@ -26,7 +26,7 @@ void EnemyCountWipeOutCheck_804A8250::update() {
     if (count >= field_0x238) {
         setScreenFlag_0x30(0xFF, true);
         if (field_0x244 != gAudioMgr_8053AF80->field_0x58 && field_0x240 == 0) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
         mAlive = false;
     }

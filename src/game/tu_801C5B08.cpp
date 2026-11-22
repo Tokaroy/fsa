@@ -30,7 +30,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
     bool near = fn_801D183C(1.0f);
     bool notTarget = !fn_801CAED4(field_0x338);
     if (field_0x597 == 0 && near && notTarget && (field_0x524.field_0x0 & 0x10) && dist <= 900.0f) {
-        fn_801C3B7C(0x22);
+        setState_801C3B7C(0x22);
         return;
     }
     if (dist <= 2500.0f) {
@@ -73,20 +73,20 @@ void ShadowLink2_804A43E8::fn_801C6260() {
                 field_0x33c = field_0x33c - 0x8000;
                 field_0x33c = field_0x33c + fn_801CD664(0x4001) - 0x2000;
             }
-            fn_801C3B7C(0x1C);
+            setState_801C3B7C(0x1C);
         } else if (field_0x597 == 0 && notTarget) {
             if ((field_0x524.field_0x0 & 0x10) && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
                 if (field_0x524.field_0x0 & 0x20) {
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.67f) {
-                        fn_801C3B7C(0x26);
+                        setState_801C3B7C(0x26);
                     } else {
-                        fn_801C3B7C(0x25);
+                        setState_801C3B7C(0x25);
                     }
                 } else {
-                    fn_801C3B7C(0x25);
+                    setState_801C3B7C(0x25);
                 }
             } else if (near && (field_0x524.field_0x0 & 0x8)) {
-                fn_801C3B7C(0x22);
+                setState_801C3B7C(0x22);
             }
         }
     }
@@ -178,15 +178,15 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
 void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
     if (fn_801C5340()) {
         mFlags |= 0x2000000;
-        fn_801C3B7C(0x1E);
+        setState_801C3B7C(0x1E);
         return;
     }
     s32 player = fn_801D05F8(&mPos, field_0x5ac);
     if (player < 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-            fn_801C3B7C(0xF);
+            setState_801C3B7C(0xF);
         } else {
-            fn_801C3B7C(0x11);
+            setState_801C3B7C(0x11);
         }
         return;
     }
@@ -208,7 +208,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
             s32 rnd = fn_801CD664(0x4001);
             field_0x33c = field_0x33c + rnd - 0x2000;
         }
-        fn_801C3B7C(0x1C);
+        setState_801C3B7C(0x1C);
         field_0x59a = 0xB4;
         return;
     }
@@ -223,7 +223,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         if (entry < rail->field_0x2) {
             rail->field_0x3 = entry;
         }
-        fn_800FE294(&railPos, field_0x358.fn_80214244(), index);
+        getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), index);
         JGeometry::TVec3f target = railPos;
         f32 dx = target.x - mPos.x;
         f32 dy = target.y - mPos.y;
@@ -245,7 +245,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
     }
     if (found) {
         mFlags |= 0x200000;
-        fn_801C3B7C(0x11);
+        setState_801C3B7C(0x11);
         mFlags &= ~0x200000;
         field_0x598 = 0x78;
     } else {

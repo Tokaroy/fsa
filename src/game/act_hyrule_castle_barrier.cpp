@@ -157,7 +157,7 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F5C0(s32 arg) {
             field_0x254->clearStatus(JPAEMIT_StopDraw);
             s32 bit = field_0x238;
             if (bit > 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, false, 0xFF);
             }
         }
         break;
@@ -176,7 +176,7 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F5C0(s32 arg) {
         field_0xb0 = 0;
         s32 bit = field_0x238;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
         break;
     }
@@ -201,12 +201,12 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F5C0(s32 arg) {
     case 4: {
         s32 bit = field_0x238;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
         if (!field_0x241) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
     }

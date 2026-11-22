@@ -327,7 +327,7 @@ void Title_804AF820::fn_803A44D8() {
                 field_0x82 == 0) {
                 calcBlink(blink);
             }
-            gGameRoot2_8053AB10->fn_8013B490();
+            gGameRoot2_8053AB10->setPort_8013B490();
             mScreen->search('Pntd')->setAlpha(field_0x4c);
             mScreen->search('Ptlogo01')->setAlpha(0);
             mScreen->search('Ptlogo02')->setAlpha(0);
@@ -336,7 +336,7 @@ void Title_804AF820::fn_803A44D8() {
             mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
         }
     } else {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         if (lbl_80529DEC.field_0x238 == 0xFF && lbl_80529DEC.field_0x249[0] != 0) {
             if (field_0x154 == 1) {
                 // The six cloud models and the title's effects.
@@ -363,14 +363,14 @@ void Title_804AF820::fn_803A44D8() {
                     mtx[2][1] = 1.0f;
                     mtx[2][2] = 0.0f;
                     mtx[2][3] = -513.0f - 96.0f * i;
-                    fn_8013ABCC(field_0x104[i], scale, mtx);
+                    calcAndEntryModel_8013ABCC(field_0x104[i], scale, mtx);
                 }
                 fn_8013AB2C();
                 manager->calc(0);
                 manager->draw(&info, 0);
             }
             if (field_0x150 == 1) {
-                gGameRoot2_8053AB10->fn_8013B490();
+                gGameRoot2_8053AB10->setPort_8013B490();
                 field_0x20->setAlpha(field_0x68);
                 field_0x20->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
             }

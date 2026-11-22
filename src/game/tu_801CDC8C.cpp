@@ -2,7 +2,7 @@
 // per-frame driver and the helpers its descendants call.
 //
 // Every function is written. The player searches (fn_801D0B44, fn_801D05F8,
-// fn_801D0D50, fn_801D0DA0, fn_801D0020, fn_801D01A0) are inlined into the
+// fn_801D0D50, fn_801D0DA0, fn_801D0020, calcVelocityToward_801D01A0) are inlined into the
 // functions before them, so their bodies are inline helpers (canTargetPlayer,
 // nearestPlayer, ...) defined ahead of the first use; likewise the landing
 // shared by checkFloor_0x80 and fn_801CE800 (landStep).
@@ -47,7 +47,7 @@ inline void EnemyBase_804A4808::moveStep() {
         if (mSpeed > mTargetSpeed) {
             step = mDecel;
         }
-        fn_801CD950(&mSpeed, mTargetSpeed, step);
+        moveToward_801CD950(&mSpeed, mTargetSpeed, step);
     }
     calcVelocity_0x88();
     mPos += mVel_0x3c;
@@ -212,7 +212,7 @@ inline s32 EnemyBase_804A4808::directionTo(const JGeometry::TVec3f* pos, s32 pla
     return 3;
 }
 
-// fn_801D01A0's body: the velocity from mPos toward *target (x, y), at most
+// calcVelocityToward_801D01A0's body: the velocity from mPos toward *target (x, y), at most
 // `speed` long: the normalised offset scaled by the shorter of `speed` and
 // the offset's length.
 inline void EnemyBase_804A4808::velocityToward(const JGeometry::TVec3f* target, JGeometry::TVec2f* out,
@@ -393,12 +393,12 @@ s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
 // Same instructions; the target loads target->y before mPos.y for the second
 // offset (ours the other way round).
 // The velocity toward *target (x, y), at most `speed` long.
-void EnemyBase_804A4808::fn_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed) {
+void EnemyBase_804A4808::calcVelocityToward_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed) {
     velocityToward(target, out, speed);
 }
 
 // FIXME: 92.63 %, scheduling+regalloc; behaviour clean.
-// and registers as in fn_801D01A0 (the same body).
+// and registers as in calcVelocityToward_801D01A0 (the same body).
 // The velocity (x, y) toward player `player`, at most `speed` long.
 void EnemyBase_804A4808::fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed) {
     JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
@@ -744,19 +744,19 @@ u8 EnemyBase_804A4808::fn_801CEBD0() {
 u8 EnemyBase_804A4808::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        hit = fn_801F2FAC();
+        hit = checkPlayerAttacks_801F2FAC();
     }
     return hit;
 }
 
-// Hit by the actor overlapping this one (fn_801F82CC, within 32 in z), unless
+// Hit by the actor overlapping this one (findOverlappingActor_801F82CC, within 32 in z), unless
 // it is a live Bombchu (fn_801CC8E4): fn_801F37AC with its attack, its
 // position relative to ours, its field_0x168 and field_0x110. The attacker's
 // field_0x164 is set when the hit landed. Returns whether it did.
 bool EnemyBase_804A4808::fn_801CEA60() {
     bool hit = false;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
@@ -921,7 +921,7 @@ void EnemyBase_804A4808::onMoved_0x8C() {}
 void EnemyBase_804A4808::updateState_0x90(u8 mapHit) {}
 
 void EnemyBase_804A4808::updateAnim_0x94() {
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void EnemyBase_804A4808::fn_801CE32C() {

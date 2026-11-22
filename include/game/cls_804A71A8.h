@@ -57,14 +57,14 @@ public:
     // in field_0x38.
     void fn_8026E68C(u16 tile);
     // 0x8026EB1C (called by fn_8026E68C): whether the owner pushes
-    // (fn_80250D30) with a facing that tile 0x10-0x17 accepts (0x10-0x13
+    // (isPushing_80250D30) with a facing that tile 0x10-0x17 accepts (0x10-0x13
     // one facing each, 0x14-0x17 two).
     u8 fn_8026EB1C(u16 tile); // extrwi 8: a u8
     // 0x8026EC88 (fn_8026C350, tiles 0x31 + player): fn_8026EE60 for the
     // block of player `player` only (the owner's fn_80240868), its id + 1
     // going into bits 4-6 of the 'BLCK' actor's field_0x90.
     void fn_8026EC88(s32 player);
-    // 0x8026EE60 (fn_8026C350, a pushable tile): pushing (fn_80250D30)
+    // 0x8026EE60 (fn_8026C350, a pushable tile): pushing (isPushing_80250D30)
     // toward the probe with fn_8024FF84() < 0 and a free tile (0, 2 or
     // 0x50) 16 units ahead spawns a 'BLCK' actor at the probe and keeps its
     // serial in the owner's field_0xd94 (unless the probe's tile is 0x50);

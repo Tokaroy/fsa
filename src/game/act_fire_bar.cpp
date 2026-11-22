@@ -51,7 +51,7 @@ void FireBarManager_804A3F90::init() {
         count = 1;
     }
     mCount = count;
-    mAngle = fn_801F6874(dir);
+    mAngle = dirToAngle_801F6874(dir);
     switch (speedSel) {
     case 0:
         mSpeed = 0x80;

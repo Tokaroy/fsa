@@ -204,8 +204,8 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_score | `Score_804AF4C0::updateState1` | 10 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
 | act_score | `Score_804AF4C0::updateState2` | 7 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
 | act_seesaw_lift | `SeesawLift_804AD348::isPlayerInside` | 9 | `fn_80358F98__19SeesawLift_804AD348Fv`, `fn_803597EC__19SeesawLift_804AD348Fv`, `fn_8035A210__19SeesawLift_804AD348Fv`, `fn_8035AC84__19SeesawLift_804AD348Fl`, `fn_8035AE9C__19SeesawLift_804AD348Fl` |
-| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::hopDown` | 8 | `fn_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
-| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::spawnFlash` | 5 | `fn_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
+| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::hopDown` | 8 | `setState_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
+| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::spawnFlash` | 5 | `setState_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
 | act_shovel_old_timer | `ShovelOldTimer_804AAB40::findDigSpot` | 31 | `draw__23ShovelOldTimer_804AAB40Fv`, `init__23ShovelOldTimer_804AAB40Fv` |
 | act_small_key | `SmallKey_804A8CD8::bounceOffTile` | 19 | `fn_802C24A8__17SmallKey_804A8CD8Fv` |
 | act_small_key | `SmallKey_804A8CD8::dropAtPlayer` | 37 | (none alone; needed jointly with the unit's other helpers) |
@@ -233,8 +233,8 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_zora_escort | `ZoraEscort_8049DF78::findNearbyPlayer` | 17 | (none alone; needed jointly with the unit's other helpers) |
 | act_zora_escort | `ZoraEscort_8049DF78::hasNearbyBari` | 21 | (none alone; needed jointly with the unit's other helpers) |
 | act_zora_escort | `ZoraEscort_8049DF78::stepToPlayer` | 24 | (none alone; needed jointly with the unit's other helpers) |
-| act_zora_escort_goal | `ZoraEscortGoal_8049E424::spawnEmitters` | 6 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `draw__23ZoraEscortGoal_8049E424Fv`, `init__23ZoraEscortGoal_8049E424Fv`, `__ct__23ZoraEscortGoal_8049E424Fv` |
-| act_zora_escort_goal | `ZoraEscortGoal_8049E424::walkRail` | 25 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `init__23ZoraEscortGoal_8049E424Fv` |
+| act_zora_escort_goal | `ZoraEscortGoal_8049E424::spawnEmitters` | 6 | `setState_80126A4C__23ZoraEscortGoal_8049E424Fl`, `draw__23ZoraEscortGoal_8049E424Fv`, `init__23ZoraEscortGoal_8049E424Fv`, `__ct__23ZoraEscortGoal_8049E424Fv` |
+| act_zora_escort_goal | `ZoraEscortGoal_8049E424::walkRail` | 25 | `setState_80126A4C__23ZoraEscortGoal_8049E424Fl`, `init__23ZoraEscortGoal_8049E424Fv` |
 | tu_8010089C | `WhackAMoleShop_8049C8EC::showTimer` | 10 | `draw__23WhackAMoleShop_8049C8ECFv`, `init__23WhackAMoleShop_8049C8ECFv` |
 | tu_80113788 | `CrystalCutscene_8049D83C::positionPlayers` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
 | tu_80113788 | `CrystalCutscene_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__24CrystalCutscene_8049D83CFv` |
@@ -251,7 +251,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | tu_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
 | tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
 | tu_8018EB94 | `BigMoldormTail_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
-| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `fn_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `fn_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
+| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `fn_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
 | tu_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
 | tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `fn_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `fn_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `fn_8030DFE8__15Camera_804AA9E4Fb` |
 | tu_8034AA40 | `markRandomCucco` | 8 | `fn_8034AAA0__24CuccoHerdingNPC_804AC8C0Fv`, `vfunc_0x10__24CuccoHerdingNPC_804AC8C0Fv`, `init__24CuccoHerdingNPC_804AC8C0Fv` |

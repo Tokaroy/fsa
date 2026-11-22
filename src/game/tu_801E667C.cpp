@@ -107,14 +107,14 @@ bool cls_801E6AB8::fn_801E667C() {
         }
         break;
     case 2:
-        mAnim.fn_801D1C18();
+        mAnim.update_801D1C18();
         cel = mAnim.mCel;
         for (i = 0; i < 4; i++) {
             if (mActive[i]) {
                 fn_80230498(i, getPlayerPos_8023E724(i), cel, 0xFF, -0x80, -0x80, true);
             }
         }
-        if (mAnim.fn_801D21F0()) {
+        if (mAnim.isStopped_801D21F0()) {
             fn_801E67C4(3);
         }
         break;

@@ -48,7 +48,7 @@ void Zoom_804A9DF8::update() {
                 mState = 1;
                 mTimer = mDuration;
                 if (field_0x234 != 0) {
-                    fn_801F0D20(lbl_8046F260[field_0x234]);
+                    playSe_801F0D20(lbl_8046F260[field_0x234]);
                 }
             }
         }
@@ -58,11 +58,11 @@ void Zoom_804A9DF8::update() {
         if (field_0x238 == 0) {
             if (fn_8023077C() == 1) {
                 mState = 2;
-                fn_801F0D20(0x3C);
+                playSe_801F0D20(0x3C);
             }
         } else {
             mState = 2;
-            fn_801F0D20(0x3C);
+            playSe_801F0D20(0x3C);
         }
         break;
     case 2:
@@ -77,10 +77,10 @@ void Zoom_804A9DF8::update() {
         takeCamera(gGameRoot2_8053AB10->field_0x24);
         if (field_0x238 == 0) {
             if (fn_80230534(false) == 1) {
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }

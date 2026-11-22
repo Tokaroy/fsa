@@ -42,7 +42,7 @@ static inline void clearOnPress() {
 
 // Forward declarations.
 f32 fn_8037F580(u8 command, s32 value, char* out, s32* len, f32 scale);
-u8 fn_8037F1E4(s32 player);
+u8 getMessageWindowState_8037F1E4(s32 player);
 bool fn_8037EC98(s32 player, u16 flags);
 
 static inline s32 operand(const char* p, s32 offset) {
@@ -208,11 +208,11 @@ void fn_8038D570() {
             if (manager->field_0xeb != 0) {
                 if (!getGameView_802D6A9C()->fn_802D800C(manager->field_0xea)) {
                     bit = lbl_8053AD78->field_0xea;
-                    getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
                 }
             } else if (getGameView_802D6A9C()->fn_802D800C(manager->field_0xea) == true) {
                 bit = lbl_8053AD78->field_0xea;
-                getGameView_802D6A9C()->fn_802D8050(bit, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, false, 0xFF);
             }
         }
     }
@@ -266,9 +266,9 @@ static inline void syncOtherPlayers(s32 player, s32 serial, u16 flags) {
     }
 }
 
-// fn_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
+// openMessage_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
 // into its id; the no-position fallback is fn_8038C60C.
-bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
+bool openMessageById_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
     s32 window = windowIndex(player);
     if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
         return false;
@@ -382,7 +382,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
     }
 
 bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 flags) {
-    if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
+    if (getMessageWindowState_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
         if (flags & 0x91F) {
             lbl_8053AD78->mWindows[player]->fn_80390E40(value, false);
             lbl_8053AD78->mWindows[windowIndex(player)]->field_0x24 = 1;
@@ -410,7 +410,7 @@ bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 
     return false;
 }
 
-bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
+bool openMessage_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
     s32 window = windowIndex(player);
     if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
         return false;
@@ -463,7 +463,7 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
 }
 
 bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u16 flags) {
-    if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
+    if (getMessageWindowState_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || flags & 0x19F) {
             bool ready = false;
             if (flags & 0x1000) {
@@ -498,7 +498,7 @@ bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 
 }
 
 bool MessageManager_804AF070::fn_8038A42C(s32 player, s32 actor, s32 value, s32 serial, JGeometry::TVec3f pos, u16 flags) {
-    if (fn_8037F1E4(player) == 0) {
+    if (getMessageWindowState_8037F1E4(player) == 0) {
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || flags & 0x19F) {
             bool ready = false;
             if (flags & 0x1000) {
@@ -553,7 +553,7 @@ bool MessageManager_804AF070::fn_8038A42C(s32 player, s32 actor, s32 value, s32 
 }
 
 bool MessageManager_804AF070::fn_80389F78(s32 player, s32 arg, s32 value, JGeometry::TVec3f pos, u16 flags) {
-    if (fn_8037F1E4(player) == 0) {
+    if (getMessageWindowState_8037F1E4(player) == 0) {
         if (flags & 0x11F) {
             s32 plain = flags & 0x40;
             if (plain) {
@@ -598,7 +598,7 @@ bool MessageManager_804AF070::fn_80389F78(s32 player, s32 arg, s32 value, JGeome
 
 bool fn_80389BF0(s32 player, s32 value) {
     s32 index = windowIndex(player);
-    if (fn_8037F1E4(index) == 0 && !fn_80303750(index)) {
+    if (getMessageWindowState_8037F1E4(index) == 0 && !fn_80303750(index)) {
         lbl_8053AD78->mWindows[index]->fn_80390E40(value, false);
         lbl_8053AD78->mWindows[windowIndex(index)]->field_0x24 = 1;
         lbl_8053AD78->mWindows[index]->field_0x28 |= 0x1000;
@@ -614,7 +614,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u16 flags) {
     for (s32 i = 0; i < 4; i++) {
         ready[i] = 0;
         if (i != exclude && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
-            if (!fn_8022FA80(i) && fn_8037F1E4(i) == 0) {
+            if (!fn_8022FA80(i) && getMessageWindowState_8037F1E4(i) == 0) {
                 if ((flags & 4) || (flags & 2) || msg == 0x265) {
                     if (fn_80230188(i)) {
                         ready[i] = 1;
@@ -649,7 +649,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u16 flags) {
 void MessageManager_804AF070::fn_803895EC(s32 player, s32 arg, bool a, bool b) {
     s32 mapped = windowIndex(player);
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8037F1E4(i) == 9) {
+        if (getMessageWindowState_8037F1E4(i) == 9) {
             if (a) {
                 if (i == mapped) {
                     fn_8022FB1C(player, arg);
@@ -701,10 +701,10 @@ void fn_8038911C(s32 player, s32 value) {
 
 bool fn_80388EEC(s32 player) {
     s32 index = windowIndex(player);
-    if (fn_8037F1E4(index) == 0) {
+    if (getMessageWindowState_8037F1E4(index) == 0) {
         return true;
     }
-    if (fn_803865B8(player)) {
+    if (stepMessageWindow_803865B8(player)) {
         return fn_80385960(player);
     }
     return false;
@@ -712,10 +712,10 @@ bool fn_80388EEC(s32 player) {
 
 bool fn_80388CAC(s32 player, s32 serial) {
     s32 index = windowIndex(player);
-    if (fn_8037F1E4(index) == 0) {
+    if (getMessageWindowState_8037F1E4(index) == 0) {
         return true;
     }
-    if (fn_803865B8(player)) {
+    if (stepMessageWindow_803865B8(player)) {
         return fn_80384C58(player, serial);
     }
     return false;
@@ -872,7 +872,7 @@ static inline u8 isWindowDone(s32 player) {
 // window is done (bit of field_0xe7, after the countdown field_0xf0 of two frames). On the
 // last page a press (or option 0x20 / the processor's countdown) finishes it; otherwise a
 // press turns the page (state 2 / 7).
-bool fn_803865B8(s32 player) {
+bool stepMessageWindow_803865B8(s32 player) {
     s32 window = windowIndex(player);
     if (isWindowDone(window)) {
         return true;
@@ -1046,12 +1046,12 @@ bool fn_8038470C(s32 player, u32 msg) {
     s32 index = windowIndex(player);
     lbl_8053AD78->mWindows[index]->fn_803913E0();
     u32 mapped = fn_80383EB0(index, msg);
-    if (fn_8037F1E4(index) == 5) {
+    if (getMessageWindowState_8037F1E4(index) == 5) {
         lbl_8053AD78->mWindows[index]->fn_80390E40(mapped, true);
         lbl_8053AD78->mWindows[windowIndex(index)]->field_0x24 = 1;
         return true;
     }
-    if (fn_8037F1E4(index) == 8) {
+    if (getMessageWindowState_8037F1E4(index) == 8) {
         lbl_8053AD78->mWindows[index]->fn_80390E40(mapped, true);
         lbl_8053AD78->mWindows[windowIndex(index)]->field_0x24 = 6;
         return true;
@@ -2224,7 +2224,7 @@ bool fn_8037F2FC(u32 msg, s32 frames, u8 skipMask, f32 x, f32 y, f32 width, f32 
     return false;
 }
 
-u8 fn_8037F1E4(s32 player) {
+u8 getMessageWindowState_8037F1E4(s32 player) {
     return lbl_8053AD78->mWindows[windowIndex(player)]->field_0x24;
 }
 

@@ -164,10 +164,10 @@ void Navi_804A6708::init() {
     }
 
     if (getGameView_802D6A9C()->field_0x131f9 == 2) {
-        fn_801F3668();
+        markDead_801F3668();
     } else if (mFlags & 0x20000) {
         if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
-            fn_801F3668();
+            markDead_801F3668();
         } else {
             mEmitter2D0 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x32C, 0, -1, NULL, NULL, isState9(), 1.0f);
             mEmitter2D4 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x184, 0, -1, NULL, NULL, isState9(), 1.0f);
@@ -272,7 +272,7 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
             for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
-                    fn_80230498(p, &pos, fn_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
+                    fn_80230498(p, &pos, getPlayerFacing_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
                 }
             }
         }
@@ -282,7 +282,7 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
             fn_80230534(false);
             mFlags |= 0x40000;
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     case 4: {
         fn_801F3604();
@@ -321,7 +321,7 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
                     if (mFlags & 0x4000) {
                         v = 3;
                     } else if (fn_8022F514(p)) {
-                        v = fn_80230CFC(fn_8022F3DC(p));
+                        v = getPlayerFacing_80230CFC(fn_8022F3DC(p));
                     } else {
                         v = fn_801CD354(fn_801D0020(&mPos, p, false));
                     }
@@ -426,7 +426,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
         }
         fn_8022FE80(field_0x2b4, mLayer_0x4, mSerial, false, false);
         if (field_0x2b4 == fn_8022FD8C(mSerial)) {
-            if (fn_8038C678(field_0x2b4, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
+            if (openMessageById_8038C678(field_0x2b4, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
                 if (mFlags & 0x4000) {
                     fn_8021F064()->mFlags |= 1;
                 } else {
@@ -441,7 +441,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
             break;
         }
         fn_8022FE80(field_0x2b4, mLayer_0x4, mSerial, false, false);
-        if (fn_803865B8(field_0x2b4) && fn_80384C58(field_0x2b4, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2b4) && fn_80384C58(field_0x2b4, mSerial)) {
             if (mFlags & 0x4000) {
                 fn_8021F064()->mFlags |= 2;
             } else if (mFlags & 0x8000) {
@@ -526,8 +526,8 @@ void Navi_804A6708::calcVelocity_0x88() {
     case 4:
     case 7: {
         JGeometry::TVec2f out;
-        // fn_801D01A0 reads only (x, y) of its target, typed TVec3f* in EnemyBase.
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2c0, &out, FLT_MAX);
+        // calcVelocityToward_801D01A0 reads only (x, y) of its target, typed TVec3f* in EnemyBase.
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2c0, &out, FLT_MAX);
         mVel_0x3c.x = out.x;
         mVel_0x3c.y = out.y;
         break;

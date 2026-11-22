@@ -92,7 +92,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
                                     12.0f * JMath::sincosTable_.sinShort(field_0x240 * 2),
                                     0.0f);
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             mState++;
         }
@@ -120,7 +120,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
 
     case 4:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             field_0x254->vfunc_0x60(10);
             mState++;
@@ -148,7 +148,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
                 dcr2->vfunc_0x60(12);
                 fn_803676CC();
                 dcr2->mNaviActor = NULL;
-                fn_801F3668();
+                markDead_801F3668();
             }
         }
         mPos = field_0x244 + offset;

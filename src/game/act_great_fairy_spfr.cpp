@@ -160,7 +160,7 @@ void GreatFairy_8049EB8C::update() {
         break;
     case 6:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -174,7 +174,7 @@ void GreatFairy_8049EB8C::update() {
         break;
     case 9:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -184,14 +184,14 @@ void GreatFairy_8049EB8C::update() {
         break;
     case 15:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
         break;
     case 19:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -203,7 +203,7 @@ void GreatFairy_8049EB8C::update() {
     if (field_0x230 != 0) {
         fn_80239914(&box, mLayer_0x4, mSerial);
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
     if (mDrawEnabled) {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     }
@@ -324,7 +324,7 @@ void GreatFairy_8049EB8C::fn_80132454(s32 index) {
         break;
     }
     case 7:
-        fn_801F0D20(0x3B);
+        playSe_801F0D20(0x3B);
         break;
     case 8:
         gAudioMgr_8053AF80->fn_80458FF0(0x01000021, 0, 0);
@@ -351,7 +351,7 @@ void GreatFairy_8049EB8C::fn_80132454(s32 index) {
         mAnim.startAnim_801D22DC(0, 2, false);
         mAnim.fn_801D1F14(0.0f);
         fn_80119DD0()->fn_80119998(60, 0, 2, 0, 0, 0, 0);
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         lbl_8053AD70->fn_8037AE00();
         break;
     case 14: {
@@ -372,7 +372,7 @@ void GreatFairy_8049EB8C::fn_80132454(s32 index) {
         break;
     case 17: {
         s32 bit = getScreenFlagBit_0x3C();
-        getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         break;
     }
     case 18:
@@ -404,11 +404,11 @@ void GreatFairy_8049EB8C::fn_80132454(s32 index) {
         mAlive = false;
         break;
     case 22:
-        getGameView_802D6A9C()->fn_802D8050(field_0x248, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x248, true, 0xFF);
         break;
     case 25:
         fn_8011921C()->fn_80118384();
-        fn_801F3668();
+        markDead_801F3668();
         break;
     case 26:
         break;
@@ -525,7 +525,7 @@ s32 GreatFairy_8049EB8C::talkTo() {
     }
     JGeometry::TVec3f pos = mPos;
     pos.y -= 64.0f;
-    if (fn_8038AD24(player, 0x2B6, mSerial, mLayer_0x4, pos, 0x28)) {
+    if (openMessage_8038AD24(player, 0x2B6, mSerial, mLayer_0x4, pos, 0x28)) {
         return player;
     }
     return -1;

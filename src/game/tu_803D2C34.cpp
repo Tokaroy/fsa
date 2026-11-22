@@ -187,7 +187,7 @@ void SaveScreen_804B0288::fn_803D5554() {
 }
 
 void SaveScreen_804B0288::fn_803D521C() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x216f == 3) {
         f32 bounce = 0.0f;
         if (field_0x82 > 0) {

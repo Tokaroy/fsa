@@ -140,7 +140,7 @@ void Icicle_8049CFC8::update() {
         fn_8010B40C(4);
         break;
     case 3:
-        if (mSprite.fn_801D21F0()) {
+        if (mSprite.isStopped_801D21F0()) {
             fn_8010B40C(4);
         }
         break;
@@ -155,7 +155,7 @@ void Icicle_8049CFC8::update() {
             break;
         }
         mDrawEnabled = true;
-        fn_801CD950(&field_0x240, 1.0f, 0.005f);
+        moveToward_801CD950(&field_0x240, 1.0f, 0.005f);
         mPos.y = mSpawnPos.y - 8.0f * (1.0f - field_0x240);
         if (field_0x240 >= 1.0f) {
             fn_8010B40C(0);
@@ -163,7 +163,7 @@ void Icicle_8049CFC8::update() {
         break;
     }
     field_0x54.setAll(field_0x240);
-    mSprite.fn_801D1C18();
+    mSprite.update_801D1C18();
 }
 
 static inline void setScaleMtx(Mtx m, f32 sx, f32 sy, f32 sz) {

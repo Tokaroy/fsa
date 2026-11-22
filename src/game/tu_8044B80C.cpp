@@ -81,7 +81,7 @@ void StaffRollLoader_804B1D10::fn_8044B960() {
 
 void StaffRollLoader_804B1D10::fn_8044B8EC() {
     if (mDraw && mState == 3 && mScreen != NULL) {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
         mDraw = false;
     }
