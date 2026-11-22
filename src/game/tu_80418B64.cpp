@@ -680,7 +680,7 @@ void cls_804B13D4::fn_8041F720() {
         return;
     }
     if (field_0x291 != 0) {
-        f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
+        f32 zoom = gGameRoot2_8053AB10->field_0x24->mZoom_0x858;
         f32 scale = lbl_8050DB0C.field_0x30[4];
         f32 sx = scale * ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / zoom);
         f32 sy = scale * ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / zoom);

@@ -71,7 +71,7 @@ public:
 
     // 0x80456120 (game/tu_80455CA4.cpp): clears field_0x31, then calls
     // dispose() through the vtable (slot 0xC). ActorManager's release code
-    // calls it on each mSounds entry and on field_0x200c (game/tu_801F6058.cpp).
+    // calls it on each mSounds entry and on mSharedSound_0x200c (game/tu_801F6058.cpp).
     void fn_80456120();
 
     // 0x80456154 (game/tu_80455CA4.cpp): points mSoundPos at a copy of
@@ -135,23 +135,23 @@ public:
     // here is a symbols.txt rename too; the return type is not mangled.
     // "Serial" is ActorBase_804A5770::mSerial, the handle actors keep to
     // each other; "live" means in mActors[0, mActorEnd) with mAlive set.
-    // Queries that take `layer` compare it with ActorBase field_0x4.
+    // Queries that take `layer` compare it with ActorBase mViewMtx_0x4.
 
-    // 2 units / 2 calls. field_0x3030[i] (0x801F6058).
+    // 2 units / 2 calls. mPlayerRanking_0x3030[i] (0x801F6058).
     s32 fn_801F6058(s32 i);
     // Called by the update pass (fn_801F871C) first. Ranks the players
     // taking part (gGameRoot_8053AAF8 mPlayerMask) by fn_80236228, highest first:
-    // field_0x3020 the values, field_0x3030 the player indices (others get
+    // mPlayerRankValues_0x3020 the values, mPlayerRanking_0x3030 the player indices (others get
     // -9999 and 3); the entries past the last player repeat it.
     void fn_801F6068();
-    // 2 units / 8 calls. field_0x305c = value (stb; callers pass li 0/1).
+    // 2 units / 8 calls. mAllDefeated_0x305c = value (stb; callers pass li 0/1).
     void fn_801F6204(u8 value);
     // EnemyParam.csv lookup: the value of `column` (ActorParamColumn) for
     // actor `id`, row 0's default when `id` has no row, 0 when the column
     // is missing. 2 units / 8 calls (the spawner, tu_802D39B8).
     s32 fn_801F620C(u32 id, u32 column);
     // 1 unit / 2 calls (ActorBase_804A5770::fn_801F1184 and startSound_801F0E34).
-    // mSounds[slot], or field_0x200c when mActors[slot]->field_0x4 != 0.
+    // mSounds[slot], or mSharedSound_0x200c when mActors[slot]->mViewMtx_0x4 != 0.
     ActorSoundObj_804578F4* fn_801F6644(s32 slot);
     // 170 units / 709 calls. The live actor with mSerial == serial
     // (cmpw), or NULL (also for serial < 0). Tries mActors[mLastSlot]
@@ -271,7 +271,7 @@ public:
     // 1 unit / 1 call each (GameRoot, tu_80139BE8), with GameRoot
     // 0x4->0x8:
     // fn_801F857C deletes every actor (virtual destructor, delete flag 1)
-    // and releases its sound object (fn_80456120), then field_0x200c's.
+    // and releases its sound object (fn_80456120), then mSharedSound_0x200c's.
     void fn_801F857C();
     // The draw pass: vfunc_0x20 of every live actor with mDrawEnabled
     // (only those with field_0x11f while paused, fn_80134CC8), each after
@@ -279,16 +279,16 @@ public:
     void fn_801F8658();
     // The update pass (0x730 bytes).
     void fn_801F871C();
-    // 0x801F6A4C: the pairwise push pass over field_0x201c, called by fn_801F871C.
+    // 0x801F6A4C: the pairwise push pass over mPushSerials_0x201c, called by fn_801F871C.
     void fn_801F6A4C();
     // fn_801F857C, then resets the spawn state: mSpawnCount = 0, mLastSlot
-    // = mActorEnd = -1, mListHead = NULL, field_0x305c = field_0x3041 = 0.
+    // = mActorEnd = -1, mListHead = NULL, mAllDefeated_0x305c = field_0x3041 = 0.
     void fn_801F8E4C();
     // The spawner (game/tu_801F9484.cpp). Allocates the actor for `id`
     // from mHeap, places it in the first free slot, sets its spawn fields
     // (ActorBase_804A5770's inline setters), calls init() and returns its
     // serial, or -1 when `id` is unknown or no slot is free. `pos` is
-    // copied to mPos, mPrevPos and mSpawnPos. arg_0x4 goes to field_0x4
+    // copied to mPos, mPrevPos and mSpawnPos. arg_0x4 goes to mViewMtx_0x4
     // (the layer) and field_0x8, arg_0x90 to field_0x90 (u32 there),
     // arg_0x16c to field_0x16c, arg_0x110 to field_0x110. 145 units / 521
     // calls.
@@ -312,16 +312,16 @@ public:
     /* 0x0008 */ ActorBase_804A5770* mActors[ACTOR_MANAGER_MAX_ACTORS];
     /* 0x1008 */ s32 mActorEnd;  // one past the highest used slot
     /* 0x100C */ ActorSoundObj_804578F4* mSounds[ACTOR_MANAGER_MAX_ACTORS]; // per slot
-    /* 0x200C */ ActorSoundObj_804578F4* field_0x200c; // shared by actors
-                                                       // with field_0x4 != 0
+    /* 0x200C */ ActorSoundObj_804578F4* mSharedSound_0x200c; // shared by actors
+                                                       // with mViewMtx_0x4 != 0
     /* 0x2010 */ s32 mSpawnCount; // ActorBase_804A5770::mSerial of the next spawn
     /* 0x2014 */ s32 mLastSlot;   // slot of the last spawn
     /* 0x2018 */ ActorBase_804A5770* mListHead; // through ActorBase_804A5770::mListPrev/Next
                                        // (fn_801F84C4 links, fn_801F8448 unlinks)
-    /* 0x201C */ s32 field_0x201c[0x400]; // -1 at the start of each update
-    /* 0x301C */ s32 field_0x301c;
-    /* 0x3020 */ s32 field_0x3020[4]; // fn_801F6068: per player, sorted
-    /* 0x3030 */ s32 field_0x3030[4]; // fn_801F6068: player index per entry
+    /* 0x201C */ s32 mPushSerials_0x201c[0x400]; // -1 at the start of each update
+    /* 0x301C */ s32 mPushSerialNum_0x301c;
+    /* 0x3020 */ s32 mPlayerRankValues_0x3020[4]; // fn_801F6068: per player, sorted
+    /* 0x3030 */ s32 mPlayerRanking_0x3030[4]; // fn_801F6068: player index per entry
     /* 0x3040 */ u8 field_0x3040;
     /* 0x3041 */ u8 field_0x3041; // bit per player (fn_801F68E0 sets,
                                   // fn_801F6884 and fn_801F8E4C clear)
@@ -333,7 +333,7 @@ public:
     /* 0x3054 */ u32* mParamColumnIds; // 4-character column keys ('life', ...)
     /* 0x3058 */ s32* mParamValues;    // [row * mParamColumnNum + column];
                                        // row 0 holds the defaults
-    /* 0x305C */ u8 field_0x305c;      // set by fn_801F6204
+    /* 0x305C */ u8 mAllDefeated_0x305c;      // set by fn_801F6204
 }; // Size: 0x3060
 
 // EnemyParam.csv column keys the spawner reads (fn_801F620C's 2nd argument),
@@ -345,7 +345,7 @@ enum ActorParamColumn {
     ACTOR_PARAM_DSTR = 'dstr', // field_0x1a8 (as != 0)
     ACTOR_PARAM_DASU = 'dasu', // field_0x18c
     ACTOR_PARAM_EFSZ = 'efsz', // field_0xc0
-    ACTOR_PARAM_VOIC = 'voic', // field_0x190
+    ACTOR_PARAM_VOIC = 'voic', // mNextVisibleBox_0x190
 };
 
 // Exports of game/tu_801F6058.cpp that are not manager members (their
@@ -357,7 +357,7 @@ ActorManager_804A5800* getActorManager_801F856C(void);
 
 // Defined in game/tu_801F6058.cpp. 21 units / 38 calls. True when pos (x, y) is outside the view's box
 // (getGameView_802D6A9C 0xCC, or 0xDC for layer 8 and up) grown by `margin` on
-// each side (<= / >= compares). Callers pass &mPos, field_0x4 and a
+// each side (<= / >= compares). Callers pass &mPos, mViewMtx_0x4 and a
 // literal, and test r3 with clrlwi. 24.
 bool fn_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin);
 

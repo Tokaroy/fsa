@@ -195,7 +195,7 @@ Title_804AF820::Title_804AF820() {
     field_0x34[2] = NULL;
     field_0x34[3] = NULL;
     field_0x44 = NULL;
-    gGameRoot2_8053AB10->field_0x20->field_0x2364 = 1;
+    gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     lbl_80529DEC.field_0x250 = 0;
 }
 
@@ -265,7 +265,7 @@ void Title_804AF820::fn_803A5380() {
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs"), 0, 3, 0, 0);
         gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, false);
-        gGameRoot2_8053AB10->field_0x20->field_0x2364 = 1;
+        gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
     field_0x154 = 1;
     field_0x14c = 0;

@@ -71,7 +71,7 @@ cls_8049F184::~cls_8049F184() {}
 // system into r4 first; here the root is in r4 and the camera comes in r5.
 void cls_8049F184::drawAfter(JPABaseEmitter* emitter) {
     GameRoot2_8049F108* root = gGameRoot2_8053AB10;
-    root->field_0x24->field_0xe4.getCamMtx(root->field_0x28->mEmitterManager->pWd->mPosCamMtx);
+    root->field_0x24->mDrawInfo_0xe4.getCamMtx(root->field_0x28->mEmitterManager->pWd->mPosCamMtx);
 }
 
 // Projects the particles: scales the manager's camera matrix by 1/sqrt 2 in y and z and moves
@@ -223,7 +223,7 @@ void EffectSystem_8049F178::fn_8013DB2C() {
 
 void EffectSystem_8049F178::fn_8013DA10() {
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
-        JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->field_0xe4);
+        JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->mDrawInfo_0xe4);
         gGameRoot2_8053AB10->fn_8013B438();
         GXSetAlphaUpdate(GX_FALSE);
         mEmitterManager->draw(&info, 9);
@@ -231,14 +231,14 @@ void EffectSystem_8049F178::fn_8013DA10() {
 }
 
 void EffectSystem_8049F178::fn_8013D908() {
-    JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->field_0xe4);
+    JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->mDrawInfo_0xe4);
     gGameRoot2_8053AB10->fn_8013B438();
     mEmitterManager->draw(&info, 7);
 }
 
 void EffectSystem_8049F178::fn_8013D6E4() {
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
-        JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->field_0xe4);
+        JPADrawInfo info(gGameRoot2_8053AB10->field_0x24->mDrawInfo_0xe4);
         JPADrawInfo info2d;
         gGameRoot2_8053AB10->fn_8013B438();
         mEmitterManager->draw(&info, 0);

@@ -39,7 +39,7 @@ cls_804B1E1C::~cls_804B1E1C() {
 
 void cls_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* pos, JUtility::TColor color) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    f32 baseSize = 48.0f * camera->field_0x858;
+    f32 baseSize = 48.0f * camera->mZoom_0x858;
     Vec screen;
     camera->fn_8030C5F0(pos, false, false, &screen);
     for (int i = 0; i < 128; i++) {

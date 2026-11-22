@@ -704,13 +704,13 @@ void cls_8049D83C::updateCameraFocus() {
         focus.y += 32.0f;
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = focus.x;
-            camera->field_0x7fc.y = focus.y;
-            camera->field_0x7fc.z = focus.z;
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.x = focus.x;
+            camera->mFocusPos_0x7fc.y = focus.y;
+            camera->mFocusPos_0x7fc.z = focus.z;
+            camera->mOverrideBlend_0x7f6 = 0;
         }
         break;
     }
@@ -719,13 +719,13 @@ void cls_8049D83C::updateCameraFocus() {
         focus.y += 16.0f + (mSpawnPos.y - mPos.y - 32.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = focus.x;
-            camera->field_0x7fc.y = focus.y;
-            camera->field_0x7fc.z = focus.z;
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.x = focus.x;
+            camera->mFocusPos_0x7fc.y = focus.y;
+            camera->mFocusPos_0x7fc.z = focus.z;
+            camera->mOverrideBlend_0x7f6 = 0;
         }
         break;
     }

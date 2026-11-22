@@ -87,12 +87,12 @@ ActorManager_804A5800::ActorManager_804A5800(JKRHeap* parent) {
         mSounds[i] = new (parent, 0) ActorSoundObj_804578F4(&lbl_804CABD8, NULL, 8);
         mSounds[i]->fn_80456120();
     }
-    field_0x200c = new (parent, 0) ActorSoundObj_804578F4(NULL, NULL, 0x18);
+    mSharedSound_0x200c = new (parent, 0) ActorSoundObj_804578F4(NULL, NULL, 0x18);
     fn_801F62AC(parent);
 }
 
 ActorManager_804A5800::~ActorManager_804A5800() {
-    delete field_0x200c;
+    delete mSharedSound_0x200c;
     for (s32 i = ACTOR_MANAGER_MAX_ACTORS - 1; i >= 0; i--) {
         delete mSounds[i];
     }
@@ -111,7 +111,7 @@ ActorManager_804A5800::~ActorManager_804A5800() {
 
 void ActorManager_804A5800::fn_801F8E4C() {
     fn_801F857C();
-    field_0x200c->setField_0x31();
+    mSharedSound_0x200c->setField_0x31();
     mSpawnCount = 0;
     mLastSlot = -1;
     mActorEnd = -1;
@@ -122,21 +122,21 @@ void ActorManager_804A5800::fn_801F8E4C() {
 
 // FIXME(shotgun): 96.75 %, missing/extra + reloc-name; behaviour drift.
 // (fn_801A6160 named in C++)
-// The per-frame update pass. Clears the per-frame serial list (field_0x201c), steps the
+// The per-frame update pass. Clears the per-frame serial list (mPushSerials_0x201c), steps the
 // collision box lists, then updates each live actor: with GameView's fn_802DCD0C only those
 // flagged for it (0x11E / 0xC4 / 0xCC); otherwise all of them unless paused (0x11F keeps them
 // going; 'SWDL' in GameRoot 0x88 mode 2), and while GameRoot 0x94 / 0x96 holds only the
 // listed actor ids. Dead actors are deleted, the others checked against the collision boxes
 // (die_0x24). Then fn_801F6A4C, the list pass (actors not re-linked this frame are unlinked)
-// and field_0x305c when no countable actor is left.
+// and mAllDefeated_0x305c when no countable actor is left.
 void ActorManager_804A5800::fn_801F871C() {
     s32 count = 0;
     fn_801F6068();
     field_0x3040 = 0;
     for (u32 i = 0; i < 0x400; i++) {
-        field_0x201c[i] = -1;
+        mPushSerials_0x201c[i] = -1;
     }
-    field_0x301c = 0;
+    mPushSerialNum_0x301c = 0;
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 && (fn_80239D38() || gGameRoot_8053AAF8->fn_80134CC8())) ||
         lbl_80529DEC.field_0x240 != 0)
@@ -180,7 +180,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 deleteSlot(i);
             }
         }
-        field_0x200c->fn_80456154();
+        mSharedSound_0x200c->fn_80456154();
     } else {
         for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
             if (mActors[i] == NULL) {
@@ -220,9 +220,9 @@ void ActorManager_804A5800::fn_801F871C() {
                     }
                     u8 kind = mActors[i]->field_0xb8;
                     if (kind == 1 || kind == 2) {
-                        if (field_0x201c[field_0x301c] == -1) {
-                            field_0x201c[field_0x301c] = mActors[i]->mSerial;
-                            field_0x301c++;
+                        if (mPushSerials_0x201c[mPushSerialNum_0x301c] == -1) {
+                            mPushSerials_0x201c[mPushSerialNum_0x301c] = mActors[i]->mSerial;
+                            mPushSerialNum_0x301c++;
                         }
                     }
                     mSounds[i]->fn_80456154();
@@ -246,7 +246,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 }
             }
         }
-        field_0x200c->fn_80456154();
+        mSharedSound_0x200c->fn_80456154();
     }
     fn_801F6A4C();
     ActorBase_804A5770* next;
@@ -287,7 +287,7 @@ void ActorManager_804A5800::fn_801F857C() {
     for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
         deleteSlot(i);
     }
-    field_0x200c->fn_80456120();
+    mSharedSound_0x200c->fn_80456120();
 }
 
 ActorManager_804A5800* getActorManager_801F856C(void) {
@@ -800,17 +800,17 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
 }
 
 // FIXME(shotgun): 84.87 %, missing/extra + reloc-name; behaviour near.
-// The pairwise push pass over the actors fn_801F871C listed in field_0x201c: each pair on the
+// The pairwise push pass over the actors fn_801F871C listed in mPushSerials_0x201c: each pair on the
 // same layer whose boxes overlap (and the second's 0xBC is not lower) records the other's
 // serial in field_0x9c. Kind 2 (0xB8) only records it; the others are pushed out of the overlap
 // in random steps away from the other actor (up to 8 tries through fn_801F23BC), 'BOYO'
 // also knocking the actor back at 5 and flagging the BOYO's 0x94.
 void ActorManager_804A5800::fn_801F6A4C() {
-    for (s32 i = 0; i <= field_0x301c; i++) {
-        if (field_0x201c[i] == -1) {
+    for (s32 i = 0; i <= mPushSerialNum_0x301c; i++) {
+        if (mPushSerials_0x201c[i] == -1) {
             return;
         }
-        ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x201c[i]);
+        ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(mPushSerials_0x201c[i]);
         if (a == NULL || !a->mAlive) {
             continue;
         }
@@ -818,9 +818,9 @@ void ActorManager_804A5800::fn_801F6A4C() {
         boxA = a->mBox;
         boxA.addPos(a->mPos.x, a->mPos.y);
         a->field_0x9c = -1;
-        for (s32 j = 0; j < field_0x301c; j++) {
+        for (s32 j = 0; j < mPushSerialNum_0x301c; j++) {
             ActorBase_804A5770* b =
-                getActorManager_801F856C()->findActorBySerial_801F666C(field_0x201c[j]);
+                getActorManager_801F856C()->findActorBySerial_801F666C(mPushSerials_0x201c[j]);
             if (b == NULL || !b->mAlive) {
                 continue;
             }
@@ -971,7 +971,7 @@ ActorSoundObj_804578F4* ActorManager_804A5800::fn_801F6644(s32 slot) {
     if (mActors[slot]->mLayer_0x4 == 0) {
         return mSounds[slot];
     }
-    return field_0x200c;
+    return mSharedSound_0x200c;
 }
 
 void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
@@ -1089,7 +1089,7 @@ s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
 }
 
 void ActorManager_804A5800::fn_801F6204(u8 value) {
-    field_0x305c = value;
+    mAllDefeated_0x305c = value;
 }
 
 void ActorManager_804A5800::fn_801F6068() {
@@ -1098,41 +1098,41 @@ void ActorManager_804A5800::fn_801F6068() {
     s32 best;
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i)) {
-            field_0x3020[i] = fn_80236228(i);
-            field_0x3030[i] = i;
+            mPlayerRankValues_0x3020[i] = fn_80236228(i);
+            mPlayerRanking_0x3030[i] = i;
             count++;
         } else {
-            field_0x3020[i] = -9999;
-            field_0x3030[i] = 3;
+            mPlayerRankValues_0x3020[i] = -9999;
+            mPlayerRanking_0x3030[i] = 3;
         }
     }
     // Selection sort, highest value first.
     for (s32 i = 0; i < count - 1; i++) {
         best = i;
-        s32 v = field_0x3020[i];
+        s32 v = mPlayerRankValues_0x3020[i];
         for (j = i + 1; j < count; j++) {
-            if (v < field_0x3020[j]) {
-                field_0x3020[best] = field_0x3020[j];
-                field_0x3020[j] = v;
-                v = field_0x3020[best];
-                s32 p = field_0x3030[j];
-                field_0x3030[j] = field_0x3030[best];
-                field_0x3030[best] = p;
+            if (v < mPlayerRankValues_0x3020[j]) {
+                mPlayerRankValues_0x3020[best] = mPlayerRankValues_0x3020[j];
+                mPlayerRankValues_0x3020[j] = v;
+                v = mPlayerRankValues_0x3020[best];
+                s32 p = mPlayerRanking_0x3030[j];
+                mPlayerRanking_0x3030[j] = mPlayerRanking_0x3030[best];
+                mPlayerRanking_0x3030[best] = p;
                 best = j;
             }
         }
     }
     // The entries past the last player repeat it.
     if (count < 4) {
-        s32 lastValue = field_0x3020[count - 1];
-        s32 lastPlayer = field_0x3030[count - 1];
+        s32 lastValue = mPlayerRankValues_0x3020[count - 1];
+        s32 lastPlayer = mPlayerRanking_0x3030[count - 1];
         for (s32 i = count; i < 4; i++) {
-            field_0x3020[i] = lastValue;
-            field_0x3030[i] = lastPlayer;
+            mPlayerRankValues_0x3020[i] = lastValue;
+            mPlayerRanking_0x3030[i] = lastPlayer;
         }
     }
 }
 
 s32 ActorManager_804A5800::fn_801F6058(s32 i) {
-    return field_0x3030[i];
+    return mPlayerRanking_0x3030[i];
 }

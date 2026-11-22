@@ -11,7 +11,7 @@
 #include "game/tu_803B8C74.h"
 
 // The actor with this serial, or NULL. This file looks actors up through one inline
-// helper, used at all 35 sites: written out by hand, cls_804A51E4::vfunc_0x88 differs
+// helper, used at all 35 sites: written out by hand, cls_804A51E4::calcVelocity_0x88 differs
 // (97.22 %) (docs/analysis/INLINE_LEADS.md).
 static inline ActorBase_804A5770* actorBySerial(s32 serial) {
     return getActorManager_801F856C()->findActorBySerial_801F666C(serial);

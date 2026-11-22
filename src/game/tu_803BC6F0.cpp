@@ -443,7 +443,7 @@ FileSelect_804AFF60::FileSelect_804AFF60() {
         gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 3, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
         gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 3, 0, 0, false);
-        gGameRoot2_8053AB10->field_0x20->field_0x2364 = 1;
+        gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
 
     lbl_8053ADB0 = this;

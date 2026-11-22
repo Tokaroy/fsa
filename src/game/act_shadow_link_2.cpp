@@ -1301,11 +1301,11 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
             f32 x = mPos.x;
             f32 y = mPos.y;
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (camera->field_0x7f5 == 0) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = 4;
-                camera->field_0x7fc.set(x, y, 0.0f);
-                camera->field_0x7f6 = 0;
+            if (camera->mShowWholeArea_0x7f5 == 0) {
+                camera->mFocusOverride_0x7f4 = 1;
+                camera->mFocusMode_0x7f8 = 4;
+                camera->mFocusPos_0x7fc.set(x, y, 0.0f);
+                camera->mOverrideBlend_0x7f6 = 0;
             }
         }
         break;

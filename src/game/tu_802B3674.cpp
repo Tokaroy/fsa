@@ -186,8 +186,8 @@ void cls_804A8638::init() {
     field_0x308 = 0xFF;
     field_0x30c = 0;
     field_0x310 = fn_801B7550();
-    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->field_0x4[0][3];
-    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->field_0x4[1][3];
+    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[0][3];
+    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[1][3];
     field_0x254.z = 0.0f;
     switch (field_0x2d8) {
     case 0:
@@ -389,8 +389,8 @@ void cls_804A8638::update() {
         field_0x2d0[5]++;
     }
     fn_8016A3AC()->field_0x1ef = field_0x2d0[5];
-    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->field_0x4[0][3];
-    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->field_0x4[1][3];
+    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[0][3];
+    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[1][3];
     field_0x254.z = 0.0f;
     switch (field_0x2d8) {
     case 0: {
@@ -436,7 +436,7 @@ void cls_804A8638::update() {
         mSoundObj->startSound(0x3001E);
         switch (field_0x240) {
         case 0:
-            if (getActorManager_801F856C()->field_0x305c == 1) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
                 field_0x248 = 20;
                 field_0x240 = 1;
             }
@@ -470,7 +470,7 @@ void cls_804A8638::update() {
             }
             break;
         case 0xC:
-            if (getActorManager_801F856C()->field_0x305c == 1) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
                 field_0x248 = 20;
                 field_0x240 = 1;
             }
@@ -507,12 +507,12 @@ void cls_804A8638::update() {
             }
             break;
         case 4:
-            if (getActorManager_801F856C()->field_0x305c == 0) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 0) {
                 field_0x240 = 5;
             }
             break;
         case 5:
-            if (getActorManager_801F856C()->field_0x305c == 1) {
+            if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
                 field_0x248 = 30;
                 field_0x240 = 7;
             }

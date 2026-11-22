@@ -304,7 +304,7 @@ public:
     /* 0x08 */ virtual ~TileMap_804AA858(); // fn_802FFBF8
 
     // 61 units / 144 calls. Draws frame `frame` of the "SOB " resource `res`
-    // at pos, scaled by (scaleX, scaleY), when field_0x2364 is set; params
+    // at pos, scaled by (scaleX, scaleY), when mDrawSprites_0x2364 is set; params
     // (a SpriteParams_801F5AE0 or NULL) selects variants (its bytes 0x21 /
     // 0x22 divert to fn_802F654C / fn_802F6298). The body reads res
     // bytewise at res + frame * 2 + 2..5 (0x802F87FC), so its real type is
@@ -320,15 +320,15 @@ public:
     // 0x802F6298 / 0x802F654C: queue a sprite (pos, the "SOB " resource and
     // frame, or the image of fn_802F745C, or the fn_802F6CF4 resource) with a
     // copy of params (field_0x22 / field_0x21 cleared so the queued draw does
-    // not queue again; its matrix copied into the entry) on field_0xd324 /
-    // field_0xc220; false when the queue's 0x20 entries are taken. The draws
+    // not queue again; its matrix copied into the entry) on mLateQueuedSprites_0xd324 /
+    // mQueuedSprites_0xc220; false when the queue's 0x20 entries are taken. The draws
     // call them when params' byte 0x22 / 0x21 is set.
     u8 fn_802F6298(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
                      SpriteParams_801F5AE0* params);
     u8 fn_802F654C(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
                      SpriteParams_801F5AE0* params);
     // 0x802F6800: called by the three draws (same arguments) when params'
-    // field_0x30 is not -1; adds a field_0x2398 effect of that kind (tables
+    // field_0x30 is not -1; adds a mFadeSprites_0x2398 effect of that kind (tables
     // indexed by field_0x30) on frames where the sprite's resource address
     // (res + image + res3) matches the frame counter modulo its period.
     u8 fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
@@ -343,10 +343,10 @@ public:
     // 0x802F99DC: loads the u16 tile grid of `layer` (little-endian in res)
     // at byte dstOffset; tu_802D39B8 passes (res, 0, layer, 0, 0).
     void fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstOffset, u32 size);
-    // 0x802F9BE8: loads the u16 grid field_0x24 the same way, from byte
+    // 0x802F9BE8: loads the u16 grid mTileDefs_0x24 the same way, from byte
     // `start` on (tu_802D39B8).
     void fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size);
-    // 0x802F9DA8: fn_802F93F4 for the sprite palettes field_0xc / field_0x18
+    // 0x802F9DA8: fn_802F93F4 for the sprite palettes mTilePalettesRaw_0xc / mTilePalettes_0x18
     // of slot 0-2 (tu_802D39B8).
     void fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
     // 0x802F53F4. tu_80301CD0 (0x803051A0, 0x80305DEC). Keeps the record of
@@ -361,14 +361,14 @@ public:
     // there (cross products of the grid's slopes); returns whether it did.
     bool fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx);
     // 0x802F601C: starts an effect of `kind` (1-6; 4 becomes 5 with scaleX
-    // negated) at pos in a field_0xbf9c slot; kind 3 keeps dir normalized
+    // negated) at pos in a mHeightGridEffects_0xbf9c slot; kind 3 keeps dir normalized
     // (r6 is read as a TVec3f only there). act_warp_cannon passes (1, NULL,
     // 1.0f, -2.0f).
     void fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir, f32 scaleX,
                      f32 scaleY);
     // 0x802F9714 (game/tu_802F5040.cpp): the same arguments as fn_802FA160
     // (checkCompressed / getResSize for size 0); writes the nibble-swapped
-    // bytes to field_0x88[slot] + dstOffset and flushes them; tu_8039003C's
+    // bytes to mSpriteImages_0x88[slot] + dstOffset and flushes them; tu_8039003C's
     // constructor passes the 'SCH ' resources (slots 0, 0, 2, 3), as does
     // tu_803A85E4's (slots 0, 0, 2, 3; dstOffset 0 / 0x7000 / 0x4000 / 0).
     void fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
@@ -401,8 +401,8 @@ public:
     // GameRoot2_8049F108::fn_8013B538 / fn_8013B618 with field_0x20.
     void fn_802FF0EC();
     // 0x802FAC10: draws the panel tile grid field_0x48[layer] (2 x 2 blocks of
-    // 16 x 16, field_0x4[1]'s colour-index texture, palette set field_0x18[1]
-    // for layers 0 / 8 or a nonzero flag, else field_0x18[2]) scrolled by (x, y),
+    // 16 x 16, mTileImages_0x4[1]'s colour-index texture, palette set mTilePalettes_0x18[1]
+    // for layers 0 / 8 or a nonzero flag, else mTilePalettes_0x18[2]) scrolled by (x, y),
     // tinted grey / alpha unless both are 0xFF; offsets (or NULL): a shift per
     // screen line (0xA0), averaged over each 8-line row. Called only by fn_802FB69C.
     void fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets);
@@ -413,7 +413,7 @@ public:
     void fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_803004C0* rect, cls_803004C0* rect2,
                      u8 flag, s32 count, u8 alpha);
     // 0x802FF3B0 (game/tu_802F5040.cpp): no arguments. Calls fn_802FA3FC
-    // when byte 0xE451 is set and gGameRoot_8053AAF8->field_0x4 is not NULL.
+    // when byte 0xE451 is set and gGameRoot_8053AAF8->mTileImages_0x4 is not NULL.
     void fn_802FF3B0();
     // 0x802FA3FC (game/tu_802F5040.cpp, not written yet): no arguments; reads
     // this's 0x2368 / 0x2374 / 0x235C / 0x2380 fields (r15 = r3 on entry).
@@ -421,11 +421,11 @@ public:
     void fn_802FA3FC();
 
     // 0x802F5E9C. The height under pos: pos->z plus the bilinear blend of
-    // the z of the four field_0x100[field_0x2388] grid points (8-unit cells,
-    // 65 per row) around pos, when field_0xc21c is positive and pos lies in
-    // the field_0x2380 x field_0x2384 cells from field_0x2368.
+    // the z of the four mHeightGrid_0x100[mHeightGridIndex_0x2388] grid points (8-unit cells,
+    // 65 per row) around pos, when mHeightGridEffectNum_0xc21c is positive and pos lies in
+    // the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells from mLayerOrigin_0x2368.
     f32 fn_802F5E9C(const JGeometry::TVec3f* pos);
-    // 0x802F6CF4: the third sprite kind of the queues (cls_8030029C::field_0x18),
+    // 0x802F6CF4: the third sprite kind of the queues (cls_8030029C::mTilePalettes_0x18),
     // called like fn_802F745C (pos, the resource, &params).
     void fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
     // 0x802F91AC: loads the view matrix of a sprite at pos (fn_802F86CC
@@ -436,26 +436,26 @@ public:
     void fn_802F8F0C(SpriteParams_801F5AE0* params);
     void fn_802FC80C(); // 0x802FC80C, called by fn_802FF3F0
     // 0x802FC268: draws the tile grid `grid` of `layer` (converted to a float
-    // offset) at origin (PSMTXTrans, then the 16 palettes of field_0x18).
+    // offset) at origin (PSMTXTrans, then the 16 palettes of mTilePalettes_0x18).
     void fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u16* grid);
     void fn_802FCE74(); // 0x802FCE74, called by fn_802FF568 in the game modes of isGameModeSet()
     void fn_802FDDD4(); // 0x802FDDD4, called by fn_802FF568 and fn_802FF798
     void fn_802FEE68(); // 0x802FEE68, called by fn_802FF2D8
-    // 0x802FF2D8: draws the field_0xd324 queue, empties it, then fn_802FEE68.
+    // 0x802FF2D8: draws the mLateQueuedSprites_0xd324 queue, empties it, then fn_802FEE68.
     void fn_802FF2D8();
     // 0x802FF3F0: sets the camera's screen rectangle, fn_802FC80C, then draws
-    // the field_0xc220 queue and empties it.
+    // the mQueuedSprites_0xc220 queue and empties it.
     void fn_802FF3F0();
-    // 0x802FF568: the per-frame update (fn_802FDDD4, timers of field_0x2398).
+    // 0x802FF568: the per-frame update (fn_802FDDD4, timers of mFadeSprites_0x2398).
     void fn_802FF568();
 
     /* 0x0000 vtable */
     // The buffers the constructor allocates on `heap` (__nwa, alignment 0x20;
     // sizes in the comments), freed by the destructor in reverse order.
-    /* 0x0004 */ u8* field_0x4[2];   // 0x8000
-    /* 0x000C */ u8* field_0xc[3];   // 0x200
-    /* 0x0018 */ u8* field_0x18[3];  // 0x200
-    /* 0x0024 */ u16* field_0x24;    // 0x1000 (fn_802F9BE8 stores u16s)
+    /* 0x0004 */ u8* mTileImages_0x4[2];   // 0x8000
+    /* 0x000C */ u8* mTilePalettesRaw_0xc[3];   // 0x200
+    /* 0x0018 */ u8* mTilePalettes_0x18[3];  // 0x200
+    /* 0x0024 */ u16* mTileDefs_0x24;    // 0x1000 (fn_802F9BE8 stores u16s)
     // The u16 tile grids of layers 0-3 and 4-7 (fn_802F9908 / fn_802F9974
     // test the two ranges separately; 32 x 32 cells). 0x2000 each.
     /* 0x0028 */ u16* mLayerGrid[4];
@@ -463,19 +463,19 @@ public:
     // u16 tile grids of 2 x 2 blocks of 16 x 16 (0x2000 each; fn_802FAC10 draws one).
     /* 0x0048 */ u16* field_0x48[16];
     // 4-bit tile images (0x8000 each): fn_802F9714 / fn_802F93F4 write them,
-    // fn_802FF798 makes them the GXInitTexObjCI images of field_0xb5c.
-    /* 0x0088 */ u8* field_0x88[4];
-    /* 0x0098 */ u8* field_0x98[12]; // 0x200
-    // Palettes (0x200 each, 16 of 0x20): the GXInitTlutObj data of field_0x25c.
-    /* 0x00C8 */ u8* field_0xc8[12];
+    // fn_802FF798 makes them the GXInitTexObjCI images of mSpriteTexObjs_0xb5c.
+    /* 0x0088 */ u8* mSpriteImages_0x88[4];
+    /* 0x0098 */ u8* mSpritePalettesRaw_0x98[12]; // 0x200
+    // Palettes (0x200 each, 16 of 0x20): the GXInitTlutObj data of mSpriteTluts_0x25c.
+    /* 0x00C8 */ u8* mSpritePalettes_0xc8[12];
     // 0x8000: where fn_802F9714 decodes compressed resources (JKRDecomp::decode).
-    /* 0x00F8 */ u8* field_0xf8;
+    /* 0x00F8 */ u8* mDecodeBuf_0xf8;
     /* 0x00FC */ cls_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
     // 65 x 65 grid points (0x1081 TVec3f / TColor each, __construct_new_array).
-    /* 0x0100 */ JGeometry::TVec3f (*field_0x100[2])[65];
-    /* 0x0108 */ JUtility::TColor* field_0x108[2];
-    /* 0x0110 */ JGeometry::TVec2f* field_0x110; // 0x1000 (4 x 64 x 16, filled by fn_802FF798)
-    /* 0x0114 */ u16 field_0x114[4]; // fn_802F9DA8: the first colour of each sprite palette set
+    /* 0x0100 */ JGeometry::TVec3f (*mHeightGrid_0x100[2])[65];
+    /* 0x0108 */ JUtility::TColor* mHeightGridColors_0x108[2];
+    /* 0x0110 */ JGeometry::TVec2f* mTileTexCoords_0x110; // 0x1000 (4 x 64 x 16, filled by fn_802FF798)
+    /* 0x0114 */ u16 mPaletteFirstColor_0x114[4]; // fn_802F9DA8: the first colour of each sprite palette set
     /* 0x011C */ cls_804AA858Sub11C* field_0x11c[4];
     /* 0x012C */ u8 field_0x12c[4]; // set by fn_802F53F4 for the slot it fills
     /* 0x0130 */ u8 field_0x130[4]; // fn_802F53F4: record bits 0x4 >> 5 (mode 3)
@@ -511,49 +511,49 @@ public:
     /* 0x0240 */ s32 field_0x240;
     /* 0x0244 */ s32 field_0x244;
     // When set, fn_802FF3F0 gives the camera's screen rectangle
-    // (Camera_804AA9E4::field_0x144) field_0x24c instead of the full screen.
-    /* 0x0248 */ u8 field_0x248;
-    /* 0x024C */ JGeometry::TBox2<u32> field_0x24c;
-    /* 0x025C */ GXTlutObj field_0x25c[3][4][16];
-    /* 0x0B5C */ GXTexObj field_0xb5c[3][4][16];
+    // (Camera_804AA9E4::field_0x144) mScreenRect_0x24c instead of the full screen.
+    /* 0x0248 */ u8 mUseScreenRect_0x248;
+    /* 0x024C */ JGeometry::TBox2<u32> mScreenRect_0x24c;
+    /* 0x025C */ GXTlutObj mSpriteTluts_0x25c[3][4][16];
+    /* 0x0B5C */ GXTexObj mSpriteTexObjs_0xb5c[3][4][16];
     // Per-player bytes: tu_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC
     // and tu_803B7DCC store them; Camera_804AA9E4::fn_8030C85C /
-    // fn_8030C928 copy them to field_0x2360.
-    /* 0x235C */ u8 field_0x235c[4];
-    /* 0x2360 */ u8 field_0x2360[4];
+    // fn_8030C928 copy them to mLayer2Visible_0x2360.
+    /* 0x235C */ u8 mLayerVisible_0x235c[4];
+    /* 0x2360 */ u8 mLayer2Visible_0x2360[4];
     // fn_802F86CC draws nothing while it is 0; 6 units set it to 1
     // (tu_802D39B8 0x802D9BFC).
-    /* 0x2364 */ u8 field_0x2364;
+    /* 0x2364 */ u8 mDrawSprites_0x2364;
     /* 0x2365 */ u8 field_0x2365;
-    // Camera_804AA9E4::fn_8030C928 moves field_0x2368 to field_0x2374 and
-    // stores the new box's corner (x0, y0, constant) in field_0x2368;
+    // Camera_804AA9E4::fn_8030C928 moves mLayerOrigin_0x2368 to mLayer2Origin_0x2374 and
+    // stores the new box's corner (x0, y0, constant) in mLayerOrigin_0x2368;
     // tu_8016A2B4 reads it (0x8016E014).
-    /* 0x2368 */ JGeometry::TVec3f field_0x2368;
-    /* 0x2374 */ JGeometry::TVec3f field_0x2374;
+    /* 0x2368 */ JGeometry::TVec3f mLayerOrigin_0x2368;
+    /* 0x2374 */ JGeometry::TVec3f mLayer2Origin_0x2374;
     // Written by tu_802D39B8 (0x802D92D4), read as ints by tu_8016A2B4
     // (0x8016AE44). The cell counts of fn_802F5E9C's grid (64 after fn_802FF798).
-    /* 0x2380 */ s32 field_0x2380;
-    /* 0x2384 */ s32 field_0x2384;
-    /* 0x2388 */ s32 field_0x2388; // which field_0x100 grid fn_802F5E9C reads
-    /* 0x238C */ u8* field_0x238c; // __nwa(0x100)
-    /* 0x2390 */ s32 field_0x2390;
-    /* 0x2394 */ s32 field_0x2394;
-    /* 0x2398 */ cls_803003AC field_0x2398[0x100];
+    /* 0x2380 */ s32 mHeightGridCellsX_0x2380;
+    /* 0x2384 */ s32 mHeightGridCellsY_0x2384;
+    /* 0x2388 */ s32 mHeightGridIndex_0x2388; // which mHeightGrid_0x100 grid fn_802F5E9C reads
+    /* 0x238C */ u8* mAnimTileData_0x238c; // __nwa(0x100)
+    /* 0x2390 */ s32 mAnimTileFrame_0x2390;
+    /* 0x2394 */ s32 mAnimTileTimer_0x2394;
+    /* 0x2398 */ cls_803003AC mFadeSprites_0x2398[0x100];
     /* 0xBF98 */ u8 field_0xbf98;
-    /* 0xBF9C */ cls_803003A8 field_0xbf9c[16];
-    /* 0xC21C */ s32 field_0xc21c; // fn_802F5E9C reads the grid only while it is positive
-    // Two sprite queues: fn_802FF3F0 / fn_802FF2D8 draw the field_0xd320 /
-    // field_0xe424 entries and empty them.
-    /* 0xC220 */ cls_8030029C field_0xc220[0x20];
-    /* 0xD320 */ s32 field_0xd320;
-    /* 0xD324 */ cls_8030029C field_0xd324[0x20];
-    /* 0xE424 */ s32 field_0xe424;
-    /* 0xE428 */ JUTTexture* field_0xe428[10];
-    /* 0xE450 */ u8 field_0xe450;
+    /* 0xBF9C */ cls_803003A8 mHeightGridEffects_0xbf9c[16];
+    /* 0xC21C */ s32 mHeightGridEffectNum_0xc21c; // fn_802F5E9C reads the grid only while it is positive
+    // Two sprite queues: fn_802FF3F0 / fn_802FF2D8 draw the mQueuedSpriteNum_0xd320 /
+    // mLateQueuedSpriteNum_0xe424 entries and empty them.
+    /* 0xC220 */ cls_8030029C mQueuedSprites_0xc220[0x20];
+    /* 0xD320 */ s32 mQueuedSpriteNum_0xd320;
+    /* 0xD324 */ cls_8030029C mLateQueuedSprites_0xd324[0x20];
+    /* 0xE424 */ s32 mLateQueuedSpriteNum_0xe424;
+    /* 0xE428 */ JUTTexture* mFilterTex_0xe428[10];
+    /* 0xE450 */ u8 mUseFilterTex_0xe450;
     // fn_802FF3B0 tests it before calling fn_802FA3FC (the only reader seen).
     /* 0xE451 */ u8 field_0xe451;
     /* 0xE452 */ u8 field_0xe452[0xE454 - 0xE452];
-    /* 0xE454 */ JUTTexture* field_0xe454;
+    /* 0xE454 */ JUTTexture* mCircleTex_0xe454;
     /* 0xE458 */ f32 field_0xe458;
     /* 0xE45C */ f32 field_0xe45c;
     /* 0xE460 */ u8 field_0xe460;

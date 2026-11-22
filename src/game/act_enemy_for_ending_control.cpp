@@ -79,11 +79,11 @@ void EnemyForEndingControl_804AD48C::vfunc_0x10() {}
 
 static inline void setCameraBox(const JGeometry::TBox2f& box) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 5;
-        camera->field_0x808.set(box);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 5;
+        camera->mFocusBox_0x808.set(box);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -145,12 +145,12 @@ bool cls_804A5958::fn_8035C15C(s32 seq) {
 
 static inline void setCameraRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
-        camera->field_0x844.set(x0, y0, x1, y1);
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBox_0x844.set(x0, y0, x1, y1);
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 

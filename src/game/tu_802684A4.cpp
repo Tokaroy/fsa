@@ -317,7 +317,7 @@ static inline void climbUp(cls_804A71A8* p) {
         if (!(p->field_0x4->fn_80240F28() && p->field_0x4->fn_802415CC() >= 2 &&
               (p->field_0x4->mFacing_0x3dc == 0 || p->field_0x4->mFacing_0x3dc == 1)) &&
             !p->field_0x4->fn_80240B34() && !p->field_0x4->fn_80240D64() && !p->field_0x4->fn_80240860() &&
-            !(p->field_0x4->fn_80270A8C() && p->field_0x4->field_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
+            !(p->field_0x4->fn_80270A8C() && p->field_0x4->mDragPlayer_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
         {
             p->field_0x4->mPos.y += 4.0f;
         }
@@ -722,18 +722,18 @@ void cls_804A71A8::fn_8026E68C(u16 tile) {
     }
 }
 
-// Stores pos's x and y in field_0x324 when fn_80251AEC accepts it for this
-// player: the arg is 0x38 on field_0xd64 == 0, else 0x13.
+// Stores pos's x and y in mGlideTarget_0x324 when fn_80251AEC accepts it for this
+// player: the arg is 0x38 on mLifting_0xd64 == 0, else 0x13.
 bool Player_804A6F38::fn_8026E5F8(const JGeometry::TVec2f* pos) {
-    if (field_0xd64 == 0) {
+    if (mLifting_0xd64 == 0) {
         if (fn_80251AEC(0x38)) {
-            field_0x324.x = pos->x;
-            field_0x324.y = pos->y;
+            mGlideTarget_0x324.x = pos->x;
+            mGlideTarget_0x324.y = pos->y;
             return true;
         }
     } else if (fn_80251AEC(0x13)) {
-        field_0x324.x = pos->x;
-        field_0x324.y = pos->y;
+        mGlideTarget_0x324.x = pos->x;
+        mGlideTarget_0x324.y = pos->y;
         return true;
     }
     return false;
@@ -1615,7 +1615,7 @@ slowFloor: // the owner stands near a 'WARP' actor, or the alignment is done
         climbUp(this);
     }
     if (field_0xba == 1) {
-        field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xcbc, 0xD);
+        field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->mRespawnPos_0xcbc, 0xD);
     }
     liftOn60(this);
     if (field_0x4->fn_8026FC20() <= 0) {
@@ -1745,19 +1745,19 @@ void cls_804A71A8::fn_80268BC4() {
                 field_0x8 += field_0x4->mPos;
                 u16 tile = fn_8022461C(&field_0x8, field_0x4->mLayer_0x3b4);
                 if (field_0x4->fn_8025F590() && field_0x4->mLayer_0x3b4 == 8 &&
-                    getPlayerLayer_8023DE58(field_0x4->field_0xd70) < 8)
+                    getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70) < 8)
                 {
                     // Probe the same spot on the layer of the player getPlayerLayer_8023DE58
                     // names, moved from this layer's view box to that one's.
                     JGeometry::TVec3f saved = field_0x8;
                     field_0x8.x -= layerBox(field_0x4->mLayer_0x3b4)->i.x;
                     field_0x8.y -= layerBox(field_0x4->mLayer_0x3b4)->i.y;
-                    field_0x8.x += layerBox(getPlayerLayer_8023DE58(field_0x4->field_0xd70))->i.x;
-                    field_0x8.y += layerBox(getPlayerLayer_8023DE58(field_0x4->field_0xd70))->i.y;
-                    if (field_0x4->fn_802684A4(&field_0x8, getPlayerLayer_8023DE58(field_0x4->field_0xd70))) {
+                    field_0x8.x += layerBox(getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70))->i.x;
+                    field_0x8.y += layerBox(getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70))->i.y;
+                    if (field_0x4->fn_802684A4(&field_0x8, getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70))) {
                         setDir(this, field_0x28);
                     } else {
-                        fn_8026B81C(fn_8022461C(&field_0x8, getPlayerLayer_8023DE58(field_0x4->field_0xd70)));
+                        fn_8026B81C(fn_8022461C(&field_0x8, getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70)));
                     }
                     field_0x8 = saved;
                 }
@@ -1778,7 +1778,7 @@ void cls_804A71A8::fn_80268BC4() {
         } while (field_0x9a == 1 && field_0xb0 < 100);
 
         if (!isField98Or99Set()) {
-            field_0x4->field_0xc90.set(1.0f, 1.0f, 1.0f);
+            field_0x4->mDrawScale_0xc90.set(1.0f, 1.0f, 1.0f);
         } else if (gGameRoot_8053AAF8->field_0x96 == 0) {
             field_0x99 = field_0x98;
             field_0x98 = 0;
@@ -1821,7 +1821,7 @@ void Player_804A6F38::fn_802685D4() {
     field_0x3c1 = false;
     field_0x3c2 = false;
     if (!fn_8024BBB0() &&
-        !(fn_8025F418() && field_0x1216 == 0 && field_0x1228 == 0 && fn_8022D75C(field_0xd70)) &&
+        !(fn_8025F418() && field_0x1216 == 0 && field_0x1228 == 0 && fn_8022D75C(mHeldPlayer_0xd70)) &&
         !fn_802413E8() && fn_80241E28(field_0x3bc, &mPrevPos_0x2c))
     {
         JGeometry::TVec2f corner(mPos.x, mPrevPos_0x2c.y);

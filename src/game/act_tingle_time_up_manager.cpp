@@ -47,7 +47,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             obj30->field_0x28c = 0.05f;
         }
         gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
     }
 
     switch (mState) {

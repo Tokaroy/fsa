@@ -827,11 +827,11 @@ void cls_804A4C58::vfunc_0xA0() {
             obj->field_0x28c = 0.05f;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (!camera->field_0x7f5) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.set(mPos);
-            camera->field_0x7f6 = 0;
+        if (!camera->mShowWholeArea_0x7f5) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.set(mPos);
+            camera->mOverrideBlend_0x7f6 = 0;
         }
     } else {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -846,13 +846,13 @@ void cls_804A4C58::die_0x24() {}
 void cls_804A4C58::update() {
     if (updateBossDeath_0x2C(0.0f, -16.0f, 50.0f)) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
-            camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
+        if (camera->mBlendBoxOn_0x840 == 0) {
+            camera->mBlendBoxOn_0x840 = 1;
+            camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = mPos.x;
+            camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = mPos.y;
+            camera->mBlendWeight_0x854 = 1.0f;
+            camera->mMargin_0x1d4 = -1.0f;
+            camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
         gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
     } else {

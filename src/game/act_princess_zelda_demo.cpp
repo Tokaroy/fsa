@@ -194,25 +194,25 @@ void PrincessZeldaDemo_8049D208::update() {
 }
 
 // The two camera requests the demo states make (inlined in the original): a focus range on the
-// view (field_0x840) and a movement box (field_0x7f4), each taken only while free.
+// view (mBlendBoxOn_0x840) and a movement box (mFocusOverride_0x7f4), each taken only while free.
 static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x840 == 0) {
-        cam->field_0x840 = 1;
-        cam->field_0x844.set(x0, y0, x1, y1);
-        cam->field_0x854 = 1.0f;
-        cam->field_0x1d4 = -1.0f;
-        cam->field_0x1d8 = -1.0f;
+    if (cam->mBlendBoxOn_0x840 == 0) {
+        cam->mBlendBoxOn_0x840 = 1;
+        cam->mBlendBox_0x844.set(x0, y0, x1, y1);
+        cam->mBlendWeight_0x854 = 1.0f;
+        cam->mMargin_0x1d4 = -1.0f;
+        cam->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
 static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x7f5 == 0) {
-        cam->field_0x7f4 = 1;
-        cam->field_0x7f8 = 5;
-        cam->field_0x808.set(x0, y0, x1, y1);
-        cam->field_0x7f6 = 0;
+    if (cam->mShowWholeArea_0x7f5 == 0) {
+        cam->mFocusOverride_0x7f4 = 1;
+        cam->mFocusMode_0x7f8 = 5;
+        cam->mFocusBox_0x808.set(x0, y0, x1, y1);
+        cam->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -639,11 +639,11 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
     case 12:
     case 13:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         break;
     case 14:
     case 15: {
-        gGameRoot2_8053AB10->field_0x24->field_0x17c = 1;
+        gGameRoot2_8053AB10->field_0x24->mWidenBounds_0x17c = 1;
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mSpawnPos;
         p.y += -40.0f;
@@ -688,13 +688,13 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         }
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         Camera_804AA9E4* cam2 = gGameRoot2_8053AB10->field_0x24;
-        if (cam2->field_0x840 == 0) {
-            cam2->field_0x840 = 1;
-            cam2->field_0x844.i.x = cam2->field_0x844.f.x = mPos.x;
-            cam2->field_0x844.i.y = cam2->field_0x844.f.y = mPos.y;
-            cam2->field_0x854 = 1.0f;
-            cam2->field_0x1d4 = -1.0f;
-            cam2->field_0x1d8 = -1.0f;
+        if (cam2->mBlendBoxOn_0x840 == 0) {
+            cam2->mBlendBoxOn_0x840 = 1;
+            cam2->mBlendBox_0x844.i.x = cam2->mBlendBox_0x844.f.x = mPos.x;
+            cam2->mBlendBox_0x844.i.y = cam2->mBlendBox_0x844.f.y = mPos.y;
+            cam2->mBlendWeight_0x854 = 1.0f;
+            cam2->mMargin_0x1d4 = -1.0f;
+            cam2->mMinHalfWidth_0x1d8 = -1.0f;
         }
         break;
     }
@@ -729,8 +729,8 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
     case 0x32:
     case 0x33: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f4 == 0) {
-            cam->field_0x7f5 = 1;
+        if (cam->mFocusOverride_0x7f4 == 0) {
+            cam->mShowWholeArea_0x7f5 = 1;
         }
         break;
     }
@@ -746,7 +746,7 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
     case 0x3A:
     case 0x3B:
     case 0x3C: {
-        gGameRoot2_8053AB10->field_0x24->field_0x17c = 1;
+        gGameRoot2_8053AB10->field_0x24->mWidenBounds_0x17c = 1;
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mSpawnPos;
         p.y = p.y + field_0x278;

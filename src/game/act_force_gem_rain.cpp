@@ -72,16 +72,16 @@ void ForceGemRain_804A8010::update() {
         if (field_0x24c != 0) {
             if (field_0x244 == 0 || field_0x244 == 1 || field_0x244 == 0xB || field_0x244 == 0xD) {
                 Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-                if (cam->field_0x7f4 == 0) {
-                    cam->field_0x7f5 = 1;
+                if (cam->mFocusOverride_0x7f4 == 0) {
+                    cam->mShowWholeArea_0x7f5 = 1;
                 }
             }
             return;
         }
         if (field_0x244 == 0 || field_0x244 == 1 || field_0x244 == 0xB || field_0x244 == 0xD) {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-            if (cam->field_0x7f4 == 0) {
-                cam->field_0x7f5 = 1;
+            if (cam->mFocusOverride_0x7f4 == 0) {
+                cam->mShowWholeArea_0x7f5 = 1;
             }
         }
         {
@@ -233,8 +233,8 @@ void ForceGemRain_804A8010::update() {
     // fall through
     case 2: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f4 == 0) {
-            cam->field_0x7f5 = 1;
+        if (cam->mFocusOverride_0x7f4 == 0) {
+            cam->mShowWholeArea_0x7f5 = 1;
         }
         pos.x = mPos.x;
         pos.y = mPos.y;
@@ -323,8 +323,8 @@ void ForceGemRain_804A8010::update() {
     case 3: {
         if (field_0x244 == 1) {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-            if (cam->field_0x7f4 == 0) {
-                cam->field_0x7f5 = 1;
+            if (cam->mFocusOverride_0x7f4 == 0) {
+                cam->mShowWholeArea_0x7f5 = 1;
             }
         }
         pos.set(
@@ -355,8 +355,8 @@ void ForceGemRain_804A8010::update() {
     case 4:
         if (field_0x244 == 0xB || field_0x244 == 0xD) {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-            if (cam->field_0x7f4 == 0) {
-                cam->field_0x7f5 = 1;
+            if (cam->mFocusOverride_0x7f4 == 0) {
+                cam->mShowWholeArea_0x7f5 = 1;
             }
         }
         if (field_0x248 == 0) {

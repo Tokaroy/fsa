@@ -36,7 +36,7 @@ static const GXColor lbl_8053CDD8 = {0xFF, 0xFF, 0xFF, 0xFF};
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 JGeometry::TBox2<u32>* fn_8013C394() {
-    return &gGameRoot2_8053AB10->field_0x24->field_0x144;
+    return &gGameRoot2_8053AB10->field_0x24->mScreenRect_0x144;
 }
 #pragma auto_inline reset
 
@@ -131,7 +131,7 @@ void GameRoot2_8049F108::fn_8013BB64() {
     field_0x24->fn_8030DFE8(false);
     j3dSys.mDrawBuffer[0] = field_0x8;
     j3dSys.mDrawBuffer[1] = field_0xc;
-    PSMTXCopy(field_0x24->field_0x4, j3dSys.mViewMtx);
+    PSMTXCopy(field_0x24->mViewMtx_0x4, j3dSys.mViewMtx);
 }
 
 void GameRoot2_8049F108::fn_8013BB18() {
