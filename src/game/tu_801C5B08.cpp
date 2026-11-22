@@ -40,7 +40,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
             s32 layer = field_0x4;
             if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
                 const JGeometry::TVec3f* playerPos = &field_0x1ac[player];
-                if (__fabsf((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
+                if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
                     !fn_801CFCF0(1)) {
                     if (mPos.x < playerPos->x) {
                         field_0x33c = -0x4000;
@@ -49,7 +49,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
                     } else {
                         field_0x33c = 0x4000;
                     }
-                } else if (__fabsf((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
+                } else if (JMAAbs((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
                            !fn_801CFCF0(0)) {
                     if (mPos.x > playerPos->x) {
                         field_0x33c = 0x4000;
