@@ -40,11 +40,11 @@ void cls_801E6AB8::fn_801E67C4(s32 state) {
         s32 j; // j before i to match (99.49 % otherwise)
         s32 i;
         for (i = 0; i < count; i++) {
-            if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
+            if (isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
                 mActive[i] = 1;
             }
             for (j = i + 1; j < 4; j++) {
-                if (fn_8023F264(j) && hasPlayerLeader_8022F514(j) && getPlayerLeader_8022F3DC(j) == i && !fn_802349EC(j)) {
+                if (isPlayerActive_8023F264(j) && hasPlayerLeader_8022F514(j) && getPlayerLeader_8022F3DC(j) == i && !fn_802349EC(j)) {
                     mActive[j] = 1;
                 }
             }

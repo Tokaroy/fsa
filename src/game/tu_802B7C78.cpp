@@ -78,7 +78,7 @@ void ReaperShinigami_804A886C::update() {
                     if (gGameRoot_8053AAF8->field_0x7f == 1) {
                         while (true) {
                             field_0x298 = field_0x2a0[field_0x27c];
-                            if (playerInGame(field_0x298) == 1 && fn_8023F264(field_0x298) == 1) {
+                            if (playerInGame(field_0x298) == 1 && isPlayerActive_8023F264(field_0x298) == 1) {
                                 break;
                             }
                             field_0x27c++;
@@ -96,7 +96,7 @@ void ReaperShinigami_804A886C::update() {
                         if (field_0x27c < 4) {
                             while (true) {
                                 field_0x298 = field_0x2a0[field_0x27c];
-                                if (playerInGame(field_0x298) == 1 && fn_8023F264(field_0x298) == 1 &&
+                                if (playerInGame(field_0x298) == 1 && isPlayerActive_8023F264(field_0x298) == 1 &&
                                     getPlayerLife_80237774(field_0x298) > 1) {
                                     break;
                                 }
@@ -316,7 +316,7 @@ void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
             }
             arg3 = 4;
         }
-        if (fn_8023F264(field_0x298) == true && !isPlayerDead_80236B50(field_0x298)) {
+        if (isPlayerActive_8023F264(field_0x298) == true && !isPlayerDead_80236B50(field_0x298)) {
             s32 hit = damagePlayersInBox_801F2B7C(damage, -1, arg3);
             if (hit) {
                 startSound_801F0E34(0x40041, 0);

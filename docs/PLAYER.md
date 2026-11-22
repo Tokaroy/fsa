@@ -296,7 +296,7 @@ No Player object exists from boot to the main menu (the manager at
 gPlayerManager_8053AC90 is not constructed), and the only Player-range code that runs
 there is the units' `__sinit` functions, the static-init function
 fn_8023F9B8 and three manager guards that return early on the null manager:
-fn_8023F264 (the player-active check), getPlayerLayer_8023DE58 and getRepresentativePlayer_8022EA0C (14
+isPlayerActive_8023F264 (the player-active check), getPlayerLayer_8023DE58 and getRepresentativePlayer_8022EA0C (14
 instructions). Measured from the p1-p3a coverage dumps. Everything else runs in the menu ->
 Shadow Battle phase: about 7.8k unmatched instructions (~31 KB). The most
 executed unmatched functions are:
@@ -464,6 +464,8 @@ placed before it, so these can become plain functions where the asm has both an
 out-of-line copy and inlined uses; converting them is a follow-up and only
 player_8023FBF0 is affected. The findings below are what the inlining proved.)
 - **groupSize** (fn_80248970): this player, its leader 0xD60 and every
+tu_8023FBF0 is affected. The findings below are what the inlining proved.)
+- **groupSize** (getGroupSize_80248970): this player, its leader 0xD60 and every
   follower (hasPlayerLeader_8022F514) whose leader (getPlayerLeader_8022F3DC) is that leader (or this
   player when 0xD60 < 0).
 - **groupMode** (fn_802486A0): 5 alone, else the leader's mode (fn_8022CAF8)
@@ -482,7 +484,7 @@ player_8023FBF0 is affected. The findings below are what the inlining proved.)
   fn_80244FFC / fn_80245238, and the axes fn_8024712C (fn_80309F20) /
   fn_80247330 (fn_80309FCC). fn_80243234 / fn_80243C64 / fn_80244630 compare
   those axes with the facing 0x3DC (fn_80243234 also turns 0x3DC/0x3E8 to 3).
-- fn_802486A0 / fn_802487FC / fn_80248970 / fn_80240670 / getGroupTurn_80240888 /
+- fn_802486A0 / fn_802487FC / getGroupSize_80248970 / fn_80240670 / getGroupTurn_80240888 /
   fn_8023FC5C are **const**: the loop test's field_0x4 is hoisted, which
   MWCC only does through a const `this` (as in getFollowerIndex_80248778).
 
@@ -888,7 +890,7 @@ names provisional, evidence = what the handlers do):
 | 0x38 | 80283E70 / 8028414C / 80283D2C | exit (written): 0x440 keeps mPos as the return point 0x2C4; unless 0xCF4 is 0x24 it clears 0xCE8 and, without the carry flag 0x43F, releases the players following this one (fn_802384BC on each i with getPlayerLeader_8022F3DC(i) == index) and on tile 0xD spawns effect 0x3D0 (scale 1.2); with 0x43F it keeps 0x444 = 0x344.z for state 0x1B or clears 0x43F / 0x440 / 0x444 |
 
 - **updateFacing_8027EB04 = facing / walk direction** (0x3DC / 0x3E8, 100 %): in a group from the formation
-  (formation 3 with fn_80248970() >= 2: lbl_8046C0B8 / lbl_8046C0C8 by index, by viewLayerFlag) or
+  (formation 3 with getGroupSize_80248970() >= 2: lbl_8046C0B8 / lbl_8046C0C8 by index, by viewLayerFlag) or
   the leader (getPlayerFacing_80230CFC / fn_80230B70); else from the pad bits fn_80246B10 (2 right, 1 left,
   8 up, 4 down; diagonals give 0x3E8 4-7 and keep a compatible facing).
 - **getFollowTargetPos_8027FA08(out) = the follow target** (update B, the state 3 update): the history head 0x38[0]
@@ -1191,7 +1193,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
   compile alike, inlined only the inverted one gives the original's blocks. Ten are now.
 - **Deferred inlining evidence** (this is what the project's `-inline auto,deferred` switch
   rests on, docs/INLINING.md): fn_8023434C inlines its own recursion three levels and calls
-  the player test out of line at the bottom as fn_8023F264, so isPlayerActive is fn_8023F264
+  the player test out of line at the bottom as isPlayerActive_8023F264, so isPlayerActive is isPlayerActive_8023F264
   itself (a plain function at 0x8023F264); fn_80235B68's bottom calls fn_8018A614. The 16
   functions that were unwritten then all inline functions defined after them (forwarders,
   getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_80238A68); the deferred model makes
@@ -1321,7 +1323,7 @@ reproduces both).
 - **Cue** playSound_8024F0E8: rumble ids 0xC / 4 / 8 / 0xB / 7 for 0x20034 / 0x20011 / 0x30009 /
   0x30004 / 0x2003A; else sound object 0x1250 (layer < 8 or 8) / 0x1254, ports 0x44 / 0x45 by
   view flag 0x800, layer 8, GameView 0x54 and fn_802D7948.
-- Group loop: `s32 leader;` declared first fixes fn_80248970; the inlined copies still want leader
+- Group loop: `s32 leader;` declared first fixes getGroupSize_80248970; the inlined copies still want leader
   and own index in two registers (lowest / highest), no shape found (24 orders measured).
 
 ## Round 15 (player_8026FC20) (agent Z, Opus 5.5, 2026-11-06)
@@ -1408,7 +1410,7 @@ checkScreenExit_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241
 
 | function | % / try.py class | what it is |
 |---|---|---|
-| fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (playSystemSound_80458880, extsb index). Not in 0x454 mode |
+| fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (getGroupSize_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (playSystemSound_80458880, extsb index). Not in 0x454 mode |
 | dropForceGems_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, dropPlayerForceGems_80236074 |
 | resetTrail_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (resetPosHistory_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (arePlayersInSameGroup_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
 | dropForceGems_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, dropPlayerForceGems_80236074 |
@@ -1417,7 +1419,7 @@ checkScreenExit_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241
 | fn_8024F63C | 99.07 scheduling+regalloc | **join a push** (state 0x1A): with pad 0x20 held (fn_802456FC), the partner 0xDAC's pushed actor (its 0xDA4) still alive, or a fresh press (fn_80245938), not a follower in mode 5, the point lbl_8046AE28[facing] (10 behind) free of fn_802265DC / fn_802684A4: a present player inside the box +-1 at mPos + lbl_8046AE58[facing], facing the same way and held by nobody (fn_80238EDC), is taken: from states 0 / 2 / 3 (0x11 unless fn_8025F500 / isLiftingPlayer_8025F590) the push 0x1A is requested, else 0xDAC = it, 0xDA4 = its pushed actor, 0xDA8 = 3 frames; returns 0xDA8 > 0. Callers: fn_8024FE78, state 0x1A, player_80285E58 |
 | fn_80250090 | 99.21 regalloc | **join a block carry** (state 0x0D's partner): on the ground and not a follower in mode 5, keeps 0xD9C while its fn_80241478 holds, else takes a present player whose fn_80250ACC holds inside the box +-1 at mPos + lbl_8046AE08[facing] while the stick points along the facing (fn_80247330 / fn_8024712C): 0xD9C = it, 0xD94 = its grabbed actor (fn_8024FF84), 0xD98 = 3 |
 | fn_80250FD4 | 99.86 regalloc | **pushing along the facing**: state 0x1A and the stick toward the facing (fn_80244630's test without the input gate); used by isPushing_80250D30 |
-| fn_802487FC | 94.95 different | places in use: 1 in mode 4, else fn_80248970; the plain function its callers inline (fn_8024D134 here, fn_8027F1C8 calls it). Its own copy zeroes count / index li / li, ours li / mr (the known group-loop issue); the inlined copies are li / mr in both |
+| fn_802487FC | 94.95 different | places in use: 1 in mode 4, else getGroupSize_80248970; the plain function its callers inline (fn_8024D134 here, fn_8027F1C8 calls it). Its own copy zeroes count / index li / li, ours li / mr (the known group-loop issue); the inlined copies are li / mr in both |
 
 Evidence and fixes:
 - **0x31 loops count with `int`**: with `s32` (long) MWCC emits an entry test (cmpwi 0x31;
@@ -1642,6 +1644,9 @@ now written; the remaining sub-100 % ones are structurally done or close.
 | fn_80241B44 (player_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller act_unknown_form_8029C584 unwritten). |
 | resetTrail_8024B2E0 (player_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
 | fn_802487FC (player_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined fn_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
+| fn_80241B44 (tu_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller tu_8029C584 unwritten). |
+| resetTrail_8024B2E0 (tu_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
+| fn_802487FC (tu_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined getGroupSize_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
 
 Evidence:
 - **A by-value TVec3f return** shows up as a stack TVec3f built in place, then copied through
@@ -1765,7 +1770,7 @@ SHARED-EDITS: Player.h startTransition_80290070 parameter names; extern "C" fn_8
   `hit == true` gives subfic / cntlzw, s32 / u32 locals compare with cmpwi / cmplwi.
   fn_80274238, fn_80273E7C, fn_802738F0, fn_80273D44, fn_80273C30 stay 100 %.
 
-## Open problem: the group-count helpers (fn_80248970 / fn_802486A0)
+## Open problem: the group-count helpers (getGroupSize_80248970 / fn_802486A0)
 
 About 100 inlined copies of these two helpers still differ, in roughly 45 functions of
 player_8023FBF0 (`python3 tools/clones.py --fn game/player_8023FBF0.cpp fn_802490A8`: the largest open
@@ -1783,7 +1788,7 @@ function is 88 % such copies). Both helpers match as standalone functions. What 
 - Without effect on N, or worse: all orders and places of declaring `self`, `leader` and `count`
   (24 combinations: 196 at best, else 190-191); one variable for both values; direct field
   compares without locals; a while loop; the index declared outside the for; an inline accessor
-  for field_0x4; the loop in a file-static inline `groupSize(const Player*)` that fn_80248970
+  for field_0x4; the loop in a file-static inline `groupSize(const Player*)` that getGroupSize_80248970
   returns (195); 2,000 mechanical rewrites across the eight helpers of the chain.
 - Different callers respond to different helper forms (a combination that takes fn_80245B74 from
   score 215 to 10 makes fn_8023FC5C and fn_80243234 worse), which hints at two source shapes.

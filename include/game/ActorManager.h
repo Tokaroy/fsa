@@ -167,7 +167,7 @@ public:
     // 24 units / 37 calls. fn_80230224(i, 0) for the four players, clears
     // field_0x3041 and calls fn_8037AE30(lbl_8053AD70).
     void fn_801F6884();
-    // 24 units / 37 calls. Per-player checks (fn_8023F264, fn_8023ED8C,
+    // 24 units / 37 calls. Per-player checks (isPlayerActive_8023F264, fn_8023ED8C,
     // fn_802300EC, fn_8023E854); sets bit i of field_0x3041 for each player
     // it calls fn_80230AD4 on, and once every taking-part player's bit is
     // set calls fn_8037AE00(lbl_8053AD70) and returns 1, else 0. Callers

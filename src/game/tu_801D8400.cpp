@@ -16,7 +16,7 @@
 // this unit's .sdata2 (0x8053F1C8).
 extern const u8 lbl_8053F1C8 = 4;
 
-static inline bool isColumnRight(cls_804A4C58* self) {
+static inline bool isColumnRight(Frostare_804A4C58* self) {
     bool right = false;
     if (self->mPos.x < self->field_0x2d4[self->field_0x334].x ||
         (self->mPos.x == self->field_0x2d4[self->field_0x334].x && (self->mFlags & 0x2000))) {
@@ -25,7 +25,7 @@ static inline bool isColumnRight(cls_804A4C58* self) {
     return right;
 }
 
-static inline bool needsTurn(cls_804A4C58* self) {
+static inline bool needsTurn(Frostare_804A4C58* self) {
     bool turn = false;
     if (isColumnRight(self)) {
         if (!(self->mFlags & 0x2000)) {
@@ -43,7 +43,7 @@ static inline bool needsTurn(cls_804A4C58* self) {
 // and the twelve TVec2f are built after it (the member initialisers run in
 // declaration order); the body then zeroes the fields at 0x334-0x33F and the
 // four emitters.
-cls_804A4C58::cls_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
+Frostare_804A4C58::Frostare_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
     field_0x334 = 0;
     field_0x336 = 0;
     field_0x338 = 0;
@@ -57,7 +57,7 @@ cls_804A4C58::cls_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
     mEmitter2c[3] = NULL;
 }
 
-cls_804A4C58::~cls_804A4C58() {
+Frostare_804A4C58::~Frostare_804A4C58() {
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitter2c[i]);
         mEmitter2c[i] = NULL;
@@ -68,7 +68,7 @@ cls_804A4C58::~cls_804A4C58() {
 }
 
 // FIXME(shotgun): 69.16 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A4C58::init() {
+void Frostare_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
     mBox.i.y = 1.0f;
@@ -136,12 +136,12 @@ void cls_804A4C58::init() {
 
 // Vtable slot 0x54 (0x801DA0FC): EnemyBase's start hook; asks
 // gAudioMgr_8053AF80 for stopBgm_80458F9C(60).
-void cls_804A4C58::onFirstUpdate_0x54() {
+void Frostare_804A4C58::onFirstUpdate_0x54() {
     gAudioMgr_8053AF80->stopBgm_80458F9C(60);
 }
 
 // FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
-void cls_804A4C58::setState_801D9C58(int state) {
+void Frostare_804A4C58::setState_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
         mFlags &= ~0x80;
@@ -282,7 +282,7 @@ void cls_804A4C58::setState_801D9C58(int state) {
 }
 
 // FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
-void cls_804A4C58::fn_801D9960() {
+void Frostare_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
     }
@@ -339,7 +339,7 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-static inline s32 findTarget_801D95F4(cls_804A4C58* self) {
+static inline s32 findTarget_801D95F4(Frostare_804A4C58* self) {
     s16 angle;
     s32 player;
     s32 target = -1;
@@ -364,7 +364,7 @@ static inline s32 findTarget_801D95F4(cls_804A4C58* self) {
 }
 
 // FIXME(shotgun): 99.09 %, regalloc-only + reloc-name; behaviour clean.
-bool cls_804A4C58::fn_801D95F4() {
+bool Frostare_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
     if (mFlags & 0x2000) {
@@ -409,7 +409,7 @@ bool cls_804A4C58::fn_801D95F4() {
 
 // Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
 // FIXME: 99.70 %, regalloc-only + reloc-name; behaviour drift.
-void cls_804A4C58::updateState_0x90(u8 mapHit) {
+void Frostare_804A4C58::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (fn_801CD228(mLayer_0x4)) {
@@ -675,7 +675,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A4C58::updateAnim_0x94() {
+void Frostare_804A4C58::updateAnim_0x94() {
     bool play = false;
     s32 before = mSeq2a8.fn_801DA96C();
     mSeq2a8.fn_801DA7C0();
@@ -705,7 +705,7 @@ void cls_804A4C58::updateAnim_0x94() {
 // Vtable slot 0x9C (0x801D89BC). Any hit bit in mFlags skips the step
 // (updateAnim_0x94 only in state 0xF); otherwise EnemyBase's state step runs.
 // Then the countdown at 0x336 and the effect pair at 0x2C8.
-void cls_804A4C58::updateBehavior_0x9C(u8 mapHit) {
+void Frostare_804A4C58::updateBehavior_0x9C(u8 mapHit) {
     if (!(mFlags & 7)) {
         fn_801CE2BC(mapHit);
     } else if (mState == 0xF) {
@@ -720,7 +720,7 @@ void cls_804A4C58::updateBehavior_0x9C(u8 mapHit) {
 // Vtable slot 0x80 (0x801D8980). A position above the ceiling in
 // field_0x2d0 is clamped to it, its vertical speed is zeroed, and then
 // EnemyBase's floor check runs.
-void cls_804A4C58::checkFloor_0x80() {
+void Frostare_804A4C58::checkFloor_0x80() {
     if (mPos.y > field_0x2d0) {
         mPos.y = field_0x2d0;
         mVel_0x3c.y = 0.0f;
@@ -728,7 +728,7 @@ void cls_804A4C58::checkFloor_0x80() {
     EnemyBase_804A4808::checkFloor_0x80();
 }
 
-void cls_804A4C58::calcVelocity_0x88() {
+void Frostare_804A4C58::calcVelocity_0x88() {
     switch (mState) {
     case 0xB: case 0xC: case 0xD: case 0xE: {
         JGeometry::TVec2f dir(field_0x2d4[field_0x334].x - mPos.x, field_0x2d4[field_0x334].y - mPos.y);
@@ -756,7 +756,7 @@ void cls_804A4C58::calcVelocity_0x88() {
 }
 
 
-void cls_804A4C58::onHitReactionEnd_0x74() {
+void Frostare_804A4C58::onHitReactionEnd_0x74() {
     switch (mState) {
     case 0xB:
     case 0xC:
@@ -816,7 +816,7 @@ void cls_804A4C58::onHitReactionEnd_0x74() {
 }
 
 // Vtable slot 0xA0 (0x801D84E4), the last slot of the vtable.
-void cls_804A4C58::vfunc_0xA0() {
+void Frostare_804A4C58::vfunc_0xA0() {
     if (mState == 0) {
         return;
     }
@@ -841,9 +841,9 @@ void cls_804A4C58::vfunc_0xA0() {
     }
 }
 
-void cls_804A4C58::die_0x24() {}
+void Frostare_804A4C58::die_0x24() {}
 
-void cls_804A4C58::update() {
+void Frostare_804A4C58::update() {
     if (updateBossDeath_0x2C(0.0f, -16.0f, 50.0f)) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->mBlendBoxOn_0x840 == 0) {
@@ -860,7 +860,7 @@ void cls_804A4C58::update() {
     }
 }
 
-void cls_804A4C58::fn_801D8400() {
+void Frostare_804A4C58::fn_801D8400() {
     if (mState < 8) {
         setState_801D9C58(8);
     }

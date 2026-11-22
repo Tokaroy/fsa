@@ -245,7 +245,7 @@ void Carrot_804AC6B0::update() {
         }
         break;
     case 4:
-        if (fn_8023F264(field_0x250)) {
+        if (isPlayerActive_8023F264(field_0x250)) {
             mPos = *getPlayerPos_8023E724(field_0x250);
             mPos.y -= 38.0f;
         }

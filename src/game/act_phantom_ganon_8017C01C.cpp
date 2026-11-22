@@ -994,7 +994,7 @@ void PhantomGanon_804A1318::update() {
                         field_0x23c = 100;
                         break;
                     }
-                    if (fn_8023F264(field_0x24c) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x24c) &&
+                    if (isPlayerActive_8023F264(field_0x24c) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x24c) &&
                         !fn_80230188(field_0x24c)) {
                         findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, NULL, field_0x24c, 2);
                         field_0x2bb = lbl_80539F88[field_0x24c];

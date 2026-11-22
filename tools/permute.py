@@ -68,7 +68,7 @@ at the call, so the cause is often in the callee); the whole-unit check covers t
 --callees works the other way round: it takes each function of a file that MWCC inlined into
 functions that are still open (most inliners first), rewrites THAT function and scores every
 function of the unit. A callee can match on its own while its inlined copies do not: one moved
-declaration in Player's fn_80248970 made five of its callers match. Such a result is kept when
+declaration in Player's 0x80248970 made five of its callers match. Such a result is kept when
 more functions match, none that matched breaks and no data section gets worse; functions that
 were open may move either way.
 

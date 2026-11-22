@@ -568,7 +568,7 @@ void Cucco_804AB8C0::fn_80331D38() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
+            if (isPlayerActive_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) && fn_8022F9E4(i, mSerial, true, false)) {
                 mPos.z = 0.0f;
                 field_0x258 = 0;
                 field_0x238 = 0;
@@ -1017,7 +1017,7 @@ void Cucco_804AB8C0::update() {
                     field_0x94 = 0xFFFF;
                     s32 shift = 0;
                     for (s32 i = 0; i < 4; i++, shift += 0x10) {
-                        if (i != field_0x25c && fn_8023F264(i)) {
+                        if (i != field_0x25c && isPlayerActive_8023F264(i)) {
                             if (field_0x94 == 0xFFFF) {
                                 field_0x94 = i;
                             } else {
@@ -1044,7 +1044,7 @@ void Cucco_804AB8C0::update() {
         if (field_0x238 == 0) {
             field_0x94 = 0xFFFF;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && i != field_0x25c && !arePlayersInSameGroup_8022E438(i, field_0x25c) && !hasPlayerLeader_8022F514(i) &&
+                if (isPlayerActive_8023F264(i) && i != field_0x25c && !arePlayersInSameGroup_8022E438(i, field_0x25c) && !hasPlayerLeader_8022F514(i) &&
                     ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) &&
                     (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !isPlayerDead_80236B50(i))
                 {
@@ -1226,7 +1226,7 @@ void Cucco_804AB8C0::update() {
         break;
     case 9:
         if (field_0x238 == 0) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && fn_8023F264(field_0x25c) &&
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && isPlayerActive_8023F264(field_0x25c) &&
                 !fn_8022DCD8(field_0x25c) && !isPlayerDead_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
@@ -1303,7 +1303,7 @@ void Cucco_804AB8C0::update() {
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.x = 0.0f;
         mPos.z = 0.0f;
-        if (fn_8023F264(field_0x25c)) {
+        if (isPlayerActive_8023F264(field_0x25c)) {
             mPos.x = getPlayerPos_8023E724(field_0x25c)->x;
             mPos.y = getPlayerPos_8023E724(field_0x25c)->y - 24.0f;
         }
@@ -1490,7 +1490,7 @@ void Cucco_804AB8C0::fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* ou
     } else if (actor->getField_0x4() == getPlayerLayer_8023DE58(player)) {
         onLayer = 1;
     }
-    if (fn_8023F264(player) && !fn_8022DCD8(player) && onLayer != 0 && !fn_8022F478(player) &&
+    if (isPlayerActive_8023F264(player) && !fn_8022DCD8(player) && onLayer != 0 && !fn_8022F478(player) &&
         !isPlayerDead_80236B50(player) && !fn_8022D534(player))
     {
         f32 dx;

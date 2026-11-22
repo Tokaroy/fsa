@@ -612,7 +612,7 @@ void BigMoldorm_8049F6C8::update() {
             } else if (field_0x23c == 0) {
                 if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                     for (s32 i = 0; i < 4; i++) {
-                        if (i != field_0x280 && fn_8023F264(i) && !hasPlayerLeader_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                        if (i != field_0x280 && isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
                             !fn_80230188(i) && !fn_8022DCD8(i)) {
                             field_0x280 = i;
                             break;

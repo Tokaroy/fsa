@@ -56,7 +56,7 @@ void LifeMeter_804B174C::update() {
                 break;
             }
         } else {
-            if (field_0x250 < 0 || field_0x250 > 3 || !fn_8023F264(field_0x250) ||
+            if (field_0x250 < 0 || field_0x250 > 3 || !isPlayerActive_8023F264(field_0x250) ||
                 field_0x24c < 0) {
                 mAlive = false;
                 break;

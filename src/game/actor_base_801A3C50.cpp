@@ -425,7 +425,7 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
     if (field_0xd4 == 0) {
         f32 range = 0.0f;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && fn_8023A51C(i) && !mPos.z) {
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && fn_8023A51C(i) && !mPos.z) {
                 if (fn_8023725C(i) == 1) {
                     range = 50.0f;
                 } else if (fn_8023725C(i) == 2) {

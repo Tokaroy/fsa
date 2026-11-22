@@ -14,7 +14,7 @@ inline bool RoomWarpForL72_8049E8F8::playersInside() {
     for (s32 i = 0; i < 4; i++) {
         // (u8) gives the clrlwi on the mask that the original has.
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            if (!fn_8023F264(i)) {
+            if (!isPlayerActive_8023F264(i)) {
                 return false;
             }
             if (fn_8023EA28(i)) {

@@ -204,7 +204,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
 void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
     f32 y = mPos.y - yOffset;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
                 field_0x288[i].x = pos->x;
@@ -252,7 +252,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
     case 0:
         if (getActorManager_801F856C()->fn_801F68E0()) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
+                if (isPlayerActive_8023F264(i)) {
                     if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         pos.set(*getPlayerPos_8023E724(i));
                         pos.x = 16.0f * i + 4840.0f;

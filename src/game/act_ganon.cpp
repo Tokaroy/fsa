@@ -408,7 +408,7 @@ void Ganon_804A25F0::init() {
         lbl_8053AB91 = 0;
         lbl_80539FE8 = mLayer_0x4;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 lbl_804C1C00[i].set(*getPlayerPos_8023E724(i));
             }
         }
@@ -574,7 +574,7 @@ void Ganon_804A25F0::fn_80196208(s32 mode) {
     field_0x2fc = -1;
     s32 best = -1;
     for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023F264(i)) {
+        if (!isPlayerActive_8023F264(i)) {
             continue;
         }
         if (getField_0x4() != getPlayerLayer_8023DE58(i)) {
@@ -1326,7 +1326,7 @@ void Ganon_804A25F0::update() {
             field_0x318[3] = -1;
             field_0x300 = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i) && getLayer_8015461C() == getPlayerLayer_8023DE58(i)) {
                     field_0x308[field_0x300] = i;
                     field_0x300++;
                 }

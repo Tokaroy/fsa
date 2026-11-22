@@ -41,7 +41,7 @@ game/tu_8022AD64.cpp, hand-matched and reviewed):
 
   fwd    the per-player forwarders of tu_8022AD64 (templates fn_8022B7C4 and
          fn_8022B860 there): `if (<mgr> == NULL) return <fallback>;
-         if (fn_8023F264(player)) return mPlayers[player]-><getter>(...);
+         if (the player-active test (0x8023F264)) return mPlayers[player]-><getter>(...);
          return <fallback>;` and its void form. The forwarder and its getter
          (a new Player_804A6F38 member) are declared in include/game/Player.h;
          symbols.txt renames both to the names our object emits. Types and
@@ -51,7 +51,7 @@ game/tu_8022AD64.cpp, hand-matched and reviewed):
          check requires each declaration once, not the whole file).
 
   loop   tu_8022AD64's all-players loops (`for (s32 i = 0; i < 4; i++)`
-         over fn_8023F264(i)): "each" calls a getter on every active
+         over the player-active test (0x8023F264)(i)): "each" calls a getter on every active
          player, "find" returns the first player whose getter is true, else
          -1. Generated with the fwd run (`gen_game.py tu_8022AD64`); rows and
          checks as fwd's; see "family loop" below.
@@ -1724,7 +1724,7 @@ FWD_DEF = """\
     if ({mgr} == NULL) {{
         return {fb};
     }}
-    if (fn_8023F264(player)) {{
+    if ({active}(player)) {{
         return {mgr}->mPlayers[player]->{callee}({args});
     }}
     return {fb2};
@@ -1741,7 +1741,7 @@ FWD_DEF_RANGED = """\
     if (player >= 4) {{
         return {fb2};
     }}
-    if (fn_8023F264(player)) {{
+    if ({active}(player)) {{
         return {mgr}->mPlayers[player]->{callee}({args});
     }}
     return {fb3};
@@ -1752,7 +1752,7 @@ void {name}({params}) {{
     if ({mgr} == NULL) {{
         return;
     }}
-    if (fn_8023F264(player)) {{
+    if ({active}(player)) {{
         {mgr}->mPlayers[player]->{callee}({args});
     }}
 }}
@@ -1773,6 +1773,13 @@ DECL_RE = re.compile(r"^((?:const )?[\w:<>]+\*?)\s+(fn_8[0-9A-F]{7})\(([^)]*)\);
 
 def fwd_mgr():
     return sym_at(".sbss", FWD_MGR_AT)
+
+
+FWD_ACTIVE_AT = 0x8023F264  # the forwarders' "player is active" test, named by symbols.txt
+
+
+def fwd_active():
+    return sym_at(".text", FWD_ACTIVE_AT).split("__")[0]
 
 
 def fwd_decl_anchor():
@@ -2241,12 +2248,12 @@ def fwd_render_def(m):
     args = ", ".join(n for t, n in sp[1:])
     if not m["void"] and len(m["fb"]) == 4:
         lit = [fallback_literal(m["ret"], v) for v in m["fb"]]
-        return FWD_DEF_RANGED.format(ret=m["ret"], name=m["name"], params=m["params"], mgr=fwd_mgr(),
+        return FWD_DEF_RANGED.format(active=fwd_active(), ret=m["ret"], name=m["name"], params=m["params"], mgr=fwd_mgr(),
                                      callee=m["callee"], args=args, fb0=lit[0], fb1=lit[1], fb2=lit[2],
                                      fb3=lit[3])
     if m["void"]:
-        return FWD_DEF_VOID.format(name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"], args=args)
-    return FWD_DEF.format(ret=m["ret"], name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"],
+        return FWD_DEF_VOID.format(active=fwd_active(), name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"], args=args)
+    return FWD_DEF.format(active=fwd_active(), ret=m["ret"], name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"],
                           args=args, fb=fallback_literal(m["ret"], m["fb"][0]),
                           fb2=fallback_literal(m["ret"], m["fb"][1]))
 
@@ -2397,7 +2404,7 @@ def fwd_header_problems(rows_plan, text):
 # ---------------------------------------------------------------- family loop: all-players loops
 #
 # tu_8022AD64's loops over the four players (`for (s32 i = 0; i < 4; i++)`
-# with fn_8023F264(i), which re-reads the manager each time): "each"
+# with the player-active test (0x8023F264)(i), which re-reads the manager each time): "each"
 # calls a getter on every active player; "find" returns the first player
 # whose getter returns true, else -1 (and its fallback without a manager).
 # No loop is matched by hand: each group of members with the same shape
@@ -2414,7 +2421,7 @@ s32 {name}({params}) {{
         return {fb};
     }}
     for (s32 i = 0; i < 4; i++) {{
-        if (fn_8023F264(i) && {mgr}->mPlayers[i]->{callee}({args})) {{
+        if ({active}(i) && {mgr}->mPlayers[i]->{callee}({args})) {{
             return i;
         }}
     }}
@@ -2427,7 +2434,7 @@ void {name}({params}) {{
         return;
     }}
     for (s32 i = 0; i < 4; i++) {{
-        if (fn_8023F264(i)) {{
+        if ({active}(i)) {{
             {mgr}->mPlayers[i]->{callee}({args});
         }}
     }}
@@ -2589,7 +2596,7 @@ def loop_plan(header_text=None):
 def loop_render_def(m):
     args = ", ".join(n for t, n in (split_params(m["params"]) or []))
     tmpl = LOOP_DEF_FIND if m["kind"] == "find" else LOOP_DEF_EACH
-    return tmpl.format(name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"], args=args,
+    return tmpl.format(active=fwd_active(), name=m["name"], params=m["params"], mgr=fwd_mgr(), callee=m["callee"], args=args,
                        fb=fallback_literal("s32", m["fb"]) if m["fb"] is not None else "")
 
 

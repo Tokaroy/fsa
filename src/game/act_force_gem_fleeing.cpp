@@ -308,7 +308,7 @@ void FleeingForceGem_804AB170::update() {
                 mVel_0x3c.x = 0.0f;
                 mPos.z = 0.0f;
             }
-            if (fn_8023F264(field_0x264)) {
+            if (isPlayerActive_8023F264(field_0x264)) {
                 mPos.x = getPlayerPos_8023E724(field_0x264)->x;
                 mPos.y = getPlayerPos_8023E724(field_0x264)->y - 24.0f;
             }

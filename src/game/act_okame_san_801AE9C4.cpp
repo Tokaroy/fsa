@@ -307,7 +307,7 @@ void OkameSan_804A3448::update() {
             break;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
+            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
                 !fn_80230188(i) && !fn_8022DCD8(i)) {
                 f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
                 f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);

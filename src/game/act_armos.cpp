@@ -125,7 +125,7 @@ void Armos_8049F260::update() {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 JGeometry::TVec3f d;
                 d.sub(*playerPos, mPos);

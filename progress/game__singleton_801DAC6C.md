@@ -23,5 +23,7 @@ ours one. extab/extabindex ~57%: same as other generated units (weak pool entrie
 SHARED-EDITS: include/game/GameGlobals.h (removed Singleton_801DAC6C/fn_801DAC6C/fn_801DAD2C
 decls, now in act/singleton_801DAC6C.h; added fn_801DC264 [act_frostare_tail unit, s32] and
 fn_801D8400 [tu_801D8400 unit, cls_804A4C58*] extern "C" decls); src/game/tu_801E5FC8.cpp
+decls, now in act/tu_801DAC6C.h; added fn_801DC264 [act_frostare_tail unit, s32] and
+fn_801D8400 [tu_801D8400 unit, Frostare_804A4C58*] extern "C" decls); src/game/tu_801E5FC8.cpp
 (call becomes fn_801DAC6C()->fn_801DAD2C(); try.py unchanged at 5/8); symbols.txt renames.
 Next: find the real type of lbl_8053AC30 and the second sdata2 float.

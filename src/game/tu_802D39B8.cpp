@@ -569,7 +569,7 @@ void GameView_804A9950::vfunc_0x10() {
     gGameRoot2_8053AB10->field_0x24->mOffset_0x1dc.set(x, y, 0.0f);
 
     for (int i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             s32 dx = field_0xf0[getPlayerLayer_8023DE58(i)].x;
             s32 dy = field_0xf0[getPlayerLayer_8023DE58(i)].y;
             if (gGameRoot_8053AAF8->field_0x5c & 2) {
@@ -763,7 +763,7 @@ void GameView_804A9950::restartStage_802DBD60() {
         getGameView_802D6A9C()->field_0x131f5 = 0;
         gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
         for (int i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 fn_80235918(i);
             }
             fn_8023EE28(i);

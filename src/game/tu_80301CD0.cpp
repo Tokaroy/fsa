@@ -720,7 +720,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     s32 layer = getRepresentativePlayer_8022EA0C(player);
     for (s32 i = 0; i < 4; i++) {
         s32 idx = fn_802340A0(i);
-        if (!fn_8023F264(i) || !fn_8023188C(i) || getPlayerLayer_8023DE58(layer) < 8 ||
+        if (!isPlayerActive_8023F264(i) || !fn_8023188C(i) || getPlayerLayer_8023DE58(layer) < 8 ||
             (!fn_8022BC38(layer, getPlayerLayer_8023DE58(i), getPlayerPos_8023E724(i)) &&
              (getPlayerLayer_8023DE58(layer) > 8 || getPlayerLayer_8023DE58(i) > 8))) {
             lbl_80506DE8[player].f.mEntries[idx].mXHigh = 1;
@@ -802,10 +802,10 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
         lbl_80506DE8[player].f.field_0x18[i].f.field_0x3_4 = 0;
     }
     s32 count = 0;
-    if (fn_8023F264(player)) {
+    if (isPlayerActive_8023F264(player)) {
         count = fn_803066F0((s32)this, player, lbl_80541618[lbl_8053AD08] - 7);
     }
-    if (fn_8023F264(player)) {
+    if (isPlayerActive_8023F264(player)) {
         fn_803064A8((s32)this, player, lbl_80541618[lbl_8053AD08] - 7 - count, count);
     }
     for (s32 n = lbl_80541618[lbl_8053AD08] - 8; n > 0; n--) {

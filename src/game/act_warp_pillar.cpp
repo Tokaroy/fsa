@@ -100,7 +100,7 @@ void WarpPillar_804AC0A8::update() {
     switch (field_0x230) {
     case 0: {
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8023F264(i) || fn_8023EA28(i) || !fn_8023561C(i) || isPlayerDead_80236B50(i)) {
+            if (!isPlayerActive_8023F264(i) || fn_8023EA28(i) || !fn_8023561C(i) || isPlayerDead_80236B50(i)) {
                 continue;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);

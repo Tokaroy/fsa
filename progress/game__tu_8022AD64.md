@@ -4,7 +4,7 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
 
 ## Matched
 - tu_8022AD64 (26): flag accessors fn_8022ADB0..fn_8022B260 and fn_8022ADFC;
-  fn_8023F264 (the guard); query templates fn_8022B7C4 (getter call),
+  isPlayerActive_8023F264 (the guard); query templates fn_8022B7C4 (getter call),
   fn_8022B860 (void setter call, one argument), getPlayerLayer_8023DE58 (field),
   getPlayerPos_8023E724 (field address, fallback &lbl_804CF460).
 - tu_801CB270: fn_801CCF34, fn_801CD228, fn_801CD290.
@@ -52,7 +52,7 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
   Player_804A6F38 (0x13BC) layouts, isPlayerActive, 64 extern "C"
   declarations. Evidence per field and declaration in the header.
 - include/game/GameGlobals.h: includes game/Player.h; the per-player block
-  (fn_8023F264, getPlayerLayer_8023DE58, getPlayerPos_8023E724, fn_802397B4) and the
+  (isPlayerActive_8023F264, getPlayerLayer_8023DE58, getPlayerPos_8023E724, fn_802397B4) and the
   fn_8022ADE4/fn_8022ADCC block moved to Player.h with the same types.
 - config/G4SE01/symbols.txt: placeholder renames only (both classes'
   ctor/dtor/vtable, fn_8023F984/fn_8023FC08/fn_8023FC10 members, the three
@@ -161,8 +161,8 @@ structural 9129. .bss 100 % (sinit split).
 
 ## Evidence for the "inlining of later-defined functions" question (CRACK_PASS)
 fn_8023434C inlines its own recursion three levels; at the depth limit MWCC calls the inline
-player test out of line, and the original calls fn_8023F264 there (ours: isPlayerActive's weak
-copy). So the original's isPlayerActive IS fn_8023F264, a plain function defined at 0x8023F264
+player test out of line, and the original calls isPlayerActive_8023F264 there (ours: isPlayerActive's weak
+copy). So the original's isPlayerActive IS isPlayerActive_8023F264, a plain function defined at 0x8023F264
 that every earlier function inlines. Likewise fn_80235B68's level 4 calls fn_8018A614 (a
 one-argument mPlayerMask test whose level-2/3 copies are fn_8023F9B0()->fn_8023F98C()). This
 unit was therefore compiled with deferred inlining (or equivalent); see "Not done".
@@ -221,7 +221,7 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 ## Done (100 % unless said)
 - The "inline later-defined functions" list, now plain functions: fn_8022B334, fn_8022CFE8,
   fn_8022D534, arePlayersInSameGroup_8022E438 (group test), getRepresentativePlayer_8022EA0C (recursive leader mapping; MWCC unrolls it
-  and calls fn_8023F264 out of line at the depth limit, as the original), fn_802316C8,
+  and calls isPlayerActive_8023F264 out of line at the depth limit, as the original), fn_802316C8,
   fn_80231A50, fn_80237A80, fn_8023885C, fn_80239108, fn_8023D21C, fn_8023D644, fn_8023DAF4.
 - fn_8023CEAC 99.84 % (regalloc-only: box / first position registers swapped).
 - hitPlayerGroup_80238548 91.52 % (structurally close: the original keeps the TVec2f offset on the stack,

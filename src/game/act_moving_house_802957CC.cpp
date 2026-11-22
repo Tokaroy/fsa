@@ -968,7 +968,7 @@ void MovingHouse_804A7AE0::update() {
     if (field_0x2bb == 1) {
         bool done = true;
         for (s32 i = 0; i < 4; i++) {
-            if (mPlayerFlags[i] == 1 && fn_8023F264(i) == 1 && !hasPlayerLeader_8022F514(i)) {
+            if (mPlayerFlags[i] == 1 && isPlayerActive_8023F264(i) == 1 && !hasPlayerLeader_8022F514(i)) {
                 if (!fn_8022D75C(i) &&
                     hitPlayerGroup_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0) == 1) {
                     mPlayerFlags[i] = 0;
@@ -996,7 +996,7 @@ void MovingHouse_804A7AE0::update() {
         fn_802984B0();
         if (field_0x250.isZero()) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, mLayer_0x4) &&
+                if (isPlayerActive_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, mLayer_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false)) {
                     field_0x234 = 50;
                     killSerialActors();
@@ -1567,7 +1567,7 @@ void MovingHouse_804A7AE0::fn_80295EE8() {
 void MovingHouse_804A7AE0::die_0x24() {
     s32 v;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
+        if (isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
             v = (mSpawnParam_0x90 >> 7) & 0x1F;
             s32 layer = v == 0 ? 0 : v + 7;
             if (layer == getPlayerLayer_8023DE58(i)) {

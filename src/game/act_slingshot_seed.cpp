@@ -396,7 +396,7 @@ void SlingshotSeed_804AB3A8::update() {
         box.addPos(mPos.x, mPos.y);
         if (field_0x26a == 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+                if (isPlayerActive_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                     JGeometry::TVec2f centre;
                     centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
                     centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);

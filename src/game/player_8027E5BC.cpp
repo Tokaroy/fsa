@@ -523,7 +523,7 @@ void Player_804A6F38::fn_802844F8() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_80233EDC(i) && !contains(box, *getPlayerPos_8023E724(i))) {
+        if (isPlayerActive_8023F264(i) && fn_80233EDC(i) && !contains(box, *getPlayerPos_8023E724(i))) {
             allInside = false;
             break;
         }
@@ -1123,7 +1123,7 @@ void Player_804A6F38::fn_80282E6C() {
             field_0xd28 = mLayer_0x3b4;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80243194(i) && fn_8022CAF8(i) != 4) {
+            if (isPlayerActive_8023F264(i) && fn_80243194(i) && fn_8022CAF8(i) != 4) {
                 fn_8023E080(i, field_0xd28);
             }
         }
@@ -2211,7 +2211,7 @@ void Player_804A6F38::getFollowTargetPos_8027FA08(JGeometry::TVec3f* out) {
     }
     switch (fn_802486A0()) {
     case 3:
-        if (fn_80241284() && fn_80248970() >= 2) {
+        if (fn_80241284() && getGroupSize_80248970() >= 2) {
             JGeometry::TVec3f center = *fn_80252F48();
             out->x = center.x + 16.0f * JMath::sincosTable_.cosShort(mSpinAngle_0x11c0);
             if (viewLayerFlag(mLayer_0x3b4)) {
@@ -2537,7 +2537,7 @@ void Player_804A6F38::updateFacing_8027EB04() {
         if (fn_802486A0() != 4 && hasLeader_80240808() && fn_8022D75C(getLeader_80240644())) {
             return;
         }
-        if (fn_802486A0() == 3 && fn_80248970() >= 2) {
+        if (fn_802486A0() == 3 && getGroupSize_80248970() >= 2) {
             if (viewLayerFlag(mLayer_0x3b4)) {
                 s32 facing = lbl_8046C0B8[mPlayerNo_0x4];
                 mFacing_0x3dc = facing;

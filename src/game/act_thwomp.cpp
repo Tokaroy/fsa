@@ -36,7 +36,7 @@ void Thwomp_804AB5D8::update() {
     mPos += mVel_0x3c;
     s32 hitMap = sweepMapBox_801F2618(NULL, false);
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && !fn_8023EA28(i)) {
+        if (isPlayerActive_8023F264(i) && !fn_8023EA28(i)) {
             if (getPlayerPos_8023E724(i)->y > mPos.y && mPos.x - 15.0f < getPlayerPos_8023E724(i)->x &&
                 15.0f + mPos.x > getPlayerPos_8023E724(i)->x && field_0x230 == 1 && !hitMap) {
                 if (fn_8023B190(i, &box, mLayer_0x4)) {

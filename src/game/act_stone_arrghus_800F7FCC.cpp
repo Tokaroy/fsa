@@ -1527,7 +1527,7 @@ void HitRing_800F802C::fn_800F802C() {
         mActive = false;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && getRepresentativePlayer_8022EA0C(i) == i && !(mHitMask & (1 << i)) &&
+        if (isPlayerActive_8023F264(i) && getRepresentativePlayer_8022EA0C(i) == i && !(mHitMask & (1 << i)) &&
             getPlayerLayer_8023DE58(i) == 0) {
             // One stack vector: the player's offset (its length is TVec2's
             // TUtilf::sqrt), then the position the hit is reported at.

@@ -282,7 +282,7 @@ HelmarocKing_804A1630::~HelmarocKing_804A1630() {
 void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
     s32 frame = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023F264(i)) {
+        if (!isPlayerActive_8023F264(i)) {
             continue;
         }
         if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
@@ -470,7 +470,7 @@ void HelmarocKing_804A1630::update() {
         }
         if (field_0x260 != 1) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     f32 dx = getPlayerPos_8023E724(i)->x - field_0x288.x;
                     f32 dy = getPlayerPos_8023E724(i)->y - field_0x288.y;
                     if (std::sqrtf(dx * dx + dy * dy) < 64.0f) {

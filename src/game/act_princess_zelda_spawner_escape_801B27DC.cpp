@@ -85,7 +85,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 railLayer = mLayer_0x4;
     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 1.0f, 0.0f, false);
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             getGameView_802D6A9C()->fn_802D79A4(i, 2.0f, 1.0f, 1.0f);
         }
     }
@@ -359,7 +359,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         }
         s32 near = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && getRepresentativePlayer_8022EA0C(i) == i &&
+            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && getRepresentativePlayer_8022EA0C(i) == i &&
                 !fn_80230188(i) && !fn_8022DCD8(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                 f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;

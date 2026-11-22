@@ -74,7 +74,7 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
 void VaatiBoss_804A4958::fn_801E5754() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x2a8[i].field_0x0 != 0) {
-            if (fn_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_8022D75C(i)) {
+            if (isPlayerActive_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_8022D75C(i)) {
                 if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                     continue;
                 }

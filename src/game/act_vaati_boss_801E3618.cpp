@@ -227,7 +227,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
             box.f.x += 8.0f;
             box.f.y += 8.0f;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
+                if (isPlayerActive_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
                     getPlayerLayer_8023DE58(i) == getField_0x4() && fn_80235448(i) &&
                     getPlayerPos_8023E724(i)->z <= 40.0f) {
                     f32 limit = fn_8023E578(i)->z;

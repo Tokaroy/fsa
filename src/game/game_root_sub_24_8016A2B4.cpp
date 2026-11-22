@@ -410,7 +410,7 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
             s32 minX = 0x200;
             s32 alpha = 100 - gGameRoot2_8053AB10->field_0x2c->field_0xc * 100 / 255;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
+                if (isPlayerActive_8023F264(i)) {
                     s32 x = (s32)getPlayerPos_8023E724(i)->x & 0x1ff;
                     if (minX > x) {
                         minX = x;

@@ -419,7 +419,7 @@ void WingedForceGem_804AB098::update() {
     }
     case 6:
         mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
-        if (fn_8023F264(field_0x26c)) {
+        if (isPlayerActive_8023F264(field_0x26c)) {
             mPos.z = getPlayerPos_8023E724(field_0x26c)->z;
             mPos.x = getPlayerPos_8023E724(field_0x26c)->x;
             mPos.y = getPlayerPos_8023E724(field_0x26c)->y - 24.0f;

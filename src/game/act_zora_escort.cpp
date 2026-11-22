@@ -118,7 +118,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         vfunc_0x98(0, 1, 64.0f);
         s32 nearPlayer = findNearbyPlayer();
         if (nearPlayer >= 0 && nearPlayer != field_0x3cc) {
-            if (!fn_8023F264(nearPlayer)) {
+            if (!isPlayerActive_8023F264(nearPlayer)) {
                 return;
             }
             if (!fn_802300EC(nearPlayer)) {

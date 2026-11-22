@@ -5,7 +5,7 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 
-void cls_804A4C58::fn_801DE12C() {
+void Frostare_804A4C58::fn_801DE12C() {
     switch (mState) {
     case 0:
     case 1:
@@ -182,7 +182,7 @@ void cls_804A4C58::fn_801DE12C() {
     mBox2.f.y = mBox.f.y;
 }
 
-bool cls_804A4C58::fn_801DE018() {
+bool Frostare_804A4C58::fn_801DE018() {
     bool result = false;
     bool inRange = false;
     switch (mState) {
@@ -217,7 +217,7 @@ bool cls_804A4C58::fn_801DE018() {
 extern const u8 lbl_8053F1C8; // hits before the knock-back state (tu_801D8400's .sdata)
 
 // FIXME(shotgun): 92.43 %, missing/extra; behaviour near.
-bool cls_804A4C58::fn_801DDBE4() {
+bool Frostare_804A4C58::fn_801DDBE4() {
     bool hit = false;
     bool active = false;
     if (mState != 5 && mState >= 4 && mState < 8) {
@@ -315,7 +315,7 @@ bool cls_804A4C58::fn_801DDBE4() {
 }
 
 // Whether player i overlaps the sequencer's hit area at all; state 0x11 always counts.
-static inline bool playerTouches(cls_804A4C58* boss, s32 i) {
+static inline bool playerTouches(Frostare_804A4C58* boss, s32 i) {
     bool touched = false;
     if (i >= 0 && i < 4 && !fn_80235448(i)) {
         if (boss->mState == 0x11) {
@@ -345,7 +345,7 @@ static inline bool playerTouches(cls_804A4C58* boss, s32 i) {
 }
 
 // FIXME(shotgun): 96.60 %, different; behaviour near.
-bool cls_804A4C58::fn_801DD410() {
+bool Frostare_804A4C58::fn_801DD410() {
     bool hit = false;
     bool active = false;
     if (mState == 5 || (mState >= 4 && mState < 8)) {
@@ -473,7 +473,7 @@ bool cls_804A4C58::fn_801DD410() {
     return hit;
 }
 
-u8 cls_804A4C58::fn_801DD28C() {
+u8 Frostare_804A4C58::fn_801DD28C() {
     u8 hit = 0;
     f32 x0 = 1.0f;
     f32 y0 = x0;
@@ -510,7 +510,7 @@ u8 cls_804A4C58::fn_801DD28C() {
     return hit;
 }
 
-bool cls_804A4C58::fn_801DD1AC() {
+bool Frostare_804A4C58::fn_801DD1AC() {
     bool clamped = false;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT)) {
         if (mPos.x < field_0x2d4[0].x) {

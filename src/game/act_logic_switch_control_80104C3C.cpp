@@ -37,7 +37,7 @@ bool LogicSwitchControl_8049CB58::fn_80104EB0() {
         break;
     case 1:
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
+            if (isPlayerActive_8023F264(i)) {
                 gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(getPlayerPos_8023E724(i));
             }
         }
@@ -45,7 +45,7 @@ bool LogicSwitchControl_8049CB58::fn_80104EB0() {
         if (field_0x248 == 0) {
             field_0x24a++;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
+                if (isPlayerActive_8023F264(i)) {
                     fn_80230498(i, getPlayerPos_8023E724(i), field_0x24a + 0xDB, 0xFF, -0x80, -0x80, true);
                     if (field_0x24a == 1) {
                         fn_80230FD0(i, 0x10001);

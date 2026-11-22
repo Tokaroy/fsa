@@ -60,7 +60,7 @@ void LiftableWood_804A87A8::update() {
         JGeometry::TBox2f box = mBox;
         box.addPos(mPos.x, mPos.y);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, &box, mLayer_0x4)) {
+            if (isPlayerActive_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, &box, mLayer_0x4)) {
                 JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 f32 px = playerPos->x;
                 f32 py = playerPos->y;

@@ -101,7 +101,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
     }
 
     for (int i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && !fn_8022F478(i) && getPlayerLayer_8023DE58(i) < 8 &&
+        if (isPlayerActive_8023F264(i) && !fn_8022F478(i) && getPlayerLayer_8023DE58(i) < 8 &&
             !fn_80230188(i) && !fn_8022B7C4(i) && !fn_802349EC(i) && !unk[i]) {
             // hitPlayerGroup_80238548 reads pos+0/+4 (TVec2f) only
             hitPlayerGroup_80238548(i, 0x20, (const JGeometry::TVec2f*)pos, 0x13);

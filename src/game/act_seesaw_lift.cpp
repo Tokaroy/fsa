@@ -81,7 +81,7 @@ inline void SeesawLift_804AD348::checkContactBox(s32 p) {
 }
 
 inline void SeesawLift_804AD348::pushPlayer(s32 p) {
-    if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !hasPlayerLeader_8022F514(p)) {
+    if (isPlayerActive_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !hasPlayerLeader_8022F514(p)) {
         f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
         f32 push = 1.8f * (sinVal * JGeometry::TUtilf::abs(sinVal));
         if (gGameRoot_8053AAF8->field_0x7e != 0 && getKind() >= 2) {
@@ -309,7 +309,7 @@ void SeesawLift_804AD348::fn_8035A210() {
     for (s32 p = 0; p < 4; p++) {
         field_0x246[p] = 0;
         field_0x24a[p] = 0;
-        if (fn_8023F264(p)) {
+        if (isPlayerActive_8023F264(p)) {
             field_0x246[p] = fn_8035AE9C(p);
             checkContactBox(p);
         }
@@ -446,7 +446,7 @@ void SeesawLift_804AD348::fn_803597EC() {
     for (s32 p = 0; p < 4; p++) {
         field_0x246[p] = 0;
         field_0x24a[p] = 0;
-        if (fn_8023F264(p)) {
+        if (isPlayerActive_8023F264(p)) {
             field_0x246[p] = fn_8035AE9C(p);
             if (fn_80235448(p) && field_0x246[p] != 0) {
                 field_0x24e |= 1 << p;
@@ -514,7 +514,7 @@ void SeesawLift_804AD348::fn_80358F98() {
     for (s32 p = 0; p < 4; p++) {
         field_0x246[p] = 0;
         field_0x24a[p] = 0;
-        if (fn_8023F264(p)) {
+        if (isPlayerActive_8023F264(p)) {
             field_0x246[p] = fn_8035AE9C(p);
             checkContactBox(p);
         }
@@ -608,7 +608,7 @@ void SeesawLift_804AD348::fn_803584C0() {
     for (s32 p = 0; p < 4; p++) {
         field_0x246[p] = 0;
         field_0x24a[p] = 0;
-        if (fn_8023F264(p)) {
+        if (isPlayerActive_8023F264(p)) {
             field_0x246[p] = fn_8035AC84(p);
             checkContactBox(p);
             if (field_0x25c[p] == NULL) {

@@ -189,7 +189,7 @@ void ActorBase_804A5770::checkPlayerContact_0x18() {
         JGeometry::TBox2f box;
         toScreenBox(&box, mBox, mPos);
         for (int i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TBox2f playerBox;
                 toScreenBox(&playerBox, JGeometry::TBox2f(-12.0f, -28.0f, 12.0f, 12.0f),
                             *getPlayerPos_8023E724(i));
@@ -2116,7 +2116,7 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
         } else if (actor->getField_0x4() == getPlayerLayer_8023DE58(i)) {
             onLayer = 1;
         }
-        if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && onLayer != 0 &&
+        if (isPlayerActive_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && onLayer != 0 &&
             !fn_8022F478(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i))
         {
             f32 dx;
@@ -2204,7 +2204,7 @@ void ActorBase_804A5770::getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir,
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
+        if (isPlayerActive_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
             !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
@@ -2257,7 +2257,7 @@ void ActorBase_804A5770::getNearestPlayerDir_801EE558(JGeometry::TVec3f* outDir,
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
+        if (isPlayerActive_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);

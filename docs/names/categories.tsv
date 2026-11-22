@@ -82,7 +82,7 @@ game/act_recovery_heart.cpp	objects	med	actors.tsv (actor spawner): object HART 
 game/act_octorok_rock.cpp	objects	med	actors.tsv (actor spawner): effect OKTM Octorok rock	auto
 game/act_big_moldorm_80147B50.cpp	enemies	med	strings 'boss_deg_*.bti': a boss's textures	hand
 game/act_bomb.cpp	objects	high	actors.tsv (actor spawner): object HBMB Bomb	auto
-game/act_hinox.cpp	enemies	high	actors.tsv (actor spawner): enemy HINO Hinox	auto
+game/act_hinox.cpp	enemies	med	actors.tsv (actor spawner): enemy HINO Hinox	auto
 game/act_sword_soldier.cpp	enemies	med	actors.tsv (actor spawner): enemy SLR1 Sword Soldier	auto
 game/act_tektite.cpp	enemies	med	actors.tsv (actor spawner): enemy TKTA Tektite	auto
 game/act_bow_soldier_801555D8.cpp	enemies	low	actor-shaped (no direct callers); calls act_sword_soldier 24x	hand
@@ -166,7 +166,7 @@ game/act_shadow_link_2_801D3CBC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_
 game/act_vaati_boss.cpp	enemies	high	EnemyBase subclass (VaatiBoss_804A4958); actors.tsv (actor spawner): boss BOGF Vaati (boss)	auto
 game/tu_801D6CEC.cpp	enemies	med	Vaati's actor-serial table, called by act_vaati_boss	hand
 game/act_unknown_bgbl_801D7AFC.cpp	enemies	low	EnemyBase subclass (UnknownBGBL_804A4BB0); but actors.tsv (actor spawner): object BGBL unknown (BGBL)	auto
-game/tu_801D8400.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
+game/tu_801D8400.cpp	enemies	med	EnemyBase subclass (Frostare_804A4C58); no actors.tsv kind	auto
 game/sequencer_801DA7C0.cpp	enemies	med	strings 'boss_koori_*.bti': a boss's textures	hand
 game/singleton_801DAC6C.cpp	enemies	low	called only by the ice boss units (tu_801D8400, act_frostare_tail)	hand
 game/act_frostare_child_frosteye_801DB18C.cpp	enemies	med	EnemyBase subclass (FrostareChildFrosteye_804A4EE8); actors.tsv (actor spawner): boss ICHL Frostare child (Frosteye?)	auto
@@ -179,7 +179,7 @@ game/act_tingle_buster.cpp	enemies	low	EnemyBase subclass (TingleBuster_804A5370
 game/act_vaati_boss_801E3618.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
 game/tu_801E4A18.cpp	enemies	low	called only by act_vaati_boss	hand
 game/act_vaati_boss_801E4D54.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
-game/tu_801E5FC8.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
+game/tu_801E5FC8.cpp	enemies	med	EnemyBase subclass (Frostare_804A4C58); no actors.tsv kind	auto
 game/tu_801E667C.cpp	enemies	low	called only by act_vaati_boss	hand
 game/act_iron_pot_801E6D48.cpp	enemies	low	EnemyBase subclass (IronPot_804A5418); but actors.tsv (actor spawner): object IPOT Iron pot	auto
 game/act_fuse_point.cpp	enemies	low	EnemyBase subclass (FusePoint_804A54C0); but actors.tsv (actor spawner): system FSPO Fuse point	auto
@@ -236,7 +236,7 @@ game/act_navi.cpp	npcs	med	actors.tsv (actor spawner): npc NAVI Navi; but EnemyB
 game/navi_list_8021F064.cpp	npcs	low	called only by act_navi	hand
 game/emitter_move_seq_8021F4B0.cpp	enemies	low	called only by act_shadow_link_generator	hand
 game/tu_8021FDB8.cpp	enemies	med	EnemyBase subclass (cls_804A51E4); no actors.tsv kind	auto
-game/act_unknown_fbal_802201D8.cpp	enemies	low	EnemyBase subclass (cls_804A48B0); but actors.tsv (actor spawner): object FBAL unknown (FBAL)	auto
+game/act_unknown_fbal_802201D8.cpp	enemies	low	EnemyBase subclass (UnknownFBAL_804A6828); but actors.tsv (actor spawner): object FBAL unknown (FBAL)	auto
 game/act_shadow_link_jump.cpp	enemies	high	EnemyBase subclass (ShadowLinkBase_804A6A00); actors.tsv (actor spawner): enemy ZSLJ Shadow Link (jump, minor)	auto
 game/shadow_link_base_80220F54.cpp	enemies	med	EnemyBase subclass (ShadowLinkBase_804A6A00); no actors.tsv kind	auto
 game/act_shadow_link_hammer_minor_80221B44.cpp	enemies	med	EnemyBase subclass (ShadowLinkBase_804A6A00); no actors.tsv kind	auto

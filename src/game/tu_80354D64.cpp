@@ -128,7 +128,7 @@ void Log_804ACD70::update() {
             }
             field_0x2d0 = -1;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i)) {
+                if (isPlayerActive_8023F264(i)) {
                     JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                     f32 px = ppos->x;
                     f32 py = ppos->y;

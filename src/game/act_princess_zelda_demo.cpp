@@ -1423,7 +1423,7 @@ inline s32 PrincessZeldaDemo_8049D208::startTalk(u32 msg, bool talkFlag) {
         player = -1;
     } else if (!fn_802300EC(player)) {
         player = -1;
-    } else if (!fn_8023F264(player)) {
+    } else if (!isPlayerActive_8023F264(player)) {
         player = -1;
     } else {
         JGeometry::TVec3f at = mPos;

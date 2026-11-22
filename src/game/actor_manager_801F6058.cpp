@@ -882,7 +882,7 @@ s32 ActorManager_804A5800::fn_801F68E0() {
     s32 busy = 0;
     u8 present = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_8023ED8C(i)) {
+        if (isPlayerActive_8023F264(i) && fn_8023ED8C(i)) {
             fn_80230C6C(i);
             busy++;
         }
@@ -891,12 +891,12 @@ s32 ActorManager_804A5800::fn_801F68E0() {
         return 0;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
+        if (isPlayerActive_8023F264(i)) {
             present |= 1 << i;
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_802300EC(i) == true && !fn_8023E854(i)) {
+        if (isPlayerActive_8023F264(i) && fn_802300EC(i) == true && !fn_8023E854(i)) {
             fn_80230AD4(i);
             field_0x3041 |= 1 << i;
         }

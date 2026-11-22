@@ -3,7 +3,7 @@
 Baseline: `total: 5901 / 11557 functions, 1181784 / 4442032 bytes of code (26.60 %)`.
 After: `total: 5905 / 11557 functions, 1182252 / 4442032 bytes of code (26.62 %)`. gate: ok.
 
-Class cls_804A4C58 (vtable 0x804A4C58, EnemyBase_804A4808 child), header include/game/act/tu_801D8400.h.
+Class Frostare_804A4C58 (vtable 0x804A4C58, EnemyBase_804A4808 child), header include/game/act/tu_801D8400.h.
 
 ## Matched (5/8)
 fn_801E61C4, fn_801E6234, fn_801E6394, fn_801E63D8 and the generated __sinit.
@@ -29,5 +29,5 @@ fn_801E61C4, fn_801E6234, fn_801E6394, fn_801E63D8 and the generated __sinit.
 - config/G4SE01/symbols.txt: the 7 functions renamed to their mangled member names.
 
 ## Next
-Unwritten units tu_801D8400 / tu_801DD1AC own the rest of cls_804A4C58 (the header has only the members used here;
+Unwritten units tu_801D8400 / tu_801DD1AC own the rest of Frostare_804A4C58 (the header has only the members used here;
 the 0x2A8 Sequencer_801DA7C0 is 0x18 bytes, ends at 0x2C0).

@@ -119,7 +119,7 @@ static inline bool shownOrState49(const Player_804A6F38* player) {
 // inlined). The group loops read the leader through an inline with a local of its own, not as a
 // local of the loop: MWCC creates an inlined function's locals when its call is expanded, so this
 // value is created, and coloured, after every loop counter of the caller. Written as a plain local
-// of fn_80248970 / getFollowerIndex_80248778 it lands in another register in about 30 callers.
+// of getGroupSize_80248970 / getFollowerIndex_80248778 it lands in another register in about 30 callers.
 static inline s32 leaderOf(const Player_804A6F38* player) {
     s32 leader = player->mLeader_0xd60;
     return leader;
@@ -131,7 +131,7 @@ static inline s32 selfOf(const Player_804A6F38* player) {
     return self;
 }
 
-// The leader as the group loops (fn_80248970 / getFollowerIndex_80248778) read it: one inline level above
+// The leader as the group loops (getGroupSize_80248970 / getFollowerIndex_80248778) read it: one inline level above
 // leaderOf. Provisional name (always inlined; the original's accessor is not known, the level is
 // what the registers show). Each level delays the expansion of the call inside it by one inlining
 // pass, so leaderOf's local is created, and coloured, after selfOf's in the same copy and after
@@ -1045,7 +1045,7 @@ void Player_804A6F38::fn_80252FC0() {
     f32 pushX = 0.0f;
     f32 pushY = pushX;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4)) {
+        if (isPlayerActive_8023F264(i) && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4)) {
             if (fn_8022D930(i) || fn_8022D894(i) || fn_8022D9CC(i)) {
                 JGeometry::TVec3f target;
                 fn_8027F854(&target, i);
@@ -2742,7 +2742,7 @@ void Player_804A6F38::fn_8024BDBC() {
     if (field_0x454) {
         return;
     }
-    if (fn_80248970() >= 2) {
+    if (getGroupSize_80248970() >= 2) {
         return;
     }
     if (!gGameRoot_8053AAF8->field_0x7f) {
@@ -2890,7 +2890,7 @@ void Player_804A6F38::resetTrail_8024B2E0() {
         }
         return;
     }
-    if (fn_80248970() <= 1) {
+    if (getGroupSize_80248970() <= 1) {
         for (int i = 0; i < 0x31; i++) {
             mPosHistory_0x38[i].x = field_0x32c.x;
             mPosHistory_0x38[i].y = field_0x32c.y;
@@ -2898,7 +2898,7 @@ void Player_804A6F38::resetTrail_8024B2E0() {
         }
     } else {
         JGeometry::TVec3f from = mPos;
-        for (s32 n = 1, other = mPlayerNo_0x4 + 1; n < fn_80248970(); n++, other++) {
+        for (s32 n = 1, other = mPlayerNo_0x4 + 1; n < getGroupSize_80248970(); n++, other++) {
             while (!arePlayersInSameGroup_8022E438(mPlayerNo_0x4, other)) {
                 if (other >= 4) {
                     break;
@@ -2915,7 +2915,7 @@ void Player_804A6F38::resetTrail_8024B2E0() {
             }
             from.set(to);
         }
-        for (s32 i = (fn_80248970() - 1) * 12; i < 0x31; i++) {
+        for (s32 i = (getGroupSize_80248970() - 1) * 12; i < 0x31; i++) {
             mPosHistory_0x38[i].x = from.x;
             mPosHistory_0x38[i].y = from.y;
             mPosHistory_0x38[i].z = from.z;
@@ -3065,7 +3065,7 @@ void Player_804A6F38::fn_802490A8() {
         return;
     }
     JUTGamePad* pad = JUTGamePad::getGamePad(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec));
-    if (mLeader_0xd60 < 0 && fn_80248970() >= 2 &&
+    if (mLeader_0xd60 < 0 && getGroupSize_80248970() >= 2 &&
         lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x40)) {
         if (fn_802486A0() == 5) {
             if (!gGameRoot_8053AAF8->field_0x7e) {
@@ -3297,7 +3297,7 @@ bool Player_804A6F38::fn_80248A24() {
 // inlines this function after fn_802486A0; its direct copy zeroes count and
 // index li / li in the original, li / mr in ours ("different" 94.9 %, six
 // shapes).
-s32 Player_804A6F38::fn_80248970() const {
+s32 Player_804A6F38::getGroupSize_80248970() const {
     s32 self;
     s32 leader;
     s32 count = 0;
@@ -3324,7 +3324,7 @@ s32 Player_804A6F38::fn_80248970() const {
 }
 
 // The number of group places in use: 1 in group mode 4 (turn-based), else
-// the group's size (fn_80248970).
+// the group's size (getGroupSize_80248970).
 // FIXME: 96.13 %, different; behaviour clean.
 // Registers only: the original zeroes the loop's count and
 // index with two li (r29, r30), ours with li / mr (r28, r29).
@@ -3332,7 +3332,7 @@ s32 Player_804A6F38::fn_802487FC() const {
     if (fn_802486A0() == 4) {
         return 1;
     }
-    return fn_80248970();
+    return getGroupSize_80248970();
 }
 
 // The place of this player in its partner's line (1 for the first follower),
@@ -3355,7 +3355,7 @@ s32 Player_804A6F38::getFollowerIndex_80248778() const {
 // The group's mode: 5 alone, else the leader's (fn_8022CAF8) or, leading,
 // field_0x120c.
 s32 Player_804A6F38::fn_802486A0() const {
-    if (fn_80248970() <= 1) {
+    if (getGroupSize_80248970() <= 1) {
         return 5;
     }
     if (mLeader_0xd60 >= 0) {
@@ -3379,7 +3379,7 @@ void Player_804A6F38::fn_80248604() {
 // reset (fn_8023105C / fn_802310F8), the old mode kept in field_0x1210 and,
 // for a leader, the cue played (playSound_8024F0E8 / fn_80230FD0) when `cue`.
 void Player_804A6F38::setGroupMode_80248004(s32 mode, bool cue) {
-    if (fn_80248970() <= 1) {
+    if (getGroupSize_80248970() <= 1) {
         return;
     }
     if (field_0x1216 == true) {
@@ -4258,7 +4258,7 @@ void Player_804A6F38::fn_80241B44(JGeometry::TBox2f* out) {
     }
 }
 
-// True alone (fn_80248970 <= 1) or in group mode 4; else only when every
+// True alone (getGroupSize_80248970 <= 1) or in group mode 4; else only when every
 // other player this one can reach (arePlayersInSameGroup_8022E438) has fn_802349EC (byte
 // 0x1215 of that player, set on arriving at its spot).
 // FIXME: 98.96 %, regalloc-only; behaviour clean.
@@ -4266,7 +4266,7 @@ void Player_804A6F38::fn_80241B44(JGeometry::TBox2f* out) {
 // index are r29 / r30 in the original, r28 / r29 here (with the stw r28 save
 // moved).
 bool Player_804A6F38::fn_80241964() {
-    if (fn_80248970() <= 1) {
+    if (getGroupSize_80248970() <= 1) {
         return true;
     }
     if (fn_802486A0() == 4) {

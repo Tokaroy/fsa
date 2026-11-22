@@ -561,7 +561,7 @@ void BowSoldier_804A00C8::update() {
             mVel_0x3c.x = 0.0f;
             field_0x264 = (field_0x264 + 0x4000) & 0xF000;
         }
-        if (field_0x250 == 0 && field_0x268 >= 0 && fn_8023F264(field_0x268)) {
+        if (field_0x250 == 0 && field_0x268 >= 0 && isPlayerActive_8023F264(field_0x268)) {
             if (dir != -1) {
                 mDir_0x98 = dir;
             }

@@ -255,7 +255,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 
         s32 anyOnScreen = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
+            if (isPlayerActive_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
                 anyOnScreen = 1;
             }
         }

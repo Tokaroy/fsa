@@ -128,7 +128,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         } else {
             s32 count = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                if (isPlayerActive_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
                     !fn_80230188(i) && !fn_8022DCD8(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                     f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                     f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
@@ -256,7 +256,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         playSe_801F0D20(0x50);
         if (field_0x234 == 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     healPlayerGroup_80236554(i, 0x20, false);
                 }
             }
