@@ -235,7 +235,8 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME: 98.51 %, missing/extra; behaviour near.
+// FIXME: 98.62 %, missing/extra; behaviour clean.
+// Still differs: the original keeps layer in a second register (mr r31, r29; the spawn calls read the first).
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = getCellIndex_80226BC4(&p, layer);
@@ -362,8 +363,8 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         }
     } else if (field_0x24 == 0x71) {
         if (a == 0) {
-            // both outcomes write 0x7B in the original
-            if (fn_802353AC(player)) {
+            // both outcomes write 0x7B in the original; the result is compared with 1 (cmplwi)
+            if (fn_802353AC(player) == true) {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7B);
             } else {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7B);
@@ -1330,68 +1331,68 @@ void BgRewrite_804A7C98::fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s
     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, next, d);
 }
 
-// FIXME: 92.35 %, missing/extra; behaviour clean.
-// Register allocation and placement only: the original saves b in
-// r30 and cell in r29 up front and copies layer into r31 inside each branch
-// (mr r31, r4 twice); ours saves layer in r29 before the branch.
+static inline void writeCell(int layer, s32 cell, u16 tile) {
+    gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, tile);
+}
+
 void BgRewrite_804A7C98::writeTilePair_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b) {
     if (vertical == 0) {
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, a);
+        writeCell(layer, cell, a);
         cell++;
         if ((cell & 0xF) == 0) {
             cell += 0xF0;
         }
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, b);
+        writeCell(layer, cell, b);
     } else {
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, a);
+        writeCell(layer, cell, a);
         s32 below = cell + 0x10;
         if ((cell & 0x100) != (below & 0x100)) {
             below = cell + 0x110;
         }
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, below, b);
+        writeCell(layer, below, b);
     }
 }
 
-// Register allocation and placement only: the original copies layer into r27 / r31 inside each branch; ours saves it in r30 before the branch.
-// FIXME: 94.12 %, missing/extra; behaviour clean.
+// Registers only: cell, the layer copies and b/c/d sit in other callee-saved registers.
+// FIXME: 97.09 %, regalloc-only; behaviour clean.
 void BgRewrite_804A7C98::writeFourTiles_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
     if (vertical == 0) {
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, a);
+        writeCell(layer, cell, a);
         cell++;
         if ((cell & 0xF) == 0) {
             cell += 0xF0;
         }
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, b);
+        writeCell(layer, cell, b);
         cell++;
         if ((cell & 0xF) == 0) {
             cell += 0xF0;
         }
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, c);
+        writeCell(layer, cell, c);
         cell++;
         if ((cell & 0xF) == 0) {
             cell += 0xF0;
         }
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, d);
+        writeCell(layer, cell, d);
     } else {
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, a);
+        writeCell(layer, cell, a);
         s32 below0 = cell + 0x10;
         if ((cell & 0x100) != (below0 & 0x100)) {
             below0 = cell + 0x110;
         }
         cell = below0;
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, b);
+        writeCell(layer, cell, b);
         s32 below1 = cell + 0x10;
         if ((cell & 0x100) != (below1 & 0x100)) {
             below1 = cell + 0x110;
         }
         cell = below1;
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, c);
+        writeCell(layer, cell, c);
         s32 below2 = cell + 0x10;
         if ((cell & 0x100) != (below2 & 0x100)) {
             below2 = cell + 0x110;
         }
         cell = below2;
-        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, d);
+        writeCell(layer, cell, d);
     }
 }
 
