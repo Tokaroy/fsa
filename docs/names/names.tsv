@@ -267,3 +267,50 @@ address	kind	old	new	confidence	apply	evidence
 804AF9A0	field	field_0x4c0	mMode_0x4c0	med	yes	tu_803A8DFC fn_803A9830 switch: 0 wait, 1 fade in, 2-4 the result pages, 6 / 5 fades; tu_80379F84 reads it
 804AF9A0	field	field_0x4c1	mState_0x4c1	med	yes	tu_803A8DFC fn_803AA8F8: switch (field_0x4c1) over the 4P result states; each handler stores the next
 804AF9A0	field	field_0x4c2	mFadeAlpha_0x4c2	med	yes	tu_803A8DFC fn_803A9830 steps it 0-255 in modes 1 / 5 / 6; it is the alpha of the kk_black.bti picture (fn_803A8F5C)
+804B0F10	field	field_0x8	mEntryScreen_0x8	med	yes	tu_803F0A54 ctor: new J2DScreen, setPriority("bat_entry.blo") from the mode-4 archive
+804B0F10	field	field_0xc	mEntryConScreen_0xc	med	yes	tu_803F0A54 ctor: new J2DScreen, setPriority("bat_entry_con.blo"); fn_803F0A54 draws the player sprites over its panes
+804B0F10	field	field_0x10	mHandicapScreen_0x10	med	yes	tu_803F0A54 ctor: new J2DScreen, setPriority("handicap.blo"); 'Tstr01'-'Tstr04', 'Paccur02', 'Pthabb07' are searched on it
+804B0F10	field	field_0x14	mBackScreen_0x14	med	yes	tu_803F0A54 ctor: new J2DScreen, setPriority("bat_back.blo"); fn_803FC46C draws it first
+804B0F10	field	field_0x18	mArrowAnimScreens_0x18	med	yes	tu_803F0A54 ctor: [0-3] = new J2DScreen, setPriority("entry_arrow_anim.blo")
+804B0F10	field	field_0x28	mConnectAnimScreens_0x28	med	yes	tu_803F0A54 ctor: [0-3] = new J2DScreen, setPriority("entry_connect_anim.blo")
+804B0F10	field	field_0x38	mArrowAnms_0x38	med	yes	tu_803F0A54 ctor: [i] = J2DAnmLoaderDataBase::load("entry_arrow_anim.bck"), setAnimation on field_0x18[i]'s 'NULL_001'
+804B0F10	field	field_0x48	mConnectAnms_0x48	med	yes	tu_803F0A54 ctor: [i] = J2DAnmLoaderDataBase::load("entry_connect_anim.bck"), setAnimation on field_0x28[i]'s 'Ndatay00'
+804B0F10	field	field_0x5c	mFadePicture_0x5c	med	yes	tu_803F0A54 ctor: new J2DPicture("kk_black.bti"), black; drawFade setAlpha(field_0x25d) and draws it 800 x 640
+804B0F10	field	field_0x60	mPthabb07Pane_0x60	med	yes	tu_803F0A54 ctor: PaneCtrl of handicap.blo 'Pthabb07'
+804B0F10	field	field_0x64	mPstrbPanes_0x64	med	yes	tu_803F0A54 ctor: [0-3] = PaneCtrl of handicap.blo 'Pstrb14' / 'Pstrb24' / 'Pstrb34' / 'Pstrb44'
+804B0F10	field	field_0x74	mButtonGuidePane_0x74	low	yes	tu_803F0A54 ctor: = lbl_8053AED8->field_0x8, the pane of the object given kk_kettei_01.bti / kk_modoru_01.bti (decide / back) right after; moved with moveFromCentre(0, offset). The role is read from the texture names
+804B0F10	field	field_0x78	mPlayerSoundObjs_0x78	med	yes	tu_803F0A54 ctor: new cls_804B20F8(i, NULL, NULL, 8) per player; field_0x78[i]->startSound(0x10001) (line 1183); fn_803FC304 updates each every frame
+804B0F10	field	field_0x1c0	mConnectedCount_0x1c0	med	yes	tu_803F0A54 fn_803FC304: zeroed, then ++ for each player whose input slot fn_8030A308 reports connected (the same test sets GameRoot mPlayerMask's bit i + 4)
+804B0F10	field	field_0x1c4	mState_0x1c4	med	yes	tu_803F0A54 fn_803FC304: (this->*lbl_804B0D14[field_0x1c4])(), the update table; the enter functions store the new state (fn_803F1C5C: = 11)
+804B0F10	field	field_0x1c8	mPrevState_0x1c8	med	yes	tu_803F0A54 enter functions: field_0x1c8 = field_0x1c4 before the new state is stored; state 13 runs lbl_804B0D14[field_0x1c8]
+804B0F10	field	field_0x1cc	mNextState_0x1cc	med	yes	tu_803F0A54 drawFade: at full black (this->*lbl_804B0BDC[field_0x1cc])(), the enter function of the state stored with the fade request
+804B0F10	field	field_0x25d	mFadeAlpha_0x25d	med	yes	tu_803F0A54 drawFade: stepped by 10 up to 255 and back to 0; the alpha of the kk_black.bti picture
+804B0F10	field	field_0x25e	mFadeState_0x25e	med	yes	tu_803F0A54 drawFade: 0 off, 1 fading out (then the state change), 2 fading in; fn_803FC304 holds the update while it is set
+804B0F10	field	field_0x94	mEntryNdata03X_0x94	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata03')->getBounds()->i.x
+804B0F10	field	field_0x98	mEntryNdata03Y_0x98	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata03')->getBounds()->i.y
+804B0F10	field	field_0xa0	mEntryNdata05X_0xa0	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata05')->getBounds()->i.x
+804B0F10	field	field_0xa4	mEntryNdata05Y_0xa4	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata05')->getBounds()->i.y
+804B0F10	field	field_0xac	mEntryNdata06X_0xac	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata06')->getBounds()->i.x
+804B0F10	field	field_0xb0	mEntryNdata06Y_0xb0	med	yes	tu_803F0A54 ctor: = bat_entry.blo search('Ndata06')->getBounds()->i.y
+804B0F10	field	field_0xbc	mEntryPpllbkX_0xbc	med	yes	tu_803F0A54 ctor: [0-3] = bat_entry.blo 'Ppllbk02' / 'Ppllbk12' / 'Ppllbk22' / 'Ppllbk32' getBounds()->i.x
+804B0F10	field	field_0xcc	mEntryPpllbkY_0xcc	med	yes	tu_803F0A54 ctor: [0-3] = the same four Ppllbk panes' getBounds()->i.y
+804B0F10	field	field_0xec	mPscuro02X_0xec	med	yes	tu_803F0A54 ctor: = bat_n_player.blo (mScreen) search('Pscuro02')->getBounds()->i.x
+804B0F10	field	field_0xf0	mPscuro02Y_0xf0	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Pscuro02')->getBounds()->i.y
+804B0F10	field	field_0xf4	mConPscuro02X_0xf4	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Pscuro02')->getBounds()->i.x
+804B0F10	field	field_0xf8	mConPscuro02Y_0xf8	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Pscuro02')->getBounds()->i.y
+804B0F10	field	field_0x108	mPmbabb07X_0x108	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Pmbabb07')->getBounds()->i.x
+804B0F10	field	field_0x10c	mPmbabb07Y_0x10c	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Pmbabb07')->getBounds()->i.y
+804B0F10	field	field_0x118	mPnopbX_0x118	med	yes	tu_803F0A54 ctor: [0-2] = bat_n_player.blo 'Pnopb08' / 'Pnopb12' / 'Pnopb16' getBounds()->i.x
+804B0F10	field	field_0x124	mPnopbY_0x124	med	yes	tu_803F0A54 ctor: [0-2] = the same three Pnopb panes' getBounds()->i.y
+804B0F10	field	field_0x13c	mNdata02X_0x13c	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata02')->getBounds()->i.x
+804B0F10	field	field_0x140	mNdata02Y_0x140	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata02')->getBounds()->i.y
+804B0F10	field	field_0x148	mNdata05X_0x148	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata05')->getBounds()->i.x
+804B0F10	field	field_0x14c	mNdata05Y_0x14c	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata05')->getBounds()->i.y
+804B0F10	field	field_0x150	mNdata07X_0x150	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata07')->getBounds()->i.x
+804B0F10	field	field_0x154	mNdata07Y_0x154	med	yes	tu_803F0A54 ctor: = bat_n_player.blo search('Ndata07')->getBounds()->i.y
+804B0F10	field	field_0x15c	mConPmbabb07X_0x15c	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Pmbabb07')->getBounds()->i.x
+804B0F10	field	field_0x160	mConPmbabb07Y_0x160	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Pmbabb07')->getBounds()->i.y
+804B0F10	field	field_0x190	mConPlibkk03X_0x190	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Plibkk03')->getBounds()->i.x
+804B0F10	field	field_0x194	mConPlibkk03Y_0x194	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Plibkk03')->getBounds()->i.y
+804B0F10	field	field_0x19c	mPaccur02X_0x19c	med	yes	tu_803F0A54 ctor: = handicap.blo search('Paccur02')->getBounds()->i.x
+804B0F10	field	field_0x1a0	mPaccur02Y_0x1a0	med	yes	tu_803F0A54 ctor: = handicap.blo search('Paccur02')->getBounds()->i.y

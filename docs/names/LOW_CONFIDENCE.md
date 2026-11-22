@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-52 rows: 52 applied, 0 not applied.
+53 rows: 53 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -58,6 +58,7 @@ See METHOD.md.
 | `InvisibleNPCWallForLink_804AE780` | 804AE780 | class | `cls_804AE780` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `HorseRaceEndArea_804AE830` | 804AE830 | class | `cls_804AE830` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `mWalkAnimCounter_0x3f8` | 804A6F38 | field | `field_0x3f8` | yes | tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function | evidence that proves the role or the name |
+| `mButtonGuidePane_0x74` | 804B0F10 | field | `field_0x74` | yes | tu_803F0A54 ctor: = lbl_8053AED8->field_0x8, the pane of the object given kk_kettei_01.bti / kk_modoru_01.bti (decide / back) right after; moved with moveFromCentre(0, offset). The role is read from the texture names | evidence that proves the role or the name |
 | `mLevelCursorPanes_0x228` | 804B1288 | field | `field_0x228` | yes | tu_80403D84 ctor: PaneCtrl of map_area.blo 'Plvcu01'-'Plvcu04' in two pairs; fn_80409014 swaps which of each pair is shown every 15 frames. "cursor" is read from the 'cu' of the tag only | evidence that proves the role or the name |
 | `mPlayerSoundObjs_0x2b8` | 804B1288 | field | `field_0x2b8` | yes | tu_80403D84 ctor: new cls_804B20F8(i, NULL, NULL, 8) for i 0-3; fn_804108B4 calls fn_80456154 on each every frame; the header calls the class a sound object (ResultScreen: one per player), not proven here | evidence that proves the role or the name |
 | `mStickAnimTimer_0x420` | 804B1288 | field | `field_0x420` | yes | tu_80403D84 fn_80409014: 0-179 cycle that drives setBlendRatio and the 90 / 270 degree turn of 'Pms01' (the pane given kk_mStick_02.bti); "stick" from the texture name only | evidence that proves the role or the name |
