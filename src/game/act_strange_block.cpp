@@ -18,7 +18,12 @@ static const Vec lbl_80471E28[4] = {{20.0f, 0.0f, 0.0f}, {-20.0f, 0.0f, 0.0f}, {
 // .data at 0x804ABC80 (16 bytes, local to this unit).
 extern s32 lbl_804ABC80[4];
 extern const f32 lbl_804A79E0[12]; // step per direction (game/act_block.cpp)
-extern const f32 lbl_804AC2A8[12]; // push velocity per direction
+f32 lbl_804AC2A8[12] = {
+    0.5f, 0.0f, 0.0f,
+    -0.5f, 0.0f, 0.0f,
+    0.0f, 0.5f, 0.0f,
+    0.0f, -0.5f, 0.0f,
+}; // push velocity per direction
 extern const s32 lbl_804ABCA0[4][4]; // sprite frame offsets by animation step (and, 4 per row, by phase)
 
 // 0x8033E188.
@@ -80,9 +85,29 @@ void StrangeBlock_804AC2D8::init() {
     field_0x230 = 0;
 }
 
+inline void StrangeBlock_804AC2D8::checkTalk() {
+    JGeometry::TBox2f talkBox(mBox);
+    talkBox.i.x += mPos.x;
+    talkBox.i.y += mPos.y;
+    talkBox.f.x += mPos.x;
+    talkBox.f.y += mPos.y;
+    if (field_0x25c == 0 || field_0x25c == 2) {
+        fn_8022FEB8(&talkBox, field_0x4, mSerial, true, false);
+        field_0x258 = fn_8022FD8C(mSerial);
+        if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
+            fn_802300EC(field_0x258)) {
+            if (fn_8038C678(field_0x258, field_0x268, mSerial, field_0x4, mPos, 0)) {
+                field_0x234 = 1;
+                field_0x254 = fn_80230CFC(field_0x258);
+                field_0x254 = field_0x254 ^ 1;
+            }
+        }
+    }
+}
+
 // 0x8033DA78. States of field_0x234: 0 the block waits to be pushed or slides, 1 a player's
 // message is open, then back to 0.
-// FIXME(shotgun): 93.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.67 %, different; behaviour near.
 void StrangeBlock_804AC2D8::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -91,8 +116,7 @@ void StrangeBlock_804AC2D8::update() {
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     if (field_0x25c != 0 && field_0x25c != 2) {
-        CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        boxes->mLists[boxes->field_0x0].fn_8020D7D0(mSerial);
+        fn_8020D58C()->addBox(mSerial);
     }
     switch (field_0x234) {
     case 0: {
@@ -109,22 +133,12 @@ void StrangeBlock_804AC2D8::update() {
             if (mPos.x <= mSpawnPos.x + 11.5f && mPos.x >= mSpawnPos.x - 11.5f) {
                 mPos.x = mSpawnPos.x;
             } else {
-                f32 gap = reach + 0.1f;
-                if (mPos.x < field_0x238.x) {
-                    mPos.x = field_0x238.x - gap;
-                } else {
-                    mPos.x = field_0x238.x + gap;
-                }
+                mPos.x = fn_8033D4AC(mPos.x, field_0x238.x, reach);
             }
             if (mPos.y <= mSpawnPos.y + 11.5f && mPos.y >= mSpawnPos.y - 11.5f) {
                 mPos.y = mSpawnPos.y;
             } else {
-                f32 gap = reach + 0.1f;
-                if (mPos.y < field_0x238.y) {
-                    mPos.y = field_0x238.y - gap;
-                } else {
-                    mPos.y = field_0x238.y + gap;
-                }
+                mPos.y = fn_8033D4AC(mPos.y, field_0x238.y, reach);
             }
             field_0x238 = mPos;
             field_0x3c.x = 0.0f;
@@ -147,23 +161,7 @@ void StrangeBlock_804AC2D8::update() {
                 field_0x248 = 30;
             }
         } else if (field_0x265) {
-            JGeometry::TBox2f talkBox(mBox);
-            talkBox.i.x += mPos.x;
-            talkBox.i.y += mPos.y;
-            talkBox.f.x += mPos.x;
-            talkBox.f.y += mPos.y;
-            if (field_0x25c == 0 || field_0x25c == 2) {
-                fn_8022FEB8(&talkBox, field_0x4, mSerial, true, false);
-                field_0x258 = fn_8022FD8C(mSerial);
-                if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
-                    fn_802300EC(field_0x258)) {
-                        if (fn_8038C678(field_0x258, field_0x268, mSerial, field_0x4, mPos, 0)) {
-                        field_0x234 = 1;
-                        field_0x254 = fn_80230CFC(field_0x258);
-                        field_0x254 = field_0x254 ^ 1;
-                    }
-                }
-            }
+            checkTalk();
         } else {
             mPos += field_0x3c;
             if (field_0x244 > 0) {
@@ -171,33 +169,12 @@ void StrangeBlock_804AC2D8::update() {
             } else if (field_0x244 == 0) {
                 if (field_0x3c.isZero()) {
                     fn_8033D4CC();
-                } else {
-                    JGeometry::TVec3f saved = field_0x3c;
-                    if (!blockedAtFullReach(reach)) {
-                        field_0x3c = saved;
-                    } else {
-                        field_0x244 = 8;
-                        field_0x271 = 1;
-                    }
+                } else if (!blockedAtFullReach(reach)) {
+                    field_0x244 = 8;
+                    field_0x271 = 1;
                 }
             } else if (field_0x244 < 0) {
-                JGeometry::TBox2f talkBox(mBox);
-                talkBox.i.x += mPos.x;
-                talkBox.i.y += mPos.y;
-                talkBox.f.x += mPos.x;
-                talkBox.f.y += mPos.y;
-                if (field_0x25c == 0 || field_0x25c == 2) {
-                    fn_8022FEB8(&talkBox, field_0x4, mSerial, true, false);
-                    field_0x258 = fn_8022FD8C(mSerial);
-                    if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
-                        fn_802300EC(field_0x258)) {
-                            if (fn_8038C678(field_0x258, field_0x268, mSerial, field_0x4, mPos, 0)) {
-                            field_0x234 = 1;
-                            field_0x254 = fn_80230CFC(field_0x258);
-                            field_0x254 = field_0x254 ^ 1;
-                        }
-                    }
-                }
+                checkTalk();
             } else if (field_0x230 != NULL) {
                 setEmitterPos_8013CB44(field_0x230, &mPos, 0, 0, true);
             }
@@ -226,7 +203,7 @@ void StrangeBlock_804AC2D8::update() {
 
 // 0x8033D4CC. Called when the block is idle: pushes it one step when a player has been
 // shoving it long enough, or lets it slide back to its spawn position.
-// FIXME: 97.34 %, different; behaviour clean.
+// FIXME: 98.51 %, different; behaviour clean.
 // FIXME(shotgun): stack slot order and literal pool names differ.
 void StrangeBlock_804AC2D8::fn_8033D4CC() {
     s32 pushers = fn_80239108(mSerial);
@@ -234,8 +211,7 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
         if (PSVECDistance(&mPos, &mSpawnPos) < (f32)(field_0x260 << 4) - 0.1f) {
             s32 dir = fn_80238BC4(mSerial);
             JGeometry::TVec3f saved = mPos;
-            JGeometry::TVec3f step(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
-            mPos += step;
+            mPos += JGeometry::TVec3f(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
             if (fn_801F2618(NULL, false)) {
                 mPos = saved;
                 return;
@@ -361,12 +337,17 @@ f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
 
 // A plain function that update inlines and whose own copy the linker dropped: the original's
 // .sdata2 has its literals (19.9f, 8f) ahead of fn_8033D4AC's, so it was generated before it
-// (tools/pool.py). True when a size-2 block at its full reach, 8 or more away from where it
-// started, cannot go on in its direction.
+// (tools/pool.py). False when a size-2 block at its full reach, 8 or more away from where it
+// started, cannot go on in its direction; otherwise puts field_0x3c back and returns true.
 bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
-    return field_0x260 == 2 && reach == 19.9f &&
-           PSVECDistance(&mPos, (const Vec*)&field_0x238) >= 8.0f && field_0x26c != 0 &&
-           !fn_8033D264(field_0x26c - 1);
+    JGeometry::TVec3f saved = field_0x3c;
+    if (field_0x260 == 2 && reach == 19.9f &&
+        PSVECDistance(&mPos, (const Vec*)&field_0x238) >= 8.0f && field_0x26c != 0 &&
+        !fn_8033D264(field_0x26c - 1)) {
+        return false;
+    }
+    field_0x3c = saved;
+    return true;
 }
 
 // 0x8033D264.
