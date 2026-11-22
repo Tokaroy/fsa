@@ -114,8 +114,8 @@ void Boulder_8049C4C0::fn_800F5E08() {
             }
             return;
         }
-        for (s32 i = 0, layer = field_0x4; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == layer) {
+        for (s32 i = 0; i < 4; i++) {
+            if (field_0x4 == getPlayerLayer_8023DE58(i)) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
