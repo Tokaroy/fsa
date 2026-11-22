@@ -5,7 +5,7 @@
 // fn_801D0D50, fn_801D0DA0, fn_801D0020, fn_801D01A0) are inlined into the
 // functions before them, so their bodies are inline helpers (canTargetPlayer,
 // nearestPlayer, ...) defined ahead of the first use; likewise the landing
-// shared by vfunc_0x80 and fn_801CE800 (landStep).
+// shared by checkFloor_0x80 and fn_801CE800 (landStep).
 
 #include "game/GameAudio.h"
 #include "game/EnemyBase.h"
@@ -37,8 +37,8 @@ inline void EnemyBase_804A4808::stateStep(u8 mapHit) {
     if (mStateTimer < 0) {
         mStateTimer = 0;
     }
-    vfunc_0x90(mapHit);
-    vfunc_0x94();
+    updateState_0x90(mapHit);
+    updateAnim_0x94();
 }
 
 inline void EnemyBase_804A4808::moveStep() {
@@ -49,12 +49,12 @@ inline void EnemyBase_804A4808::moveStep() {
         }
         fn_801CD950(&mSpeed, mTargetSpeed, step);
     }
-    vfunc_0x88();
+    calcVelocity_0x88();
     mPos += field_0x3c;
-    vfunc_0x8C();
+    onMoved_0x8C();
     if (mPos.z <= 0.0f) {
         if (viewLayerFlag(field_0x4)) {
-            vfunc_0x80();
+            checkFloor_0x80();
         } else if (mFlags & ENEMY_FLAG_BOUNCE) {
             mPos.z = 0.6f * -mPos.z;
             field_0x3c.z = 0.6f * -field_0x3c.z;
@@ -66,7 +66,7 @@ inline void EnemyBase_804A4808::moveStep() {
                 mPos.z = 0.0f;
                 field_0x3c.z = 0.0f;
             } else {
-                vfunc_0x7C();
+                onBounce_0x7C();
             }
         } else {
             mPos.z = 0.0f;
@@ -243,7 +243,7 @@ void EnemyBase_804A4808::init() {
     mLifeBackup = mLife;
 }
 
-void EnemyBase_804A4808::vfunc_0x54() {}
+void EnemyBase_804A4808::onFirstUpdate_0x54() {}
 
 // Snaps mPos (x, y) to the centre of its tile and makes it the previous and
 // the spawn position too.
@@ -479,7 +479,7 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
             if (column == columns - 1) {
                 point.x = box.f.x;
             }
-            if (vfunc_0x4C(layer, &point)) {
+            if (isBlocked_0x4C(layer, &point)) {
                 return true;
             }
             point.x += 8.0f;
@@ -511,11 +511,11 @@ bool EnemyBase_804A4808::fn_801CFCF0(s32 dir) {
 
 // FIXME: 98.53 %, missing/extra; behaviour clean.
 // The target copies `layer` into a second register (mr r31,
-// r28) after getGameView_802D6A9C and uses the copy for vfunc_0x4C; the
+// r28) after getGameView_802D6A9C and uses the copy for isBlocked_0x4C; the
 // rest is registers.
 // Whether the way from *from to *to is blocked: either point outside the
 // view's box for `layer` (0xCC, or 0xDC for the upper layers), or the map
-// (vfunc_0x4C) blocking a point every 8 units along the line or the end.
+// (isBlocked_0x4C) blocking a point every 8 units along the line or the end.
 bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer) {
     JGeometry::TVec3f pos;
     JGeometry::TBox2f* box = layerBox(layer);
@@ -528,7 +528,7 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     f32 len = JMAFastSqrt(dir.squared());
     if (len <= 0.0f) {
         JGeometry::TVec3f point(from->x, from->y, 0.0f);
-        return vfunc_0x4C(layer, &point);
+        return isBlocked_0x4C(layer, &point);
     }
     bool blocked = false;
     dir.normalize();
@@ -536,7 +536,7 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     s32 steps = (s32)(0.125f * len) + 1;
     pos.set(from->x, from->y, 0.0f);
     for (s32 i = 0; i < steps; i++) {
-        if (vfunc_0x4C(layer, &pos)) {
+        if (isBlocked_0x4C(layer, &pos)) {
             blocked = true;
             break;
         }
@@ -545,7 +545,7 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     }
     if (!blocked) {
         JGeometry::TVec3f end(to->x, to->y, 0.0f);
-        blocked = vfunc_0x4C(layer, &end);
+        blocked = isBlocked_0x4C(layer, &end);
     }
     return blocked;
 }
@@ -741,7 +741,7 @@ u8 EnemyBase_804A4808::fn_801CEBD0() {
     return hit;
 }
 
-u8 EnemyBase_804A4808::vfunc_0x5C() {
+u8 EnemyBase_804A4808::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         hit = fn_801F2FAC();
@@ -777,7 +777,7 @@ bool EnemyBase_804A4808::fn_801CEA60() {
     return hit;
 }
 
-u8 EnemyBase_804A4808::vfunc_0x60() {
+u8 EnemyBase_804A4808::checkHitByActor_0x60() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         hit = fn_801F2DB4('NULL', 'NULL', NULL);
@@ -785,7 +785,7 @@ u8 EnemyBase_804A4808::vfunc_0x60() {
     return hit;
 }
 
-u8 EnemyBase_804A4808::vfunc_0x64() {
+u8 EnemyBase_804A4808::sweepMap_0x64() {
     u8 hit = 0;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && field_0x80.getWidth() > 0.0f &&
         field_0x80.getHeight() > 0.0f)
@@ -795,7 +795,7 @@ u8 EnemyBase_804A4808::vfunc_0x64() {
     return hit;
 }
 
-u8 EnemyBase_804A4808::vfunc_0x68() {
+u8 EnemyBase_804A4808::attackPlayers_0x68() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         hit = fn_801F2B7C(field_0x114, -1, 1);
@@ -803,15 +803,15 @@ u8 EnemyBase_804A4808::vfunc_0x68() {
     return hit;
 }
 
-void EnemyBase_804A4808::vfunc_0x6C() {}
+void EnemyBase_804A4808::onHitByPlayer_0x6C() {}
 
-void EnemyBase_804A4808::vfunc_0x70() {}
+void EnemyBase_804A4808::onHitByActor_0x70() {}
 
-void EnemyBase_804A4808::vfunc_0x74() {}
+void EnemyBase_804A4808::onHitReactionEnd_0x74() {}
 
-void EnemyBase_804A4808::vfunc_0x78() {}
+void EnemyBase_804A4808::onDeath_0x78() {}
 
-void EnemyBase_804A4808::vfunc_0x7C() {}
+void EnemyBase_804A4808::onBounce_0x7C() {}
 
 #pragma auto_inline reset
 void EnemyBase_804A4808::fn_801CE800() {
@@ -849,7 +849,7 @@ void EnemyBase_804A4808::fn_801CE800() {
 // The floor check after a step reached z <= 0 on a floor layer: on a tile of
 // kind 2 the height is folded into y and the actor lands (fn_801CE800);
 // elsewhere it just stops at z = 0.
-void EnemyBase_804A4808::vfunc_0x80() {
+void EnemyBase_804A4808::checkFloor_0x80() {
     if (!(mFlags & ENEMY_FLAG_NO_FLOOR) && fn_8022461C(&mPos, field_0x4) == 2) {
         // The lift is read into a local first, as in the original (without it 99.9 -> 98 %).
         f32 lift = -mPos.z;
@@ -869,11 +869,11 @@ void EnemyBase_804A4808::fn_801CE5D4() {
     if (mFlags & 7) {
         mPos.z = mPrevPos.z;
         field_0x3c.z = mPrevVel.z;
-        vfunc_0x84();
+        applyGravity_0x84();
         mPos.z += field_0x3c.z;
         if (mPos.z <= 0.0f) {
             if (viewLayerFlag(field_0x4)) {
-                vfunc_0x80();
+                checkFloor_0x80();
             } else {
                 mPos.z = 0.0f;
                 field_0x3c.z = 0.0f;
@@ -883,7 +883,7 @@ void EnemyBase_804A4808::fn_801CE5D4() {
 }
 
 // Gravity.
-void EnemyBase_804A4808::vfunc_0x84() {
+void EnemyBase_804A4808::applyGravity_0x84() {
     if (field_0xd8 > 0 && field_0xf8 == 2) {
         return;
     }
@@ -894,7 +894,7 @@ void EnemyBase_804A4808::vfunc_0x84() {
 }
 
 // The velocity along field_0x98 (0 +x, 1 -x, 2 +y, 3 -y) at mSpeed.
-void EnemyBase_804A4808::vfunc_0x88() {
+void EnemyBase_804A4808::calcVelocity_0x88() {
     switch (field_0x98) {
     case 0:
         field_0x3c.x = mSpeed;
@@ -913,14 +913,14 @@ void EnemyBase_804A4808::vfunc_0x88() {
         field_0x3c.y = -mSpeed;
         break;
     }
-    vfunc_0x84();
+    applyGravity_0x84();
 }
 
-void EnemyBase_804A4808::vfunc_0x8C() {}
+void EnemyBase_804A4808::onMoved_0x8C() {}
 
-void EnemyBase_804A4808::vfunc_0x90(u8 mapHit) {}
+void EnemyBase_804A4808::updateState_0x90(u8 mapHit) {}
 
-void EnemyBase_804A4808::vfunc_0x94() {
+void EnemyBase_804A4808::updateAnim_0x94() {
     mAnim.fn_801D1C18();
 }
 
@@ -932,13 +932,13 @@ void EnemyBase_804A4808::fn_801CE2BC(u8 mapHit) {
     stateStep(mapHit);
 }
 
-void EnemyBase_804A4808::vfunc_0x98() {
+void EnemyBase_804A4808::move_0x98() {
     if (!(mFlags & 7)) {
         moveStep();
     }
 }
 
-void EnemyBase_804A4808::vfunc_0x9C(u8 mapHit) {
+void EnemyBase_804A4808::updateBehavior_0x9C(u8 mapHit) {
     if (!(mFlags & 7)) {
         stateStep(mapHit);
     }
@@ -958,7 +958,7 @@ void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
 
 void EnemyBase_804A4808::vfunc_0xA0() {}
 
-// The target passes vfunc_0x64's result to vfunc_0x9C with clrlwi 24 where
+// The target passes sweepMap_0x64's result to updateBehavior_0x9C with clrlwi 24 where
 // ours has mr.
 // FIXME: 99.65 %, different; behaviour near.
 void EnemyBase_804A4808::update() {
@@ -966,7 +966,7 @@ void EnemyBase_804A4808::update() {
     s32 prevD8;
     if (!checkFlag(ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
-        vfunc_0x54();
+        onFirstUpdate_0x54();
     }
     mFlags &= ~0x1F;
     mPlayersHit = 0;
@@ -984,12 +984,12 @@ void EnemyBase_804A4808::update() {
     prevD8 = field_0xd8;
     if (fn_801F3D94(flag)) {
         mFlags |= ENEMY_FLAG_HIT;
-    } else if (vfunc_0x5C()) {
+    } else if (checkHitByPlayer_0x5C()) {
         mFlags |= ENEMY_FLAG_HIT_PLAYER;
-        vfunc_0x6C();
-    } else if (vfunc_0x60()) {
+        onHitByPlayer_0x6C();
+    } else if (checkHitByActor_0x60()) {
         mFlags |= ENEMY_FLAG_HIT_ACTOR;
-        vfunc_0x70();
+        onHitByActor_0x70();
     }
     if (!flag && field_0xd8 > 0 && field_0xf8 == 2 && field_0x3c.z > 0.0f) {
         field_0x3c.z = 0.0f;
@@ -998,18 +998,18 @@ void EnemyBase_804A4808::update() {
         mLife = mLifeBackup;
     }
     if (prevD8 == 1 && field_0xd8 == 0) {
-        vfunc_0x74();
+        onHitReactionEnd_0x74();
     }
     if (!checkFlag(ENEMY_FLAG_DEAD) && mLife <= 0) {
         mFlags |= ENEMY_FLAG_DEAD;
-        vfunc_0x78();
+        onDeath_0x78();
     }
-    vfunc_0x98();
-    mapHit = vfunc_0x64();
+    move_0x98();
+    mapHit = sweepMap_0x64();
     if (!isHit() && !(mFlags & ENEMY_FLAG_NO_ATTACK)) {
-        mPlayersHit = vfunc_0x68();
+        mPlayersHit = attackPlayers_0x68();
     }
-    vfunc_0x9C(mapHit);
+    updateBehavior_0x9C(mapHit);
     if (!fn_801CD2F8(field_0x4)) {
         vfunc_0xA0();
     }

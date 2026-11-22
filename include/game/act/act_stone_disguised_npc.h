@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x230 */ s32 mState; // update(): 0 find the player, 1 slide, 2 wait, 3 chase
     /* 0x234 */ f32 field_0x234; // target velocity x (+-2 or 0)
     /* 0x238 */ f32 field_0x238; // target velocity y (+-2 or 0)

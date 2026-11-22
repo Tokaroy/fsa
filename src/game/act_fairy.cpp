@@ -93,7 +93,7 @@ void Fairy_804A03B8::init() {
         startSound_801F0E34(0x400E5, 0);
         field_0x230 = 5;
     }
-    if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
+    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         field_0xb0 = 0;
         return;
     }
@@ -115,7 +115,7 @@ void Fairy_804A03B8::init() {
 // FIXME(shotgun): 94.67 %, different + reloc-name
 void Fairy_804A03B8::update() {
     if (field_0x268 == 0 && (field_0x90 >> 27) != 0) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         field_0x268 = 1;
@@ -341,7 +341,7 @@ void Fairy_804A03B8::update() {
 // 0x80160650.
 void Fairy_804A03B8::draw() {
     SpriteParams_801F5AE0 params;
-    if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
+    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     if (field_0x258 != 2) {

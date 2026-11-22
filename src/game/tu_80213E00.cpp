@@ -29,9 +29,9 @@ void cls_804A6400::init() {
     mAnim.startAnim_801D22DC(0, 2, false);
 }
 
-void cls_804A6400::vfunc_0x90(u8) {}
+void cls_804A6400::updateState_0x90(u8) {}
 
-void cls_804A6400::vfunc_0x88() {
+void cls_804A6400::calcVelocity_0x88() {
     field_0x3c.set(0.0f, 0.0f, 0.0f);
 }
 

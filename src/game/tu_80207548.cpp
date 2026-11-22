@@ -118,7 +118,7 @@ void cls_804A5B28::fn_80207830(u16 slot, s32 player, s32 arg3, const JGeometry::
 
 // Marks `slot` done; once its player's slot is active and picked in mMask,
 // aims the actor found by the slot's serial at that player when the player is
-// on the actor's layer and vfunc_0x4C accepts the position. Reports the actor
+// on the actor's layer and isBlocked_0x4C accepts the position. Reports the actor
 // (fn_801F3668) when every other slot was already done.
 // FIXME: 99.60 %, regalloc-only; behaviour clean.
 // Only the registers differ: the original keeps the slot
@@ -144,7 +144,7 @@ void cls_804A5B28::fn_802075D8(u16 slot) {
         if (player >= 0 && player < 4) {
             s32 layer = field_0x4;
             if (layer == getPlayerLayer_8023DE58(player)) {
-                if (vfunc_0x4C(field_0x4, &pos)) {
+                if (isBlocked_0x4C(field_0x4, &pos)) {
                     ActorBase_804A5770* b = getActorManager_801F856C()->findActorBySerial_801F666C(handle);
                     if (b) {
                         JGeometry::TVec2f d(getPlayerPos_8023E724(player)->x - pos.x, getPlayerPos_8023E724(player)->y - pos.y);

@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-46 rows: 46 applied, 0 not applied.
+48 rows: 48 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -59,6 +59,8 @@ See METHOD.md.
 | `HorseRaceEndArea_804AE830` | 804AE830 | class | `cls_804AE830` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `gGameRoot_8053AAF8` | 8053AAF8 | global | `lbl_8053AAF8` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `gGameRoot2_8053AB10` | 8053AB10 | global | `lbl_8053AB10` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
+| `updateState_0x90` | 804A4808 | member | `vfunc_0x90` | yes | EnemyBase base 0x801CE4E0 empty (include/game/EnemyBase.h); vfunc_0x9C calls it after mStateTimer++ with the map-hit flag; 36 overrides, which switch on the enemy's state (header: the per-state behaviour). Low: the role rests on the overrides' shape | evidence that proves the role or the name |
+| `checkPlayerContact_0x18` | 804A5770 | member | `vfunc_0x18` | yes | ActorBase base 0x801F5790 (game/tu_801EE24C.cpp): with mPos.z <= 16 and a non-empty mBox, tests its screen box against each live player's on the same layer and on overlap calls fn_802397B4(&box, layer, mSerial) (Player.h:1453); the update loop calls it when field_0xa4 != 0 (0x801F8B94); 3 overrides. Low: what fn_802397B4 does for the player is not known | evidence that proves the role or the name |
 
 ## Names that are weak in themselves
 

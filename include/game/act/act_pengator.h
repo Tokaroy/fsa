@@ -14,7 +14,7 @@ public:
     /* 0x08 */ virtual ~Pengator_804A1888();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    /* 0x18 */ virtual void vfunc_0x18();
+    /* 0x18 */ virtual void checkPlayerContact_0x18();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230; // state: update()'s switch (0-3)
     /* 0x234 */ s32 field_0x234;

@@ -72,7 +72,7 @@ void cls_8049E610::update() {
 // .sdata2 pool its original order: 0, 32768/pi, 0.5, 3 (isPlayerOn), 1.0
 // (checkActivate), then init's box literals.
 void cls_8049E610::checkActivate() {
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         field_0x238 = 1;
         // The original stores the state and then switches on it (a state setter inlined here, asm 0x8012A058).
         switch (field_0x238) {

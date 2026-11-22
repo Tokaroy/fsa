@@ -14,7 +14,7 @@ void ForceGemRain_804A8010::init() {
     field_0x240 = 0;
     field_0x244 = field_0x90 & 0xFF;
     if (!(field_0x244 == 3 || field_0x244 == 0xC)) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mAlive = false;
         }
     }
@@ -58,7 +58,7 @@ void ForceGemRain_804A8010::update() {
             field_0x230 = 1;
             break;
         }
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             break;
         }
         u32 spawnId;

@@ -724,9 +724,9 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
 
 // 0x801C2ED4.
 // FIXME(shotgun): 98.95 %, missing/extra; behaviour drift.
-void ShadowLink2_804A43E8::vfunc_0x90(u8 mapHit) {
+void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (mapHit) {
-        if (vfunc_0x4C(field_0x4, &mPos)) {
+        if (isBlocked_0x4C(field_0x4, &mPos)) {
             mPos.x = mPrevPos.x;
             mPos.y = mPrevPos.y;
             JGeometry::TVec2f nudge;
@@ -1049,7 +1049,7 @@ void ShadowLink2_804A43E8::vfunc_0x90(u8 mapHit) {
             if (mFlags & 0x10000) {
                 fn_801C0D70()->fn_801C1224(mSerial);
             }
-            vfunc_0x24();
+            die_0x24();
         } else {
             if (mFlags & 0x08010000) {
                 getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.5f, false);
@@ -1119,7 +1119,7 @@ void ShadowLink2_804A43E8::fn_801C2E70() {
 }
 
 // 0x801C2D84.
-void ShadowLink2_804A43E8::vfunc_0x9C(u8 mapHit) {
+void ShadowLink2_804A43E8::updateBehavior_0x9C(u8 mapHit) {
     fn_801CE2BC(mapHit);
     if (field_0x59c != 0) {
         field_0x59c--;
@@ -1145,9 +1145,9 @@ void ShadowLink2_804A43E8::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// Gravity override (EnemyBase's vfunc_0x84): z changes by lbl_8053EFB8 per call,
+// Gravity override (EnemyBase's applyGravity_0x84): z changes by lbl_8053EFB8 per call,
 // skipped while field_0xd8 > 0 and field_0xf8 == 2; clamped at -lbl_8053EFBC.
-void ShadowLink2_804A43E8::vfunc_0x84() {
+void ShadowLink2_804A43E8::applyGravity_0x84() {
     if (field_0xd8 > 0 && field_0xf8 == 2) {
         return;
     }
@@ -1159,7 +1159,7 @@ void ShadowLink2_804A43E8::vfunc_0x84() {
 }
 
 // 0x801C2BF4.
-void ShadowLink2_804A43E8::vfunc_0x88() {
+void ShadowLink2_804A43E8::calcVelocity_0x88() {
     s32 state = mState;
     switch (state) {
     case 6:
@@ -1204,11 +1204,11 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
         break;
     }
     }
-    vfunc_0x84();
+    applyGravity_0x84();
 }
 
 // 0x801C2A84.
-void ShadowLink2_804A43E8::vfunc_0x98() {
+void ShadowLink2_804A43E8::move_0x98() {
     switch (mState) {
     case 0x17:
     case 0x18:
@@ -1245,7 +1245,7 @@ void ShadowLink2_804A43E8::vfunc_0x98() {
 }
 
 // 0x801C2960.
-void ShadowLink2_804A43E8::vfunc_0x74() {
+void ShadowLink2_804A43E8::onHitReactionEnd_0x74() {
     mFlags &= ~0x02000000;
     switch (mState) {
     case 0x10:
@@ -1326,7 +1326,7 @@ void ShadowLink2_804A43E8::fn_801C27F0() {
     bool flag = (mFlags & 0x08000000) != 0;
     cls_801C0D70* tracker = fn_801C0D70();
     tracker->fn_801C1374(flag);
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 // Member: switches to state 2 when mState is 0 or 1 and mFlags has bit 0x4000.

@@ -62,7 +62,7 @@ static inline void showPickedEntry(cls_8049DE90* self) {
 void cls_8049DE90::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
             mState = 1;
             break;
         }
@@ -79,9 +79,9 @@ void cls_8049DE90::update() {
     case 1: {
         if (mDuration == 0 && isOnPlayerLayer(this)) {
             mState = 0;
-        } else if (vfunc_0x3C() == 0) {
+        } else if (getScreenFlagBit_0x3C() == 0) {
             mState = 0;
-        } else if (vfunc_0x34()) {
+        } else if (isScreenFlagSet_0x34()) {
             mState = 0;
         }
         break;

@@ -51,8 +51,8 @@ inline s32 OBJLift_804ACA00::checkPushDir() {
     case 19:
     case 20:
         if (field_0x281 == 1 && field_0x26c >= 4) {
-            if (field_0x25c == 1 && !vfunc_0x34()) {
-                vfunc_0x30(0xFF, true);
+            if (field_0x25c == 1 && !isScreenFlagSet_0x34()) {
+                setScreenFlag_0x30(0xFF, true);
             }
             startSound_801F0E34(0x30009, 0);
             field_0x244 = 30;
@@ -68,8 +68,8 @@ inline s32 OBJLift_804ACA00::checkPushDir() {
     case 8:
     case 9:
         if (field_0x281 == 1 && field_0x280 == 1) {
-            if (field_0x25c == 1 && !vfunc_0x34()) {
-                vfunc_0x30(0xFF, true);
+            if (field_0x25c == 1 && !isScreenFlagSet_0x34()) {
+                setScreenFlag_0x30(0xFF, true);
             }
             startSound_801F0E34(0x30009, 0);
             field_0x230 = 1;
@@ -639,7 +639,7 @@ u8 OBJLift_804ACA00::fn_803502CC() {
 }
 
 // 0x80350274.
-bool OBJLift_804ACA00::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool OBJLift_804ACA00::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     if (code == 0x3A || code == 0x3 || code == 0xD || code == 0xE || code == 0x3B) {
         return false;
@@ -687,7 +687,7 @@ void OBJLift_804ACA00::fn_8035001C(u32 dir) {
 // 0x8034F43C.
 void OBJLift_804ACA00::update() {
     if (field_0x230 == 4) {
-        if (vfunc_0x34() == 1) {
+        if (isScreenFlagSet_0x34() == 1) {
             showBreakEffect(field_0x4);
             startSound_801F0E34(0x30003, 0);
             fn_801F0D20(0x42);

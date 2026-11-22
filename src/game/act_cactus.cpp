@@ -22,7 +22,7 @@ void Cactus_804AB580::init() {
 }
 
 void Cactus_804AB580::update() {
-    if ((field_0x90 & 1) == 1 && vfunc_0x34() == 1) {
+    if ((field_0x90 & 1) == 1 && isScreenFlagSet_0x34() == 1) {
         spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
         mAlive = false;
         return;

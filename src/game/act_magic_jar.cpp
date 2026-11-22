@@ -51,7 +51,7 @@ void MagicJar_804AF018::update() {
                 field_0x3c.y += 0.1f;
                 f32 dy = field_0x90 == 0 ? 8.0f : 4.0f;
                 JGeometry::TVec3f probe(mPos.x, mPos.y + dy, mPos.z);
-                if (vfunc_0x4C(field_0x4, &probe) == true) {
+                if (isBlocked_0x4C(field_0x4, &probe) == true) {
                     field_0x238--;
                     if (field_0x238 <= 0) {
                         field_0x3c.y = 0.0f;

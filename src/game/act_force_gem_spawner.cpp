@@ -56,7 +56,7 @@ void ForceGemSpawner_804AB660::init() {
         break;
     }
     if (field_0x230 == 1 || field_0x230 == 3 || field_0x230 == 4) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             fn_801F3668();
         }
     }
@@ -184,7 +184,7 @@ void ForceGemSpawner_804AB660::update() {
         break;
     }
     case 1: {
-        if (vfunc_0x34() && field_0x234 == 0) {
+        if (isScreenFlagSet_0x34() && field_0x234 == 0) {
             JGeometry::TVec3f pos(mPos);
             pos.x += 8.0f;
             pos.y += 12.0f;
@@ -253,7 +253,7 @@ void ForceGemSpawner_804AB660::update() {
             if (field_0x238 == 0) {
                 field_0x238++;
                 field_0x234 = 500;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
             JGeometry::TVec3f savedPos(mPos);
             mPos.x += 8.0f;

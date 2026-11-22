@@ -5,7 +5,7 @@
 
 ## Matched (5/6 functions, 100 % data)
 - `Carrot_804AC6B0::init` (0x80347B20): 100 %
-- `Carrot_804AC6B0::vfunc_0x4C` (0x803477DC): 100 %
+- `Carrot_804AC6B0::isBlocked_0x4C` (0x803477DC): 100 %
 - `Carrot_804AC6B0::update` (0x803471A0): 100 %
 - `Carrot_804AC6B0::~Carrot_804AC6B0` (0x80346E24): 100 % (pre-existing)
 - `__sinit_act_carrot_cpp` (0x80347C6C): 100 % (pre-existing)

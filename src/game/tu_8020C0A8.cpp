@@ -14,7 +14,7 @@ static const s16 lbl_8046A398[] = { 4, 6, 7, 4, 8, 6, 7, 4, -1, -1 };
 // The actor's animations (one), ended by NULL.
 static const s16* lbl_8053A178[2] = { lbl_8046A398, NULL };
 
-// The actor ids vfunc_0x4C ignores, ended by 'NULL'.
+// The actor ids isBlocked_0x4C ignores, ended by 'NULL'.
 static const u32 lbl_8053F9E0[2] = { 'TOMI', 'NULL' };
 
 cls_804A5F40::cls_804A5F40() {
@@ -45,7 +45,7 @@ void cls_804A5F40::init() {
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
     if (mFlags & 0x2000) {
-        if (vfunc_0x4C(field_0x4, &mPos)) {
+        if (isBlocked_0x4C(field_0x4, &mPos)) {
             fn_801F3668();
         } else {
             JGeometry::TBox2f* box = layerBox(field_0x4);
@@ -117,7 +117,7 @@ void cls_804A5F40::fn_8020C6E8() {
     }
 }
 
-void cls_804A5F40::vfunc_0x90(u8 mapHit) {
+void cls_804A5F40::updateState_0x90(u8 mapHit) {
     fn_8020C6E8();
     switch (mState) {
     case 0:
@@ -195,17 +195,17 @@ void cls_804A5F40::vfunc_0x90(u8 mapHit) {
 
 // FIXME: 98.04 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): register allocation differs (f0/f1/f2 assignment).
-void cls_804A5F40::vfunc_0x88() {
+void cls_804A5F40::calcVelocity_0x88() {
     f32 sinV = JMath::sincosTable_.sinShort(field_0x2ae);
     f32 cosV = JMath::sincosTable_.cosShort(field_0x2ae);
     f32 x = sinV * mSpeed;
     f32 y = cosV * mSpeed;
     field_0x3c.x = x;
     field_0x3c.y = y;
-    vfunc_0x84();
+    applyGravity_0x84();
 }
 
-void cls_804A5F40::vfunc_0x98() {
+void cls_804A5F40::move_0x98() {
     if (!(mFlags & 7)) {
         fn_801CE32C();
     } else if (viewLayerFlag(field_0x4)) {
@@ -214,7 +214,7 @@ void cls_804A5F40::vfunc_0x98() {
 }
 
 // FIXME(shotgun): 98.75 %, regalloc-only; behaviour clean.
-bool cls_804A5F40::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool cls_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     const u32* ignoreIds = NULL;
     if (mFlags & 7) {
         ignoreIds = lbl_8053F9E0;

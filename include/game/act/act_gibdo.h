@@ -15,13 +15,13 @@ public:
     /* 0x08 */ virtual ~Gibdo_804A3BF8();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x98 */ virtual void vfunc_0x98();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x24 */ virtual void die_0x24();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x98 */ virtual void move_0x98();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // Out of line in act_gibdo (0x801B9DD4), no other unit calls it: the
-    // state change that vfunc_0x24 and vfunc_0x90 make. The argument is the
+    // state change that die_0x24 and updateState_0x90 make. The argument is the
     // step's mode (0, 1, 2 or 3).
     void fn_801B9DD4(s32 mode);
 }; // Size: 0x2A8

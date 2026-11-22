@@ -105,7 +105,7 @@ void BurningBlockWoodenCrate_804A7B90::draw() {
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x17e, NULL, 0, 1.0f, 1.0f);
 }
 
-void BurningBlockWoodenCrate_804A7B90::vfunc_0x24() {
+void BurningBlockWoodenCrate_804A7B90::die_0x24() {
     mAlive = false;
 }
 

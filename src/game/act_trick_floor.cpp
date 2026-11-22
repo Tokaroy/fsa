@@ -292,12 +292,12 @@ void TrickFloor_804A83A0::update() {
         case 3:
         case 6:
             if (!((field_0x23c == 0 || field_0x23c == 2) && (standing >= 0 || ball >= 0)) &&
-                (field_0x23c == 0 || !vfunc_0x34())) {
+                (field_0x23c == 0 || !isScreenFlagSet_0x34())) {
                 break;
             }
             spawnDust(this, 0);
             if (standing >= 0) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 startSound_801F0E34(0x30009, 0);
             }
             FILL_TILES(vbox, mPos.x, 6);
@@ -309,7 +309,7 @@ void TrickFloor_804A83A0::update() {
             if (pushers != 4) {
                 break;
             }
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             startSound_801F0E34(0x30009, 0);
             FILL_TILES(vbox, mPos.x, 0x7C);
             field_0x24c = 0.07f;
@@ -339,7 +339,7 @@ void TrickFloor_804A83A0::update() {
         }
         if (field_0x244 != 0) {
             field_0x244--;
-            if (field_0x244 == 0 && field_0x23c != 0 && vfunc_0x34() == true) {
+            if (field_0x244 == 0 && field_0x23c != 0 && isScreenFlagSet_0x34() == true) {
                 field_0x244 = 1;
             }
         }

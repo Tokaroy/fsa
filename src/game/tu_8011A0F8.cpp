@@ -26,7 +26,7 @@ void cls_8049DAD8::update() {
                 field_0x239 = true;
             }
         }
-        if ((field_0x90 & 0xF8000000) && vfunc_0x34()) {
+        if ((field_0x90 & 0xF8000000) && isScreenFlagSet_0x34()) {
             field_0x238 = true;
         }
     }

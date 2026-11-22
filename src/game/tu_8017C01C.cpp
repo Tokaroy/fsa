@@ -338,7 +338,7 @@ void cls_804A1318::update() {
     if (field_0x90 == 0) {
         fn_8016A3AC()->field_0x1c6 = 1;
     }
-    if (vfunc_0x2C(8.0f, -16.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(8.0f, -16.0f, 50.0f)) {
         fn_8017EC70(&mPos, 1.0f);
         fn_8017ED08();
         return;
@@ -1086,7 +1086,7 @@ void cls_804A1318::update() {
                 mEmitter2dc = NULL;
             }
             getActorManager_801F856C()->fn_801F6884();
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 24:
@@ -1211,9 +1211,9 @@ void cls_804A1318::draw() {
     }
 }
 
-// The 'FGAN' actor's (cls_804A1318, vtable 0x804A1318) vfunc_0x24.
-void cls_804A1318::vfunc_0x24() {
+// The 'FGAN' actor's (cls_804A1318, vtable 0x804A1318) die_0x24.
+void cls_804A1318::die_0x24() {
     startSound_801F0E34(0x40047, 0);
-    vfunc_0x28(field_0x2ba, 8.0f, -16.0f);
+    startBossDeath_0x28(field_0x2ba, 8.0f, -16.0f);
 }
 

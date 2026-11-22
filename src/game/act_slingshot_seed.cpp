@@ -99,7 +99,7 @@ void SlingshotSeed_804AB3A8::init() {
     field_0x26a = 0;
 }
 
-// The "hit a wall tile" counter step shared by the tile cases of vfunc_0x4C: while the seed is
+// The "hit a wall tile" counter step shared by the tile cases of isBlocked_0x4C: while the seed is
 // still flying, the 21st contact reports a hit.
 static inline bool seedBump(SlingshotSeed_804AB3A8* seed) {
     if (seed->field_0x250 == 0) {
@@ -122,7 +122,7 @@ static inline void spawnHitEffect(s32 layer, const JGeometry::TVec3f* pos) {
 
 // Remaining: register order of layer/pos and the ids constants come from sdata2 in the original.
 // FIXME: 98.30 %, scheduling+regalloc + reloc-name; behaviour clean.
-bool SlingshotSeed_804AB3A8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool SlingshotSeed_804AB3A8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ids[2] = {'TOMI', ACTOR_NULL};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();

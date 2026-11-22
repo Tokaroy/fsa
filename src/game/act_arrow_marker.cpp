@@ -78,7 +78,7 @@ void ArrowMarker_804A8470::update() {
     case 1:
         switch (field_0x230) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x250 = 1;
                 field_0x254 = 0x14;
                 field_0x258 = 0;
@@ -89,7 +89,7 @@ void ArrowMarker_804A8470::update() {
                 }
             } else if (player >= 0) {
                 field_0x25c = 1;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
             break;
         case 1:
@@ -98,7 +98,7 @@ void ArrowMarker_804A8470::update() {
             // The original copies mPos into a named local before the by-value call.
             JGeometry::TVec3f pos = mPos;
             lbl_8053AED0->fn_8043E7CC(pos);
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 if (field_0x258 == 0) {
                     if (field_0x254 >= 0xC8) {
                         field_0x254 = 0xC8;
@@ -111,12 +111,12 @@ void ArrowMarker_804A8470::update() {
                 }
                 if (player < 0) {
                     if (field_0x25c != 0) {
-                        vfunc_0x30(0xFF, false);
+                        setScreenFlag_0x30(0xFF, false);
                     }
                     field_0x25c = 0;
                 } else {
                     field_0x25c = 1;
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
             } else {
                 field_0x250 = 0;
@@ -144,7 +144,7 @@ void ArrowMarker_804A8470::update() {
     case 3:
         switch (field_0x230) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x250 = 1;
                 field_0x254 = 0x14;
                 field_0x258 = 0;
@@ -160,7 +160,7 @@ void ArrowMarker_804A8470::update() {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
             JGeometry::TVec3f pos = mPos;
             lbl_8053AED0->fn_8043E7CC(pos);
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 if (field_0x258 == 0) {
                     if (field_0x254 >= 0xC8) {
                         field_0x254 = 0xC8;

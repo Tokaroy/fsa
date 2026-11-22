@@ -203,14 +203,14 @@ void Tektite_8049FD50::draw() {
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x90 * 3 + field_0x250 + 0x49, &params, 7, 1.0f, 1.0f);
 }
 
-void Tektite_8049FD50::vfunc_0x24() {
+void Tektite_8049FD50::die_0x24() {
     setField_0x18C(0);
     if (field_0x90 != 0) {
         getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 3);
     } else {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 Tektite_8049FD50::~Tektite_8049FD50() {}

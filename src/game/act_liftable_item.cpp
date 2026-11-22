@@ -354,7 +354,7 @@ void LiftableItem_804A01D0::update() {
         if (field_0x238 <= 0) {
             if (field_0x26c != 0) {
                 if (field_0x25c != 0 || fn_803865B8(field_0x250)) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
                 break;
             }
@@ -376,11 +376,11 @@ void LiftableItem_804A01D0::update() {
                     if (fn_80388EEC(field_0x24c)) {
                         if (field_0x268 != 0) {
                             if (fn_8023061C(field_0x274, 0) == true) {
-                                vfunc_0x24();
+                                die_0x24();
                             }
                         } else {
                             if (fn_80230224(field_0x250, 0) == true) {
-                                vfunc_0x24();
+                                die_0x24();
                             }
                         }
                     }
@@ -388,11 +388,11 @@ void LiftableItem_804A01D0::update() {
                     if (fn_80388EEC(field_0x24c)) {
                         if (field_0x268 != 0) {
                             if (fn_80230534(false) == true) {
-                                vfunc_0x24();
+                                die_0x24();
                             }
                         } else {
                             if (fn_80230224(field_0x250, 0) == true) {
-                                vfunc_0x24();
+                                die_0x24();
                             }
                         }
                     }
@@ -420,12 +420,12 @@ void LiftableItem_804A01D0::update() {
                 if (fn_80388EEC(field_0x24c)) {
                     if (field_0x268 != 0) {
                         if (fn_8023061C(field_0x274, 0) == true) {
-                            vfunc_0x24();
+                            die_0x24();
                             break;
                         }
                     } else {
                         if (fn_80230224(field_0x250, 0) == true) {
-                            vfunc_0x24();
+                            die_0x24();
                             break;
                         }
                     }
@@ -434,12 +434,12 @@ void LiftableItem_804A01D0::update() {
                 if (fn_80388EEC(field_0x24c)) {
                     if (field_0x268 != 0) {
                         if (fn_80230534(false) == true) {
-                            vfunc_0x24();
+                            die_0x24();
                             break;
                         }
                     } else {
                         if (fn_80230224(field_0x250, 0) == true) {
-                            vfunc_0x24();
+                            die_0x24();
                             break;
                         }
                     }
@@ -560,7 +560,7 @@ void LiftableItem_804A01D0::draw() {
     }
 }
 
-void LiftableItem_804A01D0::vfunc_0x24() {
+void LiftableItem_804A01D0::die_0x24() {
     if (mEmitter2a8 != NULL) {
         mEmitter2a8->becomeInvalidEmitter();
         mEmitter2a8->stopCreateParticle();
@@ -640,7 +640,7 @@ void LiftableItem_804A01D0::fn_801597EC() {
 }
 
 void LiftableItem_804A01D0::fn_801597C0() {
-    vfunc_0x24();
+    die_0x24();
 }
 
 s32 LiftableItem_804A01D0::fn_801597B8() {

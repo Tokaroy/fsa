@@ -25,10 +25,10 @@ inline bool WindEnvironment_8049CC98::shouldBlow() {
         return false;
     case 0:
     default:
-        if (vfunc_0x3C() <= 0) {
+        if (getScreenFlagBit_0x3C() <= 0) {
             return true;
         }
-        return vfunc_0x34();
+        return isScreenFlagSet_0x34();
     }
 }
 

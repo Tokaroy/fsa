@@ -496,7 +496,7 @@ void cls_804AEED0::update() {
         if (fn_80388CAC(field_0x244, mSerial)) {
             field_0x240 = 0;
             field_0x244 = -1;
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             if (field_0x268 != 0) {
                 field_0x272 = 0;
                 field_0x268 = 0;

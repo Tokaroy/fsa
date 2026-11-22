@@ -45,7 +45,7 @@ void WhackAMoleShop_8049C8EC::init() {
     field_0x268[3] = 0;
     field_0x244 = gGameRoot_8053AAF8->fn_80138A30();
     field_0x248 = (field_0x90 >> 22) & 0x1F;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         field_0x230 = 9;
         field_0x234 = 0;
     } else {
@@ -360,7 +360,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
                     }
                 }
             }
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
         }
         break;
     case 9:

@@ -104,10 +104,10 @@ void cls_8049E7F0::update() {
     ActorBase_804A5770::update();
     switch (field_0x234) {
     case 0:
-        if (vfunc_0x3C() == 0) {
+        if (getScreenFlagBit_0x3C() == 0) {
             field_0x234 = 1;
             runPhase();
-        } else if (vfunc_0x34()) {
+        } else if (isScreenFlagSet_0x34()) {
             field_0x234 = 1;
             runPhase();
             if (field_0x231 != 0) {
@@ -116,7 +116,7 @@ void cls_8049E7F0::update() {
         }
         break;
     case 1:
-        if (vfunc_0x3C() > 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
             field_0x234 = 0;
             runPhase();
         }

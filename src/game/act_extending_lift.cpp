@@ -85,7 +85,7 @@ void ExtendingLift_804A78B0::init() {
 // FIXME: 92.98 %, missing/extra; behaviour clean.
 // FIXME: missing/extra (2 extra instrs): stack frame is 16 bytes larger, mBox bounds in contains() are loaded lazily instead of upfront, and the field_0x230/0x234 divides are scheduled differently.
 void ExtendingLift_804A78B0::update() {
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         if (!field_0x244) {
             startSound_801F0E34(0x30041, 0);
         }

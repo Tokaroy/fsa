@@ -80,8 +80,8 @@ void cls_804A61C8::fn_80210990(s32 dir, JGeometry::TBox2f* out) {
 // FIXME: 95.25 %, scheduling+regalloc; behaviour clean.
 // Same instructions; the original keeps this in r30 and the serial in r31 across
 // the getter call, here this is in r31 and the serial in r30.
-void cls_804A61C8::vfunc_0x9C(u8 mapHit) {
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+void cls_804A61C8::updateBehavior_0x9C(u8 mapHit) {
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     JGeometry::TBox2f box;
     setBox(&box, field_0x54);
     box.i.x += mPos.x;
@@ -92,7 +92,7 @@ void cls_804A61C8::vfunc_0x9C(u8 mapHit) {
     addBox(mSerial, &box, field_0x4);
 }
 
-u8 cls_804A61C8::vfunc_0x5C() {
+u8 cls_804A61C8::checkHitByPlayer_0x5C() {
     fn_801CEBD0();
     return 0;
 }

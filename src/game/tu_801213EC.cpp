@@ -203,14 +203,14 @@ void EscortBase_8049E0C8::draw() {
     fn_801F02BC(mSobName, field_0x338 + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
 }
 
-bool EscortBase_8049E0C8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool EscortBase_8049E0C8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u16 tile = fn_8022461C(pos, layer);
     for (s32 i = 0; i < 8; i++) {
         if (tile == lbl_80464D84[i]) {
             return false;
         }
     }
-    return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }
 
 s32 EscortBase_8049E0C8::vfunc_0x5C(const s32*) {

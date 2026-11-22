@@ -653,7 +653,7 @@ void Ganon_804A25F0::update() {
     fn_80154718(&mPos);
     if (field_0x90 == 0) {
         fn_801964AC();
-        if (vfunc_0x2C(0.0f, 16.0f, 50.0f)) {
+        if (updateBossDeath_0x2C(0.0f, 16.0f, 50.0f)) {
             return;
         }
         fn_801F3D94(0);
@@ -1922,7 +1922,7 @@ void Ganon_804A25F0::draw() {
     }
 }
 
-void Ganon_804A25F0::vfunc_0x24() {
+void Ganon_804A25F0::die_0x24() {
     startSound_801F0E34(0x40006, 0);
-    vfunc_0x28(2, 0.0f, 0.0f);
+    startBossDeath_0x28(2, 0.0f, 0.0f);
 }

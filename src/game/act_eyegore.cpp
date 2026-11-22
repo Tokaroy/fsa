@@ -87,7 +87,7 @@ void Eyegore_804A3548::update() {
         return;
     }
     if (mLife < 0x3E8) {
-        vfunc_0x24();
+        die_0x24();
         field_0xb0 = 0;
         return;
     }

@@ -3,7 +3,7 @@
 Baseline: total: 6426 / 11557 functions, 1284740 / 4442032 bytes of code (28.92 %)
 After:    total: 6427 / 11557 functions, 1284864 / 4442032 bytes of code (28.93 %)
 
-Functions 2/6 -> 4/6 (vfunc_0x24, __dt, init, __sinit match; Matching flag not set).
+Functions 2/6 -> 4/6 (die_0x24, __dt, init, __sinit match; Matching flag not set).
 
 ## Resistant
 - update 99.13 % (scheduling + reloc-name): target loads fn_802D78B4's bit

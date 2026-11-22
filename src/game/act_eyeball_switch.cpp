@@ -24,7 +24,7 @@ void EyeballSwitch_804AE678::init() {
     field_0x248 = field_0x90 >> 27;
     field_0x240 = (field_0x90 >> 25) & 3;
     field_0x238 = 0;
-    vfunc_0x30(0xFF, false);
+    setScreenFlag_0x30(0xFF, false);
     field_0x244 = false;
     field_0x234 = 0;
     mEmitter = NULL;
@@ -46,7 +46,7 @@ void EyeballSwitch_804AE678::init() {
     if (active == 1) {
         if (field_0x23c >= 3 && getGameView_802D6A9C()->fn_802D7888(field_0x248) == true) {
             gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             if (field_0x23c == 4) {
                 field_0x234 = 2;
             } else {
@@ -57,7 +57,7 @@ void EyeballSwitch_804AE678::init() {
         }
     } else {
         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         field_0x234 = 2;
         field_0x244 = true;
     }
@@ -139,7 +139,7 @@ void EyeballSwitch_804AE678::update() {
                             field_0x238 = 25;
                         }
                         if (!field_0x244) {
-                            vfunc_0x30(0xFF, false);
+                            setScreenFlag_0x30(0xFF, false);
                             gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
                         } else {
                             open();
@@ -154,7 +154,7 @@ void EyeballSwitch_804AE678::update() {
             field_0x238--;
             if (field_0x238 == 0) {
                 field_0x234 = 0;
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
                 field_0x244 = false;
             }
@@ -175,13 +175,13 @@ void EyeballSwitch_804AE678::update() {
 
 // Not in the binary (update inlines it twice); the pool has its 1.0f ahead of update's 32.0f.
 void EyeballSwitch_804AE678::open() {
-    vfunc_0x30(0xFF, true);
+    setScreenFlag_0x30(0xFF, true);
     gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x3008F, 0);
 }
 
-void EyeballSwitch_804AE678::vfunc_0x24() {
+void EyeballSwitch_804AE678::die_0x24() {
     deleteEmitter(&mEmitter);
     mAlive = false;
 }

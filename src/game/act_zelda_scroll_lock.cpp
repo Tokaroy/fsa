@@ -22,7 +22,7 @@ void ZeldaScrollLock_804AC708::update() {
         break;
     case 1:
         fn_8022ADE4();
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             fn_8022ADCC();
             fn_801F3668();
         }

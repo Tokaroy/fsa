@@ -149,7 +149,7 @@ void cls_804A5568::fn_801E9224() {
     }
 }
 
-void cls_804A5568::vfunc_0x90(u8 mapHit) {
+void cls_804A5568::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0: {
         u16 trigger = field_0x94;
@@ -188,11 +188,11 @@ void cls_804A5568::vfunc_0x90(u8 mapHit) {
     }
 }
 
-u8 cls_804A5568::vfunc_0x5C() {
+u8 cls_804A5568::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-u8 cls_804A5568::vfunc_0x60() {
+u8 cls_804A5568::checkHitByActor_0x60() {
     if (mState == 0 && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         if (fn_801E9B58() >= 0) {
             mFlags |= 0x2000;
@@ -205,7 +205,7 @@ u8 cls_804A5568::vfunc_0x60() {
     return 0;
 }
 
-u8 cls_804A5568::vfunc_0x68() {
+u8 cls_804A5568::attackPlayers_0x68() {
     u8 result = 0;
     if (mFlags & 0x2000) {
         f32 savedIX = mBox.i.x;

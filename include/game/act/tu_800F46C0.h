@@ -28,7 +28,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x230 */ u8 field_0x230; // the state update() switches on (0-5)
     // SHARED-EDIT: carved from field_0x231[3], field_0x234[8], field_0x24c[0x14] (game/tu_800F46C0.cpp init).
     /* 0x231 */ u8 field_0x231;

@@ -275,7 +275,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         break;
 
     case 14:
-        if (vfunc_0x3C() == 0) {
+        if (getScreenFlagBit_0x3C() == 0) {
             vfunc_0x6C(7);
         } else {
             field_0x380 = 0.7f;
@@ -424,7 +424,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         field_0x3c8 = 0;
         break;
     case 15:
-        getGameView_802D6A9C()->fn_802D8050(vfunc_0x3C(), true, 0xFF);
+        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
         field_0x11e = 0;
         mDrawEnabled = false;
         mAlive = false;

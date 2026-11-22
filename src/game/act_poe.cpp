@@ -112,7 +112,7 @@ void Poe_8049F330::update() {
     u16 angle = 0;
     s32 dir = 0;
     if (field_0x238[7] == 0 && field_0x94 >= 4 && field_0x94 <= 7) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         field_0x238[7] = 1;
@@ -122,7 +122,7 @@ void Poe_8049F330::update() {
         }
     }
     if (field_0x94 == 8) {
-        if (vfunc_0x34() || field_0x238[4] != 0) {
+        if (isScreenFlagSet_0x34() || field_0x238[4] != 0) {
             field_0x238[4]++;
             if (field_0x238[4] > 30) {
                 gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
@@ -288,7 +288,7 @@ void Poe_8049F330::update() {
 
 void Poe_8049F330::draw() {
     if (field_0x238[7] == 0 && field_0x94 >= 4 && field_0x94 <= 7) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
     }

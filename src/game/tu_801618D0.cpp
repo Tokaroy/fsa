@@ -148,7 +148,7 @@ void cls_804A0440::update() {
     y0 += py;
     x1 += px;
     y1 += py;
-    if (vfunc_0x2C(0.0f, 0.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(0.0f, 0.0f, 50.0f)) {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
@@ -487,7 +487,7 @@ void cls_804A0440::update() {
                     pooh->field_0x234 = 1;
                 }
             }
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 11:
@@ -651,9 +651,9 @@ void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
 #pragma auto_inline reset
 
 // 0x80161F20.
-void cls_804A0440::vfunc_0x24() {
+void cls_804A0440::die_0x24() {
     startSound_801F0E34(0x40015, 0);
-    vfunc_0x28(7, 0.0f, 16.0f);
+    startBossDeath_0x28(7, 0.0f, 16.0f);
     s32 bit = field_0x270;
     if (bit != 0) {
         getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);

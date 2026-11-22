@@ -10,7 +10,7 @@ Resistant:
 - vfunc_0xBC 91.8, fn_80122898 96.8: TBox2f copy then adds of mPos; target stores f.x before the y load. addPos(x,y) gives 86.6 / worse.
 - vfunc_0xB4 92.9 (missing/extra, not examined), vfunc_0x78 (fixed in review: const on base and both overrides, 100 %).
 
-Unwritten: fn_80121438, 801217EC, 80121BB8, 80122148, 80122548, 80122730, 80122F6C, 8012309C, 80123394, vfunc_0x98 (80123AB4), vfunc_0x80 (80123B94), fn_80123E9C (vfunc_0x4C), fn_80123F9C, update, fn_80124448, fn_80124600, dtor, ctor, __sinit.
+Unwritten: fn_80121438, 801217EC, 80121BB8, 80122148, 80122548, 80122730, 80122F6C, 8012309C, 80123394, vfunc_0x98 (80123AB4), vfunc_0x80 (80123B94), fn_80123E9C (isBlocked_0x4C), fn_80123F9C, update, fn_80124448, fn_80124600, dtor, ctor, __sinit.
 
 SHARED-EDITS: include/game/tu_801213EC.h (fields 0x268-0x3C4 declared, slots 0x54/0x58 bool, 0x5C s32, 0x98-0xC4 added, helper decls); act_escort_woman.h (0x54/0x58 bool, 0x5C s32, her field_0x340/0x35c removed: now base fields); act_zora_escort.h (field_0x340[] -> field_0x3c4[0x3D4-0x3C4]); GameGlobals.h (extern u8 lbl_8053AAA0, owner tu_8011CEC8); config gen_game.tsv row removed; symbols.txt renames to mangled member names.
 

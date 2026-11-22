@@ -29,7 +29,7 @@ void Shutter_804A8118::init() {
 void Shutter_804A8118::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x38);
             s32 layer = field_0x4 + 1;
             JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);

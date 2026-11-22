@@ -176,8 +176,8 @@ void Log_804ACD70::update() {
                                 field_0x254[count] = i;
                                 count++;
                                 if (count >= 4) {
-                                    if (vfunc_0x3C() > 0) {
-                                        vfunc_0x30(0xFF, true);
+                                    if (getScreenFlagBit_0x3C() > 0) {
+                                        setScreenFlag_0x30(0xFF, true);
                                     }
                                     field_0x230 = 1;
                                     field_0xb8 = 0;
@@ -262,7 +262,7 @@ void Log_804ACD70::update() {
         }
         break;
     case 2:
-        vfunc_0x24();
+        die_0x24();
         break;
     }
 }
@@ -315,7 +315,7 @@ void Log_804ACD70::draw() {
     }
 }
 
-void Log_804ACD70::vfunc_0x24() {
+void Log_804ACD70::die_0x24() {
     u16 a;
     u16 b;
     u16 c;
@@ -356,7 +356,7 @@ void Log_804ACD70::vfunc_0x24() {
     fn_801F3668();
 }
 
-bool Log_804ACD70::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0x230 == 0) {
         s32 kind = fn_8022461C(pos, layer);
         if (kind == 0x27 || kind == 3) {
@@ -379,7 +379,7 @@ bool Log_804ACD70::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
                 return false;
             }
         }
-        return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+        return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
     }
     return fn_801F132C(layer, pos, &field_0x2b8);
 }
@@ -526,7 +526,7 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
                 JGeometry::TVec3f p(*getPlayerPos_8023E724(i));
                 JGeometry::TVec3f off(lbl_80472320[dir][0], lbl_80472320[dir][1], lbl_80472320[dir][2]);
                 p += off;
-                if (vfunc_0x4C(field_0x4, &p) == 1) {
+                if (isBlocked_0x4C(field_0x4, &p) == 1) {
                     ok = false;
                 }
             }

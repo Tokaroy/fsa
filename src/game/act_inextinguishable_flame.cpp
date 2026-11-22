@@ -108,7 +108,7 @@ void InextinguishableFlame_804A9D28::update() {
 
     switch (mState) {
     case 0: {
-        if (mFlag300 == 0 || (mFlag300 != 0 && vfunc_0x34() == true)) {
+        if (mFlag300 == 0 || (mFlag300 != 0 && isScreenFlagSet_0x34() == true)) {
             JGeometry::TVec3f grid = mPos;
             s32 n = 0;
             for (s32 i = 0; i < mCountX; i++) {
@@ -149,7 +149,7 @@ void InextinguishableFlame_804A9D28::update() {
         }
         break;
     case 2:
-        if (field_0x94 == 2 || (mKind == 2 && vfunc_0x34() == true)) {
+        if (field_0x94 == 2 || (mKind == 2 && isScreenFlagSet_0x34() == true)) {
             getGameView_802D6A9C()->fn_802D8050(mViewBit, true, 0xFF);
             vfunc_0x54();
             s32 n = 0;
@@ -204,18 +204,18 @@ void InextinguishableFlame_804A9D28::update() {
             pos.x += 16.0f;
         }
         field_0x94 = 0;
-        vfunc_0x24();
+        die_0x24();
         break;
     case 4:
         mTimer--;
         if (mTimer == 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 5:
         mTimer--;
         if (mTimer == 0) {
-            vfunc_0x24();
+            die_0x24();
         } else if (mTimer == 0x34) {
             startSound_801F0E34(0x30061, 0);
         }
@@ -228,7 +228,7 @@ void InextinguishableFlame_804A9D28::update() {
                 mTimer = 0;
             }
         }
-        if (mFlag300 != 0 && !vfunc_0x34()) {
+        if (mFlag300 != 0 && !isScreenFlagSet_0x34()) {
             vfunc_0x54();
             field_0x94 = 0;
             mState = 0;
@@ -264,7 +264,7 @@ void InextinguishableFlame_804A9D28::vfunc_0x54() {
     }
 }
 
-void InextinguishableFlame_804A9D28::vfunc_0x24() {
+void InextinguishableFlame_804A9D28::die_0x24() {
     vfunc_0x54();
     fn_801F35AC();
 }

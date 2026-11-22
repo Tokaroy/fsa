@@ -37,7 +37,7 @@ void cls_804AE4B0::init() {
         JGeometry::TVec3f(32.0f, 0.0f, 0.0f),
         JGeometry::TVec3f(48.0f, 0.0f, 0.0f),
     };
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         mState = 0xB;
     } else {
         mState = 0;
@@ -677,7 +677,7 @@ void cls_804AE4B0::fn_80370508() {
         } else {
             fn_80230534(false);
             mState = 0xB;
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
         }
     }
 }

@@ -149,21 +149,21 @@ void cls_804AC3E0::vfunc_0xB0() {
     }
 }
 
-u8 cls_804AC3E0::vfunc_0x5C() {
+u8 cls_804AC3E0::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-u8 cls_804AC3E0::vfunc_0x60() {
+u8 cls_804AC3E0::checkHitByActor_0x60() {
     return 0;
 }
 
-u8 cls_804AC3E0::vfunc_0x68() {
+u8 cls_804AC3E0::attackPlayers_0x68() {
     return 0;
 }
 
 // FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
 // missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
-void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
+void cls_804AC3E0::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
     case 3:

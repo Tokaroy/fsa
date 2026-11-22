@@ -6,7 +6,7 @@
 
 // Code: game/tu_801DB18C.cpp. An EnemyBase_804A4808 named after its vtable,
 // 0x804A4EE8 (config/G4SE01/tu_map.tsv: enemy_both_sob.bin unit).
-// Its vfunc_0x9C runs EnemyBase's, then moves the emitter at 0x2E4 to mPos
+// Its updateBehavior_0x9C runs EnemyBase's, then moves the emitter at 0x2E4 to mPos
 // with setEmitterPos_8013CB44 (height 1, depth 0, adjusted).
 class cls_804A4EE8 : public EnemyBase_804A4808 {
 public:
@@ -19,16 +19,16 @@ public:
     // or, for a player for whom fn_801F329C holds, that centre converted by
     // fn_801CD0D0, with fn_80238548(player, field_0x114, &pos, 1). Returns
     // the bitmask of the players overlapping mBox (0 when mBox is empty).
-    /* 0x68 */ virtual u8 vfunc_0x68();
-    /* 0x94 */ virtual void vfunc_0x94();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x94 */ virtual void updateAnim_0x94();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // Shotgun pass: the constructor and overrides below are written from the asm only.
     cls_804A4EE8();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     void fn_801DB6C8();
 
     // 0x801DB950: the state setter. State 1 starts a search: the frame rate

@@ -63,12 +63,12 @@ void WaitSwitch_804A8B20::update() {
                 mTimer = mCount;
                 mToggle ^= 1;
                 if (mToggle) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 } else {
-                    vfunc_0x30(0xFF, false);
+                    setScreenFlag_0x30(0xFF, false);
                 }
             } else {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 mState = 2;
             }
         }

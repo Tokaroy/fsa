@@ -24,22 +24,22 @@ void AttackHitboxWhenPlayerIsThrown_804A7C40::update() {
         if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
             // fn_80238548 reads only x and y of the position.
             fn_80238548(i, damage, (const JGeometry::TVec2f*)&mPos, 4);
-            vfunc_0x24();
+            die_0x24();
             return;
         }
     }
     if (fn_801F2B20(0) || mPos.z <= 0.0f) {
-        vfunc_0x24();
+        die_0x24();
     }
 }
 
 void AttackHitboxWhenPlayerIsThrown_804A7C40::draw() {}
 
-void AttackHitboxWhenPlayerIsThrown_804A7C40::vfunc_0x24() {
+void AttackHitboxWhenPlayerIsThrown_804A7C40::die_0x24() {
     mAlive = false;
 }
 
-bool AttackHitboxWhenPlayerIsThrown_804A7C40::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool AttackHitboxWhenPlayerIsThrown_804A7C40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return false;
 }
 

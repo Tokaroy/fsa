@@ -65,7 +65,7 @@ void cls_804AC8C0::init() {
         field_0x2c0 = 0x427;
         break;
     }
-    if (vfunc_0x34() == true) {
+    if (isScreenFlagSet_0x34() == true) {
         field_0x230 = 0xB;
     }
 }
@@ -424,7 +424,7 @@ void cls_804AC8C0::update() {
                 } else if (fn_80388CAC(field_0x240, mSerial)) {
                     getActorManager_801F856C()->fn_801F6884();
                     field_0x230 = 11;
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 break;
             case 1:
@@ -443,7 +443,7 @@ void cls_804AC8C0::update() {
                             }
                         }
                         field_0x230 = 11;
-                        vfunc_0x30(0xFF, true);
+                        setScreenFlag_0x30(0xFF, true);
                     }
                 }
                 break;

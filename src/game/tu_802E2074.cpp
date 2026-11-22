@@ -158,7 +158,7 @@ void cls_804A9BC8::update() {
         field_0x230 = 0;
         break;
     case 2:
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34() == true) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             field_0x230 = 1;
         }
         break;

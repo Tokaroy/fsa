@@ -22,7 +22,7 @@ void FocusNPC_804A8EA0::update() {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
             if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
                 if ((field_0x90 >> 27) != 0) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 mState = 1;
                 mTimer = mDuration;
@@ -43,7 +43,7 @@ void FocusNPC_804A8EA0::update() {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
             if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
                 if ((field_0x90 >> 27) != 0) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
             }
         }

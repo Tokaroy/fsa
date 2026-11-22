@@ -14,9 +14,9 @@ public:
     cls_804A6AA8();
     virtual ~cls_804A6AA8();
     /* 0x0C */ virtual void init();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // Starts the shockwave ring at pos (taken by value, as the original does).
     void startRing(s32 layer, const JGeometry::TVec3f& pos) {

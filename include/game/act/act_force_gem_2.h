@@ -15,8 +15,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x230 */ s32 mState; // 5 or 6 once vfunc_0x4C has found a special tile
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x230 */ s32 mState; // 5 or 6 once isBlocked_0x4C has found a special tile
     /* 0x234 */ f32 mRadius; // 30.0f: the orbit radius (init's sin / cos)
     /* 0x238 */ f32 field_0x238; // 1.0f
     /* 0x23C */ f32 field_0x23c; // 0.0f

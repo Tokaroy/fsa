@@ -89,7 +89,7 @@ void cls_8049EA88::update() {
     }
     switch (field_0x230) {
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             setState(1);
         }
         break;

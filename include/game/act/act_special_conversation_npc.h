@@ -50,7 +50,7 @@ public:
     /* 0x234 */ s32 mPlayer; // the player the message is open for; -1 when none
     /* 0x238 */ u32 field_0x238;     // index into the state table (lbl_804AAED4)
     /* 0x23C */ u32 field_0x23c;
-    /* 0x240 */ u32 field_0x240;    // 0, 1 or 2: compared against vfunc_0x34()
+    /* 0x240 */ u32 field_0x240;    // 0, 1 or 2: compared against isScreenFlagSet_0x34()
     /* 0x244 */ u32 field_0x244;    // message for fn_8038AD24
     /* 0x248 */ JGeometry::TBox2f field_0x248; // box moved by mPos for fn_8022FEB8 / fn_8022FF8C
     /* 0x258 */ s32 field_0x258;

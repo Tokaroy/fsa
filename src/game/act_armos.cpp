@@ -114,7 +114,7 @@ void Armos_8049F260::update() {
         fn_80239914(&box, field_0x4, mSerial);
         fn_801EF510();
         if (field_0x94 == 2) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 startSound_801F0E34(0x400A0, 0);
                 if (field_0x94 != 3) {
                     field_0xbc = 2;
@@ -357,8 +357,8 @@ void Armos_8049F260::update() {
         field_0x2f8 = 5;
         // fall through
     case 5: {
-        if ((field_0x90 >> 27) != 0 && vfunc_0x34()) {
-            vfunc_0x24();
+        if ((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34()) {
+            die_0x24();
             return;
         }
         fn_801EF510();

@@ -30,15 +30,15 @@ void NPCRideSwitch_804AD220::update() {
             f32 dx = mPos.x - (x1 + 0.5f * (x0 - x1));
             f32 dy = mPos.y - (y1 + 0.5f * (y0 - y1));
             if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 4.0f) {
-                if (!vfunc_0x34()) {
-                    vfunc_0x30(0xFF, true);
+                if (!isScreenFlagSet_0x34()) {
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 return;
             }
         }
     }
-    if (vfunc_0x34() == true) {
-        vfunc_0x30(0xFF, false);
+    if (isScreenFlagSet_0x34() == true) {
+        setScreenFlag_0x30(0xFF, false);
     }
 }
 

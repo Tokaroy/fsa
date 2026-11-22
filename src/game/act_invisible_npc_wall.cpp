@@ -20,7 +20,7 @@ void InvisibleNPCWallForLink_804AE780::init() {
 }
 
 void InvisibleNPCWallForLink_804AE780::update() {
-    if (field_0x230 == 0 || vfunc_0x34()) {
+    if (field_0x230 == 0 || isScreenFlagSet_0x34()) {
         JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
         box.i.y += mPos.y;

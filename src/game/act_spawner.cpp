@@ -57,7 +57,7 @@ void SpawnerGenerator_804A9328::update() {
     switch (field_0x230) {
     case 0:
     case 1: {
-        if (field_0x250 == 0 || vfunc_0x34()) {
+        if (field_0x250 == 0 || isScreenFlagSet_0x34()) {
             if (field_0x230 == 0) {
                 field_0x230 = 1;
                 field_0x268 = 12;

@@ -10,11 +10,11 @@ static const u32 lbl_8053EF18[2] = {'FLME', 'NULL'};
 
 bool ShadowLink2_804A43E8::fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer) {
     bool hit = false;
-    if (ActorBase_804A5770::vfunc_0x4C(layer, pos) ||
-        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, pos->y - 7.0f, pos->z)) ||
-        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, pos->y - 7.0f, pos->z)) ||
-        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, 7.0f + pos->y, pos->z)) ||
-        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, 7.0f + pos->y, pos->z))) {
+    if (ActorBase_804A5770::isBlocked_0x4C(layer, pos) ||
+        ActorBase_804A5770::isBlocked_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::isBlocked_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::isBlocked_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, 7.0f + pos->y, pos->z)) ||
+        ActorBase_804A5770::isBlocked_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, 7.0f + pos->y, pos->z))) {
         hit = true;
     }
     return hit;

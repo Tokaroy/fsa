@@ -7,7 +7,7 @@
 #include "game/act/tu_80209C14.h"
 
 // Steering wrapper: without it the arguments are evaluated after
-// getActorManager_801F856C() (init 97.8 %, vfunc_0x90 98.0 %); with it the
+// getActorManager_801F856C() (init 97.8 %, updateState_0x90 98.0 %); with it the
 // call is made on the arguments' registers as in the original.
 static inline s32 spawnActorInline(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b) {
     return getActorManager_801F856C()->spawnActor_801F9484(id, layer, pos, arg, a, b);
@@ -170,7 +170,7 @@ void cls_804A5BD8::init() {
     mTargetSpeed = 0.0f;
 }
 
-void cls_804A5BD8::vfunc_0x54() {
+void cls_804A5BD8::onFirstUpdate_0x54() {
     field_0x346 = fn_8022461C(&mPos, field_0x4);
     field_0x348 = fn_80226850(&mPos, field_0x4);
 }
@@ -289,7 +289,7 @@ void cls_804A5BD8::fn_80208244(int state) {
 
 // FIXME: 99.80 %, regalloc-only; behaviour clean.
 // (regalloc-only). r29 vs r27 for loop counter i in checkTrigger case 2.
-void cls_804A5BD8::vfunc_0x90(u8 mapHit) {
+void cls_804A5BD8::updateState_0x90(u8 mapHit) {
     fn_80207A60();
     switch (mState) {
     case 0:
@@ -317,7 +317,7 @@ void cls_804A5BD8::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5BD8::vfunc_0x88() {
+void cls_804A5BD8::calcVelocity_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.z = 0.0f;

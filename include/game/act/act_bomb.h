@@ -18,7 +18,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     /* 0x48 */ virtual void vfunc_0x48();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x54 */ virtual void vfunc_0x54();
 
     void fn_8014D868(const JGeometry::TVec3f* pos);

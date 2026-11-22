@@ -11,10 +11,10 @@ public:
     cls_804A5568();
     /* 0x08 */ virtual ~cls_804A5568();
     /* 0x0C */ virtual void init();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x68 */ virtual u8 vfunc_0x68();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
     // Not written yet (game/tu_801E801C.cpp); called from game/tu_801E9AFC.cpp.
     // 0x801E801C: draws the sprite (fn_801EA108) unless field_0x248 is set.

@@ -71,7 +71,7 @@ void Block_804A7A10::init() {
         if (!((field_0x90 >> 9) & 1)) {
             if (fn_8028D4DC(&mPos, type, field_0x16c)) {
                 field_0x244 = 1;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
         }
         field_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -139,11 +139,11 @@ u8 fn_8028D4DC(JGeometry::TVec3f* pos, s32 index, s32 layer) {
     return 1;
 }
 
-bool Block_804A7A10::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Block_804A7A10::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if ((s32)fn_8022461C(pos, layer) == 0xD) {
         return false;
     }
-    return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }
 
 // FIXME: 96.11 %, missing/extra + reloc-name; behaviour drift.
@@ -188,7 +188,7 @@ void Block_804A7A10::update() {
                     return;
                 }
             }
-            vfunc_0x24();
+            die_0x24();
         } else {
             JGeometry::TBox2f box2(mBox);
             box2.i.x += mPos.x;
@@ -239,7 +239,7 @@ void Block_804A7A10::update() {
             if (!((field_0x90 >> 7) & 1) && !((field_0x90 >> 8) & 1) &&
                 PSVECDistance(&mPos, &mSpawnPos) >= (f32)(((field_0x90 & 3) + 1) * 16) - 0.1f) {
                 field_0x23c = -1;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             } else {
                 field_0x23c = 8;
                 field_0x240 = 30;
@@ -525,7 +525,7 @@ void Block_804A7A10::draw() {
     }
 }
 
-void Block_804A7A10::vfunc_0x24() {
+void Block_804A7A10::die_0x24() {
     mPos.x = (s32)((s32)mPos.x + 4) / 8 * 8;
     mPos.y = (s32)((s32)mPos.y + 4) / 8 * 8;
     if ((field_0x90 & 3) == 0) {

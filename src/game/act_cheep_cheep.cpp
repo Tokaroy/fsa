@@ -63,7 +63,7 @@ void CheepCheep_804A11B8::init() {
     }
 }
 
-bool CheepCheep_804A11B8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool CheepCheep_804A11B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = fn_8022461C(pos, layer);
     if (tile != 0x3B && tile != 0 && tile != 2 && tile != 3) {
         return true;

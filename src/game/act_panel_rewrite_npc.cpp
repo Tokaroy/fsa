@@ -117,11 +117,11 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
         }
 
         if ((field_0x90 >> 27) != 0) {
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 field_0x24c = false;
             }
         }
-        if (field_0x23c == 2 && !vfunc_0x34()) {
+        if (field_0x23c == 2 && !isScreenFlagSet_0x34()) {
             field_0x230 = 3;
             if (field_0x254 == field_0x234) {
                 switch (field_0x234) {
@@ -178,13 +178,13 @@ void PanelRewriteNPC_804A8E40::update() {
     } else {
         switch (field_0x230) {
         case 0:
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 writeCell(this);
                 finishCell(this);
             }
             break;
         case 1:
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4 + field_0x256, field_0x254);
                 vfunc_0x54(0);
                 field_0x230 = 0;

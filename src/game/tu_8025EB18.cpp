@@ -1834,7 +1834,7 @@ bool Player_804A6F38::fn_8025EDD4(s32 a, const JGeometry::TVec3f* pos) {
 
 // Whether the held thing can be put down at field_0x2f4: a player held across from
 // a GBA layer (8) is checked on its own layer, with the point moved between the two
-// view corners; else the tile there, and for an actor its vfunc_0x4C. On success the
+// view corners; else the tile there, and for an actor its isBlocked_0x4C. On success the
 // drop point takes the player's x / y.
 bool Player_804A6F38::fn_8025EB18() {
     if (fn_8025F590() && field_0x3b4 == 8 && getPlayerLayer_8023DE58(field_0xd70) < 8) {
@@ -1865,7 +1865,7 @@ bool Player_804A6F38::fn_8025EB18() {
             }
         } else {
             ActorBase_804A5770* actor = heldActor();
-            if (actor != 0 && actor->vfunc_0x4C(field_0x3b4, &field_0x2f4)) {
+            if (actor != 0 && actor->isBlocked_0x4C(field_0x3b4, &field_0x2f4)) {
                 field_0x2f4.x = mPos.x;
                 field_0x2f4.y = mPos.y;
                 return true;

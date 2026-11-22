@@ -72,7 +72,7 @@ void StrangeBlock_804AC2D8::init() {
     if (field_0x264 == 0) {
         if (fn_8028D4DC(&mPos, field_0x260 - 1, field_0x16c)) {
             field_0x265 = 1;
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
         }
     }
     field_0x238 = mPos;
@@ -152,7 +152,7 @@ void StrangeBlock_804AC2D8::update() {
             if (!((field_0x90 >> 16) & 1) &&
                 PSVECDistance(&mPos, &mSpawnPos) >= (f32)(field_0x260 << 4) - 0.1f) {
                 field_0x244 = -1;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 if (field_0x25c != 4) {
                     fn_801F0D20(3);
                 }

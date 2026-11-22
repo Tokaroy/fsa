@@ -168,7 +168,7 @@ void cls_804A0810::update() {
         return;
     }
     if ((field_0x90 >> 27) != 0) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         if (field_0x26c == 0) {
@@ -578,7 +578,7 @@ void cls_804A0810::draw() {
     f32 y = mPos.y;
     f32 z = mPos.z;
     if (field_0x94 != 5) {
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34()) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
             params.field_0x0[8] = field_0x274;
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x258 + 0x7F, &params, 7, 1.0f, 1.0f);
             if (mTimers[4] == 0) {

@@ -71,7 +71,7 @@ bool Thief_804A5A30::vfunc_0x58() {
     return hit;
 }
 
-u8 Thief_804A5A30::vfunc_0x60() {
+u8 Thief_804A5A30::checkHitByActor_0x60() {
     u8 hit = 0;
     if (field_0xc4 == 0 && mState != 3 && mState != 4 && mBox.getWidth() > 0.0f &&
         mBox.getHeight() > 0.0f) {
@@ -83,7 +83,7 @@ u8 Thief_804A5A30::vfunc_0x60() {
     return hit;
 }
 
-u8 Thief_804A5A30::vfunc_0x5C() {
+u8 Thief_804A5A30::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (field_0xc4 == 0 && mState != 3 && mState != 4 && mBox.getWidth() > 0.0f &&
         mBox.getHeight() > 0.0f) {
@@ -103,7 +103,7 @@ u8 Thief_804A5A30::vfunc_0x5C() {
     return hit;
 }
 
-u8 Thief_804A5A30::vfunc_0x68() {
+u8 Thief_804A5A30::attackPlayers_0x68() {
     u8 hit = 0;
     JGeometry::TVec3f out;
     JGeometry::TBox2f box;
@@ -158,7 +158,7 @@ u8 Thief_804A5A30::vfunc_0x68() {
     return hit;
 }
 
-u8 Thief_804A5A30::vfunc_0x64() {
+u8 Thief_804A5A30::sweepMap_0x64() {
     u8 hit = 0;
     if (!fn_8020609C() && !(mFlags & ENEMY_FLAG_NO_MAP_HIT) && field_0x80.getWidth() > 0.0f &&
         field_0x80.getHeight() > 0.0f) {
@@ -167,7 +167,7 @@ u8 Thief_804A5A30::vfunc_0x64() {
     return hit;
 }
 
-bool Thief_804A5A30::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Thief_804A5A30::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0xc4 != 0 || mState == 3) {
         return false;
     }
@@ -183,5 +183,5 @@ bool Thief_804A5A30::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         }
         break;
     }
-    return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }

@@ -60,7 +60,7 @@ void DiggingGameKeeper_8049C970::init() {
     field_0x274[1] = 0;
     field_0x274[2] = 0;
     field_0x274[3] = 0;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         field_0x230 = 7;
         field_0x244 = 0;
     } else {
@@ -225,7 +225,7 @@ void DiggingGameKeeper_8049C970::update() {
         if (!fn_803865B8(0) || !fn_80384C58(0, mSerial)) {
             break;
         }
-        vfunc_0x30(0xff, true);
+        setScreenFlag_0x30(0xff, true);
         field_0x230 = 7;
         field_0x244 = 0;
         fn_80230534(false);

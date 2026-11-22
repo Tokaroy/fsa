@@ -48,9 +48,9 @@ void Grass_804A92D0::update() {
                     damage = 0;
                 }
                 if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
-                    vfunc_0x24();
+                    die_0x24();
                 } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             } else {
                 if (field_0x245 == 0) {
@@ -66,9 +66,9 @@ void Grass_804A92D0::update() {
                     damage = 0;
                 }
                 if (fn_801F2618(NULL, false)) {
-                    vfunc_0x24();
+                    die_0x24();
                 } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             }
         }
@@ -138,7 +138,7 @@ void Grass_804A92D0::draw() {
     fn_801F02BC("enemy_both2_sob.bin", 0x27, &params, flags, 0, true, 1.0f, 1.0f);
 }
 
-void Grass_804A92D0::vfunc_0x24() {
+void Grass_804A92D0::die_0x24() {
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
@@ -238,12 +238,12 @@ void Grass_804A92D0::fn_802CEC10() {
     mAlive = false;
 }
 
-bool Grass_804A92D0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Grass_804A92D0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x23c);
 }
 
 void Grass_804A92D0::vfunc_0x48() {
-    vfunc_0x24();
+    die_0x24();
 }
 
 Grass_804A92D0::~Grass_804A92D0() {}

@@ -6,13 +6,13 @@ saves, cntlzw/extrwi vs srwi, 0x2020 resource types, rodata-initialised aggregat
 before calls; plus the matching FIXMEs. Claimed units and tu_8022AD64 skipped.
 
 +8 at 100 % (no function anywhere drops, by address against the main report):
-- act_octorok_rock vfunc_0x4C 68.69, act_dropped_item vfunc_0x4C 85.12 (tile-code != chain,
+- act_octorok_rock isBlocked_0x4C 68.69, act_dropped_item isBlocked_0x4C 85.12 (tile-code != chain,
   act_bombchu's form);
 - tu_801CDC8C fn_801CF0F4 89.70, tu_8020CCA8 fn_8020D2AC 94.47, tu_801DAC6C fn_801DAD2C 91.30 /
   fn_801DACAC 81.19 (const);
 - tu_801DAC6C fn_801DAE24 86.85, tu_80215A94 fn_8021606C 91.62 (const + the loop tests the member).
 Raised (FIXMEs updated): act_recovery_heart 61.51 -> 99.96, act_small_key fn_802C1970 85.34 -> 98.52,
-act_somaria_block 57.54 -> 96.79, tu_8017A44C UnknownSWBM vfunc_0x4C 72.66 -> 98.97,
+act_somaria_block 57.54 -> 96.79, tu_8017A44C UnknownSWBM isBlocked_0x4C 72.66 -> 98.97,
 act_two_sword_motion 84.07 -> 92.08, tu_802E2074 init 86.53 -> 96.17 (resource type), tu_801ED3DC
 fn_801ED828 79.80 -> 90.12, tu_801CDC8C fn_801CF144 61.74 -> 75.30, tu_8023FBF0 fn_80240DCC 86.20 -> 92.26.
 

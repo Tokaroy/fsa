@@ -867,7 +867,7 @@ void cls_804A7AE0::fn_80298978() {
                 } else if (kind == 0x18) {
                     pos.x += -16.0f;
                 }
-                if (vfunc_0x4C(warpLayer(warp->field_0x90), &pos) == 1) {
+                if (isBlocked_0x4C(warpLayer(warp->field_0x90), &pos) == 1) {
                     blocked = 1;
                     break;
                 }
@@ -1341,7 +1341,7 @@ void cls_804A7AE0::update() {
                         fn_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
                     }
                 }
-                vfunc_0x24();
+                die_0x24();
             } else if (fn_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
                 for (s32 i = 0; i < 4; i++) {
                     s32 v = (field_0x90 >> 7) & 0x1F;
@@ -1350,7 +1350,7 @@ void cls_804A7AE0::update() {
                         fn_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
                     }
                 }
-                vfunc_0x24();
+                die_0x24();
             }
         }
         break;
@@ -1525,7 +1525,7 @@ void cls_804A7AE0::fn_802961AC() {
 
 void cls_804A7AE0::fn_80295EE8() {
     if (mTimer <= 0) {
-        vfunc_0x24();
+        die_0x24();
         return;
     }
     if (mTimerMax - mTimer < 60) {
@@ -1564,7 +1564,7 @@ void cls_804A7AE0::fn_80295EE8() {
     mTimer--;
 }
 
-void cls_804A7AE0::vfunc_0x24() {
+void cls_804A7AE0::die_0x24() {
     s32 v;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8022F514(i)) {

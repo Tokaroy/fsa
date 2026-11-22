@@ -71,10 +71,10 @@ void TempleBTIDisplay_8049CB04::init() {
         field_0x244 = 1;
     }
     if (getGameView_802D6A9C()->field_0x131f9 != 0) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
     }
     if (field_0x234 == 2) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x245 = 2;
             field_0x246 = 1;
         } else {
@@ -115,7 +115,7 @@ void TempleBTIDisplay_8049CB04::update() {
             fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (player >= 0) {
                 if (getPlayerPos_8023E724(player)->y - y < 80.0f) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     field_0x245 = 1;
                 }
             }

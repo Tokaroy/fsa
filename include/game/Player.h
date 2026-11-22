@@ -1450,7 +1450,7 @@ void fn_8022FEB8(const JGeometry::TBox2f* box, s32 layer, s32 serial, bool a, bo
 // (0x80274344-0x80274360) when a player hits; `flag` is only passed on.
 s32 fn_8023B8E4(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* pos, bool flag);
 
-// Called by ActorBase_804A5770::vfunc_0x18 with the actor's screen box,
+// Called by ActorBase_804A5770::checkPlayerContact_0x18 with the actor's screen box,
 // field_0x4 and mSerial when the box overlaps a player's.
 void fn_802397B4(const JGeometry::TBox2f* box, s32 arg_0x4, s32 serial);
 

@@ -17,7 +17,7 @@ public:
     /* 0x20 */ virtual void draw();
     // Not in the binary: a plain function that update inlines.
     void stopSwim();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // 0x80346330: finds the player the fish swims away from (field_0x270, with its heading in
     // field_0x268 / field_0x26c and distance in field_0x264); true when there is one.
     s32 fn_80346330();

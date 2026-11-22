@@ -63,12 +63,12 @@ void UnknownSWBM_804A1160::init() {
     startSound_801F0E34(0x30026, 0);
 }
 
-// The tile codes as act_bombchu's vfunc_0x4C (a != chain around the remaining tests).
+// The tile codes as act_bombchu's isBlocked_0x4C (a != chain around the remaining tests).
 // FIXME: 98.97. Register allocation only, plus one move: the target keeps a second copy of
 // layer in r29 (mr r29, r28 before the fn_8020D6AC call) for the two later fn_80226850
 // calls, as if they read it through another variable; ours reuses one register. this / pos
 // / layer also take r31 / r27 / r28 there, r29 / r28 / r27 here.
-bool UnknownSWBM_804A1160::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_80466880) == 1) {

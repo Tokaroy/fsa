@@ -18,7 +18,7 @@ public:
     /* 0x0C */ virtual void init();       // fn_802F3C8C
     /* 0x14 */ virtual void update();     // fn_802F3BD8
     /* 0x20 */ virtual void draw();       // fn_802F3BD4, empty
-    /* 0x24 */ virtual void vfunc_0x24(); // fn_802F3C24
+    /* 0x24 */ virtual void die_0x24(); // fn_802F3C24
 
     // Takes the position by value, as the original's call does; mPlayer and
     // mMsg are read inside, after the copy of the position.

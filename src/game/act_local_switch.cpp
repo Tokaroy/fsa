@@ -15,7 +15,7 @@ void LocalSwitch_804AA008::init() {
 // calls slot 0x30 with (0xFF, true).
 void LocalSwitch_804AA008::update() {
     if (getGameView_802D6A9C()->fn_802D7F40(((u32)field_0x90 >> 22) & 0x1F)) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
     }
 }
 

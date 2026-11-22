@@ -347,7 +347,7 @@ void AllEnemiesDefeated_804A2AB0::update() {
     case 0:
         switch (mField_0x230) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 fn_801F0D20(0x42);
                 fn_8019DC5C();
                 mAlive = false;

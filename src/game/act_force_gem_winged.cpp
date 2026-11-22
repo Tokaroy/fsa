@@ -157,7 +157,7 @@ void WingedForceGem_804AB098::init() {
 // FIXME(shotgun): 98.06 %, different; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
-        if (vfunc_0x34() == 1) {
+        if (isScreenFlagSet_0x34() == 1) {
             s32 layer = field_0x4;
             if (layer >= 8) {
                 getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 3, -1, -1);
@@ -425,7 +425,7 @@ void WingedForceGem_804AB098::update() {
             mPos.y = getPlayerPos_8023E724(field_0x26c)->y - 24.0f;
         }
         if (field_0x250 == 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             fn_801F3668();
         }
         break;

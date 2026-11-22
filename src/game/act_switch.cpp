@@ -69,7 +69,7 @@ void Switch_804A7F38::init() {
 // FIXME: 99.69 %. Regalloc only: target->ours r30->r31, r4->r5, r5->r4, r31->r30.
 void Switch_804A7F38::vfunc_0x10() {
     if (mState == 1) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             readTileId();
             vfunc_0x54(-1);
             mAlive = false;
@@ -104,7 +104,7 @@ void Switch_804A7F38::vfunc_0x10() {
                                             } else {
                                                 field_0x258 = 0x51;
                                             }
-                                            vfunc_0x30(0xFF, false);
+                                            setScreenFlag_0x30(0xFF, false);
                                             gBgRewrite_8053AC98->fn_802A3884(&mPos, -1, field_0x4, field_0x258);
                                         }
                                     }
@@ -114,7 +114,7 @@ void Switch_804A7F38::vfunc_0x10() {
                         }
                     }
                     if (field_0x258 == 0x43 || field_0x258 == 0x68 || field_0x258 == 0x6a || field_0x258 == 0x41) {
-                        if (vfunc_0x34()) {
+                        if (isScreenFlagSet_0x34()) {
                             vfunc_0x54(-1);
                             mAlive = false;
                         } else {
@@ -189,7 +189,7 @@ void Switch_804A7F38::update() {
         break;
 
     case 1:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             readTileId();
             vfunc_0x54(player);
             mAlive = false;
@@ -209,7 +209,7 @@ void Switch_804A7F38::update() {
                     fn_80233DA4(player) == true || fn_80235004(player) == true) {
                     break;
                 }
-                s32 switchBit = vfunc_0x3C();
+                s32 switchBit = getScreenFlagBit_0x3C();
                 if (getGameView_802D6A9C()->fn_802D800C(switchBit) == false) {
                     if (gGameRoot_8053AAF8->field_0x7e == 1) {
                         bool found = false;
@@ -232,7 +232,7 @@ void Switch_804A7F38::update() {
                         if (fn_8022E39C(player, 10) != true) {
                             break;
                         }
-                        vfunc_0x30(player, true);
+                        setScreenFlag_0x30(player, true);
                         startSound_801F0E34(0x30009, 0);
                         vfunc_0x54(player);
                         mState = 3;
@@ -241,13 +241,13 @@ void Switch_804A7F38::update() {
                     } else {
                         if (player == 0) {
                             if (fn_8022E39C(player, 5) == true) {
-                                vfunc_0x30(player, true);
+                                setScreenFlag_0x30(player, true);
                                 startSound_801F0E34(0x30009, 0);
                                 vfunc_0x54(player);
                                 field_0x248 = 5;
                             }
                         } else {
-                            vfunc_0x30(player, true);
+                            setScreenFlag_0x30(player, true);
                             startSound_801F0E34(0x30009, 0);
                             vfunc_0x54(player);
                             field_0x248 = 0;
@@ -261,7 +261,7 @@ void Switch_804A7F38::update() {
                     mState = 4;
                 }
             } else {
-                vfunc_0x30(player, true);
+                setScreenFlag_0x30(player, true);
                 mState = 6;
             }
         } else if (blockSerial >= 0) {
@@ -269,7 +269,7 @@ void Switch_804A7F38::update() {
             if (actor && actor->mActorId == lbl_8046C838[blockKind]) {
                 field_0x250 = -1;
                 field_0x254 = blockKind;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 startSound_801F0E34(0x30009, 0);
                 vfunc_0x54(field_0x250);
                 mState = 7;
@@ -295,7 +295,7 @@ void Switch_804A7F38::update() {
             if (fn_80230188(field_0x250)) {
                 break;
             }
-            if (vfunc_0x34() && (field_0x234 == 1 || field_0x234 == 3)) {
+            if (isScreenFlagSet_0x34() && (field_0x234 == 1 || field_0x234 == 3)) {
                 mAlive = false;
                 break;
             }
@@ -321,14 +321,14 @@ void Switch_804A7F38::update() {
                     }
                 }
                 if (field_0x234 == 0 || field_0x234 == 5) {
-                    vfunc_0x30(0xFF, false);
+                    setScreenFlag_0x30(0xFF, false);
                     gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
                 } else {
                     gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
                 }
             } else {
                 if (field_0x234 == 2 || field_0x234 == 6) {
-                    vfunc_0x30(0xFF, false);
+                    setScreenFlag_0x30(0xFF, false);
                     gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
                 } else {
                     gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
@@ -339,18 +339,18 @@ void Switch_804A7F38::update() {
             fn_802302C4(player, 0xE8, 0xFF);
             if (player == field_0x250) {
                 if (field_0x234 == 5 || field_0x234 == 6) {
-                    vfunc_0x30(field_0x250, true);
+                    setScreenFlag_0x30(field_0x250, true);
                 }
             } else {
                 field_0x250 = player;
-                vfunc_0x30(field_0x250, true);
+                setScreenFlag_0x30(field_0x250, true);
             }
         }
         break;
 
     case 5:
         if (field_0x24c == 0) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
             mState = 2;
         } else {
@@ -373,14 +373,14 @@ void Switch_804A7F38::update() {
         }
         if (field_0x234 == 0 || field_0x234 == 1 || field_0x234 == 5 || field_0x234 == 8) {
             if (field_0x234 == 0 || field_0x234 == 5) {
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
             } else {
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
             }
         } else {
             if (field_0x234 == 2 || field_0x234 == 6) {
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
             }
             gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
         }

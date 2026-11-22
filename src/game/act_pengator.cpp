@@ -59,9 +59,9 @@ void Pengator_804A1888::init() {
     field_0x230 = 0;
 }
 
-void Pengator_804A1888::vfunc_0x18() {
+void Pengator_804A1888::checkPlayerContact_0x18() {
     fn_80212AC0()->fn_80212AF0(&mPos);
-    ActorBase_804A5770::vfunc_0x18();
+    ActorBase_804A5770::checkPlayerContact_0x18();
 }
 
 // FIXME: 96.97 %, missing/extra + reloc-name; behaviour drift.

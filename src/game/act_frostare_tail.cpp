@@ -44,7 +44,7 @@ void cls_804A4F90::init() {
     fn_801DAC6C()->fn_801DAF3C(mSerial);
 }
 
-void cls_804A4F90::vfunc_0x90(u8 mapHit) {
+void cls_804A4F90::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         break;
@@ -67,18 +67,18 @@ void cls_804A4F90::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A4F90::vfunc_0x9C(u8 mapHit) {
+void cls_804A4F90::updateBehavior_0x9C(u8 mapHit) {
     if ((mFlags & (ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR)) == 0) {
         fn_801CE2BC(mapHit);
     } else {
-        vfunc_0x94();
+        updateAnim_0x94();
     }
 }
 
 // FIXME: 97.86 %, regalloc-only; behaviour clean.
 // Register swap only: the original loads lbl_8053EFB8 into f1 and
 // field_0x3c.y into f0 (fadds f0, f0, f1); ours uses f0 / f1.
-void cls_804A4F90::vfunc_0x88() {
+void cls_804A4F90::calcVelocity_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.z = 0.0f;
     if (mState == 2) {
@@ -88,7 +88,7 @@ void cls_804A4F90::vfunc_0x88() {
     }
 }
 
-void cls_804A4F90::vfunc_0x74() {
+void cls_804A4F90::onHitReactionEnd_0x74() {
     mAnim.fn_801D22A0(0, 2);
     if (mHitCount >= 10) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -105,7 +105,7 @@ void cls_804A4F90::vfunc_0x74() {
 // the rupee serial in r28 (loading 'RUPY' into r28 before getActorManager_801F856C)
 // and puts the upper-layer velocity temporary at sp+0x20, the other at sp+0x2C;
 // ours swaps both pairs, and the random terms' scratch registers follow.
-u8 cls_804A4F90::vfunc_0x5C() {
+u8 cls_804A4F90::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         for (s32 i = 0; i < 4; i++) {
@@ -150,7 +150,7 @@ u8 cls_804A4F90::vfunc_0x5C() {
     return hit;
 }
 
-u8 cls_804A4F90::vfunc_0x60() {
+u8 cls_804A4F90::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         fn_801F2DB4(mActorId, 'NULL', NULL);
     }

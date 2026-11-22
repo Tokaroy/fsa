@@ -26,7 +26,7 @@ void FourPersonPullSwitchBTIVersion_804AE574::init() {
     field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0x23c = 0;
-    field_0x240 = field_0x254 = vfunc_0x34();
+    field_0x240 = field_0x254 = isScreenFlagSet_0x34();
     if (field_0x240) {
         field_0x244 = 14.0f;
     } else {
@@ -186,7 +186,7 @@ void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
             field_0x24c = -1;
         }
     } else if (field_0x248 == 15) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
     }
 }
 

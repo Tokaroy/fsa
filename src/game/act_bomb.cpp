@@ -977,7 +977,7 @@ void Bomb_8049F784::draw() {
 
 // FIXME: 97.38 %, scheduling+regalloc; behaviour clean.
 // (scheduling+regalloc). Only register allocation differs (layer in r31/pos in r29/code in r30 in target).
-bool Bomb_8049F784::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Bomb_8049F784::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     s32 tile = fn_80226850(pos, layer);
     if ((u32)(code - 0x10) <= 7 || (tile >= 0x140 && tile <= 0x15F)) {

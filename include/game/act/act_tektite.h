@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x230 */ s32 field_0x230; // 0 or 1 after init; update branches on it
     /* 0x234 */ s32 field_0x234; // countdown (update)
     /* 0x238 */ s32 field_0x238; // countdown (update); init sets 0x14 + random(0..19), or 0

@@ -11,8 +11,8 @@
 class cls_804A1630 : public ActorBase_804A5770 {
 public:
     /* 0x08 */ virtual ~cls_804A1630();
-    // 0x8017EF40: starts sound 0x40038, then vfunc_0x28(2, 0.0f, -24.0f).
-    /* 0x24 */ virtual void vfunc_0x24();
+    // 0x8017EF40: starts sound 0x40038, then startBossDeath_0x28(2, 0.0f, -24.0f).
+    /* 0x24 */ virtual void die_0x24();
 
     /* 0x0C */ virtual void init();   // fn_801820B4
     /* 0x14 */ virtual void update(); // fn_8017FB10, not written yet

@@ -227,7 +227,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
         // Fallthrough to case 2
 
     case 2:
-        if (vfunc_0x34() == 1 && !getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (isScreenFlagSet_0x34() == 1 && !getGameView_802D6A9C()->fn_802DCD0C()) {
             field_0x254 = 1;
             field_0x23c = ((field_0x90 >> 16) & 3) * 70 + 30;
             mPos = field_0x278;

@@ -23,11 +23,11 @@ public:
     ShadowLink2_804A43E8();
     /* 0x08 */ virtual ~ShadowLink2_804A43E8();
     /* 0x0C */ virtual void init();
-    /* 0x74 */ virtual void vfunc_0x74();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x98 */ virtual void vfunc_0x98();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x74 */ virtual void onHitReactionEnd_0x74();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x98 */ virtual void move_0x98();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
     // 0x801C50A8: fn_801C3B7C calls it.
     void fn_801C50A8(int state);
@@ -60,10 +60,10 @@ public:
     // act_shadow_link_2.cpp: true if mFlags has bit 0x40000 and the byte at
     // 0x55C is at most 0x14.
     bool fn_801C53C4();
-    // act_shadow_link_2.cpp: gravity, EnemyBase's vfunc_0x84 override. Unless
+    // act_shadow_link_2.cpp: gravity, EnemyBase's applyGravity_0x84 override. Unless
     // field_0xd8 > 0 && field_0xf8 == 2, field_0x3c.z += lbl_8053EFB8, clamped
     // at -lbl_8053EFBC from below.
-    /* 0x84 */ virtual void vfunc_0x84();
+    /* 0x84 */ virtual void applyGravity_0x84();
     // act_shadow_link_2.cpp: copies field_0x98 (direction) into the animation
     // sequencer's mDir, advances the sequencer unless it is in state 0x13 past
     // its first tick or mFlags has bit 0x80000, then updates the hit box.
@@ -71,7 +71,7 @@ public:
     // act_shadow_link_2.cpp: switches to state 0xD (fn_801C3B7C only).
     void fn_801C26D8();
     // act_shadow_link_2.cpp (0x801C27F0): passes mFlags bit 0x08000000 to the fn_801C0D70 object's
-    // fn_801C1374, then vfunc_0x24.
+    // fn_801C1374, then die_0x24.
     void fn_801C27F0();
     // act_shadow_link_2.cpp: switches to state 0xE unless mState is 0xE.
     void fn_801C26FC();
@@ -211,7 +211,7 @@ public:
     /* 0x599 */ u8 field_0x599;
     /* 0x59A */ u8 field_0x59a; // fn_801C5B08 stores 0xB4 here
     /* 0x59B */ u8 field_0x59b;
-    /* 0x59C */ u8 field_0x59c; // vfunc_0x9C counts it down to 0
+    /* 0x59C */ u8 field_0x59c; // updateBehavior_0x9C counts it down to 0
     /* 0x59D */ u8 field_0x59d;
     /* 0x59E */ u16 field_0x59e;
     /* 0x5A0 */ u16 field_0x5a0;

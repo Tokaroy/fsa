@@ -22,7 +22,7 @@ Explosion_804A7FB8::~Explosion_804A7FB8() {
     }
 }
 
-// States in field_0x230: count down, wait for vfunc_0x34(), spawn effect
+// States in field_0x230: count down, wait for isScreenFlagSet_0x34(), spawn effect
 // 0x173 offset by (16, 24), then for 20 frames widen the view's entry
 // field_0x4 (fn_802D79E8) and hit players, then remove itself.
 void Explosion_804A7FB8::update() {
@@ -40,7 +40,7 @@ void Explosion_804A7FB8::update() {
         }
         break;
     case 1:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x230 = 2;
             field_0x234 = 1;
         }

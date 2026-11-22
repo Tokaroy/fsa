@@ -65,7 +65,7 @@ void Carrot_804AC6B0::init() {
     field_0x25c = 0;
 }
 
-bool Carrot_804AC6B0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Carrot_804AC6B0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tileCode = fn_8022461C(pos, layer);
     if (tileCode == 0x4C || tileCode == 0x4D || tileCode == 0x4E || tileCode == 0x4F) {
         return false;
@@ -116,7 +116,7 @@ bool Carrot_804AC6B0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (tileCode == 0x39) {
         return false;
     }
-    return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }
 
 void Carrot_804AC6B0::update() {

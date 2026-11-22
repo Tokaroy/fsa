@@ -95,7 +95,7 @@ void ArrowPlayer_804A05E0::init() {
 
 // 0x8016636C. Whether the arrow is blocked at pos: by a collision box, or by the tile there.
 // FIXME(shotgun): 99.28 %, missing/extra; behaviour clean.
-bool ArrowPlayer_804A05E0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ArrowPlayer_804A05E0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_804662E8) == true) {

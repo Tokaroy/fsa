@@ -161,7 +161,7 @@ void cls_804AA4F0::update() {
         applyColor(this);
         break;
     case 5:
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34()) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
             mState = 2;
         }
         applyColor(this);

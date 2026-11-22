@@ -3,7 +3,7 @@
 Baseline (progress.py): total: 5901 / 11557 functions, 1181784 / 4442032 bytes of code (26.60 %)
 After: total: 5906 / 11557 functions, 1182900 / 4442032 bytes of code (26.63 %)
 
-Matched: all 7 functions (dtor, vfunc_0x4C, vfunc_0x24, draw, update, init, __sinit).
+Matched: all 7 functions (dtor, isBlocked_0x4C, die_0x24, draw, update, init, __sinit).
 Resistant: none in code. .sdata2 reports 93.33 % although the object's bytes
 equal the target's (0x20, trailing pad float 0): dtk's lbl_80540F30 is 8 bytes
 (12.0f + pad) and ours is a 4-byte literal. Not fixable from source.

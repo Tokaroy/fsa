@@ -13,7 +13,7 @@ void GBAWindowControl_804AA440::init() {
 void GBAWindowControl_804AA440::update() {
     switch (field_0x230) {
     case 0:
-        if (field_0x234 == 0x1F && vfunc_0x34()) {
+        if (field_0x234 == 0x1F && isScreenFlagSet_0x34()) {
             field_0x230 = 1;
             field_0x23c = field_0x238;
         }

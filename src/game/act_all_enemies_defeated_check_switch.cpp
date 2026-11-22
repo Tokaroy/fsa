@@ -126,8 +126,8 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
         case 0:
         case 1:
             if (getActorManager_801F856C()->field_0x305c == 1) {
-                if (field_0x238 == 0 || (field_0x238 == 1 && !vfunc_0x34())) {
-                    vfunc_0x30(0xFF, true);
+                if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
+                    setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 0) {
                         fn_801F0D20(3);
                     }
@@ -145,8 +145,8 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
                     }
                 }
             } else {
-                if (field_0x238 == 1 && vfunc_0x34() == true) {
-                    vfunc_0x30(0xFF, false);
+                if (field_0x238 == 1 && isScreenFlagSet_0x34() == true) {
+                    setScreenFlag_0x30(0xFF, false);
                 }
             }
             break;
@@ -172,8 +172,8 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
         case 8:
         case 9:
             if (getActorManager_801F856C()->fn_801F75B4(field_0x4, &field_0x23c) == true) {
-                if (field_0x238 == 0 || (field_0x238 == 1 && !vfunc_0x34())) {
-                    vfunc_0x30(0xFF, true);
+                if (field_0x238 == 0 || (field_0x238 == 1 && !isScreenFlagSet_0x34())) {
+                    setScreenFlag_0x30(0xFF, true);
                     if (field_0x234 == 2 || field_0x234 == 4 || field_0x234 == 6 || field_0x234 == 8) {
                         fn_801F0D20(3);
                     }
@@ -191,8 +191,8 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::update() {
                     }
                 }
             } else {
-                if (field_0x238 == 1 && vfunc_0x34() == true) {
-                    vfunc_0x30(0xFF, false);
+                if (field_0x238 == 1 && isScreenFlagSet_0x34() == true) {
+                    setScreenFlag_0x30(0xFF, false);
                 }
             }
             break;

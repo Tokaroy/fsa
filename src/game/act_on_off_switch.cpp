@@ -56,7 +56,7 @@ void OnOffSwitch_804A8FC8::init() {
                 if (mEmitter234 == NULL) {
                     mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x429, 1, 0, NULL, NULL, true, 1.0f);
                 }
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 if (field_0x240 == 3) {
                     mState = 2;
                 } else {
@@ -64,12 +64,12 @@ void OnOffSwitch_804A8FC8::init() {
                 }
             } else {
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xBF);
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
                 mState = 0;
             }
         } else {
             gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xBF);
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             mState = 0;
         }
     } else {
@@ -80,7 +80,7 @@ void OnOffSwitch_804A8FC8::init() {
         if (mEmitter234 == NULL) {
             mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x429, 1, 0, NULL, NULL, true, 1.0f);
         }
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         mState = 4;
     }
     mBox.i.x = -9.0f;
@@ -173,7 +173,7 @@ void OnOffSwitch_804A8FC8::update() {
                 getGameView_802D6A9C()->fn_802D78B4(field_0x244, true);
             }
             gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0xBE);
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x42B, 1, 0, NULL, NULL, true, 1.0f);
             if (mEmitter230 == NULL) {
                 mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x428, 1, 0, NULL, NULL, true, 1.0f);
@@ -195,7 +195,7 @@ void OnOffSwitch_804A8FC8::update() {
         } else {
             if (field_0x240 == 3 && getGameView_802D6A9C()->fn_802D7888(field_0x244) == true) {
                 gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0xBE);
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 if (mEmitter230 == NULL) {
                     mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x428, 1, 0, NULL, NULL, true, 1.0f);
                 }
@@ -229,7 +229,7 @@ void OnOffSwitch_804A8FC8::update() {
                     getGameView_802D6A9C()->fn_802D78B4(field_0x244, false);
                 }
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xBF);
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
                 mState = 3;
                 field_0x23c = 25;
                 startSound_801F0E34(0x30009, 0);
@@ -237,7 +237,7 @@ void OnOffSwitch_804A8FC8::update() {
                 releaseEmitter(mEmitter234);
             } else if (field_0x240 == 3 && getGameView_802D6A9C()->fn_802D7888(field_0x244) == false) {
                 gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xBF);
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
                 mState = 3;
                 field_0x23c = 25;
                 releaseEmitter(mEmitter230);
@@ -259,7 +259,7 @@ void OnOffSwitch_804A8FC8::update() {
                 getGameView_802D6A9C()->fn_802D78B4(field_0x244, false);
             }
             gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xBF);
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             mState = 3;
             startSound_801F0E34(0x30009, 0);
             field_0x23c = 25;

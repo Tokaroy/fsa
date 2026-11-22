@@ -33,7 +33,7 @@ public:
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254; // spawn parameter bits 17-18: the TIMG variant
     /* 0x258 */ s32 field_0x258; // spawn parameter bits 12-16
-    /* 0x25C */ s32 field_0x25c; // compared with the WARP actors' vfunc_0x3C()
+    /* 0x25C */ s32 field_0x25c; // compared with the WARP actors' getScreenFlagBit_0x3C()
     /* 0x260 */ s32 field_0x260[2]; // slots of the first two SLR4 actors
     /* 0x268 */ JGeometry::TVec3f field_0x268; // mPos at init, y lowered by 32
     /* 0x274 */ u8 field_0x274;

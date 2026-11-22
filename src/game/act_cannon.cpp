@@ -62,8 +62,8 @@ void Cannon_8049CCF0::init() {
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1F14(0.0f);
     mHomePos.set(mPos);
-    if (vfunc_0x3C()) {
-        if (vfunc_0x34()) {
+    if (getScreenFlagBit_0x3C()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x269 = 1;
         }
     }
@@ -83,9 +83,9 @@ void spawnTakenEffect(Cannon_8049CCF0* self);
 
 // FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
 void Cannon_8049CCF0::update() {
-    if (vfunc_0x3C()) {
+    if (getScreenFlagBit_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 field_0x269 = 0;
                 return;
             }
@@ -188,9 +188,9 @@ void Cannon_8049CCF0::update() {
 }
 
 void Cannon_8049CCF0::draw() {
-    if (vfunc_0x3C()) {
+    if (getScreenFlagBit_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 return;
             }
         }

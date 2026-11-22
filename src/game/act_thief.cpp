@@ -120,7 +120,7 @@ Thief_804A5A30::~Thief_804A5A30() {
     fn_80204638()->fn_802049E0(this);
 }
 
-// Its 1.0f is vfunc_0x90's (see there).
+// Its 1.0f is updateState_0x90's (see there).
 // FIXME: 99.96 %, reloc-name; behaviour clean.
 void Thief_804A5A30::init() {
     EnemyBase_804A4808::init();
@@ -208,7 +208,7 @@ s32 Thief_804A5A30::fn_802063FC() {
 }
 
 // FIXME: 98.85 %, regalloc-only + reloc-name; behaviour clean.
-// (regalloc-only + reloc-name). Register allocation swap between r29 and r30; 1.0f pool slot (see vfunc_0x90).
+// (regalloc-only + reloc-name). Register allocation swap between r29 and r30; 1.0f pool slot (see updateState_0x90).
 void Thief_804A5A30::fn_80206168() {
     if (field_0x344 == 0) {
         return;
@@ -365,14 +365,14 @@ void Thief_804A5A30::fn_80205E0C(s32 newState) {
 // r31, the layer argument of fn_801CF888 in states 0 and 6 is loaded into a saved register before
 // getPlayerPos_8023E724 in the original) and literal relocations (the original pools 1.0f before
 // 1.2f / 2.0f; ours pools it last).
-void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
+void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     if (mapHit) {
         fn_801F11B4();
     } else {
         switch (mState) {
         case 1:
         case 2:
-            if (vfunc_0x4C(field_0x4, &mPos)) {
+            if (isBlocked_0x4C(field_0x4, &mPos)) {
                 mPos.x = mPrevPos.x;
                 mPos.y = mPrevPos.y;
                 fn_80205E0C(0);
@@ -576,7 +576,7 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void Thief_804A5A30::vfunc_0x94() {
+void Thief_804A5A30::updateAnim_0x94() {
     s32 state = mState;
     switch (state) {
     case 5:
@@ -614,11 +614,11 @@ void Thief_804A5A30::vfunc_0x94() {
             break;
         }
     }
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
 // FIXME: 99.86 %, regalloc-only; behaviour clean.
-void Thief_804A5A30::vfunc_0x9C(u8 mapHit) {
+void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
     if (field_0xc4 != 0 && field_0xc8 >= 0 && field_0xc8 < 4) {
         if (fn_80204638()->field_0x0 != 0 || fn_802064E0()) {
             fn_80230C6C(field_0xc8);
@@ -668,12 +668,12 @@ void Thief_804A5A30::vfunc_0x9C(u8 mapHit) {
         }
         break;
     }
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     fn_8020FADC();
 }
 
-void Thief_804A5A30::vfunc_0x88() {
-    vfunc_0x84();
+void Thief_804A5A30::calcVelocity_0x88() {
+    applyGravity_0x84();
     if (fn_8020609C()) {
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
@@ -709,7 +709,7 @@ void Thief_804A5A30::vfunc_0x88() {
     }
 }
 
-void Thief_804A5A30::vfunc_0x8C() {
+void Thief_804A5A30::onMoved_0x8C() {
     if (!fn_8020609C()) {
         switch (mState) {
         case 1:
@@ -726,7 +726,7 @@ void Thief_804A5A30::vfunc_0x8C() {
     }
 }
 
-void Thief_804A5A30::vfunc_0x98() {
+void Thief_804A5A30::move_0x98() {
     if (mState == 3) {
         if (field_0xc4 != 0) {
             field_0x98 = fn_80230CFC(field_0xc8);

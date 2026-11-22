@@ -47,9 +47,9 @@ void IronBall_804AB968::init() {
 // the original has f1 (|y|), f3 (|x|) then frsp into f0, f1.
 void IronBall_804AB968::update() {
     fn_801F2B7C(-100, -1, 1);
-    if (!vfunc_0x34()) {
+    if (!isScreenFlagSet_0x34()) {
         mPos += field_0x3c;
-        if (vfunc_0x4C(field_0x4, &mPos) || field_0x244 > 600) {
+        if (isBlocked_0x4C(field_0x4, &mPos) || field_0x244 > 600) {
             mAlive = false;
         }
         field_0x234 -= (s32)(0.5f + (FABS(field_0x3c.y) + FABS(field_0x3c.x)));
@@ -95,7 +95,7 @@ void IronBall_804AB968::draw() {
     }
 }
 
-bool IronBall_804AB968::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool IronBall_804AB968::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     JGeometry::TVec3f p(*pos);
     switch (field_0x240) {
     case 0:

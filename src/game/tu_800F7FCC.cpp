@@ -508,7 +508,7 @@ void cls_8049C718::fn_800FBD90() {
         mBox.set(-26.0f * mScale, -50.0f * mScale, 26.0f * mScale, 0.0f);
         startSound_801F0E34(0x40005, 0);
         if (mLife <= 10) {
-            vfunc_0x24();
+            die_0x24();
         }
         return;
     }
@@ -773,7 +773,7 @@ void cls_8049C718::fn_800FB070() {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EB, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EC, 0, 0, NULL, NULL, true, 1.0f);
             if (mLife <= 10) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
     }
@@ -781,7 +781,7 @@ void cls_8049C718::fn_800FB070() {
 
 void cls_8049C718::update() {
     mBox2.set(-21.0f, -35.0f + mPos.z, 22.0f, -2.0f + mPos.z);
-    if (vfunc_0x2C(0.0f, -20.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(0.0f, -20.0f, 50.0f)) {
         return;
     }
     if (!(mFlags & 1)) {
@@ -898,7 +898,7 @@ void cls_8049C718::update() {
 }
 
 // FIXME(shotgun): 91.96 %, scheduling+regalloc; behaviour clean.
-bool cls_8049C718::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool cls_8049C718::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 kind = fn_8022461C(pos, layer);
     if (kind == 3 || kind == 14 || kind == 2) {
         return false;
@@ -906,11 +906,11 @@ bool cls_8049C718::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, 0);
 }
 
-void cls_8049C718::vfunc_0x24() {
+void cls_8049C718::die_0x24() {
     getGameView_802D6A9C()->fn_802D7440(0);
     startSound_801F0E34(0x40006, 0);
     mSignal = 2;
-    vfunc_0x28(0, 0.0f, -20.0f);
+    startBossDeath_0x28(0, 0.0f, -20.0f);
 }
 
 void cls_8049C718::vfunc_0x44() {
@@ -944,7 +944,7 @@ void cls_8049C718::vfunc_0x44() {
         mBox.f.y = 0.0f;
         startSound_801F0E34(0x40005, 0);
         if (mLife <= 10) {
-            vfunc_0x24();
+            die_0x24();
         }
     } else if (field_0x255 == 3) {
         mSignal = 1;
@@ -1349,12 +1349,12 @@ void StoneArrghusChildPuff_8049C678::update() {
             break;
         }
         if (mParent->mSignal == 1) {
-            vfunc_0x24();
+            die_0x24();
         }
     } else {
         fn_800F8BAC();
         if (mParent->mSignal == 2) {
-            vfunc_0x24();
+            die_0x24();
         }
     }
 }
@@ -1366,7 +1366,7 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x40() {
 
 // FIXME: 98.96 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): scheduling+regalloc differs; behaviour matches.
-void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
+void StoneArrghusChildPuff_8049C678::die_0x24() {
     s32 count;
     if (mIndex == 0x14) {
         count = 4;
@@ -1387,7 +1387,7 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
     }
     field_0x18c = 0;
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 void StoneArrghusChildPuff_8049C678::draw() {

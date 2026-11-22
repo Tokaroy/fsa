@@ -159,7 +159,7 @@ bool cls_804A51E4::vfunc_0x58() {
     return hit;
 }
 
-u8 cls_804A51E4::vfunc_0x60() {
+u8 cls_804A51E4::checkHitByActor_0x60() {
     u8 hit = 0;
     s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
     if (other >= 0 && other != mSerial) {
@@ -187,7 +187,7 @@ u8 cls_804A51E4::vfunc_0x60() {
     return hit;
 }
 
-u8 cls_804A51E4::vfunc_0x5C() {
+u8 cls_804A51E4::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     s32 player = fn_801F285C(NULL, NULL, true, -1);
     if (player >= 0) {
@@ -211,7 +211,7 @@ u8 cls_804A51E4::vfunc_0x5C() {
     return hit;
 }
 
-u8 cls_804A51E4::vfunc_0x64() {
+u8 cls_804A51E4::sweepMap_0x64() {
     u8 hit = 0;
     if (!(mFlags & 0x1000)) {
         JGeometry::TBox2f* box = layerBox(field_0x4);

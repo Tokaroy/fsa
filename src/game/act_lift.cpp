@@ -174,14 +174,14 @@ void Lift_804A6F6C::fn_80256410() {
 // Stack slot order and f4/f5 regalloc around sqrt/sincos still differ.
 // FIXME: 99.17 %, operands; behaviour clean.
 void Lift_804A6F6C::update() {
-    if (field_0x90 >> 27 == 0 || vfunc_0x34() == true) {
+    if (field_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
         fn_80256410();
     }
     for (s32 i = 0; i < 4; i++) {
         if (!fn_802565BC(i)) {
             continue;
         }
-        if (field_0x90 >> 27 != 0 && vfunc_0x34() != true) {
+        if (field_0x90 >> 27 != 0 && isScreenFlagSet_0x34() != true) {
             continue;
         }
         fn_8023DF68(i, &(mPos - mPrevPos));

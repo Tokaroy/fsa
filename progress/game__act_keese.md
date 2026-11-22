@@ -34,7 +34,7 @@
 
 ## Functions
 - `__dt__14Keese_804A02B8Fv` (0x8015C860): 100%
-- `vfunc_0x4C__14Keese_804A02B8FlPCQ29JGeometry8TVec3<f>` (0x8015C8BC): 100%
+- `isBlocked_0x4C__14Keese_804A02B8FlPCQ29JGeometry8TVec3<f>` (0x8015C8BC): 100%
 - `draw__14Keese_804A02B8Fv` (0x8015C8DC): 98.70% (`regalloc-only`: `setRotScaleMtx` saved-FPR assignment `f30->f31, f31->f27, f29->f27, f27->f31` across the `sin`/`cos` calls)
 - `update__14Keese_804A02B8Fv` (0x8015CD18): 100%
 - `init__14Keese_804A02B8Fv` (0x8015D844): 99.36% (`regalloc-only`: `gGameRoot_8053AAF8` pointer and `0x19660D` LCG multiplier swap `r5`/`r6`)

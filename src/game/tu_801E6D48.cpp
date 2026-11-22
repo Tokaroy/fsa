@@ -132,7 +132,7 @@ void cls_804A5418::fn_801E728C(int state) {
 }
 
 // FIXME(shotgun): 95.83 %, missing/extra; behaviour near.
-void cls_804A5418::vfunc_0x90(u8 mapHit) {
+void cls_804A5418::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
         if (fn_80210A6C()) {
@@ -144,7 +144,7 @@ void cls_804A5418::vfunc_0x90(u8 mapHit) {
 }
 
 // FIXME(shotgun): 96.47 %, missing/extra; behaviour drift.
-u8 cls_804A5418::vfunc_0x60() {
+u8 cls_804A5418::checkHitByActor_0x60() {
     s32 skip = -1;
     if (mState == 0 && field_0x2ac == -1) {
         f32 savedIx = mBox.i.x;

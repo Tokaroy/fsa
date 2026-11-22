@@ -12,7 +12,7 @@ public:
     /* 0x08 */ virtual ~RotatingSkull_804A8588();
     /* 0x0C */ virtual void init();
 
-    // Calls vfunc_0x4C(layer, pos); clears field_0x27c when it returns false.
+    // Calls isBlocked_0x4C(layer, pos); clears field_0x27c when it returns false.
     u8 fn_802B21AC(s32 layer, const JGeometry::TVec3f* pos);
 
     /* 0x14 */ virtual void update();

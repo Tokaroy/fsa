@@ -8,7 +8,7 @@
 
 void SpikeFloorCheck_804A8170::init() {
     mType = field_0x90 & 0xFF;
-    if ((mType == 0 && vfunc_0x34()) || (mType != 0 && getActorManager_801F856C()->field_0x305c == 1)) {
+    if ((mType == 0 && isScreenFlagSet_0x34()) || (mType != 0 && getActorManager_801F856C()->field_0x305c == 1)) {
         gGameRoot2_8053AB10->field_0x20->fn_802FA160(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
         getGameView_802D6A9C()->fn_802D7920(0);
@@ -34,7 +34,7 @@ void SpikeFloorCheck_804A8170::update() {
     case 1:
         switch (mType) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 fn_801F0D20(3);
                 mState = 2;
                 mTimer = 8;

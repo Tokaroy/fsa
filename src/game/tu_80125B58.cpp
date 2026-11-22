@@ -32,7 +32,7 @@ void cls_8049E350::init() {
     mAnim27c.startAnim_801D22DC(0, 0, false);
     mAnim27c.fn_801D1F14(0.0f);
     mDrawEnabled = false;
-    if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+    if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     field_0x234 = 1;
@@ -41,7 +41,7 @@ void cls_8049E350::init() {
         field_0x230 = 0;
         break;
     case 1:
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         field_0x230 = 1;
         mDrawEnabled = true;
         field_0x23c = -1;
@@ -65,7 +65,7 @@ inline void cls_8049E350::enterState() {
         field_0x230 = 0;
         break;
     case 1:
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         field_0x230 = 1;
         mDrawEnabled = true;
         field_0x23c = -1;
@@ -88,7 +88,7 @@ void cls_8049E350::update() {
     box.addPos(mPos.x, mPos.y);
     switch (field_0x234) {
     case 0:
-        if (vfunc_0x3C() > 0 && vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() > 0 && isScreenFlagSet_0x34()) {
             if (field_0x238 == 0) {
                 field_0x98 = 0;
             }

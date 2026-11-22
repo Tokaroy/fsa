@@ -343,7 +343,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         mDrawEnabled = false;
         break;
     case 1:
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         break;
     case 4: {
         GameRootSub20_801902C0* sub = fn_801902C0();
@@ -364,7 +364,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         mSequencer.fn_800FEB78(4);
         break;
     case 10: {
-        vfunc_0x30(0xFF, false);
+        setScreenFlag_0x30(0xFF, false);
         mDrawEnabled = false;
         JGeometry::TVec3f pos(mSpawnPos);
         pos.y += 128.0f;

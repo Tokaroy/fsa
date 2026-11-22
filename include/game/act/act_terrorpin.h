@@ -14,16 +14,16 @@ public:
     /* 0x08 */ virtual ~Terrorpin_804A3B10();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x44 */ virtual void vfunc_0x44();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x68 */ virtual u8 vfunc_0x68();
-    /* 0x6C */ virtual void vfunc_0x6C();
-    /* 0x7C */ virtual void vfunc_0x7C();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x6C */ virtual void onHitByPlayer_0x6C();
+    /* 0x7C */ virtual void onBounce_0x7C();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
     // 0x801B91A8 (in this unit): vfunc_0x44 calls it with 1 (state 0) or 4
     // (states 2, 3, 5). Its meaning is not known yet.
     void fn_801B91A8(s32 arg);

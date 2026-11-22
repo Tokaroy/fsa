@@ -15,8 +15,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x230 */ s32 field_0x230; // state: 2 on tiles 0xC/0x3/0xE, 3 otherwise set (vfunc_0x4C)
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x230 */ s32 field_0x230; // state: 2 on tiles 0xC/0x3/0xE, 3 otherwise set (isBlocked_0x4C)
     /* 0x234 */ f32 field_0x234; // 30.0f (init)
     /* 0x238 */ f32 field_0x238; // 1.0f (init)
     /* 0x23C */ f32 field_0x23c; // 0.0f (init)

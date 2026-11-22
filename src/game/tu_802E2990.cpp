@@ -486,9 +486,9 @@ void cls_804A9C20::update() {
                     }
                 }
                 if (field_0x238 == 5) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 } else if (field_0x244 != 0) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 if (fn_802DE7CC()) {
                     if (!isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {

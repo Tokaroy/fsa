@@ -54,8 +54,8 @@ void Rat_8049C400::update() {
     }
     u8 hit = fn_801F2618(NULL, false);
     if (hit) {
-        if (ActorBase_804A5770::vfunc_0x4C(field_0x4, &mPos) == 1) {
-            vfunc_0x24();
+        if (ActorBase_804A5770::isBlocked_0x4C(field_0x4, &mPos) == 1) {
+            die_0x24();
             return;
         }
     }

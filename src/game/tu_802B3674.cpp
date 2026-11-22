@@ -104,7 +104,7 @@ void cls_804A8638::init() {
         }
     }
     if (field_0x288 == 2 && getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 &&
-        vfunc_0x34()) {
+        isScreenFlagSet_0x34()) {
         if (getGameView_802D6A9C()->field_0x131f2 != 0) {
             field_0x288 = 3;
         } else {
@@ -113,11 +113,11 @@ void cls_804A8638::init() {
     }
     if (field_0x288 != 0) {
         field_0x310 = fn_801B7550();
-        if (field_0x288 == 2 && (field_0x90 >> 27) != 0 && !vfunc_0x34()) {
+        if (field_0x288 == 2 && (field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
             field_0x288 = 1;
         }
         if (field_0x288 == 1) {
-            if (((field_0x90 >> 27) != 0 && vfunc_0x34() == true) || getGameView_802D6A9C()->field_0x131f2 != 0) {
+            if (((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34() == true) || getGameView_802D6A9C()->field_0x131f2 != 0) {
                 field_0x288 = 2;
             }
         }
@@ -486,11 +486,11 @@ void cls_804A8638::update() {
             vfunc_0x5C();
             if (field_0x240 == 9) {
                 field_0x240 = 2;
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
             break;
         case 2:
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 vfunc_0x54(0xFF, 0x80, 0xFF, 0, 10, 0);
                 field_0x240 = 6;
             }
@@ -624,7 +624,7 @@ void cls_804A8638::update() {
     case 11: {
         switch (field_0x240) {
         case 0: {
-            if ((field_0x90 >> 27) == 0 || vfunc_0x34()) {
+            if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 vfunc_0x54(0xFF, 0xFF, 0xFF, 0, 0xFF, 0);
                 field_0x240 = 1;
             }
@@ -653,7 +653,7 @@ void cls_804A8638::update() {
     case 12: {
         switch (field_0x240) {
         case 0:
-            if ((field_0x90 >> 27) == 0 || vfunc_0x34()) {
+            if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 field_0x240 = 1;
             }
             break;
@@ -674,7 +674,7 @@ void cls_804A8638::update() {
 
     if (field_0x288 != 0) {
         mPos = *getPlayerPos_8023E724(0);
-        if (field_0x288 != 1 || (field_0x90 >> 27) == 0 || vfunc_0x34() == true) {
+        if (field_0x288 != 1 || (field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             if (!paused) {
                 field_0x24c--;
                 if (field_0x24c == 0) {
@@ -693,7 +693,7 @@ void cls_804A8638::update() {
 
     switch (field_0x288) {
     case 1:
-        if ((field_0x90 >> 27) != 0 && vfunc_0x34() != true) {
+        if ((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34() != true) {
             break;
         }
         if (field_0x250 == 0) {
@@ -784,7 +784,7 @@ void cls_804A8638::update() {
         }
         break;
     case 3:
-        if (field_0x250 == 0 && ((field_0x90 >> 27) == 0 || !vfunc_0x34())) {
+        if (field_0x250 == 0 && ((field_0x90 >> 27) == 0 || !isScreenFlagSet_0x34())) {
             field_0x250 = 20;
             if (field_0x2c0[0] > 1.0f) {
                 field_0x2c0[0] -= field_0x2c0[2];
@@ -866,7 +866,7 @@ void cls_804A8638::update() {
         }
         break;
     case 2: {
-        if ((getGameView_802D6A9C()->field_0x4 != 4 || getGameView_802D6A9C()->field_0x8 != 1) && vfunc_0x34()) {
+        if ((getGameView_802D6A9C()->field_0x4 != 4 || getGameView_802D6A9C()->field_0x8 != 1) && isScreenFlagSet_0x34()) {
             field_0x288 = 3;
             field_0x244 = 0;
         }

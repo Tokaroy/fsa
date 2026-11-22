@@ -16,8 +16,8 @@ public:
     virtual ~cls_804A6100();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     /* 0x2AC */ s32 field_0x2ac;

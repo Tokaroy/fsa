@@ -33,7 +33,7 @@ void SpecialBGDrawObject_804AC760::init() {
 void SpecialBGDrawObject_804AC760::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             mTimer = 0;
             mState = 1;
             switch (mKind) {
@@ -85,7 +85,7 @@ void SpecialBGDrawObject_804AC760::update() {
             }
             break;
         case 2:
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 if (mTimer < 120) {
                     if (mSoundState != 1) {
                         startSound_801F0E34(0x30045, 0);

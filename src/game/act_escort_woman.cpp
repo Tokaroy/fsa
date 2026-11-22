@@ -184,7 +184,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             vfunc_0x6C(0);
             break;
         }
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             vfunc_0x6C(14);
             break;
         }

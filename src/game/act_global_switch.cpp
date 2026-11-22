@@ -8,7 +8,7 @@ void GlobalSwitch_804AA060::init() {
 
 void GlobalSwitch_804AA060::update() {
     if (getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 22) & 0x1F)) {
-        getGameView_802D6A9C()->fn_802D7F84(vfunc_0x3C(), true);
+        getGameView_802D6A9C()->fn_802D7F84(getScreenFlagBit_0x3C(), true);
     }
 }
 

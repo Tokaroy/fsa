@@ -152,7 +152,7 @@ bool MagicCircle_804A7960::fn_8028B850() {
         return 0;
     }
     if ((field_0x90 >> 27) != 0) {
-        if (!vfunc_0x34() && field_0x24c != 0 && field_0x24c != 2 && field_0x24c != 3) {
+        if (!isScreenFlagSet_0x34() && field_0x24c != 0 && field_0x24c != 2 && field_0x24c != 3) {
             return 0;
         }
     }
@@ -167,9 +167,9 @@ bool MagicCircle_804A7960::fn_8028B850() {
         }
         return field_0x234;
     case 2:
-        return vfunc_0x34();
+        return isScreenFlagSet_0x34();
     case 3:
-        return !vfunc_0x34();
+        return !isScreenFlagSet_0x34();
     case 4:
         if (field_0x230 >= 600) {
             return 1;

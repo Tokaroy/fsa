@@ -681,7 +681,7 @@ void ChiefSoldier_804A0B90::update() {
                                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(keese);
                                     startSound_801F0E34(0x4008D, 0);
                                     if (actor != NULL) {
-                                        actor->vfunc_0x24();
+                                        actor->die_0x24();
                                     }
                                     field_0x2c0[i] = -1;
                                 }
@@ -1003,7 +1003,7 @@ void ChiefSoldier_804A0B90::update() {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x4, &pos, 7, -1, -1);
             }
         } else {
-            ActorBase_804A5770::vfunc_0x24();
+            ActorBase_804A5770::die_0x24();
         }
         break;
     }
@@ -1098,11 +1098,11 @@ void ChiefSoldier_804A0B90::draw() {
     }
 }
 
-void ChiefSoldier_804A0B90::vfunc_0x24() {
+void ChiefSoldier_804A0B90::die_0x24() {
     if (getType() == 6) {
         field_0x18c = 0;
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 

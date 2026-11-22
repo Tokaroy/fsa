@@ -370,7 +370,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     mState = newState;
 }
 
-void cls_804A6708::vfunc_0x90(u8 mapHit) {
+void cls_804A6708::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= 5) {
@@ -483,8 +483,8 @@ void cls_804A6708::vfunc_0x90(u8 mapHit) {
 
 // FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
 // Registers only; the .sdata2 literals are not split.
-void cls_804A6708::vfunc_0x9C(u8 mapHit) {
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+void cls_804A6708::updateBehavior_0x9C(u8 mapHit) {
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     if (mState == 9) {
         f32 alpha = (mPos.z - 268.0f) * -0.004901961f;
         if (alpha > 1.0f) {
@@ -507,7 +507,7 @@ void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-void cls_804A6708::vfunc_0x88() {
+void cls_804A6708::calcVelocity_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.z = 0.0f;
@@ -542,8 +542,8 @@ void cls_804A6708::vfunc_0x88() {
     }
 }
 
-void cls_804A6708::vfunc_0x98() {
-    EnemyBase_804A4808::vfunc_0x98();
+void cls_804A6708::move_0x98() {
+    EnemyBase_804A4808::move_0x98();
     if (mState == 9 && mPos.z > 350.0f) {
         mPos.z = 350.0f;
     }

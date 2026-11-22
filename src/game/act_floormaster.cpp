@@ -94,7 +94,7 @@ void Floormaster_804A6004::init() {
         field_0x2ac = y;
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-    // Field-wise copy throughout: `mBox2 = mBox` drops init/fn_8020ED5C/vfunc_0x94 to 72-93 %.
+    // Field-wise copy throughout: `mBox2 = mBox` drops init/fn_8020ED5C/updateAnim_0x94 to 72-93 %.
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
@@ -293,7 +293,7 @@ inline void Floormaster_804A6004::updateGrabbedPlayer_8020EB08() {
     }
 }
 
-// Not auto-inlined: vfunc_0x90 calls fn_8020EB08 out of line in the original (docs/INLINING.md, pragma rule 1).
+// Not auto-inlined: updateState_0x90 calls fn_8020EB08 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void Floormaster_804A6004::fn_8020EB08() {
     setEmitterPos_8013CB44(mEmitter2b0, &mPos, 0, 0, true);
@@ -346,7 +346,7 @@ void Floormaster_804A6004::fn_8020EB08() {
 // case 7 stores x/y from pos in the other order and swaps pos/vec stack slots;
 // setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
 // FIXME: 98.13 %, different; behaviour drift.
-void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
+void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     fn_8020EB08();
     switch (mState) {
     case 0:
@@ -496,9 +496,9 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void Floormaster_804A6004::vfunc_0x94() {
+void Floormaster_804A6004::updateAnim_0x94() {
     if (mState == 4) return;
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
     if (!(mBox.f.x - mBox.i.x > 0.0f)) return;
     if (!(mBox.f.y - mBox.i.y > 0.0f)) return;
     switch (mAnim.mCel) {
@@ -527,7 +527,7 @@ void Floormaster_804A6004::vfunc_0x94() {
     mBox2.f.y = mBox.f.y;
 }
 
-void Floormaster_804A6004::vfunc_0x88() {
+void Floormaster_804A6004::calcVelocity_0x88() {
     field_0x3c.set(0.0f, 0.0f, 0.0f);
     switch (mState) {
     case 1:
@@ -603,7 +603,7 @@ bool Floormaster_804A6004::vfunc_0x58() {
     return hitOccurred;
 }
 
-u8 Floormaster_804A6004::vfunc_0x60() {
+u8 Floormaster_804A6004::checkHitByActor_0x60() {
     u8 result = 0;
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         result = fn_801F2DB4(mActorId, 'NULL', NULL);
@@ -615,7 +615,7 @@ u8 Floormaster_804A6004::vfunc_0x60() {
     return result;
 }
 
-u8 Floormaster_804A6004::vfunc_0x5C() {
+u8 Floormaster_804A6004::checkHitByPlayer_0x5C() {
     u8 result = 0;
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         for (int i = 0; i < 4; i++) {

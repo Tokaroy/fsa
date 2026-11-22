@@ -396,7 +396,7 @@ void Stalfos_804A0CD8::update() {
             field_0x3c.z = 0.0f;
         }
         if (mTimers[4] == 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     }

@@ -92,14 +92,14 @@ void NPCDisguisedAsAStone_804A8750::update() {
         mPos.add(field_0x3c);
         JGeometry::TVec3f savedPos(mPos);
         if (fn_801F3D94(true) || fn_801F305C()) {
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2618(NULL, false)) {
             mPos = savedPos;
-            vfunc_0x24();
+            die_0x24();
         } else if (mPos.z < 0.0f) {
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(field_0x114, -1, 4) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     }
@@ -110,7 +110,7 @@ void NPCDisguisedAsAStone_804A8750::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x29, NULL, 0, 1.0f, 1.0f);
 }
 
-void NPCDisguisedAsAStone_804A8750::vfunc_0x24() {
+void NPCDisguisedAsAStone_804A8750::die_0x24() {
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;

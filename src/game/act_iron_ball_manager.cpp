@@ -21,7 +21,7 @@ void IronBallManager_804ABA38::init() {
 // fewer) and keeps the counter in r0.
 void IronBallManager_804ABA38::update() {
     JGeometry::TVec3f pos = field_0x230;
-    if (!vfunc_0x34()) {
+    if (!isScreenFlagSet_0x34()) {
         if (field_0x240 == 0) {
             if (field_0x247) {
                 if (field_0x246 == 0) {

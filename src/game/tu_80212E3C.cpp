@@ -141,7 +141,7 @@ void cls_804A6340::fn_80213774(int mode) {
 }
 
 // FIXME: 99.92 %, reloc-name; behaviour drift.
-void cls_804A6340::vfunc_0x90(u8 mapHit) {
+void cls_804A6340::updateState_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
     }
@@ -208,11 +208,11 @@ void cls_804A6340::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6340::vfunc_0x94() {
+void cls_804A6340::updateAnim_0x94() {
     if (mState == 4 && mAnim.mAnim == 1 && mAnim.fn_801D217C()) {
         startSound_801F0E34(0x50035, 0);
     }
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
     switch (mState) {
     case 3:
     case 6:
@@ -287,14 +287,14 @@ void cls_804A6340::vfunc_0x44() {
     }
 }
 
-void cls_804A6340::vfunc_0x24() {
+void cls_804A6340::die_0x24() {
     if ((s32)field_0x90 >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C((s32)field_0x90);
         if (actor != NULL) {
             static_cast<cls_804A6270*>(actor)->fn_80210D90();
         }
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 void cls_804A6340::fn_80212F5C() {

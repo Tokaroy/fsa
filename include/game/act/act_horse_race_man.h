@@ -19,9 +19,9 @@ public:
     virtual ~HorseRaceMan_804A5630();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     void fn_801EC7B8();
     void fn_801ECB08(s32 state);

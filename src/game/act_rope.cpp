@@ -46,7 +46,7 @@ void Rope_804A3A68::init() {
 // original keeps found in r27, dir in r28 and i in r29 (the zeros copied with
 // mr from r27, and found = dir = 1 as li/mr in the last branch); ours puts
 // found in r29 and i in r27.
-void Rope_804A3A68::vfunc_0x90(u8 mapHit) {
+void Rope_804A3A68::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
     case 1: {
@@ -142,7 +142,7 @@ void Rope_804A3A68::vfunc_0x90(u8 mapHit) {
 // FIXME: 99.12 %, regalloc-only; behaviour clean.
 // Regalloc only: the original loads mSpeed into f2 and the
 // 0.9090909f constant into f1 (ours the reverse).
-void Rope_804A3A68::vfunc_0x94() {
+void Rope_804A3A68::updateAnim_0x94() {
     mAnim.fn_801D2264(field_0x98, 2);
     f32 t = (mSpeed - 0.4f) * 0.9090909f;
     if (t > 1.0f) {
@@ -151,11 +151,11 @@ void Rope_804A3A68::vfunc_0x94() {
         t = 0.0f;
     }
     mAnim.mFrameCtrl.setRate(t * 2.0f + 1.0f);
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
-// Not in the binary (vfunc_0x90 inlines it at each call); the pool has its 0.4f ahead of
-// vfunc_0x94's 0.9090909f, so it is a plain function generated before vfunc_0x94.
+// Not in the binary (updateState_0x90 inlines it at each call); the pool has its 0.4f ahead of
+// updateAnim_0x94's 0.9090909f, so it is a plain function generated before updateAnim_0x94.
 void Rope_804A3A68::walk() {
     field_0x250 = fn_801CD664(0x29) + 0x3c;
     mTargetSpeed = 0.4f;

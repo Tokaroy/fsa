@@ -459,8 +459,8 @@ bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
     return true;
 }
 
-// The tile codes as act_bombchu's vfunc_0x4C (a != chain around the remaining tests).
-bool DroppedItem_804A8C80::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+// The tile codes as act_bombchu's isBlocked_0x4C (a != chain around the remaining tests).
+bool DroppedItem_804A8C80::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0x258 == 0) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();

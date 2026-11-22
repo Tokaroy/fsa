@@ -148,7 +148,7 @@ void cls_804A4EE8::fn_801DB9CC() {
     }
 }
 
-// Not auto-inlined: vfunc_0x90 calls fn_801DB950 out of line in the original (docs/INLINING.md, pragma rule 1).
+// Not auto-inlined: updateState_0x90 calls fn_801DB950 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void cls_804A4EE8::fn_801DB950(s32 state) {
     // A one-case switch: MWCC's cmpwi/beq/b shape for state 1 is what matches.
@@ -217,7 +217,7 @@ void cls_804A4EE8::fn_801DB6C8() {
     }
 }
 
-void cls_804A4EE8::vfunc_0x90(u8 mapHit) {
+void cls_804A4EE8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
@@ -251,22 +251,22 @@ void cls_804A4EE8::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A4EE8::vfunc_0x94() {
+void cls_804A4EE8::updateAnim_0x94() {
     s32 cel = mAnim.mCel;
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
     if (cel == 8 && mAnim.mCel == 7) {
         startSound_801F0E34(0x4005B, 0);
     }
 }
 
-void cls_804A4EE8::vfunc_0x9C(u8 mapHit) {
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+void cls_804A4EE8::updateBehavior_0x9C(u8 mapHit) {
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     setEmitterPos_8013CB44(field_0x2e4, &mPos, 1, 0, true);
 }
 
 // FIXME: 99.07 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): remaining diff is instruction scheduling and registers only.
-void cls_804A4EE8::vfunc_0x88() {
+void cls_804A4EE8::calcVelocity_0x88() {
     if (field_0x2b4 != 0.0f) {
         if (mState == 0) {
             field_0x2b4 *= 0.95f;
@@ -296,7 +296,7 @@ void cls_804A4EE8::vfunc_0x88() {
     field_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
 }
 
-u8 cls_804A4EE8::vfunc_0x68() {
+u8 cls_804A4EE8::attackPlayers_0x68() {
     u8 hitPlayers = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         hitPlayers = fn_801F2740(-1);

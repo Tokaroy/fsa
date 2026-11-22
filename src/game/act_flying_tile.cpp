@@ -128,7 +128,7 @@ void FlyingTile_804AC100::vfunc_0x10() {
     }
 }
 
-bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool FlyingTile_804AC100::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == true) {
@@ -277,8 +277,8 @@ void FlyingTile_804AC100::update() {
             switch (field_0x24c) {
             case 1:
                 if (fn_8022461C(&mPos, field_0x4) != 0x21) {
-                    if (vfunc_0x3C() > 0) {
-                        vfunc_0x30(0xFF, true);
+                    if (getScreenFlagBit_0x3C() > 0) {
+                        setScreenFlag_0x30(0xFF, true);
                     }
                     mAlive = false;
                     return;
@@ -287,8 +287,8 @@ void FlyingTile_804AC100::update() {
             case 5:
                 field_0x260 = fn_80226850(&mPos, field_0x4);
                 if (field_0x260 < 0x40 || field_0x260 > 0x49) {
-                    if (vfunc_0x3C() > 0) {
-                        vfunc_0x30(0xFF, true);
+                    if (getScreenFlagBit_0x3C() > 0) {
+                        setScreenFlag_0x30(0xFF, true);
                     }
                     mAlive = false;
                     return;
@@ -368,8 +368,8 @@ void FlyingTile_804AC100::update() {
         }
         break;
     case 3:
-        if (vfunc_0x3C() > 0) {
-            vfunc_0x30(0xFF, true);
+        if (getScreenFlagBit_0x3C() > 0) {
+            setScreenFlag_0x30(0xFF, true);
         }
         switch (field_0x24c) {
         case 0:

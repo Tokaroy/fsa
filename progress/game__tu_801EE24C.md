@@ -9,21 +9,21 @@ Resistant:
   functions put .sdata2 in the original order. lbl_8053F7F8 (40.0f) is
   size 0x8 in symbols.txt (40.0f plus a zero pad word): it needs a size fix
   (approved_symbol_changes or a placeholder split) for the literal to pair.
-- vfunc_0x18__18ActorBase_804A5770Fv (fn_801F5790) 99.23 %: float register allocation
+- checkPlayerContact_0x18__18ActorBase_804A5770Fv (fn_801F5790) 99.23 %: float register allocation
   (player z f5 vs f7) besides the literals.
 
 Symbols renamed: the functions above, __vt__18ActorBase_804A5770 (0x804A5770),
 __ct__20ActorSub1DC_801EAD68Fv (0x801EAD68), __ct__Q29JGeometry8TVec3<f>Fv
 (0x8003B2CC, the weak empty ctor __construct_array uses for field_0x1ac).
 
-Next: the remaining ~95 functions of the unit (vfunc_0x24..0x50 first),
+Next: the remaining ~95 functions of the unit (die_0x24..0x50 first),
 then the .sdata2 order resolves the ctor.
 
 ## 2026-11-05 pass (Sonnet 5.5)
 Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, fn_801F3668, fn_801F4694 (const).
 Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / fn_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
 SHARED-EDITS: include/game/ActorBase.h (fn_801EE3C0 moved out of extern "C"; fn_801F4694 / fn_801F317C const); symbols.txt renames fn_801EE3C0__FUs, fn_801F4694...CFv, fn_801F317C...CF....
-Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, fn_801F2FAC, fn_801F32F4, vfunc_0x50, then the larger ones.
+Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, fn_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
 
 ## 2026-11-05 leverage wave 1 (Opus 5.5)
 Baseline 8397 -> 8401 (+4 honest). 100 %: releaseEmitter_801EE434 (now C++
@@ -34,7 +34,7 @@ Structural (FIXME each): fn_801EE24C 99.95 reloc-name (200.0f), startSound_801F0
 fn_801F2DB4 99.4, fn_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
 clrlwi at the return: a u8 return type matches the bodies 100 % but lowers ~20
 bool-using callers, EnemyBase vfunc_0x60/0x64 etc.; left bool), fn_801F305C
-97.9 (inlines fn_801F2FAC), vfunc_0x50 94.4 regalloc, fn_801F2740 85.0 (an
+97.9 (inlines fn_801F2FAC), isBlockedOrOutOfView_0x50 94.4 regalloc, fn_801F2740 85.0 (an
 unexplained clrlwi at the return + prologue scheduling).
 Constructor: cannot reach 100 % until the whole .sdata2 is in order. The pool
 starts with four aggregate objects emitted before the literals and in reverse
@@ -69,7 +69,7 @@ Written (all with FIXMEs):
 - fn_801EE558 99.4 / fn_801EE8F4 99.6 scheduling+regalloc (pos load order in the prologue).
   They inline fn_801F320C: new static inline isPlayerOnLayer (fn_801F320C now calls it),
   following the existing isPlayerBelowLayer8 precedent.
-- vfunc_0x28 99.7, fn_801F2A10 99.9: instructions identical, literal names only.
+- startBossDeath_0x28 99.7, fn_801F2A10 99.9: instructions identical, literal names only.
 Data: lbl_8053F730 u16[4] / lbl_8053F738 u8[4] are file-scope statics: that puts them at the
 start of .sdata2 as in the original (function-local statics land in function order).
 Ctor: still needs every literal user before it (all floats up to lbl_8053F7F8) in order; not
@@ -88,7 +88,7 @@ fn_801EE3C0 100 %: it takes an int (s32; symbols.txt __FUs -> __Fl): the
 parameter is never extended and each test truncates to 16 bits.
 Written:
 - fn_801EEC98 100 % (104 callers; layerBox for the view box, std::sqrtf).
-- fn_801F11B4 99.4 regalloc, vfunc_0x24 99.75 regalloc (death), vfunc_0x2C 98.8
+- fn_801F11B4 99.4 regalloc, die_0x24 99.75 regalloc (death), updateBossDeath_0x2C 98.8
   regalloc (boss death explosion), fn_801F285C 88.8 scheduling (box before the
   register saves, as fn_801F2740), fn_801F3D94 99.0 missing/extra 1 (hit
   reaction), fn_801F37AC 94.4 missing/extra (hit handler: .rodata base hoist +
@@ -132,12 +132,12 @@ symbols.txt (fn_801F329C CFl, fn_801F172C member, fn_801F6718 FllPC...ll).
 ## 2026-11-06 leverage, ActorBase round 4 (Opus 5.5)
 Baseline 9018 honest -> 9020 (+2); unit 47 -> 49 / 75 at 100 %. No function anywhere
 drops (compared by address across the whole report against the main report_honest.json).
-- fn_801F132C 100 % (new; the vfunc_0x4C of act_pot/rock/grass/sign/stone/coconut,
+- fn_801F132C 100 % (new; the isBlocked_0x4C of act_pot/rock/grass/sign/stone/coconut,
   countdown param renamed timer): s32 locals for both tile codes (cmpwi), the 0x10-0x13
   range as an `==` chain (folds to subi/cmplwi 3), and the 0x25 / 0x26 results narrowed
   as bytes `(u8)(... == 0)` (extrwi), the form act_bombchu / act_blade_trap use at 100 %.
   `? true : false` and plain `==` give srwi here.
-- vfunc_0x50 94.4 -> 100 %: `return vfunc_0x4C(...) || pos->x < ... ;` (the
+- isBlockedOrOutOfView_0x50 94.4 -> 100 %: `return isBlocked_0x4C(...) || pos->x < ... ;` (the
   `bool result = false; if (...) result = true;` form keeps layer and the result apart).
 - fn_801F2740 85.1 -> 99.15 and fn_801F285C 88.8 -> 99.8: const (the box loads off
   `this` sit above the register saves; symbols.txt ...CFl / ...CFPQ...Plbl). Left:
@@ -154,7 +154,7 @@ Tried, not merged:
   second stack struct (70 %); a pointer helper and a by-value helper: no change / worse.
   The target copies like a non-aliasing destination (all loads, spills, then stores)
   although &sp goes to fn_802F86CC. Draft: scratchpad r4_draft_801EF574.cpp.
-- vfunc_0x4C: getSerial() (layer fixed, pos/this swap), early returns, `||` with a box
+- isBlocked_0x4C: getSerial() (layer fixed, pos/this swap), early returns, `||` with a box
   helper: none beat 89.5.
 SHARED-EDITS: ActorBase.h (fn_801F2740 / fn_801F285C const; fn_801F172C returns u8;
 fn_801F132C param timer; comments); symbols.txt renames fn_801F2740__18ActorBase_804A5770CFl,

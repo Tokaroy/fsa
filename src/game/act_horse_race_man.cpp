@@ -276,7 +276,7 @@ static inline void setCameraFocus(const JGeometry::TVec3f& pos) {
     }
 }
 
-void HorseRaceMan_804A5630::vfunc_0x90(u8 mapHit) {
+void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
     s32 i;
     JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
 
@@ -286,7 +286,7 @@ void HorseRaceMan_804A5630::vfunc_0x90(u8 mapHit) {
         field_0x2b0 = fn_8022FD8C(mSerial);
         if (field_0x2b0 >= 0) {
             s32 msg = 0x364;
-            bool flag = vfunc_0x34();
+            bool flag = isScreenFlagSet_0x34();
             if (!flag) {
                 msg = 0x35D;
             }
@@ -453,22 +453,22 @@ void HorseRaceMan_804A5630::vfunc_0x90(u8 mapHit) {
                 }
                 mTable.fn_80215BCC(i);
             }
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             fn_801ECB08(0);
         }
         break;
     }
 }
 
-void HorseRaceMan_804A5630::vfunc_0x94() {
+void HorseRaceMan_804A5630::updateAnim_0x94() {
     mAnim.fn_801D2264(field_0x98, 2);
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
-void HorseRaceMan_804A5630::vfunc_0x9C(u8 mapHit) {
+void HorseRaceMan_804A5630::updateBehavior_0x9C(u8 mapHit) {
     mCountdown.fn_801ED8F0();
     mTable.fn_80215F30();
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
     fn_80239914(&box, field_0x4, mSerial);
     s32 serial = mSerial;

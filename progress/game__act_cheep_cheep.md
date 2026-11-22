@@ -5,7 +5,7 @@ Baseline: `total: 9046 / 11557 functions, 1881952 / 4442032 bytes of code (42.37
 ## Matched (100%)
 - `CheepCheep_804A11B8::~CheepCheep_804A11B8()` (0x8017B140)
 - `CheepCheep_804A11B8::draw()` (0x8017B1A0)
-- `CheepCheep_804A11B8::vfunc_0x4C(s32, const JGeometry::TVec3f*)` (0x8017BBA8)
+- `CheepCheep_804A11B8::isBlocked_0x4C(s32, const JGeometry::TVec3f*)` (0x8017BBA8)
 - `__sinit_act_cheep_cheep_cpp` (0x8017BDF8)
 
 ## Resistant

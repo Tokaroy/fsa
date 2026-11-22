@@ -18,9 +18,9 @@ public:
     /* 0x0C */ virtual void init();
     // 0x80208924: the tile codes under mPos on this layer, from
     // fn_8022461C and fn_80226850.
-    /* 0x54 */ virtual void vfunc_0x54();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     // 0x802088B4: fn_80208244(5) unless already in state 5, then
     // fn_80209D44 on each slot's actor (findActorBySerial_801F666C of the slot's serial).
     /* 0xA4 */ virtual void vfunc_0xA4();
@@ -41,7 +41,7 @@ public:
     // 0x80208520
     void fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* outStep);
 
-    // Inlined into init, vfunc_0x90 and fn_80208244 (no standalone copy in the
+    // Inlined into init, updateState_0x90 and fn_80208244 (no standalone copy in the
     // original): spawn the four slimes of the formation, test the trigger
     // condition of mode field_0x340, average the live slimes' positions, and
     // pick a direction towards the nearest player.

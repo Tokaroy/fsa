@@ -45,9 +45,9 @@ void Stone_804A93D0::update() {
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x92);
                 }
             }
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(damage, field_0xc8, 4) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
     } else {
         if (!field_0x235) {
@@ -63,9 +63,9 @@ void Stone_804A93D0::update() {
             damage = 0;
         }
         if (fn_801F2618(NULL, false)) {
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(damage, field_0xc8, 4) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
     }
 }
@@ -83,7 +83,7 @@ void Stone_804A93D0::draw() {
     fn_801F02BC("enemy_both2_sob.bin", 0x29, &params, flags, 0, true, 1.0f, 1.0f);
 }
 
-void Stone_804A93D0::vfunc_0x24() {
+void Stone_804A93D0::die_0x24() {
     JGeometry::TVec3f pos(mPos);
     pos.z = 0.0f;
     s32 layer = field_0x4;
@@ -111,12 +111,12 @@ void Stone_804A93D0::vfunc_0x24() {
     mAlive = false;
 }
 
-bool Stone_804A93D0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Stone_804A93D0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x230);
 }
 
 void Stone_804A93D0::vfunc_0x48() {
-    vfunc_0x24();
+    die_0x24();
 }
 
 Stone_804A93D0::~Stone_804A93D0() {}

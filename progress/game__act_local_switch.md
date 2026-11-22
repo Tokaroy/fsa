@@ -11,7 +11,7 @@ Now:      total: 4449 / 11561 functions, 800028 / 4442088 bytes of code (18.01 %
 - Explicit empty destructor, draw (empty), update, init (calls update()
   virtually), `__sinit` (template: act_talking_npc_2).
 - update: `if (fn_802D7F40(getGameView_802D6A9C(), (field_0x90 >> 22) & 0x1F))
-  vfunc_0x30(0xFF, 1);`
+  setScreenFlag_0x30(0xFF, 1);`
 
 
 ## symbols.txt (placeholder renames)
@@ -28,7 +28,7 @@ Now:      total: 4449 / 11561 functions, 800028 / 4442088 bytes of code (18.01 %
 ## Rebase onto headers v2 (3729a91)
 - Local `// TODO(shared)` declarations removed; the unit uses ActorBase.h /
   GameGlobals.h (fn_801F0D20 and fn_801F3668 are now ActorBase members).
-- The former FIXME'd update (vfunc_0x30(u8, bool) / bool vfunc_0x34()) now
+- The former FIXME'd update (setScreenFlag_0x30(u8, bool) / bool isScreenFlagSet_0x34()) now
   matches; the vtable matches with the renamed slot functions.
 
 ## SHARED-EDITS

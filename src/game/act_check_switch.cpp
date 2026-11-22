@@ -17,7 +17,7 @@ void CheckSwitch_804A8BD0::update() {
 
     switch (mState) {
     case 0:
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34() == 1) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
             s32 bit = (field_0x90 >> lbl_8046D460[fn_801CD664(100) & 3]) & 0x1F;
             getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
             if (mMode == 0) {
@@ -30,7 +30,7 @@ void CheckSwitch_804A8BD0::update() {
         }
         break;
     case 1:
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             mState = 0;
         }
         break;

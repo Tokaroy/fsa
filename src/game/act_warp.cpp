@@ -254,7 +254,7 @@ void Warp_804A6DC8::update() {
     if (kind == 0x20) {
         updateSandHole(this);
     }
-    if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
+    if ((field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     JGeometry::TBox2f box(mBox.i, mBox.f);

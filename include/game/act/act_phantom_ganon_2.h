@@ -16,7 +16,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
 
     // Picks the player this actor goes for (a random starting player, the next
     // free one after it), stores it in field_0x94 and returns it (0x80189DEC).

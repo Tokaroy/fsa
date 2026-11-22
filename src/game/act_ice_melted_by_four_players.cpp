@@ -227,7 +227,7 @@ u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
     } else if (field_0x244 == 0 && fn_80230534(false)) {
         field_0x248 = -1;
         fn_801F0D20(3);
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         fn_801F3668();
     }
     return true;

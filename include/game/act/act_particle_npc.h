@@ -13,7 +13,7 @@
 // init() unpacks field_0x90: bits 0-7 are the mode (field_0x250), bits 12-15
 // go to field_0x258, bits 16-19 to field_0x254 (which init() then sets to 1)
 // and bits 20-23 to field_0x25c. The emitters are spawned in init() when
-// field_0x25c is 0, else in update() once vfunc_0x34() holds.
+// field_0x25c is 0, else in update() once isScreenFlagSet_0x34() holds.
 class ParticleNpc_804A9AC8 : public ActorBase_804A5770 {
 public:
     ParticleNpc_804A9AC8() {}

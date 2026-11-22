@@ -134,7 +134,7 @@ void cls_804AE7D8::update() {
             field_0x254 = 8;
             mPrevPos = mPos;
             if (PSVECDistance(&mPos, &mSpawnPos) >= 63.9) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
 
                 rewriteTiles();
                 field_0x244 = 1;

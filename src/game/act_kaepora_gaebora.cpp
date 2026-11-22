@@ -272,7 +272,7 @@ void cls_804A6550::fn_80219AFC(s32 state) {
 extern const f32 lbl_8046A640[4][2]; // x, y offsets (about +-16) by facing, .rodata of this unit
 
 // FIXME(shotgun): 98.88 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A6550::vfunc_0x90(u8 mapHit) {
+void cls_804A6550::updateState_0x90(u8 mapHit) {
     JGeometry::TBox2f box;
     if (mState == 3) {
         box.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
@@ -459,7 +459,7 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6550::vfunc_0x94() {
+void cls_804A6550::updateAnim_0x94() {
     if (mAnim.mAnim == 1) {
         if (mAnim.mFrameCtrl.checkPass(0.1f) ||
             mAnim.mFrameCtrl.checkPass(22.1f) ||
@@ -468,14 +468,14 @@ void cls_804A6550::vfunc_0x94() {
         }
     }
     s32 oldCel = mAnim.mCel;
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
     s32 newCel = mAnim.mCel;
     if (mAnim.mAnim == 1 && oldCel != 5 && newCel == 5) {
         fn_8021B668();
     }
 }
 
-void cls_804A6550::vfunc_0x9C(u8 mapHit) {
+void cls_804A6550::updateBehavior_0x9C(u8 mapHit) {
     // The 0x10000 test appears twice in the original (a single test drops to 98.38 %).
     if (mFlags & 0x10000) {
         if (mFlags & 0x10000) {
@@ -493,11 +493,11 @@ void cls_804A6550::vfunc_0x9C(u8 mapHit) {
             gGameRoot2_8053AB10->field_0x2c->field_0xc = field_0x2d8;
         }
     }
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     fn_8021B548();
 }
 
-void cls_804A6550::vfunc_0x88() {
+void cls_804A6550::calcVelocity_0x88() {
     JGeometry::TVec2f vel;
     field_0x3c.set(0.0f, 0.0f, 0.0f);
     switch (mState) {
@@ -523,11 +523,11 @@ void cls_804A6550::vfunc_0x88() {
     }
 }
 
-u8 cls_804A6550::vfunc_0x5C() {
+u8 cls_804A6550::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-u8 cls_804A6550::vfunc_0x60() {
+u8 cls_804A6550::checkHitByActor_0x60() {
     return 0;
 }
 

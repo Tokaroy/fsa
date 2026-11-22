@@ -61,7 +61,7 @@ void ForceLike_8049C578::init() {
     if (field_0x90 & 0x100) {
         field_0x230 = 1;
     }
-    if (vfunc_0x3C()) {
+    if (getScreenFlagBit_0x3C()) {
         field_0x230 = 4;
     }
     if (field_0x90 & 0x400) {
@@ -87,7 +87,7 @@ void ForceLike_8049C578::update() {
     field_0x24c++;
     switch (field_0x230) {
     case 4:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x230 = 0;
         }
         break;
@@ -325,7 +325,7 @@ void ForceLike_8049C578::draw() {
 }
 
 // FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
-void ForceLike_8049C578::vfunc_0x24() {
+void ForceLike_8049C578::die_0x24() {
     int layer = field_0x4;
     s32 pick;
     if (fn_8022DCD8(field_0x238)) {
@@ -381,10 +381,10 @@ void ForceLike_8049C578::vfunc_0x24() {
     }
     spawnKindEmitter();
     field_0x18c = 0;
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
-// Not in the binary (vfunc_0x24 and update inline it); the pool has its 1.0f ahead of vfunc_0x24's literals.
+// Not in the binary (die_0x24 and update inline it); the pool has its 1.0f ahead of die_0x24's literals.
 void ForceLike_8049C578::spawnKindEmitter() {
     spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
 }

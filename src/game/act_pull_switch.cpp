@@ -17,7 +17,7 @@ void PullSwitch_804A7908::init() {
     field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0x23c = 0;
-    field_0x240 = vfunc_0x34();
+    field_0x240 = isScreenFlagSet_0x34();
     if (field_0x240) {
         field_0x244 = 8.0f;
         mPos.y = mSpawnPos.y + field_0x244;
@@ -78,7 +78,7 @@ void PullSwitch_804A7908::update() {
                 field_0x244 = 8.0f;
                 field_0x240 = 1;
                 startSound_801F0E34(0x3004B, 0);
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 mPos.y = mSpawnPos.y + field_0x244;
                 field_0x3c.x = 0.0f;
                 field_0x3c.y = 4.0f;

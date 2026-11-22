@@ -125,9 +125,9 @@ void LiftableWood_804A87A8::update() {
             field_0x3c.z += -0.15f;
             mPos += field_0x3c;
             if (mPos.z < 0.0f) {
-                vfunc_0x24();
+                die_0x24();
             } else if (fn_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -156,7 +156,7 @@ void LiftableWood_804A87A8::draw() {
     }
 }
 
-void LiftableWood_804A87A8::vfunc_0x24() {
+void LiftableWood_804A87A8::die_0x24() {
     if (field_0x248[0] == 'r' || field_0x248[0] == 's' || field_0x248[0] == 'y') {
         spawnEmitter_8013CC50(field_0x4, &mPos, 0xAD, 1, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(field_0x4, &mPos, 0xB1, 1, 0, NULL, NULL, true, 1.0f);

@@ -26,7 +26,7 @@ void cls_804A6AA8::init() {
 // at 0x14 and the state 5 position at 0x8; ours has them at 0x8, 0x14 and
 // 0x20 (the copy gets the lowest slot). Jump table reloc is a data-name
 // difference (jumptable_804A6B4C vs @NNN).
-void cls_804A6AA8::vfunc_0x90(u8 mapHit) {
+void cls_804A6AA8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -128,16 +128,16 @@ void cls_804A6AA8::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6AA8::vfunc_0x9C(u8 mapHit) {
-    ShadowLinkBase_804A6A00::vfunc_0x9C(mapHit);
+void cls_804A6AA8::updateBehavior_0x9C(u8 mapHit) {
+    ShadowLinkBase_804A6A00::updateBehavior_0x9C(mapHit);
     mRing.fn_800F802C();
 }
 
-void cls_804A6AA8::vfunc_0x88() {
+void cls_804A6AA8::calcVelocity_0x88() {
     if (mState == 2) {
         fn_80221250();
     } else {
-        EnemyBase_804A4808::vfunc_0x88();
+        EnemyBase_804A4808::calcVelocity_0x88();
     }
 }
 

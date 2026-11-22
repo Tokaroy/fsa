@@ -218,8 +218,8 @@ void cls_804AC950::update() {
                     if (fn_8022F9E4(i, mSerial, true, false)) {
                         field_0x254[count++] = i;
                         if (count >= 2) {
-                            if (vfunc_0x3C() > 0) {
-                                vfunc_0x30(0xFF, true);
+                            if (getScreenFlagBit_0x3C() > 0) {
+                                setScreenFlag_0x30(0xFF, true);
                             }
                             field_0x230 = 1;
                             if (field_0x380[5] == 1) {
@@ -321,7 +321,7 @@ void cls_804AC950::update() {
         }
         break;
     case 2:
-        vfunc_0x24();
+        die_0x24();
         break;
     }
     if ((field_0x230 == 1 && mPos.z > 0.0f) || field_0x230 == 2) {
@@ -366,7 +366,7 @@ void cls_804AC950::draw() {
     mPos = saved;
 }
 
-void cls_804AC950::vfunc_0x24() {
+void cls_804AC950::die_0x24() {
     s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
@@ -404,7 +404,7 @@ void cls_804AC950::vfunc_0x24() {
     }
 }
 
-bool cls_804AC950::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool cls_804AC950::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x378);
 }
 

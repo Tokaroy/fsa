@@ -93,7 +93,7 @@ static inline s32 kind(u32 f) {
 void cls_804A7A68::update() {
     switch (field_0x230) {
     case 0: {
-        if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
             break;
         }
         f32 x0 = mBox.i.x + mPos.x;

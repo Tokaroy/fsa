@@ -165,7 +165,7 @@ void SpecialConversationNPC_804AAFB8::init() {
     }
     if ((field_0x90 >> 27) != 0) {
         field_0x240 = (field_0x90 >> 24) & 3;
-        bool done = vfunc_0x34();
+        bool done = isScreenFlagSet_0x34();
         if ((field_0x240 == 1 && done == true) || (field_0x240 == 2 && done == false)) {
             field_0x270 = 0;
         } else {
@@ -206,7 +206,7 @@ void SpecialConversationNPC_804AAFB8::vfunc_0x10() {
 
 void SpecialConversationNPC_804AAFB8::update() {
     if (field_0x240 != 0) {
-        bool done = vfunc_0x34();
+        bool done = isScreenFlagSet_0x34();
         if ((field_0x240 == 1 && done == true) || (field_0x240 == 2 && done == false)) {
             field_0x270 = 0;
         } else {

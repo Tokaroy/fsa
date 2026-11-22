@@ -175,17 +175,17 @@ public:
     virtual ~VaatiBoss_804A4958();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24(); // empty override
+    /* 0x24 */ virtual void die_0x24(); // empty override
     // 0x801D652C: gAudioMgr_8053AF80->fn_80458F9C(60).
-    /* 0x54 */ virtual void vfunc_0x54();
-    /* 0x74 */ virtual void vfunc_0x74();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
+    /* 0x74 */ virtual void onHitReactionEnd_0x74();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     // 0x801D5338: advances the sprite animation (mAnim.fn_801D1C18) unless
     // mState is 6, 7, 0xB or 0x17..0x1A (no call in those states).
-    /* 0x94 */ virtual void vfunc_0x94();
-    /* 0x98 */ virtual void vfunc_0x98();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
+    /* 0x98 */ virtual void move_0x98();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     void fn_801D63D0();

@@ -21,7 +21,7 @@ void ZoomOutNPC_804AA228::init() {
 void ZoomOutNPC_804AA228::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             // The original makes the request twice (0x802EC7E8, 0x802EC804); only the second result is used.
             takeCamera(gGameRoot2_8053AB10->field_0x24);
             if (takeCamera(gGameRoot2_8053AB10->field_0x24) == 1) {

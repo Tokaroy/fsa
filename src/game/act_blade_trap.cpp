@@ -16,7 +16,7 @@ static const f32 lbl_80466288[4][2] = {
     {0.0f, -8.0f},
 };
 
-// Actors vfunc_0x4C's collision box test ignores.
+// Actors isBlocked_0x4C's collision box test ignores.
 static const u32 lbl_804662A8[5] = {'TOMI', 'IPOT', 'IBBM', 'BMST', 'NULL'};
 
 inline void BladeTrap_804A04D8::setMoveSpeed() {
@@ -226,7 +226,7 @@ void BladeTrap_804A04D8::draw() {
     }
 }
 
-bool BladeTrap_804A04D8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool BladeTrap_804A04D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_804662A8) == true) {

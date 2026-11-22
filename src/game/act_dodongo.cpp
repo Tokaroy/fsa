@@ -560,7 +560,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                     field_0x230 = 11;
                     mTimers[1] = 63;
                 } else {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             }
         }

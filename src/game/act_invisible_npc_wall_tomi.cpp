@@ -32,7 +32,7 @@ void InvisibleNPCWall_804AE6D0::init() {
 void InvisibleNPCWall_804AE6D0::update() {
     switch (field_0x234) {
     case 0:
-        if (field_0x230 == 0 || vfunc_0x34()) {
+        if (field_0x230 == 0 || isScreenFlagSet_0x34()) {
             fn_8020D58C()->addBox(mSerial);
         }
         break;

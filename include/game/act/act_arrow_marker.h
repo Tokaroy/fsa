@@ -29,7 +29,7 @@ public:
     /* 0x250 */ s32 field_0x250; // frame index 0-3 (update), also the draw gate
     /* 0x254 */ s32 field_0x254; // alpha in draw; offset stepped by lbl_80540968 in update
     /* 0x258 */ s32 field_0x258; // index into lbl_80540968 (0 or 1)
-    /* 0x25C */ s32 field_0x25c; // player in the box (vfunc_0x30 on change)
+    /* 0x25C */ s32 field_0x25c; // player in the box (setScreenFlag_0x30 on change)
 }; // Size: 0x260
 
 #endif
