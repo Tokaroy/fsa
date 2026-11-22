@@ -823,7 +823,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
                     startSound_801F0E34(0x40070, 0);
                 }
             }
-            if (!(mFlags & 0x2000)) {
+            if (!checkFlag(0x2000)) {
                 field_0x2b8 = field_0x2ac;
                 findTargets(this);
                 ActorBase_804A5770* found = NULL;
@@ -888,12 +888,12 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
             if (mFlags & 0x20000) {
                 height = 20.0f;
             } else {
-                s32 s = field_0x2ac;
-                if (s >= 0 && actorBySerial(s) != NULL) {
+                serial = field_0x2ac;
+                if (serial >= 0 && actorBySerial(serial) != NULL) {
                     height = 20.0f;
                 } else {
-                    s = field_0x2b0;
-                    if (s >= 0 && actorBySerial(s) != NULL) {
+                    serial = field_0x2b0;
+                    if (serial >= 0 && actorBySerial(serial) != NULL) {
                         height = 20.0f;
                     }
                 }
