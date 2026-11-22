@@ -885,7 +885,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
     }
-    if (mFlags & 0x20000) {
+    if (checkFlag(0x20000)) {
         field_0x2a8 = -1;
         if (!(mFlags & 0x2000)) {
             field_0x2a8 = -1;
@@ -901,7 +901,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
             enterFromEdge(this);
         }
     } else {
-        if (!(mFlags & 0x2000) && target != NULL) {
+        if (!checkFlag(0x2000) && target != NULL) {
             mFlags |= 0x2000;
             if (behind(this, target->mPos.x)) {
                 setState_801E1594(6);
