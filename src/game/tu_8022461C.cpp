@@ -394,21 +394,5 @@ bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer) {
 // (7, 3) (0xE -> 0x51).
 // FIXME(shotgun): 95.98 %, missing/extra; behaviour near.
 u16 getTileCollisionCode_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
-    u16 raw = rawTileAt(pos, layer);
-    u16 code = lbl_8046CB88[raw];
-    if (viewLayerFlag(layer) != 0) {
-        if (code == 0) {
-            return 2;
-        } else if (code == 0x61) {
-            return 0;
-        }
-    } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) ||
-            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3 &&
-             screenValueIs(0x10) &&
-             pos->y > 2470.0f)) {
-            return 0x51;
-        }
-    }
-    return code;
+    return collisionCodeAt(pos, layer);
 }
