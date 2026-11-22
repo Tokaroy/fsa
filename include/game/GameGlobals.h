@@ -325,7 +325,7 @@ struct GameRoot_8049EF20 {
     // constructor fn_80139300 (0x8013932C-0x80139338). 132 units inline
     // TRandom_fast_::get()/get_ufloat_1() on it (lwz 0xB4, mullw 0x19660D,
     // + 0x3C6EF35F, stw, srwi 9, oris 0x3F80, - 1.0f), e.g. 0x803D6578.
-    /* 0xB4 */ JMath::TRandom_fast_ mRandom;
+    /* 0xB4 */ JMath::TRandom_<JMath::TRandom_fast_> mRandom;
     /* 0xB8 */ J2DPicture* field_0xb8; // made from 'TIMG' resources by the constructor
     /* 0xBC */ J2DPicture* field_0xbc;
     // Two text boxes the constructor makes; resetGameState_80138C9C copies field_0xc8

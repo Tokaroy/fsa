@@ -347,6 +347,8 @@ namespace JMath
     {
     public:
         TRandom_(u32 num) : T(num) {}
+
+        f32 get_ufloat(f32 max) { return this->get_ufloat_1() * max; }
     };
 }
 
