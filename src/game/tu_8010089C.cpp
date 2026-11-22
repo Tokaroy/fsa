@@ -263,7 +263,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
             gAudioMgr_8053AF80->fn_80458508(1);
         }
         if (field_0x23c / 60 == 10) {
-            lbl_8053AED0->fn_8043D67C(0x326, 0, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x326, 0, 0);
         }
         field_0x234++;
         if (field_0x234 >= lbl_8049C8D8[field_0x244] && field_0x23c >= 0x78) {

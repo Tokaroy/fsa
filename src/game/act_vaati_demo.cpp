@@ -272,7 +272,7 @@ void VaatiCutscene_8049D940::fn_80115F9C(s32 index) {
     case 9: {
         fn_80119DD0()->fn_80119998(120, 0, 1, 0, 0, 70, 0);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(
-            getActorManager_801F856C()->fn_801F7A08('SWEV'));
+            getActorManager_801F856C()->findSerialByActorId_801F7A08('SWEV'));
         if (actor != NULL) {
             static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A3C();
         }

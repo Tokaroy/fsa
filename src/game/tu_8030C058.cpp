@@ -839,7 +839,7 @@ void Camera_804AA9E4::fn_8030C85C() {
 }
 
 // The camera's box of the given width around center (the height keeps the screen's aspect).
-void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
+void Camera_804AA9E4::requestBox_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
     f32 halfY = 0.5f * (size * (f32)(s32)JUTVideo::sManager->getEfbHeight() /
                         (f32)(s32)JUTVideo::sManager->getFbWidth());
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
@@ -853,11 +853,11 @@ static inline f32 projectRow(const f32* row, f32 x, f32 y, f32 z, f32 w) {
     return x * row[0] + y * row[1] + z * row[2] + w * row[3];
 }
 
-// Not inlined into its caller fn_8030C2A8 in the original (bl fn_8030C5F0).
+// Not inlined into its caller fn_8030C2A8 in the original (bl worldToScreen_8030C5F0).
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
-void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, Vec* out) {
+void Camera_804AA9E4::worldToScreen_8030C5F0(const Vec* pos, bool inRect, bool normalised, Vec* out) {
     Vec v;
     PSMTXMultVec(mLoadedViewMtx_0x74, pos, &v);
     f32 y = projectRow(mLoadedProjMtx_0xa4[1], v.x, v.y, v.z, 1.0f);
@@ -915,7 +915,7 @@ void Camera_804AA9E4::setScreenRectViewport() {
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
 bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
-    fn_8030C5F0(pos, true, false, &screen);
+    worldToScreen_8030C5F0(pos, true, false, &screen);
     return screen.x >= (f32)(mScreenRect_0x144.i.x + 14) && screen.x < (f32)(mScreenRect_0x144.f.x - 14) &&
            screen.y >= (f32)(mScreenRect_0x144.i.y + 14) && screen.y < (f32)(mScreenRect_0x144.f.y - 14);
 }

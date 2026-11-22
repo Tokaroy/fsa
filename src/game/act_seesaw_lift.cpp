@@ -612,7 +612,7 @@ void SeesawLift_804AD348::fn_803584C0() {
             field_0x246[p] = fn_8035AC84(p);
             checkContactBox(p);
             if (field_0x25c[p] == NULL) {
-                if (fn_8023EFEC(p) && fn_8023EEB4(p) == 'YASI') {
+                if (fn_8023EFEC(p) && getPlayerHeldActorId_8023EEB4(p) == 'YASI') {
                     field_0x25c[p] = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(p));
                 }
             } else if (!field_0x25c[p]->mAlive) {

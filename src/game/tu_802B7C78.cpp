@@ -48,7 +48,7 @@ void ReaperShinigami_804A886C::init() {
     field_0x196 = 1;
     field_0x230 = 0;
     startSound_801F0E34(0x4003F, 0);
-    lbl_8053AED0->fn_8043D67C(0x197, 0, 0);
+    lbl_8053AED0->requestMessage_8043D67C(0x197, 0, 0);
 }
 
 // The player at field_0x2a0[field_0x27c] is in the game and present.

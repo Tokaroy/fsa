@@ -28,7 +28,7 @@ static JGeometry::TVec3f lbl_804CABD8;
 
 // Whether two boxes overlap (edges touching counts), on a copy of `a`: inlined
 // the same way, with no store back to either box, into fn_801F7F58,
-// fn_801F8108 and fn_801F82CC.
+// findOverlappingActorById_801F8108 and fn_801F82CC.
 static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
     JGeometry::TBox2f overlap(a);
     return overlap.intersect(b);
@@ -376,7 +376,7 @@ s32 ActorManager_804A5800::fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij
     return found;
 }
 
-extern "C" s32 fn_801F8108(const ActorBase_804A5770* actor, u32 id, s32 excludeSerial, f32 maxDz) {
+extern "C" s32 findOverlappingActorById_801F8108(const ActorBase_804A5770* actor, u32 id, s32 excludeSerial, f32 maxDz) {
     u32 ids[2];
     ids[0] = id;
     ids[1] = ACTOR_NULL;
@@ -544,7 +544,7 @@ s32 ActorManager_804A5800::fn_801F7A6C() {
     return count;
 }
 
-s32 ActorManager_804A5800::fn_801F7A08(u32 id) {
+s32 ActorManager_804A5800::findSerialByActorId_801F7A08(u32 id) {
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && id == mActors[i]->mActorId) {
             return mActors[i]->mSerial;

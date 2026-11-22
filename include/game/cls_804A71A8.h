@@ -159,7 +159,7 @@ public:
     // The probe point: fn_80268BC4 sets it to the owner's mPos plus the
     // offset lbl_8046BAE8[field_0x1c] and tests the tile and boxes there.
     /* 0x8 */ JGeometry::TVec3f field_0x8;
-    // Zeroed by the owner's update fn_80253E6C each frame; fn_80268BC4 sets
+    // Zeroed by the owner's update update_80253E6C each frame; fn_80268BC4 sets
     // it to how far the owner's mPos x / y moved during it. A TVec2f: the
     // owner's fn_802422C4 (tu_8023FBF0) returns its address as the
     // `const TVec2f*` of fn_8022DFD4.

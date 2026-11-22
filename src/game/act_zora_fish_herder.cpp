@@ -311,7 +311,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         }
         if (field_0x26c < 0 && field_0x250 == 4) {
             mBox.set(-24.0f, 0.0f, 24.0f, 32.0f);
-            field_0x26c = fn_801F2718('FISH');
+            field_0x26c = findOverlappingActor_801F2718('FISH');
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
             if (field_0x26c >= 0) {
                 ActorBase_804A5770* fish = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x26c);

@@ -258,7 +258,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     if (mTimers[2] == 0) {
         damagePlayersInBox_801F2B7C(-100, -1, 1);
         if (mEmitters[0] == NULL && mEmitters[1] == NULL) {
-            if (fn_801F2718('FIRE') >= 0 || fn_801F2718('BLZE') >= 0) {
+            if (findOverlappingActor_801F2718('FIRE') >= 0 || findOverlappingActor_801F2718('BLZE') >= 0) {
                 mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBB, 0, -1, NULL, NULL, true, 1.0f);
                 mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBC, 0, 1, NULL, NULL, true, 1.0f);
                 mTimers[2] = 200;

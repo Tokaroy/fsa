@@ -360,12 +360,12 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
         field_0x2c4[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464938[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
         field_0x2c4[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464948[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
         field_0x2a4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464958[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
-        s32 swevSerial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SWEV);
+        s32 swevSerial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_SWEV);
         ActorBase_804A5770* swev = getActorManager_801F856C()->findActorBySerial_801F666C(swevSerial);
         if (swev != NULL) {
             static_cast<EnvironmentSwitchControl_804A8638*>(swev)->fn_802B3A3C();
         }
-        s32 sev2Serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SEV2);
+        s32 sev2Serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_SEV2);
         ActorBase_804A5770* sev2 = getActorManager_801F856C()->findActorBySerial_801F666C(sev2Serial);
         if (sev2 != NULL) {
             static_cast<EnvironmentControl2_804A9CD0*>(sev2)->fn_802E43E0();

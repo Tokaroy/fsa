@@ -1991,7 +1991,7 @@ void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
 }
 
 // Resets the player's link state (or marks it 0xFF while lbl_8053ACF0 is
-// set), then does the same for the player fn_8023ECF0 names, while there is
+// set), then does the same for the player getPlayerHeldPlayer_8023ECF0 names, while there is
 // one that is its own fn_8022EA0C.
 void fn_80301D54(s32 player) {
     s32 slot = fn_8022F340(player);
@@ -2004,7 +2004,7 @@ void fn_80301D54(s32 player) {
     }
     lbl_8053ACF8[player] = 0;
     if (fn_8023ED8C(player)) {
-        s32 other = fn_8023ECF0(player);
+        s32 other = getPlayerHeldPlayer_8023ECF0(player);
         if (other == fn_8022EA0C(other)) {
             fn_80301D54(other);
         }

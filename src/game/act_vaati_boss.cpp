@@ -163,7 +163,7 @@ void VaatiBoss_804A4958::init() {
     }
 
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_sch5.szs");
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0x7000, 0);
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 0, 0x7000, 0);
 }
 
 void VaatiBoss_804A4958::onFirstUpdate_0x54() {

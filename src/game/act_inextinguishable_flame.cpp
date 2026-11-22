@@ -104,7 +104,7 @@ void InextinguishableFlame_804A9D28::update() {
         fn_8020D58C()->addBox(mSerial);
     }
     pos = mPos;
-    fn_801F2718('TUBO');
+    findOverlappingActor_801F2718('TUBO');
 
     switch (mState) {
     case 0: {

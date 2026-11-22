@@ -440,7 +440,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 mBox.i.y = f4 * p[1];
                 mBox.f.x = f4 * p[2];
                 mBox.f.y = f4 * p[3];
-                field_0x264 = fn_801F2718('HBMB');
+                field_0x264 = findOverlappingActor_801F2718('HBMB');
                 if (field_0x264 >= 0) {
                     ActorBase_804A5770* bombBase = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264);
                     if (bombBase != NULL && bombBase->field_0x94 == 0) {

@@ -146,7 +146,7 @@ void Switch_804A7F38::update() {
     box.f.x += x;
     box.f.y += y;
 
-    if (fn_801F8108(this, 'TBO2', -1, 32.0f) >= 0) {
+    if (findOverlappingActorById_801F8108(this, 'TBO2', -1, 32.0f) >= 0) {
         return;
     }
 
@@ -155,18 +155,18 @@ void Switch_804A7F38::update() {
     s32 blockSerial = -1;
 
     if (field_0x234 != 7) {
-        blockSerial = fn_801F8108(this, 'AMOS', -1, 32.0f);
+        blockSerial = findOverlappingActorById_801F8108(this, 'AMOS', -1, 32.0f);
         if (blockSerial < 0) {
-            blockSerial = fn_801F8108(this, 'BRBL', -1, 32.0f);
+            blockSerial = findOverlappingActorById_801F8108(this, 'BRBL', -1, 32.0f);
             blockKind = 1;
             if (blockSerial < 0) {
-                blockSerial = fn_801F8108(this, 'BLCK', -1, 32.0f);
+                blockSerial = findOverlappingActorById_801F8108(this, 'BLCK', -1, 32.0f);
                 blockKind = 2;
                 if (blockSerial < 0) {
-                    blockSerial = fn_801F8108(this, 'BCK2', -1, 32.0f);
+                    blockSerial = findOverlappingActorById_801F8108(this, 'BCK2', -1, 32.0f);
                     blockKind = 3;
                     if (blockSerial < 0) {
-                        blockSerial = fn_801F8108(this, 'SMRI', -1, 0.1f);
+                        blockSerial = findOverlappingActorById_801F8108(this, 'SMRI', -1, 0.1f);
                         blockKind = 4;
                     }
                 }

@@ -105,7 +105,7 @@ struct SobObj_802F86CC {
 }; // Size: 0x6
 
 // One 5-bit colour channel times scale plus offset, clamped to 0-31
-// (fn_802F93F4's channel adjustment, inlined for r, g and b).
+// (loadSpritePalette_802F93F4's channel adjustment, inlined for r, g and b).
 // scale / offset are parameters (callers pass 1.0f, 0.0f): the original keeps the
 // fmadds, which constants in the body would fold away.
 static inline u8 adjustChannel(s32 value, f32 scale, f32 offset) {
@@ -812,12 +812,12 @@ void TileMap_804AA858::fn_802FCE74() {
                     s32 player = fn_8022EA0C(i);
                     Vec screen;
                     JGeometry::TVec3f pos;
-                    if (fn_8023E10C(player) < 8) {
+                    if (getPlayerDestLayer_8023E10C(player) < 8) {
                         pos.set(*fn_8023E214(player));
                     } else {
                         pos.set(*fn_8023E32C(player));
                     }
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
+                    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
                     f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
                     f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
 
@@ -881,12 +881,12 @@ void TileMap_804AA858::fn_802FCE74() {
         s32 player = fn_8022EA0C(0);
         Vec screen;
         JGeometry::TVec3f pos;
-        if (fn_8023E10C(player) < 8) {
+        if (getPlayerDestLayer_8023E10C(player) < 8) {
             pos.set(*fn_8023E214(player));
         } else {
             pos.set(*fn_8023E32C(player));
         }
-        gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
+        gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
         f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
         f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
         field_0xfc->fn_80433718();
@@ -1850,9 +1850,9 @@ void TileMap_804AA858::fn_802FA3FC() {
 }
 
 // FIXME: 88.38 %, scheduling+regalloc; behaviour clean.
-// As in fn_802F9714: the original loads the next source bytes of the
+// As in loadSpriteImage_802F9714: the original loads the next source bytes of the
 // unrolled nibble-swap loop before storing the previous ones; registers differ.
-// fn_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
+// loadSpriteImage_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
 // also keeps bytes 0x200-0x2FF of that buffer in mAnimTileData_0x238c.
 void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
     u8* dst;
@@ -1900,8 +1900,8 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
 // 0xD8 as clrlwi + srawi 8 (extrwi for 0xD9 / 0xDA; ours extrwi for all three).
 // Also moved: the original adds src + srcOffset (add r9, r26, r7) after copying
 // len to r4 (mr r4, r24) before the first loop; ours adds it right after the
-// decode and copies len after the loops (as in fn_802F93F4). Registers differ.
-// The 'SCL ' palettes of the sprite layer `slot` (0-2): fn_802F93F4 into
+// decode and copies len after the loops (as in loadSpritePalette_802F93F4). Registers differ.
+// The 'SCL ' palettes of the sprite layer `slot` (0-2): loadSpritePalette_802F93F4 into
 // field_0xc[slot] (keeping the first colour, made transparent, in
 // mPaletteFirstColor_0x114[slot]), colours 0xD8-0xDA made RGB4A3 with alpha 4 / 7, and the
 // adjusted copy in field_0x18[slot].
@@ -2084,7 +2084,7 @@ u16 TileMap_804AA858::getTile_802F9908(s32 layer, s32 index) {
 // In the unrolled nibble-swap loop the original loads the next
 // source byte before storing the previous one (ours stores, then loads), and the
 // computed length lives in r26 (ours r31; the parameters move up one register).
-void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
+void TileMap_804AA858::loadSpriteImage_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
     u8* dst;
     u8* src;
     u32 len;
@@ -2128,7 +2128,7 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
 // colour of every 16 transparent; then copies them to mSpritePalettes_0xc8[slot] with
 // each opaque colour's channels adjusted (rotated to b, r, g with `flag`) and
 // flushes that copy.
-void TileMap_804AA858::fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag) {
+void TileMap_804AA858::loadSpritePalette_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag) {
     u32 len;
     if (size == 0) {
         s32 resSize;

@@ -156,8 +156,8 @@ void Tingle_804B0478::update() {
             field_0x23c = 0x5a;
             for (s32 i = 0; i < 4; i++) {
                 if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1) {
-                    if (fn_80237774(i) < fn_80237810(i) - 4) {
-                        fn_80236554(i, fn_80237810(i) - fn_80237774(i) - 4, true);
+                    if (fn_80237774(i) < getPlayerMaxLife_80237810(i) - 4) {
+                        fn_80236554(i, getPlayerMaxLife_80237810(i) - fn_80237774(i) - 4, true);
                     }
                 }
             }
@@ -199,7 +199,7 @@ void Tingle_804B0478::update() {
             } else {
                 lbl_80529DEC.field_0x24f = 0;
             }
-            lbl_8053AED0->fn_8043D67C(0x33a, 0, lbl_80529DEC.field_0x24f);
+            lbl_8053AED0->requestMessage_8043D67C(0x33a, 0, lbl_80529DEC.field_0x24f);
             mAlive = false;
         }
         break;

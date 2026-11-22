@@ -96,7 +96,7 @@ void BeeFormation_804AC7B8::update() {
                 if (getPlayerLayer_8023DE58(field_0x244) < 8) {
                     field_0x274 = field_0x268;
                     field_0x268 = *getPlayerPos_8023E724(field_0x244);
-                    s32 unk = fn_8022E970(field_0x244);
+                    s32 unk = getPlayerGroupSize_8022E970(field_0x244);
                     switch (fn_8022CAF8(field_0x244)) {
                     case 0:
                         switch (unk) {

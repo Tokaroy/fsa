@@ -578,7 +578,7 @@ void CuccoHerdingNPC_804AC8C0::fn_8034ACF4() {
         }
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
         if (pos.z <= 1.0f && containsPoint(box, pos)) {
-            lbl_8053AED0->fn_8043D67C(0x410, 0, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x410, 0, 0);
             JGeometry::TVec3f push;
             switch (field_0x260[i]) {
             case 0:
@@ -626,7 +626,7 @@ s32 CuccoHerdingNPC_804AC8C0::fn_8034AAA0() {
         }
     }
     if (lbl_80472158[field_0x25c] >= field_0x24c - count && field_0x28c[field_0x25c] == 0) {
-        lbl_8053AED0->fn_8043D67C(0x42A, 0, lbl_80472158[field_0x25c]);
+        lbl_8053AED0->requestMessage_8043D67C(0x42A, 0, lbl_80472158[field_0x25c]);
         field_0x28c[field_0x25c] = 1;
         if (field_0x25c == 2) {
             gAudioMgr_8053AF80->fn_80458508(1);

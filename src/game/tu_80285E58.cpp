@@ -82,7 +82,7 @@ void Player_804A6F38::fn_802870C8() {
             if (fn_8022D75C(getLeader_80240644()) && !fn_80234ECC(getLeader_80240644()) && fn_8022D498(getLeader_80240644()) != 0xC &&
                 fn_8022D498(getLeader_80240644()) != 0xD && fn_8022D498(getLeader_80240644()) != 0x26) {
                 if (!fn_8024BBB0() &&
-                    !fn_8022BC38(getLeader_80240644(), fn_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
+                    !fn_8022BC38(getLeader_80240644(), getPlayerDestLayer_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
                     if (mState_0x1240 == 8 || mState_0x1240 == 9 || mState_0x1240 == 10 || mState_0x1240 == 0x39) {
                         if (fn_8022D75C(fn_8022EA0C(getIndex()))) {
                             fn_80251AEC(0);
@@ -1062,7 +1062,7 @@ void Player_804A6F38::fn_802870C8() {
         if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
             fn_80265D8C();
         } else if (fn_80240808() && fn_8022D75C(getLeader_80240644()) && fn_8022D498(getLeader_80240644()) != 0x27 &&
-                   !fn_8022BC38(getLeader_80240644(), fn_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
+                   !fn_8022BC38(getLeader_80240644(), getPlayerDestLayer_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
             mAlpha_0xca0 = 0;
         } else if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(getLeader_80240644()) &&
                    !fn_80236B50(getLeader_80240644()) && !fn_80270A8C()) {
@@ -1228,7 +1228,7 @@ void Player_804A6F38::fn_80286E10() {
         if (start != mGroupTurn_0x1224) {
             fn_80230FD0(other, 0x10010);
             if (fn_8023ED8C(partner)) {
-                fn_8023105C(fn_8023ECF0(partner));
+                fn_8023105C(getPlayerHeldPlayer_8023ECF0(partner));
                 fn_802310F8(partner);
             }
         }
@@ -1442,7 +1442,7 @@ void Player_804A6F38::fn_80285F44() {
 }
 
 // The player's per-frame update (docs/PLAYER.md, "Per-frame flow"): run by
-// fn_80253E6C (update A) for each player.
+// update_80253E6C (update A) for each player.
 void Player_804A6F38::fn_80285E58() {
     if (mFreezeTimer_0x11f4 > 0) {
         mFreezeTimer_0x11f4--;

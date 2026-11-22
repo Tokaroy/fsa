@@ -41,7 +41,7 @@ ActorBase_804A5770* EscortActorList_80131F6C::fn_80131E30(s32 idx) {
 }
 
 bool fn_80131D98() {
-    s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_OPGL);
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_OPGL);
     if (serial < 0) {
         return false;
     }

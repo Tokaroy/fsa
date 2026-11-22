@@ -292,7 +292,7 @@ void BowSoldier_804A00C8::update() {
         u32 excludeId = 'NULL';
         if (mSpawnParam_0x90 == 2 && field_0x258 == 0 && field_0x284 < 0) {
             fn_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
-            field_0x284 = fn_801F2718('HBMB');
+            field_0x284 = findOverlappingActor_801F2718('HBMB');
             fn_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
             if (field_0x284 >= 0) {
                 Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x284));

@@ -80,7 +80,7 @@ void MaidenCutscene_8049D740::init() {
 }
 
 void MaidenCutscene_8049D740::vfunc_0x10() {
-    s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_DMGL);
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_DMGL);
     ActorBase_804A5770* goal = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     if (goal != NULL) {
         mGoalPos = goal->mPos;

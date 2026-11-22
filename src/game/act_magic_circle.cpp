@@ -227,7 +227,7 @@ void MagicCircle_804A7960::update() {
         }
         if (field_0x240 >= 1.0f) {
             if (field_0x260 == 1) {
-                lbl_8053AED0->fn_8043D67C(0xE7, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0xE7, 0, 0);
                 field_0x260 = 0;
             }
             field_0x244++;
@@ -369,7 +369,7 @@ void MagicCircle_804A7960::update() {
     }
 
     field_0x262 = 1;
-    s32 serial = fn_801F26CC(lbl_8046C100);
+    s32 serial = findOverlappingActorOf_801F26CC(lbl_8046C100);
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         f32 viewX;

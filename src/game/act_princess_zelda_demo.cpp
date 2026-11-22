@@ -138,7 +138,7 @@ void PrincessZeldaDemo_8049D208::init() {
                 fn_8010E7E8(0x3d);
                 break;
             case 2:
-                fn_8010E2D4(0x3d);
+                enterDemoState_8010E2D4(0x3d);
                 break;
             case 3:
                 break;
@@ -262,7 +262,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                 fn_8010E7E8(2);
                 break;
             case 2:
-                fn_8010E2D4(2);
+                enterDemoState_8010E2D4(2);
                 break;
             }
             field_0x238 = 2;
@@ -283,7 +283,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     fn_8010E7E8(0xD);
                     break;
                 case 2:
-                    fn_8010E2D4(0xD);
+                    enterDemoState_8010E2D4(0xD);
                     break;
                 }
                 field_0x238 = 0xD;
@@ -293,7 +293,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     fn_8010E7E8(0x3E);
                     break;
                 case 2:
-                    fn_8010E2D4(0x3E);
+                    enterDemoState_8010E2D4(0x3E);
                     break;
                 }
                 field_0x238 = 0x3E;
@@ -305,7 +305,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     fn_8010E7E8(1);
                     break;
                 case 2:
-                    fn_8010E2D4(1);
+                    enterDemoState_8010E2D4(1);
                     break;
                 }
                 field_0x238 = 1;
@@ -512,7 +512,7 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
                 fn_8010E7E8(0x3D);
                 break;
             case 2:
-                fn_8010E2D4(0x3D);
+                enterDemoState_8010E2D4(0x3D);
                 break;
             case 3:
                 break;
@@ -590,7 +590,7 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
                 fn_8010E7E8(2);
                 break;
             case 2:
-                fn_8010E2D4(2);
+                enterDemoState_8010E2D4(2);
                 break;
             case 3:
                 break;
@@ -780,79 +780,79 @@ void PrincessZeldaDemo_8049D208::vfunc_0x54() {
     case 0:
         if (fn_8011921C()->field_0x4 == 0) {
             if (key == lbl_80464550[3]) {
-                fn_8010F478(0x3);
+                setDemoState_8010F478(0x3);
             } else if (key == lbl_80464550[4]) {
-                fn_8010F478(0x4);
+                setDemoState_8010F478(0x4);
             } else if (key == lbl_80464550[5]) {
-                fn_8010F478(0x5);
+                setDemoState_8010F478(0x5);
             } else if (key == lbl_80464550[6]) {
-                fn_8010F478(0x6);
+                setDemoState_8010F478(0x6);
             } else if (key == lbl_80464550[7]) {
-                fn_8010F478(0x7);
+                setDemoState_8010F478(0x7);
             } else if (key == lbl_80464550[8]) {
-                fn_8010F478(0x8);
+                setDemoState_8010F478(0x8);
             } else if (key == lbl_80464550[9]) {
-                fn_8010F478(0x9);
+                setDemoState_8010F478(0x9);
             } else if (key == lbl_80464550[10]) {
-                fn_8010F478(0xA);
+                setDemoState_8010F478(0xA);
             } else if (key == lbl_80464550[11]) {
-                fn_8010F478(0xB);
+                setDemoState_8010F478(0xB);
             } else if (key == lbl_80464550[12]) {
-                fn_8010F478(0xC);
+                setDemoState_8010F478(0xC);
             } else if (key == lbl_80464550[13]) {
-                fn_8010F478(0xD);
-                fn_8010F478(0x25);
+                setDemoState_8010F478(0xD);
+                setDemoState_8010F478(0x25);
             }
         }
         break;
     case 1:
         if (fn_8011921C()->field_0x4 == 1) {
             if (key == lbl_80464550[14]) {
-                fn_8010F478(0xE);
+                setDemoState_8010F478(0xE);
             } else if (key == lbl_80464550[15]) {
-                fn_8010F478(0xF);
+                setDemoState_8010F478(0xF);
             } else if (key == lbl_80464550[16]) {
-                fn_8010F478(0x10);
+                setDemoState_8010F478(0x10);
             } else if (key == lbl_80464550[17]) {
-                fn_8010F478(0x11);
+                setDemoState_8010F478(0x11);
             } else if (key == lbl_80464550[18]) {
-                fn_8010F478(0x12);
+                setDemoState_8010F478(0x12);
             } else if (key == lbl_80464550[19]) {
-                fn_8010F478(0x13);
+                setDemoState_8010F478(0x13);
             } else if (key == lbl_80464550[20]) {
-                fn_8010F478(0x14);
+                setDemoState_8010F478(0x14);
             } else if (key == lbl_80464550[21]) {
-                fn_8010F478(0x15);
+                setDemoState_8010F478(0x15);
             } else if (key == lbl_80464550[22]) {
-                fn_8010F478(0x16);
+                setDemoState_8010F478(0x16);
             } else if (key == lbl_80464550[23]) {
-                fn_8010F478(0x17);
+                setDemoState_8010F478(0x17);
             } else if (key == lbl_80464550[24]) {
-                fn_8010F478(0x18);
+                setDemoState_8010F478(0x18);
             } else if (key == lbl_80464550[25]) {
-                fn_8010F478(0x19);
+                setDemoState_8010F478(0x19);
             } else if (key == lbl_80464550[26]) {
-                fn_8010F478(0x1A);
+                setDemoState_8010F478(0x1A);
             } else if (key == lbl_80464550[27]) {
-                fn_8010F478(0x1B);
+                setDemoState_8010F478(0x1B);
             } else if (key == lbl_80464550[28]) {
-                fn_8010F478(0x1C);
+                setDemoState_8010F478(0x1C);
             } else if (key == lbl_80464550[29]) {
-                fn_8010F478(0x1D);
+                setDemoState_8010F478(0x1D);
             } else if (key == lbl_80464550[30]) {
-                fn_8010F478(0x1E);
+                setDemoState_8010F478(0x1E);
             } else if (key == lbl_80464550[31]) {
-                fn_8010F478(0x1F);
+                setDemoState_8010F478(0x1F);
             } else if (key == lbl_80464550[32]) {
-                fn_8010F478(0x20);
+                setDemoState_8010F478(0x20);
             } else if (key == lbl_80464550[33]) {
-                fn_8010F478(0x21);
+                setDemoState_8010F478(0x21);
             } else if (key == lbl_80464550[34]) {
-                fn_8010F478(0x22);
+                setDemoState_8010F478(0x22);
             } else if (key == lbl_80464550[35]) {
-                fn_8010F478(0x23);
+                setDemoState_8010F478(0x23);
             } else if (key == lbl_80464550[37]) {
-                fn_8010F478(0x3E);
+                setDemoState_8010F478(0x3E);
             }
         }
         break;
@@ -860,54 +860,54 @@ void PrincessZeldaDemo_8049D208::vfunc_0x54() {
         switch (fn_8011921C()->field_0x4) {
         case 0xF:
             if (key == lbl_80464550[38]) {
-                fn_8010F478(0x26);
+                setDemoState_8010F478(0x26);
             } else if (key == lbl_80464550[39]) {
-                fn_8010F478(0x27);
+                setDemoState_8010F478(0x27);
             } else if (key == lbl_80464550[40]) {
-                fn_8010F478(0x28);
+                setDemoState_8010F478(0x28);
             } else if (key == lbl_80464550[41]) {
-                fn_8010F478(0x29);
+                setDemoState_8010F478(0x29);
             } else if (key == lbl_80464550[42]) {
-                fn_8010F478(0x2A);
+                setDemoState_8010F478(0x2A);
             } else if (key == lbl_80464550[43]) {
-                fn_8010F478(0x2B);
+                setDemoState_8010F478(0x2B);
             } else if (key == lbl_80464550[44]) {
-                fn_8010F478(0x2C);
+                setDemoState_8010F478(0x2C);
             } else if (key == lbl_80464550[45]) {
-                fn_8010F478(0x2D);
+                setDemoState_8010F478(0x2D);
             } else if (key == lbl_80464550[46]) {
-                fn_8010F478(0x2E);
+                setDemoState_8010F478(0x2E);
             } else if (key == lbl_80464550[47]) {
-                fn_8010F478(0x2F);
+                setDemoState_8010F478(0x2F);
             }
             break;
         case 0xD:
             if (key == lbl_80464550[48]) {
-                fn_8010F478(0x30);
+                setDemoState_8010F478(0x30);
             } else if (key == lbl_80464550[50]) {
-                fn_8010F478(0x32);
+                setDemoState_8010F478(0x32);
             } else if (key == lbl_80464550[51]) {
-                fn_8010F478(0x33);
+                setDemoState_8010F478(0x33);
             } else if (key == lbl_80464550[52]) {
-                fn_8010F478(0x34);
+                setDemoState_8010F478(0x34);
             } else if (key == lbl_80464550[53]) {
-                fn_8010F478(0x35);
+                setDemoState_8010F478(0x35);
             } else if (key == lbl_80464550[54]) {
-                fn_8010F478(0x36);
+                setDemoState_8010F478(0x36);
             } else if (key == lbl_80464550[55]) {
-                fn_8010F478(0x37);
+                setDemoState_8010F478(0x37);
             } else if (key == lbl_80464550[56]) {
-                fn_8010F478(0x38);
+                setDemoState_8010F478(0x38);
             } else if (key == lbl_80464550[57]) {
-                fn_8010F478(0x39);
+                setDemoState_8010F478(0x39);
             } else if (key == lbl_80464550[58]) {
-                fn_8010F478(0x3A);
+                setDemoState_8010F478(0x3A);
             } else if (key == lbl_80464550[59]) {
-                fn_8010F478(0x3B);
+                setDemoState_8010F478(0x3B);
             } else if (key == lbl_80464550[60]) {
-                fn_8010F478(0x3C);
+                setDemoState_8010F478(0x3C);
             } else if (key == lbl_80464550[61]) {
-                fn_8010F478(0x3D);
+                setDemoState_8010F478(0x3D);
             }
             break;
         }
@@ -936,7 +936,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F9F0() {
         fn_8010E7E8(0x31);
         break;
     case 2:
-        fn_8010E2D4(0x31);
+        enterDemoState_8010E2D4(0x31);
         break;
     case 3: // nothing sets this state
         break;
@@ -1037,16 +1037,16 @@ void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
 
 #pragma auto_inline reset
 
-// Not auto-inlined: vfunc_0x54 calls fn_8010F478 out of line in the original.
+// Not auto-inlined: vfunc_0x54 calls setDemoState_8010F478 out of line in the original.
 #pragma auto_inline off
-void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
+void PrincessZeldaDemo_8049D208::setDemoState_8010F478(s32 arg) {
     switch (field_0x234) {
     case 0:
     case 1:
         fn_8010E7E8(arg);
         break;
     case 2:
-        fn_8010E2D4(arg);
+        enterDemoState_8010E2D4(arg);
         break;
     case 3:
         break;
@@ -1270,7 +1270,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
 
 // Enters demo state `arg` (0x26-0x3D) of the first scene set: animation, camera objects, emitters
 // and the talk prompts of the states that need them.
-void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
+void PrincessZeldaDemo_8049D208::enterDemoState_8010E2D4(s32 arg) {
     switch (arg) {
     case 0x26:
         getShadowLinkFight_801C0D70()->fn_801C11A4();
@@ -1396,7 +1396,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
 }
 
 // Not in the binary: the plain functions below are inlined by fn_80110E9C and fn_8010E7E8, and the
-// pool has their literals ahead of fn_8010E2D4's, so they stand at the bottom of the file.
+// pool has their literals ahead of enterDemoState_8010E2D4's, so they stand at the bottom of the file.
 
 // Turns the maiden to a direction (0..3) and starts that direction's standing animation.
 // R2 pool helper (inlined at 2 call sites); was faceDir.
@@ -1487,7 +1487,7 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
             fn_8010E7E8(0x24);
             break;
         case 2:
-            fn_8010E2D4(0x24);
+            enterDemoState_8010E2D4(0x24);
             break;
         }
         field_0x238 = 0x24;

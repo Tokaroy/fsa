@@ -226,7 +226,7 @@ public:
     // cached in lbl_8053A168 for the next call.
     s32 fn_801F78F4(u32 id, s32 afterSerial);
     // 18 units / 28 calls. The serial of the first live `id` actor, or -1.
-    s32 fn_801F7A08(u32 id);
+    s32 findSerialByActorId_801F7A08(u32 id);
     // 1 unit / 1 call (tu_801EE24C). The number of live actors with
     // field_0x1a8 ("dstr") set.
     s32 fn_801F7A6C();
@@ -245,7 +245,7 @@ public:
     // layer other than 0, and of the layer-0 ones with the byte at 0x194
     // set that are outside the view's box (0xCC-0xD8).
     void fn_801F7E88();
-    // 2 units / 2 calls (ActorBase_804A5770::fn_801F26CC, tu_801E9AFC).
+    // 2 units / 2 calls (ActorBase_804A5770::findOverlappingActorOf_801F26CC, tu_801E9AFC).
     // The serial of the first live actor on actor's layer, other than
     // excludeSerial, whose mActorId is in `ids` ('NULL'-ended) and whose box
     // (fn_801F31C4) overlaps actor's, or -1. Unless the view's flag for the
@@ -387,9 +387,9 @@ extern "C" {
 // and does fn_801F7F58's search for the single id `id` (a stack
 // {id, 'NULL'} list): the serial of an actor overlapping `actor` on its
 // layer, other than excludeSerial, or -1. Callers pass the actor in r3
-// (ActorBase_804A5770::fn_801F2718 passes this, its mSerial and
+// (ActorBase_804A5770::findOverlappingActor_801F2718 passes this, its mSerial and
 // lbl_8053F748; others pass -1 for excludeSerial).
-s32 fn_801F8108(const ActorBase_804A5770* actor, u32 id, s32 excludeSerial, f32 maxDz);
+s32 findOverlappingActorById_801F8108(const ActorBase_804A5770* actor, u32 id, s32 excludeSerial, f32 maxDz);
 // It inlines fn_801F7F58's whole search and getActorManager_801F856C (defined after it).
 
 } // extern "C"

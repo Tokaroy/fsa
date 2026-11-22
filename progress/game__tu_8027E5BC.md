@@ -5,7 +5,7 @@ reloc-name (sdata2 literals not yet in the original order/split: resolves when n
 Resistant: fn_8027E7E0 98.85 % (scheduling+regalloc): original loads field_0x3b4 into r30 before the field_0x11fc
 load for the getPlayerLayer_8023DE58 call; ours loads it after (tried flipping the != operands, no change).
 Not written (callees unknown / need new class for the 0xF4/0x24 "stop emitter" pointer at 0x1350/0x1354/0x1358/0x132c/0x135c:
-fn_80280DD8, fn_80281A18, fn_802811C0), the rest need unnamed callees (fn_8027EB04 and larger bodies).
+fn_80280DD8, fn_80281A18, fn_802811C0), the rest need unnamed callees (updateFacing_8027EB04 and larger bodies).
 SHARED-EDITS: include/game/Player.h (fields 0x318..0x13BC split, member declarations), config/G4SE01/symbols.txt (renames to
 Player_804A6F38 members, incl. fn_80248604, fn_8024D134, fn_8024E3D8 of tu_8023FBF0), config/G4SE01/gen_game.tsv (tu_8027E5BC row removed).
 
@@ -27,7 +27,7 @@ include/game/cls_804A71A8.h (0xA0 s32, 0xB7 u8; owner tu_802684A4); symbols.txt 
 fn_802341D0__Fl, fn_802487FC__15Player_804A6F38Fv and the three new members.
 
 ## 2026-11-05 Opus 5.5 round 7 (agent K)
-Baseline total 8539 -> 8548 (+9); unit 36/73 -> 45/73 (honest report). 100 %: fn_8027EB04, fn_80280DD8,
+Baseline total 8539 -> 8548 (+9); unit 36/73 -> 45/73 (honest report). 100 %: updateFacing_8027EB04, fn_80280DD8,
 fn_802811C0, fn_80281760, fn_80281A18, fn_80281A90, fn_80281D50, fn_80282E6C, fn_802857F0.
 Structurally written (FIXME / reloc-name): fn_8027FA08 99.94, fn_802808E8 99.97, fn_80281E98 99.65,
 fn_80282094 99.41, fn_8028538C 99.90 (stack slots), fn_80283D2C 99.38 (regs), fn_802859C4 99.54 and

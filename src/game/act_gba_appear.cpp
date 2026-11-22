@@ -51,7 +51,7 @@ void GBAAppear_804B16E0::update() {
         if (lbl_80529DEC.field_0x236 & bit) {
             JGeometry::TVec3f pos = lbl_80529DEC.field_0x1c4[i];
             JGeometry::TVec3f screen;
-            gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
             if (mState[i] == 0xFF) {
                 if (screen.y > 0.5f * (s32)JUTGetVideoManager()->getEfbHeight()) {
                     mState[i] = 0;

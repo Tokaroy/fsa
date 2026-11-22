@@ -213,7 +213,7 @@ void GreatFairy_804AF338::update() {
                 switch (mSpawnParam_0x90) {
                 case 0:
                     if (fn_80388CAC(field_0x234, mSerial)) {
-                        fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                        fn_80236554(fn_8022F340(field_0x234), getPlayerMaxLife_80237810(fn_8022F340(field_0x234)), false);
                         s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(
@@ -254,7 +254,7 @@ void GreatFairy_804AF338::update() {
         case 2:
             fn_8022FEB8(&near, mLayer_0x4, mSerial, false, true);
             if (fn_80388CAC(field_0x234, mSerial)) {
-                fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                fn_80236554(fn_8022F340(field_0x234), getPlayerMaxLife_80237810(fn_8022F340(field_0x234)), false);
                 s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(
@@ -265,14 +265,14 @@ void GreatFairy_804AF338::update() {
             }
             break;
         case 3:
-            if (fn_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
                 field_0x25c == 0 && fn_8023061C(field_0x234, false) == 1)
             {
                 field_0x25c = 0x1E;
                 field_0x29c = 0;
                 mState = 6;
             }
-            if (fn_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
                 field_0x25c > 0)
             {
                 if (field_0x25c % 10 == 0) {
@@ -480,7 +480,7 @@ void GreatFairy_804AF338::update() {
                     } else {
                         mState = 13;
                         startSound_801F0E34(0x40090, 0);
-                        fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                        fn_80236554(fn_8022F340(field_0x234), getPlayerMaxLife_80237810(fn_8022F340(field_0x234)), false);
                         s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(

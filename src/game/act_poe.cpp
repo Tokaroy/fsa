@@ -187,7 +187,7 @@ void Poe_8049F330::update() {
                     startSound_801F0E34(0x40025, 0);
                     return;
                 }
-            } else if (fn_801F2718('SPOT') >= 0) {
+            } else if (findOverlappingActor_801F2718('SPOT') >= 0) {
                 startSound_801F0E34(0x40025, 0);
                 fn_801F37AC(0x80, &mPos, 3, 0, -1);
                 return;

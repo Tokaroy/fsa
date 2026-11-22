@@ -12,7 +12,7 @@ void KeepsEscortedGirlFromGoing_8049EA00::init() {
 }
 
 bool KeepsEscortedGirlFromGoing_8049EA00::fn_8012FC2C(const s32* v) {
-    s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_OPGL);
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_OPGL);
     if (serial < 0) {
         return true;
     }

@@ -95,7 +95,7 @@ void SlimeFormation_804A5D60::onFirstUpdate_0x54() {
 // FIXME(shotgun): 99.83 %, regalloc-only; behaviour drift.
 // 0x8020AA78: enters `state`, starting its animation and
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
-void SlimeFormation_804A5D60::fn_8020AA78(s32 state) {
+void SlimeFormation_804A5D60::setState_8020AA78(s32 state) {
     if (mFlags & 0x2000) {
         switch (state) {
         case 8:
@@ -209,7 +209,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             case 6:
                 break;
             default:
-                fn_8020AA78(11);
+                setState_8020AA78(11);
                 break;
             }
             break;
@@ -221,7 +221,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             mBox.i.set(-8.0f, -8.0f);
             mBox.f.set(8.0f, 8.0f);
             mBox2.set(mBox);
-            fn_8020AA78(1);
+            setState_8020AA78(1);
         }
         break;
     case 1:
@@ -234,7 +234,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
                 mAnim.startAnim_801D22DC(3, 0, false);
                 break;
             case 3:
-                fn_8020AA78(2);
+                setState_8020AA78(2);
                 break;
             }
         }
@@ -245,17 +245,17 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             if (manager != NULL) {
                 static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207ECC();
             }
-            fn_8020AA78(7);
+            setState_8020AA78(7);
         }
         break;
     case 3:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020AA78(4);
+            setState_8020AA78(4);
         }
         break;
     case 4:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020AA78(5);
+            setState_8020AA78(5);
         }
         break;
     case 5:
@@ -275,7 +275,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
                 if (manager != NULL) {
                     static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207ECC();
                 }
-                fn_8020AA78(7);
+                setState_8020AA78(7);
                 break;
             }
             }
@@ -284,9 +284,9 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
     case 6:
         if (mAnim.mAnim == 5 && mAnim.fn_801D217C()) {
             if (mFlags & 0x4000) {
-                fn_8020AA78(7);
+                setState_8020AA78(7);
             } else if (mFlags & 0x8000) {
-                fn_8020AA78(9);
+                setState_8020AA78(9);
             }
         }
         break;
@@ -309,12 +309,12 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
                     ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
                     if (manager != NULL) {
                         if (static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207E58()) {
-                            fn_8020AA78(11);
+                            setState_8020AA78(11);
                         } else {
-                            fn_8020AA78(6);
+                            setState_8020AA78(6);
                         }
                     } else {
-                        fn_8020AA78(11);
+                        setState_8020AA78(11);
                     }
                 } else {
                     mAnim.startAnim_801D22DC(1, 0, false);
@@ -339,7 +339,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             case 4:
                 field_0x2b1--;
                 if (field_0x2b1 == 0) {
-                    fn_8020AA78(11);
+                    setState_8020AA78(11);
                 } else {
                     mAnim.startAnim_801D22DC(1, 0, false);
                 }
@@ -358,7 +358,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
                 mAnim.startAnim_801D22DC(3, 0, false);
                 break;
             case 3:
-                fn_8020AA78(10);
+                setState_8020AA78(10);
                 break;
             }
         }
@@ -369,12 +369,12 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             if (manager != NULL) {
                 static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207E24();
             }
-            fn_8020AA78(6);
+            setState_8020AA78(6);
         }
         break;
     case 11:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020AA78(12);
+            setState_8020AA78(12);
         }
         break;
     case 12:

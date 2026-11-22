@@ -10,7 +10,7 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/act/act_slingshot_seed.h"
 
-// The actors whose touch destroys the seed (update's fn_801F26CC list, 'NULL'-terminated).
+// The actors whose touch destroys the seed (update's findOverlappingActorOf_801F26CC list, 'NULL'-terminated).
 static const u32 lbl_80471840[] = {'FLME', 'BLZ2', 'NULL'};
 
 // 0x80324AC4.
@@ -294,7 +294,7 @@ void SlingshotSeed_804AB3A8::update() {
                 mEmitter26c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35D, 0, 1, NULL, NULL, true, 1.0f);
             }
         }
-        s32 serial = fn_801F26CC(lbl_80471840);
+        s32 serial = findOverlappingActorOf_801F26CC(lbl_80471840);
         if (serial >= 0) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL &&

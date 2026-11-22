@@ -273,7 +273,7 @@ bool IceWall_8049DE18::hitByFire() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     hitPos.set(0.0f, 0.0f);
-    if (fn_8023AB94(&box, mLayer_0x4, &hitPos) >= 0 || fn_801F2718('FIRE') >= 0) {
+    if (fn_8023AB94(&box, mLayer_0x4, &hitPos) >= 0 || findOverlappingActor_801F2718('FIRE') >= 0) {
         return true;
     }
     return false;

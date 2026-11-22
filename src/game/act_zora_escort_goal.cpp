@@ -280,7 +280,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     case 10:
         for (s32 i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-                fn_80236554(i, fn_80237810(i), false);
+                fn_80236554(i, getPlayerMaxLife_80237810(i), false);
                 fn_80237524(i, 0x180);
             }
         }
@@ -316,7 +316,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         field_0x250 = 0;
         break;
     case 15:
-        if (getActorManager_801F856C()->fn_801F7A08('SPFR') < 0) {
+        if (getActorManager_801F856C()->findSerialByActorId_801F7A08('SPFR') < 0) {
             u32 arg = getScreenFlagBit_0x3C() << 27;
             getActorManager_801F856C()->spawnActor_801F9484('SPFR', mLayer_0x4, &field_0x270, arg, -1, -1);
             fn_801283E8()->fn_80128074();

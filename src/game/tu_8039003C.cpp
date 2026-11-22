@@ -19,19 +19,19 @@ cls_804AF480::cls_804AF480() {
         lbl_80529DEC.field_0x242 = 1;
         gGameRoot2_8053AB10->field_0x20->fn_802FF798();
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_base_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 0, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_schE.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0x7000, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 0, 0x7000, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 0, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 0, 0, 0, false);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "player_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 2, 0, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 2, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 2, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 2, 0, 0, false);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 3, 0, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 3, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 3, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 3, 0, 0, false);
         gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
     if (gGameRoot_8053AAF8->field_0x7f) {

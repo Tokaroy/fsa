@@ -37,7 +37,7 @@ void UnknownIBBM_804A6100::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    lbl_8053AED0->fn_8043D67C(field_0x2b0, 0, 0);
+    lbl_8053AED0->requestMessage_8043D67C(field_0x2b0, 0, 0);
     f32 y = mPos.y + field_0x54.y * fn_80210AF8(mDir_0x98);
     f32 x = mPos.x + field_0x54.x * fn_80210B34(mDir_0x98);
     JGeometry::TVec3f pos(x, y, 0.0f);

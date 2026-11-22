@@ -299,11 +299,11 @@ public:
     // serial of an actor overlapping this one whose mActorId is in `ids` (a
     // 'NULL'-ended list, walked by 4 and compared with cmplw; callers pass
     // .rodata arrays), or -1 (callers test r3 with cmpwi/blt).
-    s32 fn_801F26CC(const u32* ids);
-    // 30 units / 38 calls. fn_801F8108(this, actorId, mSerial, ...): the
+    s32 findOverlappingActorOf_801F26CC(const u32* ids);
+    // 30 units / 38 calls. findOverlappingActorById_801F8108(this, actorId, mSerial, ...): the
     // serial of an actor with mActorId == actorId (4CC; cmplw) overlapping
     // this one on its layer, or -1.
-    s32 fn_801F2718(u32 actorId) const;
+    s32 findOverlappingActor_801F2718(u32 actorId) const;
     // 16 units / 17 calls. Bit i set for each player i (other than
     // skipPlayer; callers pass -1 in 16 of 17) whose box overlaps mBox
     // around mPos in screen space (0x801F2828-0x801F2844). damagePlayersInBox_801F2B7C
@@ -599,7 +599,7 @@ public:
     /* 0x114 */ s32 mParamAtcp_0x114; // EnemyParam.csv column "atcp"
     /* 0x118 */ s32 mParamAtcn_0x118; // EnemyParam.csv column "atcn"
     // mAlive: the manager's update pass deletes the actor (virtual dtor)
-    // when it is false, and its collision queries (fn_801F8108,
+    // when it is false, and its collision queries (findOverlappingActorById_801F8108,
     // fn_801F82CC, ...) and draw pass skip it; fn_801F3668 clears it. Some
     // actors clear it in init() (TMI2), which removes them at once.
     /* 0x11C */ bool mAlive;

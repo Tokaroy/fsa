@@ -191,7 +191,7 @@ static inline s32 recentPresses(const Player_804A6F38* player) {
 
 // The boxes for facing `dir` (0 +x, 1 -x, 2 +y, 3 -y): 0x4B0 a 16x16 box 8-24 ahead (the
 // attack box), 0x4A0 the body box stretched 4 back / 16 ahead, 0x30C the point 16 ahead,
-// 0x3F0 = dir. fn_80276BB8 uses them for the opposite facing, fn_80276E5C for the facing.
+// 0x3F0 = dir. fn_80276BB8 uses them for the opposite facing, setFacingBoxes_80276E5C for the facing.
 static inline void setBoxesPosX(Player_804A6F38* player) {
     player->field_0x4b0.set(player->mPos.x + 16.0f, player->mPos.y - 8.0f, player->mPos.x + 32.0f, player->mPos.y + 8.0f);
     player->field_0x4a0.set(player->mPos.x - 4.0f, player->mPos.y - 8.0f, player->mPos.x + 16.0f, player->mPos.y + 8.0f);
@@ -294,7 +294,7 @@ static const f32 lbl_8046BD88[4][2] = {{24.0f, 0.0f}, {-24.0f, 0.0f}, {2.0f, 24.
 // The sword beam: a 'SWBM' (into 0xB38, its layer into 0xB6C) at lbl_8046BD88[facing] from
 // the player when none is out and the life is full (or under fn_80241284 with 0x11AC == 1 and
 // fn_80241544() >= 2, which also sets 0x100 in its argument). fn_8027B648, fn_8027D5F0.
-// The life test is the leader's (fn_80237774 / fn_80237810) under fn_80240808, else the
+// The life test is the leader's (fn_80237774 / getPlayerMaxLife_80237810) under fn_80240808, else the
 // player's own (fn_8024189C / fn_802417CC); as early returns it branches straight into the
 // spawn, as in the original (a bool helper materialises li 0 / 1).
 static inline void fireSwordBeam(Player_804A6F38* player) {
@@ -304,7 +304,7 @@ static inline void fireSwordBeam(Player_804A6F38* player) {
     }
     if (!(player->fn_80241284() && player->field_0x11ac == 1 && player->fn_80241544() >= 2)) {
         if (player->fn_80240808()) {
-            if (fn_80237774(player->getLeader_80240644()) < fn_80237810(player->getLeader_80240644())) {
+            if (fn_80237774(player->getLeader_80240644()) < getPlayerMaxLife_80237810(player->getLeader_80240644())) {
                 return;
             }
         } else if (player->fn_8024189C() < player->fn_802417CC()) {
@@ -357,7 +357,7 @@ static inline s32 historyDepth(const Player_804A6F38* player) {
 
 // Enter of state 0x04 (the sword attack): picks the attack 0x45C. Three or more presses in a
 // row (recentPresses) or the 0x11C4 window start the lunge (4: history cleared, step
-// fn_8027EB04, 0x344 = 4 along the facing with z 1, sound 0x1000B, 0xBF4 = 8); outside a
+// updateFacing_8027EB04, 0x344 = 4 along the facing with z 1, sound 0x1000B, 0xBF4 = 8); outside a
 // group spin the 0x11CC window with the stick in direction 0x11D0 gives 3; otherwise the
 // combo position by the history depth: 2 / 0 / 1 for a first press, 0 / 1 after one. Every
 // attack but the lunge has 0x458 = 1, 0xBF4 = 4 and sound 0x10000; then sound 0x20000 and
@@ -372,7 +372,7 @@ void Player_804A6F38::fn_8027DEA0() {
     }
     if (!(fn_802486A0() == 3 && !fn_8023434C(mPlayerNo_0x4)) && (combo == true || field_0x11c4 > 0)) {
         mAttackKind_0x45c = 4;
-        fn_8027EB04();
+        updateFacing_8027EB04();
         if (mFacing_0x3dc == 0) {
             mVel_0x344.set(4.0f, 0.0f, 1.0f);
         } else if (mFacing_0x3dc == 1) {
@@ -740,7 +740,7 @@ void Player_804A6F38::fn_8027C6C4() {
     } else {
         mAnimTimer_0x3fa++;
     }
-    fn_80276E5C();
+    setFacingBoxes_80276E5C();
     fn_802685D4();
 }
 
@@ -806,7 +806,7 @@ void Player_804A6F38::fn_8027BE74() {
             field_0x43d = 3;
         }
         if (mSwordCharge_0x403 < 168) {
-            fn_80276E5C();
+            setFacingBoxes_80276E5C();
         } else {
             fn_80276BB8();
         }
@@ -990,7 +990,7 @@ void Player_804A6F38::fn_8027BA2C() {
         break;
     }
     field_0x458 = 1;
-    fn_8027EB04();
+    updateFacing_8027EB04();
     fn_8024F0E8(0x10001);
     fn_8024F0E8(0x20001);
     fn_8024F0E8(0x2000e);
@@ -1047,7 +1047,7 @@ void Player_804A6F38::fn_8027B304() {
     field_0x458 = 1;
     fn_8024F0E8(0x10001);
     fn_8024F0E8(0x20028);
-    fn_8027EB04();
+    updateFacing_8027EB04();
     fn_8027023C();
     field_0x11b0 = 0;
     if (mSpinEmitter_0x12bc == NULL) {
@@ -1074,7 +1074,7 @@ void Player_804A6F38::fn_8027B304() {
 }
 
 // Update of state 0x0A (the spin attack): the spin animation (fn_80274728) and step
-// (fn_8027EB04). In a group spin (mode 3 without fn_8023434C) the spin centre 0x11B4 moves 2 a
+// (updateFacing_8027EB04). In a group spin (mode 3 without fn_8023434C) the spin centre 0x11B4 moves 2 a
 // frame with the stick (fn_8022C82C / fn_8022C76C) unless one of the three tiles 24 ahead
 // blocks, and from frame 11 the player walks to its spot; otherwise it drifts 2 along the facing
 // 0x3E8. BgRewrite runs at 0x30C (twice) and the probe points; sound 0x20029; the emitter 0x12B8
@@ -1085,7 +1085,7 @@ void Player_804A6F38::fn_8027B304() {
 // puts the probe and emitter vectors above the tile-test vectors).
 void Player_804A6F38::fn_8027AAD0() {
     fn_80274728();
-    fn_8027EB04();
+    updateFacing_8027EB04();
     if (fn_802486A0() == 3 && !fn_8023434C(mPlayerNo_0x4)) {
         if (fn_8022C82C(mPlayerNo_0x4) > 0.0f) {
             if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
@@ -1173,7 +1173,7 @@ void Player_804A6F38::fn_8027A908() {
     field_0xbba = 0;
     field_0xbbc = 3.0f;
     mPos.z = 0.0f;
-    fn_8027EB04();
+    updateFacing_8027EB04();
     fn_8027023C();
     if (field_0x490 == 1) {
         fn_8024F0E8(0x40075);
@@ -1200,7 +1200,7 @@ void Player_804A6F38::fn_8027A1E0() {
     s32 dir = mFacing_0x3dc;
     fn_8027439C();
     if (mPos.z <= 0.0f && (mSubPose_0x3fd == 1 || mSubPose_0x3fd == 2)) {
-        fn_8027EB04();
+        updateFacing_8027EB04();
     }
     if (mSubPose_0x3fd == 1) {
         f32 speed = field_0xbbc;
@@ -1740,13 +1740,13 @@ void Player_804A6F38::fn_80277F98() {
                     fn_8024E694(lost, 0);
                     s32 diff = before - fn_80241920();
                     if (diff == 0) {
-                        lbl_8053AED0->fn_8043D67C(0x19a, mPlayerNo_0x4, 0);
+                        lbl_8053AED0->requestMessage_8043D67C(0x19a, mPlayerNo_0x4, 0);
                     } else {
-                        lbl_8053AED0->fn_8043D67C(0x198, mPlayerNo_0x4, diff);
+                        lbl_8053AED0->requestMessage_8043D67C(0x198, mPlayerNo_0x4, diff);
                     }
                 }
             } else {
-                lbl_8053AED0->fn_8043D67C(0x19a, mPlayerNo_0x4, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x19a, mPlayerNo_0x4, 0);
             }
         }
     } else {
@@ -1778,7 +1778,7 @@ void Player_804A6F38::fn_80277F98() {
                 field_0x494 = 180;
                 break;
             }
-            if (!fn_80240808() && field_0x49c < 0 && getActorManager_801F856C()->fn_801F7A08('BLZD') < 0) {
+            if (!fn_80240808() && field_0x49c < 0 && getActorManager_801F856C()->findSerialByActorId_801F7A08('BLZD') < 0) {
                 switch (rank) {
                 case 1:
                     field_0x49c = getActorManager_801F856C()->fn_801F6718(mPlayerNo_0x4, mLayer_0x3b4, &mPos, 0, 3);
@@ -1895,7 +1895,7 @@ void Player_804A6F38::fn_80277F98() {
                     mStateLocked_0x124d = 0;
                     if (fn_80251AEC(0)) {
                         field_0xc00 = 0;
-                        fn_80270DDC(fn_802417CC() - 4, false);
+                        addLife_80270DDC(fn_802417CC() - 4, false);
                     }
                 }
             }
@@ -2034,12 +2034,12 @@ static inline void startTingle(Player_804A6F38* player) {
     getActorManager_801F856C()->spawnActor_801F9484('TNGL', player->mLayer_0x3b4, &player->mPos, 1, -1, player->mPlayerNo_0x4);
 }
 
-// Frame 420 of state 0x34: with no life left, the heal (fn_80270DDC) up to 4 below the maximum.
+// Frame 420 of state 0x34: with no life left, the heal (addLife_80270DDC) up to 4 below the maximum.
 static inline void tingleHeal(Player_804A6F38* player) {
     if (player->field_0xd30 == 420) {
         player->field_0xc00 = 0;
         if (player->fn_8024189C() <= 0) {
-            player->fn_80270DDC(player->fn_802417CC() - 4, false);
+            player->addLife_80270DDC(player->fn_802417CC() - 4, false);
         }
     }
 }
@@ -2052,7 +2052,7 @@ static inline void tingleHeal(Player_804A6F38* player) {
 // dead `beq` to the function's end (cmplwi r3, 0 / beq / beq / lbz 0x251).
 void Player_804A6F38::fn_8027776C() {
     if (!gGameRoot_8053AAF8->field_0x7e) {
-        s32 serial = getActorManager_801F856C()->fn_801F7A08('TNGL');
+        s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('TNGL');
         Tingle_804B0478* tingle = static_cast<Tingle_804B0478*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (tingle != NULL && !tingle->field_0x251) {
             return;
@@ -2258,7 +2258,7 @@ void Player_804A6F38::fn_80277104() {
 void Player_804A6F38::fn_80277100() {}
 
 // The boxes of the facing 0x3DC.
-void Player_804A6F38::fn_80276E5C() {
+void Player_804A6F38::setFacingBoxes_80276E5C() {
     switch (mFacing_0x3dc) {
     case 0:
         setBoxesPosX(this);
@@ -2293,7 +2293,7 @@ void Player_804A6F38::fn_80276BB8() {
     }
 }
 
-// The facing boxes (as fn_80276E5C) for the s16 angle 0x11C0 in eight directions. On a
+// The facing boxes (as setFacingBoxes_80276E5C) for the s16 angle 0x11C0 in eight directions. On a
 // diagonal the facing 0x3F0 becomes the vertical one: the original's `!= a || != b` test
 // (compiled as such: cmpwi a / bne, cmpwi b / beqlr) is always true.
 void Player_804A6F38::fn_802765C0() {
@@ -2549,7 +2549,7 @@ void Player_804A6F38::fn_802756E4() {
         } else {
             mAnimTimer_0x3fa++;
         }
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
         break;
     case 3:
         if (mAnimTimer_0x3fa < 2) {
@@ -2570,7 +2570,7 @@ void Player_804A6F38::fn_802756E4() {
         } else {
             mAnimTimer_0x3fa++;
         }
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
         break;
     case 4:
         if (mAnimTimer_0x3fa < 6) {
@@ -2595,13 +2595,13 @@ void Player_804A6F38::fn_802756E4() {
         } else {
             mAnimTimer_0x3fa++;
         }
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
         break;
     }
     switch (mAttackKind_0x45c) {
     case 0:
     case 1:
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
         s16 dir = angle; // the angle is compared as an s16 (extsh at the compare only)
         if (dir <= -0x7000) {
             mFrontPos_0x30c.set(-16.0f, 0.0f, 0.0f);
@@ -2635,7 +2635,7 @@ void Player_804A6F38::fn_802756E4() {
     case 2:
     case 3:
     case 4:
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
         break;
     }
 }
@@ -2650,7 +2650,7 @@ void Player_804A6F38::fn_802756E4() {
 // below layer 8, a 'PEFF' and sound 0x20027; past it the per-player emitter 0x26B-0x26E. Spent
 // immortal emitters are deleted. Releasing the button (fn_80246464) ends the charge: below 48
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
-// member out of step (mode 4) drops to state 0. Then the facing boxes (fn_80276E5C, or
+// member out of step (mode 4) drops to state 0. Then the facing boxes (setFacingBoxes_80276E5C, or
 // fn_80276BB8 at full charge).
 // FIXME: 95.57 %, missing/extra; behaviour drift.
 // Structurally close: the original loads one .rodata base (0x8046BB48) into r3 at
@@ -2838,7 +2838,7 @@ void Player_804A6F38::fn_80274CB8() {
         }
     }
     if (mSwordCharge_0x403 < 168) {
-        fn_80276E5C();
+        setFacingBoxes_80276E5C();
     } else {
         fn_80276BB8();
     }
@@ -3010,7 +3010,7 @@ void Player_804A6F38::fn_8027439C() {
             mAnimTimer_0x3fa = 0;
             mPose_0x3fb = 0;
             if (field_0x490 == 1) {
-                lbl_8053AED0->fn_8043D67C(0x190, mPlayerNo_0x4, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x190, mPlayerNo_0x4, 0);
                 field_0x490 = 0;
             }
         }
@@ -3365,7 +3365,7 @@ bool Player_804A6F38::fn_80272E98(const JGeometry::TBox2f* box, s32 layer) {
     if (!fn_802413F0()) {
         return false;
     }
-    if (!fn_80251BFC(0x11)) {
+    if (!canRequestState_80251BFC(0x11)) {
         return false;
     }
     return overlapsInView(this, *box, layer);
@@ -3509,7 +3509,7 @@ bool Player_804A6F38::fn_802724E0(const JGeometry::TBox2f* box, s32 layer) {
     if (mPos.z > 0.0f) {
         return false;
     }
-    if (!(fn_80270A8C() && fn_80270A04()) && !fn_80251BFC(0x19)) {
+    if (!(fn_80270A8C() && fn_80270A04()) && !canRequestState_80251BFC(0x19)) {
         return false;
     }
     return overlapsInView(this, *box, layer);
@@ -3657,7 +3657,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
     if (kind == 0x16 && fn_80240B70()) {
         return false;
     }
-    if (kind == 0xa && !fn_80251BFC(0x35)) {
+    if (kind == 0xa && !canRequestState_80251BFC(0x35)) {
         return false;
     }
     field_0x11e4 = kind;
@@ -3681,7 +3681,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         field_0x488 = 4;
     }
     if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && damage >= 4 && fn_8024189C() > 0) {
-        lbl_8053AED0->fn_8043D67C(0x18f, mPlayerNo_0x4, 0);
+        lbl_8053AED0->requestMessage_8043D67C(0x18f, mPlayerNo_0x4, 0);
     }
     if (damage >= 4) {
         gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
@@ -3941,10 +3941,10 @@ void Player_804A6F38::fn_80270F00(s32 arg) {
     if (mMaxLife_0xbf8 > 32) {
         mMaxLife_0xbf8 = 32;
     }
-    fn_80270DDC(mMaxLife_0xbf8, false);
+    addLife_80270DDC(mMaxLife_0xbf8, false);
 }
 
-void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
+void Player_804A6F38::addLife_80270DDC(s32 amount, bool flag) {
     if (field_0xd35) {
         return;
     }
@@ -4127,7 +4127,7 @@ void Player_804A6F38::fn_8027057C() {
         if (!fn_80251AEC(0)) {
             return;
         }
-        fn_80270DDC(fn_802417CC() - 4, false);
+        addLife_80270DDC(fn_802417CC() - 4, false);
         field_0x464 = 180;
         field_0xd2c = 0;
         mPos = field_0xd10;
@@ -4161,7 +4161,7 @@ void Player_804A6F38::fn_8027057C() {
         if (field_0x494 > 0) {
             field_0x494--;
             if (field_0x494 == 0) {
-                if (getActorManager_801F856C()->fn_801F7A08('TNGL') >= 0) {
+                if (getActorManager_801F856C()->findSerialByActorId_801F7A08('TNGL') >= 0) {
                     field_0x494 = 1;
                 } else {
                     field_0xcfc = 0;

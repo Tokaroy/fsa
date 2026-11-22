@@ -43,7 +43,7 @@ inline void ShovelOldTimer_804AAB40::setDigPos(const JGeometry::TVec3f& pos) {
 
 inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
     if (player == field_0x250 || (fn_8022E438(player, field_0x250) && fn_8022CAF8(player) == 4)) {
-        lbl_8053AED0->fn_8043D67C(msg, player, 0);
+        lbl_8053AED0->requestMessage_8043D67C(msg, player, 0);
     }
 }
 

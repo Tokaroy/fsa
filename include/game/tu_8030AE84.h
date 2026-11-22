@@ -20,7 +20,7 @@ public:
     // Mangled fn_8030BD3C__12cls_804AA8D8Fl (game/tu_8030AE84.cpp): stores the
     // player, then the callees below.
     void fn_8030BD3C(s32 player);
-    // fn_8030B774 (this unit): run each frame by the owner's update fn_80253E6C.
+    // fn_8030B774 (this unit): run each frame by the owner's update update_80253E6C.
     void fn_8030B774();
     // Mangled fn_8030AE84__12cls_804AA8D8FPQ29JGeometry8TBox2<f> (this unit).
     // Writes the box of 240x160 around the two position words (0x290, 0x294).

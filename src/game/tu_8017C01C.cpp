@@ -1107,7 +1107,7 @@ void PhantomGanon_804A1318::update() {
         f32 z = mPos.z;
         mPos.y -= z;
         mPos.z = 0.0f;
-        s32 serial = fn_801F2718('FGAN');
+        s32 serial = findOverlappingActor_801F2718('FGAN');
         mPos.z = z;
         mPos.y += mPos.z;
         if (serial < 0) {

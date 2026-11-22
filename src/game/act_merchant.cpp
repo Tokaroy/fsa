@@ -14,7 +14,7 @@ static const s16* lbl_80539ED8[2] = {lbl_80464000, NULL};
 
 // True while a shop item ('SITM') actor exists.
 static inline bool isShopItemAlive() {
-    s32 serial = getActorManager_801F856C()->fn_801F7A08('SITM');
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('SITM');
     if (serial < 0) {
         return false;
     }

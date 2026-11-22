@@ -119,7 +119,7 @@ void EyeballSwitch_804AE678::update() {
             field_0x238--;
         } else {
             fn_8023BA68(&box, mLayer_0x4, &p, true);
-            s32 serial = fn_801F8108(this, ACTOR_ARRW, -1, 32.0f);
+            s32 serial = findOverlappingActorById_801F8108(this, ACTOR_ARRW, -1, 32.0f);
             if (serial >= 0) {
                 ActorBase_804A5770* arrowActor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (arrowActor != NULL && arrowActor->mActorId == ACTOR_ARRW) {

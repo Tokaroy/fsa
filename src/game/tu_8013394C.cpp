@@ -121,7 +121,7 @@ void NaviAfterCrystalCutscene_8049ED30::draw() {
 // FIXME(shotgun): 98.77 %, regalloc-only; behaviour clean.
 bool fn_80133B58() {
     bool res = true;
-    s32 serial = getActorManager_801F856C()->fn_801F7A08('CRNV');
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('CRNV');
     while (serial != -1) {
         NaviAfterCrystalCutscene_8049ED30* actor = (NaviAfterCrystalCutscene_8049ED30*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor == NULL) {

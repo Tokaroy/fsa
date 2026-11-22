@@ -293,14 +293,14 @@ public:
     // 3 units. Steps field_0x26 / field_0x24 up to frames, toward (x, y).
     u8 fn_8040271C(s16 frames, f32 x, f32 y);
     // 5 units. Resizes by (x, y).
-    void fn_80402CE0(f32 x, f32 y);
+    void scaleKeepCentre_80402CE0(f32 x, f32 y);
     // SHARED-EDIT (tu_803BC6F0 fn_803CE11C): 7 units. Steps field_0x26 up to
     // frames - 1, setting the pane's alpha from `from` toward `to`; on the
     // last step stores frames in field_0x22, sets `to` and returns 1, else 0.
     bool fn_80402628(s16 frames, u8 from, u8 to);
     // 2 units. Steps field_0x26 (wrapping at frames) and fades the pane's alpha
     // from `from` to `to`; mode 1 eases in and out, any other mode goes up and back.
-    bool fn_8040245C(s16 frames, u8 from, u8 to, u8 mode);
+    bool pulseAlpha_8040245C(s16 frames, u8 from, u8 to, u8 mode);
 
     f32 getY() const { return field_0xc; }
 

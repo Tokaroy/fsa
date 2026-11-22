@@ -271,7 +271,7 @@ bool Thief_804A5A30::fn_8020609C() const {
     return result;
 }
 
-void Thief_804A5A30::fn_80205E0C(s32 newState) {
+void Thief_804A5A30::setState_80205E0C(s32 newState) {
     if (newState == 7) {
         switch (mState) {
         case 3:
@@ -375,7 +375,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
                 mPos.x = mPrevPos.x;
                 mPos.y = mPrevPos.y;
-                fn_80205E0C(0);
+                setState_80205E0C(0);
             }
             break;
         }
@@ -433,17 +433,17 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (field_0x340 >= 0) {
-            fn_80205E0C(1);
+            setState_80205E0C(1);
         } else if (field_0x338 >= 0) {
             if (fn_801CCF34(field_0x338) <= 0 && !fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
-                fn_80205E0C(6);
+                setState_80205E0C(6);
             } else if (fn_801D183C(0.0f)) {
-                fn_80205E0C(2);
+                setState_80205E0C(2);
             }
         }
         if (mState == 0) {
             if (field_0x94 == 1) {
-                fn_80205E0C(8);
+                setState_80205E0C(8);
             } else {
                 field_0x33c = field_0x368.fn_80217374(field_0x33c);
             }
@@ -457,7 +457,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     case 1: {
         s32 serial = field_0x340;
         if (serial < 0) {
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         } else {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             field_0x32c.x = target->mPos.x;
@@ -482,19 +482,19 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     }
     case 2:
         if (field_0x340 >= 0) {
-            fn_80205E0C(1);
+            setState_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) <= 0 || !fn_801D0B44(field_0x338) ||
                    fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) == 0) {
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         } else if (!fn_801D12CC()) {
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         } else {
             field_0x33c = fn_801D02E0(&field_0x32c);
         }
         break;
     case 3:
         if (field_0xc4 == 0) {
-            fn_80205E0C(4);
+            setState_80205E0C(4);
         }
         break;
     case 4:
@@ -521,21 +521,21 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
                     }
                 }
             }
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         }
         break;
     case 5:
         if (fn_801D2918(&field_0x35c)) {
-            fn_80205E0C(7);
+            setState_80205E0C(7);
         }
         break;
     case 6:
         if (field_0x340 >= 0) {
-            fn_80205E0C(1);
+            setState_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !fn_801D0B44(field_0x338) ||
                    !fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ||
                    fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         } else if (mapHit) {
             fn_801D11FC();
         } else {
@@ -544,7 +544,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         break;
     case 7:
         if (mStateTimer >= 60) {
-            fn_80205E0C(0);
+            setState_80205E0C(0);
         }
         break;
     case 8:
@@ -633,7 +633,7 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
         case 9:
             break;
         default:
-            fn_80205E0C(9);
+            setState_80205E0C(9);
             break;
         }
     }
@@ -660,7 +660,7 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
                     if (getPlayerLayer_8023DE58(i) == getField_0x4() &&
                         fn_80239C00(i, &box, mLayer_0x4) &&
                         fn_8022F9E4(i, mSerial, true, false)) {
-                        fn_80205E0C(3);
+                        setState_80205E0C(3);
                         break;
                     }
                 }

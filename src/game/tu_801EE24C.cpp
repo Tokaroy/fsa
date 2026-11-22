@@ -335,7 +335,7 @@ void ActorBase_804A5770::die_0x24() {
                isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) &&
                gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f && mLastAttacker_0x10c >= 0 &&
                mLastAttacker_0x10c < 4 && fn_8022F340(mLastAttacker_0x10c) == fn_801CCDA4() &&
-               getActorManager_801F856C()->fn_801F7A08(ACTOR_CRTL) < 0)
+               getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_CRTL) < 0)
     {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, mLayer_0x4, &mPos, 0, -1, -1);
     } else if (mParamDasu_0x18c != 0) {
@@ -1242,13 +1242,13 @@ u8 ActorBase_804A5770::fn_801F2740(s32 skipPlayer) const {
     return hits;
 }
 
-s32 ActorBase_804A5770::fn_801F2718(u32 actorId) const {
-    return fn_801F8108(this, actorId, mSerial, 32.0f);
+s32 ActorBase_804A5770::findOverlappingActor_801F2718(u32 actorId) const {
+    return findOverlappingActorById_801F8108(this, actorId, mSerial, 32.0f);
 }
 
-// 32.0f is lbl_8053F748; fn_801F26CC (reloc-name) and fn_801F2718 pair with
+// 32.0f is lbl_8053F748; findOverlappingActorOf_801F26CC (reloc-name) and findOverlappingActor_801F2718 pair with
 // it only once the unit's .sdata2 order is fixed (see the constructor's FIXME).
-s32 ActorBase_804A5770::fn_801F26CC(const u32* ids) {
+s32 ActorBase_804A5770::findOverlappingActorOf_801F26CC(const u32* ids) {
     return getActorManager_801F856C()->fn_801F7F58(this, ids, mSerial, 32.0f);
 }
 

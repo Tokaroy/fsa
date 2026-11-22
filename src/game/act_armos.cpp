@@ -384,7 +384,7 @@ void Armos_8049F260::update() {
         }
         damagePlayersInBox_801F2B7C(-100, -1, 1);
         fn_801F2618(NULL, false);
-        s32 serial = fn_801F8108(this, 'LNBM', -1, 32.0f);
+        s32 serial = findOverlappingActorById_801F8108(this, 'LNBM', -1, 32.0f);
         if (serial != 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {

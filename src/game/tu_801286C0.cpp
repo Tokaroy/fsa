@@ -205,7 +205,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         gAudioMgr_8053AF80->fn_80458F9C(0x96);
         break;
     case 9: {
-        s32 serial = getActorManager_801F856C()->fn_801F7A08('SEV2');
+        s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('SEV2');
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {

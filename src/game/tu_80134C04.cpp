@@ -1329,18 +1329,18 @@ bool GameRoot_8049EF20::fn_80136320() {
 // heap and starts loading the mode's archives (fn_80401E10) or screen.
 void GameRoot_8049EF20::fn_80135A04(s32 mode) {
     if (field_0x84 != 0) {
-        fn_801352F4(field_0x4c);
+        deleteModeScreen_801352F4(field_0x4c);
         field_0x84 = 0;
     }
     switch (mode) {
     case 7:
         if (field_0x4 == NULL) {
-            fn_801352F4(1);
-            fn_801352F4(2);
-            fn_801352F4(3);
-            fn_801352F4(4);
-            fn_801352F4(6);
-            fn_801352F4(12);
+            deleteModeScreen_801352F4(1);
+            deleteModeScreen_801352F4(2);
+            deleteModeScreen_801352F4(3);
+            deleteModeScreen_801352F4(4);
+            deleteModeScreen_801352F4(6);
+            deleteModeScreen_801352F4(12);
             OSReport("Game　連続空き容量　%fK 残り空き容量　%fK\n",
                      field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
@@ -1366,23 +1366,23 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         break;
     case 12:
         getEffectSystem_8013C824()->mEmitterManager->forceDeleteAllEmitter();
-        fn_801352F4(1);
-        fn_801352F4(2);
-        fn_801352F4(3);
-        fn_801352F4(4);
-        fn_801352F4(6);
-        fn_801352F4(7);
+        deleteModeScreen_801352F4(1);
+        deleteModeScreen_801352F4(2);
+        deleteModeScreen_801352F4(3);
+        deleteModeScreen_801352F4(4);
+        deleteModeScreen_801352F4(6);
+        deleteModeScreen_801352F4(7);
         OSReport("Result　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         fn_80135020(12);
         break;
     case 1:
-        fn_801352F4(7);
-        fn_801352F4(2);
-        fn_801352F4(3);
-        fn_801352F4(4);
-        fn_801352F4(6);
-        fn_801352F4(12);
+        deleteModeScreen_801352F4(7);
+        deleteModeScreen_801352F4(2);
+        deleteModeScreen_801352F4(3);
+        deleteModeScreen_801352F4(4);
+        deleteModeScreen_801352F4(6);
+        deleteModeScreen_801352F4(12);
         OSReport("Title　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         fn_80135020(1);
@@ -1392,12 +1392,12 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         if (field_0x4c == 2 || field_0x4c == 5) {
             break;
         }
-        fn_801352F4(7);
-        fn_801352F4(1);
-        fn_801352F4(3);
-        fn_801352F4(4);
-        fn_801352F4(6);
-        fn_801352F4(12);
+        deleteModeScreen_801352F4(7);
+        deleteModeScreen_801352F4(1);
+        deleteModeScreen_801352F4(3);
+        deleteModeScreen_801352F4(4);
+        deleteModeScreen_801352F4(6);
+        deleteModeScreen_801352F4(12);
         OSReport("ModeSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
@@ -1408,12 +1408,12 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         field_0xb0 = NULL;
         break;
     case 3:
-        fn_801352F4(7);
-        fn_801352F4(1);
-        fn_801352F4(2);
-        fn_801352F4(4);
-        fn_801352F4(6);
-        fn_801352F4(12);
+        deleteModeScreen_801352F4(7);
+        deleteModeScreen_801352F4(1);
+        deleteModeScreen_801352F4(2);
+        deleteModeScreen_801352F4(4);
+        deleteModeScreen_801352F4(6);
+        deleteModeScreen_801352F4(12);
         OSReport("FileSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
@@ -1424,12 +1424,12 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         field_0xb0 = NULL;
         break;
     case 4:
-        fn_801352F4(7);
-        fn_801352F4(1);
-        fn_801352F4(2);
-        fn_801352F4(3);
-        fn_801352F4(6);
-        fn_801352F4(12);
+        deleteModeScreen_801352F4(7);
+        deleteModeScreen_801352F4(1);
+        deleteModeScreen_801352F4(2);
+        deleteModeScreen_801352F4(3);
+        deleteModeScreen_801352F4(6);
+        deleteModeScreen_801352F4(12);
         OSReport("Menu　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
@@ -1440,12 +1440,12 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         field_0xb0 = NULL;
         break;
     case 6:
-        fn_801352F4(7);
-        fn_801352F4(1);
-        fn_801352F4(2);
-        fn_801352F4(3);
-        fn_801352F4(4);
-        fn_801352F4(12);
+        deleteModeScreen_801352F4(7);
+        deleteModeScreen_801352F4(1);
+        deleteModeScreen_801352F4(2);
+        deleteModeScreen_801352F4(3);
+        deleteModeScreen_801352F4(4);
+        deleteModeScreen_801352F4(12);
         OSReport("MapSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
@@ -1580,7 +1580,7 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
 }
 
 // Deletes the screen object of game mode `mode` (see fn_80135020).
-void GameRoot_8049EF20::fn_801352F4(s32 mode) {
+void GameRoot_8049EF20::deleteModeScreen_801352F4(s32 mode) {
     switch (mode) {
     case 7:
         if (field_0x4 != NULL) {

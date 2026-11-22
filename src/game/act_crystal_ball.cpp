@@ -42,7 +42,7 @@ inline s32 adjustItem_80320374(CrystalBall_804AB308* ball, s32 item) {
             }
         }
         if (item == 7) {
-            if (fn_802DE814() == 1 || fn_80237810(fn_8022F340(ball->field_0x23c)) != 0x10) {
+            if (fn_802DE814() == 1 || getPlayerMaxLife_80237810(fn_8022F340(ball->field_0x23c)) != 0x10) {
                 item = 6;
             }
         }
@@ -635,7 +635,7 @@ void CrystalBall_804AB308::update() {
                 if (field_0x94 == 0) {
                     fn_80322F44();
                     if (mLayer_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                        lbl_8053AED0->fn_8043D67C(0x1A1, field_0x29c, 0);
+                        lbl_8053AED0->requestMessage_8043D67C(0x1A1, field_0x29c, 0);
                     }
                 } else if (field_0x94 == 2) {
                     fn_80322BC4();
@@ -739,7 +739,7 @@ void CrystalBall_804AB308::update() {
         if (field_0x258 <= 0) {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 if (mLayer_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                    lbl_8053AED0->fn_8043D67C(0x1A1, field_0x29c, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x1A1, field_0x29c, 0);
                 } else {
                     fn_8038BD08(field_0x29c, 0xD3, mLayer_0x4, mPos, true);
                 }

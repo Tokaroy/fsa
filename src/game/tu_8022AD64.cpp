@@ -152,7 +152,7 @@ void fn_8023F6C4() {
 // active player without fn_80240670 is on a layer below 8, else 1.
 void fn_8023F390() {
     for (s32 i = 0; i < 4; i++) {
-        playerAt(i)->fn_80253E6C();
+        playerAt(i)->update_80253E6C();
     }
     if (gGameRoot_8053AAF8->field_0x94 == 1) {
         return;
@@ -273,7 +273,7 @@ s32 fn_8023EF50(s32 player) {
     return 0;
 }
 
-s32 fn_8023EEB4(s32 player) {
+s32 getPlayerHeldActorId_8023EEB4(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
     }
@@ -303,7 +303,7 @@ bool fn_8023ED8C(s32 player) {
     return gPlayerManager_8053AC90->mPlayers[player]->fn_8025F590();
 }
 
-s32 fn_8023ECF0(s32 player) {
+s32 getPlayerHeldPlayer_8023ECF0(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return -1;
     }
@@ -508,7 +508,7 @@ s32 fn_8023E190(s32 player) {
     return 0;
 }
 
-s32 fn_8023E10C(s32 player) {
+s32 getPlayerDestLayer_8023E10C(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
     }
@@ -1541,7 +1541,7 @@ s32 fn_8023885C(s32 serial) {
 }
 
 // A hit on `player` at `pos` reaches every player of its group, each at the
-// same offset from its own position (fn_802710C8, then fn_80248FF0 when it
+// same offset from its own position (fn_802710C8, then endFormActor_80248FF0 when it
 // lands); then fn_80270D34(damage) on every player who follows a leader.
 // Whether `player` itself was hit.
 // FIXME: 91.52 %. The original keeps `offset` on the stack (stores pos, then the
@@ -1568,7 +1568,7 @@ bool fn_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg) 
             JGeometry::TVec2f at(own->x, own->y);
             at.add(offset);
             if (gPlayerManager_8053AC90->mPlayers[i]->fn_802710C8(player, damage, &at, arg)) {
-                gPlayerManager_8053AC90->mPlayers[i]->fn_80248FF0();
+                gPlayerManager_8053AC90->mPlayers[i]->endFormActor_80248FF0();
                 if (i == player) {
                     hit = true;
                 }
@@ -1639,7 +1639,7 @@ void fn_802381B8(s32 player) {
 // it holds): a manager, not in mode 4 with fn_8022F478, no free player passing fn_80234950,
 // not fn_8023EA28; then every present player not fn_802349EC (on the game root's
 // field_0x7f with no stage selected: all of them, failing on fn_8022CCAC; else
-// `player`'s group) must pass fn_80251BFC(0x38), and they all get fn_80248B9C.
+// `player`'s group) must pass canRequestState_80251BFC(0x38), and they all get fn_80248B9C.
 bool fn_80237A80(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
@@ -1661,7 +1661,7 @@ bool fn_80237A80(s32 player) {
                 if (fn_8022CCAC(i)) {
                     return false;
                 }
-                if (!gPlayerManager_8053AC90->mPlayers[i]->fn_80251BFC(0x38)) {
+                if (!gPlayerManager_8053AC90->mPlayers[i]->canRequestState_80251BFC(0x38)) {
                     return false;
                 }
             }
@@ -1672,7 +1672,7 @@ bool fn_80237A80(s32 player) {
     } else {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && !fn_802349EC(i) && fn_8022E438(player, i) &&
-                !gPlayerManager_8053AC90->mPlayers[i]->fn_80251BFC(0x38)) {
+                !gPlayerManager_8053AC90->mPlayers[i]->canRequestState_80251BFC(0x38)) {
                 return false;
             }
         }
@@ -1715,7 +1715,7 @@ bool fn_802378AC(s32 player, const JGeometry::TVec2f* pos) {
     return false;
 }
 
-s32 fn_80237810(s32 player) {
+s32 getPlayerMaxLife_80237810(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
     }
@@ -2007,12 +2007,12 @@ s32 fn_80236630(s32 player) {
     return 0;
 }
 
-// fn_80270DDC(amount, flag) on `player` and every player of its group (fn_8022E438).
+// addLife_80270DDC(amount, flag) on `player` and every player of its group (fn_8022E438).
 void fn_80236554(s32 player, s32 amount, bool flag) {
     if (gPlayerManager_8053AC90 != NULL && fn_8023F264(player)) {
         for (s32 i = 0; i < 4; i++) {
             if (player == i || fn_8022E438(player, i)) {
-                gPlayerManager_8053AC90->mPlayers[i]->fn_80270DDC(amount, flag);
+                gPlayerManager_8053AC90->mPlayers[i]->addLife_80270DDC(amount, flag);
             }
         }
     }
@@ -2652,10 +2652,10 @@ void fn_80232A0C() {
             if (fn_8022CAF8(j) != 4 && fn_8022E438(i, j)) {
                 continue;
             }
-            if (fn_8023EFEC(i) && fn_8022E438(fn_8023ECF0(i), j) && fn_8022CAF8(j) != 4) {
+            if (fn_8023EFEC(i) && fn_8022E438(getPlayerHeldPlayer_8023ECF0(i), j) && fn_8022CAF8(j) != 4) {
                 continue;
             }
-            if (fn_8023EFEC(j) && fn_8022E438(fn_8023ECF0(j), i) && fn_8022CAF8(i) != 4) {
+            if (fn_8023EFEC(j) && fn_8022E438(getPlayerHeldPlayer_8023ECF0(j), i) && fn_8022CAF8(i) != 4) {
                 continue;
             }
             if (fn_80233EDC(j) || fn_8022D75C(j) || fn_802349EC(j) || fn_8023EA28(j) ||
@@ -2863,7 +2863,7 @@ void fn_80232A0C() {
 // The screen change of a Shadow Battle / multiplayer stage (fn_8023F390, with
 // gGameRoot_8053AAF8->0x7F): players standing on an exit (fn_802527B0 gives
 // its direction) pull their group along (fn_80248DB8); when every present
-// player able to (not fn_8022F478, fn_80251BFC(0x1B)) points the same way and
+// player able to (not fn_8022F478, canRequestState_80251BFC(0x1B)) points the same way and
 // none is busy, the escort check fn_80124600 lets it through, the view
 // changes screen (fn_802DD3D4, then fn_802DCE5C), every player gets
 // fn_80241E64 and each one is placed on the new screen (fn_802520C0).
@@ -2921,7 +2921,7 @@ void fn_80231DE4() {
         if (fn_8023EA28(i)) {
             continue;
         }
-        if (!player->fn_80251BFC(0x1B)) {
+        if (!player->canRequestState_80251BFC(0x1B)) {
             return;
         }
         if (fn_8022F478(i)) {
@@ -3023,7 +3023,7 @@ bool fn_802319B4(s32 player, s32 arg) {
         return false;
     }
     if (fn_8023F264(player)) {
-        return gPlayerManager_8053AC90->mPlayers[player]->fn_80251BFC(arg);
+        return gPlayerManager_8053AC90->mPlayers[player]->canRequestState_80251BFC(arg);
     }
     return false;
 }
@@ -3672,7 +3672,7 @@ s32 fn_8022EA0C(s32 player) {
     return other;
 }
 
-s32 fn_8022E970(s32 player) {
+s32 getPlayerGroupSize_8022E970(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
     }
@@ -4033,7 +4033,7 @@ void fn_8022CD48(s32 player) {
         return;
     }
     if (fn_8023F264(player)) {
-        gPlayerManager_8053AC90->mPlayers[player]->fn_80248FF0();
+        gPlayerManager_8053AC90->mPlayers[player]->endFormActor_80248FF0();
     }
 }
 

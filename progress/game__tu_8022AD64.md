@@ -106,7 +106,7 @@ Baseline (progress.py): total 8571 / 11557; unit 283/373. Now (rebased on matchi
   bypassed in-process (no claims.json edit); its manifest row is new (coordinator approval).
 - Types proven from the asm: fn_80230224 takes s32 (the call truncates it with clrlwi 24 into
   fn_8024D058, whose parameter is therefore u8); fn_80236554's flag is bool (passed unextended to
-  fn_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
+  addLife_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
   fn_80230498 returns fn_8024DC00's bool.
 - Defined functions leave Player.h's extern "C" block (a section after it); symbols.txt renamed to
   the names our object emits, also the Player getters fn_8024CAC8, fn_80241BA0, fn_802422D0,

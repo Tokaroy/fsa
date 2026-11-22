@@ -82,19 +82,19 @@ GameMode_804B0688::GameMode_804B0688() {
     if (lbl_80529DEC.field_0x242 == 0) {
         lbl_80529DEC.field_0x242 = 1;
         gGameRoot2_8053AB10->field_0x20->fn_802FF798();
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_base_sch.szs"), 0, 0, 0, 0);
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_schE.szs"), 0, 0, 0x7000, 0);
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 0, 0, 0, false);
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "player_sch.szs"), 0, 2, 0x4000, 0);
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 2, 0, 0, false);
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs"), 0, 3, 0, 0);
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, false);
         gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }

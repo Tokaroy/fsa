@@ -194,7 +194,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             vfunc_0x9C(fn_8012285C(), 0.03f, 0.08f, 1.0f, 0.2f, 8.0f);
         }
         {
-            s32 serial = fn_801F2718(0x48415254);
+            s32 serial = findOverlappingActor_801F2718(0x48415254);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {

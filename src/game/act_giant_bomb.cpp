@@ -95,7 +95,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
         if (fn_8022D75C(i) == true && !fn_80234ECC(i)) {
             unk[i] = 1;
             if (fn_8023ED8C(i) == true) {
-                unk[fn_8023ECF0(i)] = 1;
+                unk[getPlayerHeldPlayer_8023ECF0(i)] = 1;
             }
         }
     }
@@ -220,9 +220,9 @@ void GiantBomb_804AC588::update() {
             mVel_0x3c.z = 0.0f;
             mTimer = 15;
             if (field_0x248 == 0) {
-                lbl_8053AED0->fn_8043D67C(0x1A8, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x1A8, 0, 0);
             } else if (field_0x248 == 1) {
-                lbl_8053AED0->fn_8043D67C(0x1C1, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x1C1, 0, 0);
             }
             mState = 5;
         } else {

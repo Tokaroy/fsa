@@ -430,19 +430,19 @@ FileSelect_804AFF60::FileSelect_804AFF60() {
         lbl_80529DEC.field_0x242 = 1;
         gGameRoot2_8053AB10->field_0x20->fn_802FF798();
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_base_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 0, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_schE.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0x7000, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 0, 0x7000, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 0, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 0, 0, 0, false);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "player_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 2, 0x4000, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 2, 0x4000, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 2, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 2, 0, 0, false);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 3, 0, 0);
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(res, 0, 3, 0, 0);
         res = gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs");
-        gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 3, 0, 0, false);
+        gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(res, 0, 3, 0, 0, false);
         gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
 
@@ -1304,7 +1304,7 @@ void FileSelect_804AFF60::fn_803CD2DC() {
             }
         }
         field_0x50->moveFromCentre_80402E08(0.0f, field_0x44[field_0xa4]->mPane->getBounds()->i.y - field_0x44[0]->field_0xc);
-        field_0x50->fn_8040245C(0x3C, 0, field_0x50->field_0x28, 1);
+        field_0x50->pulseAlpha_8040245C(0x3C, 0, field_0x50->field_0x28, 1);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur01'), field_0x50->field_0x28);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur02'), field_0x50->field_0x28);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur03'), field_0x50->field_0x28);
@@ -1799,7 +1799,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
             }
         }
         field_0x34->moveFromCentre_80402E08(field_0x24[field_0xa0]->field_0x8 - field_0x24[0]->field_0x8, bob);
-        field_0x34->fn_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
+        field_0x34->pulseAlpha_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
         field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
     }
 }
@@ -2155,7 +2155,7 @@ void FileSelect_804AFF60::fn_803C8B80() {
             }
         }
         field_0x50->moveFromCentre_80402E08(0.0f, field_0x44[field_0xa0]->mPane->getBounds()->i.y - field_0x44[0]->field_0xc);
-        field_0x50->fn_8040245C(0x3C, 0, field_0x50->field_0x28, 1);
+        field_0x50->pulseAlpha_8040245C(0x3C, 0, field_0x50->field_0x28, 1);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur01'), field_0x50->field_0x28);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur02'), field_0x50->field_0x28);
         field_0x50->setAlpha_804023D0(mScreenHuuin->search('Pfcur03'), field_0x50->field_0x28);
@@ -2292,7 +2292,7 @@ void FileSelect_804AFF60::fn_803C7CA0() {
             }
         }
         field_0x34->moveFromCentre_80402E08(field_0x24[field_0x114]->field_0x8 - field_0x24[0]->field_0x8, bob);
-        field_0x34->fn_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
+        field_0x34->pulseAlpha_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
         field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
     }
 }
@@ -2809,7 +2809,7 @@ void FileSelect_804AFF60::fn_803C4054() {
             }
         }
         field_0x34->moveFromCentre_80402E08(field_0x24[field_0x114]->field_0x8 - field_0x24[0]->field_0x8, bob);
-        field_0x34->fn_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
+        field_0x34->pulseAlpha_8040245C(0x3C, 0, field_0x34->field_0x28, 1);
         field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
     }
 }

@@ -112,7 +112,7 @@ bool MapEdOverlay_804B1AE8::fn_804432DC(u8 kind, s16 a, s16 b) {
             mPtestmap->field_0x22 = 0;
             mPtestmap->field_0x24 = 0;
             mPtestmap->moveFromCentre_80402E08(0.0f, 0.0f);
-            mPtestmap->fn_80402CE0(1.0f, 1.0f);
+            mPtestmap->scaleKeepCentre_80402CE0(1.0f, 1.0f);
             mPtestmap->mPane->show();
             mPmapten->mPane->hide();
             mState = 0;
@@ -126,7 +126,7 @@ bool MapEdOverlay_804B1AE8::fn_804432DC(u8 kind, s16 a, s16 b) {
             mPtestmap->field_0x24 = 0;
             mPtestmap->moveFromCentre_80402E08((f32)lbl_8048FBA4[mKind], (f32)lbl_8048FBB4[mKind]);
             f32 scale = lbl_8048FB88[mKind] / mPtestmap->field_0x18;
-            mPtestmap->fn_80402CE0(scale, scale);
+            mPtestmap->scaleKeepCentre_80402CE0(scale, scale);
             mPtestmap->mPane->show();
             mPmapten->mPane->hide();
             mState = 2;

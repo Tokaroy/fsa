@@ -378,7 +378,7 @@ void ForceGem_804AB6D8::update() {
     case 3:
         pool_80541D88();
         if (field_0x268 >= 4 && field_0x264 >= 0 && mLayer_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-            lbl_8053AED0->fn_8043D67C(lbl_80471A08[field_0x268 - 4], fn_8022F340(field_0x264), 0);
+            lbl_8053AED0->requestMessage_8043D67C(lbl_80471A08[field_0x268 - 4], fn_8022F340(field_0x264), 0);
         }
         fn_801F3604();
         field_0x250 = 0;
@@ -1070,7 +1070,7 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
     }
     if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
         !getGameView_802D6A9C()->fn_802D7F40(0)) {
-        lbl_8053AED0->fn_8043D67C(0x13f, other, 0);
+        lbl_8053AED0->requestMessage_8043D67C(0x13f, other, 0);
         getGameView_802D6A9C()->fn_802D7F84(0, true);
     }
     if (field_0x268 >= 4) {

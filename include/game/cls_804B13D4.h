@@ -121,7 +121,7 @@ public:
     /* 0x1C8 */ s32 field_0x1c8[4];
     /* 0x1D8 */ s32 field_0x1d8[4]; // fn_80419570: the life shown (fn_80237774), in quarter hearts
     /* 0x1E8 */ s32 field_0x1e8[4]; // fn_8041E8B4: the previous field_0x1d8
-    /* 0x1F8 */ s32 field_0x1f8[4]; // fn_80419570: the maximum shown (fn_80237810)
+    /* 0x1F8 */ s32 field_0x1f8[4]; // fn_80419570: the maximum shown (getPlayerMaxLife_80237810)
     /* 0x208 */ s32 field_0x208[4];
     /* 0x218 */ u8 field_0x218; // fn_80418B64: player 0 is in the lower part of the screen
     /* 0x219 */ u8 field_0x219;

@@ -231,9 +231,9 @@ void ArrowPlayer_804A05E0::update() {
         return;
     }
     if (field_0x230 != 4) {
-        s32 flame = fn_801F2718('FLME');
+        s32 flame = findOverlappingActor_801F2718('FLME');
         if (flame < 0) {
-            flame = fn_801F2718('BLZ2');
+            flame = findOverlappingActor_801F2718('BLZ2');
             if (flame >= 0) {
                 ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(flame);
                 if (a == NULL) {

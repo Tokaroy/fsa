@@ -173,7 +173,7 @@ void HelmarocKing_804A1630::init() {
         for (s32 i = 0; i < 4; i++) {
             fn_80304C10(i, "gb_ch_obj_tr_sch0.szs", 0x6017000, 1, 0);
         }
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_sch0.szs"), 0, 0, 0x7000, 0);
         field_0xb0 = 0x9040004;
         mDir_0x98 = 1;
@@ -924,7 +924,7 @@ void HelmarocKing_804A1630::update() {
                 damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 6);
             }
         } else if (lbl_80539F98 > 0) {
-            field_0x274 = fn_801F2718('GROK');
+            field_0x274 = findOverlappingActor_801F2718('GROK');
             if (field_0x274 >= 0) {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274);
                 if (target != NULL && target->mSpawnParam_0x90 != 2 && target->mSpawnParam_0x90 != 3) {

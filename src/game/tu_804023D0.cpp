@@ -391,7 +391,7 @@ void PaneCtrl_804AF86C::moveFromCentre_80402E08(f32 x, f32 y) {
 
 // FIXME: 99.59 %, regalloc-only; behaviour clean.
 // Regalloc only: saved floats f29/f31/f28 are assigned in a different order.
-void PaneCtrl_804AF86C::fn_80402CE0(f32 x, f32 y) {
+void PaneCtrl_804AF86C::scaleKeepCentre_80402CE0(f32 x, f32 y) {
     resizeKeepCentre(this, x, y);
 }
 
@@ -475,7 +475,7 @@ bool PaneCtrl_804AF86C::fn_80402628(s16 frames, u8 from, u8 to) {
 
 // Steps field_0x26 and fades the pane's alpha from `from` to `to`, mode 1 easing in and
 // out, any other mode up and back.
-bool PaneCtrl_804AF86C::fn_8040245C(s16 frames, u8 from, u8 to, u8 mode) {
+bool PaneCtrl_804AF86C::pulseAlpha_8040245C(s16 frames, u8 from, u8 to, u8 mode) {
     field_0x26++;
     if (field_0x26 >= frames) {
         field_0x26 = 0;

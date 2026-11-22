@@ -599,21 +599,21 @@ MapScreen_804B1288::MapScreen_804B1288() {
         field_0x38c = -1;
     }
     mTestMapPane_0xc8->moveFromCentre_80402E08(0.0f, 0.0f);
-    mTestMapPane_0xc8->fn_80402CE0(1.0f, 1.0f);
+    mTestMapPane_0xc8->scaleKeepCentre_80402CE0(1.0f, 1.0f);
     mTestMapPane_0xc8->mPane->setAlpha(mTestMapPane_0xc8->field_0x28);
     mTestMapPane_0xc8->field_0x20 = 0;
     mTestMapPane_0xc8->field_0x22 = 0;
     mTestMapPane_0xc8->field_0x24 = 0;
     mTestMapPane_0xc8->field_0x26 = 0;
     mTowerPane_0xcc->moveFromCentre_80402E08(0.0f, 0.0f);
-    mTowerPane_0xcc->fn_80402CE0(1.0f, 1.0f);
+    mTowerPane_0xcc->scaleKeepCentre_80402CE0(1.0f, 1.0f);
     mTowerPane_0xcc->mPane->setAlpha(mTowerPane_0xcc->field_0x28);
     mTowerPane_0xcc->field_0x20 = 0;
     mTowerPane_0xcc->field_0x22 = 0;
     mTowerPane_0xcc->field_0x24 = 0;
     mTowerPane_0xcc->field_0x26 = 0;
     field_0xd0->moveFromCentre_80402E08(0.0f, 0.0f);
-    field_0xd0->fn_80402CE0(1.0f, 1.0f);
+    field_0xd0->scaleKeepCentre_80402CE0(1.0f, 1.0f);
     field_0xd0->mPane->setAlpha(field_0xd0->field_0x28);
     field_0xd0->field_0x20 = 0;
     field_0xd0->field_0x22 = 0;
@@ -621,7 +621,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
     field_0xd0->field_0x26 = 0;
     for (s32 i = 0; i < 18; i++) {
         mRoutePanes_0xd4[i]->moveFromCentre_80402E08(0.0f, 0.0f);
-        mRoutePanes_0xd4[i]->fn_80402CE0(1.0f, 1.0f);
+        mRoutePanes_0xd4[i]->scaleKeepCentre_80402CE0(1.0f, 1.0f);
         mRoutePanes_0xd4[i]->mPane->setAlpha(mRoutePanes_0xd4[i]->field_0x28);
         mRoutePanes_0xd4[i]->field_0x20 = 0;
         mRoutePanes_0xd4[i]->field_0x22 = 0;
@@ -2423,23 +2423,23 @@ void MapScreen_804B1288::fn_8040873C() {
     } else {
         if (mStage_0x340 < 7) {
             mTestMapPane_0xc8->moveFromCentre_80402E08(lbl_8048C86C[mStage_0x340], lbl_8048C87C[mStage_0x340]);
-            mTestMapPane_0xc8->fn_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
+            mTestMapPane_0xc8->scaleKeepCentre_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
                                     lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
             f32 scale = lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18 - 1.0f;
             f32 dx = scale * (mTowerPane_0xcc->field_0x10 - mTestMapPane_0xc8->field_0x10);
             f32 dy = scale * (mTowerPane_0xcc->field_0x14 - mTestMapPane_0xc8->field_0x14);
             mTowerPane_0xcc->moveFromCentre_80402E08(dx + lbl_8048C86C[mStage_0x340], dy + lbl_8048C87C[mStage_0x340]);
-            mTowerPane_0xcc->fn_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
+            mTowerPane_0xcc->scaleKeepCentre_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
                                     lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
             dx = scale * (field_0xd0->field_0x10 - mTestMapPane_0xc8->field_0x10);
             dy = scale * (field_0xd0->field_0x14 - mTestMapPane_0xc8->field_0x14);
             field_0xd0->moveFromCentre_80402E08(dx + lbl_8048C86C[mStage_0x340], dy + lbl_8048C87C[mStage_0x340]);
-            field_0xd0->fn_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
+            field_0xd0->scaleKeepCentre_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
                                     lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
             for (int i = 0; i < 18; i++) {
                 mRoutePanes_0xd4[i]->moveFromCentre_80402E08(scale * mRoutePanes_0xd4[i]->field_0x10,
                                                        scale * mRoutePanes_0xd4[i]->field_0x14);
-                mRoutePanes_0xd4[i]->fn_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
+                mRoutePanes_0xd4[i]->scaleKeepCentre_80402CE0(lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18,
                                            lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
             }
         }
@@ -2493,7 +2493,7 @@ void MapScreen_804B1288::fn_804083D8() {
     field_0x42e = 30;
     for (int i = 0; i < 8; i++) {
         if (i == mStage_0x340) {
-            mLevelRowPanes_0x28[i][0]->fn_80402CE0(1.0f / scaleX, 1.0f / scaleY);
+            mLevelRowPanes_0x28[i][0]->scaleKeepCentre_80402CE0(1.0f / scaleX, 1.0f / scaleY);
             mLevelRowPanes_0x28[i][1]->mPane->resize(72.0f, 36.0f);
             boundsY = mLevelRowPanes_0x28[i][0]->mPane->getBounds()->i.y;
             iconY = mLevelRowPanes_0x28[i][0]->field_0xc;
@@ -2505,7 +2505,7 @@ void MapScreen_804B1288::fn_804083D8() {
             ((J2DPicture*)mLevelRowPanes_0x28[i][1]->mPane)->setBlackWhite(mRowBlackColors_0x328[4], mRowWhiteColors_0x310[4]);
             ((J2DTextBox*)mLevelRowPanes_0x28[i][2]->mPane)->setBlackWhite(mRowBlackColors_0x328[5], mRowWhiteColors_0x310[5]);
         } else {
-            mLevelRowPanes_0x28[i][0]->fn_80402CE0(1.0f, 1.0f);
+            mLevelRowPanes_0x28[i][0]->scaleKeepCentre_80402CE0(1.0f, 1.0f);
             mLevelRowPanes_0x28[i][1]->mPane->resize(mLevelRowPanes_0x28[i][1]->field_0x18, mLevelRowPanes_0x28[i][1]->field_0x1c);
             mLevelRowPanes_0x28[i][2]->mPane->move(mLevelRowPanes_0x28[i][2]->field_0x8, mLevelRowPanes_0x28[i][2]->getY());
             ((J2DPicture*)mLevelRowPanes_0x28[i][0]->mPane)->setBlackWhite(mRowBlackColors_0x328[0], mRowWhiteColors_0x310[0]);
@@ -2591,10 +2591,10 @@ void MapScreen_804B1288::fn_8040732C() {
         for (int i = mStage_0x340 * 4; i < mStage_0x340 * 4 + 4; i++) {
             if (field_0x38c & (1 << i)) {
                 if (fn_804045F8(mStage_0x340)) {
-                    mPointPanes_0x128[i]->fn_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
+                    mPointPanes_0x128[i]->pulseAlpha_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
                     mPointPanes_0x128[i]->setAlpha_804023D0(mMapAreaScreen_0x10->search(lbl_8048C2F8[i][1]), mPointAlpha_0x641);
                 } else if (i != lbl_8048C8EC[mStage_0x340] && !fn_80404074(i / 4, i % 4, &picked)) {
-                    mPointPanes_0x128[i]->fn_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
+                    mPointPanes_0x128[i]->pulseAlpha_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
                     mPointPanes_0x128[i]->setAlpha_804023D0(mMapAreaScreen_0x10->search(lbl_8048C2F8[i][1]), mPointAlpha_0x641);
                 }
             }
@@ -2661,10 +2661,10 @@ void MapScreen_804B1288::fn_8040732C() {
     for (int i = mStage_0x340 * 4; i < mStage_0x340 * 4 + 4; i++) {
         if (field_0x38c & (1 << i)) {
             if (fn_804045F8(mStage_0x340)) {
-                mPointPanes_0x128[i]->fn_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
+                mPointPanes_0x128[i]->pulseAlpha_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
                 mPointPanes_0x128[i]->setAlpha_804023D0(mMapAreaScreen_0x10->search(lbl_8048C2F8[i][1]), mPointAlpha_0x641);
             } else if (i != lbl_8048C8EC[mStage_0x340] && !fn_80404074(i / 4, i % 4, &picked)) {
-                mPointPanes_0x128[i]->fn_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
+                mPointPanes_0x128[i]->pulseAlpha_8040245C(100, 0, mPointPanes_0x128[i]->field_0x28, 0);
                 mPointPanes_0x128[i]->setAlpha_804023D0(mMapAreaScreen_0x10->search(lbl_8048C2F8[i][1]), mPointAlpha_0x641);
             }
         }

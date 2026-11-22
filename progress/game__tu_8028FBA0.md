@@ -23,11 +23,11 @@ SHARED-EDITS:
 - include/game/Player.h: member declarations added (raiseHeldActor,
   spinFacing, stepWalkCycle, setHeldPos, stepTransitionAnim, spawnEffect17D,
   followCamera, requestArrival, spawnEffect15B, life, fallStep,
-  riseToTarget: unit-local inlines of tu_8028FBA0; fn_8026152C(bool) of
+  riseToTarget: unit-local inlines of tu_8028FBA0; updateCarryWalk_8026152C(bool) of
   tu_8025EB18); fn_80290070 returns bool (was u8; callers test clrlwi.).
 - include/game/GameGlobals.h: `bool fn_80301CD0(s32 layer);` (tu_80301CD0,
   already defined there with C++ linkage).
-- config/G4SE01/symbols.txt: fn_8026152C -> fn_8026152C__15Player_804A6F38Fb
+- config/G4SE01/symbols.txt: updateCarryWalk_8026152C -> updateCarryWalk_8026152C__15Player_804A6F38Fb
   (r3 = Player: reads mPos / 0x14, writes 0x2F4; r4 tested with clrlwi.).
 
 ```diff

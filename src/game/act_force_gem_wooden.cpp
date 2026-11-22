@@ -8,7 +8,7 @@
 #include "game/RotMatrix.h"
 #include "game/act/act_force_gem_wooden.h"
 
-// The ids fn_801F26CC searches for: 'FIRE', 'BLZE', 'DDGO', then the 'NULL' end.
+// The ids findOverlappingActorOf_801F26CC searches for: 'FIRE', 'BLZE', 'DDGO', then the 'NULL' end.
 static const u32 lbl_80471708[4] = {'FIRE', 'BLZE', 'DDGO', 'NULL'};
 
 WoodenForceGem_804AB1F0::~WoodenForceGem_804AB1F0() {
@@ -99,7 +99,7 @@ void WoodenForceGem_804AB1F0::update() {
         s32 layer = mLayer_0x4;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
         boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, layer, serial);
-        if (fn_8023AB94(&box, mLayer_0x4, &p) >= 0 || fn_801F26CC(lbl_80471708) >= 0) {
+        if (fn_8023AB94(&box, mLayer_0x4, &p) >= 0 || findOverlappingActorOf_801F26CC(lbl_80471708) >= 0) {
             if (field_0x248 == 0) {
                 startSound_801F0E34(0x30005, 0);
                 getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &mPos, 0, -1, -1);

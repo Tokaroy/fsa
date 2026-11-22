@@ -134,10 +134,10 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
 | tu_80457DFC | fn_80457E54, fn_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
-| tu_8023FBF0 | fn_80248FF0 | L | fn_80249070 | progress |
+| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
+| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
 | tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
-| tu_801F6058 | fn_801F8108 | L | fn_801F7F58 | progress |
+| tu_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
 | tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
 | tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
 | tu_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
@@ -263,7 +263,7 @@ There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.
 
 Gains under deferred: act_deadrock draw / update; act_shadow_link_bow and
-act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, fn_801F26CC, fn_801F2718,
+act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
 fn_801F2A10, fn_801F3128 (99.5-99.9 % register / scheduling near-misses that become
 exact); tu_802EF76C init.
 

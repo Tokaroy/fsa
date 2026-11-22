@@ -690,7 +690,7 @@ void AdventureHud_804B13D4::fn_8041F720() {
             }
             Vec screen;
             if (field_0x21a[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
-                gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
                 f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
                 f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
                 f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
@@ -700,7 +700,7 @@ void AdventureHud_804B13D4::fn_8041F720() {
                 field_0x8[i]->draw(x, y, field_0x4c);
                 field_0x234[i] = 0;
             } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
-                gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
                 f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
                 f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
                 f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
@@ -882,7 +882,7 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
         field_0x21a[player] = lbl_8050DB0C.field_0x4c[20] * lbl_8050DB0C.field_0x4c[21] + 30;
         field_0x1e8[player] = field_0x1d8[player];
         field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
-        field_0x1f8[player] = fn_80237810(player);
+        field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         lbl_80529DEC.field_0x239 &= ~(u8)(1 << player);
     } else if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x198[player]++;
@@ -901,7 +901,7 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
             field_0x21a[player] = lbl_8050DB0C.field_0x4c[20] * lbl_8050DB0C.field_0x4c[21] + 30;
             field_0x1e8[player] = field_0x1d8[player];
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
-            field_0x1f8[player] = fn_80237810(player);
+            field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         }
     } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
@@ -920,7 +920,7 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
             field_0x21a[player] = lbl_8050DB0C.field_0x4c[20] * lbl_8050DB0C.field_0x4c[21] + 30;
             field_0x1e8[player] = field_0x1d8[player];
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
-            field_0x1f8[player] = fn_80237810(player);
+            field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         }
     } else {
         field_0x198[player] = 0;
@@ -1076,7 +1076,7 @@ void AdventureHud_804B13D4::fn_8041DD24() {
     if (!(field_0x28a & 1)) {
         return;
     }
-    s32 max = fn_80237810(0);
+    s32 max = getPlayerMaxLife_80237810(0);
     s32 life = lbl_80529DEC.field_0xd8[0];
     if (max > 32) {
         max = 32;
@@ -1860,7 +1860,7 @@ void AdventureHud_804B13D4::fn_80419C38(s32 player, bool arg) {
 void AdventureHud_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
         field_0x1d8[player] = fn_80237774(player);
-        field_0x1f8[player] = fn_80237810(player);
+        field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         return;
     }
     s32 max = field_0x1f8[player];
@@ -2039,7 +2039,7 @@ void AdventureHud_804B13D4::fn_80418D08(s32 player, bool force) {
 
 s32 AdventureHud_804B13D4::fn_80418B64() {
     Vec screen;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(0)), false, false, &screen);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(0)), false, false, &screen);
     if (getPlayerLayer_8023DE58(0) >= 8) {
         field_0x218 = 1;
     } else {

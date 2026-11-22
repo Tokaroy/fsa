@@ -807,7 +807,7 @@ void Player_804A6F38::fn_802544B0() {
     field_0xc7c = 0;
 }
 
-void Player_804A6F38::fn_80253E6C() {
+void Player_804A6F38::update_80253E6C() {
     if (!mActive) {
         return;
     }
@@ -1167,7 +1167,7 @@ void Player_804A6F38::fn_80252BAC(const JGeometry::TVec3f* offset) {
 bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
     out->x = 0;
     out->y = 0;
-    if (!fn_80251BFC(0x1b)) {
+    if (!canRequestState_80251BFC(0x1b)) {
         return false;
     }
     if (mState_0x1240 == 0x1b) {
@@ -1400,7 +1400,7 @@ void Player_804A6F38::fn_80251D50() {
 }
 
 // Whether a request for `state` may be made now.
-bool Player_804A6F38::fn_80251BFC(s32 state) {
+bool Player_804A6F38::canRequestState_80251BFC(s32 state) {
     if (mStateLocked_0x124d == true) {
         return false;
     }
@@ -1435,12 +1435,12 @@ bool Player_804A6F38::fn_80251BFC(s32 state) {
     return true;
 }
 
-// Requests state `state` (mRequestedState_0x1244) when fn_80251BFC allows it. A player
+// Requests state `state` (mRequestedState_0x1244) when canRequestState_80251BFC allows it. A player
 // not taking part (bit field_0x4 of gGameRoot_8053AAF8->mPlayerMask clear, see
 // game/PlayerBit.h) with no partner asking for state 0 gets
 // state 1 instead; with field_0x434 set, state 0 becomes 2.
 bool Player_804A6F38::fn_80251AEC(s32 state) {
-    if (!fn_80251BFC(state)) {
+    if (!canRequestState_80251BFC(state)) {
         return false;
     }
     if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && mLeader_0xd60 < 0 && state == 0) {
@@ -1961,7 +1961,7 @@ bool Player_804A6F38::fn_8024EFA0(bool arg) {
 // 0x60 frames the flag lbl_8053ACD8[field_0x4] blinks (set while bit 0x10 of
 // the count and field_0x11e0 are clear); every 32 frames (count & 0x1f ==
 // 15) fn_803037D4(field_0x4, 5) when fn_8030A308 and fn_8030381C allow it,
-// else sound 9. While it runs and fn_8023E10C is below 8, fn_80402FBC gets
+// else sound 9. While it runs and getPlayerDestLayer_8023E10C is below 8, fn_80402FBC gets
 // fn_8023E214's vector; once it has run out the flag follows the player's
 // layer (< 8).
 void Player_804A6F38::fn_8024EE24() {
@@ -1988,7 +1988,7 @@ void Player_804A6F38::fn_8024EE24() {
                 }
             }
         }
-        if (fn_8023E10C(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
+        if (getPlayerDestLayer_8023E10C(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
             s32 player = mPlayerNo_0x4;
             fn_80402FBC(player, *fn_8023E214(fn_8022EA0C(player)));
         }
@@ -2017,7 +2017,7 @@ s8 Player_804A6F38::fn_8024EE0C() {
 // are the original's halt checks (a self-branch each): the counter must be
 // at most 9999 and must take a store (written +1, read back, restored).
 // The +1 / read back / halt / restore check is the same construct as
-// tu_8026FC20 fn_80270DDC on mLife_0xbfc (source form unexplained,
+// tu_8026FC20 addLife_80270DDC on mLife_0xbfc (source form unexplained,
 // docs/CRACK_PASS.md, Open questions).
 void Player_804A6F38::fn_8024ED4C(s32 value) {
     if (mLeader_0xd60 >= 0) {
@@ -2242,7 +2242,7 @@ void Player_804A6F38::fn_8024E344() {
     }
 }
 
-// Not auto-inlined: fn_80253E6C calls fn_8024E0A0 out of line in the original
+// Not auto-inlined: update_80253E6C calls fn_8024E0A0 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Every 60 frames (field_0x1264), in the game modes of isGameModeSet, for a
@@ -2309,7 +2309,7 @@ JGeometry::TVec3f* Player_804A6F38::fn_8024E018() {
 // Puts the player into the 0x454 mode (fn_8024E060 must allow it; state 0x4F
 // first asks for state 0): keeps mPos in 0x32C and picks the frame 0x450 by
 // state and facing (0x3DC); then 0xCA2 = 0xFF, 0x452 = 0, the emitters go
-// (fn_80241E64), the 'FORM' actor ends (fn_80248FF0) and 0xCAE / 0xCAF are set.
+// (fn_80241E64), the 'FORM' actor ends (endFormActor_80248FF0) and 0xCAE / 0xCAF are set.
 bool Player_804A6F38::fn_8024DCD0() {
     if (!fn_8024E060()) {
         return false;
@@ -2359,7 +2359,7 @@ bool Player_804A6F38::fn_8024DCD0() {
     field_0xca2 = 0xff;
     field_0x452 = 0;
     fn_80241E64();
-    fn_80248FF0();
+    endFormActor_80248FF0();
     field_0xcae = 1;
     field_0xcaf = 1;
     return true;
@@ -2992,7 +2992,7 @@ bool Player_804A6F38::fn_8024AFF8() {
 // Register allocation only (the group loops' temporaries; the
 // acting-player copy of field_0x4 is r26 vs r30), plus the literal pool
 // (@NNN vs lbl_80540044) until the unit's literals are in order.
-// The player's input each frame (update A, fn_80253E6C): the 'FORM' call
+// The player's input each frame (update A, update_80253E6C): the 'FORM' call
 // of a group leader and the four direction picks (fn_80248004(dir, true))
 // on the pad buttons or the C stick.
 void Player_804A6F38::fn_802490A8() {
@@ -3155,7 +3155,7 @@ bool Player_804A6F38::fn_80249068() {
 
 // Ends the 'FORM' actor of serial field_0x1230 (fn_802490A8 spawns it), or
 // without one clear121F_80249070.
-void Player_804A6F38::fn_80248FF0() {
+void Player_804A6F38::endFormActor_80248FF0() {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x1230);
     if (actor != NULL) {
         actor->mAlive = false;
@@ -3202,7 +3202,7 @@ void Player_804A6F38::fn_80248DD8() {
         mPos.x = pos->x;
         mPos.y = pos->y;
         mPos.z = pos->z;
-        if (fn_80251BFC(3)) {
+        if (canRequestState_80251BFC(3)) {
             mRequestedState_0x1244 = 3;
             mStateRequested_0x124c = true;
             if (mLeader_0xd60 < 0 && field_0xcfe == 1 && mRequestedState_0x1244 != 0) {
@@ -3433,7 +3433,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023ED8C(i) &&
             (fn_8022F478(i) || (field_0x120c == 4 && mode != 4))) {
-            fn_8023105C(fn_8023ECF0(i));
+            fn_8023105C(getPlayerHeldPlayer_8023ECF0(i));
             fn_802310F8(i);
         }
     }
@@ -3491,11 +3491,11 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
 void Player_804A6F38::fn_80247F58() {
     s32 team = mLeader_0xd60;
     if (team >= 0 && fn_80236B50(team)) {
-        if (fn_80251BFC(0x33)) {
+        if (canRequestState_80251BFC(0x33)) {
             // positions are read as TVec2f (x, y) by the callee
             fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
         }
-    } else if (fn_80239D38() && !field_0xd34 && fn_80251BFC(0x33)) {
+    } else if (fn_80239D38() && !field_0xd34 && canRequestState_80251BFC(0x33)) {
         fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
     }
 }
@@ -3516,7 +3516,7 @@ void Player_804A6F38::fn_80247F0C() {
 // Starts state 0xB with the timer field_0x48c (0x2D0 with GameRoot 0x7F,
 // else 0x168): with manager flag 0x71 it only sets field_0xbc0 = 0x3C, and
 // any of the flags 0x6C-0x72 refuses; already in state 0xB the timer
-// restarts. Otherwise when fn_80251BFC allows state 0xB: turn-based group
+// restarts. Otherwise when canRequestState_80251BFC allows state 0xB: turn-based group
 // mode (4) is left first (fn_80248004(5, true)) and still refuses; a
 // leader requests the state (fn_80251AEC), with fn_8022AD88 when the timer
 // had run out (field_0x490).
@@ -3537,7 +3537,7 @@ bool Player_804A6F38::fn_80247C0C() {
         field_0xbc0 = 0x3c;
         return true;
     }
-    if (!fn_80251BFC(0xb)) {
+    if (!canRequestState_80251BFC(0xb)) {
         return false;
     }
     if (fn_802486A0() == 4) {
@@ -4337,7 +4337,7 @@ void Player_804A6F38::fn_80241804(s32 value) {
 s32 Player_804A6F38::fn_802417CC() {
     s32 team = mLeader_0xd60;
     if (team >= 0) {
-        return fn_80237810(team);
+        return getPlayerMaxLife_80237810(team);
     }
     return mMaxLife_0xbf8;
 }

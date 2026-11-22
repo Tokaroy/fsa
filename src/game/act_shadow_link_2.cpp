@@ -340,7 +340,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 0xC:
         if (mFlags & 0x2000) {
-            lbl_8053AED0->fn_8043D67C(0x19B, 0, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x19B, 0, 0);
             gAudioMgr_8053AF80->fn_80458FF0(0x100000D, true, 0);
             getGameView_802D6A9C()->fn_802D6BC8(1);
         }

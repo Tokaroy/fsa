@@ -182,7 +182,7 @@ void Player_804A6F38::fn_8025E79C() {
 // along the facing or a player hit ahead (fn_8022E438 / fn_802350A0) recoils (0x41).
 // The actor field_0xbb4 is kept 34 ahead (lbl_8046AFB0).
 void Player_804A6F38::fn_8025DACC() {
-    fn_80276E5C();
+    setFacingBoxes_80276E5C();
     fn_802709C8();
     u16 tile;
     if (viewLayerFlag(mLayer_0x3b4)) {
@@ -1145,7 +1145,7 @@ void Player_804A6F38::fn_8025B3F0() {
         full = 25;
     }
     if (mAnimTimer_0x3fa == 0 && fn_8022C274(mPlayerNo_0x4)) {
-        fn_8027EB04();
+        updateFacing_8027EB04();
         mStateTimer_0x3fc++;
         if (mStateTimer_0x3fc == full) {
             field_0xb9b = true;
@@ -1779,7 +1779,7 @@ void Player_804A6F38::fn_80259830() {
     }
     if (!mButtonHeld_0xb84 && mAnimTimer_0x3fa == 11) {
         if (!field_0xbb8) {
-            lbl_8053AED0->fn_8043D67C(0xe8, mPlayerNo_0x4, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0xe8, mPlayerNo_0x4, 0);
             field_0xbb8 = 1;
         }
         CaneOfSomariaBlock_804AA9F0* block = static_cast<CaneOfSomariaBlock_804AA9F0*>(
@@ -1944,7 +1944,7 @@ void Player_804A6F38::fn_80259778() {
 
 void Player_804A6F38::fn_80259660() {
     field_0x458 = 0;
-    fn_8027EB04();
+    updateFacing_8027EB04();
     mVel_0x344.set(0.0f, 0.0f, 0.0f);
     mVel_0x344.z = 5.4f;
     fn_8024F0E8(0x10002);
@@ -2649,7 +2649,7 @@ inline void Player_804A6F38::requestJump_8025785C() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_80243194(i) && fn_8023EEB4(i) == 'RCK2') {
+        if (fn_80243194(i) && getPlayerHeldActorId_8023EEB4(i) == 'RCK2') {
             return;
         }
     }

@@ -207,7 +207,7 @@ bool cls_804A4C58::fn_801DE018() {
             }
         }
         if (player >= 0) {
-            fn_801D9C58(5);
+            setState_801D9C58(5);
             result = true;
         }
     }
@@ -231,7 +231,7 @@ bool cls_804A4C58::fn_801DDBE4() {
         mBox.f.y = 50.0f;
         s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
-            fn_801D9C58(5);
+            setState_801D9C58(5);
         }
         mBox.set(saved);
     }
@@ -290,11 +290,11 @@ bool cls_804A4C58::fn_801DDBE4() {
                     if (field_0x33f >= lbl_8053F1C8) {
                         mVel_0x3c.x *= 2.0f;
                         mVel_0x3c.y *= 2.0f;
-                        fn_801D9C58(0xF);
+                        setState_801D9C58(0xF);
                     }
                 }
                 if (mLife <= 0) {
-                    fn_801D9C58(0x13);
+                    setState_801D9C58(0x13);
                 }
             } else if (field_0x1dc.fn_801EAC54(other->mSerial)) {
                 startSound_801F0E34(0x400D1, 0);
@@ -359,7 +359,7 @@ bool cls_804A4C58::fn_801DD410() {
         mBox.f.x = 40.0f;
         mBox.f.y = 50.0f;
         if (fn_801F285C(NULL, &outFlag, true, -1) >= 0) {
-            fn_801D9C58(5);
+            setState_801D9C58(5);
         }
         mBox.set(saved);
     }
@@ -395,10 +395,10 @@ bool cls_804A4C58::fn_801DD410() {
                 if (field_0x33f >= lbl_8053F1C8) {
                     mVel_0x3c.x *= 2.0f;
                     mVel_0x3c.y *= 2.0f;
-                    fn_801D9C58(0xF);
+                    setState_801D9C58(0xF);
                 }
             }
-            fn_801D9C58(0x13);
+            setState_801D9C58(0x13);
         }
         mBox.set(saved);
         if (!hit && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
@@ -420,11 +420,11 @@ bool cls_804A4C58::fn_801DD410() {
                     if (field_0x33f >= lbl_8053F1C8) {
                         mVel_0x3c.x *= 2.0f;
                         mVel_0x3c.y *= 2.0f;
-                        fn_801D9C58(0xF);
+                        setState_801D9C58(0xF);
                     }
                 }
                 if (mLife <= 0) {
-                    fn_801D9C58(0x13);
+                    setState_801D9C58(0x13);
                 }
             }
         }
@@ -464,7 +464,7 @@ bool cls_804A4C58::fn_801DD410() {
                     if (field_0x33f >= lbl_8053F1C8) {
                         mVel_0x3c.x *= 2.0f;
                         mVel_0x3c.y *= 2.0f;
-                        fn_801D9C58(0xF);
+                        setState_801D9C58(0xF);
                     }
                 }
             }

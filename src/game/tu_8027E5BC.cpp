@@ -116,7 +116,7 @@ void Player_804A6F38::fn_80285C28() {
 
 // Update of state 0 (standing): walk (2) or run (3) when the stick or the leader moves, then the
 // facing (toward the nearest player as player 4 of a group outside the leader's slot, else
-// fn_8027EB04), the pick-up checks and the body frame.
+// updateFacing_8027EB04), the pick-up checks and the body frame.
 void Player_804A6F38::fn_802859C4() {
     if (mPos.z != 0.0f && !field_0x434) {
         mPos.z = 0.0f;
@@ -153,7 +153,7 @@ void Player_804A6F38::fn_802859C4() {
     if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         fn_8027E7E0();
     } else {
-        fn_8027EB04();
+        updateFacing_8027EB04();
         if (field_0x434) {
             fn_80251AEC(2);
         }
@@ -232,7 +232,7 @@ void Player_804A6F38::fn_80285690() {
         }
     }
     fn_802808E8(1.5f);
-    fn_8027EB04();
+    updateFacing_8027EB04();
     fn_8027EEB4();
     fn_80261480();
     fn_80268B3C();
@@ -262,7 +262,7 @@ void Player_804A6F38::fn_8028538C() {
     }
     fn_80275D9C();
     followStep();
-    fn_8027EB04();
+    updateFacing_8027EB04();
     fn_8027EEB4();
     fn_80261480();
     fn_80268B3C();
@@ -306,7 +306,7 @@ void Player_804A6F38::fn_80285098() {
                 }
             }
             s32 facing = mFacing_0x3dc;
-            fn_8027EB04();
+            updateFacing_8027EB04();
             if (facing != mFacing_0x3dc || field_0xbf0->field_0xa0 == 0) {
                 fn_80251AEC(0);
                 field_0xd9c = -1;
@@ -554,7 +554,7 @@ void Player_804A6F38::fn_802844F8() {
     }
     if (!field_0x43f) {
         if (fn_8025F684()) {
-            fn_8026152C(false);
+            updateCarryWalk_8026152C(false);
         } else if (mSubPose_0x3fd == 0) {
             mWalkAnimCounter_0x3f8++;
             if (mWalkAnimCounter_0x3f8 >= 16) {
@@ -774,7 +774,7 @@ void Player_804A6F38::fn_80283D20() {
 }
 
 void Player_804A6F38::fn_80283D00() {
-    fn_8027EB04();
+    updateFacing_8027EB04();
 }
 
 void Player_804A6F38::fn_80283CEC() {
@@ -893,7 +893,7 @@ void Player_804A6F38::fn_80283948() {
             mSubPose_0x3fd = 2;
         }
     }
-    fn_8027EB04();
+    updateFacing_8027EB04();
 }
 
 void Player_804A6F38::fn_80283944() {}
@@ -1041,7 +1041,7 @@ void Player_804A6F38::fn_80282FE0() {
     if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         fn_8027E7E0();
     } else {
-        fn_8027EB04();
+        updateFacing_8027EB04();
     }
     if (!fn_80225BE4(&mPos, mLayer_0x3b4) || fn_8024B24C()) {
         fn_80251AEC(0);
@@ -1195,7 +1195,7 @@ void Player_804A6F38::fn_80282ACC() {
     } else if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         fn_8027E7E0();
     } else {
-        fn_8027EB04();
+        updateFacing_8027EB04();
     }
     mPos.y += mBobY_0x410;
     mBobY_0x410 += 0.02f;
@@ -1685,7 +1685,7 @@ void Player_804A6F38::fn_8028126C() {
     s32 facing = mFacing_0x3dc;
     if (mPos.z <= 0.0f && mVel_0x344.z <= 0.0f) {
         mVel_0x344.z = 0.0f;
-        fn_8027EB04();
+        updateFacing_8027EB04();
         mPos += mVel_0x344;
         switch (mFacing_0x3dc) {
         case 0:
@@ -2532,7 +2532,7 @@ void Player_804A6F38::fn_8027EDDC() {
 
 // The facing (0x3DC) and the walk direction (0x3E8): in a group from the formation or the leader,
 // else from the pad directions (fn_80246B10: 1 left, 2 right, 4 down, 8 up; 4-7 are diagonals).
-void Player_804A6F38::fn_8027EB04() {
+void Player_804A6F38::updateFacing_8027EB04() {
     if (!fn_80241230() && !fn_802412A4() && !field_0x1214) {
         if (fn_802486A0() != 4 && fn_80240808() && fn_8022D75C(getLeader_80240644())) {
             return;

@@ -83,7 +83,7 @@ void MagicCircleGenerator_804A9FB0::update() {
                 gGameRoot_8053AAF8->startRumble_80134DE4(9, 0);
                 if (getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1 &&
                     !getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, false)) {
-                    lbl_8053AED0->fn_8043D67C(0x24E, field_0x250, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x24E, field_0x250, 0);
                     getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, true);
                 }
             }
@@ -107,7 +107,7 @@ void MagicCircleGenerator_804A9FB0::update() {
             box.set(mBox);
             box.addPos(offset);
             for (s32 player = 0; player < 4; player++) {
-                if (fn_8023B0F4(player, &box, mLayer_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
+                if (fn_8023B0F4(player, &box, mLayer_0x4, false, 0.0f) == 1 && getPlayerHeldActorId_8023EEB4(player) == ACTOR_KEY0) {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player)));
                     if (key != NULL && key->field_0x280 == 6) {

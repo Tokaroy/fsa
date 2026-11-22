@@ -858,7 +858,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         }
         break;
     case 0x10: {
-        s32 target = fn_801F2718(0x54454E4E);
+        s32 target = findOverlappingActor_801F2718(0x54454E4E);
         if (mPos.z <= 0.0f) {
             startSound_801F0E34(0x3004C, 0);
             mPos.z = 0.0f;

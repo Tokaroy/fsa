@@ -939,7 +939,7 @@ void Cucco_804AB8C0::update() {
             }
             if (field_0x268 <= 0 && field_0x240 % 2 == 1) {
                 if (field_0x2a0 == 1) {
-                    lbl_8053AED0->fn_8043D67C(0x1B6, 0, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x1B6, 0, 0);
                     field_0x2a0 = 0;
                 }
                 GameView_804A9950* view = getGameView_802D6A9C();

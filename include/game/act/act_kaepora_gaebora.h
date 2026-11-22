@@ -29,7 +29,7 @@ public:
     // states call).
     // 0x80219AFC (act_kaepora_gaebora): switches to `state`: the exit and entry
     // actions of the old and new state, then mStateTimer = 0 and mState = state.
-    void fn_80219AFC(s32 state);
+    void setState_80219AFC(s32 state);
     // 0x80219E04 (act_kaepora_gaebora): true in states 6-10 and in state 2
     // while field_0x2b4 == 3; the sprites and effects then move by -6.
     bool fn_80219E04() const;

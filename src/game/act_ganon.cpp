@@ -693,7 +693,7 @@ void Ganon_804A25F0::update() {
             fn_80196D70(&posA, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
-            s32 hitSer = fn_801F2718('GNON');
+            s32 hitSer = findOverlappingActor_801F2718('GNON');
             fn_80196D70(&mPos, &posA);
             if (hitSer >= 0) {
                 ActorBase_804A5770* hit = findActorBySerial_8015445C(hitSer);

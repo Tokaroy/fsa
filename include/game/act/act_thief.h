@@ -55,7 +55,7 @@ public:
     // 0x802072E4 (tu_80206B30): mBox = (-8, -16)-(8, 8), copied to mBox2.
     void fn_802072E4();
     // 0x80205E0C (act_thief, not written yet): switches to state `state`.
-    void fn_80205E0C(s32 state);
+    void setState_80205E0C(s32 state);
     // 0x8020609C and 0x802064E0 (act_thief, not written yet): state tests
     // the hit overrides make; roles unknown.
     bool fn_8020609C() const;

@@ -1128,7 +1128,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             case 1:
             case 2:
             case 0x10:
-                if (fn_8023EEB4(player) == 'KEY0') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player)));
                     s32 state = key->field_0x280;
@@ -1143,7 +1143,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 }
                 break;
             case 3:
-                if (fn_8023EEB4(player) == 'BORD') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'BORD') {
                     next = target;
                     if (consume) {
                         fn_8023EE28(player);
@@ -1151,7 +1151,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 }
                 break;
             case 4:
-                if (fn_8023EEB4(player) == 'STON') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'STON') {
                     next = target;
                     if (consume) {
                         fn_8023EE28(player);
@@ -1159,7 +1159,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 }
                 break;
             case 5:
-                if (fn_8023EEB4(player) == 'HBMB') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'HBMB') {
                     next = target;
                     if (consume) {
                         fn_8023EE28(player);
@@ -1167,7 +1167,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 }
                 break;
             case 6:
-                if (fn_8023EEB4(player) == 'NIWA') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'NIWA') {
                     next = target;
                     if (consume) {
                         fn_8023EE28(player);
@@ -1175,7 +1175,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 }
                 break;
             case 7:
-                if (fn_8023EEB4(player) == 'GRAS') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'GRAS') {
                     next = target;
                     if (consume) {
                         fn_8023EE28(player);
@@ -1185,7 +1185,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             case 8:
             case 9:
             case 10:
-                if (fn_8023EEB4(player) == 'TUBO') {
+                if (getPlayerHeldActorId_8023EEB4(player) == 'TUBO') {
                     ActorBase_804A5770* pot =
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player));
                     u32 type = (pot->mSpawnParam_0x90 >> 7) & 0x1F;
@@ -1201,9 +1201,9 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             case 12:
             case 13:
             case 14:
-                if (fn_8023EEB4(player) == 'PLAY') {
-                    if ((fn_8023ECF0(slot) == 0 && kind == 11) || (fn_8023ECF0(player) == 1 && kind == 12) ||
-                        (fn_8023ECF0(player) == 2 && kind == 13) || (fn_8023ECF0(player) == 3 && kind == 14))
+                if (getPlayerHeldActorId_8023EEB4(player) == 'PLAY') {
+                    if ((getPlayerHeldPlayer_8023ECF0(slot) == 0 && kind == 11) || (getPlayerHeldPlayer_8023ECF0(player) == 1 && kind == 12) ||
+                        (getPlayerHeldPlayer_8023ECF0(player) == 2 && kind == 13) || (getPlayerHeldPlayer_8023ECF0(player) == 3 && kind == 14))
                     {
                         next = target;
                     }

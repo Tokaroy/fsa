@@ -270,7 +270,7 @@ void BeeManager_804AC810::draw() {
 // Out-of-line in the original asm: BeeManager_804AC810::update calls fn_80349914 via bl at 0x8034A1F4.
 void BeeManager_804AC810::fn_80349914(JGeometry::TVec3f* outPos) {
     outPos->set(*getPlayerPos_8023E724(field_0x27c));
-    s32 idx = fn_8022E970(field_0x27c);
+    s32 idx = getPlayerGroupSize_8022E970(field_0x27c);
     switch (fn_8022CAF8(field_0x27c)) {
     case 0:
         if (idx != 1 && idx >= 1 && idx < 5) {

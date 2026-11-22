@@ -143,7 +143,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
     field_0x23c = field_0x23c & 3;
     damagePlayersInBox_801F2B7C(2, -1, 6);
-    s32 serial = fn_801F2718(ACTOR_OIWA);
+    s32 serial = findOverlappingActor_801F2718(ACTOR_OIWA);
     if (serial != -1) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         JGeometry::TVec3f d;

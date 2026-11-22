@@ -41,7 +41,7 @@ void RupeeDigitSprites_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* po
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     f32 baseSize = 48.0f * camera->mZoom_0x858;
     Vec screen;
-    camera->fn_8030C5F0(pos, false, false, &screen);
+    camera->worldToScreen_8030C5F0(pos, false, false, &screen);
     for (int i = 0; i < 128; i++) {
         if (!mSprites[i].active) {
             mSprites[i].active = 1;

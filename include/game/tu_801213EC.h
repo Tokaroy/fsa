@@ -79,7 +79,7 @@ public:
     // with `throttled` it only acts every tenth call (field_0x364[4] counts).
     void fn_80122730(s32 anim, bool shifted, bool throttled);
     s32 fn_80121DB0();
-    // fn_801216D0 (tu_801213EC): the index of the player (0-3) whose fn_8023ECF0 is `player`, else -1.
+    // fn_801216D0 (tu_801213EC): the index of the player (0-3) whose getPlayerHeldPlayer_8023ECF0 is `player`, else -1.
     s32 fn_801216D0(s32 player);
     // fn_80121438 (tu_801213EC): update's push away from a magic circle ('CIRC') the escort
     // overlaps; true with dir set (xy, length 1.6), else false and dir zero.

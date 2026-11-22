@@ -73,7 +73,7 @@ static const Vec lbl_8046B760[4] = {
     {4.0f, 0.0f, 0.0f}, {-4.0f, 0.0f, 0.0f}, {0.0f, 4.0f, 0.0f}, {0.0f, -4.0f, 0.0f},
 };
 
-// Carry walk pose per facing and step (fn_8026152C, 0x80262BAC, 0x80263C64).
+// Carry walk pose per facing and step (updateCarryWalk_8026152C, 0x80262BAC, 0x80263C64).
 static const u8 lbl_8046B790[4][8] = {
     {0, 1, 2, 3, 0, 1, 2, 3},
     {0, 1, 2, 3, 0, 1, 2, 3},
@@ -244,7 +244,7 @@ void Player_804A6F38::fn_80264410() {
 // down (0x18), anything else thrown (0x16, also when fn_8024B24C); fn_8022C0A0 throws
 // (0x16); fn_802466B4 starts 0x15 unless the held actor's field_0x1a4 is 2 or more. Then
 // it walks with the held thing (fn_802808E8 at 1.25 for a player, 1.5 for an actor with
-// field_0x1a4 == 0, none otherwise) through the carry cycle fn_8026152C(false); a held
+// field_0x1a4 == 0, none otherwise) through the carry cycle updateCarryWalk_8026152C(false); a held
 // player that stops being one (fn_8023EA28) or a lost actor ends the carry (state 0).
 void Player_804A6F38::fn_80263C64() {
     JGeometry::TVec3f stick;
@@ -271,8 +271,8 @@ void Player_804A6F38::fn_80263C64() {
     if (fn_8025F590()) {
         if (fn_8023EA28(mHeldPlayer_0xd70)) {
             fn_802808E8(1.25f);
-            fn_8027EB04();
-            fn_8026152C(false);
+            updateFacing_8027EB04();
+            updateCarryWalk_8026152C(false);
         } else {
             fn_80251AEC(0);
             mHeldPlayer_0xd70 = -1;
@@ -280,11 +280,11 @@ void Player_804A6F38::fn_80263C64() {
     } else if (actor != 0) {
         if (actor->field_0x1a4 == 0) {
             fn_802808E8(1.5f);
-            fn_8027EB04();
-            fn_8026152C(false);
+            updateFacing_8027EB04();
+            updateCarryWalk_8026152C(false);
         } else {
-            fn_8027EB04();
-            fn_8026152C(false);
+            updateFacing_8027EB04();
+            updateCarryWalk_8026152C(false);
         }
     } else {
         fn_80251AEC(0);
@@ -556,7 +556,7 @@ void Player_804A6F38::fn_80263078() {
 // carried gliding: the player moves 0.5 a frame toward mGlideTarget_0x324.x, bobbing with the
 // distance, else falls and lands back in 0x12; anything else falls at 0.25 (0.17 down to
 // -6 while 0x43F / 0x441, floating at 8 below mGlideTarget_0x324.y), with the carry walk cycle
-// at lbl_8046B790 / lbl_8046B7B0 (fn_8026152C's) and sounds 0x1000D / 0x2003E when 0x440.
+// at lbl_8046B790 / lbl_8046B7B0 (updateCarryWalk_8026152C's) and sounds 0x1000D / 0x2003E when 0x440.
 void Player_804A6F38::fn_80262BAC() {
     if (mHeldActorId_0xd6c == ACTOR_NIWA && !field_0x441) {
         f32 dx = mGlideTarget_0x324.x - mPos.x;
@@ -612,7 +612,7 @@ void Player_804A6F38::fn_80262BAC() {
                 fn_80251AEC(0x12);
             }
         }
-        fn_8026152C(false);
+        updateCarryWalk_8026152C(false);
         if (field_0x440 && mVel_0x344.z < 0.0f) {
             fn_8024F0E8(0x1000D);
             fn_8024F0E8(0x2003E);
@@ -1005,7 +1005,7 @@ void Player_804A6F38::fn_8026173C() {
 
 // The carry walk cycle (mWalkAnimCounter_0x3f8 over 24 frames, 48 when slow) and the held thing's
 // position: pose lbl_8046B790[facing][step], offset lbl_8046B7B0[pose] from mPos.
-void Player_804A6F38::fn_8026152C(bool slow) {
+void Player_804A6F38::updateCarryWalk_8026152C(bool slow) {
     if (epsilonEquals(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon()) && mKeptVel_0x368.isZero()) {
         mWalkAnimCounter_0x3f8 = 0;
     } else {
@@ -1059,7 +1059,7 @@ bool Player_804A6F38::fn_80260C08() {
     if (fn_8022B1F8()) {
         return false;
     }
-    if (!fn_80251BFC(0x11)) {
+    if (!canRequestState_80251BFC(0x11)) {
         return false;
     }
     const Vec& d = lbl_8046B83C[mFacing_0x3dc];
@@ -1322,7 +1322,7 @@ bool Player_804A6F38::fn_802604CC() {
             if (isPlayerBitSet(gGameRoot_8053AAF8, i) || fn_8022E438(mPlayerNo_0x4, i)
                 || (gGameRoot_8053AAF8->field_0x7e != 0 && fn_8022CAF8(i) == 4)
                 || (mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8)) {
-                if ((fn_80236B50(i) || fn_80251BFC(0x19)) && fn_80251AEC(0x11)) {
+                if ((fn_80236B50(i) || canRequestState_80251BFC(0x19)) && fn_80251AEC(0x11)) {
                     if (fn_80236B50(i)) {
                         fn_80231230(i, mPlayerNo_0x4);
                     } else {
@@ -1433,7 +1433,7 @@ bool Player_804A6F38::fn_802600A0(s32 player) {
     } else {
         return false;
     }
-    fn_80248FF0();
+    endFormActor_80248FF0();
     return true;
 }
 
@@ -1442,7 +1442,7 @@ bool Player_804A6F38::fn_80260048(s32 arg) {
         return false;
     }
     mHeldPlayer_0xd70 = arg;
-    fn_80248FF0();
+    endFormActor_80248FF0();
     return true;
 }
 

@@ -140,7 +140,7 @@ void OshinUnidentified_804AB528::update() {
                     if (fn_8022CAF8(i) == 4) {
                         field_0x238++;
                     } else {
-                        field_0x238 += fn_8022E970(i);
+                        field_0x238 += getPlayerGroupSize_8022E970(i);
                     }
                     for (s32 j = 0; j < 4; j++) {
                         if (field_0x254[j] == 0 && fn_8022CAF8(j) != 4 && i != j && fn_8022E438(i, j) == 1) {

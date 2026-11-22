@@ -14,7 +14,7 @@
 // minus the centre of the box it is built from (0x8030CB0C-0x8030CC14: an
 // identity with m[0][3] = -(x0 + x1) / 2), followed by an orthographic
 // projection (C_MTXOrtho into mProjMtx_0x34) that the unit loads with
-// GXSetProjection / GXLoadPosMtxImm; fn_8030C5F0 projects world positions
+// GXSetProjection / GXLoadPosMtxImm; worldToScreen_8030C5F0 projects world positions
 // to the screen; mVisibleBox_0x154 is the visible area and addFocusPoint_8030C210 collects
 // the points the camera has to keep in view.
 //
@@ -63,10 +63,10 @@ public:
     // them only when both lie in mVisibleBox_0x154. TBox2f is a guess: two
     // TVec2f would read the same.
     u8 fn_8030C058(const JGeometry::TBox2f* box);
-    // 9 units / 24 calls. Projects pos with fn_8030C5F0(pos, true, false,
+    // 9 units / 24 calls. Projects pos with worldToScreen_8030C5F0(pos, true, false,
     // &tmp) and tests tmp (x, y) against the screen rectangle mScreenRect_0x144
     // shrunk by 0xE on each side; returns 0 or 1. pos goes straight on to
-    // fn_8030C5F0, so const Vec* would compile too: TVec3f (callers pass
+    // worldToScreen_8030C5F0, so const Vec* would compile too: TVec3f (callers pass
     // &mPos, act_door 0x802C73AC) is a guess.
     bool fn_8030C2A8(const JGeometry::TVec3f* pos);
     // 1 unit (act_tingle_time_up_manager 0x80352934). Writes two world
@@ -80,13 +80,13 @@ public:
     void fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeometry::TVec3f* out);
     // Sets the orthographic projection and view for the box (depth: the view's distance).
     void fn_8030CB10(const JGeometry::TBox2f* box, f32 depth);
-    void fn_8030C5F0(const Vec* pos, bool, bool, Vec* out);
+    void worldToScreen_8030C5F0(const Vec* pos, bool, bool, Vec* out);
     // 2 units / 10 calls (this unused: the body reads the camera through
     // gGameRoot2_8053AB10 again). Sets mRequestedBox_0x180 to the box of half-size
     // size * k around center, with y scaled by the video frame's aspect
     // (JUTVideo's height / width), and mUseRequestedBox_0x17e to 1. Reads center 0x0
     // and 0x4 only (tu_8011CEC8 passes a stack pair, 0x8011D008).
-    void fn_8030C7C4(const JGeometry::TVec2f* center, f32 size);
+    void requestBox_8030C7C4(const JGeometry::TVec2f* center, f32 size);
     // 1 unit (GameView fn_802D9CB0). Clears mInTransition_0x1e8, zeroes each of the
     // map's bytes 0x2360-0x2363 whose byte 0x235C-0x235F is set, clears the
     // view (fn_802DCDF4) and copies mNextVisibleBox_0x190 to mVisibleBox_0x154.
@@ -130,7 +130,7 @@ public:
     // (act_all_enemies_defeated 0x8019D2D4 / 0x8019D2E0).
     /* 0x004 */ Mtx mViewMtx_0x4;
     /* 0x034 */ Mtx44 mProjMtx_0x34; // C_MTXOrtho (0x8030CC18)
-    /* 0x074 */ Mtx mLoadedViewMtx_0x74;   // fn_8030C5F0's PSMTXMultVec; GXLoadPosMtxImm
+    /* 0x074 */ Mtx mLoadedViewMtx_0x74;   // worldToScreen_8030C5F0's PSMTXMultVec; GXLoadPosMtxImm
     /* 0x0A4 */ Mtx44 mLoadedProjMtx_0xa4; // GXSetProjection (0x8030DEFC)
     // The particle draw info: a copy of the view (PSMTXCopy at 0x8030CC24)
     // and a C_MTXLightOrtho (0x8030CC4C); identity after the constructor
@@ -158,8 +158,8 @@ public:
     /* 0x17B */ u8 field_0x17b;
     /* 0x17C */ u8 mWidenBounds_0x17c;
     /* 0x17D */ u8 mSkipUpdate_0x17d;
-    /* 0x17E */ u8 mUseRequestedBox_0x17e; // set by fn_8030C7C4
-    /* 0x180 */ JGeometry::TBox2f mRequestedBox_0x180; // fn_8030C7C4
+    /* 0x17E */ u8 mUseRequestedBox_0x17e; // set by requestBox_8030C7C4
+    /* 0x180 */ JGeometry::TBox2f mRequestedBox_0x180; // requestBox_8030C7C4
     /* 0x190 */ JGeometry::TBox2f mNextVisibleBox_0x190; // fn_8030C928; fn_8030C85C
     /* 0x1A0 */ JGeometry::TBox2f mTransitionEndBox_0x1a0; // the box the transition leaves (fn_8030E154 blends from it)
     /* 0x1B0 */ f32 mTransitionEndDepth_0x1b0;     // and its depth

@@ -492,7 +492,7 @@ void Goal2_804A9C20::update() {
                 }
                 if (fn_802DE7CC()) {
                     if (!isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
-                        lbl_8053AED0->fn_8043D67C(0x341, 0, 0);
+                        lbl_8053AED0->requestMessage_8043D67C(0x341, 0, 0);
                     }
                 }
                 startSound_801F0E34(0x30039, 0);

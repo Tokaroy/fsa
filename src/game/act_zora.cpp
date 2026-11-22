@@ -73,7 +73,7 @@ void ZoraEnemy_804A3D7C::init() {
 }
 
 // FIXME: 99.44 %, regalloc-only. Minor register allocation differences in tile search loop (r22/r23/r24/r25/r27).
-void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
+void ZoraEnemy_804A3D7C::setState_801BACE8(s32 state) {
     switch (state) {
     case 0:
         field_0x250 = randInt_801CD664(121) + 60;
@@ -168,7 +168,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         vfunc_0xA8();
         if (mStateTimer >= field_0x250) {
             if (fn_801D05F8(&mPos, 300.0f) >= 0) {
-                fn_801BACE8(1);
+                setState_801BACE8(1);
             }
         }
         break;
@@ -188,7 +188,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
             field_0x54.z = field_0x54.x;
         } else if (mStateTimer >= field_0x250) {
             if (mAnim.fn_801D217C()) {
-                fn_801BACE8(2);
+                setState_801BACE8(2);
                 vfunc_0xB0();
             }
         }
@@ -196,14 +196,14 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
     case 2:
         if (mStateTimer > 1) {
             if (mAnim.fn_801D21F0()) {
-                fn_801BACE8(3);
+                setState_801BACE8(3);
             }
         }
         break;
     case 3:
         if (mStateTimer >= field_0x250) {
             if (mAnim.fn_801D217C()) {
-                fn_801BACE8(4);
+                setState_801BACE8(4);
             }
         }
         break;
@@ -217,7 +217,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
                 }
             }
             if (mAnim.fn_801D21F0()) {
-                fn_801BACE8(5);
+                setState_801BACE8(5);
             }
         }
         break;
@@ -231,7 +231,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         }
         if (mStateTimer > 1) {
             if (mAnim.fn_801D21F0()) {
-                fn_801BACE8(0);
+                setState_801BACE8(0);
             }
         }
         break;

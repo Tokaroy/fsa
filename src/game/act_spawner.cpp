@@ -116,7 +116,7 @@ void SpawnerGenerator_804A9328::update() {
                         break;
                     }
                     case 16:
-                        if (getActorManager_801F856C()->fn_801F7A08('BMTY') < 0) {
+                        if (getActorManager_801F856C()->findSerialByActorId_801F7A08('BMTY') < 0) {
                             field_0x274[field_0x240] = getActorManager_801F856C()->spawnActor_801F9484('BMTY', mLayer_0x4, &field_0x258, 20, -1, -1);
                         }
                         break;
@@ -139,7 +139,7 @@ void SpawnerGenerator_804A9328::update() {
                     field_0x254 = 0;
                 }
                 if (field_0x234[field_0x254] == 16) {
-                    if (getActorManager_801F856C()->fn_801F7A08('BMTY') < 0) {
+                    if (getActorManager_801F856C()->findSerialByActorId_801F7A08('BMTY') < 0) {
                         flag = 1;
                     }
                 }

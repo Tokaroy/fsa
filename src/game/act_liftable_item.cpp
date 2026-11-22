@@ -139,7 +139,7 @@ void LiftableItem_804A01D0::update() {
             }
             if (field_0x258 == 0) {
                 if (mLayer_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                    lbl_8053AED0->fn_8043D67C(lbl_80465F78[field_0x234], field_0x274, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(lbl_80465F78[field_0x234], field_0x274, 0);
                 }
                 if ((u32)lbl_80465E38[field_0x234] == 0x27F) {
                     if ((u32)((gGameRoot_8053AAF8->field_0x83 >> (field_0x274 * 2)) & 3) == 2) {

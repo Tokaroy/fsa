@@ -141,7 +141,7 @@ void cls_804A4C58::onFirstUpdate_0x54() {
 }
 
 // FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
-void cls_804A4C58::fn_801D9C58(int state) {
+void cls_804A4C58::setState_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
         mFlags &= ~0x80;
@@ -307,7 +307,7 @@ void cls_804A4C58::fn_801D9960() {
         }
         if (target >= 0) {
             if (mSeq2a8.fn_801DA894()) {
-                fn_801D9C58(0xD);
+                setState_801D9C58(0xD);
             }
         }
     }
@@ -333,7 +333,7 @@ void cls_804A4C58::fn_801D9960() {
             }
             field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
-                fn_801D9C58(0xC);
+                setState_801D9C58(0xC);
             }
         }
     }
@@ -421,18 +421,18 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                 }
             }
             if (p < 4 && getActorManager_801F856C()->fn_801F68E0() != 0) {
-                fn_801D9C58(1);
+                setState_801D9C58(1);
             }
         }
         break;
     case 1:
         if (mStateTimer >= 180) {
-            fn_801D9C58(2);
+            setState_801D9C58(2);
         }
         break;
     case 2:
         if (mSeq2a8.field_0x14 & 1) {
-            fn_801D9C58(3);
+            setState_801D9C58(3);
         }
         break;
     case 3:
@@ -440,7 +440,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             getActorManager_801F856C()->fn_801F6884();
             gAudioMgr_8053AF80->fn_80458FF0(0x1000004, true, 0);
             field_0x33a = randInt_801CD664(0x1E1) + 0x258;
-            fn_801D9C58(4);
+            setState_801D9C58(4);
         } else if (mStateTimer == 6) {
             mFlags &= ~0x4000;
             if (!(mFlags & 0x4000) && !(fn_801DAC6C()->field_0x84 & 1)) {
@@ -468,19 +468,19 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                 ok = true;
             }
             if (ok) {
-                fn_801D9C58(6);
+                setState_801D9C58(6);
             }
         }
         break;
     case 5:
     case 6:
         if (mSeq2a8.field_0x14 & 1) {
-            fn_801D9C58(7);
+            setState_801D9C58(7);
         }
         break;
     case 7:
         if (mSeq2a8.field_0x14 & 1) {
-            fn_801D9C58(4);
+            setState_801D9C58(4);
         } else if (mStateTimer == 6) {
             if (!(mFlags & 0x4000) && !(fn_801DAC6C()->field_0x84 & 1)) {
                 s32 n = 30 - fn_801DAC6C()->mCount;
@@ -503,7 +503,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             mPos.y = field_0x2d0;
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 12.0f, 0.0f, false);
             gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
-            fn_801D9C58(9);
+            setState_801D9C58(9);
         }
         break;
     case 9:
@@ -531,13 +531,13 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             } else {
                 mFlags &= ~0x2000;
             }
-            fn_801D9C58(10);
+            setState_801D9C58(10);
         }
         break;
     case 10:
         if (mSeq2a8.field_0x14 & 1) {
             fn_801E6234();
-            fn_801D9C58(11);
+            setState_801D9C58(11);
         }
         break;
     case 11:
@@ -546,12 +546,12 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
     case 12:
         if (mSeq2a8.field_0x14 & 1) {
             mFlags ^= 0x2000;
-            fn_801D9C58(11);
+            setState_801D9C58(11);
         }
         break;
     case 13:
         if (mSeq2a8.field_0x14 & 1) {
-            fn_801D9C58(14);
+            setState_801D9C58(14);
         }
         break;
     case 14:
@@ -579,7 +579,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             if (target >= 0) {
                 if (field_0x33e < 2 ||
                     (field_0x33e < 3 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f)) {
-                    fn_801D9C58(14);
+                    setState_801D9C58(14);
                     break;
                 }
             }
@@ -602,9 +602,9 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             }
             field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
-                fn_801D9C58(12);
+                setState_801D9C58(12);
             } else {
-                fn_801D9C58(11);
+                setState_801D9C58(11);
             }
             field_0x33e = 0;
         } else if (mStateTimer == 10) {
@@ -616,7 +616,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         break;
     case 15:
         if (mSeq2a8.field_0x14 & 1) {
-            fn_801D9C58(16);
+            setState_801D9C58(16);
         }
         break;
     case 16:
@@ -625,12 +625,12 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             mPos.y = field_0x2d0;
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 6.0f, 0.0f, false);
             gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
-            fn_801D9C58(17);
+            setState_801D9C58(17);
         }
         break;
     case 17:
         if (field_0x336 == 0) {
-            fn_801D9C58(18);
+            setState_801D9C58(18);
         }
         break;
     case 18:
@@ -654,9 +654,9 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             }
             field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
-                fn_801D9C58(12);
+                setState_801D9C58(12);
             } else {
-                fn_801D9C58(11);
+                setState_801D9C58(11);
             }
         }
         break;
@@ -667,7 +667,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
             mEmitter2c[2] = NULL;
             mEmitter2c[3] = NULL;
             startBossDeath_0x28(0, 0.0f, -16.0f);
-            fn_801D9C58(20);
+            setState_801D9C58(20);
         }
         break;
     case 20:
@@ -806,9 +806,9 @@ void cls_804A4C58::onHitReactionEnd_0x74() {
             }
             field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
-                fn_801D9C58(0xC);
+                setState_801D9C58(0xC);
             } else {
-                fn_801D9C58(0xB);
+                setState_801D9C58(0xB);
             }
         }
         break;
@@ -862,6 +862,6 @@ void cls_804A4C58::update() {
 
 void cls_804A4C58::fn_801D8400() {
     if (mState < 8) {
-        fn_801D9C58(8);
+        setState_801D9C58(8);
     }
 }

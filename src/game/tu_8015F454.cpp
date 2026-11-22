@@ -112,7 +112,7 @@ void cls_804A03A8::fn_8015F9C0() {
                     }
                     alpha *= 159.0f;
                     Vec proj;
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&field_0x84[i], false, false, &proj);
+                    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&field_0x84[i], false, false, &proj);
                     f32 pos[4];
                     f32 uv[4];
                     uv[0] = t * (proj.x - 20.0f);
@@ -135,7 +135,7 @@ void cls_804A03A8::fn_8015F9C0() {
                     }
                     alpha *= 159.0f;
                     Vec proj;
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&field_0x84[i], false, false, &proj);
+                    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&field_0x84[i], false, false, &proj);
                     f32 pos[4];
                     f32 uv[4];
                     uv[0] = t * (proj.x - 20.0f);
@@ -152,10 +152,10 @@ void cls_804A03A8::fn_8015F9C0() {
                 case 5: {
                     JGeometry::TVec3f base(field_0x84[i].x, field_0x84[i].y, field_0x84[i].z + 6.0f);
                     JGeometry::TVec3f p;
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&base, true, false, &p);
+                    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&base, true, false, &p);
                     JGeometry::TVec3f off(20.0f + field_0x84[i].x, 20.0f + field_0x84[i].y, 6.0f + field_0x84[i].z);
                     JGeometry::TVec3f q;
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&off, true, false, &q);
+                    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&off, true, false, &q);
                     q -= p;
                     f32 pos[4];
                     f32 uv[4];

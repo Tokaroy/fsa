@@ -446,7 +446,7 @@ void Goal_804A7EB0::update() {
             getActorManager_801F856C()->spawnActorSimple_801F8544('FARY', mLayer_0x4, &pos, 0x30);
             field_0x314--;
             if (field_0x314 == 0) {
-                lbl_8053AED0->fn_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
+                lbl_8053AED0->requestMessage_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
             }
             field_0x318++;
             if (field_0x318 >= 4) {

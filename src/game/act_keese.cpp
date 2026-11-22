@@ -109,7 +109,7 @@ void Keese_804A02B8::update() {
         die_0x24();
         return;
     }
-    s32 bmtySerial = fn_801F2718(ACTOR_BMTY);
+    s32 bmtySerial = findOverlappingActor_801F2718(ACTOR_BMTY);
     if (bmtySerial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bmtySerial);
         if (actor != NULL && actor->mActorId == ACTOR_BMTY) {

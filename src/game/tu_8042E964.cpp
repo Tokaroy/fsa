@@ -501,24 +501,24 @@ void WarningWindow_804B1634::fn_8042F6DC() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
     f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
-    field_0x24[0]->fn_80402CE0(sx0, 1.0f);
-    field_0x24[1]->fn_80402CE0(sx0, 1.0f);
+    field_0x24[0]->scaleKeepCentre_80402CE0(sx0, 1.0f);
+    field_0x24[1]->scaleKeepCentre_80402CE0(sx0, 1.0f);
     f32 sy2 = h / field_0x24[4]->field_0x1c;
     f32 sx2 = w / field_0x24[4]->field_0x18;
-    field_0x24[2]->fn_80402CE0(1.0f, sy2);
-    field_0x24[3]->fn_80402CE0(1.0f, sy2);
-    field_0x24[4]->fn_80402CE0(sx2, sy2);
+    field_0x24[2]->scaleKeepCentre_80402CE0(1.0f, sy2);
+    field_0x24[3]->scaleKeepCentre_80402CE0(1.0f, sy2);
+    field_0x24[4]->scaleKeepCentre_80402CE0(sx2, sy2);
 
     f32 sx_bb0 = (w + (field_0x10[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x10[0]->field_0x18;
-    field_0x10[0]->fn_80402CE0(sx_bb0, 1.0f);
-    field_0x10[1]->fn_80402CE0(sx_bb0, 1.0f);
+    field_0x10[0]->scaleKeepCentre_80402CE0(sx_bb0, 1.0f);
+    field_0x10[1]->scaleKeepCentre_80402CE0(sx_bb0, 1.0f);
 
     f32 w4 = field_0x24[4]->field_0x18;
     f32 w_bb4 = field_0x10[4]->field_0x18;
     f32 sy_bb2 = (h + (field_0x10[4]->field_0x1c - field_0x24[4]->field_0x1c)) / field_0x10[4]->field_0x1c;
-    field_0x10[2]->fn_80402CE0(1.0f, sy_bb2);
-    field_0x10[3]->fn_80402CE0(1.0f, sy_bb2);
-    field_0x10[4]->fn_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
+    field_0x10[2]->scaleKeepCentre_80402CE0(1.0f, sy_bb2);
+    field_0x10[3]->scaleKeepCentre_80402CE0(1.0f, sy_bb2);
+    field_0x10[4]->scaleKeepCentre_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
 // FIXME(shotgun): 96.14 %, missing/extra + reloc-name; behaviour near.

@@ -203,7 +203,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             }
         }
         if (field_0x250 == 0x5A) {
-            lbl_8053AED0->fn_8043D67C(0x23F, 0, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x23F, 0, 0);
             fn_80230F44(0, 0x100002D);
             for (s32 i = 0; i < 4; i++) {
                 if ((u8)(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) {
@@ -271,7 +271,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
                         }
                         fn_80230FD0(i, 0x10001);
                         if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) {
-                            fn_80236554(i, fn_80237810(i), false);
+                            fn_80236554(i, getPlayerMaxLife_80237810(i), false);
                         }
                     }
                 }

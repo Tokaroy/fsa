@@ -295,7 +295,7 @@ void FleeingForceGem_804AB170::update() {
                 }
                 lbl_8053AED0->fn_8043D874(target, lbl_804AB160[field_0x268], 0);
                 if (getPlayerLayer_8023DE58(target) >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                    lbl_8053AED0->fn_8043D67C(0x194 - (mSpawnParam_0x90 & 3), target, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x194 - (mSpawnParam_0x90 & 3), target, 0);
                 }
             }
             fn_801F3604();

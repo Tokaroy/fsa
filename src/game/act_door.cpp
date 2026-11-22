@@ -390,7 +390,7 @@ void Door_804A8D88::update() {
                 break;
             }
             if (fn_8022CAF8(field_0x248) == 4) {
-                if (fn_8022F478(field_0x248) || fn_8023EEB4(field_0x248) != 'KEY0') {
+                if (fn_8022F478(field_0x248) || getPlayerHeldActorId_8023EEB4(field_0x248) != 'KEY0') {
                     break;
                 }
                 SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(field_0x248)));
@@ -404,7 +404,7 @@ void Door_804A8D88::update() {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (i == field_0x248 || (fn_8022F514(i) == true && field_0x248 == fn_8022F3DC(i))) {
-                    if (fn_8023EEB4(i) != 'KEY0') {
+                    if (getPlayerHeldActorId_8023EEB4(i) != 'KEY0') {
                         continue;
                     }
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(i)));
@@ -421,7 +421,7 @@ void Door_804A8D88::update() {
         case 2:
         case 4:
             if (field_0x240 == 0) {
-                s32 serial = fn_801F2718('HBMB');
+                s32 serial = findOverlappingActor_801F2718('HBMB');
                 if (serial < 0) {
                     break;
                 }
@@ -450,7 +450,7 @@ void Door_804A8D88::update() {
                 if (bomb->mSpawnParam_0x90 == 12) {
                     break;
                 }
-                s32 warpSerial = fn_801F2718('WARP');
+                s32 warpSerial = findOverlappingActor_801F2718('WARP');
                 if (warpSerial < 0) {
                     break;
                 }
@@ -471,7 +471,7 @@ void Door_804A8D88::update() {
             break;
         case 7: {
             field_0x248 = fn_8023AF14(&field_0x26c, mLayer_0x4, false, 0.0f);
-            if (field_0x248 < 0 || fn_8023EEB4(field_0x248) != 'KEY0') {
+            if (field_0x248 < 0 || getPlayerHeldActorId_8023EEB4(field_0x248) != 'KEY0') {
                 break;
             }
             SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(field_0x248)));

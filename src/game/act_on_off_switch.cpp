@@ -150,9 +150,9 @@ void OnOffSwitch_804A8FC8::update() {
         playerB = playerA;
     }
     s32 playerC = fn_8023A6CC(&box, mLayer_0x4);
-    s32 lnbmSerial = fn_801F8108(this, ACTOR_LNBM, -1, 32.0f);
-    s32 tuboSerial = fn_801F8108(this, ACTOR_TUBO, -1, 32.0f);
-    s32 hbmbSerial = fn_801F2718(ACTOR_HBMB);
+    s32 lnbmSerial = findOverlappingActorById_801F8108(this, ACTOR_LNBM, -1, 32.0f);
+    s32 tuboSerial = findOverlappingActorById_801F8108(this, ACTOR_TUBO, -1, 32.0f);
+    s32 hbmbSerial = findOverlappingActor_801F2718(ACTOR_HBMB);
     mHitTimer_0xd8 = 0;
 
     switch (mState) {

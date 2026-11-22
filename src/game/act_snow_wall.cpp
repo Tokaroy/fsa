@@ -74,7 +74,7 @@ void SnowWall_8049E8A0::update() {
             JGeometry::TVec2f pos(mPos.x, mPos.y);
             fn_802379E4(player, (const JGeometry::TVec3f*)&pos);
         }
-        s32 fireSerial = fn_801F2718('FIRE');
+        s32 fireSerial = findOverlappingActor_801F2718('FIRE');
         bool hasFire;
         if (fireSerial <= 0) {
             hasFire = false;

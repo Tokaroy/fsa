@@ -124,24 +124,24 @@ void RecoveryHeart_8049F4F0::update() {
             fn_8023B768(&box, mLayer_0x4, &basePos);
         }
         if (player >= 0) {
-            s32 owner = fn_80237810(player);
+            s32 owner = getPlayerMaxLife_80237810(player);
             if (owner == fn_80237774(player)) {
                 fn_80230EB8(player, 9);
             }
             fn_80236554(player, 4, 0);
             mAlive = false;
         } else if (hitPlayer >= 0) {
-            s32 owner = fn_80237810(hitPlayer);
+            s32 owner = getPlayerMaxLife_80237810(hitPlayer);
             if (owner == fn_80237774(hitPlayer)) {
                 fn_80230EB8(hitPlayer, 9);
             }
             fn_80236554(hitPlayer, 4, 0);
             mAlive = false;
-        } else if (fn_801F2718('ZLD2') >= 0) {
+        } else if (findOverlappingActor_801F2718('ZLD2') >= 0) {
             startSound_801F0E34(0x400C9, 0);
             lbl_8053AB9C = 4;
             mAlive = false;
-        } else if (fn_801F2718('ZLD4') >= 0) {
+        } else if (findOverlappingActor_801F2718('ZLD4') >= 0) {
             startSound_801F0E34(0x400C9, 0);
             lbl_8053ABEC = 4;
             mAlive = false;

@@ -257,7 +257,7 @@ void FlyingTile_804AC100::update() {
                 }
                 break;
             case 7: {
-                s32 serial = fn_801F2718(ACTOR_TKRA);
+                s32 serial = findOverlappingActor_801F2718(ACTOR_TKRA);
                 if (serial >= 0) {
                     ActorBase_804A5770* chest = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (chest != NULL) {

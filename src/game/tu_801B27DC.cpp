@@ -118,7 +118,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                         continue;
                     }
                     mBox.set(-8.0f, -14.0f, 8.0f, 10.0f);
-                    if (field_0x308 == 0 && fn_801F2718(actor->mActorId) >= 0) {
+                    if (field_0x308 == 0 && findOverlappingActor_801F2718(actor->mActorId) >= 0) {
                         field_0x334 = 0.0f;
                         mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
                         field_0x2f8 = 0xB;
@@ -129,7 +129,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                             continue;
                         }
                         mBox.set(-64.0f, -48.0f, 64.0f, 48.0f);
-                        if (fn_801F2718(actor->mActorId) < 0) {
+                        if (findOverlappingActor_801F2718(actor->mActorId) < 0) {
                             continue;
                         }
                         field_0x304 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
@@ -147,7 +147,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                         break;
                     } else {
                         mBox.set(-256.0f, -48.0f, 256.0f, 48.0f);
-                        if (fn_801F2718(actor->mActorId) >= 0) {
+                        if (findOverlappingActor_801F2718(actor->mActorId) >= 0) {
                             field_0x32c = 1;
                             break;
                         }
@@ -187,7 +187,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         field_0x31c = 0;
         field_0x2f8 = 2;
     case 2: {
-        s32 serial = fn_801F2718(ACTOR_ZDCO);
+        s32 serial = findOverlappingActor_801F2718(ACTOR_ZDCO);
         if (serial >= 0) {
             obj = static_cast<PrincessZeldaMotionObjectSpawner_804A375C*>(
                 getActorManager_801F856C()->findActorBySerial_801F666C(serial));

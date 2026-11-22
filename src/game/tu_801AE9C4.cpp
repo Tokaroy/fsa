@@ -25,7 +25,7 @@ static u32 lbl_804A33C4[] = {0, 0, 2};
 // The (6, 5) early return is `cmpwi r4,5; bne; blr` in the
 // original; ours is `cmpwi r4,5; beqlr`, one instruction fewer. The
 // jump table and the sdata2 literals differ only by @NNN names (data split).
-void OkameSan_804A3448::fn_801AF7D0(s32 state) {
+void OkameSan_804A3448::setState_801AF7D0(s32 state) {
     if (field_0x258 == state) {
         return;
     }
@@ -109,14 +109,14 @@ void OkameSan_804A3448::fn_801AF678() {
         field_0x240 += 1;
         field_0x240 &= 3;
         if (field_0x240 == 0) {
-            fn_801AF7D0(2);
+            setState_801AF7D0(2);
             field_0x25c = 1;
         }
         break;
     case 3:
         field_0x240 += 1;
         if (field_0x240 > 2) {
-            fn_801AF7D0(0);
+            setState_801AF7D0(0);
             field_0x25c = 1;
         }
         break;
@@ -124,14 +124,14 @@ void OkameSan_804A3448::fn_801AF678() {
         field_0x240 += 1;
         field_0x240 &= 3;
         if (field_0x240 == 0) {
-            fn_801AF7D0(6);
+            setState_801AF7D0(6);
             field_0x25c = 1;
         }
         break;
     case 7:
         field_0x240 += 1;
         if (field_0x240 > 2) {
-            fn_801AF7D0(4);
+            setState_801AF7D0(4);
             field_0x25c = 1;
         }
         break;
@@ -257,10 +257,10 @@ void OkameSan_804A3448::init() {
         field_0x250 = mSpawnParam_0x90 & 1;
         if (field_0x250 == 0) {
             mDir_0x98 = 0;
-            fn_801AF7D0(0);
+            setState_801AF7D0(0);
         } else {
             mDir_0x98 = 2;
-            fn_801AF7D0(4);
+            setState_801AF7D0(4);
         }
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
@@ -336,9 +336,9 @@ void OkameSan_804A3448::update() {
                                 }
                             }
                             if (field_0x250 == 0) {
-                                fn_801AF7D0(1);
+                                setState_801AF7D0(1);
                             } else {
-                                fn_801AF7D0(5);
+                                setState_801AF7D0(5);
                             }
                             field_0x238 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
                             break;
@@ -358,9 +358,9 @@ void OkameSan_804A3448::update() {
         break;
     case 2:
         if (field_0x250 == 0) {
-            fn_801AF7D0(3);
+            setState_801AF7D0(3);
         } else {
-            fn_801AF7D0(7);
+            setState_801AF7D0(7);
         }
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;

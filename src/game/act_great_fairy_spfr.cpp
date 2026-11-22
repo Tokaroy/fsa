@@ -100,7 +100,7 @@ void GreatFairy_8049EB8C::init() {
         mDrawEnabled = true;
         JGeometry::TVec3f pos = mPos;
         field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
-        fn_80132454(2);
+        setState_80132454(2);
     }
 }
 
@@ -119,7 +119,7 @@ void GreatFairy_8049EB8C::update() {
         switch (field_0x238) {
         case 0:
             fn_8011921C()->fn_801183BC();
-            fn_80132454(4);
+            setState_80132454(4);
             break;
         case 1:
             if (isScreenFlagSet_0x34()) {
@@ -135,7 +135,7 @@ void GreatFairy_8049EB8C::update() {
             field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
             mDrawEnabled = true;
             startSound_801F0E34(0x40090, 0);
-            fn_80132454(2);
+            setState_80132454(2);
         }
         break;
     case 2:
@@ -146,7 +146,7 @@ void GreatFairy_8049EB8C::update() {
             s32 player = talkTo();
             if (player >= 0) {
                 field_0x23c = player;
-                fn_80132454(3);
+                setState_80132454(3);
             }
             break;
         }
@@ -155,7 +155,7 @@ void GreatFairy_8049EB8C::update() {
     case 3:
         fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
-            fn_80132454(2);
+            setState_80132454(2);
         }
         break;
     case 6:
@@ -223,56 +223,56 @@ void GreatFairy_8049EB8C::vfunc_0x54() {
     switch (field_0x238) {
     case 0:
         if (value == lbl_80465204[5]) {
-            fn_80132454(5);
+            setState_80132454(5);
         } else if (value == lbl_80465204[6]) {
-            fn_80132454(6);
+            setState_80132454(6);
         } else if (value == lbl_80465204[7]) {
-            fn_80132454(7);
+            setState_80132454(7);
         } else if (value == lbl_80465204[8]) {
-            fn_80132454(8);
+            setState_80132454(8);
         } else if (value == lbl_80465204[9]) {
-            fn_80132454(9);
+            setState_80132454(9);
         } else if (value == lbl_80465204[10]) {
-            fn_80132454(0xA);
+            setState_80132454(0xA);
         } else if (value == lbl_80465204[11]) {
-            fn_80132454(0xB);
+            setState_80132454(0xB);
         } else if (value == lbl_80465204[12]) {
-            fn_80132454(0xC);
+            setState_80132454(0xC);
         } else if (value == lbl_80465204[13]) {
-            fn_80132454(0xD);
+            setState_80132454(0xD);
         } else if (value == lbl_80465204[14]) {
-            fn_80132454(0xE);
+            setState_80132454(0xE);
         } else if (value == lbl_80465204[15]) {
-            fn_80132454(0xF);
+            setState_80132454(0xF);
         } else if (value == lbl_80465204[16]) {
-            fn_80132454(0x10);
+            setState_80132454(0x10);
         } else if (value == lbl_80465204[17]) {
-            fn_80132454(0x11);
+            setState_80132454(0x11);
         } else if (value == lbl_80465204[18]) {
-            fn_80132454(0x12);
+            setState_80132454(0x12);
         } else if (value == lbl_80465204[19]) {
-            fn_80132454(0x13);
+            setState_80132454(0x13);
         } else if (value == lbl_80465204[20]) {
-            fn_80132454(0x14);
+            setState_80132454(0x14);
         } else if (value == lbl_80465204[21]) {
-            fn_80132454(0x15);
+            setState_80132454(0x15);
         }
         break;
     case 1:
         if (value == lbl_80465204[4]) {
-            fn_80132454(4);
+            setState_80132454(4);
         } else if (value == lbl_80465204[5]) {
-            fn_80132454(5);
+            setState_80132454(5);
         } else if (value == lbl_80465204[6]) {
-            fn_80132454(6);
+            setState_80132454(6);
         } else if (value == lbl_80465204[22]) {
-            fn_80132454(0x16);
+            setState_80132454(0x16);
         } else if (value == lbl_80465204[23]) {
-            fn_80132454(0x13);
+            setState_80132454(0x13);
         } else if (value == lbl_80465204[24]) {
-            fn_80132454(0x14);
+            setState_80132454(0x14);
         } else if (value == lbl_80465204[25]) {
-            fn_80132454(0x19);
+            setState_80132454(0x19);
         }
         break;
     }
@@ -290,7 +290,7 @@ s32 GreatFairy_8049EB8C::vfunc_0x5C() {
 
 // operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
 // FIXME: 99.94 %, operands; behaviour drift.
-void GreatFairy_8049EB8C::fn_80132454(s32 index) {
+void GreatFairy_8049EB8C::setState_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
@@ -463,7 +463,7 @@ void GreatFairy_8049EB8C::fn_801321E4() {
     case 8: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f pos;
-        s32 serial = getActorManager_801F856C()->fn_801F7A08('BARI');
+        s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('BARI');
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
@@ -503,7 +503,7 @@ void GreatFairy_8049EB8C::fn_801321E4() {
     }
 }
 
-// From here to vfunc_0x58: plain functions that update and fn_80132454 inline and whose own
+// From here to vfunc_0x58: plain functions that update and setState_80132454 inline and whose own
 // copies the linker dropped. The original's .sdata2 has their literals ahead of fn_801321E4's, in
 // the order of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
@@ -536,7 +536,7 @@ s32 GreatFairy_8049EB8C::talkTo() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 20-line definition): split out only where the .sdata2 order needs it.
 void GreatFairy_8049EB8C::placeAtBarrier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-    s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
+    s32 bari = getActorManager_801F856C()->findSerialByActorId_801F7A08('BARI');
     if (bari >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
         if (actor != NULL) {
@@ -559,7 +559,7 @@ void GreatFairy_8049EB8C::placeAtBarrier() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void GreatFairy_8049EB8C::spawnSoldier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-    s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
+    s32 bari = getActorManager_801F856C()->findSerialByActorId_801F7A08('BARI');
     if (bari >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
         if (actor != NULL) {

@@ -121,7 +121,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 23 | 10 | 13376 | 15 | 10 | `__fabsf(…)` |
 | 24 | 10 | 13232 | 10 | 10 | `setRotScaleMtx(…)` |
 | 25 | 9 | 18700 | 16 | 8 | `fn_8011921C(…)->fn_801183BC(…)` |
-| 26 | 9 | 15912 | 22 | 18 | `getActorManager_801F856C(…)->fn_801F7A08(…)` |
+| 26 | 9 | 15912 | 22 | 18 | `getActorManager_801F856C(…)->findSerialByActorId_801F7A08(…)` |
 | 27 | 9 | 14028 | 10 | 10 | `fn_8011921C(…)->fn_801186B0(…)` |
 | 28 | 9 | 10124 | 11 | 4 | `fn_800FE294(…)` |
 | 29 | 8 | 34168 | 9 | 9 | `addCalc2_801F71A4(…)` |

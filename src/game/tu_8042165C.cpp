@@ -560,14 +560,14 @@ void BattleHud_804B146C::fn_80425F6C() {
         f32 x;
         f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
-            gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
             pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
             field_0x208[i] = 0;
         } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
-            gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
             pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
@@ -714,7 +714,7 @@ void BattleHud_804B146C::fn_804253E0(s32 player) {
             field_0x1e8[player] = lbl_8050DB0C.field_0x4c[(0x74 - 0x4C) / 2] * lbl_8050DB0C.field_0x4c[(0x76 - 0x4C) / 2] + 30;
             field_0x1b8[player] = field_0x1a8[player];
             field_0x1a8[player] = lbl_80529DEC.field_0xd8[player];
-            field_0x1c8[player] = fn_80237810(player);
+            field_0x1c8[player] = getPlayerMaxLife_80237810(player);
         }
     } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
@@ -732,7 +732,7 @@ void BattleHud_804B146C::fn_804253E0(s32 player) {
         field_0x1e8[player] = lbl_8050DB0C.field_0x4c[(0x74 - 0x4C) / 2] * lbl_8050DB0C.field_0x4c[(0x76 - 0x4C) / 2] + 30;
         field_0x1b8[player] = field_0x1a8[player];
         field_0x1a8[player] = lbl_80529DEC.field_0xd8[player];
-        field_0x1c8[player] = fn_80237810(player);
+        field_0x1c8[player] = getPlayerMaxLife_80237810(player);
     } else {
         field_0x168[player] = 0;
     }
@@ -1075,7 +1075,7 @@ void BattleHud_804B146C::fn_80423804(s32 player) {
     if (!(field_0x256 & (u8)(1 << player))) {
         return;
     }
-    s32 max = fn_80237810(player);
+    s32 max = getPlayerMaxLife_80237810(player);
     s32 current = lbl_80529DEC.field_0xd8[player];
     s32 life = current;
     if (max > 32) {
@@ -1316,7 +1316,7 @@ void BattleHud_804B146C::fn_80422824() {
 void BattleHud_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
         field_0x1a8[player] = fn_80237774(player);
-        field_0x1c8[player] = fn_80237810(player);
+        field_0x1c8[player] = getPlayerMaxLife_80237810(player);
         return;
     }
     s32 max = field_0x1c8[player];
@@ -1511,7 +1511,7 @@ void BattleHud_804B146C::fn_8042165C() {
             }
             if (getPlayerLayer_8023DE58(i) < 8) {
                 Vec screen;
-                gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
+                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
                 for (s32 j = 0; j < 10; j++) {
                     if (!lbl_8053AED0->fn_8043DF24(lbl_8048F188[j], lbl_8048F1B0[j], screen.x, screen.y, 0.0f)) {
                         for (s32 k = 0; k < 4; k++) {

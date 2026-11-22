@@ -25,8 +25,8 @@ public:
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x58 */ virtual s32 vfunc_0x58();
 
-    void fn_8010E2D4(s32 arg);
-    void fn_8010F478(s32 arg);
+    void enterDemoState_8010E2D4(s32 arg);
+    void setDemoState_8010F478(s32 arg);
     bool fn_8010FA54() const;
     void fn_8010E7E8(s32 arg);
     void fn_8010F7EC(s32 arg);

@@ -306,9 +306,9 @@ void Warp_804A6DC8::update() {
     kind = mSpawnParam_0x90 & 0x7F;
     s32 serial;
     if (kind == 4 || kind == 0x20 || kind == 0x24) {
-        serial = fn_801F26CC(lbl_8046AC2C);
+        serial = findOverlappingActorOf_801F26CC(lbl_8046AC2C);
     } else if (kind == 6 || kind == 0xB || kind == 0x14) {
-        serial = fn_801F26CC(lbl_8046AC20);
+        serial = findOverlappingActorOf_801F26CC(lbl_8046AC20);
     } else {
         serial = fn_80227290(32.0f, lbl_8046ABE8, -1);
     }
@@ -646,7 +646,7 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
         return;
     }
     if (field_0x27c[player] == NULL) {
-        if (fn_8023EFEC(player) && fn_8023EEB4(player) == 'YASI') {
+        if (fn_8023EFEC(player) && getPlayerHeldActorId_8023EEB4(player) == 'YASI') {
             field_0x27c[player] = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player));
         }
         return;

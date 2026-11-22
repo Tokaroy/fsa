@@ -11,7 +11,7 @@ extern u8 lbl_8053AC30;
 // chase state from the grab, else the first hit lets go of the actor it carries.
 static inline void releaseTarget(cls_804A51E4* self) {
     if (self->mState == 0xC && self->mStateTimer >= 6 && !self->fn_801E1DE8()) {
-        self->fn_801E1594(0xD);
+        self->setState_801E1594(0xD);
     } else if (self->fn_801E1CF8()) {
         if (!self->checkFlag(0x10000)) {
             self->mFlags |= 0x10000;
@@ -203,7 +203,7 @@ u8 cls_804A51E4::checkHitByPlayer_0x5C() {
                 }
             }
             if (mState == 0xC && mStateTimer >= 6 && !fn_801E1DE8()) {
-                fn_801E1594(0xD);
+                setState_801E1594(0xD);
             }
             hit = 1;
         }

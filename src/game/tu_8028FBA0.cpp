@@ -131,7 +131,7 @@ inline void Player_804A6F38::spawnEffect17D() {
 
 // The animation while walking in or out through an entrance (fn_80293FE4,
 // fn_802948C0): the walk cycle with 0xCEB, a 19-count cycle of frames 0-2
-// with 0xCEC, the carry step (fn_8026152C) while holding an actor, else
+// with 0xCEC, the carry step (updateCarryWalk_8026152C) while holding an actor, else
 // fn_8027EE84.
 inline void Player_804A6F38::stepTransitionAnim() {
     if (field_0xceb == 1) {
@@ -149,7 +149,7 @@ inline void Player_804A6F38::stepTransitionAnim() {
             mWalkFrame_0x3f9 = 2;
         }
     } else if (fn_8025F684()) {
-        fn_8026152C(false);
+        updateCarryWalk_8026152C(false);
     } else {
         fn_8027EE84();
     }
@@ -1785,7 +1785,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
     if (mTransitionKind_0xcf4 == 0x1F) {
         fn_80248004(5, true);
     }
-    fn_80248FF0();
+    endFormActor_80248FF0();
     return true;
 }
 

@@ -65,7 +65,7 @@ bool Thief_804A5A30::vfunc_0x58() {
         }
         hit = fn_801F37AC(0, &from, 0, type, player);
         if (hit) {
-            fn_80205E0C(7);
+            setState_80205E0C(7);
         }
     }
     return hit;
@@ -77,7 +77,7 @@ u8 Thief_804A5A30::checkHitByActor_0x60() {
         mBox.getHeight() > 0.0f) {
         hit = checkActorHit_801F2DB4('NULL', 'NULL', NULL);
         if (hit) {
-            fn_80205E0C(7);
+            setState_80205E0C(7);
         }
     }
     return hit;
@@ -97,7 +97,7 @@ u8 Thief_804A5A30::checkHitByPlayer_0x5C() {
             }
         }
         if (hit) {
-            fn_80205E0C(7);
+            setState_80205E0C(7);
         }
     }
     return hit;
@@ -137,7 +137,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
                         if (mState != 5) {
                             // Only x and y of the player's position are read.
                             fn_801D2978(&field_0x35c, &pos, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 24, 1.0f);
-                            fn_80205E0C(5);
+                            setState_80205E0C(5);
                         }
                     }
                 }

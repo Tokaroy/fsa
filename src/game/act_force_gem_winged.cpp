@@ -49,7 +49,7 @@ static inline void fixKind(WingedForceGem_804AB098* self) {
 static inline void showMessage(s32 who) {
     if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
         !getGameView_802D6A9C()->fn_802D7F40(0)) {
-        lbl_8053AED0->fn_8043D67C(0x13F, who, 0);
+        lbl_8053AED0->requestMessage_8043D67C(0x13F, who, 0);
         getGameView_802D6A9C()->fn_802D7F84(0, true);
     }
 }
@@ -407,7 +407,7 @@ void WingedForceGem_804AB098::update() {
             fn_802362C4(who, lbl_804AB078[field_0x270]);
         }
         if (getPlayerLayer_8023DE58(field_0x26c) >= 8 && gGameRoot_8053AAF8->field_0x7e == 1 && field_0x270 < 4) {
-            lbl_8053AED0->fn_8043D67C(0x194 - field_0x270, who, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x194 - field_0x270, who, 0);
         }
         mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         field_0x25c = 0;

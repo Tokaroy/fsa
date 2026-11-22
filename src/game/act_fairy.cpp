@@ -105,7 +105,7 @@ void Fairy_804A03B8::init() {
             SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
             if ((row.field_0x87 & 1) == 0) {
                 row.field_0x87 |= 1;
-                lbl_8053AED0->fn_8043D67C(0x339, 0, lbl_80529DEC.field_0x24f);
+                lbl_8053AED0->requestMessage_8043D67C(0x339, 0, lbl_80529DEC.field_0x24f);
             }
         }
     }
@@ -124,7 +124,7 @@ void Fairy_804A03B8::update() {
             SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
             if ((row.field_0x87 & 1) == 0) {
                 row.field_0x87 |= 1;
-                lbl_8053AED0->fn_8043D67C(0x339, 0, lbl_80529DEC.field_0x24f);
+                lbl_8053AED0->requestMessage_8043D67C(0x339, 0, lbl_80529DEC.field_0x24f);
             }
         }
         field_0xb0 = 0x20000;
@@ -195,13 +195,13 @@ void Fairy_804A03B8::update() {
                 }
                 field_0x230 = 2;
             } else {
-                field_0x254 = fn_801F2718('ZLD2');
+                field_0x254 = findOverlappingActor_801F2718('ZLD2');
                 s32 serial = field_0x254;
                 if (serial >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
                     lbl_8053AB9C = 0x20;
                     field_0x230 = 2;
                 } else {
-                    field_0x254 = fn_801F2718('ZLD4');
+                    field_0x254 = findOverlappingActor_801F2718('ZLD4');
                     serial = field_0x254;
                     if (serial >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
                         lbl_8053ABEC = 0x20;
@@ -273,7 +273,7 @@ void Fairy_804A03B8::update() {
             deleteEmitterKeep(&mEmitter290);
             deleteEmitterKeep(&mEmitter294);
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
-                lbl_8053AED0->fn_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
+                lbl_8053AED0->requestMessage_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
             }
             mAlive = false;
         }

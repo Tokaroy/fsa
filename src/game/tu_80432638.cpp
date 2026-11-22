@@ -287,7 +287,7 @@ void GbaWindow_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
         f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 4; i++) {
             field_0x18[i]->moveFromCentre_80402E08(moveX, moveY);
-            field_0x18[i]->fn_80402CE0(scaleX, scaleY);
+            field_0x18[i]->scaleKeepCentre_80402CE0(scaleX, scaleY);
         }
         if (all && 1.0f == scaleX) {
             if (field_0x9e == 1 || field_0x9e == 2 || field_0x9e == 3) {
@@ -327,7 +327,7 @@ void GbaWindow_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
         f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 3; i++) {
             field_0x28[i]->moveFromCentre_80402E08(moveX, moveY);
-            field_0x28[i]->fn_80402CE0(scaleX, scaleY);
+            field_0x28[i]->scaleKeepCentre_80402CE0(scaleX, scaleY);
         }
         field_0x4[1]->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }

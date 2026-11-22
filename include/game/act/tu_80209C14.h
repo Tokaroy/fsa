@@ -22,7 +22,7 @@ public:
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
 
     // 0x8020AA78 (plain symbol name): enters `state`.
-    void fn_8020AA78(s32 state);
+    void setState_8020AA78(s32 state);
     void fn_80209D44(); // sets mFlags bit 0x2000
     // 0x80209D20: unless mFlags bit 0x2000 is set, sets bit 0x4000 and stores
     // `dir` at 0x2AC and `steps` at 0x2B0.

@@ -79,7 +79,7 @@ void Bee_804AC600::update() {
         if (field_0x230 != 6 && field_0x230 != 1) {
             if (updateHitReaction_801F3D94(1) == 0) {
                 bool handled = false;
-                s32 serial = fn_801F2718('HBMB');
+                s32 serial = findOverlappingActor_801F2718('HBMB');
                 if (serial >= 0) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL && actor->field_0x94 != 0) {

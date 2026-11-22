@@ -506,7 +506,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Two calls compared, `cmpw r3, r29` with the FIRST call's result in r29: write the call made second
   on the left, `if (fn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
   the first result gives `cmpw r29, r3` (tu_80285E58). Same in tu_8027E5BC fn_8027E7E0 (to 100 %) and
-  act_princess_zelda `getPlayerLayer_8023DE58(p) == fn_8023E10C(p)`.
+  act_princess_zelda `getPlayerLayer_8023DE58(p) == getPlayerDestLayer_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;
   cmpwi 0x39`): compare the member itself each time (`field_0x1240 == 8 || field_0x1240 == 9 || ...`); a
   local read once lets MWCC fold 8-10 (tu_80285E58 fn_802870C8). Also tu_8025EB18 fn_8025FCC8 (state

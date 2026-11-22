@@ -241,7 +241,7 @@ void TrickFloor_804A83A0::update() {
     if (field_0x23c == 1 && standing >= 0 && !fn_80234F68(standing)) {
         standing = -1;
     }
-    s32 ball = fn_801F2718('SBAL');
+    s32 ball = findOverlappingActor_801F2718('SBAL');
     fn_8023A89C(&box, mLayer_0x4, &p);
     s32 pushers = 0;
     for (s32 i = 0; i < 4; i++) {

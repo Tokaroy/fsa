@@ -346,7 +346,7 @@ public:
     // 0x802F9BE8: loads the u16 grid mTileDefs_0x24 the same way, from byte
     // `start` on (tu_802D39B8).
     void fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size);
-    // 0x802F9DA8: fn_802F93F4 for the sprite palettes mTilePalettesRaw_0xc / mTilePalettes_0x18
+    // 0x802F9DA8: loadSpritePalette_802F93F4 for the sprite palettes mTilePalettesRaw_0xc / mTilePalettes_0x18
     // of slot 0-2 (tu_802D39B8).
     void fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
     // 0x802F53F4. tu_80301CD0 (0x803051A0, 0x80305DEC). Keeps the record of
@@ -371,11 +371,11 @@ public:
     // bytes to mSpriteImages_0x88[slot] + dstOffset and flushes them; tu_8039003C's
     // constructor passes the 'SCH ' resources (slots 0, 0, 2, 3), as does
     // tu_803A85E4's (slots 0, 0, 2, 3; dstOffset 0 / 0x7000 / 0x4000 / 0).
-    void fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
+    void loadSpriteImage_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
     // 0x802F93F4 (game/tu_802F5040.cpp, not written yet): the 'SCL ' form of
-    // fn_802F9714 with a trailing byte flag (clrlwi. 24 at 0x802F9568); the
+    // loadSpriteImage_802F9714 with a trailing byte flag (clrlwi. 24 at 0x802F9568); the
     // constructor of tu_8039003C and tu_803A85E4's pass false.
-    void fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
+    void loadSpritePalette_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
     // 0x802FF548 (game/tu_802F5040.cpp): r3 only, passed on unchanged to
     // fn_802FF798. Called by tu_8013AAD4's fn_8013B4C0 with field_0x20.
     void fn_802FF548();
@@ -462,13 +462,13 @@ public:
     /* 0x0038 */ u16* mLayerGrid2[4];
     // u16 tile grids of 2 x 2 blocks of 16 x 16 (0x2000 each; fn_802FAC10 draws one).
     /* 0x0048 */ u16* field_0x48[16];
-    // 4-bit tile images (0x8000 each): fn_802F9714 / fn_802F93F4 write them,
+    // 4-bit tile images (0x8000 each): loadSpriteImage_802F9714 / loadSpritePalette_802F93F4 write them,
     // fn_802FF798 makes them the GXInitTexObjCI images of mSpriteTexObjs_0xb5c.
     /* 0x0088 */ u8* mSpriteImages_0x88[4];
     /* 0x0098 */ u8* mSpritePalettesRaw_0x98[12]; // 0x200
     // Palettes (0x200 each, 16 of 0x20): the GXInitTlutObj data of mSpriteTluts_0x25c.
     /* 0x00C8 */ u8* mSpritePalettes_0xc8[12];
-    // 0x8000: where fn_802F9714 decodes compressed resources (JKRDecomp::decode).
+    // 0x8000: where loadSpriteImage_802F9714 decodes compressed resources (JKRDecomp::decode).
     /* 0x00F8 */ u8* mDecodeBuf_0xf8;
     /* 0x00FC */ GbaWindow_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
     // 65 x 65 grid points (0x1081 TVec3f / TColor each, __construct_new_array).

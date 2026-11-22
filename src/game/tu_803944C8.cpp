@@ -715,7 +715,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         case 0x2000E: {
             u8 amount = p[0];
             if (amount == 0) {
-                fn_80236554(field_0x60->fn_803A30BC(), fn_80237810(field_0x60->fn_803A30BC()), false);
+                fn_80236554(field_0x60->fn_803A30BC(), getPlayerMaxLife_80237810(field_0x60->fn_803A30BC()), false);
             } else {
                 fn_80236554(field_0x60->fn_803A30BC(), amount * 4, false);
             }
@@ -741,7 +741,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 1:
             case 2:
             case 16:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
@@ -754,7 +754,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 3:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -762,7 +762,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 4:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -770,7 +770,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 5:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -778,7 +778,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 6:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -786,7 +786,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 7:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -796,7 +796,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 8:
             case 9:
             case 10:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
                     ActorBase_804A5770* pot = findActorBySerial_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
@@ -812,11 +812,11 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 12:
             case 13:
             case 14:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
-                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
                         work[2] = work[0];
                     }
                 }
@@ -1298,7 +1298,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         case 0x2000E: {
             u8 amount = p[0];
             if (amount == 0) {
-                fn_80236554(field_0x60->fn_803A30BC(), fn_80237810(field_0x60->fn_803A30BC()), false);
+                fn_80236554(field_0x60->fn_803A30BC(), getPlayerMaxLife_80237810(field_0x60->fn_803A30BC()), false);
             } else {
                 fn_80236554(field_0x60->fn_803A30BC(), amount * 4, false);
             }
@@ -1324,7 +1324,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 1:
             case 2:
             case 16:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
@@ -1337,7 +1337,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 3:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -1345,7 +1345,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 4:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -1353,7 +1353,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 5:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -1361,7 +1361,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 6:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -1369,7 +1369,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
                 }
                 break;
             case 7:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
                     work[2] = work[0];
                     if (take != 0) {
                         fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
@@ -1379,7 +1379,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 8:
             case 9:
             case 10:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
                     ActorBase_804A5770* pot = findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
@@ -1395,11 +1395,11 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 12:
             case 13:
             case 14:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
-                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                if (getPlayerHeldActorId_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (getPlayerHeldPlayer_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
                         work[2] = work[0];
                     }
                 }

@@ -15,7 +15,7 @@ public:
     /* 0x20 */ virtual void draw();
     void fn_801AF1EC();
     void fn_801AF678();
-    void fn_801AF7D0(s32 state);
+    void setState_801AF7D0(s32 state);
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
@@ -27,7 +27,7 @@ public:
     /* 0x24C */ s32 field_0x24c;
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254;
-    /* 0x258 */ s32 field_0x258; // state, set by fn_801AF7D0
+    /* 0x258 */ s32 field_0x258; // state, set by setState_801AF7D0
     /* 0x25C */ u8 field_0x25c;
     /* 0x25D */ u8 field_0x25D[0x3];
     /* 0x260 */ f32 field_0x260;

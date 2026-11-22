@@ -12,7 +12,7 @@ Resistant:
 
 Unwritten small functions and why:
 - fn_8024FEFC: the original calls fn_8024FEBC/fn_8024FE78 out of line; MWCC inlines them here.
-- fn_80248FF0: inlines fn_80249070 (defined later in the file).
+- endFormActor_80248FF0: inlines fn_80249070 (defined later in the file).
 - fn_8024ECCC: contains an infinite loop (`b .`) assert; not guessed.
 - fn_80241B44/DD0/E28, fn_80252F50/5C/68/74: use field_0xbec as a cls_804AA8D8* (game/tu_8030AE84.h) but fn_8023FC24 (matched) returns it as s32 via fn_8022BCD4 (tu_8022AD64); needs field type + wrapper return changed together. DD0/E28 also copy a TVec3f to the stack and pass it as a TVec2f*.
 - fn_802422C4, fn_80252F48, fn_8025196C: result types unknown (no callers' evidence).
@@ -31,20 +31,20 @@ docs/PLAYER.md: unit map, per-frame flow, state system (0x1240/0x1244/0x1248, th
 Matched: __ct__15Player_804A6F38Fl, __dt__15Player_804A6F38Fv, __dt__23PlayerSoundObj_804B20F8Fv (now emitted after our dtor), fn_80252F50/5C/68/74 (cls_804AA8D8 0x290-0x29C).
 Written below 100 %: fn_80254660 99.91 (reloc-name only: lbl_80540098 256/3 is @NNN until earlier literals are in pool order).
 Fields proven by the ctor/dtor: 0xBEC cls_804AA8D8*, 0x1250/0x1254 PlayerSoundObj_804B20F8*, 0x1258 TVec3f, cls_804A64A8 at 0x1278/0x1290/0x12D0/0x12E8/0x130C/0x1330, cls_8049F140 at 0x1398/0x13A8 (arrays at 0x38/0x4E0/0x510/0x550/0x5FC confirmed); fn_80254660: 0xB90 f32, 0xC0C s32.
-Next: fn_80254744 (per-slot reset, 0x11A0, 646 instrs on the battle path; proves most remaining fields), fn_802544B0, fn_80253E6C, then tu_80285E58 (fn_80285E58 / fn_802870C8).
+Next: fn_80254744 (per-slot reset, 0x11A0, 646 instrs on the battle path; proves most remaining fields), fn_802544B0, update_80253E6C, then tu_80285E58 (fn_80285E58 / fn_802870C8).
 SHARED-EDITS: Player.h (fields above; fn_8023FC24 and fn_8022BCD4 return cls_804AA8D8*; includes cls_804A64A8.h + new cls_8049F140.h); cls_804A64A8.h (dtor inline, tu_802144F0's out-of-line definition removed, still 100 %); new include/game/cls_8049F140.h (class moved out of tu_8013C5C8.cpp, ctor/dtor inline); tu_8022AD64.cpp fn_8022BCD4 return type; cls_804A71A8.h comment. symbols.txt: fn_8026F9E8 -> __ct__12cls_804A71A8FP15Player_804A6F38, fn_8018E890 -> __ct__Q29JGeometry8TBox2<f>Fv.
 
 ## Player track, agent A (Opus 5.5, 2026-11-05): reset, update A, state request, layout
-Baseline 8384 / 11557 at start; matching moved to 8385 (tu_80285E58) and the branch was rebased. After 8388 (+3 honest: fn_80251AEC, fn_80251BFC, fn_8023F2BC), structural 8730.
+Baseline 8384 / 11557 at start; matching moved to 8385 (tu_80285E58) and the branch was rebased. After 8388 (+3 honest: fn_80251AEC, canRequestState_80251BFC, fn_8023F2BC), structural 8730.
 Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok (tu_8023FBF0, tu_8022AD64); no function anywhere drops (per-address compare with the main report_honest.json, including percentages).
 Written:
-- fn_80251AEC 100 %, fn_80251BFC 100 % (0x1244 read once into a local for the last compare).
+- fn_80251AEC 100 %, canRequestState_80251BFC 100 % (0x1244 read once into a local for the last compare).
 - fn_80254744 99.30 % (different + reloc-name): only the first 0x31 loop's setup registers differ (li r5,0 / mr r3,r5 vs li r6,0 / li r3,0) plus the literal pool. Inlines getFollowerIndex_80248778 (rewritten to read its fields, still 100 %), fn_80241794, fn_80241200 and fn_80251AEC(3).
-- fn_802544B0 99.95 %, fn_80253E6C 99.99 %: reloc-name only (@NNN literals).
+- fn_802544B0 99.95 %, update_80253E6C 99.99 %: reloc-name only (@NNN literals).
 - fn_8023F2BC (tu_8022AD64) 100 %.
 Unwritten: fn_8023F390 95.15 % "different": the inlined fn_8022F478 / getPlayerLayer_8023DE58 in its last loop come out with the opposite block order (fallback before the call); tried &&-chain, nested if, continue. Source kept in the scratchpad.
 Choices a reviewer should check: the player-bit test is written out as `gGameRoot_8053AAF8->field_0x82 & (u8)(1 << field_0x4)` (GameRoot_8049EF20::fn_8023F98C's body; making it a header inline loses its out-of-line copy until fn_80235B68 is written); in two branches of fn_80254744 the operands are `(u8)(1 << field_0x4) & ...` (the original loads field_0x4 first there); file-local inlines viewStageFlag (fn_8019CE40's test on the view stage, used twice) and joinCue (four copies differing only in frames); `(s8)field_0x4` for the extsb before playSystemSound_80458880; the switch in fn_80254744 has `case 1:` sharing default's code (the original's search compares 1); an unused stack copy of mPos per pass in the second 0x31 loop.
-SHARED-EDITS: Player.h (~110 fields carved, 0x350 TVec3f replaces f32 0x358 -> tu_8026FC20 fn_8027966C uses field_0x350.z; 0xEF0 s32[0x50]; member decls fn_80276538, fn_80276078, fn_80253E6C, fn_802490A8, fn_80251D50, fn_8024BDBC, fn_8024E0A0, fn_8026FD14, fn_80252FC0, fn_80264998; free fn_80236890, fn_80232A0C, fn_80231DE4); cls_804A71A8.h (fn_8026F710, f32 0x14/0x18); tu_8030AE84.h (fn_8030B774); GameGlobals.h (cls_804A03A8::fn_8015F8FC, fn_8043A170 decl, fn_8023F2BC/fn_8023F390 moved out of extern "C"); tu_8022AD64.cpp (fn_8023F2BC + playerAt inline); tu_8026FC20.cpp (field_0x350.z). symbols.txt: 17 placeholder renames to mangled names.
+SHARED-EDITS: Player.h (~110 fields carved, 0x350 TVec3f replaces f32 0x358 -> tu_8026FC20 fn_8027966C uses field_0x350.z; 0xEF0 s32[0x50]; member decls fn_80276538, fn_80276078, update_80253E6C, fn_802490A8, fn_80251D50, fn_8024BDBC, fn_8024E0A0, fn_8026FD14, fn_80252FC0, fn_80264998; free fn_80236890, fn_80232A0C, fn_80231DE4); cls_804A71A8.h (fn_8026F710, f32 0x14/0x18); tu_8030AE84.h (fn_8030B774); GameGlobals.h (cls_804A03A8::fn_8015F8FC, fn_8043A170 decl, fn_8023F2BC/fn_8023F390 moved out of extern "C"); tu_8022AD64.cpp (fn_8023F2BC + playerAt inline); tu_8026FC20.cpp (field_0x350.z). symbols.txt: 17 placeholder renames to mangled names.
 
 ## Player track round 3, agent C (Opus 5.5, 2026-11-05)
 Baseline 8389 / 11557 (honest), structural 8735. Rebased on matching after agent D's merge (cls_804A71A8.h conflict resolved keeping D's arrays + anyFlag48).
@@ -65,7 +65,7 @@ SHARED-EDITS: Player.h (decls: fn_80240B84 const, fn_8024157C, fn_8025196C, fn_8
 
 ## Player track round 10, agent Q (Opus 5.5, 2026-11-05)
 Rebased on matching 67213dd2. Unit 163 -> 172/254 (+9 honest); total 8663 / 11557, structural 9103. Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok; per-address compare with the main report: no drops (anyFlag48's users in tu_80256C74 / tu_8025EB18 / tu_8026FC20 unchanged).
-100 %: fn_8024ECCC, fn_8024ED4C (the `b .` halts are `if (c) { for (;;) {} }`), fn_802422C4, fn_80248FF0 (fn_80249070's body as file inline clear121F_80249070), fn_80252BD0, fn_80252CF0 (two inlined fn_8024B9E8), fn_80248E94, fn_8025197C (= field_0xbf0->anyFlag48(all)), fn_80241BA0 (box passed as `&TBox2f(*box)`).
+100 %: fn_8024ECCC, fn_8024ED4C (the `b .` halts are `if (c) { for (;;) {} }`), fn_802422C4, endFormActor_80248FF0 (fn_80249070's body as file inline clear121F_80249070), fn_80252BD0, fn_80252CF0 (two inlined fn_8024B9E8), fn_80248E94, fn_8025197C (= field_0xbf0->anyFlag48(all)), fn_80241BA0 (box passed as `&TBox2f(*box)`).
 Below 100 % (FIXME): fn_8024C378 98.08 (regalloc), fn_80240DCC 86.20 (scheduling+regalloc, through four layer-query inlines), fn_80248A24 99.52 / fn_80248B9C 99.39 (regalloc + literal names), fn_80241964 97.29 (scheduling+regalloc), fn_8024C828 99.42, fn_80242704 99.51, fn_8024CAC8 99.53 (regalloc), fn_8024BBB8 95.97 (missing/extra: field_0x3b4 loaded before getPlayerLayer into r30 in the original).
 Not written: fn_802487FC / fn_80248970 (li/li zeroing; tried 7 groupSize shapes: declaring `i` before `count` improves fn_802486A0 / fn_80240670 / fn_8023FC5C but drops ~25 gated functions, reverted), fn_80241B44 (TBox2f*, caller in tu_8022AD64), fn_8024FEFC (callees inlined by MWCC).
 SHARED-EDITS: Player.h (decls fn_80248A24, fn_80248B9C, fn_80241964; fn_8025197C param `all`); cls_804A71A8.h (anyFlag48(bool all = true)). symbols.txt: fn_80248A24 / fn_80248B9C / fn_80241964 -> Player members.
@@ -78,7 +78,7 @@ Workarounds replaced by the plain function at its own address (deferred inlines 
 - requestState -> fn_80251AEC; shared48C / sharedBC0 -> fn_80247BD4 / fn_80247B9C (fn_8024762C 99.2 -> 99.8, now regalloc-only); clear121F -> fn_80249070; addCounter -> fn_8024ED4C; padAxis_* -> fn_8024712C / fn_80247330.
 - resetTrail: fn_80248604's own body as a plain function drops it to 88.2 (its original asm has the inlined li/mr zero); it is `fn_8024BAEC();` (fn_8024BAEC is the same code, li/li as a direct body), every inlined copy unchanged.
 Kept: playerFlagsGate (fn_802413F0's `!= 0` body in the gates drops 21 functions 99.5 -> 96.8, tried again under deferred); teamCheck, inState1B, the layer queries, inViewBox, planarDistance, normalizeVec, joinCue (no out-of-line copy in the unit).
-Pragma rule 1 regions (each with the caller in the comment): fn_8024FEFC/FEBC/FE78 (fn_8024FFC8, fn_8024FEFC), fn_8024E0A0 (fn_80253E6C), fn_80250D30 (fn_80250030, fn_80252FC0).
+Pragma rule 1 regions (each with the caller in the comment): fn_8024FEFC/FEBC/FE78 (fn_8024FFC8, fn_8024FEFC), fn_8024E0A0 (update_80253E6C), fn_80250D30 (fn_80250030, fn_80252FC0).
 100 %: fn_8024FEFC, fn_8024EE24.
 Regalloc-only (FIXME): fn_8024E500 99.7, fn_8024DA64 99.3, fn_802422D0 99.7 (BoxTest.h containsPoint), fn_80250ACC 99.5, fn_80242940 99.6, fn_80240F28 98.4 (const), fn_8024E0A0 99.3, fn_8024C5A0 99.6, fn_8025250C 99.6, fn_80250D30 99.6, fn_80247C0C 99.4, fn_80251D50 98.6, fn_80248970 97.3. Almost all are the group loop's leader / self temporaries (one register in ours, two in the original); dropping the `team` / `self` locals drops ~40 functions 3 %, reverted.
 Not written: fn_802487FC (still "different" 94.9: its direct fn_80248970 copy zeroes li/li in the original, li/mr in ours; 4 shapes), fn_80241B44 (writes a TBox2f through a TVec2f* parameter; needs the symbol and tu_8022AD64's fn_8022B8EC changed), fn_8024DCD0 and the larger ones.
@@ -98,7 +98,7 @@ SHARED-EDITS: Player.h (decl fn_802520C0(const TVec2<s32>*), fn_802527B0 comment
 On matching 831c008b. Unit 181 -> 189/254 (+8 honest: total 8920 -> 8928); structural 9439 -> 9446.
 Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok for tu_8023FBF0 (10 other units out of order, untouched here); per-address compare with the main report: 0 drops, 22 gains.
 Written: fn_8024BDBC 99.53 (regalloc), fn_8024E694 99.82 (regalloc), fn_8024B2E0 92.26 (missing/extra -4), fn_8024D134 99.65 (regalloc), fn_8024F63C 99.07 (scheduling+regalloc), fn_80250090 99.21 (regalloc), fn_80250FD4 99.86 (regalloc), fn_802487FC 94.95 (different: li/li vs li/mr, needed as the plain function fn_8024D134 inlines). fn_802408C8 96.0 -> 99.05 (`int` loop index).
-100 % through the literal pool: fn_80254660, fn_802544B0, fn_80253E6C, fn_802527B0, fn_8024E344, fn_8024E3D8, fn_8024E46C, fn_8024DC00.
+100 % through the literal pool: fn_80254660, fn_802544B0, update_80253E6C, fn_802527B0, fn_8024E344, fn_8024E3D8, fn_8024E46C, fn_8024DC00.
 Data: .rodata 100 % (lbl_8046AE08, lbl_8046AE28, lbl_8046AE58 as source data).
 Not written: fn_80241B44 (reason unchanged).
 SHARED-EDITS: Player.h (fn_8024E694 parameter name). Details: docs/PLAYER.md "Round 16 (tu_8023FBF0)".

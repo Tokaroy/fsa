@@ -177,7 +177,7 @@ void SaveScreen_804B0288::fn_803D5554() {
     field_0x24->field_0x22 = 0;
     field_0x28->mPane->hide();
     for (s32 i = 0; i < 8; i++) {
-        field_0x2c[i]->fn_80402CE0(2.0f, 2.0f);
+        field_0x2c[i]->scaleKeepCentre_80402CE0(2.0f, 2.0f);
         field_0x2c[i]->field_0x24 = 0;
         field_0x2c[i]->mPane->setAlpha(0);
         field_0x2c[i]->field_0x26 = 0;
@@ -368,14 +368,14 @@ void SaveScreen_804B0288::fn_803D49A4() {
     field_0x2c[2]->moveFromCentre_80402E08(-(0.5f * (paneW(field_0x2c[2]) - field_0x2c[2]->field_0x18)), 0.5f * (paneH(field_0x2c[2]) - field_0x2c[2]->field_0x1c));
     field_0x2c[3]->moveFromCentre_80402E08(0.5f * (paneW(field_0x2c[3]) - field_0x2c[3]->field_0x18), 0.5f * (paneH(field_0x2c[3]) - field_0x2c[3]->field_0x1c));
     if (wide / w0 < 1.0f) {
-        field_0x2c[4]->fn_80402CE0((2.0f * (field_0x2c[0]->field_0x18 - paneW(field_0x2c[0])) + field_0x2c[4]->field_0x18) / field_0x2c[4]->field_0x18, field_0x2c[4]->field_0x1c);
+        field_0x2c[4]->scaleKeepCentre_80402CE0((2.0f * (field_0x2c[0]->field_0x18 - paneW(field_0x2c[0])) + field_0x2c[4]->field_0x18) / field_0x2c[4]->field_0x18, field_0x2c[4]->field_0x1c);
         field_0x2c[4]->moveFromCentre_80402E08(0.0f, 0.0f);
-        field_0x2c[5]->fn_80402CE0((2.0f * (field_0x2c[1]->field_0x18 - paneW(field_0x2c[1])) + field_0x2c[5]->field_0x18) / field_0x2c[5]->field_0x18, field_0x2c[5]->field_0x1c);
+        field_0x2c[5]->scaleKeepCentre_80402CE0((2.0f * (field_0x2c[1]->field_0x18 - paneW(field_0x2c[1])) + field_0x2c[5]->field_0x18) / field_0x2c[5]->field_0x18, field_0x2c[5]->field_0x1c);
         field_0x2c[5]->moveFromCentre_80402E08(0.0f, 0.0f);
-        field_0x2c[6]->fn_80402CE0((paneW(field_0x2c[0]) + paneW(field_0x2c[1])) / field_0x2c[6]->field_0x18,
+        field_0x2c[6]->scaleKeepCentre_80402CE0((paneW(field_0x2c[0]) + paneW(field_0x2c[1])) / field_0x2c[6]->field_0x18,
                                    (2.0f * (field_0x2c[2]->field_0x1c - paneH(field_0x2c[2])) + field_0x2c[6]->field_0x1c) / field_0x2c[6]->field_0x1c);
         field_0x2c[6]->moveFromCentre_80402E08(0.0f, 0.0f);
-        field_0x2c[7]->fn_80402CE0((paneW(field_0x2c[2]) + paneW(field_0x2c[3])) / field_0x2c[7]->field_0x18,
+        field_0x2c[7]->scaleKeepCentre_80402CE0((paneW(field_0x2c[2]) + paneW(field_0x2c[3])) / field_0x2c[7]->field_0x18,
                                    (2.0f * (field_0x2c[3]->field_0x1c - paneH(field_0x2c[3])) + field_0x2c[7]->field_0x1c) / field_0x2c[7]->field_0x1c);
         field_0x2c[7]->moveFromCentre_80402E08(0.0f, 0.0f);
     } else {

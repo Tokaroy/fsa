@@ -30,7 +30,7 @@ void Blizzard_804AC388::update() {
         getGameView_802D6A9C()->fn_802D9FF4(field_0x234, field_0x238);
         gGameRoot_8053AAF8->fn_80136798(16, 1);
         for (s32 i = 0; i < 4; i++) {
-            fn_8023764C(i, fn_80237810(i) - 4);
+            fn_8023764C(i, getPlayerMaxLife_80237810(i) - 4);
             fn_8022CA6C(i, 0, true);
         }
         mAlive = false;

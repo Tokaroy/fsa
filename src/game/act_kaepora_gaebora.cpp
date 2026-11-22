@@ -141,7 +141,7 @@ bool KaeporaGaebora_804A6550::fn_80219E04() const {
 
 // FIXME: 99.90 %, scheduling + reloc-name; behaviour drift.
 // FIXME: jumptable reloc-name and one branch target (0xe88 vs 0xee8).
-void KaeporaGaebora_804A6550::fn_80219AFC(s32 state) {
+void KaeporaGaebora_804A6550::setState_80219AFC(s32 state) {
     // The state tests (states 5 and 11) are written out as in the original's inlined helper; a shared helper drops to 91.68 %.
     bool oldFlying = false;
     switch (mState) {
@@ -285,23 +285,23 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (field_0x2b8 == fn_8022FD8C(mSerial)) {
             if (fn_8038BD08(field_0x2b8, 0x150, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 2)) {
-                fn_80219AFC(1);
+                setState_80219AFC(1);
             }
         }
         break;
     case 1:
         fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
-            fn_80219AFC(4);
+            setState_80219AFC(4);
         }
         break;
     case 2:
         field_0x2b8 = fn_801D05F8(&mPos, 16.0f * field_0x2ac);
         if (field_0x2b8 >= 0 && fn_8023077C()) {
             if (field_0x2b4 == 0) {
-                fn_80219AFC(4);
+                setState_80219AFC(4);
             } else if (field_0x2b4 == 3) {
-                fn_80219AFC(8);
+                setState_80219AFC(8);
             }
         }
         break;
@@ -328,7 +328,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         }
         if (found) {
             gAudioMgr_8053AF80->playSystemSound_80458880(0x47, -1);
-            fn_80219AFC(4);
+            setState_80219AFC(4);
         }
         break;
     }
@@ -336,7 +336,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         if (__fabsf(mSpawnPos.x - mPos.x) < 0.1f && __fabsf(mSpawnPos.y - mPos.y) < 0.1f) {
             mPos.x = mSpawnPos.x;
             mPos.y = mSpawnPos.y;
-            fn_80219AFC(5);
+            setState_80219AFC(5);
         } else {
             if (mAnim.fn_801D21F0()) {
                 if (mAnim.mAnim == 0) {
@@ -355,9 +355,9 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             mPos.z = 16.0f;
             if (mAnim.fn_801D21F0()) {
                 if (field_0x2b4 == 0) {
-                    fn_80219AFC(8);
+                    setState_80219AFC(8);
                 } else {
-                    fn_80219AFC(6);
+                    setState_80219AFC(6);
                 }
             }
         }
@@ -368,7 +368,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             field_0x2b8 = fn_8022FD8C(mSerial);
             if (field_0x2b8 >= 0) {
                 if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0)) {
-                    fn_80219AFC(7);
+                    setState_80219AFC(7);
                 }
             }
         }
@@ -377,9 +377,9 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x2b8, mSerial)) {
             if (mFlags & 0x4000) {
-                fn_80219AFC(10);
+                setState_80219AFC(10);
             } else {
-                fn_80219AFC(6);
+                setState_80219AFC(6);
             }
         }
         break;
@@ -396,7 +396,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
                         fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3c, 0xFF, -0x80, -0x80, true);
                     }
                 }
-                fn_80219AFC(9);
+                setState_80219AFC(9);
             }
         }
         break;
@@ -412,22 +412,22 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             }
             fn_80230534(false);
             if (mFlags & 0x4000) {
-                fn_80219AFC(10);
+                setState_80219AFC(10);
             } else {
-                fn_80219AFC(6);
+                setState_80219AFC(6);
             }
         }
         break;
     case 10:
         if (mHead.mTimer == 0) {
-            fn_80219AFC(11);
+            setState_80219AFC(11);
         }
         break;
     case 11:
         if (mPos.z >= 35.0f) {
             mPos.z = 35.0f;
             if (mAnim.fn_801D21F0()) {
-                fn_80219AFC(12);
+                setState_80219AFC(12);
             }
         }
         break;

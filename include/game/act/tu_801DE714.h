@@ -29,7 +29,7 @@ public:
     bool fn_801E1DB4() const;                   // mAnim.mAnim in 0..2 or 0xD..0x10
     bool fn_801E1CF8() const;
     void fn_801E1AB4(bool arg);
-    void fn_801E1594(s32 newState);             // the state change
+    void setState_801E1594(s32 newState);             // the state change
     void fn_801E1300();
     void fn_801E0CF4();
     void fn_801E002C(ActorBase_804A5770* target);

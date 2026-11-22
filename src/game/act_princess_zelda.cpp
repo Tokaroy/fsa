@@ -203,7 +203,7 @@ void PrincessZelda_8049CEE0::update() {
         canHit = false;
     }
     if (canHit) {
-        if (fn_801F26CC(lbl_80464204) >= 0) {
+        if (findOverlappingActorOf_801F26CC(lbl_80464204) >= 0) {
             mLife -= 2;
             if (mLife > 0) {
                 fn_801096C8(11);
@@ -348,7 +348,7 @@ void PrincessZelda_8049CEE0::update() {
             break;
         }
         if (fn_8022D75C(player)) {
-            if (fn_8023E10C(player) == 8) {
+            if (getPlayerDestLayer_8023E10C(player) == 8) {
                 fn_801096C8(7);
             } else {
                 mLayer_0x4 = getPlayerLayer_8023DE58(player);
@@ -536,7 +536,7 @@ static inline bool overlaps(const JGeometry::TBox2f& a, const JGeometry::TBox2f&
 
 bool PrincessZelda_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
     outPos->zero();
-    s32 serial = getActorManager_801F856C()->fn_801F7A08('CIRC');
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('CIRC');
     if (serial < 0) {
         return false;
     }
@@ -786,7 +786,7 @@ void PrincessZelda_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
         break;
     }
     field_0x330 = 0.5f;
-    if (getPlayerLayer_8023DE58(field_0x300) == fn_8023E10C(field_0x300)) {
+    if (getPlayerLayer_8023DE58(field_0x300) == getPlayerDestLayer_8023E10C(field_0x300)) {
         mPos.x = ppos.x;
         mPos.y = ppos.y;
         mPos.z = ppos.z;

@@ -28,7 +28,7 @@ static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeome
     return fn_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
-// The ids vfunc_0x80 asks fn_801F26CC about (0xAC bytes of 'PEAC', 'OKTA', 'AMOS', ... ids).
+// The ids vfunc_0x80 asks findOverlappingActorOf_801F26CC about (0xAC bytes of 'PEAC', 'OKTA', 'AMOS', ... ids).
 extern const u32 lbl_80464CD8[43];
 
 static const u16 lbl_80464D84[8] = {0x2C, 0x2D, 0x2E, 0x2F, 0x28, 0x29, 0x2A, 0x2B};
@@ -251,7 +251,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
         return 0;
     }
-    s32 serial = fn_801F26CC(lbl_80464CD8);
+    s32 serial = findOverlappingActorOf_801F26CC(lbl_80464CD8);
     if (serial < 0) {
         return 0;
     }
@@ -301,7 +301,7 @@ void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
 static inline bool isPlayerHidden(s32 player) {
     s32 slot = player;
     for (s32 i = 0; i < 4; i++) {
-        if (player == fn_8023ECF0(i)) {
+        if (player == getPlayerHeldPlayer_8023ECF0(i)) {
             slot = i;
             break;
         }
@@ -317,7 +317,7 @@ static inline s32 findArrivedSlot(s32 player) {
         return -1;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023ED8C(i) && player == fn_8023ECF0(i) && fn_8022D75C(i)) {
+        if (fn_8023ED8C(i) && player == getPlayerHeldPlayer_8023ECF0(i) && fn_8022D75C(i)) {
             return i;
         }
     }
@@ -339,7 +339,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         return;
     }
     if (fn_8022D75C(player) || findArrivedSlot(player) >= 0) {
-        if (fn_8023E10C(player) == 8) {
+        if (getPlayerDestLayer_8023E10C(player) == 8) {
             vfunc_0x88();
             return;
         }
@@ -377,7 +377,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         }
         s32 index = offset + 8;
         if (fn_8022CAF8(player) != 4) {
-            index += (fn_8022E970(player) - 1) * 12;
+            index += (getPlayerGroupSize_8022E970(player) - 1) * 12;
         }
         if (index >= 0x30) {
             index = 0x30;
@@ -478,7 +478,7 @@ void EscortBase_8049E0C8::fn_80122F6C(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    f32 off = 0.5f * (fn_8022E970(*player) - 1) - 0.5f;
+    f32 off = 0.5f * (getPlayerGroupSize_8022E970(*player) - 1) - 0.5f;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = 16.0f * off + v;
@@ -504,7 +504,7 @@ void EscortBase_8049E0C8::vfunc_0xA8(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    f32 offset = 0.5f * (fn_8022E970(*player) - 1) - 0.5f;
+    f32 offset = 0.5f * (getPlayerGroupSize_8022E970(*player) - 1) - 0.5f;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = -16.0f;
@@ -767,7 +767,7 @@ void EscortBase_8049E0C8::fn_80122148() {
         s32 state = fn_8012285C();
         s32 slot = state;
         for (s32 i = 0; i < 4; i++) {
-            if (state == fn_8023ECF0(i)) {
+            if (state == getPlayerHeldPlayer_8023ECF0(i)) {
                 slot = i;
                 break;
             }
@@ -787,7 +787,7 @@ void EscortBase_8049E0C8::fn_80122148() {
         } else {
             found = 0;
             while (found < 4) {
-                if (fn_8023ED8C(found) && q == fn_8023ECF0(found) && fn_8022D75C(found)) {
+                if (fn_8023ED8C(found) && q == getPlayerHeldPlayer_8023ECF0(found) && fn_8022D75C(found)) {
                     break;
                 }
                 found++;
@@ -816,7 +816,7 @@ void EscortBase_8049E0C8::fn_80122148() {
         }
         field_0x37c = 0.5f;
         s32 player = fn_8012285C();
-        s32 layer = fn_8023E10C(fn_8012285C());
+        s32 layer = getPlayerDestLayer_8023E10C(fn_8012285C());
         if (getPlayerLayer_8023DE58(player) == layer) {
             mPos.x = pos.x;
             mPos.y = pos.y;
@@ -1113,7 +1113,7 @@ s32 EscortBase_8049E0C8::fn_801216D0(s32 player) {
     }
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023ED8C(i)) {
-            s32 owner = fn_8023ECF0(i);
+            s32 owner = getPlayerHeldPlayer_8023ECF0(i);
             if (player == owner && fn_8022D75C(i)) {
                 return i;
             }
@@ -1126,7 +1126,7 @@ s32 EscortBase_8049E0C8::fn_801216D0(s32 player) {
 // dir is the xy direction from the circle to the escort, length 1.6; else dir stays zero.
 bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
     dir->zero();
-    s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_CIRC);
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_CIRC);
     if (serial < 0) {
         return false;
     }

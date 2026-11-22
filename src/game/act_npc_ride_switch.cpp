@@ -18,7 +18,7 @@ void NPCRideSwitch_804AD220::init() {
 // target loads 0x60, 0xC, 0x68, 0x64 and adds them in that order; ours loads
 // 0x68 first, with registers shuffled the same way.
 void NPCRideSwitch_804AD220::update() {
-    s32 serial = fn_801F2718(ACTOR_MRTA);
+    s32 serial = findOverlappingActor_801F2718(ACTOR_MRTA);
     if (serial >= 0) {
         Log_804ACD70* log = static_cast<Log_804ACD70*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (log != NULL && log->isAtRest() == true) {

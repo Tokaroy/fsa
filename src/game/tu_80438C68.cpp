@@ -373,7 +373,7 @@ void GameOverScreen_804B17A0::fn_80438C68() {
             break;
         case 1:
         case 2:
-            lbl_8053AED0->fn_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
+            lbl_8053AED0->requestMessage_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);
             field_0x38++;
             field_0x58 = 3;
             field_0x40 = 5;

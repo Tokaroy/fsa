@@ -54,7 +54,7 @@ void CandlestickSwitch_804A8B78::update() {
     box.addPos(p);
     switch (mState) {
     case 0:
-        if (field_0x94 == 0 && fn_8023AB94(&box, mLayer_0x4, &p) < 0 && fn_801F2718(ACTOR_FIRE) < 0) {
+        if (field_0x94 == 0 && fn_8023AB94(&box, mLayer_0x4, &p) < 0 && findOverlappingActor_801F2718(ACTOR_FIRE) < 0) {
             break;
         }
         if (fn_80226998(&mPos, mLayer_0x4) == 0x3D || fn_80226998(&mPos, mLayer_0x4) == 0x1DE) {

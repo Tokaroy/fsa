@@ -75,11 +75,11 @@ public:
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // 0x801D8400 (first function of tu_801D8400, called by tu_801DAC6C): below
-    // state 8 (mState) calls fn_801D9C58 with 8.
+    // state 8 (mState) calls setState_801D9C58 with 8.
     void fn_801D8400();
     // 0x801D9C58 (tu_801D8400 and tu_801DD1AC call it on this with a state
     // number in r4, e.g. 8 from fn_801D8400); its body is not written yet.
-    void fn_801D9C58(int state);
+    void setState_801D9C58(int state);
     // 0x801D95F4: throws a 'BOIB' from the mouth; true when it was made.
     bool fn_801D95F4();
     // 0x801D9960: counts the throw timers down and starts the next state.

@@ -527,7 +527,7 @@ void HudMgr_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 
 
 void HudMgr_804B1920::fn_8043E7CC(JGeometry::TVec3f pos) {
     Vec screen;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
     fn_80440928(screen.x, screen.y);
 }
 
@@ -540,8 +540,8 @@ static inline f32 maxf(f32 a, f32 b) {
 void HudMgr_804B1920::fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) {
     Vec screenA;
     Vec screenB;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&a, false, false, &screenA);
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&b, false, false, &screenB);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&a, false, false, &screenA);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&b, false, false, &screenB);
     f32 margin = maxf(fabs(screenB.x - screenA.x), fabs(screenB.y - screenA.y));
     f32 cx = (screenA.x + screenB.x) / 2.0f;
     f32 cy = (screenA.y + screenB.y) / 2.0f;
@@ -567,12 +567,12 @@ void HudMgr_804B1920::fn_8043DF8C(f32 x, f32 y) {
     origin.x = 0.0f;
     origin.y = 0.0f;
     origin.z = 0.0f;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&origin, false, false, &screenOrigin);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&origin, false, false, &screenOrigin);
     Vec unit;
     unit.x = 16.0f;
     unit.y = 0.0f;
     unit.z = 0.0f;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&unit, false, false, &screenUnit);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&unit, false, false, &screenUnit);
     f32 margin = screenUnit.x - screenOrigin.x;
     if (!outsideBox(93.0f, 61.5f + topOffset(lbl_8053AED0), x, y, margin)) {
         lbl_8053AED0->field_0xdc |= 1;
@@ -691,7 +691,7 @@ void HudMgr_804B1920::fn_8043D8B4() {
                     JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
                     fn_804408F0(&pos);
                 }
-                lbl_80529DEC.field_0xc8[i] = fn_80237810(i);
+                lbl_80529DEC.field_0xc8[i] = getPlayerMaxLife_80237810(i);
                 lbl_80529DEC.field_0xf8[i] = fn_802373EC(i);
             }
         }
@@ -702,7 +702,7 @@ void HudMgr_804B1920::fn_8043D8B4() {
                 fn_804408F0(&pos);
             }
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-                lbl_80529DEC.field_0xc8[i] = fn_80237810(i);
+                lbl_80529DEC.field_0xc8[i] = getPlayerMaxLife_80237810(i);
                 lbl_80529DEC.field_0xf8[i] = fn_802373EC(i);
             }
         }
@@ -773,7 +773,7 @@ void HudMgr_804B1920::fn_8043D834() {
 // Original tests the bool of field_0xde & bit against zero (srwi.; ours: srwi + cmplwi 1),
 // and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
 // FIXME: 98.18 %, missing/extra; behaviour drift.
-bool HudMgr_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
+bool HudMgr_804B1920::requestMessage_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
     }
@@ -889,15 +889,15 @@ void HudMgr_804B1920::fn_8043D034() {
         }
         // The screen height of 16 units at the origin.
         JGeometry::TVec3f origin(0.0f, 0.0f, 0.0f);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&origin, false, false, &originScreen);
+        gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&origin, false, false, &originScreen);
         JGeometry::TVec3f top(0.0f, 16.0f, 0.0f);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&top, false, false, &topScreen);
+        gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&top, false, false, &topScreen);
         f32 margin = (topScreen.y - originScreen.y) +
                      ((s32)JUTVideo::getManager()->getEfbHeight() - field_0x40[9]->field_0xc);
         u8 side[4];
         field_0x10c = 0;
         for (int i = 0; i < 4; i++) {
-            gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
             side[i] = 0;
             if (screen.x > 0.0f && screen.x < (s32)JUTVideo::getManager()->getFbWidth() && screen.y > 0.0f &&
                 screen.y < (s32)JUTVideo::getManager()->getEfbHeight()) {

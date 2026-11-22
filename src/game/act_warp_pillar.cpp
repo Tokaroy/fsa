@@ -120,7 +120,7 @@ void WarpPillar_804AC0A8::update() {
         if (field_0x234 >= 4 && fn_8023077C()) {
             for (s32 i = 0; i < 4; i++) {
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
-                if (fn_8022E970(i) > 1 && fn_80234A88(i)) {
+                if (getPlayerGroupSize_8022E970(i) > 1 && fn_80234A88(i)) {
                     fn_8022CA6C(i, 5, true);
                     field_0x260[i] = true;
                 }

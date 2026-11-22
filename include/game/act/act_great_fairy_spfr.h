@@ -23,8 +23,8 @@ public:
     // Per-state camera control, called by update.
     void fn_801321E4();
     // State change: stores the new state in field_0x234 and runs its entry code.
-    void fn_80132454(s32 index);
-    // Not in the binary (inlined into update and fn_80132454).
+    void setState_80132454(s32 index);
+    // Not in the binary (inlined into update and setState_80132454).
     s32 talkTo();
     void placeAtBarrier();
     void spawnSoldier();

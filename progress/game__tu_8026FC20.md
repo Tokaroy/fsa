@@ -7,7 +7,7 @@ Left unwritten on purpose:
 - fn_80276538, fn_8027A0D4-style literal users (fn_80279FE8): new float literals (7, -15, 15, 6) enter our .sdata2 pool
   before 0.0f (second in the original), which turns every later 0.0f user (fn_8027966C, fn_8027CB24...) into reloc-name.
   Write them when the earlier literal users (fn_8026FD14 ...) exist.
-- fn_80270948, fn_80270DDC, fn_80270F00: inline fn_80270A8C (defined earlier; the original inlines it) plus more; not tried.
+- fn_80270948, addLife_80270DDC, fn_80270F00: inline fn_80270A8C (defined earlier; the original inlines it) plus more; not tried.
 - fn_802771C8, fn_802775C8, fn_8027A178, fn_8027CBB0: stop-emitter sequence on a JPABaseEmitter (+0xF4 |= 1, +0x24 = 1)
   that the TWW JPAEmitter.h layout does not have (see act_force_gem_wooden's FIXME).
 - fn_8027A0D4 passes &field_0x130c as the particle callback argument of spawnEmitter_8013CC50 (type unknown).
@@ -37,34 +37,34 @@ fn_802765C0 -> Player_804A6F38 members.
 
 ## 2026-11-05 round 5, agent G (Opus 5.5)
 Rebased onto matching (8475). After: 8482 (unit 67 -> 74 of 120), structural +6.
-New 100 %: fn_802738F0 (literal pool), fn_80270948, fn_80270DDC, fn_80270F00, fn_80272224,
+New 100 %: fn_802738F0 (literal pool), fn_80270948, addLife_80270DDC, fn_80270F00, fn_80272224,
 fn_80272768, fn_802728AC. fn_80273518 now regalloc-only (99.82).
 Structurally close: fn_802710C8 98.54 (4 dead stfs of the knockback TVec2 missing, mPos x/y load
 order in the angle copies, regalloc), fn_80272C20 97.24 (extra `i >= 8` after the point loop).
-Unwritten: fn_8027057C (inlines fn_80270DDC defined after it; see docs/PLAYER.md round 5).
-SHARED-EDITS: include/game/Player.h (isDown() inline member decl; fn_802710C8, fn_80270DDC,
+Unwritten: fn_8027057C (inlines addLife_80270DDC defined after it; see docs/PLAYER.md round 5).
+SHARED-EDITS: include/game/Player.h (isDown() inline member decl; fn_802710C8, addLife_80270DDC,
 fn_80270948, fn_8027057C, fn_802728AC member decls; 0xD10 u8[12] -> TVec3f;
 extern "C" fn_80236468(s32, s32) owner tu_8022AD64); include/game/tu_80379F84.h (SaveRow 0x7A[4],
 0x7E, 0x7F, 0x80 from 0x7A[7], size unchanged).
-Symbol renames: fn_802710C8, fn_80270948, fn_80270DDC, fn_8027057C, fn_802728AC -> Player members.
+Symbol renames: fn_802710C8, fn_80270948, addLife_80270DDC, fn_8027057C, fn_802728AC -> Player members.
 
 ## 2026-11-05 round 9, agent O (Opus 5.5)
 Rebased onto matching 3a0cfee0 (8628). After: 8649 (unit 76 -> 97 of 120), no drops anywhere.
 New 100 %: fn_8027439C, fn_802756E4, fn_80276078, fn_80276538 (literal pool), fn_802771C8,
 fn_802775C8, fn_8027A178, fn_802796B8, fn_80279FE8, fn_8027A0D4, fn_8027CBB0, fn_8027A908,
-fn_8027C4FC, fn_8027D320, fn_8027BC90, fn_8027BA2C, fn_80276E5C, fn_80276BB8, fn_80279CFC,
+fn_8027C4FC, fn_8027D320, fn_8027BC90, fn_8027BA2C, setFacingBoxes_80276E5C, fn_80276BB8, fn_80279CFC,
 fn_8027B304, fn_80277220.
 Structural (FIXMEs in source): fn_80273FB8 98.59 missing/extra, fn_80275D9C 98.61 regalloc,
 fn_8027C6C4 99.88 regalloc, fn_8027B648 96.22 missing/extra (materialised lifeFull).
 Data: lbl_8046BCA8 (0xA0 struct), lbl_8046BB48 f32[4][3], lbl_8046BD88 f32[4][2].
 SHARED-EDITS: include/game/Player.h only (0x12A4 / 0x1320 TVec3f from u8 padding, size
-unchanged; member decls fn_8027439C, fn_802756E4, fn_80276BB8, fn_80276E5C).
-Symbol renames: fn_8027439C, fn_802756E4, fn_80276BB8, fn_80276E5C -> Player members.
+unchanged; member decls fn_8027439C, fn_802756E4, fn_80276BB8, setFacingBoxes_80276E5C).
+Symbol renames: fn_8027439C, fn_802756E4, fn_80276BB8, setFacingBoxes_80276E5C -> Player members.
 Details: docs/PLAYER.md "Round 9 (tu_8026FC20)".
 
 ## 2026-11-05 A/B run (Opus 5.5)
 Baseline 8731 / 11557 (b861c081). After: 8733 (unit 97 -> 99 of 120), no drops anywhere (by address).
-New 100 %: fn_8027057C (revive; inlines fn_80270DDC under deferred inlining; `field_0x4c == 7 ? true : false`
+New 100 %: fn_8027057C (revive; inlines addLife_80270DDC under deferred inlining; `field_0x4c == 7 ? true : false`
 as a u8 inline gives the original's subfic / cntlzw / extrwi.), fn_802765C0 (8-way facing boxes by 0x11C0).
 Structural: fn_802791B0 99.98 reloc-name (-2.0f pool slot; needs fn_80277F98 first), fn_8027776C 99.75
 missing/extra (one dead `beq` after the Tingle null test), fn_80273FB8 98.59 -> 99.62 (now inlines

@@ -1331,7 +1331,7 @@ void PhantomGanon2_804A1A98::update() {
         f32 savedZ = mPos.z;
         mPos.y -= savedZ;
         mPos.z = 0.0f;
-        s32 hitSer = fn_801F2718('FGN2');
+        s32 hitSer = findOverlappingActor_801F2718('FGN2');
         mPos.z = savedZ;
         mPos.y += mPos.z;
         if (hitSer >= 0) {

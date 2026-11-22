@@ -187,7 +187,7 @@ public:
     s32 fn_802416C4(); // via fn_802373EC
     void fn_802416FC(s32 arg); // via fn_80237524
     s32 fn_80241794(); // via fn_802375B0
-    s32 fn_802417CC(); // via fn_80237810
+    s32 fn_802417CC(); // via getPlayerMaxLife_80237810
     void fn_80241804(s32 value); // via fn_8023764C
     s32 fn_80241864(); // via fn_802376D8
     s32 fn_8024189C(); // via fn_80237774
@@ -206,10 +206,10 @@ public:
     void fn_80248004(s32 a, bool b); // via fn_8022CA6C
     s32 fn_802486A0() const; // via fn_8022CAF8
     s32 getFollowerIndex_80248778() const; // via fn_8022E8D4
-    s32 fn_80248970() const; // via fn_8022E970
+    s32 fn_80248970() const; // via getPlayerGroupSize_8022E970
     void fn_80248DB8(); // via fn_802381B8
     void fn_80248DCC(); // via fn_80238244
-    void fn_80248FF0(); // via fn_8022CD48
+    void endFormActor_80248FF0(); // via fn_8022CD48
     bool fn_80249068(); // via fn_8022CCAC
     bool fn_8024AFF8(); // via fn_8022DD74
     bool fn_8024B24C(); // via fn_8022DEAC
@@ -259,7 +259,7 @@ public:
     bool fn_80250D30(); // via fn_8022DB04
     bool fn_80250FD4(); // tu_8023FBF0 (0x80250FD4), called by fn_80250D30
     u8 fn_802517E4(); // via fn_8022D894
-    bool fn_80251BFC(s32 arg); // via fn_802319B4
+    bool canRequestState_80251BFC(s32 arg); // via fn_802319B4
     // tu_8023FBF0. Whether the player may walk off the screen (state 0x1B) at an edge of
     // the visible box; writes the direction (-1 / 1 in x or y, else 0, 0) to *out.
     // fn_80231A50 / fn_80231DE4 call it.
@@ -286,7 +286,7 @@ public:
     bool fn_8025F500(); // via fn_8023EBB8
     bool fn_8025F590(); // via fn_8023ED8C
     void fn_8025F5CC(); // via fn_8023EE28
-    s32 fn_8025F648(); // via fn_8023EEB4
+    s32 fn_8025F648(); // via getPlayerHeldActorId_8023EEB4
     s32 fn_8025F668(); // via fn_8023EF50
     bool fn_8025F684(); // via fn_8023EFEC
     void fn_802635D4(); // empty; the dispatch in fn_802870C8 calls it
@@ -384,7 +384,7 @@ public:
     void fn_8025D6A0(); // field_0xb9c = 0
     // tu_8027E5BC (dispatch targets of tu_80285E58); fn_80248604, fn_8024D134 and fn_8024E3D8 are tu_8023FBF0 (r3 = Player)
     void fn_8027EE84();
-    void fn_8026152C(bool arg); // tu_8025EB18; mHeldPos_0x2f4 from mPos (carry), called by fn_802948C0
+    void updateCarryWalk_8026152C(bool arg); // tu_8025EB18; mHeldPos_0x2f4 from mPos (carry), called by fn_802948C0
     void fn_8027F16C();
     void fn_80281E84();
     void fn_8028211C();
@@ -409,10 +409,10 @@ public:
     void fn_802857C8();
     void fn_802859B8();
     void fn_80285C28();
-    void fn_8027EB04();
+    void updateFacing_8027EB04();
     void fn_80284294();
     void fn_80282A24();
-    // tu_80285E58: the update (fn_80285E58, from fn_80253E6C), the state tick
+    // tu_80285E58: the update (fn_80285E58, from update_80253E6C), the state tick
     // fn_802870C8 and the helpers it calls.
     void fn_80285E58();
     void fn_80285F44();
@@ -565,12 +565,12 @@ public:
     // tu_8026FC20, not written yet; called by the reset fn_80254744 and update A.
     void fn_80276538(); // sets the box field_0x4c0 around mPos
     void fn_80276078();
-    // The per-frame calls of the player's update A (fn_80253E6C), all on
+    // The per-frame calls of the player's update A (update_80253E6C), all on
     // this player: tu_8023FBF0 fn_802490A8 (input and actions), fn_80251D50,
     // fn_8024BDBC (not written yet), fn_8024E0A0; tu_8026FC20
     // fn_8026FD14; tu_80264998 fn_80265E88 and tu_80285E58 fn_80285E58 /
     // fn_80286688 (declared above).
-    void fn_80253E6C();
+    void update_80253E6C();
     void fn_802490A8();
     void fn_80251D50();
     void fn_8024BDBC();
@@ -583,7 +583,7 @@ public:
     void fn_802756E4(); // called by fn_8027D5F0 (update of state 0x0E)
     void fn_80276BB8(); // boxes of the opposite facing (fn_80274CB8)
     void fn_80274CB8(); // charge step (tu_8026FC20); called by the 0x08 update fn_8027BE74
-    void fn_80276E5C(); // boxes of the facing 0x3DC
+    void setFacingBoxes_80276E5C(); // boxes of the facing 0x3DC
     void fn_8027439C(); // called by fn_8027A1E0 (update of state 0x0B): pose 0x3FA / 0x3FB, boxes 0x4A0 / 0x4B0
     void fn_802765C0();
     u8 fn_802738F0(const JGeometry::TBox2f* box, JGeometry::TVec2f* out, bool flag, bool center);
@@ -612,12 +612,12 @@ public:
     void fn_80270F00(s32 arg); // via fn_80236804
     // via fn_80236554 (act_recovery_heart heals 4): adds `amount` to the life 0xBFC (or takes
     // the group's, fn_802376D8), capped at 0xBF8; once per 0xD35, which is set to `flag`.
-    void fn_80270DDC(s32 amount, bool flag);
+    void addLife_80270DDC(s32 amount, bool flag);
     void fn_802422D0(); // via fn_80231368 (tu_8022AD64)
     const JGeometry::TVec2f* fn_802422C4(); // &field_0xbf0->mLastPos_0x14; via fn_8022DFD4 (tu_8022AD64)
     void fn_80248E94(bool flag); // via fn_8022AF78 (tu_8022AD64); clrlwi 24, compared with 1
     void fn_80270948(const JGeometry::TVec3f* pos); // called by tu_8023FBF0 fn_802422D0; 0xD10 = pos (mPos if NULL) once while down
-    void fn_8027057C(); // called by fn_80277F98 (update of state 0x33): revive (inlines fn_80270DDC)
+    void fn_8027057C(); // called by fn_80277F98 (update of state 0x33): revive (inlines addLife_80270DDC)
     bool fn_80271098(const JGeometry::TVec3f* pos); // via fn_802379E4
     s32 fn_80272184(); // via fn_8023B630
     s32 fn_802721A8(); // via fn_8023B6CC
@@ -1184,7 +1184,7 @@ public:
     bool fn_80273518(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023B848
     void fn_80252BD0(const JGeometry::TVec3f* offset); // via fn_8023DEDC
     s32 fn_8025F534(); // via fn_8023EC54
-    s32 fn_8025F55C(); // via fn_8023ECF0
+    s32 fn_8025F55C(); // via getPlayerHeldPlayer_8023ECF0
     s32 fn_80240628(); // via fn_8022F340
     bool fn_8025EDD4(s32 a, const JGeometry::TVec3f* pos); // via fn_8022F784
     // tu_8025EB18 (round 6): put-down check (callers: the carry state updates),
@@ -1394,7 +1394,7 @@ void fn_8022CA6C(s32 player, s32 a, bool b); // 11 units. act_post_warp_pillar_h
 s32 fn_8022CAF8(s32 player); // -> fn_802486A0; else 0
 void fn_8022CB94(s32 player); // -> fn_8024B9E8
 void fn_8022CC20(s32 player); // -> fn_8024BAEC
-void fn_8022CD48(s32 player); // -> fn_80248FF0
+void fn_8022CD48(s32 player); // -> endFormActor_80248FF0
 // Owner: game/tu_8022AD64.cpp. Called with a player index by UnknownFORM_804A7BE8
 // (game/tu_8029C584.cpp): the destructor calls fn_8022CDD4, init fn_8022CF08.
 void fn_8022CDD4(s32 player);
@@ -1489,7 +1489,7 @@ bool fn_8022DEAC(s32 player); // -> fn_8024B24C; else false
 void fn_8022DF48(s32 player); // -> fn_8024B274
 bool fn_8022E39C(s32 player, s32 arg); // -> fn_80240840; else false
 s32 fn_8022E8D4(s32 player); // -> getFollowerIndex_80248778; else 0
-s32 fn_8022E970(s32 player); // -> fn_80248970; else 0
+s32 getPlayerGroupSize_8022E970(s32 player); // -> fn_80248970; else 0
 bool fn_8022F5B0(s32 player); // -> fn_8024C35C; else false
 bool fn_8022F64C(s32 player); // -> fn_80240DCC; else false
 bool fn_8022F6E8(s32 player, s32 arg); // -> fn_8025EF68; else false
@@ -1498,7 +1498,7 @@ bool fn_8022FB1C(s32 player, s32 arg); // -> fn_8024C460; else false
 bool fn_80230360(s32 player); // -> fn_8024D98C; else false
 bool fn_8023188C(s32 player); // -> fn_802413F0; else false
 void fn_80231928(s32 player); // -> fn_8023FBF0
-bool fn_802319B4(s32 player, s32 arg); // -> fn_80251BFC; else false
+bool fn_802319B4(s32 player, s32 arg); // -> canRequestState_80251BFC; else false
 bool fn_80233DA4(s32 player); // -> fn_80241230; else false
 bool fn_80233E40(s32 player); // -> fn_802412A4; else false
 bool fn_80233EDC(s32 player); // -> fn_80240B84; else false
@@ -1582,7 +1582,7 @@ bool fn_8023E854(s32 player); // -> fn_8024F5E4; else false
 bool fn_8023E8F0(s32 player); // -> fn_8025F2CC; else false
 bool fn_8023E98C(s32 player); // -> fn_8025F418; else false
 void fn_8023EE28(s32 player); // -> fn_8025F5CC
-s32 fn_8023EEB4(s32 player); // -> fn_8025F648; else 0
+s32 getPlayerHeldActorId_8023EEB4(s32 player); // -> fn_8025F648; else 0
 s32 fn_8023EF50(s32 player); // -> fn_8025F668; else 0
 // game/tu_8022AD64.cpp. fn_8022B160: whether the game keeps per-player counters (arrows shot, ...);
 // fn_8022F340: the player index (0-3) of `player` in the current game mode.
@@ -1611,12 +1611,12 @@ void fn_80230C6C(s32 player);
 
 // Per-player queries and setters of the 0x9C-byte family, owner tu_8022AD64
 // (Blizzard_804AC388::update, game/tu_8033F448.cpp). Results are tested with
-// clrlwi 24 (bool); fn_80237810 is compared as a word and the value
+// clrlwi 24 (bool); getPlayerMaxLife_80237810 is compared as a word and the value
 // minus 4 goes to fn_8023764C.
 bool fn_8022F478(s32 player);
 bool fn_80236A18(s32 player);
 bool fn_80236D14(s32 player);
-s32 fn_80237810(s32 player);
+s32 getPlayerMaxLife_80237810(s32 player);
 void fn_8023764C(s32 player, s32 value);
 bool fn_8022CCAC(s32 player);            // 2 units. -> fn_80249068 (byte 0x121F); else false
 bool fn_8022D75C(s32 player);            // 29 units. -> fn_8024BBB0 (byte 0xCE8); else false
@@ -1684,7 +1684,7 @@ bool fn_80236B50(s32 player);
 s32 fn_802375B0(s32 player);
 
 // Owner: tu_8022AD64 (0x80236890). No arguments; true without a manager, else whether
-// fn_80270A04 holds for every present player whose bit is set in gGameRoot_8053AAF8->field_0x82. fn_80251BFC refuses a state
+// fn_80270A04 holds for every present player whose bit is set in gGameRoot_8053AAF8->field_0x82. canRequestState_80251BFC refuses a state
 // change when it holds while gGameRoot_8053AAF8->field_0x7e is set.
 bool fn_80236890();
 // Owner: tu_8022AD64 (not written yet). The manager update's cross-player
@@ -1693,7 +1693,7 @@ void fn_80232A0C();
 void fn_80231DE4();
 void fn_80230EB8(s32 player, s32 arg);
 // Called by act_recovery_heart's update() with (player, 4, 0) once the heart reaches a
-// player: fn_80270DDC(amount, flag) on it and on every player of its group (fn_8022E438).
+// player: addLife_80270DDC(amount, flag) on it and on every player of its group (fn_8022E438).
 void fn_80236554(s32 player, s32 amount, bool flag);
 // Owner not written yet. Called by act_recovery_heart's update() when fn_8023B8E4 finds no
 // player on the box; the result is unused.
@@ -1979,7 +1979,7 @@ u8 fn_8023AAF8(s32 player, const JGeometry::TBox2f* box, s32 layer, JGeometry::T
 bool fn_8023B848(s32 player, const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out);
 void fn_8023DEDC(s32 player, const JGeometry::TVec3f* offset);
 s32 fn_8023EC54(s32 player);
-s32 fn_8023ECF0(s32 player);
+s32 getPlayerHeldPlayer_8023ECF0(s32 player);
 bool fn_80237948(s32 player, const JGeometry::TVec2f* pos);
 void fn_8022E114(s32 player, JGeometry::TVec3f* out);
 s32 fn_8022F340(s32 player);
@@ -2003,7 +2003,7 @@ s32 fn_80230CFC(s32 player);
 bool fn_80233D20(s32 player);
 s32 fn_8023B22C(s32 player);
 bool fn_8023B400(s32 player);
-s32 fn_8023E10C(s32 player);
+s32 getPlayerDestLayer_8023E10C(s32 player);
 s32 fn_8023E190(s32 player);
 JGeometry::TVec3f* fn_8023E214(s32 player);
 JGeometry::TVec3f* fn_8023E2A0(s32 player);

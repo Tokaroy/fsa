@@ -786,7 +786,7 @@ void Bomb_8049F784::update() {
                     hit = 2;
                 }
             } else if (field_0x248 == 0) {
-                s32 serial = fn_801F2718('HBMB');
+                s32 serial = findOverlappingActor_801F2718('HBMB');
                 if (!viewLayerFlag(mLayer_0x4)) {
                     if (serial >= 0) {
                         ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);

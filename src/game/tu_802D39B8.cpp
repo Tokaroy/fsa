@@ -1125,47 +1125,47 @@ void GameView_804A9950::fn_802D92F0() {
     gGameRoot2_8053AB10->field_0x20->fn_802F9DA8(gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', gbScl), 0, 2, 0, 0, false);
     gGameRoot2_8053AB10->field_0x20->fn_802F9BE8(
         gGameRoot_8053AAF8->field_0xa4->getResource('SPL ', "bg_a_spl.szs"), 0, 0, 0);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_base_sch.szs"), 0, 0, 0, 0);
     sprintf(sch, "gb_ch_obj_tr_sch%s.szs", fn_802D9C1C());
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', sch), 0, 0, 0x7000, 0);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', sch), 0, 0, 0x7000, 0);
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 0, 0, 0, false);
     if (fn_802DEBA0() == true) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "ending_sch.szs"), 0, 1, 0, 0);
     } else {
-        gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+        gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "enemy_sch.szs"), 0, 1, 0, 0);
     }
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 1, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals2_sch.szs"), 0, 2, 0, 0);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "player_sch.szs"), 0, 2, 0x4000, 0);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 2, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9714(
+    gGameRoot2_8053AB10->field_0x20->loadSpriteImage_802F9714(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gals_sch.szs"), 0, 3, 0, 0);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, false);
     // Slots 4-11 one call each: the target has eight calls (a loop is not unrolled).
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 4, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 5, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 6, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 7, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 8, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 9, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 10, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
+    gGameRoot2_8053AB10->field_0x20->loadSpritePalette_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 11, 0, 0, false);
     gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
 }
@@ -2764,16 +2764,16 @@ void GameView_804A9950::fn_802D3A18() {
         field_0xc4--;
         if (field_0xc4 == 1800) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                lbl_8053AED0->fn_8043D67C(0x146, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x146, 0, 0);
             } else {
-                lbl_8053AED0->fn_8043D67C(0x195, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x195, 0, 0);
             }
             gAudioMgr_8053AF80->playSystemSound_80458880(0x30, -1);
         } else if (field_0xc4 == 660) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                lbl_8053AED0->fn_8043D67C(0x147, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x147, 0, 0);
             } else {
-                lbl_8053AED0->fn_8043D67C(0x196, 0, 0);
+                lbl_8053AED0->requestMessage_8043D67C(0x196, 0, 0);
             }
             gAudioMgr_8053AF80->playSystemSound_80458880(0x30, -1);
         } else if (field_0xc4 == 300) {

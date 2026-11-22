@@ -389,7 +389,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         JGeometry::TVec3f pos2;
         JGeometry::TVec3f pos1(mPos);
         pos2 = mPos;
-        for (s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_RAIL); serial != -1;
+        for (s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_RAIL); serial != -1;
              serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_RAIL, serial)) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (!actor) {

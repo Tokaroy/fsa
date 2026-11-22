@@ -1487,7 +1487,7 @@ void MovingHouse_804A7AE0::draw() {
 }
 
 void MovingHouse_804A7AE0::fn_802961AC() {
-    s32 serial = fn_801F2718('SLR3');
+    s32 serial = findOverlappingActor_801F2718('SLR3');
     if (serial < 0) {
         return;
     }

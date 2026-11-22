@@ -85,7 +85,7 @@ void ArrowMarker_804A8470::update() {
                 startSound_801F0E34(0x30025, 0);
                 field_0x230 = 1;
                 if (field_0x248 == 0) {
-                    lbl_8053AED0->fn_8043D67C(0x199, 0, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x199, 0, 0);
                 }
             } else if (player >= 0) {
                 field_0x25c = 1;
@@ -151,7 +151,7 @@ void ArrowMarker_804A8470::update() {
                 startSound_801F0E34(0x30025, 0);
                 field_0x230 = 1;
                 if (field_0x248 == 0) {
-                    lbl_8053AED0->fn_8043D67C(0x199, 0, 0);
+                    lbl_8053AED0->requestMessage_8043D67C(0x199, 0, 0);
                 }
             }
             break;

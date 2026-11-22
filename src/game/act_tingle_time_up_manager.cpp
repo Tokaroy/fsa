@@ -199,11 +199,11 @@ void TingleTimeUpManager_804ACBF0::update() {
         }
         break;
     case 6:
-        if (getActorManager_801F856C()->fn_801F7A08('TUTL') < 0) {
+        if (getActorManager_801F856C()->findSerialByActorId_801F7A08('TUTL') < 0) {
             startSound_801F0E34(0x5001B, 0);
             gGameRoot_8053AAF8->fn_80134FC4(0);
             lbl_8053AD70->fn_8037AE30();
-            lbl_8053AED0->fn_8043D67C(0x148, 0, 0);
+            lbl_8053AED0->requestMessage_8043D67C(0x148, 0, 0);
             for (s32 i = 0; i < 4; i++) {
                 bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
                 if (takesPart == true && !fn_8022F514(i)) {

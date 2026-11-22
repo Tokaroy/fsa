@@ -185,7 +185,7 @@ void AfterGoalOpening_8049DD68::setOverlayRect() {
     in.x = -cam->mViewMtx_0x4[0][3];
     in.y = -cam->mViewMtx_0x4[1][3];
     in.z = 0.0f;
-    cam->fn_8030C5F0(&in, false, false, &out);
+    cam->worldToScreen_8030C5F0(&in, false, false, &out);
     f32 size;
     switch (fn_801365A8()) {
     case 2:
@@ -216,7 +216,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         fn_801CD950(&field_0x240.y, mSpawnPos.y - 440.0f, field_0x23c);
         {
             JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
-            gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
+            gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         }
         break;
     case 1:
@@ -224,7 +224,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
     case 4:
     case 5: {
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
+        gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     case 6: {
@@ -238,12 +238,12 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
             }
         }
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
+        gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     case 7: {
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
+        gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     case 8: {
@@ -258,7 +258,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         }
         fn_801CD950(&field_0x240.y, 40.0f + pos->y, 1.8f);
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
-        gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
+        gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     }

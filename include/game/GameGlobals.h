@@ -11,7 +11,7 @@
 // "Placeholder names"): the vtable when known, else the constructor, else
 // the first function seen reaching the object (said at each). Vectors:
 // JGeometry::TVec3f for game data, Vec only where a mangled name or a
-// PSMTX/PSVEC call proves it (Camera_804AA9E4::fn_8030C5F0's mangled name
+// PSMTX/PSVEC call proves it (Camera_804AA9E4::worldToScreen_8030C5F0's mangled name
 // says Vec).
 //
 // Owner: the shared-header owner (docs/COORDINATOR.md). Propose new fields
@@ -198,7 +198,7 @@ struct GameRoot_8049EF20 {
     virtual ~GameRoot_8049EF20();
 
     // The screen objects fn_80135020 (0x80135020) creates for a game mode
-    // (field_0x4c) and fn_801352F4 (0x801352F4) deletes again; each is made in
+    // (field_0x4c) and deleteModeScreen_801352F4 (0x801352F4) deletes again; each is made in
     // field_0x98 with its heap group ID set to 1.
     /* 0x04 */ GameRootSub04_801F856C* field_0x4; // mode 7 (0x38 bytes); -> 0x8: the actor manager
     // Copied from lbl_80529DEC's field_0x5c / field_0x60 by the constructor
@@ -406,7 +406,7 @@ struct GameRoot_8049EF20 {
     // Owner: game/tu_80134C04.cpp (0x80135020, 0x801352F4). Create / delete
     // the screen object of game mode `mode` (switch on 0-12; see 0x04-0x30).
     void fn_80135020(s32 mode);
-    void fn_801352F4(s32 mode);
+    void deleteModeScreen_801352F4(s32 mode);
     // Owner: game/tu_80134C04.cpp (0x80135A04). Deletes the other modes'
     // screens, reports the heap and starts loading the archives of `mode`.
     void fn_80135A04(s32 mode);
@@ -750,10 +750,10 @@ class cls_804A03A8;
 // (clrlwi 24); tested by GameRoot2_8049F108::fn_8013BBE0.
 bool fn_80239D38();
 // Owner: game/tu_8043A0E8.cpp (0x8043A170, defined there). Called by the
-// player's update fn_80253E6C with its index.
+// player's update update_80253E6C with its index.
 void fn_8043A170(s32 player, bool force);
 // Owner: game/tu_8043A0E8.cpp (0x8043A0E8, defined there). act_kaepora_gaebora's
-// fn_80219AFC calls it with true.
+// setState_80219AFC calls it with true.
 void fn_8043A0E8(bool force);
 class cls_804A03A8 {
 public:
@@ -766,7 +766,7 @@ public:
     // yet): called with this = gGameRoot2_8053AB10->0x30 by tu_8013AAD4.
     void fn_8015F9C0();
     // 0x8015F8FC (not written yet): (layer, position, 1) from the player's
-    // update fn_80253E6C; layers 8 and up are ignored.
+    // update update_80253E6C; layers 8 and up are ignored.
     u8 fn_8015F8FC(s32 layer, const JGeometry::TVec3f* pos, s32 mode);
     void fn_8016005C();
     void fn_801601E0();
@@ -1019,7 +1019,7 @@ public:
     // the battle royale end check ORs with 0x10 when it picks its winner.
     /* 0xDC */ u8 field_0xdc;
     /* 0xDD */ u8 field_0xdd;  // per-player bits (fn_8043A170), 0xF set by fn_8043A0E8
-    /* 0xDE */ u8 field_0xde;  // per-player bits: message 0x1B5 already shown (fn_8043D67C)
+    /* 0xDE */ u8 field_0xde;  // per-player bits: message 0x1B5 already shown (requestMessage_8043D67C)
     /* 0xDF */ u8 pad_0xdf;
     /* 0xE0 */ s32 field_0xe0; // fn_8043EDE8's argument
     /* 0xE4 */ s32 field_0xe4; // 0x1E after fn_8043EDE8, 0 at construction
@@ -1092,7 +1092,7 @@ public:
     // more arguments (0 in most calls). Starts message `id` unless one is
     // showing (field_0x10a) or it was shown once already; returns whether it
     // did (li r3, 0 / 1; no caller reads it).
-    bool fn_8043D67C(s32 id, u32 arg1, u32 arg2);
+    bool requestMessage_8043D67C(s32 id, u32 arg1, u32 arg2);
 
     // 0x8043A208 (game/tu_8043A0E8.cpp): when field_0x10 exists, stores the four
     // floats at 0x1C0, sets its alpha (vtable slot 0x24) and flags 0x254.

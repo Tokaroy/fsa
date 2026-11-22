@@ -33,7 +33,7 @@ inline void BlizzardBattle_8049E7F0::playEmitter() {
 
 // The SWEV actor (ACTOR_SWEV, the environment switch control) gets fn_802B39E8.
 inline void BlizzardBattle_8049E7F0::notifySwev() {
-    s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SWEV);
+    s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_SWEV);
     ActorBase_804A5770* swev = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     if (swev != NULL) {
         static_cast<EnvironmentSwitchControl_804A8638*>(swev)->fn_802B39E8();

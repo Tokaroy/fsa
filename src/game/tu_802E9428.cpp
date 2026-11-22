@@ -235,7 +235,7 @@ void UnknownENDM_804AA0FC::update() {
                     field_0x244 = field_0x240->mPos;
                     field_0x250 = lbl_804D5730[field_0x230];
                     JGeometry::TVec2f focus(field_0x250.x, field_0x250.y + -30.0f);
-                    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
+                    gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&focus, (f32)(s32)field_0x270);
                     field_0x290 = (u8*)lbl_804AA0B8[field_0x230];
                     field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
                     field_0x264 = (f32)(s32)(field_0x250.y / 384.0f) * 384.0f;
@@ -553,7 +553,7 @@ void UnknownENDM_804AA0FC::pool_805412F8() {
         focus.y = field_0x264 + halfH;
     }
     stepZoom();
-    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
+    gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&focus, (f32)(s32)field_0x270);
 }
 
 bool UnknownENDM_804AA0FC::fn_802E948C(f32 target, s32 frames) {
