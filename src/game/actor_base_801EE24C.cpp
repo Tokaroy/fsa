@@ -1547,7 +1547,7 @@ bool ActorBase_804A5770::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos)
 }
 
 // The shared body of eight actors' isBlocked_0x4C overrides (act_pot, act_rock,
-// act_grass, act_stone, act_sign, act_coconut, tu_8034C950, tu_80354D64; each
+// act_grass, act_stone, act_sign, act_coconut, act_two_person_liftable_rock_8034C950, act_log_80354D64; each
 // passes its own countdown word): blocked by another actor's collision box, or by the tile at pos. While
 // *timer runs it counts down and nothing blocks; stepping onto a tile of
 // the 0x10-0x13 / 0x140-0x15F ranges (but not 0x146-0x148 / 0x159-0x15B)

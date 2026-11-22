@@ -2,7 +2,7 @@
 #include "game/GameGlobals.h"
 #include "game/GameState.h"
 #include "game/tu_80379F84.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "JSystem/JKernel/JKRArchive.h"
 #include "JSystem/JKernel/JKRHeap.h"
 

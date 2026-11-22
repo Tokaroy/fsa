@@ -8,8 +8,8 @@
 #include "game/GameGlobals.h"
 #include "game/act/act_link_ending_2.h"
 #include "game/act/act_kaepora_gaebora_ending.h"
-#include "game/act/tu_802E9428.h"
-#include "game/act/tu_80362634.h"
+#include "game/act/act_unknown_endm_802E9428.h"
+#include "game/act/act_other_characters_ending_80362634.h"
 
 // Sparkle effect ids, indexed by a random 0-4 (update).
 static const u16 lbl_80474EC0[5] = {0x56E, 0x570, 0x56D, 0x571, 0x56F};

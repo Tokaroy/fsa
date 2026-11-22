@@ -39,7 +39,7 @@ the measurements below rule out every layout tried and point at a compiler-mode 
   Matching game units have no switch tables). In 159 all jump tables come after every other .data object; jump
   tables always follow .text order (52/52 multi-function units). The 6 exceptions are informative: act_stone_arrghus_800F7FCC has
   `globals, __vt__30StoneArrghusChildPuff_8049C678, jt, jt, __vt__21StoneArrghus_8049C718`: class 1's vtable (its dtor is at .text 0) comes before
-  class 2's jump tables, class 2's vtable (dtor last in .text) after them. act_shadow_link_2 and tu_8037DF68: the
+  class 2's jump tables, class 2's vtable (dtor last in .text) after them. act_shadow_link_2 and message_manager_8037DF68: the
   vtable whose only referencers come after the switch functions is after the jump tables.
 - GC/2.6 `-inline auto` (scratch kf/a-c.cpp, game flags): file-scope data lands at its definition point (a global
   defined after the switch function goes after the jump table), jump tables at their function's codegen, ALL class
@@ -64,7 +64,7 @@ the measurements below rule out every layout tried and point at a compiler-mode 
   isStepBlocked_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
   (deferred WITHOUT auto): enemy_base_801CDC8C/act_vaati_boss_801EDBA4 no longer over-inline, act_shadow_link_fire_minor_80222CC4 and act_shadow_link_bow
   updateState_0x90 go 100 %, but auto-inlined callees are lost (act_stop_npc, escort_actor_list_80131D98, emitter_move_seq_8021F4B0 dtors,
-  act_unknown_bgbl_801D7AFC init, ice_floor_check_list_8012F3E4 fn_8012F554, 4 in tu_80427D2C): game functions 1745 -> 1738. Not adopted.
+  act_unknown_bgbl_801D7AFC init, ice_floor_check_list_8012F3E4 fn_8012F554, 4 in thp_read_thread_80427D2C): game functions 1745 -> 1738. Not adopted.
 - So FSA shows auto-style inlining (callee generated earlier) with deferred-style data order. No GC/2.0-3.0a5.2
   flag or pragma tested gives both. Unit stays NonMatching; nothing changed in source or flags.
 

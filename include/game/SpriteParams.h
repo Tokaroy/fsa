@@ -9,7 +9,7 @@
 #include "dolphin/gx/GXStruct.h"
 #include "JSystem/JUtility/TColor.h"
 
-// A colour word: tu_802EF76C keeps getShadowColor_8018330C's colour in one and splits
+// A colour word: act_light_environment_control_802EF76C keeps getShadowColor_8018330C's colour in one and splits
 // its bytes.
 union SpriteParamsColor_801F5AE0 {
     s32 mWord;
@@ -66,7 +66,7 @@ struct SpriteParams_801F5AE0 {
     // draw points it at a stack Mtx when its spawn parameter is nonzero.
     /* 0x18 */ MtxP mMtx;
     /* 0x1C */ s8 field_0x1c; // fn_8023CA88 (s8) in act_sign; -1 in act_blindfold (stb of a shared -1)
-    /* 0x1D */ s8 field_0x1d; // -1 in tu_80333958 draw (stb of a shared -1, as 0x1C)
+    /* 0x1D */ s8 field_0x1d; // -1 in act_iron_ball_80333958 draw (stb of a shared -1, as 0x1C)
     /* 0x1E */ u8 field_0x1e;
     /* 0x1F */ u8 field_0x1f;
     /* 0x20 */ u8 field_0x20;

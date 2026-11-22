@@ -2,8 +2,8 @@
 #include "game/GameGlobals.h"
 #include "game/GameState.h"
 #include "game/cls_804AF878.h"
-#include "game/tu_803E1668.h"
-#include "game/tu_803F0A54.h"
+#include "game/adv_entry_screen_803E1668.h"
+#include "game/connect_screen_803F0A54.h"
 #include "JSystem/JKernel/JKRArchive.h"
 
 cls_804AF878* lbl_8053AD98;

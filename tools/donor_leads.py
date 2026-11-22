@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Find donor-decomp game code that resembles an FSA unit.
 
-Usage: tools/donor_leads.py <unit, e.g. game/tu_803BC6F0.cpp> [--top N] [-v]
+Usage: tools/donor_leads.py <unit, e.g. game/file_select_803BC6F0.cpp> [--top N] [-v]
 
 Extracts fingerprints from the unit's asm (string literals, multi-char tags,
 named library callees, distinctive float constants), greps the ALLOWED donor

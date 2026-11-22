@@ -6,7 +6,7 @@
 #include "game/GameGlobals.h"
 #include "game/Message.h"
 #include "game/Player.h"
-#include "game/tu_8044998C.h"
+#include "game/mg_fishing_screen_8044998C.h"
 #include "game/act/act_force_gem_winged.h"
 #include "game/act/act_zora_fish_herder.h"
 #include "JSystem/JMath/JMath.h"

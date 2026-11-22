@@ -8,7 +8,7 @@
 #include "game/Player.h"
 #include "game/Unk_8045A080.h"
 #include "game/cls_8031709C.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/act/tu_801F9484.h"
 
 extern u8 lbl_8053ABF8;

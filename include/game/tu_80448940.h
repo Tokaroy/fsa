@@ -40,7 +40,7 @@ public:
     /* 0x31 */ u8 field_0x31; // 0-99 (clamped); tens and units pick 'Pt03'/'Pt04'
     /* 0x32 */ u8 field_0x32; // bit n (n < 4): slot n shown; bit 4: 'Ndata00' shown; cleared at the end of fn_80448940
     /* 0x33 */ u8 pad_0x33;
-}; // Size: 0x34 (the constructor's allocation in tu_8043A0E8)
+}; // Size: 0x34 (the constructor's allocation in hud_mgr_8043A0E8)
 
 // The object at lbl_8053AF18 (game/tu_80448940.cpp, constructor
 // __ct__12cls_804B1C90Fv; the auto split at 0x8053AF18 defines it).

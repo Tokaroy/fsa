@@ -142,7 +142,7 @@ any symbols.txt change (the gate accepts placeholder renames).
   `src/game/<name>.cpp` (headers under `include/game/`), and configure.py
   picks the file up on the next `python3 configure.py`.
 - Build: `cflags_game` (docs/PLAN.md, "Game code"); the THP unit
-  `game/tu_80427D2C.cpp` adds `-inline off,deferred` and includes sms's
+  `game/thp_read_thread_80427D2C.cpp` adds `-inline off,deferred` and includes sms's
   THP sources. The worker renames `fn_` placeholders to the mangled names
   its source emits (PLAN.md, "Symbols").
 - Tell game workers in `--notes`: the unit's `game_units.tsv` row, the
@@ -187,7 +187,7 @@ that need them.
 | `game/ActorManager.h` | `ActorManager_804A5800` (0x3060 bytes: actor slots, sound objects, actor list, EnemyParam.csv table), the EnemyParam column keys, and the spawner and manager functions as `extern "C"` declarations (`spawnActor_801F9484`, `spawnActorSimple_801F8544`, `getEnemyParam_801F620C`, `getActorManager_801F856C`, ...) |
 | `game/GameGlobals.h` | The two most-used singletons `gGameRoot_8053AAF8` (`GameRoot_8049EF20`) and `gGameRoot2_8053AB10` (`GameRoot2_8049F108`), the fields known so far, and includes the per-area headers: `game/Player.h` (player manager, players, per-player queries of tu_8022AD64), `game/GameView.h` (`GameView_804A9950`), `game/Effect.h` (`EffectSystem_8049F178`), `game/Map.h` (map object, tile collision, collision boxes), `game/Camera.h` (`Camera_804AA9E4`) |
 | `game/GameAudioBase.h` | The base sound header: the JAI includes, JAUAudience.h and a FIXME stand-in (`FIXME_instantiateAudiblePool`, never call or copy it) that instantiates the `JAUAudible<4>` pool at 0x804B21EC (formerly `cls_804B21EC`; JAUAudioMgr.cpp's `__sinit` proves the name: its seven pools match FSA's by name and address). Gives the 8-pool `__sinit` of tu_80457C08 and tu_8045B6F0 |
-| `game/GameAudio.h` | The full sound header for the 526 game units with the 9-pool `__sinit`: GameAudioBase.h plus JAUAudience.h and a FIXME stand-in (`FIXME_instantiateDopplerAudiblePool`, never call or copy it) that instantiates the `JAUDopplerAudible<4>` pool. Replace the stand-in with the game audience class of tu_80457DFC once known. **Include GameAudio.h / GameAudioBase.h before any other JAudio header**: including e.g. JAIStreamMgr.h first reorders the pools |
+| `game/GameAudio.h` | The full sound header for the 526 game units with the 9-pool `__sinit`: GameAudioBase.h plus JAUAudience.h and a FIXME stand-in (`FIXME_instantiateDopplerAudiblePool`, never call or copy it) that instantiates the `JAUDopplerAudible<4>` pool. Replace the stand-in with the game audience class of audio_mgr_80457DFC once known. **Include GameAudio.h / GameAudioBase.h before any other JAudio header**: including e.g. JAIStreamMgr.h first reorders the pools |
 | `game/RailBase.h` | `cls_800FE3EC` (0xC8 bytes, its method `fn_800FE3EC` in RailBase.cpp), and notes on the RAIL actor class (vtable 0x8049C770) |
 
 Conventions for game code (docs/PLAN.md, "Symbols"):

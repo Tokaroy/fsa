@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/GameView.h"
 #include "game/act_leever_80182914.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "game/GameGlobals.h"
 #include "game/Camera.h"
 #include "game/ActorManager.h"

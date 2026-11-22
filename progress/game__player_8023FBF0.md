@@ -16,7 +16,7 @@ Unwritten small functions and why:
 - fn_8024ECCC: contains an infinite loop (`b .`) assert; not guessed.
 - fn_80241B44/DD0/E28, fn_80252F50/5C/68/74: use field_0xbec as a cls_804AA8D8* (game/tu_8030AE84.h) but fn_8023FC24 (matched) returns it as s32 via fn_8022BCD4 (tu_8022AD64); needs field type + wrapper return changed together. DD0/E28 also copy a TVec3f to the stack and pass it as a TVec2f*.
 - fn_802422C4, fn_80252F48, fn_8025196C: result types unknown (no callers' evidence).
-- __dt__23PlayerSoundObj_804B20F8: defining it out of line removes tu_8045B010's @24@__dt__ thunk (tried, reverted).
+- __dt__23PlayerSoundObj_804B20F8: defining it out of line removes player_sound_obj_8045B010's @24@__dt__ thunk (tried, reverted).
 
 ## Second pass (Sonnet 5.5)
 Baseline 8093 / 11557. After 8102 (+9: unit 128 -> 137/254). Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok.

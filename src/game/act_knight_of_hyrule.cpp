@@ -1,6 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/act/act_knight_of_hyrule.h"
-#include "game/act/tu_802ED538.h"
+#include "game/act/act_giant_generator_effect_802ED538.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
 #include "game/BgRewrite.h"

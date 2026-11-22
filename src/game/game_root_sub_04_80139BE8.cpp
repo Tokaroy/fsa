@@ -10,17 +10,17 @@
 #include "game/Effect.h"
 #include "game/GameView.h"
 #include "game/Player.h"
-#include "game/act/tu_8044B80C.h"
+#include "game/act/staff_roll_loader_8044B80C.h"
 #include "game/cls_804AE9B0.h"
 #include "game/BgRewrite.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "JSystem/JKernel/JKRExpHeap.h"
 
 // Shift-JIS report strings (.rodata of this unit); not written as source because the bytes are escaped.
 extern const char lbl_80465920[];
 extern const char lbl_80465960[];
 
-// FIXME(shotgun): 33.1 %, missing/extra (the colour is copied byte by byte; fn_8013A884 takes a u32* in tu_802EF76C.h)
+// FIXME(shotgun): 33.1 %, missing/extra (the colour is copied byte by byte; fn_8013A884 takes a u32* in act_light_environment_control_802EF76C.h)
 // 0x8013A884
 // auto_inline off: the original GameRootSub04 destructor (bl at 0x8013A2B8) calls it out of line.
 #pragma auto_inline off

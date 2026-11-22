@@ -3,7 +3,7 @@
 #include "game/GameState.h"
 void* getMain2DResource_804030C4(u32 type, const char* name);
 #include "game/Message.h"
-#include "game/act/tu_80440BF4.h"
+#include "game/act/button_icons_80440BF4.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JFramework/JFWDisplay.h"

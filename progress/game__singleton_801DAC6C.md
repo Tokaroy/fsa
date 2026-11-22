@@ -16,14 +16,14 @@ Resistant:
 - fn_801DAD2C 91% scheduling: orig lwz r31 before `stw r30` / `li r30,0`.
 - fn_801DAE24 87%: orig regs r31=count, r30=-1, r29=ptr, r28=i; ours reversed.
 - fn_801DAEAC 96% STOP: orig `mr r5, r6` (i starts as found's zero, i=r5, count r8); ours li r8.
-Gaps: .sbss: lbl_8053AC30 (u8 counter 0-4 used by tu_801E2540/tu_802D39B8) sits at +8 in the
+Gaps: .sbss: lbl_8053AC30 (u8 counter 0-4 used by tu_801E2540/game_view_802D39B8) sits at +8 in the
 original (8-aligned), ours at +1; real type unknown. .sdata2: original has 8 bytes (two 0.0f),
 ours one. extab/extabindex ~57%: same as other generated units (weak pool entries).
 
 SHARED-EDITS: include/game/GameGlobals.h (removed Singleton_801DAC6C/fn_801DAC6C/fn_801DAD2C
 decls, now in act/singleton_801DAC6C.h; added fn_801DC264 [act_frostare_tail unit, s32] and
-fn_801D8400 [tu_801D8400 unit, cls_804A4C58*] extern "C" decls); src/game/tu_801E5FC8.cpp
-decls, now in act/tu_801DAC6C.h; added fn_801DC264 [act_frostare_tail unit, s32] and
+fn_801D8400 [tu_801D8400 unit, Frostare_804A4C58*] extern "C" decls); src/game/tu_801E5FC8.cpp
+decls, now in act/singleton_801DAC6C.h; added fn_801DC264 [act_frostare_tail unit, s32] and
 fn_801D8400 [tu_801D8400 unit, Frostare_804A4C58*] extern "C" decls); src/game/tu_801E5FC8.cpp
 (call becomes fn_801DAC6C()->fn_801DAD2C(); try.py unchanged at 5/8); symbols.txt renames.
 Next: find the real type of lbl_8053AC30 and the second sdata2 float.

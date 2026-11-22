@@ -40,7 +40,7 @@ public:
     virtual bool do_jump_isReady();
     virtual void do_jump(const void*, const char*);
 
-    // 0x803A2F74: resets the status fields (called by tu_80390818's update).
+    // 0x803A2F74: resets the status fields (called by message_window_80390818's update).
     void fn_803A2F74();
     // 0x803A2E48 / 0x803A2CB0: called by fn_8039FE78 to count a number's
     // characters and the noun after it into field_0x50.

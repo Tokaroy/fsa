@@ -15,7 +15,7 @@ class J2DAnmTransform;
 class J2DAnmColor;
 
 // Vtable 0x804B1288 (one slot, the destructor), 0x66C bytes, defined in
-// game/tu_80403D84.cpp. The constructor fn_804122F4 stores
+// game/map_screen_80403D84.cpp. The constructor fn_804122F4 stores
 // `this` in lbl_8053ADF8; tu_8039003C allocates it with __nw__(0x66C) when
 // gGameRoot_8053AAF8->field_0x7f is set. Its methods are the handlers of a state
 // machine (mState_0x350).
@@ -315,15 +315,15 @@ public:
     /* 0x668 */ s32 field_0x668; // fn_8040F474 returns it
 }; // Size: 0x66C
 
-// Data of game/tu_80401848.cpp.
+// Data of game/dvd_mount_aram_archive_command_80401848.cpp.
 extern MapScreen_804B1288* lbl_8053ADF8;
 
-// 0x8040F474 (game/tu_80403D84.cpp): lbl_8053ADF8->field_0x668.
+// 0x8040F474 (game/map_screen_80403D84.cpp): lbl_8053ADF8->field_0x668.
 s32 fn_8040F474();
 
 // Out-of-line copy of JUtility::TColor::operator= (0x8041499C).
 void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src);
-// 0x804149C0 (game/tu_80403D84.cpp): bit 0 of the current save row's byte 0x87.
+// 0x804149C0 (game/map_screen_80403D84.cpp): bit 0 of the current save row's byte 0x87.
 bool fn_804149C0();
 
 #endif

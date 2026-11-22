@@ -1610,7 +1610,7 @@ bool fn_80230AD4(s32 player);
 void fn_80230C6C(s32 player);
 
 // Per-player queries and setters of the 0x9C-byte family, owner tu_8022AD64
-// (Blizzard_804AC388::update, game/tu_8033F448.cpp). Results are tested with
+// (Blizzard_804AC388::update, game/act_blizzard_8033F448.cpp). Results are tested with
 // clrlwi 24 (bool); getPlayerMaxLife_80237810 is compared as a word and the value
 // minus 4 goes to fn_8023764C.
 bool fn_8022F478(s32 player);
@@ -1802,7 +1802,7 @@ void fn_8022FF8C(s32 player, const JGeometry::TBox2f* box, s32 layer, s32 serial
 // act_blindfold, act_gambling_chest: maps a player index to the index whose position
 // getPlayerPos_8023E724 is then asked for (its leader's, recursively; -1 without the manager).
 s32 getRepresentativePlayer_8022EA0C(s32 player);
-// tu_80441318. The one present player (layer 8 and up) whose checkScreenExit_802527B0 fails while
+// player_window_select_80441318. The one present player (layer 8 and up) whose checkScreenExit_802527B0 fails while
 // every other one reports the same screen point; -1 otherwise or while a manager flag
 // is set (the caller maps a result through fn_8022F340).
 s32 fn_80231A50();
@@ -1913,7 +1913,7 @@ f32 fn_8022C82C(s32 player);
 bool fn_80230224(s32 player, s32 flag);
 // 5+ units (act_thwomp_switch, act_warp, ...). Same shape as fn_8023A51C below.
 JGeometry::TVec3f* fn_8023A478(s32 player);
-// 2 units / 7 calls (act_player_start_position, tu_802D39B8 x6). Calls
+// 2 units / 7 calls (act_player_start_position, game_view_802D39B8 x6). Calls
 // fn_80252F80(mPlayers[player], pos, a, b, c), then stores pos in
 // field_0x14[player], a in field_0x44, b in field_0x54, c (stb) in field_0x64.
 void fn_8023F1D4(s32 player, const JGeometry::TVec3f* pos, s32 a, s32 b, u8 c);
@@ -1955,7 +1955,7 @@ bool fn_80230534(bool flag);
 // fn_80250030(player object, serial) passes, or -1 (fn_80239108 not positive).
 s32 fn_80238BC4(s32 serial);
 // The number of present players whose fn_8022D7F8 is `serial`, or 0 when they face
-// different ways (0x3DC). 4 units (act_moving_house_802957CC, tu_80354D64, the pull switches; cmpwi 4).
+// different ways (0x3DC). 4 units (act_moving_house_802957CC, act_log_80354D64, the pull switches; cmpwi 4).
 s32 fn_80238A68(s32 serial);
 // Owner unit tu_8022AD64 (not declared by it). 1 unit (act_moving_house_802957CC): the index (0-3) of a player
 // facing the actor `serial`, or -1.

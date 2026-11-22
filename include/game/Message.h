@@ -3,19 +3,19 @@
 
 // The game's message (dialogue text) system:
 //
-// * game/tu_8037DF68.cpp: the message manager *lbl_8053AD78 and the free
+// * game/message_manager_8037DF68.cpp: the message manager *lbl_8053AD78 and the free
 //   functions actors call to open, advance and query message boxes (97
 //   consumer units). It loads "gc_four_swords_text_e.bmg" and the font
 //   "rock_24_20_4i_e.bfn" (fn_8038DA00), hence "message".
-// * game/tu_80390818.cpp: the per-player message windows
+// * game/message_window_80390818.cpp: the per-player message windows
 //   (MessageWindow_804AF490), which own the JMessage processors of
 //   game/tu_803944C8.cpp (its four vtables derive from JMessage's
 //   TProcessor / TRenderingProcessor / TSequenceProcessor / TReference; the
-//   0x3C4-byte objects are built by the constructor below). Only tu_80390818 calls
+//   0x3C4-byte objects are built by the constructor below). Only message_window_80390818 calls
 //   into tu_803944C8, so those classes are not declared here.
 // * lbl_8050DB0C: the layout constants object (cls_804AF32C), 20 units.
 //
-// The variable lbl_8053AD78 is owned by game/tu_8037DF68.cpp (its only
+// The variable lbl_8053AD78 is owned by game/message_manager_8037DF68.cpp (its only
 // store); lbl_8053AD70, the object of game/tu_8037ACC4.cpp, is owned there.
 //
 // fn_8037F2FC (sets up a message box at a position) is declared in
@@ -54,7 +54,7 @@ class JUTResFont;
 
 // The 0x3C4-byte objects of game/tu_803944C8.cpp. Named after the vtable
 // their constructor (0x803973E8) stores at 0x0, 0x804AF5A0. Only the fields
-// tu_80390818 uses are declared.
+// message_window_80390818 uses are declared.
 class MessageWindow_804AF490;
 
 class cls_804AF5A0 {
@@ -285,7 +285,7 @@ public:
         field_0x3ab[1] = 0;
         field_0x3ab[0] = 0;
     }
-}; // Size: 0x3C4 (the fields game/tu_803944C8.cpp and tu_80390818 use are declared)
+}; // Size: 0x3C4 (the fields game/tu_803944C8.cpp and message_window_80390818 use are declared)
 
 // "gc_four_swords_text_e.bmg" (a JMessage BMG file): a 0x20-byte header, the
 // INF1 block (one 8-byte entry per message) and then the DAT1 text block. Only
@@ -309,7 +309,7 @@ struct MessageFile_804AF070 {
 };
 
 // One per player, field_0x114 of the manager (created there with
-// __nw__(0x5C)). Code in game/tu_80390818.cpp. Named after its vtable
+// __nw__(0x5C)). Code in game/message_window_80390818.cpp. Named after its vtable
 // (0x804AF490, stored first by the constructor).
 class MessageWindow_804AF490 {
 public:
@@ -359,7 +359,7 @@ public:
     // 1: 6-8, 2: 1-5). Placeholder name, no caller identified yet.
     u8 fn_80390818();
 
-    // Placeholder names, bodies in game/tu_80390818.cpp (not written yet):
+    // Placeholder names, bodies in game/message_window_80390818.cpp (not written yet):
     // fn_80390C6C steps the window and returns its halfword at 0x26; reset_80391678
     // resets it.
     u16 fn_80390C6C();
@@ -367,9 +367,9 @@ public:
     // 0x803908D0: releases the chests the windows' serials refer to; false if one is not released yet.
     bool fn_803908D0();
     // Placeholder name: called by fn_8038D570 each frame for a player that
-    // takes part (game/tu_80390818.cpp, not written yet).
+    // takes part (game/message_window_80390818.cpp, not written yet).
     void fn_80390EBC();
-    // Placeholder name: called by fn_8038470C (game/tu_80390818.cpp, not
+    // Placeholder name: called by fn_8038470C (game/message_window_80390818.cpp, not
     // written yet).
     void fn_803913E0();
 
@@ -463,7 +463,7 @@ public:
     // compares msg with it (cmplw).
     /* 0x03C */ s32 field_0x3c;
     /* 0x040 */ s32 field_0x40; // -1 after construction
-    /* 0x044 */ s32 field_0x44; // 4 units (tu_80390818, tu_803944C8)
+    /* 0x044 */ s32 field_0x44; // 4 units (message_window_80390818, tu_803944C8)
     /* 0x048 */ s32 field_0x48;
     /* 0x04C */ s32 field_0x4c[4];
     /* 0x05C */ f32 field_0x5c[4];
@@ -501,7 +501,7 @@ public:
 
 extern MessageManager_804AF070* lbl_8053AD78;
 
-// lbl_8050DB0C: a static object of tu_8037DF68 (constructed in place by
+// lbl_8050DB0C: a static object of message_manager_8037DF68 (constructed in place by
 // fn_8037DF68, destructor fn_8038DBF0 registered by the unit's __sinit),
 // named after its vtable 0x804AF32C. The constructor only stores constants:
 // bytes, floats and from 0x4C on 0x156 halfwords (screen positions, sizes
@@ -511,7 +511,7 @@ extern MessageManager_804AF070* lbl_8053AD78;
 // store is the byte at 0x30D.
 class cls_804AF32C {
 public:
-    // The constructor (fn_8037DF68, constants only, game/tu_8037DF68.cpp).
+    // The constructor (fn_8037DF68, constants only, game/message_manager_8037DF68.cpp).
     cls_804AF32C();
     /* 0x08 */ virtual ~cls_804AF32C(); // fn_8038DBF0
 
@@ -533,7 +533,7 @@ public:
 
 extern cls_804AF32C lbl_8050DB0C;
 
-// Functions of game/tu_8037DF68.cpp with C++ linkage (written in that unit).
+// Functions of game/message_manager_8037DF68.cpp with C++ linkage (written in that unit).
 // "window" is the player mapped to a window index as described above.
 // Whether any player's window is in state class 1 (fn_80390818).
 bool fn_8037E4BC();
@@ -546,7 +546,7 @@ u8 fn_8037E694(s32 player);
 BOOL fn_8037E7AC(s32 player);
 // Sets that bit.
 void fn_8037E8D4(s32 player);
-// 1 unit (tu_80316E34). Maps the player to a window and returns
+// 1 unit (sound_effect_seq_80316E34). Maps the player to a window and returns
 // fn_80390850(field_0x114[window]): -1 or field_0x174 of the window's object.
 s32 fn_8037E9F4(s32 player);
 // Copies four floats of the manager (0x5C, 0x64, 0x60, 0x68) and its byte at
@@ -602,7 +602,7 @@ u32 findMessageIndex_803846BC(u32 msg);
 
 // 41 units. Returns 0 or 1.
 bool fn_80388CAC(s32 player, s32 serial);
-// Functions of game/tu_8037DF68.cpp other units call. Return types: callers
+// Functions of game/message_manager_8037DF68.cpp other units call. Return types: callers
 // clrlwi 24 / clrlwi. the bool ones.
 // 16 units / 196 calls (the menu units). Copies the text of message msg
 // (mBmg's INF1 entry msg) into out, or into out2 / out3 (when not NULL) after
@@ -610,7 +610,7 @@ bool fn_80388CAC(s32 player, s32 serial);
 // 0x11/0x12/0x19/0x1A; each stores the width and line count so far in
 // field_0x5c); control code 0x1A size 3 writes '0' + value and fn_8037F580's
 // expansion. Returns the text width summed from mFont's getWidth per character.
-// 0x80382B48 (not written yet; C++ linkage). Used by SaveScreen_804B0288::fn_803D4DB0 (game/tu_803D2C34.cpp):
+// 0x80382B48 (not written yet; C++ linkage). Used by SaveScreen_804B0288::fn_803D4DB0 (game/save_screen_803D2C34.cpp):
 // builds message `id` into dst, given the "yes" / "no" answer texts.
 f32 fn_80382B48(char* dst, u32 id, s32 flag, const char* yes, const char* no);
 f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out3);
@@ -621,7 +621,7 @@ extern "C" {
 // Message msg mapped for window `window` (this unit, not written yet); fn_8038470C
 // passes the result to the window's fn_80390E40.
 u32 fn_80383EB0(s32 window, u32 msg);
-// 1 unit (game/tu_80403D84.cpp) + 1 (tu_8043A0E8). Builds the text of message
+// 1 unit (game/map_screen_80403D84.cpp) + 1 (hud_mgr_8043A0E8). Builds the text of message
 // msg into out (lines wrapped to width / height, the two counters are
 // getMessageText_803832BC-style arguments); returns a line count that starts at 1.
 s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 height);
@@ -647,7 +647,7 @@ bool openMessage_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry:
 // small flags such as 0x21).
 bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags);
 // 10 units. openMessage_8038AD24's argument shape, another variant (flags 0x10 in
-// tu_80441A1C).
+// gba_connect_error_window_80441A1C).
 bool openMessageById_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 }
 

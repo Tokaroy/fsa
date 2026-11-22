@@ -1,0 +1,76 @@
+
+## Checkpoint (Sonnet 5.5 pass 1)
+Baseline total 8015 -> 8029 (+14). Unit 0/43 -> 14/43. Class: AdvEntryScreen_804B0B00 (vtable 0x804B0B00, ctor fn_803EE254; state machine, 0x1D4 state / 0x1D8 previous).
+Matched: the 13 small state setters / stubs (fn_803E29C8, 2A0C, 3548, 3C00, 3C80, 3C94, 4308, 4330, 45FC, 4610, 462C, 6A28, ED5B4) and fn_803E6A2C.
+Resistant (FIXME in source): fn_803E9034, fn_803ED604, 99.8 % regalloc-only (r3/r4 for field_0x1bc / field_0x1d0).
+Notes: the static ptmf tables lbl_804B0754 / 08BC / 0A24 are runtime copies filled by the unit's sinit (fn_803F01F4, 0x860 B, .ctors);
+lbl_804B06A0 holds the enter functions (state setters), 0x808/0x970 the update/draw rows. Float-literal functions only reach 100 % once
+the earlier functions' sdata2 first-use order exists.
+SHARED-EDITS: include/game/adv_entry_screen_803E1668.h (AdvEntryScreen_804B0B00 fields/members), include/game/GameState.h (field_0x23c at 0x23C, split from field_0x23a[]),
+symbols.txt renames of the 15 members.
+Next: fn_803E3320 (0x228), fn_803EC804, fn_803EDF94, then the sinit fn_803F01F4; float-heavy ones after.
+
+## Checkpoint (Opus 5.5 pass 2, boot path, 2026-11-05)
+Baseline total 8338 -> 8341 (+3: __sinit_adv_entry_screen_803E1668_cpp, __dt__23AdvEntryScreen_804B0B00Fv, and
+player_sound_obj_8045B010's __ct__23PlayerSoundObj_804B20F8 via the s8 kind). Unit 14/43 -> 16/43.
+Boot-path functions (all three): sinit fn_803F01F4 100 %, destructor fn_803EDF94 100 %,
+constructor fn_803EE254 99.13 % (operands + reloc-name; FIXME in source).
+- Commit 1: the three ptmf tables (enter / update / draw) as source data; the sinit
+  copies them (renamed __sinit_adv_entry_screen_803E1668_cpp, scope:local); .data split into the
+  45 @668-@712 initialisers + 3 runtime tables, .bss into @998-@1006 + 9 x 0x10,
+  vtable lbl_804B0B00 -> __vt__23AdvEntryScreen_804B0B00 (size 0x40 kept, as connect_screen_803F0A54);
+  19 table members renamed fn_X__23AdvEntryScreen_804B0B00Fv.
+- Commit 2: PlayerSoundObj_804B20F8(s8 kind, ...): every caller passes it through extsb.
+- Commit 3 (NEEDS an `array` line in blobs.txt; gate --base matching fails only on
+  the byte-array tripwire, 481 literals): the constructor and the .rodata tag tables
+  0x80477970-0x80478910 in address order; lbl_804B0AD8 (kk_rupyNum strings) declared
+  between the 0xAC0 and 0xBA8 tables (its strings sit there in .rodata).
+  Header layout 0x8C-0x364 from the constructor (field_0x1e0 / 0x220 / 0x254 are [4]).
+Ctor FIXME: string pool 0x88 lower (strings of fn_803E1668 / fn_803E3564 / fn_803EDA2C
+come first in the original), loop registers, sdata2 @NNN names.
+Idiom found: `fadeAlpha(u8 alpha, f32 rate)` inline — a literal `alpha * 0.0f` folds;
+the original multiplies at runtime with constants reloaded per loop.
+SHARED-EDITS: include/game/cls_804B20F8.h (ctor kind u8 -> s8, symbol FUc -> FSc),
+src/game/player_sound_obj_8045B010.cpp (same, FIXME dropped).
+Next: fn_803ED83C / fn_803EDA2C / fn_803EDBF0 (members after the menu updates), then
+fn_803E3320, fn_803EC804; fn_803E1668 (first function, fixes the string pool start).
+
+## Checkpoint (Opus 5.5 pass 3, twin units, 2026-11-05)
+Baseline total 8416. Twin of game/connect_screen_803F0A54.cpp (ConnectScreen_804B0F10): asm-pair script
+(normalised registers / offsets / symbols, difflib) pairs every non-trivial function;
+the two .sdata2 pools hold the same constants in the same order. AdvEntryScreen_804B0B00 is the
+1-4 player version (field_0x1bc = players - 1, row 'P1pli01' in lbl_80478890), the
+twin the 2-4 player GBA one (field_0x1ac = players - 2).
+Screens: mScreen = player-count menu ('Pnopb', 'Pscuro01/02', 'Ndata'); field_0x8 =
+GBA connection screen ('Ptn01/02' kk_nPlayerP2-4 textures, 'Tkg01/02' message 0x3E,
+'Pplli' panes, effects 0xCB / 0xCC, sounds 0x10001 / 0x2000E); field_0xc = game
+select ('Pstab04' / 'Phanb04' / 'Prub04', 'Pcon01' player sprites "player_sob.bin");
+field_0x10 = results (rupee digits kk_rupyNum_*, 'Pscur' / 'Paccur' cursors, 'Pblk'
+covers). Menu sounds: 11 decide, 12 back, 0x26 cursor.
+New (all with FIXMEs): fn_803ED83C 100 %; reloc-name only: fn_803E4344, fn_803E8210,
+fn_803E9A20, fn_803E9EE8, fn_803EDA2C, fn_803EDBF0; fn_803E1668 98.3 sched+regalloc
+(index arithmetic; `size / 2` fixes the fmadds operand order); fn_803E2A20 98.2 (one
+mr); fn_803E3CB0 99.6 (string offsets); fn_803E4650 99.3 / fn_803E4940 99.6 /
+fn_803E64A0 98.7 (operands: every int->float conversion shares one stack slot in the
+original, not here); fn_803EC804 99.6 (setEntries i / 2i coalescing, same as twin).
+fn_803E3320 left unwritten: written it is auto-inlined into fn_803E9034 / fn_803ED604,
+which call it out of line in the original (tried explicit and loop forms).
+Pool leads (not fixed): .sdata2 has 3.0 / 800 / 640 right after fn_803E1668's literals
+and the strings kk_kettei / kk_modoru / kk_nPlayerP1 before P2, though their first
+visible users come later (fn_803EA3F8, fn_803EDA2C, fn_803E3564): the twin has the
+same pool, so probably a dead-stripped early helper (unproven, not written). The
+reloc-name-only functions need that before they can reach 100 %.
+SHARED-EDITS: none outside this unit's header (field_0x8c/0x90/0x94 effect position,
+field_0x262 s16); symbols.txt rename fn_803E1668 -> fn_803E1668__23AdvEntryScreen_804B0B00Fv.
+Next: fn_803E3564 (P1 string + the 300/-450 literals), fn_803EAEC8 (= twin
+fn_803F9EA8 1.00), fn_803EA3F8, fn_803ECC64, fn_803E926C; scripts in the coordinator's
+scratchpad twins/pair.py.
+
+## Checkpoint (Gemini 4 Argon, 2026-11-05)
+Unit 17/43 -> 25/43 honest 100 % matches (+8), and all 43/43 functions written (.text 57.76 % -> 98.31 %, .rodata 100.00 %, .data 99.83 %, .sdata2 98.99 %).
+- Proved and added the two dead-stripped inlined member helpers (`AdvEntryScreen_804B0B00::drawFade` and `AdvEntryScreen_804B0B00::enterState15`) placed between `fn_803E29C8` and `fn_803E1668` in descending address order, and split `.rodata` (`0x80477970..0x80478A60`) in `config/G4SE01/symbols.txt` into the 38 `scope:local` static arrays and 17 `data:string` literals. This aligned the entire `.rodata` and `.sdata2` pools and flipped 8 functions (`fn_803E3564`, `fn_803E3CB0`, `fn_803E4344`, `fn_803E8210`, `fn_803E9A20`, `fn_803E9EE8`, `fn_803EDA2C`, `fn_803EDBF0`) to 100 %.
+- Implemented all 10 remaining functions (`fn_803E3564` 100 %, `fn_803E3320` 99.20 % with `#pragma auto_inline off/reset` per `docs/INLINING.md` rule 1, `fn_803EA3F8` 97.63 %, `fn_803EAEC8` 97.46 %, `fn_803E831C` 97.07 %, `fn_803E51C4` 97.03 %, `fn_803ECC64` 96.95 %, `fn_803EBAA8` 96.93 %, `fn_803E926C` 96.67 %, `fn_803E6AB0` 95.41 %).
+- Remaining diffs (all documented with `// FIXME:` in source):
+  - Regalloc/operands/scheduling only (8): `fn_803E9034` (99.82 %), `fn_803ED604` (99.82 %), `fn_803E4650` (99.81 %), `fn_803E4940` (99.67 %), `fn_803EC804` (99.61 %), `AdvEntryScreen_804B0B00::AdvEntryScreen_804B0B00` (99.55 %), `fn_803E3320` (99.20 %), `fn_803E64A0` (99.17 %), `fn_803E1668` (98.92 %).
+  - Loop induction-variable / register allocation (9): `fn_803E2A20` (98.58 %), `fn_803EA3F8` (97.63 %), `fn_803EAEC8` (97.46 %), `fn_803E831C` (97.07 %), `fn_803E51C4` (97.03 %), `fn_803ECC64` (96.95 %), `fn_803EBAA8` (96.93 %), `fn_803E926C` (96.67 %), `fn_803E6AB0` (95.41 %).
+SHARED-EDITS: none outside this unit (`include/game/adv_entry_screen_803E1668.h`, `src/game/adv_entry_screen_803E1668.cpp`, `config/G4SE01/symbols.txt`).

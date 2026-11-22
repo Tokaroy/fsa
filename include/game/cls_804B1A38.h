@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-// Audio-data loader (vtable 0x804B1A38), defined in game/tu_80442810.cpp.
+// Audio-data loader (vtable 0x804B1A38), defined in game/audio_res_loader_80442810.cpp.
 // The constructor stores `this` in lbl_8053ADD8; tu_80400DC4's fn_80401318
 // reads field_0x4 through it (0x804014E4).
 class AudioResLoader_804B1A38 {

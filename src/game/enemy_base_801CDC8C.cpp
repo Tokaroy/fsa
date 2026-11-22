@@ -1029,7 +1029,7 @@ void EnemyBase_804A4808::fn_801CDCD0(s32 layer, const JGeometry::TVec3f* pos, u3
 // Stops sound `soundId` on this actor's sound object.
 void EnemyBase_804A4808::fn_801CDC8C(u32 soundId) {
     // ActorSoundObj_804578F4 is a JAUSoundObject (game/ActorManager.h) but
-    // opaque until game/tu_80455CA4.cpp is written.
+    // opaque until game/actor_sound_obj_80455CA4.cpp is written.
     JAUSoundObject* sound = (JAUSoundObject*)fn_801F1184();
     if (sound != NULL) {
         sound->stopSound(soundId, 0);

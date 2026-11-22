@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_804A8638_H
 #define GAME_CLS_804A8638_H
 
-// Code: game/tu_802B3674.cpp. An ActorBase whose vtable is lbl_804A8638 (slot
+// Code: game/act_environment_switch_control_802B3674.cpp. An ActorBase whose vtable is lbl_804A8638 (slot
 // 0x8, the destructor, is fn_802B51C0). No actor id is confirmed for it (it
 // sets the fog colour, so likely SWEV, the environment switch control:
 // act_blizzard_battle finds the SWEV actor and calls fn_802B39E8 on it), so it

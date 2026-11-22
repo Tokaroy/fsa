@@ -6,7 +6,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 #include "game/act/act_rank_display.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // Stops an emitter (it runs out) and forgets it.

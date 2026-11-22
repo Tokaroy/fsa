@@ -4,7 +4,7 @@
 #include "game/GameState.h"
 #include "game/GameView.h"
 #include "game/Message.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/act/act_ganon.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JUtility/JUTTexture.h"

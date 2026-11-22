@@ -1,0 +1,93 @@
+# game/title_803A3484 (title screen, Title_804AF820) — 2026-11-05 (Opus 5.5)
+
+Baseline `progress.py`: 8338 / 11557 functions. After: 8340 (+2 honest; +3 more structurally written).
+
+Class: vtable 0x804AF820 (one slot: dtor), ctor fn_803A59E0, 0x158 bytes (game_root_80134C04 `new(0x158)`),
+singleton lbl_8053AD88. "Title" from title.blo / title.btk / title.arc. Header include/game/title_803A3484.h.
+Donor leads: none strong (all < 9 weak hits). Sibling with the same shape: game_mode_803DAC3C (GameMode_804B0688).
+
+| function | % | try.py class |
+|---|---|---|
+| fn_803A3484 (static getter) | 100 | |
+| fn_803A34A0 (update, 4 KB) | 99.61 | scheduling+regalloc + reloc-name |
+| fn_803A44D8 (draw, 3.7 KB) | unwritten | |
+| fn_803A5380 (reset) | 99.78 | operands + reloc-name (string offsets only) |
+| __dt__ (fn_803A56C4) | 100 | |
+| __ct__ (fn_803A59E0) | 99.78 | operands + reloc-name (string offsets only) |
+
+Resistant (data, not code):
+- .rodata: after "w_kumo5.bmd" the original has a 0x34-byte table (1, 0x20000, 0x10002, 0xFFFF0000, 0, 1, 2, 1, 6, 3, 4, 5, 4)
+  and "enemy_both2_sob.bin", referenced by no code. Every later string sits 0x48 further on, hence
+  `addi rX, r29, 0x164` vs `0x11c` in the ctor / fn_803A5380. Probably literals of dead code in the
+  unwritten draw (or update); don't fabricate them.
+- .sdata2 pool starts 0.5f (draw: C_MTXLightOrtho), 120.0f (update case 10), then 0.0f, 1.0f, the int
+  conversion double, 8.5f, 255.0f, 200.0f. Ours starts 0.0f. Possibly a two-float file-scope aggregate
+  plus dead code; unresolved.
+- fn_803A34A0: `wait + getFrameMax() + 400` — the original adds 400 last; ours folds getFrameMax()+400 first.
+
+Draw fn_803A44D8, decoded for the next agent:
+- prologue: JFWDisplay::sManager clear colour = TColor(0,0,0,0); lbl_80529DEC.field_0x1a0 counts down to 0.
+- f32 blink = 0.0f (f31). An inlined blink calc used twice: field_0x7c++, period = lbl_8050DB0C h[0x29C],
+  hold = h[0x29E], base = h[0x2A0] / 255.0f; if 7c <= 2*period: d = |7c - period|,
+  blink = base + (1 - base) * (d*d) / (period*period); else blink = 1.0f, reset 7c when 7c >= hold + 2*period.
+- mMovieState != 0: gGameRoot2_8053AB10->fn_8013B438(); mMovie->draw_80427D2C(0,0,0,0); if (field_0x249 && field_0x80)
+  { if ((fn_8030A308||fn_8030A388)(slot 0) && field_0x82 == 0) blink calc; setPort_8013B490(); 'Pntd' alpha (u8)field_0x4c,
+  'Ptlogo01'/'Ptlogo02' alpha 0, 'prsstrt1'/'2' alpha field_0x14e/14f * blink; mScreen->draw(0, 0, root->field_0x10) }.
+- else setPort_8013B490(); if (0x238 == 0xFF && field_0x249): if field_0x154 == 1 the 3D clouds (TVec3f scale 7;
+  manager = getEffectSystem_8013C824()->mEmitterManager; JPADrawInfo at sp 0x94 with BOTH matrices PSMTXIdentity'd first,
+  then Mtx view identity, fn_8013AC54(view), PSMTXCopy(view, cam), C_MTXLightOrtho(prj, 448, 0, 0, 608, 0.5 x4);
+  fn_8016D398(view, gGameRoot_8053AAF8->field_0x5c, 1, 1, &field_0x90, &field_0x84, &field_0x88, &field_0x8c,
+  field_0x11c, field_0x134, 7.0f) [fn_8016D398 is plain-named, game_root_sub_24_8016A2B4, undeclared]; 6 models each
+  calcAndEntryModel_8013ABCC(model, scale, Mtx{1,0,0,300; 0,1,0,250; 0,0,1,-513 - 96*i}) (fnmsubs); fn_8013AB2C();
+  manager->calc(0); manager->draw(&info, 0)); if field_0x150 == 1: setPort_8013B490(), field_0x20 alpha
+  (u8)field_0x68, field_0x20 vfunc 0xEC(0,0,0, -1,-1, 611, 451); if field_0x6e == 1 && button && 0x82 == 0 blink;
+  then an inlined "draw title" (Pntd alpha 4c, Ptlogo01/02 alpha 4c, prsstrt alphas * blink, screen draw,
+  `if (field_0x82 > 0 && 255.0f == field_0x4c) field_0x82--`).
+- switch (0x238): 2-4: field_0xc alpha (u8)field_0x50, draw at (113, 281) (vfunc 0xE4); fade t = 72 < 30 ?
+  72/30 : (60-72)/30; yes/no pictures 0x18/0x1C setBlackWhite with TColor(255*t,200*t,0,0)/(0xFF,0xC8,0,0xFF)
+  vs (0,0,0,0)/(0xA0,0xA0,0xA0,0xFF) by field_0x14c, alpha 0x50, draw at (211,372) / (350,372);
+  5,6: gGameRoot2_8053AB10->fn_8013AB00(); field_0x251 = 1; 9: if (!OSGetProgressiveMode()) fn_8013AAD4(); then
+  9-11: field_0x14 (14c == 0) or field_0x10 alpha 0x50 at (153, 309); default: if field_0x249 the "draw title"
+  inline with blink folded to 0.0f.
+
+SHARED-EDITS:
+- include/game/cls_8016ED88.h (new): cls_8016FDE0 (0x1C entry, ctor = the empty fn_8016FDE0) and cls_8016ED88
+  (four of them; fn_8016ED88 clears field_0x0/0x14 of each). Evidence: Title_804AF820's ctor builds the array
+  at 0x90 with __construct_array(fn_8016FDE0, 0x1C, 4) and fn_803A5380 calls fn_8016ED88 on this + 0x90; it was
+  filed as a GameRootSub24_8016A3AC member writing GameRootSub24 fields. game_root_sub_24_8016A2B4.cpp: fn_8016ED88 is now
+  cls_8016ED88's loop, fn_8016FDE0 is cls_8016FDE0's ctor (both still 100 %); GameGlobals.h drops the old
+  member declaration. symbols.txt renames: fn_8016ED88__12cls_8016ED88Fv, __ct__12cls_8016FDE0Fv.
+- symbols.txt: Title_804AF820 names, __vt__14Title_804AF820, @1299 (jump table; renumbers if draw is added).
+- splits.txt: .sbss 0x8053AD88-0x8053AD90 (lbl_8053AD88). gen_game.tsv: sinit row dropped (hand-written now).
+
+## 2026-11-05 (Opus 5.5): draw fn_803A44D8 written
+
+Baseline 8351 / 11557 (after rebase). After: 8351 (+0 honest; draw +1 structural).
+
+| function | % | try.py class |
+|---|---|---|
+| fn_803A44D8 (draw) | 99.25 | scheduling+regalloc + reloc-name |
+
+- calcBlink (f32& out) and drawTitle(f32 blink) are inline members, each inlined twice; the
+  default case's drawTitle gets blink = 0.0f by constant propagation.
+- JPADrawInfo: FSA's version has a default ctor (both matrices identity); the draw sets
+  info.mCamMtx (PSMTXCopy) and info.mPrjMtx (C_MTXLightOrtho 448,0,0,608, 0.5 x4) directly.
+  Same pattern in the Camera_804AA9E4 ctor (0xE4/0x114 pair). Added to libs/sdk JPAEmitter.h.
+- The cloud matrix swaps y/z: {1,0,0,300; 0,0,1,250; 0,1,0,-513-96i}, reusing the view Mtx.
+- Remaining diffs: register choice in calcBlink (hold r5 vs r3) and in the cloud block
+  (manager/prj ptr swapped; a `J3DModel* model = field_0x104[i]` local schedules the load like
+  the original, 99.47, not kept: temp only for codegen).
+- The 0x34-byte .rodata table + "enemy_both2_sob.bin" and the leading 0.5f/120.0f in .sdata2 are
+  NOT from the draw (it references none of them). Most likely literals of a function the original
+  linker dropped (dead or a weak duplicate); the {3,4,5,4} tail matches act_tingle_time_up_803536C4's
+  lbl_80472260, which is followed by the same string there. Reset/ctor stay 99.78.
+
+SHARED-EDITS:
+- libs/sdk/include/JSystem/JParticle/JPAEmitter.h: JPADrawInfo() default ctor (PSMTXIdentity x2).
+- include/game/GameGlobals.h: GameRoot_8049EF20 field_0x5c u8[4] -> s32 (frame passed to
+  fn_8016D398, divw); GameRoot2_8049F108::fn_8013AAD4 / fn_8013AB00 now members (the draw loads
+  gGameRoot2_8053AB10 into r3 before each; only caller); declarations of fn_8013AB2C, calcAndEntryModel_8013ABCC,
+  fn_8013AC54; extern "C" fn_8016D398(Mtx, s32, bool, bool, cls_8016ED88*, s32*, s32*, u8*,
+  J3DAnmTextureSRTKey**, J3DAnmTevRegKey**, f32) from its asm (r3 = view matrix, not an object).
+- src/game/tu_8013AAD4.cpp + symbols.txt: fn_8013AAD4__18GameRoot2_8049F108Fv,
+  fn_8013AB00__18GameRoot2_8049F108Fv (both still 100 %).

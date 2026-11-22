@@ -11,7 +11,7 @@ static const s16 lbl_80469C00[] = {
     -1, -1,
 };
 static const s16* lbl_8053A158[2] = {lbl_80469C00, NULL};
-// Read by act_horse_race_man and tu_80441318 (unwritten); owner here by its .sdata split.
+// Read by act_horse_race_man and player_window_select_80441318 (unwritten); owner here by its .sdata split.
 s32 lbl_8053A160 = -1;
 
 cls_801E6AB8::cls_801E6AB8() : mState(0), mTimer(0), field_0x8(1) {

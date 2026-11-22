@@ -6,7 +6,7 @@
 #include "game/Player.h"
 #include "game/RotMatrix.h"
 #include "game/SpriteParams.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/ActorId.h"
 #include "game/GameState.h"
 #include "game/Message.h"

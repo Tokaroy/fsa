@@ -8,12 +8,12 @@
 #include "game/Player.h"
 #include "game/cls_804AE9B0.h"
 #include "game/act_leever_80182914.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "game/act/act_force_gem.h"
 #include "game/act/act_force_gem_buried.h"
 #include "game/act/act_force_gem_fleeing.h"
 #include "game/act/act_force_gem_winged.h"
-#include "game/act/tu_803536C4.h"
+#include "game/act/act_tingle_time_up_803536C4.h"
 #include "game/act/act_tingle_time_up_manager.h"
 
 // FIXME: 99.8 %. Epilogue reloads r0 and r31 in the other order.

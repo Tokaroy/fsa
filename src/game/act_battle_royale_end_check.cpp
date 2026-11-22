@@ -7,7 +7,7 @@
 #include "game/Message.h"
 #include "game/Player.h"
 #include "game/act/act_battle_royale_end_check.h"
-#include "game/act/tu_803DA6B4.h"
+#include "game/act/press_start_overlay_803DA6B4.h"
 #include "game/cls_804A8638.h"
 
 

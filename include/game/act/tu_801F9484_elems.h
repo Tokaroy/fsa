@@ -13,7 +13,7 @@ struct Elem_801FFCDC {
     u8 data[0x14];
 };
 
-// One per player of GiantGeneratorEffect_804AA350 (tu_802ED538).
+// One per player of GiantGeneratorEffect_804AA350 (act_giant_generator_effect_802ED538).
 struct Elem_80200544 {
     Elem_80200544() {}
     /* 0x00 */ JGeometry::TVec3f mPos;

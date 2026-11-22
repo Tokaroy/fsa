@@ -8,7 +8,7 @@
 #include "game/Message.h"
 #include "game/Player.h"
 #include "game/StageFlag.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "game/act/tu_801F9484.h"
 
 static const s32 lbl_8046F628_0[9] = {1, 1, 1, 2, 1, 1, 2, 2, 0x64};

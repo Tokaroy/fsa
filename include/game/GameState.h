@@ -5,7 +5,7 @@
 // GAME_PLAN.md and the structure research called it "the UI struct"; it is
 // not UI-specific. It holds the boot heaps, the resource archives every
 // screen loads 2D data from, the selected stage and per-player tables, and
-// a block of byte flags. game/tu_804023D0.cpp defines it: its __sinit
+// a block of byte flags. game/pane_ctrl_804023D0.cpp defines it: its __sinit
 // (fn_80403B48) constructs it with fn_8040384C and registers fn_80403804 as
 // its destructor; those two store the vtable 0x804B0FE0 (one slot, the
 // destructor).
@@ -18,7 +18,7 @@
 // its last field seen is the byte at 0x254.
 //
 // Also here: PaneCtrl_804AF86C, a wrapper around one J2DPane that 28 units
-// allocate (tu_804023D0 holds its methods).
+// allocate (pane_ctrl_804023D0 holds its methods).
 //
 // Fields are named only where the code that writes them shows what they
 // are; other offsets keep field_0xNN with the function that shows them.
@@ -58,7 +58,7 @@ public:
             /* 0x0A */ u8 field_0xa;
             /* 0x0B */ u8 field_0xb; // fn_802B1D7C tests it; fn_802B1D98 clears it
             /* 0x0C */ u8 field_0xc; // 0xFF preset; fn_802B1D60 returns it if <= 3
-            /* 0x0D */ u8 field_0xd; // tu_803FF2C4's loader constructor tests it
+            /* 0x0D */ u8 field_0xd; // boot_loader_803FF2C4's loader constructor tests it
             /* 0x0E */ u8 field_0xe;
             /* 0x0F */ u8 field_0xf;
             /* 0x10 */ u8 field_0x10; // 1: progressive scan wanted
@@ -72,20 +72,20 @@ public:
     GameState_804B0FE0();
     /* 0x08 */ virtual ~GameState_804B0FE0(); // fn_80403804
 
-    // Out-of-line copy at 0x8042E780 in game/tu_80427D2C.cpp (the movie
+    // Out-of-line copy at 0x8042E780 in game/thp_read_thread_80427D2C.cpp (the movie
     // player), built there with -inline off.
     JKRHeap* getHeap_8042E780() { return mHeap; }
-    // SHARED-EDIT (tu_80403D84 draw_80411230): inline getter; its call-site
+    // SHARED-EDIT (map_screen_80403D84 draw_80411230): inline getter; its call-site
     // evaluation order hoists the load of field_0x120 before getHeight/getWidth.
     s32 getField_0x120() const { return field_0x120; }
 
-    // 3 units (tu_803BC6F0, tu_803E1668, tu_803F0A54; all pass
+    // 3 units (file_select_803BC6F0, adv_entry_screen_803E1668, connect_screen_803F0A54; all pass
     // &lbl_80529DEC). Presets the per-player tables (field_0x68[i] = 0,
     // field_0x78[i] = 1, field_0x88[i] = 2, ...), clears 0x118-0x12C, sets
     // field_0x64 and field_0x1a8 to -1 and resets most byte flags.
     void fn_80403680();
-    // 1 unit (tu_803BC6F0). Clears mStage_0x118/mLevel_0x11c, then picks them
-    // from the save files of lbl_8050EC80 (game/tu_803B8C74.h).
+    // 1 unit (file_select_803BC6F0). Clears mStage_0x118/mLevel_0x11c, then picks them
+    // from the save files of lbl_8050EC80 (game/save_data_803B8C74.h).
     void fn_80403514();
 
     /* 0x000 */ // vtable
@@ -98,7 +98,7 @@ public:
     /* 0x00C */ AudioMgr_8045A080* mAudioMgr_0xc; // the object gAudioMgr_8053AF80 also holds (calls init_80459AE4)
     // Resource archives (the loader object's 0x14, an archive fn_80401AC8 /
     // fn_80401D20 create as JKRAramArchive or JKRMemArchive). The ones set
-    // in fn_803FFAA8 (tu_803FF2C4) come from these paths (0x80400334-
+    // in fn_803FFAA8 (boot_loader_803FF2C4) come from these paths (0x80400334-
     // 0x80400364 and 0x803FFBF0):
     /* 0x010 */ JKRArchive* mBossArchive_0x10; // applyRequestedMode_80135494 (mode 7); getBossArchiveResource_804032E8
     /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
@@ -161,7 +161,7 @@ public:
     // A word read by fn_8035EE34 (game/act_link_ending.cpp) as the player index
     // to draw for (0 when negative, hasPlayerLeader_8022F514/getPlayerLeader_8022F3DC on it).
     /* 0x1A4 */ s32 field_0x1a4;
-    // -1 after the reset; tu_80441318's update picks the window from it
+    // -1 after the reset; player_window_select_80441318's update picks the window from it
     // (0-3 a player, 4 all players).
     /* 0x1A8 */ s32 field_0x1a8;
     /* 0x1AC */ s32 field_0x1ac;
@@ -191,10 +191,10 @@ public:
     /* 0x238 */ u8 field_0x238; // 0xFF after fn_8040384C; fn_803FFAA8
     /* 0x239 */ u8 field_0x239; // bit per player; Blizzard_804AC388::update ORs it
     /* 0x23A */ u8 field_0x23a[0x23C - 0x23A];
-    // SHARED-EDIT (tu_803E1668 fn_803ED604): input slot 1 + this is polled by
+    // SHARED-EDIT (adv_entry_screen_803E1668 fn_803ED604): input slot 1 + this is polled by
     // the menu's update functions (fn_80309C4C / fn_80309A9C).
     /* 0x23C */ u8 field_0x23c;
-    // SHARED-EDIT (tu_803F0A54): copied to ConnectScreen_804B0F10::field_0x1ac by its
+    // SHARED-EDIT (connect_screen_803F0A54): copied to ConnectScreen_804B0F10::field_0x1ac by its
     // constructor; input slot 2 + this is polled by its states (fn_803F8050).
     /* 0x23D */ u8 field_0x23d;
     /* 0x23E */ u8 field_0x23e[0x240 - 0x23E];
@@ -205,7 +205,7 @@ public:
     /* 0x242 */ u8 field_0x242; // 19 units
     /* 0x243 */ u8 field_0x243[1];
     /* 0x244 */ u8 field_0x244; // fn_803BAE68: byte 3 of the save image just read
-    /* 0x245 */ u8 mSoundMode_0x245; // 0 if OSGetSoundMode() is 0 else 1; tu_80442810's constructor
+    /* 0x245 */ u8 mSoundMode_0x245; // 0 if OSGetSoundMode() is 0 else 1; audio_res_loader_80442810's constructor
     /* 0x246 */ u8 field_0x246; // fn_803BAE68: byte 4 of the save image just read; 1 in the constructor
     /* 0x247 */ u8 field_0x247;
     /* 0x248 */ u8 field_0x248; // tu_8039003C's and tu_803A85E4's constructors set it to 1 after fn_80458408
@@ -231,7 +231,7 @@ public:
 
 extern GameState_804B0FE0 lbl_80529DEC;
 
-// game/tu_804023D0.cpp: getResource(type, name) on one of the archives
+// game/pane_ctrl_804023D0.cpp: getResource(type, name) on one of the archives
 // above (vtable slot 0x18, the arguments passed through).
 void* getBossArchiveResource_804032E8(u32 type, const char* name); // field_0x10; 29 units (also in GameGlobals.h)
 void* getLogoArchiveResource_80403244(u32 type, const char* name); // field_0x18
@@ -265,7 +265,7 @@ void fn_804034D4(s32 player, s32 value);
 // unit's functions, before its __sinit). 28 units allocate it with
 // __nw__(0x2C) and the inline constructor (which only stores the vtable),
 // then call setPane_80402F04 with a pane from J2DScreen::search (e.g.
-// tu_80403D84, 0x80412F18).
+// map_screen_80403D84, 0x80412F18).
 class PaneCtrl_804AF86C {
 public:
     PaneCtrl_804AF86C() {}
@@ -285,8 +285,8 @@ public:
     void setAlpha_804023D0(J2DPane* pane, u8 alpha);
     // animateMoveY_80402940 (16 units) and slideX_80402B10 (5) step field_0x22 / field_0x20
     // up to frames (r4) with a mode byte in r5; the two floats are the
-    // targets' coordinates (the f1 one is 0.0 in game/tu_804432DC.cpp).
-    // SHARED-EDIT (tu_803F0A54 fn_803F715C): returns 1 once the steps are
+    // targets' coordinates (the f1 one is 0.0 in game/map_ed_overlay_804432DC.cpp).
+    // SHARED-EDIT (connect_screen_803F0A54 fn_803F715C): returns 1 once the steps are
     // done, else 0 (li r3, 1 / li r3, 0); callers test it with clrlwi. 24.
     u8 animateMoveY_80402940(s16 frames, u8 mode, f32 x, f32 y);
     u8 slideX_80402B10(s16 frames, u8 mode, f32 x, f32 y);
@@ -294,7 +294,7 @@ public:
     u8 animateScale_8040271C(s16 frames, f32 x, f32 y);
     // 5 units. Resizes by (x, y).
     void scaleKeepCentre_80402CE0(f32 x, f32 y);
-    // SHARED-EDIT (tu_803BC6F0 fn_803CE11C): 7 units. Steps field_0x26 up to
+    // SHARED-EDIT (file_select_803BC6F0 fn_803CE11C): 7 units. Steps field_0x26 up to
     // frames - 1, setting the pane's alpha from `from` toward `to`; on the
     // last step stores frames in field_0x22, sets `to` and returns 1, else 0.
     bool animateAlpha_80402628(s16 frames, u8 from, u8 to);

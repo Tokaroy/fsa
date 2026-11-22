@@ -25,12 +25,12 @@ docs/RULES_CARD.md ("Source order and inlining").
    (built with inlining off, every written function's same-unit calls equal the
    original's `bl`s); the comment states that check.
 3. Never caller-side `dont_inline`, `inline_max_*`, `inline_depth` or
-   `defer_codegen`, never per-unit `-inline` flags (the THP unit tu_80427D2C's
+   `defer_codegen`, never per-unit `-inline` flags (the THP unit thp_read_thread_80427D2C's
    `-inline off,deferred` stays).
 4. These are not FAKEMATCH; a reviewer checks each comment against the asm.
 
 **Corrections to the research below** (verifier, then the switch itself):
-- tu_80427D2C's "−4" was an artifact: reverse_funcs re-reversed a file already
+- thp_read_thread_80427D2C's "−4" was an artifact: reverse_funcs re-reversed a file already
   in deferred order. Excluded from the reversal, it loses nothing. Likewise
   act_shadow_link_fire_minor_80222CC4 / act_shadow_link_hammer_minor_80221B44 (their `defer_codegen` crack-pass pragmas are gone;
   they stay at their percentages under the project flag).
@@ -50,15 +50,15 @@ docs/RULES_CARD.md ("Source order and inlining").
   file-scope constants always come before the file's function literals, and
   the original has them after act_shadow_link_2_801D3CBC's, so they start act_vaati_boss's
   `.sdata2` (split moved; act_shadow_link_2_801D3CBC back to 90.9 %).
-- tu_80457DFC's volume tables lbl_804B1E60..lbl_804B1ECC: under deferred,
+- audio_mgr_80457DFC's volume tables lbl_804B1E60..lbl_804B1ECC: under deferred,
   data defined anywhere in a file is addressed off `...data.0`; the original
   addresses each table on its own (an extern), and the tables lead `.data`
   ahead of the unit's jump tables. They are now defined in the preceding unit,
   tu_80457C08 (whose functions were all dead-stripped), and setVolumeMode_80458744 and
-  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
+  startBgm_80458FF0 reach 100 %. audio_mgr_80457DFC needs a region around setVolumeMode_80458744, not
   the whole-file `off` (startBgm_80458FF0 inlines fn_80458408).
   tu_80457C08 (whose functions were all dead-stripped), and setVolumeMode_80458744 and
-  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around setVolumeMode_80458744, not
+  startBgm_80458FF0 reach 100 %. audio_mgr_80457DFC needs a region around setVolumeMode_80458744, not
   the whole-file `off` (startBgm_80458FF0 inlines fn_80458408).
 - tu_802684A4: the verifier's single region over fn_8026EB1C..fn_8026F54C also
   covers fn_8026EE60, which fn_8026F000-F54C inline in the original (they drop
@@ -67,7 +67,7 @@ docs/RULES_CARD.md ("Source order and inlining").
   fn_8026EE60 out of line in the original although its siblings inline it: a
   caller-budget effect (rule 5; a per-file `inline_max_total_size(6000)`
   reproduces the whole unit, banned by rule 3, and the same budget game-wide
-  loses tu_803DAC3C fn_803DAC58). Ours stays under the budget and inlines it:
+  loses game_mode_803DAC3C fn_803DAC58). Ours stays under the budget and inlines it:
   fn_8026C350 98.53 → 95.33 %, the one function the switch lowered.
   Resolved in Player round 20 (docs/PLAYER.md): with every per-direction store
   written through one helper (setDir), fn_8026C350 reaches the default budget at
@@ -109,7 +109,7 @@ game (sources reversed, `-inline auto,deferred`, `#pragma auto_inline off` at th
 top of 10 units), it scores **3985** functions against 3980 today. It gains 10
 functions (vtable/jump-table `.data` order, the actor_base_801EE24C register near-misses),
 and nine units' `.data` and act_deadrock's `.rodata` go to 100 %. The only losses
-are the 4 THP functions in tu_80427D2C (see open items). The same build plus one
+are the 4 THP functions in thp_read_thread_80427D2C (see open items). The same build plus one
 `auto_inline off` region in tu_802684A4 recovers fn_8026E68C. On tu_8022AD64 it
 turns the three recursive leader queries from 99.95 % to 100 % (they now call
 isPlayerActive_8023F264 at the depth limit, as the original does). It also makes the 17
@@ -134,26 +134,26 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
 | player_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
-| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| game_view_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
+| audio_mgr_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | player_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
-| tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
-| tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
+| game_view_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
+| audio_mgr_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| audio_mgr_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
 | player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
 | player_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
 | player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
-| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
-| tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
+| audio_mgr_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| audio_mgr_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
 | player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
 | player_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
 | player_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
 | actor_manager_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
-| tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
-| tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
+| hud_mgr_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
+| adv_entry_screen_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
 | act_crystal_ball_generator_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
-| game_root_sub_24_8016A2B4, tu_802F5040, player_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
-| head_sway_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, player_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), player_8026FC20 (isDown), actor_base_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
+| game_root_sub_24_8016A2B4, tile_map_802F5040, player_80256C74, hud_mgr_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
+| head_sway_8021A570, tile_map_802F5040, game_root_sub_24_8016A2B4, player_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), player_8026FC20 (isDown), actor_base_801EE24C, audio_mgr_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
 | act_shadow_link_fire_minor_80222CC4, act_shadow_link_hammer_minor_80221B44, act_shadow_link_bow/jump, act_stone_arrghus_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
 | tu_801D2C60 | weak dtor first in .text | D | | progress |
 | act_vaati_demo | (matched) | E | "defined after draw(), above it MWCC inlines it" | src comment |
@@ -262,9 +262,9 @@ Reversed enemy_base_801CDC8C, `-inline auto,deferred`:
 | build | at 100 % | gained | lost |
 |---|---|---|---|
 | base (`-inline auto`, address order) | 3980 | | |
-| `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, player_8023FBF0, player_8026FC20, tu_8037DF68, act_stop_npc dtor, …) |
+| `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, player_8023FBF0, player_8026FC20, message_manager_8037DF68, act_stop_npc dtor, …) |
 | `-inline auto,deferred` | 3970 | 9 | 19 (over-inlining in 11 units, list below) |
-| `auto,deferred` + `#pragma auto_inline off` at file top of enemy_base_801CDC8C, act_shadow_link_bow, act_vaati_boss_801EDBA4, act_kaepora_gaebora_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
+| `auto,deferred` + `#pragma auto_inline off` at file top of enemy_base_801CDC8C, act_shadow_link_bow, act_vaati_boss_801EDBA4, act_kaepora_gaebora_8021AF28, hud_mgr_8043A0E8, audio_mgr_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, thp_read_thread_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in thp_read_thread_80427D2C) |
 | same + `auto_inline off` region around tu_802684A4's fn_8026EB1C only | fn_8026E68C back to 100 % (unit 13 → 14 / 25) | | |
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
@@ -281,16 +281,16 @@ act_shadow_link_jump vfunc_0x90; actor_base_801EE24C fn_801EE24C, findOverlappin
 fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
 act_shadow_link_jump vfunc_0x90; actor_base_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
 fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
-exact); tu_802EF76C init.
+exact); act_light_environment_control_802EF76C init.
 
 Sections, deferred model vs base (game units):
 
 - `.data`: 13 units better, 9 of them now 100 % (act_force_gem_rain,
   act_link_ending, act_princess_zelda_ending, act_leever_80182914, actor_base_801EE24C,
-  tu_802EF76C, tu_803DAC3C, tu_80414F6C, tu_804432DC). These are the vtable /
+  act_light_environment_control_802EF76C, game_mode_803DAC3C, battle_stage_select_80414F6C, map_ed_overlay_804432DC). These are the vtable /
   jump-table order cases.
 - `.rodata`: act_deadrock 46 → 100 %.
-- `.sdata2`: unchanged except act_shadow_link_2_801D3CBC (86 → 34 %) and tu_80427D2C (91 → 77 %).
+- `.sdata2`: unchanged except act_shadow_link_2_801D3CBC (86 → 34 %) and thp_read_thread_80427D2C (91 → 77 %).
   This refutes symptom (d) for reversed sources. player_8026FC20's "deferred pools the
   literals in reverse" came from compiling deferred **without** reversing: with the
   source reversed, the pool comes out in forward first-use order. player_8026FC20
@@ -341,8 +341,8 @@ original wrote those callees in a different way, are still needed in a few place
    with its real body. Callers inline it in either direction. Drop the
    "file inline + out-of-line wrapper" and "static inline copy" workarounds as
    units are touched: isDown / isDeadState_80270A8C, follows_80240670, playerFlags_802413F0,
-   head_sway_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → fn_8023F264.
-   tu_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → isPlayerActive_8023F264.
+   head_sway_8021A570, tile_map_802F5040, tu_803944C8 setters, `isPlayerActive` → isPlayerActive_8023F264.
+   head_sway_8021A570, tile_map_802F5040, tu_803944C8 setters, `isPlayerActive` → isPlayerActive_8023F264.
    Header `inline` stays for real header inlines (JGeometry, accessors used across
    units whose copy is placed after a caller).
 4. **Never-inlined callees**: when the original calls a small same-unit function
@@ -377,7 +377,7 @@ original wrote those callees in a different way, are still needed in a few place
 
 ## Open items
 
-- tu_80427D2C (THP, C code in extern "C"): 4 functions and `.sdata2` drop under
+- thp_read_thread_80427D2C (THP, C code in extern "C"): 4 functions and `.sdata2` drop under
   deferred even with `auto_inline off`. Its progress notes already say the
   original order looks like `-inline off,deferred` with the wrappers placed
   after THPAudio. It probably needs its own reversal of the `extern "C"` blocks,

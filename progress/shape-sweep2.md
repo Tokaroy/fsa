@@ -13,7 +13,7 @@ before calls; plus the matching FIXMEs. Claimed units and tu_8022AD64 skipped.
 - singleton_801DAC6C fn_801DAE24 86.85, horse_race_table_80215A94 fn_8021606C 91.62 (const + the loop tests the member).
 Raised (FIXMEs updated): act_recovery_heart 61.51 -> 99.96, act_small_key fn_802C1970 85.34 -> 98.52,
 act_somaria_block 57.54 -> 96.79, act_unknown_swbm_8017A44C UnknownSWBM isBlocked_0x4C 72.66 -> 98.97,
-act_two_sword_motion 84.07 -> 92.08, tu_802E2074 init 86.53 -> 96.17 (resource type), stopwatch_801ED3DC
+act_two_sword_motion 84.07 -> 92.08, act_enemy_generator_2_802E2074 init 86.53 -> 96.17 (resource type), stopwatch_801ED3DC
 fn_801ED828 79.80 -> 90.12, enemy_base_801CDC8C fn_801CF144 61.74 -> 75.30, player_8023FBF0 fn_80240DCC 86.20 -> 92.26.
 
 SHARED-EDITS: const on EnemyBase.h fn_801CF0F4 / fn_801CF144, act/tu_801DE714.h fn_8020D2AC,

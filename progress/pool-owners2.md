@@ -34,7 +34,7 @@ gate --all-units / --base matching ok, gen_game --check ok, order_check: no unit
 - act_icicle, act_snowball, act_snow_wall, act_great_fairy_spfr: update's literals lead the pool ahead
   of the lowest function's: look for a plain helper update inlines.
 - Unwritten owners by ratio: act_sword_soldier fn_8014FD5C (330 instr, 4 fns), shadow_circle_80158624
-  fn_80158624 (326, 2), tu_803F0A54 fn_803F726C (889, 8).
+  fn_80158624 (326, 2), connect_screen_803F0A54 fn_803F726C (889, 8).
 
 ## SHARED-EDITS
 - include/game/cls_801EB8CC.h: fn_801EB00C const, + fn_801EB1F4 (const member); comments.

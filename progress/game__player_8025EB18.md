@@ -19,7 +19,7 @@ Next: fn_802604CC / updateCarryWalk_8026152C (literal order 0.5, 32), then fn_80
 
 ## Session 2026-11-05 round 10 (Opus 5.5, agent R)
 Baseline 8652 total; unit 40/59 -> 43/59 (honest total 8655, +3; the only drop against the main
-checkout's report, tu_804023D0 pulseAlpha_8040245C, comes from matching having moved past this branch).
+checkout's report, pane_ctrl_804023D0 pulseAlpha_8040245C, comes from matching having moved past this branch).
 100 %: fn_802632A8, fn_80263860, fn_8026441C.
 Structurally done: fn_8026022C 95.46, fn_80260C08 96.63 (scheduling+regalloc), updateCarryWalk_8026152C 99.17
 (regalloc), fn_80262254 99.64 (scheduling+regalloc). Close: fn_80261750 99.65 (1 lwz), fn_80262BAC

@@ -27,7 +27,7 @@
 // game units calling the function. "layer" is an actor layer
 // (ActorBase_804A5770::field_0x4). Not declared yet: the 2-unit tile
 // pattern writers writeTileRun_8029DB2C, writeFourTiles_8029DD50, writeTilePair_8029DEBC, fn_8029DF80,
-// writeTilePair_8029EC84 (act_door, tu_802D39B8),
+// writeTilePair_8029EC84 (act_door, game_view_802D39B8),
 // fn_802A20F0 (10 units; spreads fire over burnable tiles) and the 1-unit
 // ones; their argument types need their bodies read first.
 //
@@ -71,7 +71,7 @@ public:
     // `const TVec3f*` (here and below) is a guess: the asm can't tell it from
     // a reference or a non-const pointer.
     void writeTile_802A381C(const JGeometry::TVec3f* pos, s32 layer, u16 tile);
-    // 2 units (act_item_pedestal, tu_802D39B8). Writes a pair of tiles (tileA, then the cell
+    // 2 units (act_item_pedestal, game_view_802D39B8). Writes a pair of tiles (tileA, then the cell
     // 16 columns left, or 0x110 back at a screen edge, gets tileB) on layer + layerOffset and
     // marks the view cell.
     void writeTilePair_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB);
@@ -146,7 +146,7 @@ public:
     // or column. this unused.
     void writeFourTiles_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
     void writeTileRun_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
-    // 2 units (act_door, tu_802D39B8). The 2 x 2 block of tile codes a..d at
+    // 2 units (act_door, game_view_802D39B8). The 2 x 2 block of tile codes a..d at
     // cell (right neighbour and the row below as in writeTilePair_8029DEBC). this unused.
     void fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s32 d);
     // 1 unit (act_block). fn_802A3948 on gBgRewrite_8053AC98 with player 0;

@@ -77,4 +77,4 @@ HudMgr_804B1920 x2, GameOverScreen_804B17A0, GameRootSub04_801F856C::fn_80139C5C
 GameRoot 0x82 renamed mPlayerMask (bits 0-3 take part, 4-7 controller connected); 0x4C, 0x7E, 0x7F, 0x83 documented
 from their writers (names unproven, offsets kept). 0x08 / 0x0C typed cls_804AA8C8* / cls_804AA8B8* (GameState
 0x5C / 0x60 too; cls_804AA8B8 moved from tu_80301CD0.cpp into GameGlobals.h). lbl_8053AEE0 is extern in
-cls_804B19F0.h (tu_80441A1C's file static removed: the symbol is global and lives in tu_8043A0E8's .sbss).
+cls_804B19F0.h (gba_connect_error_window_80441A1C's file static removed: the symbol is global and lives in hud_mgr_8043A0E8's .sbss).

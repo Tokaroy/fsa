@@ -21,10 +21,10 @@
 // instantiates its pool (memPool_ at 0x804B21DC). Only that instantiation
 // matters: the function is never called and emits nothing.
 // The likely source is the game's audience class, built in
-// game/tu_80457DFC.cpp. It derives from JAUDopplerAudience<4> (vtable
+// game/audio_mgr_80457DFC.cpp. It derives from JAUDopplerAudience<4> (vtable
 // 0x804B2074, dtor fn_8045A338) and overrides slot 6 with fn_8045A3D8. In a
 // test, an inline member that calls JAUAudience_::isActive() reproduces the
-// instantiation. Replace this with that class once tu_80457DFC is
+// instantiation. Replace this with that class once audio_mgr_80457DFC is
 // decompiled, and check that the pool order still holds for units that
 // include more JAU headers.
 inline void FIXME_instantiateDopplerAudiblePool(JAUDopplerAudible<4>* audible) {

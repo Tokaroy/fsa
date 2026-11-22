@@ -26,5 +26,5 @@
 ## Shared edits
 - `include/game/act/act_bee_manager.h`: new header for `BeeManager_804AC810`.
 - `include/game/act/tu_801F9484.h`: include `game/act/act_bee_manager.h` in place of the stub `BeeManager_804AC810` definition.
-- `include/game/act/tu_803489A4.h`: typed fields `0x230..0x2A4` of `BeeFormation_804AC7B8` (proven from `tu_803489A4.s` `init`/`update`).
-- `config/G4SE01/gen_game.tsv`: removed generator rows for `act_bee_manager` and `tu_803489A4`.
+- `include/game/act/act_bee_formation_803489A4.h`: typed fields `0x230..0x2A4` of `BeeFormation_804AC7B8` (proven from `act_bee_formation_803489A4.s` `init`/`update`).
+- `config/G4SE01/gen_game.tsv`: removed generator rows for `act_bee_manager` and `act_bee_formation_803489A4`.

@@ -7,9 +7,9 @@
 struct J2DScreen;
 class PaneCtrl_804AF86C;
 
-// Vtable 0x804B1B60, defined in game/tu_80443B0C.cpp. Its
+// Vtable 0x804B1B60, defined in game/map_yagura_window_80443B0C.cpp. Its
 // constructor fn_80444B68 stores the vtable, makes a J2DScreen and PaneCtrl
-// panes; the map screen (MapScreen_804B1288, game/tu_80403D84.cpp) allocates it with
+// panes; the map screen (MapScreen_804B1288, game/map_screen_80403D84.cpp) allocates it with
 // __nw__(0x50) and keeps it in field_0x4.
 class MapYaguraWindow_804B1B60 {
 public:

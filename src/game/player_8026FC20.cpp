@@ -13,8 +13,8 @@
 #include "game/BoxTest.h"
 #include "game/VecEpsilon.h"
 #include "game/cls_804A71A8.h"
-#include "game/tu_803B8C74.h"
-#include "game/act/tu_803D9944.h"
+#include "game/save_data_803B8C74.h"
+#include "game/act/act_tingle_803D9944.h"
 #include "JSystem/JMath/JMath.h"
 
 // The current save row's byte 0x7E while the game root's field_0x7f is set, else 0x7F.

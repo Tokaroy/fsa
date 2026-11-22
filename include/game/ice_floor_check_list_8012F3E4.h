@@ -2,7 +2,7 @@
 #define GAME_ICE_FLOOR_CHECK_LIST_8012F3E4_H
 
 // Exports of game/ice_floor_check_list_8012F3E4.cpp. Called by act_ice_floor_check_npc_monitor_8012F8AC,
-// act_ice_floor_check_npc and tu_802D39B8.
+// act_ice_floor_check_npc and game_view_802D39B8.
 
 #include "game/ActorBase.h"
 

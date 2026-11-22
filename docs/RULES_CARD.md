@@ -184,7 +184,7 @@ Game code is compiled with deferred inlining, as the original was (docs/INLINING
   highest address at the top, the lowest at the bottom (MWCC emits them in
   reverse source order). Includes, types, file-scope data and `inline`
   helpers stay on top. `python3 tools/order_check.py <unit>` checks the
-  compiled order. (The THP unit tu_80427D2C keeps its own `-inline off,deferred`.)
+  compiled order. (The THP unit thp_read_thread_80427D2C keeps its own `-inline off,deferred`.)
 - **Plain functions**: MWCC sees the whole file before it generates code, so a
   caller inlines a small plain function of its file whichever side of it the
   callee sits. Write each function once, at its own address, with its real
@@ -215,7 +215,7 @@ Game code is compiled with deferred inlining, as the original was (docs/INLINING
   `.sdata2`, and data defined anywhere in the file is addressed off the
   section base (`...data.0`). An object the original addresses on its own
   (lis + lfs/lfsu per object), or a constant after the unit's literals,
-  belongs to another unit: fix the split (tu_80457C08 / tu_80457DFC volume
+  belongs to another unit: fix the split (tu_80457C08 / audio_mgr_80457DFC volume
   tables, act_vaati_boss's 90.0f / 1.7f).
 - A unit whose dtor the compiler writes implicitly: deferred writes an implicit
   destructor first; if the original has it elsewhere, declare and define it
@@ -299,7 +299,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 ## Known game-code shapes (reviewed; natural source)
 - Library JGeometry methods (e.g. the paired-single `TVec3f::normalize`) are ordinary calls in game code, not an exception: `cflags_game` searches `libs/sdk/include` before `include`, so game units already get the libs `JGeometry.h` -> `JGeometry/Vec.h` (the game-side `include/JSystem/JGeometry.h` is used only by JUTFader.o). An out-of-line copy of such an inline is a small free function calling the member (e.g. `fn_80233C08`); never write asm in game .cpp.
 - Literals before their first visible use: (1) file-scope `static const` aggregates (e.g. GXColor) are emitted before the
-  literal pool in declaration order (tu_802F5040, game_root_sub_24_8016A2B4); (2) a helper the original defined early and inlined into its
+  literal pool in declaration order (tile_map_802F5040, game_root_sub_24_8016A2B4); (2) a helper the original defined early and inlined into its
   callers creates the pool's first literals even though the linker dead-stripped its out-of-line copy: reconstruct it as a
   plain function with exactly the body the callers inline, with a comment saying so (game_root_sub_24_8016A2B4 getMapTexView: +16 near-misses
   flipped). Never invent a helper only to emit constants: its body must be proven by the inlining callers.
@@ -329,7 +329,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   (original symbol size, bytes equal to the original, indexed by the code, no more source-like form such as named constants
   or enums available). Workers still stop and report; the coordinator adds the line. Never split or reshape data to get
   under the tripwire.
-- Constant-bound `for` loops count with a plain `int`: an `s32` (signed long) counter makes CW emit a `cmpwi/bge` entry test the original lacks (tu_802F5040 fn_802FF798 87.7 → 99.4 %, tu_80301CD0 fn_80308D0C 93.8 → 100 %).
+- Constant-bound `for` loops count with a plain `int`: an `s32` (signed long) counter makes CW emit a `cmpwi/bge` entry test the original lacks (tile_map_802F5040 fn_802FF798 87.7 → 99.4 %, tu_80301CD0 fn_80308D0C 93.8 → 100 %).
 - Unfused `fmuls, fmuls, fadds` squared sums: `square(a) + square(b)` (game/GameMath.h).
 - A two-value test compiled as `subi; clrlwi; cmplwi 1` is `(x == 2 || x == 3)` with literal constants; its negation is `!(x == 2 || x == 3)` (act_eyeball_switch init). `x != 2 && x != 3` and `x < 2 || x > 3` don't fold.
 - A position difference that the original routes through an extra stack TVec3f (xy psq_st, z reloaded, then a copy) is `a - b` with JGeometry's `TVec3::operator-` (pikmin2 form), e.g. `from.set(mPos - vel48)` (act_thief_80206B30 vfunc_0x58). Don't add a redundant named copy instead.
@@ -470,16 +470,16 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   random `gGameRoot_8053AAF8->mRandom.get_ufloat_1()` (act_shadow_link_2_801C6A4C.cpp:75),
   `(s32)(k * get_ufloat_1())` (act_sand_crab.cpp:49); resources
   `gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name)` (vtable slot 0x18,
-  tu_803536C4.cpp:45).
+  act_tingle_time_up_803536C4.cpp:45).
 - J2D pane lookup through vtable slot 0x3C with a two-word tag (r5/r6):
-  `mScreen->search(0x7072737374727431ull /* "prsstrt1" */)` (tu_803DA6B4.cpp:45).
+  `mScreen->search(0x7072737374727431ull /* "prsstrt1" */)` (press_start_overlay_803DA6B4.cpp:45).
 - A compare materialised as a byte and tested (`subfic rX, rX, N; cntlzw; extrwi. rX, rX, 8, 19; bne`):
   an inline returning `u8` with `return x == N ? true : false;`, called in the condition
   (`isGameMode(mode)` in game/GameMode.h).
   A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. player_80285E58 fn_80286688
   88.7 -> 100 % and the copy inlined in updateState_802870C8; player_8026FC20 isGameMode(7) (fn_8027057C). Shape
   sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and shadow_circle_80158624 fn_80159330 (mode 0xC, 100 %; read
-  gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 drawPlayerPanel_802FB69C
+  gGameRoot_8053AAF8 directly, a `root` local moves the root register), tile_map_802F5040 drawPlayerPanel_802FB69C
   (both mode-11 tests). A file's own byte helper takes the same form: player_8025EB18 isField0xd64One
   `p.field_0xd64 == 1 ? true : false` (fn_8025EE48, fn_8025F2CC to 100 %). It also holds for a bool
   ARGUMENT of an inlined helper (`cntlzw; extrwi.` for `== 0`, `neg; or; srwi.` for `!= 0`):
@@ -539,7 +539,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   act_recovery_heart 61.5 -> 99.96, act_small_key fn_802C1970 85.3 -> 98.5, act_somaria_block 57.5 ->
   96.8, act_unknown_swbm_8017A44C 72.7 -> 99.0, act_two_sword_motion 84.1 -> 92.1 (s32 code).
 - Resource type codes `u32 type = 'M   '; type += ((s[0] - ' ') << 16) + ((s[1] - ' ') << 8) + (s[2] -
-  ' ');` (GameView): also tu_802E2074 EnemyGenerator2_804A9BC8 init ('B   ' set before the sprintf, the add after it;
+  ' ');` (GameView): also act_enemy_generator_2_802E2074 EnemyGenerator2_804A9BC8 init ('B   ' set before the sprintf, the add after it;
   86.5 -> 96.2).
 - Did not generalise (shape sweep 2): `return a() || b();` for a bool local — Player fn_80240DCC (the
   target sets `result = true` first, li r31 1) 92.3 -> 81.2, EnemyBase fn_801D08B4 99.7 -> 91.1; keep

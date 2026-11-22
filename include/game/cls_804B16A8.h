@@ -6,9 +6,9 @@
 class J2DScreen;
 class PaneCtrl_804AF86C;
 
-// Vtable 0x804B16A8, constructor fn_804372C4 (game/tu_80434370.cpp, owner
-// unit); 0x70 bytes (__nw__(0x70) in tu_803F0A54's and
-// tu_803E1668's constructors). A J2DScreen (0x4) with a state machine run
+// Vtable 0x804B16A8, constructor fn_804372C4 (game/rule_screen_80434370.cpp, owner
+// unit); 0x70 bytes (__nw__(0x70) in connect_screen_803F0A54's and
+// adv_entry_screen_803E1668's constructors). A J2DScreen (0x4) with a state machine run
 // through the pointer-to-member table lbl_804B1690 indexed by the byte 0x6B.
 class RuleScreen_804B16A8 {
 public:

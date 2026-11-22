@@ -5,7 +5,7 @@
 #include "JSystem/JAudio/Interface/JAISound.h"
 
 // A sound object with its own startSound (vtable 0x804B20F8, defined in
-// game/tu_8045B010.cpp). Built on ActorSoundObj_804578F4: the constructor (0x8045B46C) calls
+// game/player_sound_obj_8045B010.cpp). Built on ActorSoundObj_804578F4: the constructor (0x8045B46C) calls
 // the base one and then stores this vtable at 0x8 and vtable + 0x24 at
 // 0x18. Every slot but startSound (0x14) is inherited; the destructor
 // (__dt__23PlayerSoundObj_804B20F8Fv, weak, kept by game/player_8023FBF0.cpp) stores the
@@ -26,8 +26,8 @@ public:
 
 // Plays entry `index` of lbl_8052DEE0 on `obj`, then writes `port9` to port
 // 9 of the started sound's track when it is non-zero. Called by
-// tu_803944C8, tu_803A8DFC, tu_803B7DCC, tu_803E1668, tu_803F0A54 and
-// tu_80403D84 (not written yet).
+// tu_803944C8, result_screen_803A8DFC, tu_803B7DCC, adv_entry_screen_803E1668, connect_screen_803F0A54 and
+// map_screen_80403D84 (not written yet).
 void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9);
 
 // Sound IDs indexed by `index` above; defined in game/tu_8045B6F0.cpp.

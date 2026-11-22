@@ -58,7 +58,7 @@ Method:
 1. Every game unit was built, and `objdiff-cli` was run against the target.
    The inventory takes every non-weak function that exists in ours but not in
    the target. That is 75 units and 168 helpers. Excluded: JGeometry
-   template instances (`TVec3<f>` ctor/`set`) and tu_8042E964's
+   template instances (`TVec3<f>` ctor/`set`) and warning_window_8042E964's
    `StageSelectWindow_804B1600` ctor. 82 of the helpers have a comment citing
    pool/`.sdata2`. The rest are "dead-stripped, X inlines it" helpers.
 2. None of the 168 is called out of line in ours (no `R_PPC_REL24` to it).
@@ -88,7 +88,7 @@ Figures:
 - If all 168 become inline, **321 functions lose 100 %**. The status quo is
   worth 321 functions.
 - 39 helpers change nothing on their own. Dropping all 39 still costs 37,
-  because some are needed jointly (tu_803A8DFC's three row-alpha setters:
+  because some are needed jointly (result_screen_803A8DFC's three row-alpha setters:
   each 0 alone, 19 together; escort_base_801213EC's life-meter spawners: 12).
 
 | unit | helper | body (start) | lines | sites | alone | unit | evidence beyond pool | R1 | R2 | R3 | review |
@@ -129,7 +129,7 @@ Figures:
 | act_icicle | fall | `{ field_0x23c += 0.1f; mPos.y = mSpawnPos.y + 0.5f * (9.8f * square(fi` | 4 | 1 | 5 | 5 | pool only | - | - | - |  |
 | act_maiden_demo | moveToGoal | `{ field_0x248 += 0.04f; moveToward_801CD950(&field_0x24c, 2.0f, 0.05f); s16 an` | 15 | 1 | 2 | 4 | pool only | - | - | - |  |
 | act_maiden_demo | shrinkCrystal | `{ moveToward_801CD950(&field_0x250, 0.0f, -0.02f); }` | 3 | 1 | 4 | 4 | one statement | - | y | - |  |
-| act_old_man | updateFacing | `{ if (field_0x24c != 0) { field_0x24c--; return; } field_0x24c = 20; J` | 25 | 3 | 3 | 3 | 3 call sites; same name in tu_8034AA40, act_special_conversation_npc | y | y | y |  |
+| act_old_man | updateFacing | `{ if (field_0x24c != 0) { field_0x24c--; return; } field_0x24c = 20; J` | 25 | 3 | 3 | 3 | 3 call sites; same name in act_cucco_herding_npc_8034AA40, act_special_conversation_npc | y | y | y |  |
 | act_princess_zelda | stepSpeed | `{ if (dist >= 32.0f) { moveToward_801CD950(&field_0x334, 1.1f, 0.02f); } else ` | 7 | 1 | 3 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | approachPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 19 | 1 | 4 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | followPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 25 | 1 | 4 | 5 | pool only | - | - | - |  |
@@ -179,7 +179,7 @@ Figures:
 | act_tingle_first | selectNearestPlayer | `{ s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30(); s32 bestPlayer = 0; f` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_vaati_demo | updateBobbing | `{ static s16 lbl_8053AA88 = 0; mPos.z = 4.0f * JMath::sincosTable_.sin` | 11 | 2 | 1 | 1 | 2 call sites | y | y | y |  |
 | act_vaati_demo | updateDescent | `{ if (mSpawnPos.y - mPos.y <= 24.0f) { moveToward_801CD950(&field_0x3c.y, 0.4f` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
-| act_vaati_time_up | steer | `{ if (field_0x2c4 <= 0 \|\| (field_0x2c0 <= 0 && mPos.x >= field_0x290` | 12 | 1 | 1 | 1 | same name in tu_80334318 | - | - | y |  |
+| act_vaati_time_up | steer | `{ if (field_0x2c4 <= 0 \|\| (field_0x2c0 <= 0 && mPos.x >= field_0x290` | 12 | 1 | 1 | 1 | same name in act_iron_ball_homing_80334318 | - | - | y |  |
 | act_vaati_time_up | pickTarget | `{ if (field_0x2c0 <= 0) { field_0x290 = mViewBox.i.x - 192.0f; field_0` | 10 | 1 | 1 | 1 | same name in act_vaati_boss | - | - | y |  |
 | act_warp | updateSandHole | `{ for (s32 i = 0; i < 4; i++) { if (fn_802373EC(i) == 1 && fn_8023A51C` | 18 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_warp_cannon | findPlayer | `{ JGeometry::TBox2f probe = mBox; f32 dy = mPos.y - mPos.z; probe.i.x ` | 15 | 1 | 0 | 2 | pool only | - | - | - |  |
@@ -227,40 +227,40 @@ Figures:
 | act_big_moldorm_tail_8018EB94 | setHeading | `{ s16 angle = (s32)(4000.0f * (f32)field_0x98); field_0x27c.x = field_` | 13 | 1 | 0 | 0 | pool only | - | - | - |  |
 | tu_801CB270 | tileCenter | `{ return 8.0f + (u32)((s32)v & ~0xF); }` | 3 | 4 | 5 | 5 | 4 call sites; one statement; same name in player_80285E58 | y | y | y |  |
 | player_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { moveByStick_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
-| tu_802E9428 | updateCamera | `{ JGeometry::TVec2f pos(field_0x250.x, field_0x250.y); JGeometry::TVec` | 20 | 4 | 0 | 1 | 4 call sites | y | y | y |  |
-| tu_802E9428 | stepZoom | `{ if (field_0x270 != field_0x274) { field_0x270 += field_0x278; if (fi` | 12 | 1 | 1 | 1 | pool only | - | - | - |  |
-| tu_8030C058 | setScreenRectViewport | `{ u32 w = field_0x144.f.x - field_0x144.i.x; u32 h = field_0x144.f.y -` | 7 | 1 | 5 | 5 | pool only | - | - | - |  |
-| tu_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; getNearestPlayerDir_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
-| tu_8034AA40 | markRandomCucco | `{ f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1(); Cucco_804AB8C` | 8 | 1 | 3 | 3 | pool only | - | - | - |  |
-| tu_80362634 | faceOwl | `{ if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) { field_0x23c = 0; } ` | 17 | 2 | 5 | 12 | 2 call sites | y | y | y |  |
-| tu_80362634 | chaseOwl | `{ if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) { field_0x24c = i; ` | 25 | 2 | 7 | 12 | 2 call sites | y | y | y |  |
-| tu_80362634 | isBlocked | `{ if (mPos.x < 2600.0f \|\| mPos.x > 3016.0f) { return true; } if (mPo` | 23 | 2 | 10 | 12 | 2 call sites | y | y | y |  |
-| tu_80362634 | spawnRoomEmitters | `{ // the centre of the room (512 x 384) the actor is in JGeometry::TVe` | 8 | 1 | 12 | 12 | pool only | - | - | - |  |
-| tu_8036FB60 | guidePlayer_80370764 | `{ JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *g` | 6 | 1 | 6 | 7 | pool only | - | - | - |  |
-| tu_8036FB60 | tickPlayer_80371284 | `{ for (s32 i = 0; i < 4; i++) { if (field_0x374[i] != 0) { field_0x374` | 25 | 2 | 7 | 7 | 2 call sites | y | y | y |  |
-| tu_80376FA0 | rewriteTiles | `{ f32 x = mPos.x; x -= 24.0f; f32 y = mPos.y; f32 z = mPos.z; // The i` | 22 | 1 | 1 | 1 | pool only | - | - | - |  |
-| tu_80376FA0 | touchesPlayer | `{ s32 layer = field_0x4; s32 playerLayer = getPlayerLayer_8023DE58(pla` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
-| tu_80376FA0 | setBoxes | `{ mBox.i.x = -31.5f; mBox.i.y = -31.5f; mBox.f.x = 31.5f; mBox.f.y = 3` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
-| tu_80376FA0 | spawnBreakEmitters | `{ if (mEmitter230 == NULL) { mEmitter230 = spawnEmitter_8013CC50(field` | 22 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_unknown_endm_802E9428 | updateCamera | `{ JGeometry::TVec2f pos(field_0x250.x, field_0x250.y); JGeometry::TVec` | 20 | 4 | 0 | 1 | 4 call sites | y | y | y |  |
+| act_unknown_endm_802E9428 | stepZoom | `{ if (field_0x270 != field_0x274) { field_0x270 += field_0x278; if (fi` | 12 | 1 | 1 | 1 | pool only | - | - | - |  |
+| camera_8030C058 | setScreenRectViewport | `{ u32 w = field_0x144.f.x - field_0x144.i.x; u32 h = field_0x144.f.y -` | 7 | 1 | 5 | 5 | pool only | - | - | - |  |
+| act_cucco_herding_npc_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; getNearestPlayerDir_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
+| act_cucco_herding_npc_8034AA40 | markRandomCucco | `{ f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1(); Cucco_804AB8C` | 8 | 1 | 3 | 3 | pool only | - | - | - |  |
+| act_other_characters_ending_80362634 | faceOwl | `{ if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) { field_0x23c = 0; } ` | 17 | 2 | 5 | 12 | 2 call sites | y | y | y |  |
+| act_other_characters_ending_80362634 | chaseOwl | `{ if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) { field_0x24c = i; ` | 25 | 2 | 7 | 12 | 2 call sites | y | y | y |  |
+| act_other_characters_ending_80362634 | isBlocked | `{ if (mPos.x < 2600.0f \|\| mPos.x > 3016.0f) { return true; } if (mPo` | 23 | 2 | 10 | 12 | 2 call sites | y | y | y |  |
+| act_other_characters_ending_80362634 | spawnRoomEmitters | `{ // the centre of the room (512 x 384) the actor is in JGeometry::TVe` | 8 | 1 | 12 | 12 | pool only | - | - | - |  |
+| act_four_girls_control_8036FB60 | guidePlayer_80370764 | `{ JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *g` | 6 | 1 | 6 | 7 | pool only | - | - | - |  |
+| act_four_girls_control_8036FB60 | tickPlayer_80371284 | `{ for (s32 i = 0; i < 4; i++) { if (field_0x374[i] != 0) { field_0x374` | 25 | 2 | 7 | 7 | 2 call sites | y | y | y |  |
+| act_rock_dropped_into_the_river_11_80376FA0 | rewriteTiles | `{ f32 x = mPos.x; x -= 24.0f; f32 y = mPos.y; f32 z = mPos.z; // The i` | 22 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_rock_dropped_into_the_river_11_80376FA0 | touchesPlayer | `{ s32 layer = field_0x4; s32 playerLayer = getPlayerLayer_8023DE58(pla` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_rock_dropped_into_the_river_11_80376FA0 | setBoxes | `{ mBox.i.x = -31.5f; mBox.i.y = -31.5f; mBox.f.x = 31.5f; mBox.f.y = 3` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_rock_dropped_into_the_river_11_80376FA0 | spawnBreakEmitters | `{ if (mEmitter230 == NULL) { mEmitter230 = spawnEmitter_8013CC50(field` | 22 | 1 | 1 | 1 | pool only | - | - | - |  |
 | tu_803944C8 | drawTextPicture | `{ self->field_0x30[self->field_0x68[i]->field_0x8]->draw(px, py, 29.0f` | 3 | 1 | 7 | 7 | one statement | - | y | - | accepted |
 | tu_803A60E4 | moveCursorToRow | `{ for (s32 i = 0; i < 6; i++) { field_0xc[i]->moveFromCentre_80402E08(` | 9 | 2 | 2 | 2 | 2 call sites | y | y | y |  |
-| tu_803A8DFC | setHeaderAlpha | `{ if (field_0x450 < 2) { for (int i = 0; i < 13; i++) { field_0x10[fie` | 7 | 3 | 0 | 19 | 3 call sites | y | y | y |  |
-| tu_803A8DFC | setScoreRowAlpha | `{ if (field_0x450 < 2) { for (int j = 0; j < 3; j++) { field_0x10[fiel` | 7 | 3 | 0 | 19 | 3 call sites | y | y | y |  |
-| tu_803A8DFC | setRankRowAlpha | `{ if (field_0x450 < 2) { for (int j = 0; j < 2; j++) { field_0x10[fiel` | 7 | 5 | 0 | 19 | 5 call sites | y | y | y |  |
+| result_screen_803A8DFC | setHeaderAlpha | `{ if (field_0x450 < 2) { for (int i = 0; i < 13; i++) { field_0x10[fie` | 7 | 3 | 0 | 19 | 3 call sites | y | y | y |  |
+| result_screen_803A8DFC | setScoreRowAlpha | `{ if (field_0x450 < 2) { for (int j = 0; j < 3; j++) { field_0x10[fiel` | 7 | 3 | 0 | 19 | 3 call sites | y | y | y |  |
+| result_screen_803A8DFC | setRankRowAlpha | `{ if (field_0x450 < 2) { for (int j = 0; j < 2; j++) { field_0x10[fiel` | 7 | 5 | 0 | 19 | 5 call sites | y | y | y |  |
 | tu_803B7DCC | setFrameBufferOrtho | `{ JGeometry::TBox2f box(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFb` | 5 | 1 | 2 | 2 | pool only | - | - | - |  |
-| tu_803BC6F0 | getProgressMsg | `{ int cleared = 0; for (int stage = 0; stage < 8; stage++) { if (fn_80` | 11 | 3 | 0 | 24 | 3 call sites | y | y | y |  |
-| tu_803BC6F0 | setFadeStep | `{ f32 t = (f32)(self->field_0xde * self->field_0xde) / (f32)(frames * ` | 5 | 2 | 24 | 24 | 2 call sites | y | y | y |  |
-| tu_803E1668 | drawFade | `{ if (field_0x26e != 0) { switch (field_0x26e) { case 1: if (field_0x2` | 30 | 1 | 11 | 11 | same name in tu_803F0A54 | - | - | y |  |
-| tu_803E1668 | enterState15 | `{ field_0x1d8 = field_0x1d4; field_0x1d4 = 15; if (field_0x1bc == 2 &&` | 21 | 2 | 11 | 11 | 2 call sites | y | y | y |  |
-| tu_803F0A54 | drawFade | `{ if (field_0x25e != 0) { switch (field_0x25e) { case 1: if (field_0x2` | 26 | 1 | 11 | 11 | same name in tu_803E1668 | - | - | y |  |
-| tu_803F0A54 | enterState13 | `{ field_0x1c8 = field_0x1c4; field_0x1c4 = 13; field_0x350 = 6; lbl_80` | 13 | 4 | 11 | 11 | 4 call sites | y | y | y |  |
-| tu_80403D84 | hideSubStagePanes | `{ if (field_0x65e == 1) { field_0x120[0]->field_0x22 = 0; field_0x120[` | 8 | 13 | 0 | 20 | 13 call sites | y | y | y |  |
-| tu_80403D84 | hideStagePanes | `{ switch (stage) { case 1: field_0xc->search('P21')->hide(); field_0xc` | 34 | 4 | 0 | 20 | 4 call sites | y | y | y |  |
-| tu_80403D84 | slidePane | `{ f32 t = (f32)(frame * frame) / (f32)(frames * frames); field_0x2b4->` | 5 | 2 | 20 | 20 | 2 call sites | y | y | y |  |
-| tu_8042165C | updateGaugeBar | `{ if (val >= 0x60) { field_0x4->search(lbl_8048E300[player][bar])->res` | 9 | 1 | 1 | 2 | pool only | - | - | - |  |
-| tu_8042165C | calcHudPos | `{ f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth()); ` | 6 | 2 | 2 | 2 | 2 call sites | y | y | y |  |
-| tu_8042E964 | scaleFrames | `{ f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x1` | 21 | 1 | 2 | 2 | pool only | - | - | - |  |
-| tu_80443B0C | resetCursorTimer | `{ field_0x48 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(` | 3 | 3 | 5 | 5 | 3 call sites; one statement | y | y | y |  |
+| file_select_803BC6F0 | getProgressMsg | `{ int cleared = 0; for (int stage = 0; stage < 8; stage++) { if (fn_80` | 11 | 3 | 0 | 24 | 3 call sites | y | y | y |  |
+| file_select_803BC6F0 | setFadeStep | `{ f32 t = (f32)(self->field_0xde * self->field_0xde) / (f32)(frames * ` | 5 | 2 | 24 | 24 | 2 call sites | y | y | y |  |
+| adv_entry_screen_803E1668 | drawFade | `{ if (field_0x26e != 0) { switch (field_0x26e) { case 1: if (field_0x2` | 30 | 1 | 11 | 11 | same name in connect_screen_803F0A54 | - | - | y |  |
+| adv_entry_screen_803E1668 | enterState15 | `{ field_0x1d8 = field_0x1d4; field_0x1d4 = 15; if (field_0x1bc == 2 &&` | 21 | 2 | 11 | 11 | 2 call sites | y | y | y |  |
+| connect_screen_803F0A54 | drawFade | `{ if (field_0x25e != 0) { switch (field_0x25e) { case 1: if (field_0x2` | 26 | 1 | 11 | 11 | same name in adv_entry_screen_803E1668 | - | - | y |  |
+| connect_screen_803F0A54 | enterState13 | `{ field_0x1c8 = field_0x1c4; field_0x1c4 = 13; field_0x350 = 6; lbl_80` | 13 | 4 | 11 | 11 | 4 call sites | y | y | y |  |
+| map_screen_80403D84 | hideSubStagePanes | `{ if (field_0x65e == 1) { field_0x120[0]->field_0x22 = 0; field_0x120[` | 8 | 13 | 0 | 20 | 13 call sites | y | y | y |  |
+| map_screen_80403D84 | hideStagePanes | `{ switch (stage) { case 1: field_0xc->search('P21')->hide(); field_0xc` | 34 | 4 | 0 | 20 | 4 call sites | y | y | y |  |
+| map_screen_80403D84 | slidePane | `{ f32 t = (f32)(frame * frame) / (f32)(frames * frames); field_0x2b4->` | 5 | 2 | 20 | 20 | 2 call sites | y | y | y |  |
+| battle_hud_8042165C | updateGaugeBar | `{ if (val >= 0x60) { field_0x4->search(lbl_8048E300[player][bar])->res` | 9 | 1 | 1 | 2 | pool only | - | - | - |  |
+| battle_hud_8042165C | calcHudPos | `{ f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth()); ` | 6 | 2 | 2 | 2 | 2 call sites | y | y | y |  |
+| warning_window_8042E964 | scaleFrames | `{ f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x1` | 21 | 1 | 2 | 2 | pool only | - | - | - |  |
+| map_yagura_window_80443B0C | resetCursorTimer | `{ field_0x48 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(` | 3 | 3 | 5 | 5 | 3 call sites; one statement | y | y | y |  |
 
 ## 3. Candidate rules
 
@@ -402,28 +402,28 @@ Applied on branch pool-r2 (from grind2 524d2fd3f):
 | game_root_sub_24_8016A2B4 | getMapTexView | `pool_8053D938` | 12 sites |
 | act_big_poe_2_8018A8D8 | angleOf | `pool_8053E1B0` | one statement |
 | tu_801CB270 | tileCenter | `pool_8053EF98` | 4 sites; one statement |
-| tu_802E9428 | updateCamera | `pool_805412F8` | 4 sites |
-| tu_8034AA40 | updateFacing | `pool_80542558` | 2 sites |
-| tu_80362634 | isBlocked | `pool_80542B20` | 2 sites |
-| tu_80362634 | chaseOwl | `pool_80542B4C` | 2 sites |
-| tu_80362634 | faceOwl | `pool_80542B58` | 2 sites |
-| tu_8036FB60 | tickPlayer_80371284 | `pool_80542DD8` | 2 sites |
+| act_unknown_endm_802E9428 | updateCamera | `pool_805412F8` | 4 sites |
+| act_cucco_herding_npc_8034AA40 | updateFacing | `pool_80542558` | 2 sites |
+| act_other_characters_ending_80362634 | isBlocked | `pool_80542B20` | 2 sites |
+| act_other_characters_ending_80362634 | chaseOwl | `pool_80542B4C` | 2 sites |
+| act_other_characters_ending_80362634 | faceOwl | `pool_80542B58` | 2 sites |
+| act_four_girls_control_8036FB60 | tickPlayer_80371284 | `pool_80542DD8` | 2 sites |
 | tu_803944C8 | drawTextPicture | `pool_805431D8` | one statement |
 | tu_803A60E4 | moveCursorToRow | `pool_80543370` | 2 sites |
-| tu_803A8DFC | setHeaderAlpha | `inl_803AA8F8_1` | 3 sites |
-| tu_803A8DFC | setScoreRowAlpha | `inl_803AA8F8_2` | 3 sites |
-| tu_803A8DFC | setRankRowAlpha | `pool_805433B8` | 5 sites |
-| tu_803BC6F0 | getProgressMsg | `inl_803CE4CC` | 3 sites |
-| tu_803BC6F0 | setFadeStep | `pool_80543458` | 2 sites |
-| tu_803E1668 | enterState15 | `pool_80543680` | 2 sites |
-| tu_803F0A54 | enterState13 | `pool_80543748` | 4 sites |
-| tu_80403D84 | hideStagePanes | `inl_80404D70` | 4 sites |
-| tu_80403D84 | hideSubStagePanes | `inl_80405B10` | 13 sites |
-| tu_80403D84 | slidePane | `pool_80543898` | 2 sites |
-| tu_8042165C | calcHudPos | `pool_80543A58` | 2 sites |
-| tu_80443B0C | resetCursorTimer | `pool_80543D70` | 3 sites; one statement |
+| result_screen_803A8DFC | setHeaderAlpha | `inl_803AA8F8_1` | 3 sites |
+| result_screen_803A8DFC | setScoreRowAlpha | `inl_803AA8F8_2` | 3 sites |
+| result_screen_803A8DFC | setRankRowAlpha | `pool_805433B8` | 5 sites |
+| file_select_803BC6F0 | getProgressMsg | `inl_803CE4CC` | 3 sites |
+| file_select_803BC6F0 | setFadeStep | `pool_80543458` | 2 sites |
+| adv_entry_screen_803E1668 | enterState15 | `pool_80543680` | 2 sites |
+| connect_screen_803F0A54 | enterState13 | `pool_80543748` | 4 sites |
+| map_screen_80403D84 | hideStagePanes | `inl_80404D70` | 4 sites |
+| map_screen_80403D84 | hideSubStagePanes | `inl_80405B10` | 13 sites |
+| map_screen_80403D84 | slidePane | `pool_80543898` | 2 sites |
+| battle_hud_8042165C | calcHudPos | `pool_80543A58` | 2 sites |
+| map_yagura_window_80443B0C | resetCursorTimer | `pool_80543D70` | 3 sites; one statement |
 
 ### Tagged (R2 fails)
 
 99 helpers in 54 units (count in brackets when more than one); the per-helper list
-with the functions each holds is in docs/CRACK_PASS.md: act_block, act_bombchu, act_cannon (4), act_fairy_invincible, act_fish, act_force_gem_winged, act_four_person_pull_switch, act_four_sword_demo (5), act_gambling_shop, act_great_fairy_spfr (3), act_ice_melted_by_four_players, act_ice_wall (3), act_icicle, act_maiden_demo, act_princess_zelda (3), act_princess_zelda_demo (4), act_rainbow_bridge, act_room_transfer_lift, act_score (2), act_seesaw_lift, act_shadow_link_demo (2), act_shovel_old_timer, act_small_key (2), act_snow_wall (2), act_snowball (5), act_strange_block, act_tingle_first, act_vaati_demo, act_vaati_time_up (2), act_warp, act_warp_cannon (8), act_zora_escort (3), act_zora_escort_goal (2), act_whack_a_mole_shop_8010089C, act_crystal_cutscene_80113788 (5), tu_80118384, act_after_goal_opening_8011CEC8 (2), escort_base_801213EC (2), act_escorted_woman_arrival_point_80125B58 (2), act_navi_after_crystal_cutscene_8013394C, tu_8015F454, act_big_moldorm_tail_8018EB94, player_8027E5BC, tu_802E9428, tu_8030C058, tu_8034AA40, tu_80362634, tu_8036FB60, tu_80376FA0 (4), tu_803B7DCC, tu_803E1668, tu_803F0A54, tu_8042165C, tu_8042E964.
+with the functions each holds is in docs/CRACK_PASS.md: act_block, act_bombchu, act_cannon (4), act_fairy_invincible, act_fish, act_force_gem_winged, act_four_person_pull_switch, act_four_sword_demo (5), act_gambling_shop, act_great_fairy_spfr (3), act_ice_melted_by_four_players, act_ice_wall (3), act_icicle, act_maiden_demo, act_princess_zelda (3), act_princess_zelda_demo (4), act_rainbow_bridge, act_room_transfer_lift, act_score (2), act_seesaw_lift, act_shadow_link_demo (2), act_shovel_old_timer, act_small_key (2), act_snow_wall (2), act_snowball (5), act_strange_block, act_tingle_first, act_vaati_demo, act_vaati_time_up (2), act_warp, act_warp_cannon (8), act_zora_escort (3), act_zora_escort_goal (2), act_whack_a_mole_shop_8010089C, act_crystal_cutscene_80113788 (5), tu_80118384, act_after_goal_opening_8011CEC8 (2), escort_base_801213EC (2), act_escorted_woman_arrival_point_80125B58 (2), act_navi_after_crystal_cutscene_8013394C, tu_8015F454, act_big_moldorm_tail_8018EB94, player_8027E5BC, act_unknown_endm_802E9428, camera_8030C058, act_cucco_herding_npc_8034AA40, act_other_characters_ending_80362634, act_four_girls_control_8036FB60, act_rock_dropped_into_the_river_11_80376FA0 (4), tu_803B7DCC, adv_entry_screen_803E1668, connect_screen_803F0A54, battle_hud_8042165C, warning_window_8042E964.

@@ -10,7 +10,7 @@
 #include <math.h>
 #include "game/EmitterDelete.h"
 #include "game/act/act_fairy.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 
 // 0x80161638.
 Fairy_804A03B8::~Fairy_804A03B8() {
@@ -101,7 +101,7 @@ void Fairy_804A03B8::init() {
     mEmitter294 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.0f);
     if (field_0x230 == 0 || field_0x230 == 5) {
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            // FAKEMATCH(crack-pass): row view (tu_803B8C74.h SaveFileRow_CrackPass).
+            // FAKEMATCH(crack-pass): row view (save_data_803B8C74.h SaveFileRow_CrackPass).
             SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
             if ((row.field_0x87 & 1) == 0) {
                 row.field_0x87 |= 1;
@@ -120,7 +120,7 @@ void Fairy_804A03B8::update() {
         }
         field_0x268 = 1;
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            // FAKEMATCH(crack-pass): row view (tu_803B8C74.h SaveFileRow_CrackPass).
+            // FAKEMATCH(crack-pass): row view (save_data_803B8C74.h SaveFileRow_CrackPass).
             SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
             if ((row.field_0x87 & 1) == 0) {
                 row.field_0x87 |= 1;

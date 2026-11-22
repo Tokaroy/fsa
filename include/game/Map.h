@@ -3,7 +3,7 @@
 
 // The stage map and its collision, from three units:
 //
-// * game/tu_802F5040.cpp: TileMap_804AA858, the object at gGameRoot2_8053AB10->0x20
+// * game/tile_map_802F5040.cpp: TileMap_804AA858, the object at gGameRoot2_8053AB10->0x20
 //   (124 consumer units). It holds the screen's tile layers (u16 tile codes
 //   on a 32 x 32 grid of 16-unit cells, getTile_802F9908 / setTile_802F9974) and
 //   draws the "SOB " sprites (drawSobSprite_802F86CC, drawTimgImage_802F745C).
@@ -45,7 +45,7 @@ namespace JUtility {
 struct TColor;
 }
 
-// game/tu_80432638.cpp (owner unit, not written yet). Named after its vtable,
+// game/gba_window_80432638.cpp (owner unit, not written yet). Named after its vtable,
 // lbl_804B1668 (stored by its constructor, 0x8043395C); 0xB0 bytes
 // (TileMap_804AA858's constructor allocates it). Only what TileMap_804AA858 uses.
 class GbaWindow_804B1668 {
@@ -334,20 +334,20 @@ public:
     u8 addFadeSprite_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
                      SpriteParams_801F5AE0* params);
     // 5 units (act_shutter, act_red_blue_switch, act_spike_floor_check,
-    // tu_802D39B8, bg_rewrite_8029D898) plus BgRewrite's tile animation. Decodes
+    // game_view_802D39B8, bg_rewrite_8029D898) plus BgRewrite's tile animation. Decodes
     // the 'SCH ' resource `res` (JKRDecomp::checkCompressed / decode, size
     // from getResSize when `size` is 0) and rewrites the 4-bit tile data
     // at this + 4 + slot * 4 + dstOffset from res + srcOffset (0x802FA160).
     // Callers pass (res, 0 / 0xC0 / 0x180, 0, 0x40, 0xC0).
     void loadTileImages_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
     // 0x802F99DC: loads the u16 tile grid of `layer` (little-endian in res)
-    // at byte dstOffset; tu_802D39B8 passes (res, 0, layer, 0, 0).
+    // at byte dstOffset; game_view_802D39B8 passes (res, 0, layer, 0, 0).
     void fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstOffset, u32 size);
     // 0x802F9BE8: loads the u16 grid mTileDefs_0x24 the same way, from byte
-    // `start` on (tu_802D39B8).
+    // `start` on (game_view_802D39B8).
     void fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size);
     // 0x802F9DA8: loadSpritePalette_802F93F4 for the sprite palettes mTilePalettesRaw_0xc / mTilePalettes_0x18
-    // of slot 0-2 (tu_802D39B8).
+    // of slot 0-2 (game_view_802D39B8).
     void fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
     // 0x802F53F4. tu_80301CD0 (0x803051A0, 0x80305DEC). Keeps the record of
     // player `slot` in field_0x11c[slot] and hands it to fn_803068D0.
@@ -366,20 +366,20 @@ public:
     // 1.0f, -2.0f).
     void startHeightGridEffect_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir, f32 scaleX,
                      f32 scaleY);
-    // 0x802F9714 (game/tu_802F5040.cpp): the same arguments as loadTileImages_802FA160
+    // 0x802F9714 (game/tile_map_802F5040.cpp): the same arguments as loadTileImages_802FA160
     // (checkCompressed / getResSize for size 0); writes the nibble-swapped
     // bytes to mSpriteImages_0x88[slot] + dstOffset and flushes them; tu_8039003C's
     // constructor passes the 'SCH ' resources (slots 0, 0, 2, 3), as does
     // tu_803A85E4's (slots 0, 0, 2, 3; dstOffset 0 / 0x7000 / 0x4000 / 0).
     void loadSpriteImage_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
-    // 0x802F93F4 (game/tu_802F5040.cpp, not written yet): the 'SCL ' form of
+    // 0x802F93F4 (game/tile_map_802F5040.cpp, not written yet): the 'SCL ' form of
     // loadSpriteImage_802F9714 with a trailing byte flag (clrlwi. 24 at 0x802F9568); the
     // constructor of tu_8039003C and tu_803A85E4's pass false.
     void loadSpritePalette_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size, bool flag);
-    // 0x802FF548 (game/tu_802F5040.cpp): r3 only, passed on unchanged to
+    // 0x802FF548 (game/tile_map_802F5040.cpp): r3 only, passed on unchanged to
     // fn_802FF798. Called by tu_8013AAD4's fn_8013B4C0 with field_0x20.
     void fn_802FF548();
-    // 0x802FF798 (game/tu_802F5040.cpp): resets the map and sets up its
+    // 0x802FF798 (game/tile_map_802F5040.cpp): resets the map and sets up its
     // GX texture and palette objects; no arguments;
     // called once by tu_8039003C's and tu_803A85E4's constructors before it loads the tile
     // resources.
@@ -392,7 +392,7 @@ public:
     // act_panel_rewrite_npc 0x802C8AC4).
     void setTile_802F9974(s32 layer, s32 index, u16 value);
     // 0x802F6BBC: copies the 0x1000 tiles of layer src to layer dst (the
-    // same layer branches); tu_802D39B8 passes (0, 4) and (1, 5).
+    // same layer branches); game_view_802D39B8 passes (0, 4) and (1, 5).
     void fn_802F6BBC(s32 src, s32 dst);
     // 0x802FF0EC: draws the four players' panels (drawPlayerPanel_802FB69C, for each
     // field_0x148[player] set outside screen mode 12), with field_0xfc's
@@ -412,10 +412,10 @@ public:
     // alpha (0xFF - alpha).
     void drawPlayerPanel_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect, IntRect_803004C0* rect2,
                      u8 flag, s32 count, u8 alpha);
-    // 0x802FF3B0 (game/tu_802F5040.cpp): no arguments. Calls fn_802FA3FC
+    // 0x802FF3B0 (game/tile_map_802F5040.cpp): no arguments. Calls fn_802FA3FC
     // when byte 0xE451 is set and gGameRoot_8053AAF8->mTileImages_0x4 is not NULL.
     void fn_802FF3B0();
-    // 0x802FA3FC (game/tu_802F5040.cpp, not written yet): no arguments; reads
+    // 0x802FA3FC (game/tile_map_802F5040.cpp, not written yet): no arguments; reads
     // this's 0x2368 / 0x2374 / 0x235C / 0x2380 fields (r15 = r3 on entry).
     // Called by fn_802FF3B0 (the only caller seen).
     void fn_802FA3FC();
@@ -490,7 +490,7 @@ public:
     /* 0x0214 */ u8 field_0x214; // 2 units compare it with 1 (act_player_sword_level_check_npc 0x802F1350)
     /* 0x0215 */ u8 field_0x215;
     /* 0x0216 */ u8 field_0x216; // 9 units set it to 1 (act_four_switch_monitor 0x802A9E78)
-    /* 0x0217 */ u8 field_0x217[4]; // tu_80418B64 stores them (0x8041AEBC, 0x8041F43C-0x8041F48C)
+    /* 0x0217 */ u8 field_0x217[4]; // adventure_hud_80418B64 stores them (0x8041AEBC, 0x8041F43C-0x8041F48C)
     /* 0x021B */ u8 field_0x21b;
     // A rectangle (x, y, w, h: fn_802FCE74 stores it, drawPlayerPanels_802FF0EC passes it
     // as floats to field_0xfc's fn_80432750).
@@ -498,13 +498,13 @@ public:
     /* 0x0220 */ s32 field_0x220;
     /* 0x0224 */ s32 field_0x224;
     /* 0x0228 */ s32 field_0x228;
-    // 0x22C-0x244: the window of one player (tu_80441318's setWindow, from
+    // 0x22C-0x244: the window of one player (player_window_select_80441318's setWindow, from
     // fn_80441318 / update): field_0x22c is the window index, field_0x234 a
     // flag (0, or MessageManager's byte 0xEE), field_0x238 / field_0x23c the
     // top-left corner (centred in the screen) and field_0x240 / field_0x244
     // the size (365 x 261).
     /* 0x022C */ s32 field_0x22c;
-    /* 0x0230 */ s32 field_0x230; // 2 units read it (tu_80432638 0x80432BE4)
+    /* 0x0230 */ s32 field_0x230; // 2 units read it (gba_window_80432638 0x80432BE4)
     /* 0x0234 */ s32 field_0x234;
     /* 0x0238 */ s32 field_0x238;
     /* 0x023C */ s32 field_0x23c;
@@ -516,13 +516,13 @@ public:
     /* 0x024C */ JGeometry::TBox2<u32> mScreenRect_0x24c;
     /* 0x025C */ GXTlutObj mSpriteTluts_0x25c[3][4][16];
     /* 0x0B5C */ GXTexObj mSpriteTexObjs_0xb5c[3][4][16];
-    // Per-player bytes: game_root_sub_04_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC
+    // Per-player bytes: game_root_sub_04_80139BE8 (0x80139C24), game_view_802D39B8, result_screen_803A8DFC
     // and tu_803B7DCC store them; Camera_804AA9E4::fn_8030C85C /
     // setNextVisibleBox_8030C928 copy them to mLayer2Visible_0x2360.
     /* 0x235C */ u8 mLayerVisible_0x235c[4];
     /* 0x2360 */ u8 mLayer2Visible_0x2360[4];
     // drawSobSprite_802F86CC draws nothing while it is 0; 6 units set it to 1
-    // (tu_802D39B8 0x802D9BFC).
+    // (game_view_802D39B8 0x802D9BFC).
     /* 0x2364 */ u8 mDrawSprites_0x2364;
     /* 0x2365 */ u8 field_0x2365;
     // Camera_804AA9E4::setNextVisibleBox_8030C928 moves mLayerOrigin_0x2368 to mLayer2Origin_0x2374 and
@@ -530,7 +530,7 @@ public:
     // game_root_sub_24_8016A2B4 reads it (0x8016E014).
     /* 0x2368 */ JGeometry::TVec3f mLayerOrigin_0x2368;
     /* 0x2374 */ JGeometry::TVec3f mLayer2Origin_0x2374;
-    // Written by tu_802D39B8 (0x802D92D4), read as ints by game_root_sub_24_8016A2B4
+    // Written by game_view_802D39B8 (0x802D92D4), read as ints by game_root_sub_24_8016A2B4
     // (0x8016AE44). The cell counts of getHeightAt_802F5E9C's grid (64 after fn_802FF798).
     /* 0x2380 */ s32 mHeightGridCellsX_0x2380;
     /* 0x2384 */ s32 mHeightGridCellsY_0x2384;
@@ -681,7 +681,7 @@ public:
     // 1 unit (actor_manager_801F6058, once a frame). Swaps field_0x0 and field_0x1
     // (xori 1) and empties the new write list.
     void fn_8020D660();
-    // 1 unit (tu_802D39B8). Resets field_0x0 / field_0x1 to 0 / 1 and both
+    // 1 unit (game_view_802D39B8). Resets field_0x0 / field_0x1 to 0 / 1 and both
     // counts to 0.
     void fn_8020D690();
 
@@ -702,7 +702,7 @@ public:
 // 42 units. The collision boxes (see above).
 CollisionBoxes_8020D58C* fn_8020D58C();
 
-// game/tu_802F5040.cpp. The GX setup of a sprite at pos with params (or NULL);
+// game/tile_map_802F5040.cpp. The GX setup of a sprite at pos with params (or NULL);
 // writes the draw offset to out. Called by the sprite draws of this unit and
 // by act_big_poe_801618D0 (0x801619F4).
 void fn_802F5040(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, JGeometry::TVec3f* out);

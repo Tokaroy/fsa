@@ -18,14 +18,14 @@
 #include "game/act/act_zora_fish_herder.h"
 #include "game/act/act_big_moldorm_tail_8018EB94.h"
 #include "game/act/act_goal_warp_801B6C50.h"
-#include "game/act/tu_803D9944.h"
+#include "game/act/act_tingle_803D9944.h"
 #include "game/act/act_princess_zelda_ending.h"
 #include "game/act/demo_actor_base_8010DF44.h"
 #include "game/act/tu_801D2C60.h"
 #include "game/act/act_frostare_tail.h"
 #include "game/act/act_navi.h"
 #include "game/act/act_dodongo.h"
-#include "game/act/tu_80362634.h"
+#include "game/act/act_other_characters_ending_80362634.h"
 #include "game/SpriteAnim.h"
 #include "game/act/tu_801F9484_elems.h"
 #include "JSystem/JUtility/TColor.h"
@@ -663,7 +663,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    // Code: game/tu_802E2990.cpp.
+    // Code: game/act_goal_2_802E2990.cpp.
     void fn_802E2990(u8 value);
     /* 0x230 */ s32 field_0x230; // state; draw shows the four sprites in states 0-3
     /* 0x234 */ s32 field_0x234;
@@ -756,7 +756,7 @@ public:
     /* 0x278 */ SoundEffectSeq_8031709C* field_0x278;
 }; // Size: 0x27C
 
-// Spawned for 'SBAL'. Code: game/tu_80334318.cpp.
+// Spawned for 'SBAL'. Code: game/act_iron_ball_homing_80334318.cpp.
 class IronBallHoming_804AB9C0 : public ActorBase_804A5770 {
 public:
     IronBallHoming_804AB9C0() {}

@@ -6,7 +6,7 @@
 #include "game/GameView.h"
 #include "game/Message.h"
 #include "game/tu_803944C8.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/tu_80379F84.h"
 #include "game/act/act_small_key.h"
 #include "JSystem/JMessage/TControl.h"
@@ -3357,7 +3357,7 @@ cls_804AF6E4::~cls_804AF6E4() {}
 // and the two parse_next pointers' stack slots differ (0x8 / 0x10 / 0xC);
 // the string offsets are relative to the section base (lbl_80475768+0x670..)
 // in the original, to the string pool in ours (same addresses).
-// The font is read into a local before each search, as in tu_803E1668.
+// The font is read into a local before each search, as in adv_entry_screen_803E1668.
 cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char* bmgName) {
     JUTResFont* font;
     const ResTIMG* timg;

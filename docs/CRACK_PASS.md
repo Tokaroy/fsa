@@ -74,7 +74,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 
 - **Literals pooled before their first visible use.** PARTLY SOLVED 2026-11-05 (game_root_sub_24_8016A2B4): file-scope static const aggregates, and helpers defined early whose out-of-line copy was dead-stripped (see RULES_CARD "Known game-code shapes"); revisit the other units below with that in mind. game_root_sub_24_8016A2B4 (ten GXColor
   objects then 0.125/1/0.5/0 ahead of drawParallaxModel_8016A7DC's literals), escort_base_801213EC (8.0f
-  before 0.0f, 10430.378f before -24f), tu_803BC6F0 (0, -200, 200 first, used
+  before 0.0f, 10430.378f before -24f), file_select_803BC6F0 (0, -200, 200 first, used
   only by later functions) and player_8027E5BC (1.5f, 3.0f). Literals are created per
   function in compile order, and an inline helper's aggregate initializers when
   the inline is first read. Candidates: early inline helpers, dead code the
@@ -82,13 +82,13 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   checkpoint has the pool layout.
 - **Inlining of later-defined functions.** ANSWERED 2026-11-05: the original was
   compiled with deferred inlining, now the project mode (docs/INLINING.md). The units
-  listed here (tu_803099FC, tu_8043A0E8, player_80256C74, game_root_sub_24_8016A2B4, tu_802F5040,
+  listed here (tu_803099FC, hud_mgr_8043A0E8, player_80256C74, game_root_sub_24_8016A2B4, tile_map_802F5040,
   tu_803944C8) can write the callee as a plain function.
 - **Weak destructor emitted first.** ANSWERED 2026-11-05 (deferred inlining):
   tu_8045A640 now emits the weak __dt__Q29GameAudio16CustomSoundTableFv first;
   every function, .data and .sdata2 are 100 % (extab 71 %: check the weak-dedup
   trial link before flipping it).
-- **Save-data layout.** lbl_8050EC80 (SaveData_804AFB30, game/tu_803B8C74.h) is a 0x20-byte
+- **Save-data layout.** lbl_8050EC80 (SaveData_804AFB30, game/save_data_803B8C74.h) is a 0x20-byte
   header, three 0xC8-byte SaveFile_803B950C at 0x20 and three 0x9C4-byte bodies at 0x280;
   every user reads it through getFile / getCurrentFile. Two functions read and write one field
   of the current file through a pointer the original holds at lbl_8050EC80 + file * 0xC8
@@ -103,9 +103,9 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   - **Honest fix would need:** the original's declaration that gives a 0xC8-stride object
     based at lbl_8050EC80 itself (FSA probably viewed the save data as rows somewhere; no
     donor has this class).
-- **Data of dead-stripped functions.** tu_803A3484 (title screen): a 0x34-byte .rodata table and "enemy_both2_sob.bin" sit before
+- **Data of dead-stripped functions.** title_803A3484 (title screen): a 0x34-byte .rodata table and "enemy_both2_sob.bin" sit before
   the title's strings, and 0.5f / 120.0f lead its .sdata2, but no surviving function references them; the table's tail {3,4,5,4}
-  matches tu_803536C4's lbl_80472260, also followed by that string. Likely a function the linker dropped (dead code or a weak
+  matches act_tingle_time_up_803536C4's lbl_80472260, also followed by that string. Likely a function the linker dropped (dead code or a weak
   duplicate). Keeps fn_803A5380 and the ctor at 99.78 %. Same family as the leading-literal items above.
 - **Overflow trap on the player life word (player_8026FC20 addLife_80270DDC).** The original
   does `old = x; x++; if (x == old) for (;;); x = old;` on Player 0xBFC (stw, reload,
@@ -253,18 +253,18 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_big_moldorm_tail_8018EB94 | `BigMoldormTail_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
 | player_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
 | player_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
-| tu_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
-| tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |
-| tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |
-| tu_8034AA40 | `markRandomCucco` | 8 | `fn_8034AAA0__24CuccoHerdingNPC_804AC8C0Fv`, `vfunc_0x10__24CuccoHerdingNPC_804AC8C0Fv`, `init__24CuccoHerdingNPC_804AC8C0Fv` |
-| tu_80362634 | `OtherCharactersEnding_804ADF28::spawnRoomEmitters` | 8 | `fn_80362680__30OtherCharactersEnding_804ADF28Fv`, `fn_803628D4__30OtherCharactersEnding_804ADF28Fv`, `fn_80362B74__30OtherCharactersEnding_804ADF28Fv`, `fn_80363360__30OtherCharactersEnding_804ADF28Fv`, `fn_80363664__30OtherCharactersEnding_804ADF28Fv`, `fn_80364340__30OtherCharactersEnding_804ADF28Fv`, `fn_80364900__30OtherCharactersEnding_804ADF28Fv`, `fn_80364F60__30OtherCharactersEnding_804ADF28Fv`, `fn_8036509C__30OtherCharactersEnding_804ADF28Fv`, `fn_80365220__30OtherCharactersEnding_804ADF28Fv`, `fn_80365274__30OtherCharactersEnding_804ADF28Fv`, `fn_803653EC__30OtherCharactersEnding_804ADF28Fv` |
-| tu_8036FB60 | `FourGirlsControl_804AE4B0::guidePlayer_80370764` | 6 | `fn_803703C8__25FourGirlsControl_804AE4B0Fv`, `fn_80370508__25FourGirlsControl_804AE4B0Fv`, `fn_80370764__25FourGirlsControl_804AE4B0Fv`, `fn_80370A7C__25FourGirlsControl_804AE4B0Fv`, `fn_8037100C__25FourGirlsControl_804AE4B0Fv`, `fn_80371284__25FourGirlsControl_804AE4B0Fv` |
-| tu_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::rewriteTiles` | 22 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
-| tu_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::setBoxes` | 10 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
-| tu_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::spawnBreakEmitters` | 22 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
-| tu_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::touchesPlayer` | 23 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
+| act_unknown_endm_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
+| camera_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |
+| camera_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |
+| act_cucco_herding_npc_8034AA40 | `markRandomCucco` | 8 | `fn_8034AAA0__24CuccoHerdingNPC_804AC8C0Fv`, `vfunc_0x10__24CuccoHerdingNPC_804AC8C0Fv`, `init__24CuccoHerdingNPC_804AC8C0Fv` |
+| act_other_characters_ending_80362634 | `OtherCharactersEnding_804ADF28::spawnRoomEmitters` | 8 | `fn_80362680__30OtherCharactersEnding_804ADF28Fv`, `fn_803628D4__30OtherCharactersEnding_804ADF28Fv`, `fn_80362B74__30OtherCharactersEnding_804ADF28Fv`, `fn_80363360__30OtherCharactersEnding_804ADF28Fv`, `fn_80363664__30OtherCharactersEnding_804ADF28Fv`, `fn_80364340__30OtherCharactersEnding_804ADF28Fv`, `fn_80364900__30OtherCharactersEnding_804ADF28Fv`, `fn_80364F60__30OtherCharactersEnding_804ADF28Fv`, `fn_8036509C__30OtherCharactersEnding_804ADF28Fv`, `fn_80365220__30OtherCharactersEnding_804ADF28Fv`, `fn_80365274__30OtherCharactersEnding_804ADF28Fv`, `fn_803653EC__30OtherCharactersEnding_804ADF28Fv` |
+| act_four_girls_control_8036FB60 | `FourGirlsControl_804AE4B0::guidePlayer_80370764` | 6 | `fn_803703C8__25FourGirlsControl_804AE4B0Fv`, `fn_80370508__25FourGirlsControl_804AE4B0Fv`, `fn_80370764__25FourGirlsControl_804AE4B0Fv`, `fn_80370A7C__25FourGirlsControl_804AE4B0Fv`, `fn_8037100C__25FourGirlsControl_804AE4B0Fv`, `fn_80371284__25FourGirlsControl_804AE4B0Fv` |
+| act_rock_dropped_into_the_river_11_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::rewriteTiles` | 22 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
+| act_rock_dropped_into_the_river_11_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::setBoxes` | 10 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
+| act_rock_dropped_into_the_river_11_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::spawnBreakEmitters` | 22 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
+| act_rock_dropped_into_the_river_11_80376FA0 | `RockDroppedIntoTheRiver11_804AE7D8::touchesPlayer` | 23 | `init__34RockDroppedIntoTheRiver11_804AE7D8Fv` |
 | tu_803B7DCC | `setFrameBufferOrtho` | 5 | `fn_803B7DCC__12cls_804AFAB0Fv`, `fn_803B7E64__12cls_804AFAB0Fv` |
-| tu_803E1668 | `AdvEntryScreen_804B0B00::drawFade` | 30 | `fn_803E2A20__23AdvEntryScreen_804B0B00Fv`, `fn_803E3564__23AdvEntryScreen_804B0B00Fv`, `fn_803E3CB0__23AdvEntryScreen_804B0B00Fv`, `fn_803E4344__23AdvEntryScreen_804B0B00Fv`, `fn_803E4650__23AdvEntryScreen_804B0B00Fv`, `fn_803E4940__23AdvEntryScreen_804B0B00Fv`, `fn_803E8210__23AdvEntryScreen_804B0B00Fv`, `fn_803E9A20__23AdvEntryScreen_804B0B00Fv`, `fn_803E9EE8__23AdvEntryScreen_804B0B00Fv`, `fn_803EDA2C__23AdvEntryScreen_804B0B00Fv`, `fn_803EDBF0__23AdvEntryScreen_804B0B00FUc` |
-| tu_803F0A54 | `ConnectScreen_804B0F10::drawFade` | 26 | `fn_803F1C70__22ConnectScreen_804B0F10Fv`, `fn_803F267C__22ConnectScreen_804B0F10Fv`, `fn_803F2B78__22ConnectScreen_804B0F10Fv`, `fn_803F3324__22ConnectScreen_804B0F10Fv`, `fn_803F35B0__22ConnectScreen_804B0F10Fv`, `fn_803F38A4__22ConnectScreen_804B0F10Fv`, `fn_803F715C__22ConnectScreen_804B0F10Fv`, `fn_803F8AE4__22ConnectScreen_804B0F10Fv`, `fn_803F8FBC__22ConnectScreen_804B0F10Fv`, `fn_803FC46C__22ConnectScreen_804B0F10Fv`, `fn_803FC5E4__22ConnectScreen_804B0F10FUc` |
-| tu_8042165C | `BattleHud_804B146C::updateGaugeBar` | 9 | `fn_80424148__18BattleHud_804B146CFlb` |
-| tu_8042E964 | `WarningWindow_804B1634::scaleFrames` | 21 | `fn_80431174__22WarningWindow_804B1634FUc`, `fn_804317AC__22WarningWindow_804B1634Fv` |
+| adv_entry_screen_803E1668 | `AdvEntryScreen_804B0B00::drawFade` | 30 | `fn_803E2A20__23AdvEntryScreen_804B0B00Fv`, `fn_803E3564__23AdvEntryScreen_804B0B00Fv`, `fn_803E3CB0__23AdvEntryScreen_804B0B00Fv`, `fn_803E4344__23AdvEntryScreen_804B0B00Fv`, `fn_803E4650__23AdvEntryScreen_804B0B00Fv`, `fn_803E4940__23AdvEntryScreen_804B0B00Fv`, `fn_803E8210__23AdvEntryScreen_804B0B00Fv`, `fn_803E9A20__23AdvEntryScreen_804B0B00Fv`, `fn_803E9EE8__23AdvEntryScreen_804B0B00Fv`, `fn_803EDA2C__23AdvEntryScreen_804B0B00Fv`, `fn_803EDBF0__23AdvEntryScreen_804B0B00FUc` |
+| connect_screen_803F0A54 | `ConnectScreen_804B0F10::drawFade` | 26 | `fn_803F1C70__22ConnectScreen_804B0F10Fv`, `fn_803F267C__22ConnectScreen_804B0F10Fv`, `fn_803F2B78__22ConnectScreen_804B0F10Fv`, `fn_803F3324__22ConnectScreen_804B0F10Fv`, `fn_803F35B0__22ConnectScreen_804B0F10Fv`, `fn_803F38A4__22ConnectScreen_804B0F10Fv`, `fn_803F715C__22ConnectScreen_804B0F10Fv`, `fn_803F8AE4__22ConnectScreen_804B0F10Fv`, `fn_803F8FBC__22ConnectScreen_804B0F10Fv`, `fn_803FC46C__22ConnectScreen_804B0F10Fv`, `fn_803FC5E4__22ConnectScreen_804B0F10FUc` |
+| battle_hud_8042165C | `BattleHud_804B146C::updateGaugeBar` | 9 | `fn_80424148__18BattleHud_804B146CFlb` |
+| warning_window_8042E964 | `WarningWindow_804B1634::scaleFrames` | 21 | `fn_80431174__22WarningWindow_804B1634FUc`, `fn_804317AC__22WarningWindow_804B1634Fv` |

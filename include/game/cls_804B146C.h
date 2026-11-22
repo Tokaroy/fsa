@@ -10,30 +10,30 @@ class PaneCtrl_804AF86C;
 class PlayerWindowSelect_804B19E0;
 
 // Named after its vtable, 0x804B146C (stored by its destructor,
-// fn_80426AD4 in game/tu_8042165C.cpp; the constructor is fn_804257E4).
+// fn_80426AD4 in game/battle_hud_8042165C.cpp; the constructor is fn_804257E4).
 // The object HudMgr_804B1920 keeps at 0x294. Only the members that
 // HudMgr_804B1920 calls are declared.
 class BattleHud_804B146C {
 public:
     BattleHud_804B146C();
     virtual ~BattleHud_804B146C(); // fn_80426AD4
-    // Owner: game/tu_8042165C.cpp (0x80425128). Called with only the object.
+    // Owner: game/battle_hud_8042165C.cpp (0x80425128). Called with only the object.
     void fn_80425128();
-    // Owner: game/tu_8042165C.cpp (0x804253E0): steps player `player`'s displayed counters toward the real ones.
+    // Owner: game/battle_hud_8042165C.cpp (0x804253E0): steps player `player`'s displayed counters toward the real ones.
     void fn_804253E0(s32 player);
-    // Owner: game/tu_8042165C.cpp (0x80425234). Called with the three
+    // Owner: game/battle_hud_8042165C.cpp (0x80425234). Called with the three
     // arguments HudMgr_804B1920::fn_8043D874 received.
     void fn_80425234(s32 id, s32 arg1, u32 arg2);
-    // Owner: game/tu_8042165C.cpp (0x804263A8). Called with only the object by
+    // Owner: game/battle_hud_8042165C.cpp (0x804263A8). Called with only the object by
     // HudMgr_804B1920::fn_8043EDF8.
     void fn_804263A8();
-    // Owner: game/tu_8042165C.cpp (0x804257E4). Called with only the object by
+    // Owner: game/battle_hud_8042165C.cpp (0x804257E4). Called with only the object by
     // HudMgr_804B1920::fn_8043D8B4 (it stores no vtable).
     void fn_804257E4();
-    // Owner: game/tu_8042165C.cpp (0x80425F6C). Called with only the object by
+    // Owner: game/battle_hud_8042165C.cpp (0x80425F6C). Called with only the object by
     // HudMgr_804B1920::fn_8043DC98 (its draw).
     void fn_80425F6C();
-    // Owner: game/tu_8042165C.cpp (0x80425F24). Called with only the object by HudMgr_804B1920::fn_8043D39C.
+    // Owner: game/battle_hud_8042165C.cpp (0x80425F24). Called with only the object by HudMgr_804B1920::fn_8043D39C.
     void fn_80425F24();
 
     void fn_80424148(s32 player, bool force);

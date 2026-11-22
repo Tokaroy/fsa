@@ -1,7 +1,7 @@
 #ifndef GAME_GAMEVIEW_H
 #define GAME_GAMEVIEW_H
 
-// The stage/screen state of game/tu_802D39B8.cpp: one instance, allocated
+// The stage/screen state of game/game_view_802D39B8.cpp: one instance, allocated
 // with __nw__(0x13290, heap, 0) and built by its constructor fn_802DE64C in
 // game/game_root_sub_04_80139BE8.cpp (0x8013A578-0x8013A594), stored at offset 0xC of the
 // object gGameRoot_8053AAF8->0x4 points to; reach it with getGameView_802D6A9C(). 275 game
@@ -18,7 +18,7 @@
 // and the free predicates at the end (fn_802DEB58, ...) compare them with
 // pairs such as (3, 1).
 //
-// Members: every export of game/tu_802D39B8.cpp that other units call with
+// Members: every export of game/game_view_802D39B8.cpp that other units call with
 // the view in r3 (all of them pass getGameView_802D6A9C()'s result; several bodies
 // ignore it and fetch the view again through gGameRoot_8053AAF8, said at each as
 // "(this unused)"). Names stay dtk's placeholders; symbols.txt carries the
@@ -126,7 +126,7 @@ public:
     void fn_802DA010();
     // Inlined by fn_802DA010, resetStage_802DA8DC (with field_0x131f1-0x131f3 stored
     // between them), fn_802DB6F0 and fn_802DCE5C; no out-of-line copy
-    // (game/tu_802D39B8.cpp).
+    // (game/game_view_802D39B8.cpp).
     inline void restartTimeLimit();
     inline void clearScreenState();
     // Inlined by resetStage_802DA8DC, restartStage_802DBD60 and vfunc_0xC; no out-of-line copy.
@@ -302,7 +302,7 @@ public:
     void fn_802D7934(s32 value); // 1 unit: field_0x5c
     // 23 units / 35 calls (this unused). Sets field_0x131f0 from flag, the
     // current save file (lbl_8050EC80.getCurrentFile() byte 0x5C or 0x5D,
-    // game/tu_803B8C74.h) and gGameRoot_8053AAF8's bytes 0x7E/0x7F. flag is u8, not bool:
+    // game/save_data_803B8C74.h) and gGameRoot_8053AAF8's bytes 0x7E/0x7F. flag is u8, not bool:
     // inlined in restartTimeLimit, (byte == 1) is narrowed with extrwi 8 and
     // compared with 1 again (cntlzw, extrwi, cmplwi), which a bool folds away.
     void fn_802D7440(u8 flag);
@@ -393,9 +393,9 @@ public:
     /* 0x131A8 */ s32 field_0x131a8[4]; // fn_802D39B8; read by actor_manager_801F6058
     /* 0x131B8 */ u16 field_0x131b8[0x10]; // bits (fn_802D77BC, testLayerFlags_802D7804)
     /* 0x131D8 */ u8 field_0x131d8[4]; // fn_802D7844
-    /* 0x131DC */ u16 field_0x131dc; // fn_802D7870; tu_80432638 reads it
+    /* 0x131DC */ u16 field_0x131dc; // fn_802D7870; gba_window_80432638 reads it
     // fn_802D782C; lbz in act_bg_rewrite_check_switch, stb in 8 more places
-    // in game/tu_802D39B8.cpp.
+    // in game/game_view_802D39B8.cpp.
     /* 0x131DE */ u8 field_0x131de;
     /* 0x131DF */ u8 field_0x131df[0x131EF - 0x131DF];
     /* 0x131EF */ u8 field_0x131ef; // fn_802D752C; 2 units read it
@@ -406,8 +406,8 @@ public:
     /* 0x131F4 */ u8 field_0x131f4; // fn_802D6BC8
     /* 0x131F5 */ u8 field_0x131f5; // act_torch reads it
     /* 0x131F6 */ u8 field_0x131f6; // act_player_start_position reads it
-    /* 0x131F7 */ u8 field_0x131f7; // zeroed by the constructor; tu_8044C7F0
-    /* 0x131F8 */ u8 field_0x131f8; // zeroed by the constructor; tu_8044C7F0
+    /* 0x131F7 */ u8 field_0x131f7; // zeroed by the constructor; collect_screen_8044C7F0
+    /* 0x131F8 */ u8 field_0x131f8; // zeroed by the constructor; collect_screen_8044C7F0
     /* 0x131F9 */ u8 field_0x131f9; // fn_802D6AAC; 5 units read it
     /* 0x131FA */ char field_0x131fa[0x1321A - 0x131FA]; // fn_802D8228's name buffer
     /* 0x1321A */ char field_0x1321a[0x1323C - 0x1321A]; // fn_802D8128's name buffer
@@ -430,15 +430,15 @@ public:
     }
 }; // Size: 0x13290
 
-// gGameRoot_8053AAF8->0x4->0xC (game/tu_802D39B8.cpp; 265 units).
+// gGameRoot_8053AAF8->0x4->0xC (game/game_view_802D39B8.cpp; 265 units).
 extern "C" GameView_804A9950* getGameView_802D6A9C(void);
 
-// Free functions of game/tu_802D39B8.cpp: no view argument (callers leave r3
+// Free functions of game/game_view_802D39B8.cpp: no view argument (callers leave r3
 // unset). Each returns 0 or 1 from the stage numbers of getGameView_802D6A9C() (the
 // view's mStage_0x4 / mLevel_0x8), and returns 0 at once when
 // gGameRoot_8053AAF8->0x7F is 0, except where said.
 //
-// Defined in game/tu_802D39B8.cpp (C++ linkage, renamed in symbols.txt).
+// Defined in game/game_view_802D39B8.cpp (C++ linkage, renamed in symbols.txt).
 // 8 units. Reads lbl_80529DEC's words 0x118 and 0x11C only.
 bool fn_802DE814(void);
 // 19 units. Stage (2, 3) or (7, 1); with 0x7F clear, lbl_80529DEC's 0x12C +

@@ -10,7 +10,7 @@
 #include "game/Player.h"
 #include "game/ViewLayer.h"
 #include "game/cls_804AE9B0.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/act/act_liftable_item.h"
 #include "game/act/act_treasure_chest.h"
 #include "game/StageFlag.h"

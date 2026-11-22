@@ -27,7 +27,7 @@ class JAISoundHandle;
 class JAISoundID; // JSystem/JAudio/Interface/JAISound.h; complete wherever fn_804561D8 is called
 
 // The per-actor sound object (ActorManager_804A5800::mSounds): built by
-// fn_804578F4 (game/tu_80455CA4.cpp) from two bases. JAUSoundObject is at 0
+// fn_804578F4 (game/actor_sound_obj_80455CA4.cpp) from two bases. JAUSoundObject is at 0
 // (vtable 0x804B1E28: slots 0x8-0x20 are its own). The constructor builds a
 // JKRDisposer at 0x18 and stores vtable + 0x24 there, so slots 0x24/0x28 are
 // that base's vtable header, 0x2C (fn_80457C08) is its destructor thunk
@@ -42,7 +42,7 @@ public:
     // (act_wave_se fn_802E73B4, BgRewrite's constructor).
     ActorSoundObj_804578F4(JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles);
     virtual ~ActorSoundObj_804578F4();
-    // 0x804560D0 (game/tu_80455CA4.cpp): vtable slot 0x10, where
+    // 0x804560D0 (game/actor_sound_obj_80455CA4.cpp): vtable slot 0x10, where
     // JAUSoundObject has stopOK.
     virtual bool stopOK(JAISoundHandle& handle);
     // 0x80106EB0 (game/act_wind_environment.cpp, where the weak copy
@@ -50,36 +50,36 @@ public:
     // startSound_80456334(id, 0).
     virtual JAISoundHandle* startSound(JAISoundID id);
 
-    // 0x804561D8 (game/tu_80455CA4.cpp, next to the ctor): r3 is this. `id`
+    // 0x804561D8 (game/actor_sound_obj_80455CA4.cpp, next to the ctor): r3 is this. `id`
     // is passed by value (the callee re-copies it for startSound_80456334), `fade`
     // goes unextended into startSound_80456334's u32 fade time.
     void fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c);
 
-    // 0x80456334 (game/tu_80455CA4.cpp): r3 is this, r4 the id (copied to the
+    // 0x80456334 (game/actor_sound_obj_80455CA4.cpp): r3 is this, r4 the id (copied to the
     // stack by the caller), r5 a fade time (fn_804561D8 passes its own);
     // returns the handle the sound was started on, or NULL. Called by
-    // PlayerSoundObj_804B20F8::startSound (game/tu_8045B010.cpp) with 0.
+    // PlayerSoundObj_804B20F8::startSound (game/player_sound_obj_8045B010.cpp) with 0.
     JAISoundHandle* startSound_80456334(JAISoundID id, u32 fade);
 
     void setField_0x48(f32 value) { field_0x48 = value; }
 
-    // 0x80455F40 (game/tu_80455CA4.cpp): r3 is this, r4 the handle. Does
+    // 0x80455F40 (game/actor_sound_obj_80455CA4.cpp): r3 is this, r4 the handle. Does
     // nothing for a NULL handle or one without a sound; otherwise writes
     // track ports 0xA, 0x9 and 0xB from field_0x44 and field_0x45. Called by
-    // three functions of game/tu_80455CA4.cpp (0x804571D4, 0x80457390, 0x80457814).
+    // three functions of game/actor_sound_obj_80455CA4.cpp (0x804571D4, 0x80457390, 0x80457814).
     void fn_80455F40(JAISoundHandle* handle);
 
-    // 0x80456120 (game/tu_80455CA4.cpp): clears field_0x31, then calls
+    // 0x80456120 (game/actor_sound_obj_80455CA4.cpp): clears field_0x31, then calls
     // dispose() through the vtable (slot 0xC). ActorManager's release code
     // calls it on each mSounds entry and on mSharedSound_0x200c (game/actor_manager_801F6058.cpp).
     void fn_80456120();
 
-    // 0x80456154 (game/tu_80455CA4.cpp): points mSoundPos at a copy of
+    // 0x80456154 (game/actor_sound_obj_80455CA4.cpp): points mSoundPos at a copy of
     // *field_0x34 (NULL when field_0x34 is NULL), swaps the copy's y and z,
     // and counts down field_0x50 and field_0x51 while they are nonzero.
     void fn_80456154();
 
-    // 0x80457840 (game/tu_80455CA4.cpp): r3 is this, r4 the position (NULL
+    // 0x80457840 (game/actor_sound_obj_80455CA4.cpp): r3 is this, r4 the position (NULL
     // clears the pointer at 0x14). Stores r4 at 0x34, copies it to field_0x38
     // and points mSoundPos (JAUSoundObject 0x14) at the copy.
     void fn_80457840(JGeometry::TVec3f* pos);
@@ -148,7 +148,7 @@ public:
     void setAllDefeated_801F6204(u8 value);
     // EnemyParam.csv lookup: the value of `column` (ActorParamColumn) for
     // actor `id`, row 0's default when `id` has no row, 0 when the column
-    // is missing. 2 units / 8 calls (the spawner, tu_802D39B8).
+    // is missing. 2 units / 8 calls (the spawner, game_view_802D39B8).
     s32 getEnemyParam_801F620C(u32 id, u32 column);
     // 1 unit / 2 calls (ActorBase_804A5770::fn_801F1184 and startSound_801F0E34).
     // mSounds[slot], or mSharedSound_0x200c when mActors[slot]->mViewMtx_0x4 != 0.
@@ -233,15 +233,15 @@ public:
     // 2 units / 2 calls. Clears mAlive of every live `id` actor other than
     // excludeSerial; returns how many.
     s32 fn_801F7AB8(u32 id, s32 excludeSerial);
-    // 1 unit / 5 calls (tu_802D39B8). Resets the view's per-player entries
+    // 1 unit / 5 calls (game_view_802D39B8). Resets the view's per-player entries
     // (fn_802D39B8), then clears mAlive of every live actor except the
     // players' (GameView 0x131A8-0x131B4), TZOK, RANK, GBAO, ENDM, DMGA and
     // an RASN whose field_0x230 != 0; then fn_80204638(), fn_802048F4().
     void fn_801F7B18();
-    // 1 unit / 2 calls (tu_802D39B8). fn_801F7B18 for layer-0 actors
+    // 1 unit / 2 calls (game_view_802D39B8). fn_801F7B18 for layer-0 actors
     // outside the view's box (0xCC-0xD8) only, also sparing FAZR.
     void fn_801F7CAC();
-    // 1 unit / 6 calls (tu_802D39B8). Clears mAlive of every live actor on a
+    // 1 unit / 6 calls (game_view_802D39B8). Clears mAlive of every live actor on a
     // layer other than 0, and of the layer-0 ones with the byte at 0x194
     // set that are outside the view's box (0xCC-0xD8).
     void fn_801F7E88();
@@ -372,7 +372,7 @@ u16 dirToAngle_801F6874(s32 dir);
 
 // 9 units / 13 calls. Moves *value toward target by (s16)(target -
 // *value) / step, at most maxStep either way (lhz/sth; callers pass a
-// field address, an lhz target, 1 and 0x1000 at tu_80343A70).
+// field address, an lhz target, 1 and 0x1000 at act_bee_80343A70).
 void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep);
 
 // 79 units / 361 calls. Unless *value == target, adds rate * (target -

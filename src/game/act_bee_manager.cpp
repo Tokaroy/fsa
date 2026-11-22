@@ -1,6 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/act/act_bee_manager.h"
-#include "game/act/tu_803489A4.h"
+#include "game/act/act_bee_formation_803489A4.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
 #include "game/GameGlobals.h"

@@ -285,9 +285,9 @@ player_8028FBA0 (0 instrs run): 8028FC2C 0x444; 80290070 0xce8 (44 Player + 8 cl
  80294374 0x54c (0x1D); 80294ADC 0x660 (0x1C enter).
 
 Callee classes used by the Player units (call counts): EffectSystem_8049F178 / JPA emitters (effect_system_8013C5C8) 347; ActorManager_804A5800 265;
-GameView_804A9950 (stage/map state, tu_802D39B8) 236; tu_8022461C tile/collision queries 152; cls_804AA8C8 (pad object, tu_803099FC) 149;
+GameView_804A9950 (stage/map state, game_view_802D39B8) 236; tu_8022461C tile/collision queries 152; cls_804AA8C8 (pad object, tu_803099FC) 149;
 cls_804AA8B8 (tu_80301CD0, unknown) 75; ActorBase 90; cls_804AA8D8 (per-player camera box 240x160, tu_8030AE84) 29; BgRewrite_804A7C98 27;
-AudioMgr_8045A080 (JAudio manager, tu_80457DFC) 14; TileMap_804AA858 14; Camera_804AA9E4 13. Sound: only ActorSoundObj_804578F4 (fn_80456154, in
+AudioMgr_8045A080 (JAudio manager, audio_mgr_80457DFC) 14; TileMap_804AA858 14; Camera_804AA9E4 13. Sound: only ActorSoundObj_804578F4 (fn_80456154, in
 player_8023FBF0); no JAI calls inside the Player units (audio comes through fwds / AudioMgr_8045A080).
 
 ## Boot path
@@ -463,8 +463,8 @@ Since the switch to `-inline auto,deferred` with descending source order
 placed before it, so these can become plain functions where the asm has both an
 out-of-line copy and inlined uses; converting them is a follow-up and only
 player_8023FBF0 is affected. The findings below are what the inlining proved.)
-- **groupSize** (fn_80248970): this player, its leader 0xD60 and every
-tu_8023FBF0 is affected. The findings below are what the inlining proved.)
+- **groupSize** (getGroupSize_80248970): this player, its leader 0xD60 and every
+player_8023FBF0 is affected. The findings below are what the inlining proved.)
 - **groupSize** (getGroupSize_80248970): this player, its leader 0xD60 and every
   follower (hasPlayerLeader_8022F514) whose leader (getPlayerLeader_8022F3DC) is that leader (or this
   player when 0xD60 < 0).
@@ -1643,10 +1643,10 @@ now written; the remaining sub-100 % ones are structurally done or close.
 | fn_80235B68 | 96.55 missing/extra (+1) + reloc-name, unchanged | the deepest recursion level calls fn_8018A614 (act_phantom_ganon_2) out of line, the shallower ones inline fn_8023F9B0 / fn_8023F98C by depth: fn_8018A614 looks like a header inline (`fn_8023F9B0()->fn_8023F98C(player)`) whose kept copy is act_phantom_ganon_2's; making it one changes that Matching unit, so not done. |
 | fn_80241B44 (player_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller act_unknown_form_8029C584 unwritten). |
 | resetTrail_8024B2E0 (player_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
-| fn_802487FC (player_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined fn_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
-| fn_80241B44 (tu_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller tu_8029C584 unwritten). |
-| resetTrail_8024B2E0 (tu_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
-| fn_802487FC (tu_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined getGroupSize_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
+| fn_802487FC (player_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined getGroupSize_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
+| fn_80241B44 (player_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller act_unknown_form_8029C584 unwritten). |
+| resetTrail_8024B2E0 (player_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
+| fn_802487FC (player_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined getGroupSize_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
 
 Evidence:
 - **A by-value TVec3f return** shows up as a stack TVec3f built in place, then copied through

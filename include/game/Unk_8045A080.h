@@ -2,7 +2,7 @@
 #define GAME_UNK_8045A080_H
 
 // The game's audio manager (provisional name after its constructor,
-// 0x8045A080; game/tu_80457DFC.cpp). One 0x90-byte instance, built by main
+// 0x8045A080; game/audio_mgr_80457DFC.cpp). One 0x90-byte instance, built by main
 // in the main heap and stored in gAudioMgr_8053AF80 (and GameState field_0xc).
 // init_80459AE4 sets JAudio up from "GC4Sword_usa/AudioRes/JaiInit.baa",
 // ".../Waves/" and ".../Seqs/JaiSeqs.arc" (the unit's .sdata string
@@ -91,100 +91,100 @@ struct AudioMgr_8045A080 {
     // 0x80458508: the music tempo: lbl_8053A260 (kind 1) or lbl_8053A268
     // (kind 2) over their frame counts, else 1.0 at once.
     void fn_80458508(u8 kind);
-    // fn_80458508's body, inline (game/tu_80457DFC.cpp; used only there).
+    // fn_80458508's body, inline (game/audio_mgr_80457DFC.cpp; used only there).
     inline void moveMusicTempo_80458508(u8 kind);
     // 0x80459508: stops every sound (JAUSoundMgr::stop), resets the music
     // state and resumes the audio reseter.
     void fn_80459508();
-    // game/tu_80457DFC.cpp (0x80459674, not written yet): the per-frame update; GameRoot's fn_80137300 calls it.
+    // game/audio_mgr_80457DFC.cpp (0x80459674, not written yet): the per-frame update; GameRoot's fn_80137300 calls it.
     void fn_80459674();
-    // game/tu_80457DFC.cpp: stores `pause` at 0x8a and passes it to
+    // game/audio_mgr_80457DFC.cpp: stores `pause` at 0x8a and passes it to
     // JAISeCategoryMgr::pause(bool) of three categories of the object at
     // 0x34 (0x8045868C-0x804586A8); called by act_stop_npc.
     void fn_80458658(bool pause);
-    // game/tu_80457DFC.cpp. Sets up JAudio from the two loaded audio files
-    // (the buffers at 0x14 of the loaders in tu_80442810): `heap` is the
+    // game/audio_mgr_80457DFC.cpp. Sets up JAudio from the two loaded audio files
+    // (the buffers at 0x14 of the loaders in audio_res_loader_80442810): `heap` is the
     // heap lbl_80529DEC.field_0x4, 0x800000 the audio memory size stored in
     // the JAU_JASInitializer (init_80459AE4 stores r5 at its 0x4).
     void init_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData);
-    // game/tu_80457DFC.cpp: JASDriver::setOutputMode(mode).
+    // game/audio_mgr_80457DFC.cpp: JASDriver::setOutputMode(mode).
     void fn_804594E4(u32 mode);
-    // game/tu_80457DFC.cpp (0x80458FF0). act_enemy_generator_3 calls it with
+    // game/audio_mgr_80457DFC.cpp (0x80458FF0). act_enemy_generator_3 calls it with
     // (0x1000021, 1, 0) when field_0x58 differs from 0x1000021; the body
     // compares r4 against 0x1000000+n, tests r5 with clrlwi. 24 (0x8045908C) and
     // stores r6 (a byte) at 0x8d. The third argument is a u8: GameRoot's
     // startStageMusic_80138B7C (game_root_80134C04) passes an s32 count with clrlwi 24.
     void startBgm_80458FF0(s32 id, bool arg1, u8 flag);
-    // game/tu_80457DFC.cpp (0x8045A080): the constructor main calls on the
+    // game/audio_mgr_80457DFC.cpp (0x8045A080): the constructor main calls on the
     // 0x90-byte object it allocates in the main heap.
     AudioMgr_8045A080();
-    // game/tu_80457DFC.cpp (0x80458880). Plays system sound `id` (a register,
+    // game/audio_mgr_80457DFC.cpp (0x80458880). Plays system sound `id` (a register,
     // not a JAISoundID; equality tests are cmplwi) for `player` (extsb on
     // entry; callers pass -1 for the shared object at 0x14, 331 of 393
     // calls; a fixed set of ids always plays there), panned by player when
     // field_0x5 is 2-4 (getPlayerPan); ids 0x38 and 0x57 start the second
-    // sequence instead (startSecondSeq_80458F04, inlined). fn_8045B030 (game/tu_8045B010.cpp)
+    // sequence instead (startSecondSeq_80458F04, inlined). fn_8045B030 (game/player_sound_obj_8045B010.cpp)
     // passes an id from lbl_8052DEE0.
     void playSystemSound_80458880(u32 id, s8 player);
-    // The pan of a player's system sounds (game/tu_80457DFC.cpp, inline there).
+    // The pan of a player's system sounds (game/audio_mgr_80457DFC.cpp, inline there).
     inline f32 getPlayerPan(s8 player);
-    // game/tu_80457DFC.cpp (0x804593D4, not written yet). Sets 0x8e and pauses
+    // game/audio_mgr_80457DFC.cpp (0x804593D4, not written yet). Sets 0x8e and pauses
     // the sound categories of the object at 0x34 (called by fn_80134D20).
     void fn_804593D4();
-    // game/tu_80457DFC.cpp (0x80458F04). Callers pass a table entry in r4: if
+    // game/audio_mgr_80457DFC.cpp (0x80458F04). Callers pass a table entry in r4: if
     // the sound at 0x84 is not already id, creates it through the category
     // object at 0x30 (vtable slot 0xC) and starts a volume move.
     void fn_80458F04(u32 id);
-    // fn_80458F04's body, inline (game/tu_80457DFC.cpp; used only there).
+    // fn_80458F04's body, inline (game/audio_mgr_80457DFC.cpp; used only there).
     inline void startSecondSeq_80458F04(u32 id);
-    // game/tu_80457DFC.cpp (0x80458F9C). 30+ units pass 0x3C (the argument is
+    // game/audio_mgr_80457DFC.cpp (0x80458F9C). 30+ units pass 0x3C (the argument is
     // not read): stops the sound at 0x80 and clears the fields at
     // 0x58-0x68.
     void stopBgm_80458F9C(s32 frames);
-    // game/tu_80457DFC.cpp (0x80459274, same unit). Called on gAudioMgr_8053AF80
-    // by GbaConnectErrorWindow_804B19F0::fn_80441A1C (game/tu_80441A1C.cpp) after the 0x0 call.
+    // game/audio_mgr_80457DFC.cpp (0x80459274, same unit). Called on gAudioMgr_8053AF80
+    // by GbaConnectErrorWindow_804B19F0::fn_80441A1C (game/gba_connect_error_window_80441A1C.cpp) after the 0x0 call.
     void resumeSe_80459274();
-    // game/tu_80457DFC.cpp (0x80458090): loads wave archives 2, 3 and 4 of
+    // game/audio_mgr_80457DFC.cpp (0x80458090): loads wave archives 2, 3 and 4 of
     // the JAUSection at 0x44 (loadWaveArc). Called by tu_8039003C's
     // constructor when fn_804580DC returned 0.
     void fn_80458090();
-    // game/tu_80457DFC.cpp (0x804580DC). Looks up entry `index` (a byte) of
+    // game/audio_mgr_80457DFC.cpp (0x804580DC). Looks up entry `index` (a byte) of
     // the JAUSection at 0x44 and returns a byte (1 when its state is 2);
     // tu_8039003C's constructor passes 3.
     bool fn_804580DC(u8 index);
-    // game/tu_80457DFC.cpp (0x80458408). Acts only for id 0x100001A on the
+    // game/audio_mgr_80457DFC.cpp (0x80458408). Acts only for id 0x100001A on the
     // sound at 0x80; r5 is tested with clrlwi. 24 (0x80458488). Called by
     // tu_8039003C's constructor with (0x100001A, true).
     void fn_80458408(s32 id, bool flag);
-    // SHARED-EDIT (tu_803DAC3C fn_803DD764): game/tu_80457DFC.cpp
+    // SHARED-EDIT (game_mode_803DAC3C fn_803DD764): game/audio_mgr_80457DFC.cpp
     // (0x80457F80, not written yet). Takes a JAISoundID by value and a signed
     // byte (-2 skips the first test); returns a byte the caller tests with
-    // clrlwi. 24. tu_803DAC3C passes (11, -2).
+    // clrlwi. 24. game_mode_803DAC3C passes (11, -2).
     bool fn_80457F80(JAISoundID id, s8 arg);
-    // game/tu_80457DFC.cpp (0x8045815C): slows the music (tempo kind 2,
+    // game/audio_mgr_80457DFC.cpp (0x8045815C): slows the music (tempo kind 2,
     // pitch 0.5, fx mix 1) and writes `flag` to port 0 of its tracks unless
     // the music is 0x1000001/2/4/0xD/0x23/0x2D. Called by
     // fn_80290E90 with false when the player's 0xCE4 is below 8, with true when it is 8.
     void setMusicSlow_8045815C(bool flag);
-    // game/tu_80457DFC.cpp (0x80457DFC): stores r4 (a byte) at 0x6.
+    // game/audio_mgr_80457DFC.cpp (0x80457DFC): stores r4 (a byte) at 0x6.
     void fn_80457DFC(u8 value);
-    // game/tu_80457DFC.cpp (0x80457E04): when 0x8c and 0x8b are 0, calls
+    // game/audio_mgr_80457DFC.cpp (0x80457E04): when 0x8c and 0x8b are 0, calls
     // setVolumeMode_80458744 with 3 (flag set) or 0.
     void fn_80457E04(bool flag);
-    // game/tu_80457DFC.cpp (0x80458744): switch on r4 (0-3).
+    // game/audio_mgr_80457DFC.cpp (0x80458744): switch on r4 (0-3).
     void setVolumeMode_80458744(s32 mode);
-    // game/tu_80457DFC.cpp (0x80457F60): sets the byte at 0x74.
+    // game/audio_mgr_80457DFC.cpp (0x80457F60): sets the byte at 0x74.
     void fn_80457F60();
-    // game/tu_80457DFC.cpp (0x80457F6C): clears the byte at 0x74, sets 0x6d to 0xB4.
+    // game/audio_mgr_80457DFC.cpp (0x80457F6C): clears the byte at 0x74, sets 0x6d to 0xB4.
     void fn_80457F6C();
-    // game/tu_80457DFC.cpp (0x8045873C): stores r4 (a byte) at 0x69.
+    // game/audio_mgr_80457DFC.cpp (0x8045873C): stores r4 (a byte) at 0x69.
     void fn_8045873C(u8 value);
-    // game/tu_80457DFC.cpp (0x8045959C): 0 until fn_804595E4 ran, then
+    // game/audio_mgr_80457DFC.cpp (0x8045959C): 0 until fn_804595E4 ran, then
     // 1 / 2 by JASAudioReseter::checkDone of the object at 0x2C.
     int fn_8045959C();
-    // game/tu_80457DFC.cpp (0x804595E4): JASAudioReseter::start(5, flag) on the object at 0x2C.
+    // game/audio_mgr_80457DFC.cpp (0x804595E4): JASAudioReseter::start(5, flag) on the object at 0x2C.
     void fn_804595E4(bool flag);
-    // game/tu_80457DFC.cpp (0x80459624): stores the position at 0x8/0xC/0x10 (x, z, y)
+    // game/audio_mgr_80457DFC.cpp (0x80459624): stores the position at 0x8/0xC/0x10 (x, z, y)
     // and copies `mtx` into listener `index` of the audience at 0x3C.
     void fn_80459624(const JGeometry::TVec3f* pos, Mtx mtx, s32 index);
 }; // Size: 0x90

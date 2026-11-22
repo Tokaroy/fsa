@@ -1,0 +1,34 @@
+# game/warning_window_8042E964 checkpoint
+
+Baseline: 7914 / 11557 functions (1478512 bytes). After: 7927 (+13; unit 1/31 -> 14/31).
+
+Matched (100 %): __sinit (generated, gen_game row removed), StageSelectWindow_804B1600 members
+fn_8042EB14, fn_8042EB24, fn_8042EB98, fn_8042EBEC, fn_8042EC7C, fn_8042EDAC, dtor
+fn_8042EEC8; WarningWindow_804B1634 fn_804310BC, fn_804310CC, fn_804316EC, fn_80431900,
+fn_80431A9C (two identical copies), dtor fn_80431C38.
+
+Resistant: fn_80431740 (99.81 %) and fn_804317AC (99.76 %): reloc-name only. The
+.sdata2 pool order is off because the original uses 11.0f (0x80543B94) in
+fn_80431174 before 480.0f; once fn_80431174 is written they should reach 100 %.
+
+Not written: the nine JASMemPool constructors at 0x8042E964..0x8042EAE4 (renamed
+in symbols.txt to __ct__..JASMemPool..). They are out-of-line copies called by
+thp_read_thread_80427D2C's __sinit; a template member ctor cannot be explicitly instantiated
+with this MWCC (syntax error), and `template class JASMemPool<T>;` emits nothing.
+Also unwritten: fn_80431174 (0x578), fn_8042EF9C (0x740), fn_8042F6DC (0xC8C),
+fn_80430368 (0x1B0, strings in .sdata2), fn_80430518 (0xBA4), fn_80431D84 (ctor, 0x690).
+
+SHARED-EDITS: include/game/GameGlobals.h (WarningWindow_804B1634: virtual dtor, fields
+0x4/0x8/0xC/0x10[5]/0x24[5]/0xE8/0xEA/0xEB/0xEC, members fn_804310BC, fn_80431900,
+fn_8042EF9C, fn_8042F6DC); config/G4SE01/splits.txt (.sbss 0x8053AEC0-0x8053AED0 moved
+from thp_read_thread_80427D2C to this unit); config/G4SE01/gen_game.tsv (warning_window_8042E964 row removed).
+New header include/game/cls_804B1600.h (vtable 0x804B1600; renamed vtables __vt__*).
+
+## Second pass (Sonnet 5.5)
+Baseline 8234 (14/31). After: 8234 (still 14/31; no counted gain).
+Written: WarningWindow_804B1634::fn_80431174 (cursor placement of the message window, 99.46 %: regalloc-only in the f0-f3 temporaries + .sdata2
+reloc names). Fields 0xBC/0xC0/0xC8/0xCC/0xD0/0xD8[3]/0xE4 carved out of field_0x38 (SHARED-EDIT, GameGlobals.h); return type bool (li r3, 0).
+Finding: fn_80431740 / fn_804317AC stay at 99.8 % after fn_80431174: the .sdata2 pool also puts 0.5f (0x80543B18) and 1.0f (0x80543B28)
+(first used by the unwritten fn_8042EF9C / fn_8042F6DC, a text layout engine calling fn_80430518) before 11.0f, so all three need those two
+functions written first. The nine JASMemPool constructors were left alone.
+Review fix: field_0xd8 is f32[2] (fn_8042F6DC stores it in a loop with i < 2), 0xE0..0xE4 unknown. fn_804317AC went 99.76 -> 99.71 (its 1.0f literal now pairs by pool order, see above).

@@ -7,7 +7,7 @@ class J2DScreen;
 class PaneCtrl_804AF86C;
 
 // Vtable 0x804B1378 (one slot, the destructor), 0x154 bytes, defined in
-// game/tu_80414F6C.cpp. The battle stage select screen ("bat_stage_select.blo"):
+// game/battle_stage_select_80414F6C.cpp. The battle stage select screen ("bat_stage_select.blo"):
 // the constructor stores `this` in lbl_8053AE00; tu_8039003C allocates it
 // with __nw__(0x154) when gGameRoot_8053AAF8->field_0x7f is clear. fn_804170B0 runs
 // the handler of state field_0x109 through a pointer-to-member table.
@@ -84,10 +84,10 @@ public:
     /* 0x152 */ u8 field_0x152[0x154 - 0x152];
 }; // Size: 0x154
 
-// Data of game/tu_80401848.cpp.
+// Data of game/dvd_mount_aram_archive_command_80401848.cpp.
 extern BattleStageSelect_804B1378* lbl_8053AE00;
 
-// 0x80414F6C (game/tu_80414F6C.cpp): lbl_8053AE00->field_0xe0.
+// 0x80414F6C (game/battle_stage_select_80414F6C.cpp): lbl_8053AE00->field_0xe0.
 s32 fn_80414F6C();
 
 #endif

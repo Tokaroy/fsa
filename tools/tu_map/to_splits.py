@@ -220,7 +220,7 @@ def main(apply):
     # global objects with constructors are built by its own __sinit, so a
     # .bss/.sbss symbol exactly one __sinit references belongs to that unit even when
     # other units' code uses it too (tu_8045B6F0's 49-entry JAISoundID table
-    # at 0x8052DEE0, read by tu_8045B010). The JAudio memPools every __sinit
+    # at 0x8052DEE0, read by player_sound_obj_8045B010). The JAudio memPools every __sinit
     # constructs have hundreds of such referencers and stay unowned.
     fname = {f['addr']: f['name'] for f in fns}
     sinit_refs = defaultdict(set)

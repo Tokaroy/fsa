@@ -8,7 +8,7 @@
 #include "game/act/act_force_gem.h"
 #include "game/act/act_tingle_buster.h"
 #include "game/act/tu_801DE714.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 
 // The actor with this serial, or NULL. This file looks actors up through one inline
 // helper, used at all 35 sites: written out by hand, cls_804A51E4::calcVelocity_0x88 differs
@@ -194,7 +194,7 @@ cls_804A51E4::~cls_804A51E4() {
                 lbl_8050EC80.getCurrentFile().field_0xc += field_0x2c0;
                 // The clamp looks the current file up again (the original
                 // indexes lbl_8050EC80 a second time after the add).
-                // FAKEMATCH(crack-pass): row view (tu_803B8C74.h SaveFileRow_CrackPass).
+                // FAKEMATCH(crack-pass): row view (save_data_803B8C74.h SaveFileRow_CrackPass).
                 SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
                 if (row.field_0x2c < 0) {
                     row.field_0x2c = 0;
@@ -255,7 +255,7 @@ void cls_804A51E4::fn_801E1E08() {
             if (field_0x2c0 > 0) {
                 if (!(mFlags & 0x80000)) {
                     lbl_8050EC80.getCurrentFile().field_0xc += field_0x2c0;
-                    // FAKEMATCH(crack-pass): row view (tu_803B8C74.h SaveFileRow_CrackPass).
+                    // FAKEMATCH(crack-pass): row view (save_data_803B8C74.h SaveFileRow_CrackPass).
                     SaveFileRow_CrackPass& row = lbl_8050EC80.getCurrentRow_CrackPass();
                     if (row.field_0x2c < 0) {
                         row.field_0x2c = 0;

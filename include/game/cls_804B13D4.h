@@ -1,8 +1,8 @@
 #ifndef GAME_CLS_804B13D4_H
 #define GAME_CLS_804B13D4_H
 
-// Vtable 0x804B13D4 (0, 0, the destructor), defined in game/tu_80418B64.cpp.
-// Its constructor is not identified yet; fn_8041E3B4 (tu_80418B64) is a
+// Vtable 0x804B13D4 (0, 0, the destructor), defined in game/adventure_hud_80418B64.cpp.
+// Its constructor is not identified yet; fn_8041E3B4 (adventure_hud_80418B64) is a
 // member taking a long and reading the byte at 0x28F, and fn_8041FC2C uses
 // the object's tables. The element and member types are not identified: they
 // are polymorphic objects with only a destructor, typed as PaneCtrl_804AF86C
@@ -23,32 +23,32 @@ public:
     AdventureHud_804B13D4();
     /* 0x08 */ virtual ~AdventureHud_804B13D4();
 
-    // tu_80418B64 (0x8041918C). Takes the player index; sets the byte at
+    // adventure_hud_80418B64 (0x8041918C). Takes the player index; sets the byte at
     // 0x294 + player to a level (fn_802366CC / 60 + 1, clamped to 0..99) and
     // shows the pictures of the player's pane tags for it.
     void fn_8041918C(s32 player);
 
-    // Owner: game/tu_80418B64.cpp (0x8041E58C). Called with only the object by
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041E58C). Called with only the object by
     // HudMgr_804B1920::fn_8043D834.
     void fn_8041E58C();
-    // Owner: game/tu_80418B64.cpp (0x8041E708). Called with the three
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041E708). Called with the three
     // arguments HudMgr_804B1920::fn_8043D874 received.
     void fn_8041E708(s32 id, s32 arg1, u32 arg2);
-    // Owner: game/tu_80418B64.cpp (0x8041E3B4): updates the player's bit in the masks at 0x28F / 0x290 / 0x293.
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041E3B4): updates the player's bit in the masks at 0x28F / 0x290 / 0x293.
     void fn_8041E3B4(s32 player);
-    // Owner: game/tu_80418B64.cpp (0x80418B64): 0..4 from the bits of lbl_8053AED0's byte 0xDC and whether
+    // Owner: game/adventure_hud_80418B64.cpp (0x80418B64): 0..4 from the bits of lbl_8053AED0's byte 0xDC and whether
     // player 0 is off the upper or lower third of the screen (field_0x218).
     s32 fn_80418B64();
-    // Owner: game/tu_80418B64.cpp (0x8041FC2C). Called with only the object by
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041FC2C). Called with only the object by
     // HudMgr_804B1920::fn_8043EDF8.
     void fn_8041FC2C();
-    // Owner: game/tu_80418B64.cpp (0x8041EDB0). Called with only the object by
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041EDB0). Called with only the object by
     // HudMgr_804B1920::fn_8043D8B4.
     void fn_8041EDB0();
-    // Owner: game/tu_80418B64.cpp (0x8041F720). Called with only the object by
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041F720). Called with only the object by
     // HudMgr_804B1920::fn_8043DC98 (its draw).
     void fn_8041F720();
-    // Owner: game/tu_80418B64.cpp (0x8041F5FC): draws the HUD screen (field_0x18) unless the
+    // Owner: game/adventure_hud_80418B64.cpp (0x8041F5FC): draws the HUD screen (field_0x18) unless the
     // game mode excludes it.
     void fn_8041F5FC();
     // 0x80418D08: steps the alpha scales field_0x128 / field_0x168 of the player and, when one
@@ -88,7 +88,7 @@ public:
     /* 0x2C */ J2DScreen* field_0x2c[4]; // search(u64) at vtable 0x3C (fn_8041918C), drawn by fn_8041F720
     /* 0x3C */ u8 field_0x3c[0x4C - 0x3C];
     /* 0x4C */ J2DOrthoGraph* field_0x4c; // setOrtho + setPort in fn_8041F720
-    /* 0x50 */ PlayerWindowSelect_804B19E0* field_0x50; // the window picker (game/act/tu_80441318.h)
+    /* 0x50 */ PlayerWindowSelect_804B19E0* field_0x50; // the window picker (game/act/player_window_select_80441318.h)
     /* 0x54 */ PaneCtrl_804AF86C* field_0x54;
     /* 0x58 */ PaneCtrl_804AF86C* field_0x58;
     /* 0x5C */ PaneCtrl_804AF86C* field_0x5c;

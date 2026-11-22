@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/stopwatch_801ED3DC.h"
-#include "game/tu_804455E0.h"
+#include "game/mg_horse_race_screen_804455E0.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
 

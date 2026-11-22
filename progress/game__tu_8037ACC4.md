@@ -13,9 +13,9 @@ after the lbl_8053AD70 load. if/else, ternary, inline getter all the same.
 extab/extabindex below 100 % (likely tied to it).
 
 ## SHARED-EDITS
-- splits.txt: tu_8036FB60 .sbss end 0x8053AD80 -> 0x8053AD70; tu_8037DF68 gets
+- splits.txt: act_four_girls_control_8036FB60 .sbss end 0x8053AD80 -> 0x8053AD70; message_manager_8037DF68 gets
   .sbss 0x8053AD78-0x8053AD80 (lbl_8053AD78, stored only there).
-- symbols.txt: callee placeholders in tu_8044C7F0/tu_80453AF8 renamed to
+- symbols.txt: callee placeholders in collect_screen_8044C7F0/pause_screen_80453AF8 renamed to
   mangled member names (fn_8044CB00.. / fn_80453B14.. / ctors).
 - gen_game.tsv: unit row removed.
 - New headers: cls_804AE9B0.h, cls_804B1D58.h, cls_804B1DA8.h.

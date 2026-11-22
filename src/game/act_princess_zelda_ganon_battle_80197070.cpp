@@ -10,7 +10,7 @@
 #include "game/StageFlag.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/tu_80379F84.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 #include "game/ActorManager.h"
 #include "game/Camera.h"
 #include "game/Effect.h"
@@ -88,7 +88,7 @@ BOOL fn_8019CE40(s32 stage, s32 sub) {
     return isStageFlagSet(stage, sub);
 }
 
-// Same body as setStageFlag (StageFlag.h, inlined by tu_803A8DFC); not a wrapper call
+// Same body as setStageFlag (StageFlag.h, inlined by result_screen_803A8DFC); not a wrapper call
 // because that compiles the early returns differently (90.87 %).
 void fn_8019CDE4(s32 stage, s32 sub) {
     if (stage < 0 || stage > 7) {

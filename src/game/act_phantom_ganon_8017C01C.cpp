@@ -10,7 +10,7 @@
 #include "game/SpriteParams.h"
 #include "game/ActorId.h"
 #include "game/Player.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "game/act/act_sword_soldier.h"
 #include "game/act/act_wizzrobe.h"
 #include "game/EmitterDelete.h"

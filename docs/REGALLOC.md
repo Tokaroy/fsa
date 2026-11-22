@@ -99,7 +99,7 @@ shaped chain.
 
 ## Worked example: the FileSelect pane loops
 
-About a dozen functions of `game/tu_803BC6F0.cpp` loop over a table of pane tags
+About a dozen functions of `game/file_select_803BC6F0.cpp` loop over a table of pane tags
 (`for (i < 9) ctrl->setAlpha(screen->search(table[i]), alphas[i])`). The original has the counter
 in the first register and the table pointer the compiler makes in the next; ours had them the other
 way round. By rule 2 the pointer (an optimiser temporary) is coloured before a named counter and

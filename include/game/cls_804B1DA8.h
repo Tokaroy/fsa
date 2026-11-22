@@ -7,7 +7,7 @@ class J2DScreen;
 class PaneCtrl_804AF86C;
 
 // Vtable 0x804B1DA8 (one slot, the destructor), 0x5C bytes, defined in
-// game/tu_80453AF8.cpp (not written yet). The constructor fn_80454DEC stores
+// game/pause_screen_80453AF8.cpp (not written yet). The constructor fn_80454DEC stores
 // `this` in lbl_8053AF48; tu_8037ACC4 allocates it with __nw__(0x5C) when
 // gGameRoot_8053AAF8->field_0x7f is clear.
 class PauseScreen_804B1DA8 {
@@ -38,10 +38,10 @@ public:
     /* 0x5C */ // size
 };
 
-// Data of game/tu_80453AF8.cpp.
+// Data of game/pause_screen_80453AF8.cpp.
 extern PauseScreen_804B1DA8* lbl_8053AF48;
 
-// 0x80453AF8 (game/tu_80453AF8.cpp): 9 without lbl_8053AF48, else its
+// 0x80453AF8 (game/pause_screen_80453AF8.cpp): 9 without lbl_8053AF48, else its
 // field_0x58.
 s32 fn_80453AF8();
 

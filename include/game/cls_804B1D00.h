@@ -1,11 +1,11 @@
 #ifndef GAME_CLS_804B1D00_H
 #define GAME_CLS_804B1D00_H
 
-// Code: game/tu_8044A828.cpp. Named after its vtable, 0x804B1D00 (only the
+// Code: game/mg_volleyball_screen_8044A828.cpp. Named after its vtable, 0x804B1D00 (only the
 // virtual destructor, fn_8044B3FC, in the slot at 0x8). The constructor
 // fn_8044B4B8 stores the object in lbl_8053AF28 and builds the
 // "mg_volleyball.blo" screen with two panes. Same shape as MgFishingScreen_804B1CC8
-// (game/tu_8044998C.cpp).
+// (game/mg_fishing_screen_8044998C.cpp).
 
 #include "types.h"
 
@@ -38,7 +38,7 @@ public:
     /* 0x14 */ u8 field_0x14; // bit 0: show 'Pf' digits; bit 1: show 'Pt' digits; cleared by fn_8044A828
 };
 
-// The object at lbl_8053AF28 (game/tu_8044A828.cpp, constructor fn_8044B4B8;
+// The object at lbl_8053AF28 (game/mg_volleyball_screen_8044A828.cpp, constructor fn_8044B4B8;
 // the auto split at 0x8053AF28 defines it).
 extern MgVolleyballScreen_804B1D00* lbl_8053AF28;
 

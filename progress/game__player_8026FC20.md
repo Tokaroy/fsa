@@ -72,8 +72,8 @@ missing/extra (one dead `beq` after the Tingle null test), fn_80273FB8 98.59 -> 
 fn_802730D8; auto_inline region because fn_80274238 calls it out of line; return is u8 in the original
 but fn_80274238 then converts it).
 Cleanup: the isDown() file inline is gone (deferred inlining: isDeadState_80270A8C is the plain function).
-SHARED-EDITS: include/game/Player.h (isDown decl removed, comments), include/game/act/tu_803D9944.h
-(Tingle_804B0478 u8 field_0x251 from field_0x230[0x30], size unchanged; stb 0x251 in tu_803D9944).
+SHARED-EDITS: include/game/Player.h (isDown decl removed, comments), include/game/act/act_tingle_803D9944.h
+(Tingle_804B0478 u8 field_0x251 from field_0x230[0x30], size unchanged; stb 0x251 in act_tingle_803D9944).
 Next: fn_80277F98 (0x33 update, 0x1128; fixes the 24 / -24 / -12 / 1.625 / 0.12 literals before -2),
 then fn_80279824, fn_8027A1E0, fn_8027AAD0, fn_8027BE74, fn_8027CC90, fn_8027D5F0, fn_8027DEA0, fn_80274CB8.
 

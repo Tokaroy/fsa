@@ -5,7 +5,7 @@
 #include "game/Player.h"
 #include "game/GameView.h"
 #include "game/act/act_opening_narration_801286C0.h"
-#include "game/act/tu_8044C028.h"
+#include "game/act/prologue_overlay_8044C028.h"
 #include "game/ActorManager.h"
 #include "game/Effect.h"
 #include "JSystem/JUtility/JUTVideo.h"

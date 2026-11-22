@@ -87,8 +87,8 @@ stays OK):
   r3, N; b fn`) at the end of the file that emits the vtable, after its
   `__sinit`, so tu_map's cut put them at the start of the next unit. Each
   goes to the unit whose `.data` holds its vtable: 0x80457C08 to
-  tu_80455CA4, 0x8045B010-0x8045B030 (four) to tu_8045A640, 0x8045B6F0 to
-  tu_8045B010. These are the only thunks in the game code. The units keep
+  actor_sound_obj_80455CA4, 0x8045B010-0x8045B030 (four) to tu_8045A640, 0x8045B6F0 to
+  player_sound_obj_8045B010. These are the only thunks in the game code. The units keep
   their names (tu_80457C08 now starts at 0x80457C10).
 - The tool's "references ... inside another unit" notes cover only
   references it anchors to a single unit (10 of them). Code also reads

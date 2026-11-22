@@ -59,7 +59,7 @@ public:
     // non-NULL emitter, copies the colour mColors[player] to the emitter's
     // bytes 0xB8-0xBA.
     void fn_8013C830(s32 player, JPABaseEmitter* emitter);
-    // 1 unit (tu_802D39B8, 6 calls). deleteAllParticle() on every live
+    // 1 unit (game_view_802D39B8, 6 calls). deleteAllParticle() on every live
     // emitter whose id is 0x349-0x34B.
     void fn_8013C8CC();
     // The executeAfter callback of vtable 0x8049F15C (fn_8013F588 passes the

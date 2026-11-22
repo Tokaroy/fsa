@@ -12,7 +12,7 @@
 #include "game/Player.h"
 #include "game/act/act_vaati_demo.h"
 #include "game/cls_804A8638.h"
-#include "game/tu_803B8C74.h"
+#include "game/save_data_803B8C74.h"
 
 // The animation table of field_0x238: (cel, duration) pairs ended by a cel < 0.
 static const s16 lbl_80464990[] = {0, 10, 1, 10, 2, 10, 3, 10, -1, -1};

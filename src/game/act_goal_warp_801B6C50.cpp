@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/Player.h"
-#include "game/tu_802EF76C.h"
+#include "game/act_light_environment_control_802EF76C.h"
 #include "game/act/act_goal_warp_801B6C50.h"
 #include "game/Effect.h"
 #include "game/EmitterDelete.h"

@@ -1,6 +1,6 @@
 #include "game/GameAudioBase.h"
 
-// Sound IDs, indexed by a u8 in tu_8045B010's fn_8045B030.
+// Sound IDs, indexed by a u8 in player_sound_obj_8045B010's fn_8045B030.
 JAISoundID lbl_8052DEE0[] = {
     0x1000002, 0x3, 0x20011, 0x20034,
     0x9, 0x30009, 0x12, 0x400B9,

@@ -9,7 +9,7 @@
 // and 0x20. Slots 0x10, 0x18, 0x1C and 0x24-0x50 are the base's.
 
 #include "game/ActorBase.h"
-#include "game/act/tu_8036FB60.h"
+#include "game/act/act_four_girls_control_8036FB60.h"
 
 class UnknownFORM_804A7BE8 : public ActorBase_804A5770 {
 public:

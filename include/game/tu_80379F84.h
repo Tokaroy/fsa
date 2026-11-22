@@ -2,8 +2,8 @@
 #define GAME_TU_80379F84_H
 
 #include "types.h"
-#include "game/tu_803A8DFC.h"
-#include "game/tu_803B8C74.h"
+#include "game/result_screen_803A8DFC.h"
+#include "game/save_data_803B8C74.h"
 #include "JSystem/JGeometry.h"
 
 class JKRArchive;
@@ -22,7 +22,7 @@ class J2DAnmTevRegKey;
 // its vtable (slot 0x08 is the destructor); their units are not written yet,
 // so only what game/tu_80379F84.cpp uses is declared here.
 
-// ResultScreen_804AF9A0 (vtable 0x804AF9A0) is declared in game/tu_803A8DFC.h.
+// ResultScreen_804AF9A0 (vtable 0x804AF9A0) is declared in game/result_screen_803A8DFC.h.
 
 // Vtable 0x804AFAB0; constructor fn_803B8414, destructor fn_803B82FC
 // (game/tu_803B7DCC.cpp). The constructor stores the object in lbl_8053ADA8.
@@ -81,12 +81,12 @@ public:
 }; // Size: at least 0x2A0
 
 // Vtable 0x804B03D8; constructor fn_803D901C, destructor fn_803D8D74
-// (game/tu_803D7098.cpp). The constructor stores the object in lbl_8053ADC0.
+// (game/total_screen_803D7098.cpp). The constructor stores the object in lbl_8053ADC0.
 class TotalScreen_804B03D8 {
 public:
     TotalScreen_804B03D8(); // fn_803D901C
     /* 0x08 */ virtual ~TotalScreen_804B03D8();
-    // game/tu_803D7098.cpp, not written yet; no other arguments.
+    // game/total_screen_803D7098.cpp, not written yet; no other arguments.
     void fn_803D82EC();
     void fn_803D8364();
     void fn_803D8670();
@@ -138,16 +138,16 @@ public:
 }; // Size: at least 0x82
 
 // Vtable 0x804B0288; constructor fn_803D58E0, destructor fn_803D5710
-// (game/tu_803D2C34.cpp). The constructor stores the object in lbl_8053ADB8.
+// (game/save_screen_803D2C34.cpp). The constructor stores the object in lbl_8053ADB8.
 class SaveScreen_804B0288 {
 public:
     SaveScreen_804B0288(JKRArchive* archive, bool flag); // fn_803D58E0
     /* 0x08 */ virtual ~SaveScreen_804B0288();
-    // game/tu_803D2C34.cpp, not written yet; no other arguments.
+    // game/save_screen_803D2C34.cpp, not written yet; no other arguments.
     void fn_803D5090();
     void fn_803D521C();
     void fn_803D5554();
-    // The state handlers of game/tu_803D2C34.cpp (no other arguments), indexed by field_0x216c / 0x216d.
+    // The state handlers of game/save_screen_803D2C34.cpp (no other arguments), indexed by field_0x216c / 0x216d.
     void fn_803D2C34();
     void fn_803D2C9C();
     void fn_803D2E10();
@@ -253,7 +253,7 @@ struct cls_804AE9A0 {
 }; // Size: at least 0x1F
 
 // Owner: game/act_princess_zelda_ganon_battle_80197070.cpp (0x8019CDE4 / 0x8019CE40). Set / test bit
-// stage * 4 + sub of the current save file's mFlags (game/tu_803B8C74.h; stage 0-7, sub 0-3;
+// stage * 4 + sub of the current save file's mFlags (game/save_data_803B8C74.h; stage 0-7, sub 0-3;
 // anything else is ignored / false).
 void fn_8019CDE4(s32 stage, s32 sub);
 BOOL fn_8019CE40(s32 stage, s32 sub);

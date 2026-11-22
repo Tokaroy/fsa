@@ -21,7 +21,7 @@ gate: ok.
 ## Resistant
 - fn_8009611C (0x30, missing): `lbz r0,0xb6(r3); extsb; ==0x78 -> stfs f1,0xb8; ==0x79 ->
   stfs f1,0xbc; else stfs f1,0xc0; blr`: rotate(f32)'s angle store without calcMtx(),
-  called from game code (tu_803A60E4, tu_80434370). No donor (mkdd, tp, pikmin2, tww, sms,
+  called from game code (tu_803A60E4, rule_screen_80434370). No donor (mkdd, tp, pikmin2, tww, sms,
   lm, Petari) has such a J2DPane function, so no name; not written. Blocked on a name.
 - .sdata2 95.24 %: our 255.0f (@1685, setInfluencedAlpha only) is absent in FSA, where
   setInfluencedAlpha is dead-stripped; the linker drops it with the function.

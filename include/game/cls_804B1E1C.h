@@ -6,7 +6,7 @@
 // "kk_rupyNum_00.bti".."kk_rupyNum_09.bti" plus "rupy_num_exclamation.bti"
 // (main2D.arc, GameState_804B0FE0 field_0x20) and 128 queued sprites that
 // fn_804556A4 draws through the digit's picture.
-// Code: game/tu_8045560C.cpp; tu_8043A0E8's object keeps it at 0x2BC and
+// Code: game/rupee_digit_sprites_8045560C.cpp; hud_mgr_8043A0E8's object keeps it at 0x2BC and
 // calls fn_8045560C on it (act_score also uses lbl_8053AF50).
 
 #include "types.h"

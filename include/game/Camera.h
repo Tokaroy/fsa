@@ -1,7 +1,7 @@
 #ifndef GAME_CAMERA_H
 #define GAME_CAMERA_H
 
-// The 2D camera of game/tu_8030C058.cpp: one instance, allocated with
+// The 2D camera of game/camera_8030C058.cpp: one instance, allocated with
 // __nw__(0x85C, heap, 0) and built by its constructor fn_8030E718 in
 // game/tu_8013AAD4.cpp (0x8013C264-0x8013C280), stored at
 // gGameRoot2_8053AB10->0x24. 94 game units use the unit, 77 of them through
@@ -109,12 +109,12 @@ public:
     // (PSMTXConcat), makes GX_PNMTX9 the current matrix and loads the result
     // as its position and normal matrix.
     void fn_8030DD20(const Mtx m);
-    // 0x8030DD8C (game/tu_8030C058.cpp, not written yet). Sets the screen
+    // 0x8030DD8C (game/camera_8030C058.cpp, not written yet). Sets the screen
     // box (reads 0x0-0xC of box) as the ortho projection; when `light`
     // is set also builds the light matrices. Called by
     // GameRoot2_8049F108::fn_8013B414, which passes its arguments on.
     void fn_8030DD8C(const JGeometry::TBox2f* box, bool light);
-    // 0x8030DFE8 (game/tu_8030C058.cpp, not written yet). Loads the
+    // 0x8030DFE8 (game/camera_8030C058.cpp, not written yet). Loads the
     // projection, position matrix 0x74 and viewport / scissor from mScreenRect_0x144;
     // `copy` first copies the matrices from 0x4 / 0x34 into 0x74 / 0xA4.
     void loadGXState_8030DFE8(bool copy);
@@ -137,11 +137,11 @@ public:
     // (JPADrawInfo's default constructor). effect_system_8013C5C8 copies it whole
     // (0x8013D718-0x8013D7CC) and passes it to JPAEmitterManager::draw.
     /* 0x0E4 */ JPADrawInfo mDrawInfo_0xe4;
-    // The screen rectangle (x0, y0, x1, y1) as unsigned ints: written by tu_802F5040
+    // The screen rectangle (x0, y0, x1, y1) as unsigned ints: written by tile_map_802F5040
     // (0x802FF438), read by isOnScreen_8030C2A8.
     /* 0x144 */ JGeometry::TBox2<u32> mScreenRect_0x144;
     // The visible area: addFocusPoint_8030C210 / fn_8030C058 test against it,
-    // tu_802D39B8 writes it (0x802D9F64), fn_8030C85C resets it from
+    // game_view_802D39B8 writes it (0x802D9F64), fn_8030C85C resets it from
     // mNextVisibleBox_0x190.
     /* 0x154 */ JGeometry::TBox2f mVisibleBox_0x154;
     // 3 units copy it word by word to the stack (act_unknown_form_8029C584 0x8029C5CC);

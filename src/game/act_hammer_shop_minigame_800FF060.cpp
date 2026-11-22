@@ -6,7 +6,7 @@
 #include "game/Message.h"
 #include "game/Player.h"
 #include "game/Unk_8045A080.h"
-#include "game/tu_804465B8.h"
+#include "game/mg_oni_screen_804465B8.h"
 #include "game/act/act_hammer_shop_minigame_800FF060.h"
 
 extern const u8 lbl_80539EA8[2];

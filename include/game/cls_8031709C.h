@@ -4,7 +4,7 @@
 #include "types.h"
 #include "JSystem/JGeometry.h"
 
-// A small sound/effect sequencer, defined in game/tu_80316E34.cpp. No
+// A small sound/effect sequencer, defined in game/sound_effect_seq_80316E34.cpp. No
 // vtable; named after its default constructor (fn_8031709C, the one the
 // callers run after __nw__(0x1C)). Held through a pointer by the Tingle and
 // old-man actors (act_tingle_first +0x24C, act_tingle_tower +0x278,

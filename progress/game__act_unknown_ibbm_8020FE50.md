@@ -7,6 +7,6 @@ Matched (8/8, code and data 100 %): draw, vfunc_0xA0, checkHitByActor_0x60, upda
 UnknownIBBM_804A6100 (vtable 0x804A6100, IBBM), and the generated __sinit.
 Resistant: none. extab/extabindex show 59.26 % in try.py (weak-duplicate entries only).
 
-SHARED-EDITS: see the report (symbols.txt renames of tu_80210630 / tu_8043A0E8 / ActorManager placeholders,
+SHARED-EDITS: see the report (symbols.txt renames of tu_80210630 / hud_mgr_8043A0E8 / ActorManager placeholders,
 GameGlobals.h, ActorManager.h, gen_game.tsv row).
 Next: tu_80210630 owns cls_804A61C8 (header include/game/act/tu_80210630.h; vtable symbol renamed).
