@@ -1420,7 +1420,7 @@ void cls_804A71A8::fn_8026B81C(u16 tile) {
     }
 }
 
-// FIXME: 98.83 %, missing/extra; behaviour near.
+// FIXME: 99.30 %, missing/extra; behaviour clean.
 // Ours is 3 instructions shorter. The gotos at
 // blockMarked50, liftOn60, the counter and the near-'WARP' exit are
 // FAKEMATCH(crack-pass) (docs/CRACK_PASS.md). Left: the near-'WARP'
