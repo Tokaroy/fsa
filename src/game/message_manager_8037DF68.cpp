@@ -1088,18 +1088,7 @@ u16 fn_803846A4(s32 index) {
 // count, the player's slot, a stage flag, a view bit...). Returns the message that has no command.
 u32 fn_80383EB0(s32 window, u32 msg) {
     s32 player = getRepresentativePlayer_8022EA0C(window);
-    bool listed = isGameModeSet();
-    s32 slot;
-    if (listed) {
-        s32 mapped = fn_8022F340(window);
-        if (mapped >= 0 && mapped < 4) {
-            slot = mapped;
-        } else {
-            slot = window;
-        }
-    } else {
-        slot = window;
-    }
+    s32 slot = windowIndex(window);
     u32 index = msg;
     while (true) {
         u8 command;
@@ -1224,7 +1213,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             if (pick > count) {
                 pick = count;
             }
-            index = findMessageIndex_803846BC(lbl_8053AD78->mBmg->inf1.entries[index].id + pick);
+            MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+            index = findMessageIndex_803846BC(inf1->entries[index].id + pick);
             break;
         }
         case 0x18: {
