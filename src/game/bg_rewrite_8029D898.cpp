@@ -1336,9 +1336,6 @@ static inline void writeCell(int layer, s32 cell, u16 tile) {
 }
 
 // FIXME: 92.35 %, missing/extra; behaviour clean.
-// Register allocation and placement only: the original saves b in
-// r30 and cell in r29 up front and copies layer into r31 inside each branch
-// (mr r31, r4 twice); ours saves layer in r29 before the branch.
 void BgRewrite_804A7C98::writeTilePair_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b) {
     if (vertical == 0) {
         writeCell(layer, cell, a);
