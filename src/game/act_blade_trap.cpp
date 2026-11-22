@@ -107,7 +107,7 @@ void BladeTrap_804A04D8::update() {
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
 
     if (field_0x258 && field_0x238 == 0) {
         field_0x260++;
@@ -220,9 +220,9 @@ void BladeTrap_804A04D8::draw() {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
         }
-        fn_801F02BC("enemy_both2_sob.bin", 0x154, &params, 0, mode, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x154, &params, 0, mode, false, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_gc_sob.bin", field_0x260 + 0x17A, &params, 0, mode, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", field_0x260 + 0x17A, &params, 0, mode, false, 1.0f, 1.0f);
     }
 }
 
@@ -233,7 +233,7 @@ bool BladeTrap_804A04D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos)
         return true;
     }
     if (field_0x24c == 0) {
-        s32 tile = fn_8022461C(pos, layer);
+        s32 tile = getTileCollisionCode_8022461C(pos, layer);
         if (tile != 0 && tile != 4 && tile != 5 && tile != 6 && tile != 7 && tile != 2 && tile != 3 &&
             tile != 0x50 && tile != 0xE && tile != 0xC && tile != 0x27 && tile != 0x28 && tile != 0x29 &&
             tile != 0x2A && tile != 0x2B && tile != 0x2C && tile != 0x2D && tile != 0x2E && tile != 0x2F &&

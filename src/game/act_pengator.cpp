@@ -11,7 +11,7 @@
 static s32 lbl_804A1808[16] = {0, 1, 0, 2, 3, 4, 3, 5, 6, 7, 8, 7, 10, 9, 11, 9};
 static s32 lbl_804A1848[16] = {4, 9, 4, 9, 4, 9, 4, 9, 9, 4, 9, 4, 9, 4, 9, 4};
 
-// The hit reaction update() runs after fn_801F3D94 or fn_801F305C reports a
+// The hit reaction update() runs after updateHitReaction_801F3D94 or fn_801F305C reports a
 // hit; the original has this code twice (inlined at both checks).
 static inline void hitReaction(Pengator_804A1888* self) {
     self->field_0xbc = 2;
@@ -82,7 +82,7 @@ void Pengator_804A1888::update() {
     s32 outDir = -1;
     JGeometry::TVec2f center;
 
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         hitReaction(this);
         return;
     }
@@ -95,14 +95,14 @@ void Pengator_804A1888::update() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x25c, 0.1f, field_0x250);
     mPos += mVel_0x3c;
     fn_80212AC0()->fn_80212AF0(&mPos);
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, 0, 0);
     u8 moved = fn_801F2618(NULL, false);
 
     box.addPos(pos);
     center.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     center.y = box.f.y + 0.5f * (box.i.y - box.f.y);
-    u16 tile = fn_802265FC((const JGeometry::TVec3f*)&center, mLayer_0x4);
+    u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&center, mLayer_0x4);
 
     field_0x250 = 1.0f;
     if (tile == 0x50) {

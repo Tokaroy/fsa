@@ -40,14 +40,14 @@ void UnknownBGBL_804A4BB0::init() {
     mFlags |= 0x300;
     mParamAtcp_0x114 = 2;
     field_0x194 = 1;
-    if (fn_801CD2F8(mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         mAnim.fn_801D2608(lbl_8053A140, 1);
         mAnim.startAnim_801D22DC(0, 2, false);
     } else {
         mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x226, 1, 2, NULL, NULL, true, 1.0f);
         mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x227, 1, 2, NULL, NULL, true, 1.0f);
     }
-    if (fn_801CD2F8(mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         fn_801D7DB4(1.0f);
     } else {
         fn_801D7DB4(0.0f);
@@ -70,7 +70,7 @@ void UnknownBGBL_804A4BB0::update() {
     s32 i;
     s32 mode;
     if (isTiny(mVel_0x3c)) {
-        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
     } else {
         s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -79,7 +79,7 @@ void UnknownBGBL_804A4BB0::update() {
             mAlive = false;
         } else {
             mode = 1;
-            if (!fn_801CD2F8(mLayer_0x4)) {
+            if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
                 mode = 3;
             }
             u8 hits = fn_801F2740(-1);
@@ -95,7 +95,7 @@ void UnknownBGBL_804A4BB0::update() {
             if (hits) {
                 mAlive = false;
             } else {
-                if (fn_801CD2F8(mLayer_0x4)) {
+                if (isUpperLayer_801CD2F8(mLayer_0x4)) {
                     mAnim.fn_801D1C18();
                 }
                 mPos += mVel_0x3c;
@@ -108,8 +108,8 @@ void UnknownBGBL_804A4BB0::update() {
 
 void UnknownBGBL_804A4BB0::draw() {
     if (isTiny(field_0x54) == false) {
-        if (fn_801CD2F8(mLayer_0x4)) {
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C7, false, 2, -1, 1, 0, 0);
+        if (isUpperLayer_801CD2F8(mLayer_0x4)) {
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C7, false, 2, -1, 1, 0, 0);
         }
     }
 }

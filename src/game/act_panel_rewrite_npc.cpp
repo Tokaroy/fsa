@@ -54,7 +54,7 @@ void PanelRewriteNPC_804A8E40::init() {
 }
 
 void PanelRewriteNPC_804A8E40::vfunc_0x10() {
-    u8 gameFlag = gGameRoot_8053AAF8->fn_80138A30();
+    u8 gameFlag = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     s32 keep = 0;
     u64 bit;
     u64 mask;
@@ -94,7 +94,7 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
         } else {
             field_0x24c = false;
         }
-        field_0x254 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x250);
+        field_0x254 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, field_0x250);
         field_0x230 = 0;
 
         if (field_0x234 == 0x30) {

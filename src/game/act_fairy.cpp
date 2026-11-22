@@ -269,7 +269,7 @@ void Fairy_804A03B8::update() {
         }
         field_0x278 = field_0x26c * JMath::sincosTable_.sinShort(field_0x274);
         field_0x27c = field_0x26c * JMath::sincosTable_.cosShort(field_0x274);
-        if (field_0x248 > 100 || getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (field_0x248 > 100 || getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             deleteEmitterKeep(&mEmitter290);
             deleteEmitterKeep(&mEmitter294);
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
@@ -354,12 +354,12 @@ void Fairy_804A03B8::draw() {
             params.field_0x30 = 0x11;
         }
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x5E, &params, 1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 1);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 1);
     } else {
         s32 frame = 0x5E;
         if (field_0x248 != 0) {
             frame = 0x7D;
         }
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame + field_0x250, false, 2, -1, 1, 0, 1);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame + field_0x250, false, 2, -1, 1, 0, 1);
     }
 }

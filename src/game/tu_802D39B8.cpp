@@ -584,19 +584,19 @@ void GameView_804A9950::vfunc_0x10() {
     for (int i = 0; i < 16; i++) {
         if (field_0xf0[i].x > lbl_8053A1A8) {
             field_0xf0[i].x -= lbl_8053A1A8;
-            gAudioMgr_8053AF80->fn_80458880(0x4F, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x4F, -1);
         } else {
             field_0xf0[i].x = 0.0f;
         }
         if (field_0xf0[i].y > lbl_8053A1A8) {
             field_0xf0[i].y -= lbl_8053A1A8;
-            gAudioMgr_8053AF80->fn_80458880(0x4F, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x4F, -1);
         } else {
             field_0xf0[i].y = 0.0f;
         }
     }
 
-    if (gGameRoot_8053AAF8->field_0x4c == 7 && !fn_802DEBA0() && !fn_802DCD0C()) {
+    if (gGameRoot_8053AAF8->field_0x4c == 7 && !fn_802DEBA0() && !isInTransition_802DCD0C()) {
         fn_802D3A18();
     }
 
@@ -625,7 +625,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     s32 entered = 0;
     u32 exits = 0xF;
     field_0xc9 = 0;
-    if (fn_802DCD0C() == 0) {
+    if (isInTransition_802DCD0C() == 0) {
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
@@ -665,7 +665,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
 // FIXME: 98.84 %, regalloc-only; behaviour clean.
 u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
     bool moved = false;
-    if (fn_802DCD0C() == 0) {
+    if (isInTransition_802DCD0C() == 0) {
         restartTimeLimit();
         clearScreenState();
         if (dir[0] > 0) {
@@ -705,11 +705,11 @@ void GameView_804A9950::fn_802DCDF4() {
     field_0xc9 = 0;
 }
 
-// Returns a byte like fn_802DCD0C: the bool result is narrowed at the return
+// Returns a byte like isInTransition_802DCD0C: the bool result is narrowed at the return
 // (clrlwi r3, r6, 24).
 u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
     bool moved = false;
-    if (fn_802DCD0C() == 0) {
+    if (isInTransition_802DCD0C() == 0) {
         if (dir[0] > 0) {
             mScreenX_0x14++;
         } else if (dir[0] < 0) {
@@ -729,7 +729,7 @@ u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
     return moved;
 }
 
-u8 GameView_804A9950::fn_802DCD0C() {
+u8 GameView_804A9950::isInTransition_802DCD0C() {
     return gGameRoot2_8053AB10->field_0x24->mInTransition_0x1e8;
 }
 
@@ -1270,7 +1270,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         fn_80212AC0()->mCount = 0;
         fn_8021F064()->fn_8021F27C();
         fn_801DAC6C()->fn_801DAF4C();
-        fn_801C0D70()->fn_801C151C();
+        getShadowLinkFight_801C0D70()->fn_801C151C();
         fn_8020D58C()->fn_8020D690();
         fn_801283E8()->fn_801283BC();
         fn_8012F554()->fn_8012F494();
@@ -1442,7 +1442,7 @@ void GameView_804A9950::fn_802D8050(s32 bit, bool set, u8 value) {
     }
 }
 
-bool GameView_804A9950::fn_802D800C(s32 bit) {
+bool GameView_804A9950::isScreenFlagSet_802D800C(s32 bit) {
     return ((1 << bit) & getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14]) != 0;
 }
 
@@ -1858,12 +1858,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     s32 i = 0;
     if (layer < 8) {
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, cell);
+            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer + 1, n);
                 getGameView_802D6A9C()->field_0x2948[0][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer + 1, cell);
+                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 1, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -1964,12 +1964,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     } else {
         s32 slot = layer - 7;
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, cell);
+            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer, n);
                 getGameView_802D6A9C()->field_0x2948[slot][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer + 8, cell);
+                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 8, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -2033,7 +2033,7 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 getGameView_802D6A9C()->field_0x2948[slot][i + 1] = other;
                 if ((mask & bit) != 0) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F9974(
-                        layer, cell, gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, other));
+                        layer, cell, gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, other));
                     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, other, 0x20);
                 }
                 bit <<= 2;
@@ -2072,12 +2072,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 }
                 s32 right = ((cell + 1) & 0xF) != 0 ? cell + 1 : cell + 0xF1;
                 s32 right2 = ((right + 1) & 0xF) != 0 ? right + 1 : right + 0xF1;
-                u16 upTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, up);
-                u16 downTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, down);
-                u16 leftTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, left);
-                u16 rightTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, right);
-                u16 down2Tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, down2);
-                u16 right2Tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, right2);
+                u16 upTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, up);
+                u16 downTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down);
+                u16 leftTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, left);
+                u16 rightTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right);
+                u16 down2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down2);
+                u16 right2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right2);
                 if (tile == 0x300) {
                     if (leftTile != 0x30a) skip = 1;
                 } else if (tile == 0x310) {
@@ -2768,29 +2768,29 @@ void GameView_804A9950::fn_802D3A18() {
             } else {
                 lbl_8053AED0->fn_8043D67C(0x195, 0, 0);
             }
-            gAudioMgr_8053AF80->fn_80458880(0x30, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x30, -1);
         } else if (field_0xc4 == 660) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
                 lbl_8053AED0->fn_8043D67C(0x147, 0, 0);
             } else {
                 lbl_8053AED0->fn_8043D67C(0x196, 0, 0);
             }
-            gAudioMgr_8053AF80->fn_80458880(0x30, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x30, -1);
         } else if (field_0xc4 == 300) {
             lbl_8053AED0->fn_8043EDE8(field_0xc4 / 60);
-            gAudioMgr_8053AF80->fn_80458880(0x31, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x31, -1);
         } else if (field_0xc4 == 240) {
             lbl_8053AED0->fn_8043EDE8(field_0xc4 / 60);
-            gAudioMgr_8053AF80->fn_80458880(0x32, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x32, -1);
         } else if (field_0xc4 == 180) {
             lbl_8053AED0->fn_8043EDE8(field_0xc4 / 60);
-            gAudioMgr_8053AF80->fn_80458880(0x33, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x33, -1);
         } else if (field_0xc4 == 120) {
             lbl_8053AED0->fn_8043EDE8(field_0xc4 / 60);
-            gAudioMgr_8053AF80->fn_80458880(0x34, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x34, -1);
         } else if (field_0xc4 == 60) {
             lbl_8053AED0->fn_8043EDE8(field_0xc4 / 60);
-            gAudioMgr_8053AF80->fn_80458880(0x35, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x35, -1);
         } else if (field_0xc4 == 0) {
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
             JGeometry::TVec3f pos;

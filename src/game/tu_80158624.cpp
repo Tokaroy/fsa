@@ -31,7 +31,7 @@ void ShadowCircle_804A0160::fn_80159330() {
     if (isGameMode(GAME_MODE_C)) {
         return;
     }
-    if (!isGameModeSet() || !getGameView_802D6A9C()->fn_802DCD0C()) {
+    if (!isGameModeSet() || !getGameView_802D6A9C()->isInTransition_802DCD0C()) {
         if (gGameRoot_8053AAF8->field_0x94 == 0 && gGameRoot_8053AAF8->field_0x96 == 0) {
             field_0xd[0] = 0;
         }

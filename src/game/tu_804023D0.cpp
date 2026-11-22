@@ -336,7 +336,7 @@ void* fn_80403104(u32 type, const char* name) {
     return lbl_80529DEC.mActiveResultArchive_0x3c->getResource(type, name);
 }
 
-void* fn_804030C4(u32 type, const char* name) {
+void* getMain2DResource_804030C4(u32 type, const char* name) {
     return lbl_80529DEC.mMain2DArchive_0x20->getResource(type, name);
 }
 

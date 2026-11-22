@@ -33,7 +33,7 @@ void BurningBlockWoodenCrate_804A7B90::init() {
     field_0x1a4 = 1;
     field_0x23c = 0;
     field_0xb8 = 2;
-    field_0x240 = fn_80226850(&mPos, mLayer_0x4);
+    field_0x240 = getRawTile_80226850(&mPos, mLayer_0x4);
     gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x159);
 }
 
@@ -59,14 +59,14 @@ void BurningBlockWoodenCrate_804A7B90::update() {
         mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         mPrevPos = mPos;
         field_0x23c = 8;
-        field_0x240 = fn_80226850(&mPos, mLayer_0x4);
+        field_0x240 = getRawTile_80226850(&mPos, mLayer_0x4);
         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x159);
     } else {
         mPos += mVel_0x3c;
         if (field_0x23c > 0) {
             field_0x23c--;
         } else if (mVel_0x3c.isZero()) {
-            if (fn_80226850(&mPos, mLayer_0x4) != 0x159) {
+            if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x159) {
                 switch (mSpawnParam_0x90 & 0xFF) {
                 case 1:
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &mPos, 2, -1, -1);

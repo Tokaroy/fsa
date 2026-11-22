@@ -512,7 +512,7 @@ void WingedForceGem_804AB098::draw() {
         }
         s32 idx = kind + 8;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x25c + lbl_804AB038[idx], &params, -1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x25c + lbl_804AB038[idx], 0, 2, -1, true, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x25c + lbl_804AB038[idx], 0, 2, -1, true, 0, 0);
         return;
     }
     JGeometry::TVec3f saved(mPos);
@@ -542,7 +542,7 @@ void WingedForceGem_804AB098::draw() {
     } else {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x25c + lbl_804AB038[kind], &params, 7, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x25c + lbl_804AB038[kind], 0, 2, -1, false, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x25c + lbl_804AB038[kind], 0, 2, -1, false, 0, 0);
     mPos = saved;
 }
 

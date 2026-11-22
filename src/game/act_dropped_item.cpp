@@ -69,21 +69,21 @@ void DroppedItem_804A8C80::init() {
         }
         if (field_0x234 == 3) {
             if (viewLayerFlag(mLayer_0x4)) {
-                s32 r = fn_801CD664(2) + 1;
+                s32 r = randInt_801CD664(2) + 1;
                 mVel_0x3c = JGeometry::TVec3f(0.0f, -(f32)r, 0.0f);
             } else {
-                s32 r = fn_801CD664(3) + 1;
+                s32 r = randInt_801CD664(3) + 1;
                 mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, (f32)r);
             }
         } else {
             if (viewLayerFlag(mLayer_0x4)) {
-                s32 z = fn_801CD664(3) + 1;
-                s32 x = fn_801CD664(5) - 2;
+                s32 z = randInt_801CD664(3) + 1;
+                s32 x = randInt_801CD664(5) - 2;
                 mVel_0x3c = JGeometry::TVec3f(x * 0.5f, 0.0f, (f32)z);
             } else {
-                s32 z = fn_801CD664(3) + 2;
-                s32 y = fn_801CD664(5) - 2;
-                s32 x = fn_801CD664(5) - 2;
+                s32 z = randInt_801CD664(3) + 2;
+                s32 y = randInt_801CD664(5) - 2;
+                s32 x = randInt_801CD664(5) - 2;
                 mVel_0x3c = JGeometry::TVec3f(x * 0.5f, y * 0.5f, (f32)z);
             }
         }
@@ -245,7 +245,7 @@ void DroppedItem_804A8C80::update() {
         }
 
         {
-            u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+            u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
             if (tile == 3 || tile == 14 || tile == 13) {
                 if (tile == 14) {
                     if (fn_802DE9A0()) {
@@ -381,11 +381,11 @@ void DroppedItem_804A8C80::draw() {
         if (field_0x248 == 0 || (field_0x248 != 0 && (field_0x248 & 3) == 0)) {
             if (field_0x254 >= 120 || (field_0x254 != 0 && (field_0x254 & 3) == 0)) {
                 if (mPos.z) {
-                    fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x40, 0, 2, -1, false, 0, 0);
+                    showGbaSprite_803075AC(mSerial, layer, &mPos, field_0x238 + 0x40, 0, 2, -1, false, 0, 0);
                 } else if (field_0x23c == 2) {
-                    fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x20c, 0, 2, -1, false, 0, 0);
+                    showGbaSprite_803075AC(mSerial, layer, &mPos, field_0x238 + 0x20c, 0, 2, -1, false, 0, 0);
                 } else {
-                    fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x182, 0, 2, -1, false, 0, 0);
+                    showGbaSprite_803075AC(mSerial, layer, &mPos, field_0x238 + 0x182, 0, 2, -1, false, 0, 0);
                 }
             }
         }
@@ -467,8 +467,8 @@ bool DroppedItem_804A8C80::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
             return true;
         }
-        s32 tileCode = fn_8022461C(pos, layer);
-        s32 rawCode = fn_80226850(pos, layer);
+        s32 tileCode = getTileCollisionCode_8022461C(pos, layer);
+        s32 rawCode = getRawTile_80226850(pos, layer);
         if (rawCode == 0x230 || rawCode == 0x231) {
             return false;
         }
@@ -493,7 +493,7 @@ bool DroppedItem_804A8C80::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
                 field_0x258 = 120;
                 return false;
             }
-            if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+            if (getRawTile_80226850(pos, layer) == 0x3A || getRawTile_80226850(pos, layer) == 0x3D) {
                 return false;
             }
             // The original returns these two tests through a u8 (extrwi r3, r0, 8, 19 after cntlzw).

@@ -74,7 +74,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
                 numUsable++;
             }
         }
-        u8 sel = usable[fn_801CD664(numUsable)];
+        u8 sel = usable[randInt_801CD664(numUsable)];
         cls_800FE3EC* cur = field_0x358.fn_80214244();
         if (sel < cur->field_0x2) {
             cur->field_0x3 = sel;

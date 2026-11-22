@@ -64,7 +64,7 @@ void SmallKey_804A8CD8::init() {
         }
         break;
     case 1:
-        if (!getGameView_802D6A9C()->fn_802D800C(field_0x270)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x270)) {
             field_0x240 = 0;
         } else {
             mAlive = false;
@@ -74,7 +74,7 @@ void SmallKey_804A8CD8::init() {
         field_0x240 = 6;
         break;
     case 5:
-        if (!getGameView_802D6A9C()->fn_802D800C(field_0x270)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x270)) {
             field_0x240 = 1;
         } else {
             mAlive = false;
@@ -85,7 +85,7 @@ void SmallKey_804A8CD8::init() {
         field_0x2b1 = 1;
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
                     (mLayer_0x4 & 0xFF);
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->mScreenY_0x18;
             s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col & 0xFF) << 16) | ((row & 0xFF) << 8);
@@ -199,7 +199,7 @@ void SmallKey_804A8CD8::update() {
             fn_801F355C();
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                         (mLayer_0x4 & 0xFF);
-            if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 s32 row = getGameView_802D6A9C()->mScreenY_0x18;
                 s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                 value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -388,9 +388,9 @@ void SmallKey_804A8CD8::update() {
             mPos.set(*getPlayerPos_8023E724(field_0xd0));
             mLayer_0x4 = getPlayerLayer_8023DE58(field_0xd0);
             field_0x2ad = fn_8023BCD4(field_0xd0);
-            if (gGameRoot_8053AAF8->fn_80138A30() == 1 && field_0x29c >= 1 &&
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1 && field_0x29c >= 1 &&
                 fn_8022F514(field_0x29c) == true) {
-                u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+                u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
                 if (tile != 0xD && tile != 0x3B && fn_8022F9E4(field_0x29c, mSerial, false, false)) {
                     field_0x29c = -1;
                     field_0x240 = 4;
@@ -436,7 +436,7 @@ void SmallKey_804A8CD8::update() {
             }
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                         (mLayer_0x4 & 0xFF);
-            if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 s32 row = getGameView_802D6A9C()->mScreenY_0x18;
                 s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                 value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -511,7 +511,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (layer >= 8) {
         step = 8;
     }
-    u16 code = fn_80226850(&mPos, layer + step);
+    u16 code = getRawTile_80226850(&mPos, layer + step);
     if (code != 0 && code != 0x39) {
         field_0x2ad = 0x80;
         field_0x2ac = 2;
@@ -529,7 +529,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
             return;
         }
         field_0x2b5 = 1;
-        u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+        u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (tile == 0xD || tile == 0x3B) {
             s32 player;
             for (player = 0; player < 4; player++, bit <<= 1) {
@@ -606,7 +606,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (field_0x240 != 10) {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
         value |= mLayer_0x4 & 0xFF;
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->mScreenY_0x18;
             s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -618,7 +618,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         JGeometry::TVec2f pos(mPos.x, mPos.y);
         getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
     }
-    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+    u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (field_0x298 != -1) {
         tile = 0;
     }
@@ -707,7 +707,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 mPos.set(field_0x248);
                 u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                             (mLayer_0x4 & 0xFF);
-                if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+                if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                     s32 row = getGameView_802D6A9C()->mScreenY_0x18;
                     s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                     value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -737,7 +737,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     if (field_0x2af != 0) {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (mLayer_0x4 & 0xFF);
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->mScreenY_0x18;
             s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -757,7 +757,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     }
     mPos.add(mVel_0x3c);
     mVel_0x3c.z += -0.2f;
-    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+    u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (field_0x298 != -1) {
         tile = 0;
     }
@@ -815,7 +815,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         fn_802C5284();
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (mLayer_0x4 & 0xFF);
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->mScreenY_0x18;
             s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
@@ -911,7 +911,7 @@ bool SmallKey_804A8CD8::dropAtPlayer() {
     mVel_0x3c.x = 0.0f;
     field_0x240 = 5;
     mPos.z = 0.0f;
-    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
+    u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     mPos.z = 400.0f;
     if (tile == 3 && !fn_801EE24C()) {
         return false;
@@ -1071,9 +1071,9 @@ bool SmallKey_804A8CD8::bounceOffTile() {
     checkPos.x = mPos.x + 6.0f;
     checkPos.y = mPos.y + 8.0f;
     checkPos.z = 0.0f;
-    u16 t1 = fn_80226850(&checkPos, mLayer_0x4);
+    u16 t1 = getRawTile_80226850(&checkPos, mLayer_0x4);
     checkPos.x = mPos.x - 6.0f;
-    u16 t2 = fn_80226850(&checkPos, mLayer_0x4);
+    u16 t2 = getRawTile_80226850(&checkPos, mLayer_0x4);
     if (t1 == 0x16 || t2 == 0x16) {
         mVel_0x3c.y = -2.0f;
         if (getPlayerPos_8023E724(field_0x23c)->x > mPos.x) {
@@ -1218,7 +1218,7 @@ void SmallKey_804A8CD8::draw() {
         if (field_0xc4) {
             flags = -1;
         }
-        fn_801F02BC("enemy_both2_sob.bin", frame + 0x2D, &params, flags, 0, flag, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", frame + 0x2D, &params, flags, 0, flag, 1.0f, 1.0f);
         if (field_0x240 == 7) {
             field_0xc4 = 0;
         }
@@ -1260,8 +1260,8 @@ void SmallKey_804A8CD8::fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer) {
 // other way round (the target copies pos to r30 in the prologue, layer to r28 after the
 // first argument move).
 bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tileCode = fn_8022461C(pos, layer);
-    s32 rawCode = fn_80226850(pos, layer);
+    s32 tileCode = getTileCollisionCode_8022461C(pos, layer);
+    s32 rawCode = getRawTile_80226850(pos, layer);
     if (rawCode == 0x230 || rawCode == 0x231) {
         return false;
     }

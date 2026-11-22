@@ -93,7 +93,7 @@ static inline bool inListFlag(u16 code, const u16* list, s32 n) {
     return result;
 }
 
-// The raw tile code at pos in the layer's box (0xF outside), as fn_80226850 computes it.
+// The raw tile code at pos in the layer's box (0xF outside), as getRawTile_80226850 computes it.
 // layer is an int here: the original copies it before handing it on as the tile map's s32.
 template <class V>
 static inline u16 rawTileAt(const V* pos, int layer) {
@@ -108,7 +108,7 @@ static inline u16 rawTileAt(const V* pos, int layer) {
     s32 y = (s32)(pos->y - box.i.y);
     clampCell(x);
     clampCell(y);
-    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF)) & 0x3FF;
+    return gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF)) & 0x3FF;
 }
 
 // field_0x60[row][col] == value for the current screen.
@@ -119,7 +119,7 @@ static inline bool screenValueIs(s32 value) {
     return getGameView_802D6A9C()->field_0x60[view->mScreenY_0x18][col] == value;
 }
 
-// The tile's collision code: the raw tile code (as fn_80226850) through lbl_8046CB88, adjusted
+// The tile's collision code: the raw tile code (as getRawTile_80226850) through lbl_8046CB88, adjusted
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
 template <class V>
@@ -184,20 +184,20 @@ s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
     return ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
 }
 
-// The same as fn_80226850 (only the register allocation differs in the original).
+// The same as getRawTile_80226850 (only the register allocation differs in the original).
 // FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
 u16 fn_80226998(const JGeometry::TVec3f* pos, s32 layer) {
     return rawTileAt(pos, layer);
 }
 
 // The raw tile code at pos, 0xF outside the layer's box.
-u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer) {
+u16 getRawTile_80226850(const JGeometry::TVec3f* pos, s32 layer) {
     return rawTileAt(pos, layer);
 }
 
-// The same result as fn_8022461C (compiled branch-free in the original).
+// The same result as getTileCollisionCode_8022461C (compiled branch-free in the original).
 // FIXME: 96.07 %, scheduling+regalloc; behaviour clean.
-u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
+u16 getTileCollisionCodeAlt_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     u16 code = lbl_8046CB88[raw];
     if (viewLayerFlag(layer) != 0) {
@@ -389,11 +389,11 @@ bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(rawTileAt(pos, layer), lbl_8046AB2C, 0x5E);
 }
 
-// The tile's collision code: the raw tile code (as fn_80226850) through lbl_8046CB88, adjusted
+// The tile's collision code: the raw tile code (as getRawTile_80226850) through lbl_8046CB88, adjusted
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
 // FIXME(shotgun): 95.98 %, missing/extra; behaviour near.
-u16 fn_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
+u16 getTileCollisionCode_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     u16 code = lbl_8046CB88[raw];
     if (viewLayerFlag(layer) != 0) {

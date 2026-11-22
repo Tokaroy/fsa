@@ -39,7 +39,7 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
 
-// The angle of each direction (fn_801F6874; fn_801F681C is the inverse).
+// The angle of each direction (fn_801F6874; angleToDir_801F681C is the inverse).
 static const u16 lbl_8053F800[4] = {0x4000, 0xC000, 0x0000, 0x8000};
 
 // The slot fn_801F78F4 found last.
@@ -123,7 +123,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
 // FIXME(shotgun): 96.75 %, missing/extra + reloc-name; behaviour drift.
 // (fn_801A6160 named in C++)
 // The per-frame update pass. Clears the per-frame serial list (mPushSerials_0x201c), steps the
-// collision box lists, then updates each live actor: with GameView's fn_802DCD0C only those
+// collision box lists, then updates each live actor: with GameView's isInTransition_802DCD0C only those
 // flagged for it (0x11E / 0xC4 / 0xCC); otherwise all of them unless paused (0x11F keeps them
 // going; 'SWDL' in GameRoot 0x88 mode 2), and while GameRoot 0x94 / 0x96 holds only the
 // listed actor ids. Dead actors are deleted, the others checked against the collision boxes
@@ -151,9 +151,9 @@ void ActorManager_804A5800::fn_801F871C() {
     fn_8021F064()->fn_8021F130();
     fn_80204638()->mCount = 0;
     if (!paused) {
-        fn_801C0D70()->fn_801C0DCC();
+        getShadowLinkFight_801C0D70()->fn_801C0DCC();
     }
-    if (getGameView_802D6A9C()->fn_802DCD0C()) {
+    if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
         for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
             if (mActors[i] == NULL) {
                 continue;
@@ -294,7 +294,7 @@ ActorManager_804A5800* getActorManager_801F856C(void) {
     return gGameRoot_8053AAF8->field_0x4->mActorManager;
 }
 
-s32 ActorManager_804A5800::fn_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVec3f* pos, u32 arg_0x90) {
+s32 ActorManager_804A5800::spawnActorSimple_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVec3f* pos, u32 arg_0x90) {
     return spawnActor_801F9484(id, arg_0x4, pos, arg_0x90, -1, -1);
 }
 
@@ -920,7 +920,7 @@ u16 fn_801F6874(s32 dir) {
     return lbl_8053F800[dir & 3];
 }
 
-s32 fn_801F681C(u16 angle) {
+s32 angleToDir_801F681C(u16 angle) {
     s32 dir = 1;
     if (angle < 0x2000 || angle >= 0xE000) {
         dir = 2;

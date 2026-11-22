@@ -129,7 +129,7 @@ void Octorok_8049F208::update() {
             }
         }
     }
-    if (fn_801F3D94(flag) != 0) {
+    if (updateHitReaction_801F3D94(flag) != 0) {
         if (mSpawnParam_0x90 == 1 && mLife > 0) {
             field_0x248 = 4;
             mVel_0x3c.z = 0.0f;
@@ -173,7 +173,7 @@ void Octorok_8049F208::update() {
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x27c.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     u8 mapHit = fn_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
@@ -344,7 +344,7 @@ void Octorok_8049F208::update() {
                 s32 spawned;
                 switch ((s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1())) {
                 case 0:
-                    spawned = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &rockPos, 0x20002);
+                    spawned = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &rockPos, 0x20002);
                     break;
                 default:
                     spawned = getActorManager_801F856C()->spawnActor_801F9484('OKTM', mLayer_0x4, &rockPos, 0, -1, -1);
@@ -406,18 +406,18 @@ void Octorok_8049F208::draw() {
         if (mSpawnParam_0x90 == 1) {
             offset = 0x446;
         }
-        fn_801EF574("enemy_gc_sob.bin", offset + (mDir_0x98 * 4 + step), &pos, &params);
+        drawSobSprite_801EF574("enemy_gc_sob.bin", offset + (mDir_0x98 * 4 + step), &pos, &params);
         s32 frame;
         if (field_0x230 == 2 || field_0x230 == 1) {
             frame = lbl_8049F1E0[field_0x258];
         } else {
             frame = lbl_8049F1C0[mDir_0x98 * 2 + ((field_0x234 >> 3) & 1)];
         }
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x158, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x158, 0, 2, -1, false, 0, 0);
     } else if (mSpawnParam_0x90 == 1) {
-        fn_801F02BC("enemy_gc_sob.bin", (mDir_0x98 * 4 + step) + 0x446, &params, 7, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", (mDir_0x98 * 4 + step) + 0x446, &params, 7, 0, false, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_gc_sob.bin", mDir_0x98 * 4 + step, &params, 7, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", mDir_0x98 * 4 + step, &params, 7, 0, false, 1.0f, 1.0f);
     }
 }
 

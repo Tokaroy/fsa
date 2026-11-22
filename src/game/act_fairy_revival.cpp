@@ -75,6 +75,6 @@ void RevivalFairy_804AC250::draw() {
     if (mLifeTime >= 60 || mTimer % 2 == 0) {
         params.field_0x2d = 1;
         drawSprite_801F06F0("enemy_both2_sob.bin", mFrame + 0x5e, &params, 1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, mFrame + 0x5e, false, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mFrame + 0x5e, false, 2, -1, 0, 0, 0);
     }
 }

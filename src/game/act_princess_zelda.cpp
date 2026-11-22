@@ -177,7 +177,7 @@ inline bool PrincessZelda_8049CEE0::stepRail() {
     mVel_0x3c.y = moveVec.y;
     mVel_0x3c.z = moveVec.z;
     mPos += mVel_0x3c;
-    s32 dir = fn_801F681C(angle);
+    s32 dir = angleToDir_801F681C(angle);
     if (dir >= 0 && dir != mSpriteAnim.mAnim) {
         mSpriteAnim.startAnim_801D22DC(dir, 2, false);
         pool_8053C3E0();
@@ -343,7 +343,7 @@ void PrincessZelda_8049CEE0::update() {
         if (player < 0) {
             break;
         }
-        if (getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             fn_801096C8(9);
             break;
         }
@@ -407,7 +407,7 @@ void PrincessZelda_8049CEE0::update() {
             mDir_0x98 = fn_80230CFC(field_0x300);
             approachPlayerSide(ppos);
         }
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             fn_801096C8(5);
         }
         break;
@@ -488,7 +488,7 @@ void PrincessZelda_8049CEE0::update() {
 
     if (field_0x339 != 0) {
         if (!fn_8022C52C(field_0x300, 0x400)) {
-            if (!checkTile(fn_8022461C(&mPos, mLayer_0x4))) {
+            if (!checkTile(getTileCollisionCode_8022461C(&mPos, mLayer_0x4))) {
                 JGeometry::TVec3f pos;
                 fn_801F2618(&pos, false);
             }
@@ -517,9 +517,9 @@ void PrincessZelda_8049CEE0::draw() {
         params.field_0x10.a = 255.0f * JMath::sincosTable_.sinDegree(field_0x30c * 60);
     }
     if (field_0x320 == 0) {
-        fn_801F02BC("enemy_both2_sob.bin", mSpriteAnim.mCel + 0x218, &params, 0x407, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mSpriteAnim.mCel + 0x218, &params, 0x407, 0, false, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", mSpriteAnim.mCel + 0x9b, &params, 0x407, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mSpriteAnim.mCel + 0x9b, &params, 0x407, 0, false, 1.0f, 1.0f);
     }
 }
 
@@ -630,7 +630,7 @@ bool PrincessZelda_8049CEE0::fn_801096C8(s32 state) {
         break;
     case 12:
         mSpriteAnim.startAnim_801D22DC(4, 0, false);
-        gAudioMgr_8053AF80->fn_80458880(10, (s8)field_0x300);
+        gAudioMgr_8053AF80->playSystemSound_80458880(10, (s8)field_0x300);
         for (s32 i = 0; i < 4; i++) {
             fn_80230AD4(i);
         }

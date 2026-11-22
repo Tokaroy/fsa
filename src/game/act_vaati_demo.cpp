@@ -239,7 +239,7 @@ void VaatiCutscene_8049D940::fn_80115F9C(s32 index) {
         break;
     case 2:
         field_0x2a8.field_0x58 = 255.0f;
-        gGameRoot_8053AAF8->fn_80134DE4(5, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(5, 0);
         break;
     case 3:
         fn_8011921C()->fn_80118454();

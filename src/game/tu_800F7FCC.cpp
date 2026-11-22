@@ -293,7 +293,7 @@ void StoneArrghus_8049C718::fn_800FC984() {
     }
     fn_800FA1A4();
     if (stepWobble(this) == 1) {
-        fn_801F3D94(1);
+        updateHitReaction_801F3D94(1);
         return;
     }
     mAngleSpeed = 0x40;
@@ -323,7 +323,7 @@ void StoneArrghus_8049C718::fn_800FC984() {
     field_0x262 += 0xB0;
     mPos.x = 100.0f * JMath::sincosTable_.sinShort((s16)field_0x262) + mHome.x;
     mPos.y = (50.0f * JMath::sincosTable_.cosShort((s16)field_0x262) + mHome.y) - 50.0f;
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
 }
 
 void StoneArrghus_8049C718::fn_800FC4A8() {
@@ -339,7 +339,7 @@ void StoneArrghus_8049C718::fn_800FC4A8() {
         field_0xb0 = 4;
     }
     if (stepWobble(this) == 1) {
-        fn_801F3D94(1);
+        updateHitReaction_801F3D94(1);
         return;
     }
     if (mTimer > 300) {
@@ -401,7 +401,7 @@ void StoneArrghus_8049C718::fn_800FC4A8() {
     }
     mPos.x = 100.0f * JMath::sincosTable_.sinShort((s16)field_0x262) + mHome.x;
     mPos.y = (50.0f * JMath::sincosTable_.cosShort((s16)field_0x262) + mHome.y) - 50.0f;
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
     if (mTimer == 0x244) {
         mAnimState = 0;
     } else if (mTimer == 0x32) {
@@ -437,7 +437,7 @@ void StoneArrghus_8049C718::fn_800FC128() {
         field_0xb0 = 4;
     }
     if (stepWobble(this) == 1) {
-        fn_801F3D94(1);
+        updateHitReaction_801F3D94(1);
         return;
     }
     if (mTimer >= 100) {
@@ -473,7 +473,7 @@ void StoneArrghus_8049C718::fn_800FC128() {
     field_0x262 += 0xB0;
     mPos.x = 100.0f * JMath::sincosTable_.sinShort((s16)field_0x262) + mHome.x;
     mPos.y = (50.0f * JMath::sincosTable_.cosShort((s16)field_0x262) + mHome.y) - 50.0f;
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
 }
 
 // FIXME(shotgun): 99.52 %, regalloc-only; behaviour clean.
@@ -513,7 +513,7 @@ void StoneArrghus_8049C718::fn_800FBD90() {
         }
         return;
     }
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
     if (field_0x264 != 0) {
         if (mWobble != 0) {
             mWobble += 0x2000;
@@ -555,7 +555,7 @@ void StoneArrghus_8049C718::fn_800FBD90() {
 }
 
 void StoneArrghus_8049C718::fn_800FBA14() {
-    if (fn_801F3D94(1) == 1) {
+    if (updateHitReaction_801F3D94(1) == 1) {
         mVel_0x3c.set(0.0f, 0.0f, 10.0f);
         return;
     }
@@ -597,7 +597,7 @@ void StoneArrghus_8049C718::fn_800FBA14() {
         mRing.fn_800F8210(mLayer_0x4, mPos, 1);
         getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
         startSound_801F0E34(0x4002C, 0);
-        gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
@@ -669,7 +669,7 @@ void StoneArrghus_8049C718::fn_800FB32C() {
     } else {
         field_0xb0 = 4;
     }
-    if (fn_801F3D94(1) == 1) {
+    if (updateHitReaction_801F3D94(1) == 1) {
         return;
     }
     if (mWobble != 0) {
@@ -689,7 +689,7 @@ void StoneArrghus_8049C718::fn_800FB32C() {
             startSound_801F0E34(0x4002C, 0);
             mRing.fn_800F8210(mLayer_0x4, mPos, 0);
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 5.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
@@ -747,7 +747,7 @@ void StoneArrghus_8049C718::fn_800FB070() {
         }
     }
     field_0x264++;
-    if (fn_801F3D94(1) != 1) {
+    if (updateHitReaction_801F3D94(1) != 1) {
         if (field_0x264 >= 0x118) {
             field_0x264 = 0;
             mFlags |= 1;
@@ -787,9 +787,9 @@ void StoneArrghus_8049C718::update() {
     }
     if (!(mFlags & 1)) {
         if (mFlags & 0x10) {
-            fn_801F2B7C(4, -1, 6);
+            damagePlayersInBox_801F2B7C(4, -1, 6);
         } else {
-            fn_801F2B7C(1, -1, 6);
+            damagePlayersInBox_801F2B7C(1, -1, 6);
         }
     }
     switch (mState) {
@@ -842,7 +842,7 @@ void StoneArrghus_8049C718::update() {
         fn_800FB32C();
         break;
     case 8:
-        fn_801F3D94(1);
+        updateHitReaction_801F3D94(1);
         if (mWobble != 0) {
             mWobble += 0x2000;
             if (mWobble > 0x20000) {
@@ -900,7 +900,7 @@ void StoneArrghus_8049C718::update() {
 
 // FIXME(shotgun): 91.96 %, scheduling+regalloc; behaviour clean.
 bool StoneArrghus_8049C718::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 kind = fn_8022461C(pos, layer);
+    s32 kind = getTileCollisionCode_8022461C(pos, layer);
     if (kind == 3 || kind == 14 || kind == 2) {
         return false;
     }
@@ -1114,7 +1114,7 @@ void StoneArrghus_8049C718::draw() {
         params.field_0x30 = 0x11;
     }
     void* res = fn_804032E8('WART', lbl_8049C5D0[mFrame]);
-    fn_801EFD34(res, &params, 5, 0.0f, -22.0f * (mScale + b), 0.0f);
+    drawSpriteRes_801EFD34(res, &params, 5, 0.0f, -22.0f * (mScale + b), 0.0f);
 }
 
 // FIXME(shotgun): 99.73 %, regalloc-only; behaviour clean.
@@ -1147,7 +1147,7 @@ void StoneArrghusChildPuff_8049C678::init() {
         for (s32 i = 0; i < mIndex; i++) {
             mDelay += (mIndex < 30) ? 40 - mIndex : 10;
         }
-        f32 n = gGameRoot_8053AAF8->fn_80138A30();
+        f32 n = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         if (1.0f == n) {
             mVariant = -1;
             field_0x94 = 0;
@@ -1187,13 +1187,13 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
         speed = 0.2f;
         mFlag249 = 0;
     }
-    if (fn_801F3D94(1) == 0) {
+    if (updateHitReaction_801F3D94(1) == 0) {
         if (fn_801F285C(NULL, NULL, true, -1) >= 0) {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
             fn_80238548(0, 0, &xy, 0x10);
         }
         moveToward(mPos, target, speed);
-        fn_801F2B7C(2, -1, 1);
+        damagePlayersInBox_801F2B7C(2, -1, 1);
     }
 }
 
@@ -1211,7 +1211,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
             return;
         }
     }
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         return;
     }
     if (fn_801F305C()) {
@@ -1300,7 +1300,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mVel_0x3c.y = 0.0f;
         }
     } else {
-        fn_801F2B7C(2, -1, 1);
+        damagePlayersInBox_801F2B7C(2, -1, 1);
     }
     if (JMAAbs(mVel_0x3c.x) < 1.0f && JMAAbs(mVel_0x3c.y) < 1.0f) {
         s32 player = fn_801F285C(NULL, NULL, true, -1);
@@ -1375,7 +1375,7 @@ void StoneArrghusChildPuff_8049C678::die_0x24() {
     } else {
         count = (u32)(1.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
     }
-    s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, count);
+    s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         JGeometry::TVec3f vel(
@@ -1416,7 +1416,7 @@ void StoneArrghusChildPuff_8049C678::draw() {
         mtx[2][1] = 0.0f;
         mtx[2][2] = 1.5f;
         params.mMtx = mtx;
-        fn_801F02BC(lbl_80463A58, 0x25, &params, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC(lbl_80463A58, 0x25, &params, 0, 0, false, 1.0f, 1.0f);
     } else {
         mtx[0][0] = 1.0f + a;
         mtx[0][1] = 0.0f;
@@ -1437,7 +1437,7 @@ void StoneArrghusChildPuff_8049C678::draw() {
         } else {
             res = fn_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2]);
         }
-        fn_801EFD34(res, &params, 0, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, 0, 0.0f, 0.0f, 0.0f);
     }
 }
 

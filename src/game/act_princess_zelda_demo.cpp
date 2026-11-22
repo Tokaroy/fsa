@@ -131,7 +131,7 @@ void PrincessZeldaDemo_8049D208::init() {
     mAnim1.startAnim_801D22DC(0, 2, false);
     mAnim1.fn_801D1F14(0.0f);
     if (field_0x234 == 2) {
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x250)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x250)) {
             switch (field_0x234) {
             case 0:
             case 1:
@@ -973,9 +973,9 @@ void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
         params.mMtx = mtx;
     }
     if (arg == 0x21B) {
-        fn_801F02BC("enemy_gc_sob.bin", arg + mAnim0.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", arg + mAnim0.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", arg + mAnim0.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", arg + mAnim0.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
     }
 }
 
@@ -1273,7 +1273,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
 void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     switch (arg) {
     case 0x26:
-        fn_801C0D70()->fn_801C11A4();
+        getShadowLinkFight_801C0D70()->fn_801C11A4();
         break;
     case 0x27:
         fn_8011921C()->setField_0x2(1);
@@ -1289,7 +1289,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
         break;
     case 0x29:
         mDrawEnabled = true;
-        fn_801C0D70()->field_0x0 |= 0x800;
+        getShadowLinkFight_801C0D70()->field_0x0 |= 0x800;
         break;
     case 0x2A: {
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -1309,7 +1309,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     case 0x2D:
         mAnim0.startAnim_801D22DC(0x14, 2, false);
         mAnim0.fn_801D1F14(0.0f);
-        fn_801C0D70()->fn_801C115C();
+        getShadowLinkFight_801C0D70()->fn_801C115C();
         break;
     case 0x2E: {
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -1321,7 +1321,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     case 0x2F:
         mAnim0.startAnim_801D22DC(0x13, 2, false);
         mAnim0.fn_801D1F14(0.0f);
-        fn_801C0D70()->field_0x0 &= ~0x400;
+        getShadowLinkFight_801C0D70()->field_0x0 &= ~0x400;
         fn_8011921C()->fn_80118384();
         field_0x264 = 0;
         break;
@@ -1346,7 +1346,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     case 0x33:
         mAnim0.startAnim_801D22DC(0x13, 2, false);
         mAnim0.fn_801D1F14(0.0f);
-        fn_801C0D70()->field_0x0 &= ~0x1000;
+        getShadowLinkFight_801C0D70()->field_0x0 &= ~0x1000;
         break;
     case 0x36: {
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -1432,7 +1432,7 @@ inline s32 PrincessZeldaDemo_8049D208::startTalk(u32 msg, bool talkFlag) {
             player = -1;
         } else {
             field_0x23c = player;
-            s32 anim = fn_801CD354(fn_80230CFC(field_0x23c)) + 6;
+            s32 anim = oppositeDir_801CD354(fn_80230CFC(field_0x23c)) + 6;
             mAnim0.startAnim_801D22DC(anim, 2, false);
             mAnim0.fn_801D1F14(0.0f);
             for (s32 i = 0; i < 4; i++) {

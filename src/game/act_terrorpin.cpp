@@ -123,7 +123,7 @@ void Terrorpin_804A3B10::init() {
     field_0xb0 = 0x4130B;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(16) + 30;
+    field_0x250 = randInt_801CD664(16) + 30;
     mSpeed = 0.35f;
     mTargetSpeed = 0.35f;
     mAnim.fn_801D2608(lbl_8053A120, 2);
@@ -134,7 +134,7 @@ void Terrorpin_804A3B10::init() {
 void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
     switch (state) {
     case 0:
-        field_0x250 = fn_801CD664(16) + 30;
+        field_0x250 = randInt_801CD664(16) + 30;
         mTargetSpeed = 0.35f;
         if (mState != 4) {
             mDir_0x98 = fn_801CF6B8();
@@ -156,7 +156,7 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
             }
         }
         field_0x250 = -1;
-        mDir_0x98 = fn_801CD354(mDir_0x98);
+        mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
         mTargetSpeed = 0.6f;
         mSpeed = 0.6f;
         if (mFlags & 0x2000) {
@@ -166,16 +166,16 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
         }
         break;
     case 2:
-        field_0x250 = fn_801CD664(101) + 400;
+        field_0x250 = randInt_801CD664(101) + 400;
         mTargetSpeed = 0.0f;
         break;
     case 3:
-        field_0x250 = fn_801CD664(11) + 30;
+        field_0x250 = randInt_801CD664(11) + 30;
         mTargetSpeed = 0.0f;
         break;
     case 5:
-        field_0x250 = fn_801CD664(1) + 540;
-        mDir_0x98 = fn_801CD354(mDir_0x98);
+        field_0x250 = randInt_801CD664(1) + 540;
+        mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
         mTargetSpeed = 2.5f;
         mSpeed = 2.5f;
         mVel_0x3c.z = 2.0f;
@@ -382,9 +382,9 @@ void Terrorpin_804A3B10::onBounce_0x7C() {
 u8 Terrorpin_804A3B10::checkHitByActor_0x60() {
     u8 hit = 0;
     if (isVulnerable()) {
-        fn_801F2DB4(mActorId, 'NULL', NULL);
+        checkActorHit_801F2DB4(mActorId, 'NULL', NULL);
     } else {
-        hit = fn_801F2DB4('NULL', 'NULL', NULL);
+        hit = checkActorHit_801F2DB4('NULL', 'NULL', NULL);
     }
     return hit;
 }
@@ -396,7 +396,7 @@ void Terrorpin_804A3B10::onHitByPlayer_0x6C() {
     if (mState == 5) {
         f32 speed = 1.5f;
         for (s32 i = 0; i < 2; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
@@ -460,7 +460,7 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
             fn_801F31C4(&box);
             fn_802397B4(&box, mLayer_0x4, mSerial);
         } else {
-            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+            hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
             if (hit != 0 && mState == 5) {
                 for (s32 i = 0; i < 4; i++) {
                     if (hit & (1 << i)) {
@@ -478,7 +478,7 @@ void Terrorpin_804A3B10::die_0x24() {
     if ((mFlags & 0x2000) && (mFlags & 0x4000) && mLastAttacker_0x10c >= 0 && mLastAttacker_0x10c < 4 && mLastAttacker_0x10c == field_0x2a8) {
         f32 speed = 1.5f;
         for (s32 i = 0; i < 2; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {

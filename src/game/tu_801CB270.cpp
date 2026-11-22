@@ -185,7 +185,7 @@ f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
 }
 
 // A random integer in [0, n).
-s32 fn_801CD664(s32 n) {
+s32 randInt_801CD664(s32 n) {
     return n * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
 }
 
@@ -233,7 +233,7 @@ s32 fn_801CD398(s32 a, s32 b) {
 }
 
 // Swaps the pairs 0<->1 and 2<->3; any other value maps to 0.
-s32 fn_801CD354(s32 value) {
+s32 oppositeDir_801CD354(s32 value) {
     s32 result = 0;
     switch (value) {
     case 0:
@@ -267,7 +267,7 @@ s32 fn_801CD30C(s32 value) {
 }
 
 // Whether `layer` is one of the upper layers (8 and up).
-bool fn_801CD2F8(s32 layer) {
+bool isUpperLayer_801CD2F8(s32 layer) {
     bool result = false;
     if (layer >= 8) {
         result = true;
@@ -348,9 +348,9 @@ bool fn_801CCFE4(s32 player) {
     return result;
 }
 
-// Whether fn_80230188 holds for every player that takes part (fn_80138A30).
+// Whether fn_80230188 holds for every player that takes part (getPlayerCount_80138A30).
 bool fn_801CCF7C() {
-    s32 count = gGameRoot_8053AAF8->fn_80138A30();
+    s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     for (s32 i = 0; i < count; i++) {
         if (!fn_80230188(i)) {
             return false;
@@ -392,7 +392,7 @@ s32 fn_801CCDA4() {
     s32 best = -1;
     s32 tie = 0x7FFFFFFF;
     s32 lowest = tie;
-    s32 count = gGameRoot_8053AAF8->fn_80138A30();
+    s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     for (s32 i = 0; i < count; i++) {
         if (fn_8023F264(i)) {
             s32 value = fn_80236228(i);
@@ -461,15 +461,15 @@ bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
     return found;
 }
 
-// Whether the tile (fn_802265FC) at pos (x, y - z) and the one 16 units further down are both
-// code 2, on a layer with the view's flag. fn_802265FC reads only x and y: the probes are TVec2f
+// Whether the tile (getTileCollisionCodeAlt_802265FC) at pos (x, y - z) and the one 16 units further down are both
+// code 2, on a layer with the view's flag. getTileCollisionCodeAlt_802265FC reads only x and y: the probes are TVec2f
 // on the stack (act_bomb passes its centre the same way).
 bool fn_801CCB1C(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
     JGeometry::TVec2f p(pos->x, pos->y - pos->z);
-    if (viewLayerFlag(layer) && fn_802265FC((const JGeometry::TVec3f*)&p, layer) == 2) {
+    if (viewLayerFlag(layer) && getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&p, layer) == 2) {
         JGeometry::TVec2f below(p.x, 16.0f + p.y);
-        if (fn_802265FC((const JGeometry::TVec3f*)&below, layer) == 2) {
+        if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&below, layer) == 2) {
             result = true;
         }
     }
@@ -477,18 +477,18 @@ bool fn_801CCB1C(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // Whether pos and the four points 7 units left, right, up and down of it all have tile code 0
-// (fn_802265FC), on a layer with the view's flag. The probes are TVec2f, as in fn_801CCB1C.
+// (getTileCollisionCodeAlt_802265FC), on a layer with the view's flag. The probes are TVec2f, as in fn_801CCB1C.
 bool fn_801CC9F8(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
-    if (viewLayerFlag(layer) && fn_802265FC(pos, layer) == 0) {
+    if (viewLayerFlag(layer) && getTileCollisionCodeAlt_802265FC(pos, layer) == 0) {
         JGeometry::TVec2f right(7.0f + pos->x, pos->y);
-        if (fn_802265FC((const JGeometry::TVec3f*)&right, layer) == 0) {
+        if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&right, layer) == 0) {
             JGeometry::TVec2f left(pos->x - 7.0f, pos->y);
-            if (fn_802265FC((const JGeometry::TVec3f*)&left, layer) == 0) {
+            if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&left, layer) == 0) {
                 JGeometry::TVec2f down(pos->x, 7.0f + pos->y);
-                if (fn_802265FC((const JGeometry::TVec3f*)&down, layer) == 0) {
+                if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&down, layer) == 0) {
                     JGeometry::TVec2f up(pos->x, pos->y - 7.0f);
-                    if (fn_802265FC((const JGeometry::TVec3f*)&up, layer) == 0) {
+                    if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&up, layer) == 0) {
                         result = true;
                     }
                 }
@@ -940,10 +940,10 @@ void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
     spawnEmitterHelper(layer, pos, 0x474, arg3, arg4);
 }
 
-// Asks the actor manager for a 'RUPY' (fn_801F8544 with id ACTOR_RUPY) at pos on
+// Asks the actor manager for a 'RUPY' (spawnActorSimple_801F8544 with id ACTOR_RUPY) at pos on
 // `layer`; the flag picks 5 or 4 in the low bits of its last argument.
 s32 fn_801CB434(s32 layer, const JGeometry::TVec3f* pos, bool flag) {
-    return getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, layer, pos, 0x261E00 | (flag ? 5 : 4));
+    return getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, layer, pos, 0x261E00 | (flag ? 5 : 4));
 }
 
 // Looks up the TIMG resource `name` in the game archive and initialises

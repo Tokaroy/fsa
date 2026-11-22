@@ -86,7 +86,7 @@ void LogicSwitchControl_8049CB58::update() {
         switch (field_0x240) {
         case 0:
             for (s32 i = 0; i < 4; i++) {
-                if (getGameView_802D6A9C()->fn_802D800C(field_0x230[i]) || field_0x230[i] == 0) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230[i]) || field_0x230[i] == 0) {
                     count++;
                 }
             }
@@ -96,7 +96,7 @@ void LogicSwitchControl_8049CB58::update() {
             break;
         case 1:
             for (s32 i = 0; i < 4; i++) {
-                if (getGameView_802D6A9C()->fn_802D800C(field_0x230[i])) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230[i])) {
                     count++;
                 }
             }
@@ -106,7 +106,7 @@ void LogicSwitchControl_8049CB58::update() {
             break;
         case 2:
             for (s32 i = 0; i < 4; i++) {
-                if (getGameView_802D6A9C()->fn_802D800C(field_0x230[i])) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230[i])) {
                     count++;
                 }
             }

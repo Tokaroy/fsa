@@ -210,7 +210,7 @@ void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
 // where ours keeps the compare result; the rest is the same code, registers
 // shifted.
 void cls_801E9AFC::fn_801E9C74() {
-    u8 both = getGameView_802D6A9C()->fn_802DCD0C();
+    u8 both = getGameView_802D6A9C()->isInTransition_802DCD0C();
     u8 outlines;
     u8 sprites;
     if (both) {

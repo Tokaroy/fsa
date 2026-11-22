@@ -59,8 +59,8 @@ bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
         return true;
     }
-    s32 tile = fn_8022461C(pos, layer);
-    s32 code = fn_80226850(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
+    s32 code = getRawTile_80226850(pos, layer);
     if (code == 0x230 || code == 0x231) {
         return false;
     }
@@ -111,7 +111,7 @@ void OctorokRock_8049F5D8::update() {
             field_0x230 = 1;
             break;
         }
-        if (!blocked && !fn_801F2B7C(mParamAtcp_0x114, -1, true)) {
+        if (!blocked && !damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, true)) {
             break;
         }
         if ((mSpawnParam_0x90 != 1 && mSpawnParam_0x90 != 5) || !blocked) {
@@ -207,7 +207,7 @@ void OctorokRock_8049F5D8::update() {
                 f32 angle = JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
                 // Through s32 (fctiwz), then the u16 argument (clrlwi 16).
-                mDir_0x98 = fn_801F681C(static_cast<u16>(static_cast<s32>(angle)));
+                mDir_0x98 = angleToDir_801F681C(static_cast<u16>(static_cast<s32>(angle)));
                 if (field_0x240 < 6) {
                     field_0x240 = field_0x240 + 1;
                 } else if (field_0x230 == 6) {
@@ -220,7 +220,7 @@ void OctorokRock_8049F5D8::update() {
             }
         }
         if (field_0x230 == 4) {
-            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 1);
+            getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, 1);
         }
         mAlive = false;
         break;
@@ -280,10 +280,10 @@ void OctorokRock_8049F5D8::draw() {
             JGeometry::TBox2f box;
             box = view->mVisibleBox;
             JGeometry::TVec3f pos(mPos.x + box.i.x, mPos.y + box.i.y, mPos.z);
-            fn_801EF574("enemy_gc_sob.bin", 0x25, &pos, &params);
-            fn_801F02BC("enemy_both2_sob.bin", 0x317, &params, 1, 0, false, 1.0f, 1.0f);
+            drawSobSprite_801EF574("enemy_gc_sob.bin", 0x25, &pos, &params);
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x317, &params, 1, 0, false, 1.0f, 1.0f);
         } else {
-            fn_801F02BC("enemy_gc_sob.bin", 0x25, &params, 1, 0, false, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_gc_sob.bin", 0x25, &params, 1, 0, false, 1.0f, 1.0f);
         }
         break;
     case 4:
@@ -301,10 +301,10 @@ void OctorokRock_8049F5D8::draw() {
         }
         break;
     case 2:
-        fn_801F02BC("enemy_both2_sob.bin", field_0x24c + 0x170, &params, 7, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x24c + 0x170, &params, 7, 0, false, 1.0f, 1.0f);
         break;
     case 3:
-        fn_801F02BC("enemy_both2_sob.bin", 0x1BA, NULL, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x1BA, NULL, 0, 0, false, 1.0f, 1.0f);
         break;
     }
 }

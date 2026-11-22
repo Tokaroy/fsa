@@ -91,7 +91,7 @@ void RotatingSkull_804A8588::update() {
         if (field_0x254 == 0) {
             if (field_0x25c != 0) {
                 mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
-                if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
+                if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1)) {
                     field_0x248 ^= 1;
                     field_0x254 = 0x28;
                 }
@@ -122,7 +122,7 @@ void RotatingSkull_804A8588::update() {
                 }
             }
         }
-        if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
+        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1)) {
             if (field_0x260.x >= 0.0f) {
                 field_0x260.x = -1.0f;
             } else {
@@ -174,7 +174,7 @@ void RotatingSkull_804A8588::update() {
                 break;
             case 1:
                 fn_802B21EC();
-                fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+                damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
                 break;
             }
         }
@@ -188,7 +188,7 @@ void RotatingSkull_804A8588::fn_802B2728() {
         params.field_0x1d = 0;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x258 + 0x78, NULL, 1, 1.0f, 1.0f);
         drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 128), 30.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x258 + 0x78, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x258 + 0x78, 0, 2, -1, false, 0, 0);
     }
 }
 

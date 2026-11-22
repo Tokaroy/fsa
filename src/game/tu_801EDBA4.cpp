@@ -59,9 +59,9 @@ void VaatiBoss_804A4958::fn_801EDD0C() {
             }
         }
         params.mMtx = mtx;
-        fn_801EFD34(res, &params, -1, 0.0f, -12.0f * lbl_8053F0BC, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, 0.0f, -12.0f * lbl_8053F0BC, 0.0f);
     } else {
-        fn_801EFD34(res, &params, flags, 0.0f, -12.0f * lbl_8053F0BC, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, flags, 0.0f, -12.0f * lbl_8053F0BC, 0.0f);
     }
 }
 
@@ -76,8 +76,8 @@ void VaatiBoss_804A4958::fn_801EDC0C(s32 frame) {
             mPos.x -= 1.0f;
         }
     }
-    if (fn_801CD2F8(mLayer_0x4)) {
-        fn_801F02BC("enemy_both_sob.bin", frame, NULL, -1, 0, false, 1.0f, 1.0f);
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", frame, NULL, -1, 0, false, 1.0f, 1.0f);
     } else {
         fn_801EDD0C();
     }

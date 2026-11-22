@@ -94,7 +94,7 @@ void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9) {
     if (group == 2 || group == 1) {
         handle = obj->startSound(id);
     } else if (group == 0) {
-        gAudioMgr_8053AF80->fn_80458880(id, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(id, -1);
     } else {
         handle = obj->fn_80456334(id, 0);
     }

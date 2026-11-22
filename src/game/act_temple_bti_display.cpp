@@ -129,7 +129,7 @@ void TempleBTIDisplay_8049CB04::update() {
                 field_0x245 = 2;
             }
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 1.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
         } else {
             field_0x240 = -40.0f;
             field_0x244 = 0;
@@ -163,7 +163,7 @@ void TempleBTIDisplay_8049CB04::draw() {
     params.field_0x24 = 1;
     params.field_0x21 = 1;
 
-    fn_801EFD34(fn_804032E8('TIMG', names[0][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(fn_804032E8('TIMG', names[0][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
 
     if (field_0x234 != 1) {
         mPos.y += 16.0f * (lbl_8049C3B8[0] + sOffsets[field_0x238]) + field_0x240;
@@ -172,7 +172,7 @@ void TempleBTIDisplay_8049CB04::draw() {
         } else {
             params.field_0x1d = 0;
         }
-        fn_801EFD34(fn_804032E8('TIMG', names[2][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(fn_804032E8('TIMG', names[2][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
         mPos.y = pos.y;
     }
 
@@ -182,6 +182,6 @@ void TempleBTIDisplay_8049CB04::draw() {
         params.field_0x1d = 2;
     }
     mPos.y += 16.0f * ((f32)lbl_8049C3B8[1] + sFloatTable1[field_0x238]);
-    fn_801EFD34(fn_804032E8('TIMG', names[1][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(fn_804032E8('TIMG', names[1][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
     mPos.y = pos.y;
 }

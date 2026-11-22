@@ -62,7 +62,7 @@ void Explosion_804A7FB8::update() {
         break;
     case 3:
         getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
-        fn_801F2B7C(mParamAtcp_0x114, -1, 6);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 6);
         field_0x234--;
         if (field_0x234 == 0) {
             field_0x230 = 4;

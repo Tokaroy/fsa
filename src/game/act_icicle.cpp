@@ -103,7 +103,7 @@ void Icicle_8049CFC8::update() {
         break;
     case 1:
         fall();
-        if (fn_801F2B7C(mParamAtcp_0x114, -1, 0x18)) {
+        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 0x18)) {
             fn_8010B40C(3);
             break;
         }
@@ -112,7 +112,7 @@ void Icicle_8049CFC8::update() {
             if (fn_801F2618(&hitDir, false)) {
                 JGeometry::TVec3f probe = mPos;
                 probe.y += 16.0f;
-                u16 tile = fn_80226850(&probe, mLayer_0x4);
+                u16 tile = getRawTile_80226850(&probe, mLayer_0x4);
                 if (tile >= 0x3F0 || (tile >= 0x250 && tile <= 0x26F) || tile == 0x3ED) {
                     gBgRewrite_8053AC98->fn_802A381C(&probe, mLayer_0x4, 0x34);
                 }
@@ -192,7 +192,7 @@ void Icicle_8049CFC8::draw() {
     if (field_0x54.isZero()) {
         mDrawEnabled = false;
     }
-    fn_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x19C, &params, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x19C, &params, 7, 0, false, 1.0f, 1.0f);
     if (field_0x54.isZero()) {
         mDrawEnabled = true;
     }
@@ -263,7 +263,7 @@ bool Icicle_8049CFC8::fn_8010B284() {
             if (probe.y >= playerPos.y) {
                 break;
             }
-            u16 tile = fn_80226850(&probe, mLayer_0x4);
+            u16 tile = getRawTile_80226850(&probe, mLayer_0x4);
             if (tile >= 0x3E7 || (tile >= 0x250 && tile <= 0x26F)) {
                 blocked = true;
                 break;

@@ -77,7 +77,7 @@ void KnightOfHyrule_804AABA8::update() {
     JGeometry::TVec3f pos;
     switch (mState) {
     case 0:
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x23c)) {
             gAudioMgr_8053AF80->fn_80458F9C(60);
             mState = 1;
         } else {

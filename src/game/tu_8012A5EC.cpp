@@ -522,9 +522,9 @@ void TowerAppearanceDemo_8049E770::fn_8012AA84() {
                 field_0x2bc = 9;
             }
             f64 range = 20.0 - (field_0x250 - 400) / 16.5;
-            field_0x3fc = (f32)fn_801CD664((s32)range);
-            field_0x400 = (f32)fn_801CD664((s32)range);
-            gGameRoot_8053AAF8->fn_80134DE4(3, 0);
+            field_0x3fc = (f32)randInt_801CD664((s32)range);
+            field_0x400 = (f32)randInt_801CD664((s32)range);
+            gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
         }
         fn_8012A5EC();
         return;

@@ -39,7 +39,7 @@ public:
     /* 0x291 */ u8 field_0x291[0x294 - 0x291];
     /* 0x294 */ s32 field_0x294;
     /* 0x298 */ s32 field_0x298; // frames left in state 1, 8 at the start
-    /* 0x29C */ u16 mTile;       // tile code from fn_80226850 at mPos
+    /* 0x29C */ u16 mTile;       // tile code from getRawTile_80226850 at mPos
 }; // Size: 0x2A0 at least
 
 #endif

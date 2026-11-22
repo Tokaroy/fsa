@@ -212,7 +212,7 @@ void GreatFairy_8049EB8C::update() {
 void GreatFairy_8049EB8C::draw() {
     DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
-    fn_801F02BC("enemy_gc_sob.bin", mAnim.mCel + 0x2fb, &params, 0x407, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_gc_sob.bin", mAnim.mCel + 0x2fb, &params, 0x407, 0, false, 1.0f, 1.0f);
 }
 
 void GreatFairy_8049EB8C::vfunc_0x54() {

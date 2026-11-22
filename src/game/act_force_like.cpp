@@ -129,7 +129,7 @@ void ForceLike_8049C578::update() {
     }
     case 1: {
         field_0xb0 = 0x11101;
-        if (fn_801F3D94(1) != 0) {
+        if (updateHitReaction_801F3D94(1) != 0) {
             break;
         }
         if (fn_801F305C()) {
@@ -194,7 +194,7 @@ void ForceLike_8049C578::update() {
         if (field_0x248 > 20) {
             fn_8022DD74(field_0x238);
         }
-        fn_801F3D94(1);
+        updateHitReaction_801F3D94(1);
         stepFrame(this);
         field_0x254.x = mPos.x - getPlayerPos_8023E724(field_0x238)->x;
         field_0x254.y = mPos.y - getPlayerPos_8023E724(field_0x238)->y;
@@ -247,10 +247,10 @@ void ForceLike_8049C578::update() {
     }
     case 3: {
         f32 z = mVel_0x3c.z;
-        if (fn_801F3D94(1) != 0 || fn_801F305C()) {
+        if (updateHitReaction_801F3D94(1) != 0 || fn_801F305C()) {
             mVel_0x3c.z = z;
         } else {
-            fn_801F2B7C(-100, -1, 1);
+            damagePlayersInBox_801F2B7C(-100, -1, 1);
             stepFrame(this);
             if (field_0x235 != 0) {
                 if (mPos.z == 0.0f && field_0x235 != 0) {
@@ -288,12 +288,12 @@ void ForceLike_8049C578::draw() {
     SpriteParams_801F5AE0 params;
     switch (field_0x230) {
     case 0:
-        fn_801F02BC("enemy_both2_sob.bin", lbl_8049C518[field_0x234] + field_0x235, &params, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", lbl_8049C518[field_0x234] + field_0x235, &params, 0, 0, false, 1.0f, 1.0f);
         break;
     case 2:
         mPos.x += field_0x260;
         mPos.y += field_0x264;
-        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C538[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", lbl_8049C538[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
         mPos.x -= field_0x260;
         mPos.y -= field_0x264;
         break;
@@ -318,7 +318,7 @@ void ForceLike_8049C578::draw() {
         mtx[2][1] = 0.0f;
         mtx[2][2] = scale;
         params.mMtx = mtx;
-        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C528[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", lbl_8049C528[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
         break;
     }
     }
@@ -368,7 +368,7 @@ void ForceLike_8049C578::die_0x24() {
             pick = 2;
             field_0x244 -= 20;
         }
-        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', layer, &pos, pick);
+        s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', layer, &pos, pick);
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {

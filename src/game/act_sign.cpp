@@ -35,7 +35,7 @@ void Sign_804A94D8::update() {
         }
         if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
             die_0x24();
-        } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
+        } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
             die_0x24();
         }
     }
@@ -51,7 +51,7 @@ void Sign_804A94D8::draw() {
         params.field_0x1d = fn_8023CB24(field_0xc8) + 1;
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
-    fn_801F02BC("enemy_both2_sob.bin", 0x28, &params, flags, 0, true, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x28, &params, flags, 0, true, 1.0f, 1.0f);
 }
 
 void Sign_804A94D8::die_0x24() {
@@ -60,10 +60,10 @@ void Sign_804A94D8::die_0x24() {
         pos.z = 0.0f;
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, mLayer_0x4, &pos, 0, -1, -1);
         startSound_801F0E34(0x30018, 0);
-    } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xD || fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+    } else if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xD || getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30022, 0);
-    } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xE) {
+    } else if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xE) {
         if (fn_802DE9A0()) {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);

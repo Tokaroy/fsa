@@ -189,7 +189,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6730() {
                 mFocus = 3;
                 break;
             }
-            gAudioMgr_8053AF80->fn_80458880(0x2A, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x2A, -1);
             gAudioMgr_8053AF80->fn_80458FF0(0x1000027, true, false);
         }
     }
@@ -202,7 +202,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D66A8() {
         mFocus = 4;
         mTimer = 0x82;
         mState = 5;
-        gAudioMgr_8053AF80->fn_80458880(0x2D, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x2D, -1);
     }
 }
 
@@ -245,7 +245,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6494() {
             lbl_80529DEC.field_0x64 = pick;
         }
         lbl_8053AD78->field_0xe4 = 0;
-        gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         mAlive = false;
     }
 }

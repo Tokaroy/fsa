@@ -20,7 +20,7 @@
 enum OldManSpriteKind {
     OLD_MAN_SOB_GC = 0,    // "enemy_gc_sob.bin"
     OLD_MAN_SOB_BOTH = 1,  // "enemy_both_sob.bin" (fn_80307AC8)
-    OLD_MAN_SOB_BOTH2 = 2, // "enemy_both2_sob.bin" (fn_803075AC)
+    OLD_MAN_SOB_BOTH2 = 2, // "enemy_both2_sob.bin" (showGbaSprite_803075AC)
     OLD_MAN_SOB_NONE = 3,  // kind 21 (drawn nowhere)
 };
 
@@ -603,7 +603,7 @@ void OldMan_804AEED0::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin",
                             field_0x25c + field_0x274->fn_80316E34(),
                             NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos,
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos,
                     field_0x25c + field_0x274->fn_80316E34(),
                     0, 2, -1, false, 0, 0);
         return;
@@ -623,7 +623,7 @@ void OldMan_804AEED0::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin",
                             field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                             NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos,
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos,
                     field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                     0, 2, -1, false, 0, 0);
     }

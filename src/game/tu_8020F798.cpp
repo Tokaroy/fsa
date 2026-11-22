@@ -10,7 +10,7 @@
 
 void Thief_804A5A30::fn_8020FADC() {
     bool release = false;
-    if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+    if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
         bool moving = false;
         if (field_0xc4 == 0 && mPos.z <= 0.0f) {
             if (__fabsf(mPos.x - mPrevPos.x) > 0.001f || __fabsf(mPos.y - mPrevPos.y) > 0.001f) {
@@ -80,7 +80,7 @@ void Thief_804A5A30::fn_8020F80C(s32 frame) {
     if (mLayer_0x4 == 8) {
         JGeometry::TVec3f pos;
         fn_801CD0D0(&mPos, &pos);
-        fn_801EF574("enemy_both_sob.bin", frame, &pos, &params);
+        drawSobSprite_801EF574("enemy_both_sob.bin", frame, &pos, &params);
     }
     fn_80307AC8(mSerial, mLayer_0x4, &mPos, frame, false, mode, -1);
 }

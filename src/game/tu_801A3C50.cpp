@@ -127,7 +127,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             s32 face = mDir_0x98;
-            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
+            if (face != angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
                                           10430.378f))) {
                 kind = 5;
             }
@@ -138,7 +138,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         if (kind == 16) {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             s32 face = mDir_0x98;
-            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
+            if (face != angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
                                           10430.378f))) {
                 kind = 4;
             }
@@ -243,7 +243,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                         rock->field_0x254 = std::sqrtf(dx * dx + dy * dy);
                         u16 angle = JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f;
                         u16 target = fn_801F6874(arrow->mDir_0x98) + 0x8000;
-                        while (fn_801F681C(angle) != fn_801F681C(target)) {
+                        while (angleToDir_801F681C(angle) != angleToDir_801F681C(target)) {
                             addCalcAngle2_801F714C(&angle, target, 1, 0x1000);
                         }
                         if (kind == 15) {
@@ -605,7 +605,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         kind = 4;
         f32 rad = JMath::atanTable_.atan2_(-(mPos.x - other->mPos.x), -(mPos.y - other->mPos.y));
         s32 face = mDir_0x98;
-        if ((face ^ 1) != fn_801F681C((s32)(rad * 10430.378f))) {
+        if ((face ^ 1) != angleToDir_801F681C((s32)(rad * 10430.378f))) {
             turned = true;
         }
         if (other != NULL && static_cast<UnknownBOME_804A0738*>(other)->field_0x254 != 0) {
@@ -743,7 +743,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             kind = 4;
             f32 angle = JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x), -(mPos.y - weapon->mPos.y));
             s32 face = mDir_0x98;
-            if ((face ^ 1) != fn_801F681C((s32)(angle * 10430.378f))) {
+            if ((face ^ 1) != angleToDir_801F681C((s32)(angle * 10430.378f))) {
                 turned = true;
             }
             if (!turned) {
@@ -803,7 +803,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
             s32 face = mDir_0x98;
-            if (face != fn_801F681C((s32)(angle * 10430.378f))) {
+            if (face != angleToDir_801F681C((s32)(angle * 10430.378f))) {
                 kind = 5;
             }
         }

@@ -59,7 +59,7 @@ void WoodenForceGem_804AB1F0::init() {
 }
 
 bool WoodenForceGem_804AB1F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tile = fn_8022461C(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
     if (tile == 0xC || tile == 3 || tile == 0xE) {
         mVel_0x3c.z = 0.0f;
         mVel_0x3c.y = 0.0f;
@@ -124,7 +124,7 @@ void WoodenForceGem_804AB1F0::update() {
             } else {
                 arg = kind + 4;
             }
-            s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, arg);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, arg);
             s32 bit = field_0x260;
             if (bit > 0) {
                 getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
@@ -213,5 +213,5 @@ void WoodenForceGem_804AB1F0::draw() {
     } else {
         drawSprite_801F06F0(name, frame, &params, 7, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 0, 0, 0);
 }

@@ -142,11 +142,11 @@ void Wallmaster_804A3E44::init() {
     field_0x194 = 1;
     if (field_0x2a8 == 0) {
         mState = 0;
-        field_0x250 = fn_801CD664(0x79) + 60;
+        field_0x250 = randInt_801CD664(0x79) + 60;
         mPos.z = 100.0f;
     } else {
         mState = 9;
-        field_0x250 = fn_801CD664(0xB5) + 180;
+        field_0x250 = randInt_801CD664(0xB5) + 180;
     }
     mStateTimer = 0;
     mSpeed = 0.0f;
@@ -180,7 +180,7 @@ void Wallmaster_804A3E44::fn_801BC554(s32 state) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         mDir_0x98 = 2;
-        field_0x250 = fn_801CD664(0x79) + 60;
+        field_0x250 = randInt_801CD664(0x79) + 60;
         mPos.set(mSpawnPos.x, mSpawnPos.y, 100.0f);
         mLayer_0x4 = field_0x8;
         break;
@@ -231,7 +231,7 @@ void Wallmaster_804A3E44::fn_801BC554(s32 state) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         mDir_0x98 = 2;
-        field_0x250 = fn_801CD664(0xB5) + 180;
+        field_0x250 = randInt_801CD664(0xB5) + 180;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         mPos.x = mSpawnPos.x;
@@ -315,7 +315,7 @@ inline bool Wallmaster_804A3E44::checkPlayerHit() {
     bool hitFlag = false;
     if (mState == 10 || (mState == 3 && mAnim.mCel == 1)) {
         if (field_0x2b8 >= 0 && !fn_8022DCD8(field_0x2b8)) {
-            if (fn_801CD2F8(mLayer_0x4) || !fn_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
+            if (isUpperLayer_801CD2F8(mLayer_0x4) || !isUpperLayer_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
                 mBox.set(-8.0f, -9.0f, 8.0f, 6.0f);
                 u8 hit = fn_801F2740(-1);
                 if (hit & (1 << field_0x2b8)) {
@@ -662,5 +662,5 @@ void Wallmaster_804A3E44::draw() {
 
     SpriteParams_801F5AE0 params;
     params.field_0x10.a = computeShadowAlpha();
-    fn_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x8a, &params, 0x407, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x8a, &params, 0x407, 0, false, 1.0f, 1.0f);
 }

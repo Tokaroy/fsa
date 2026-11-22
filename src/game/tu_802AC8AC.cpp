@@ -12,7 +12,7 @@
 
 BlackFade_804A8390::BlackFade_804A8390() {
     lbl_8053ACA0 = this;
-    const ResTIMG* timg = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_black.bti"));
+    const ResTIMG* timg = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_black.bti"));
     mPicture = new J2DPicture(timg);
     mAlpha = 0;
     field_0x10 = 0;

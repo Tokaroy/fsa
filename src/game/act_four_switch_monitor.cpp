@@ -68,7 +68,7 @@ void FourSwitchMonitor_804A80A0::update() {
         s32 fixedSlot = 1;
         for (s32 i = 0; i < 4; i++) {
             flags[i] = 0xFF;
-            if (getGameView_802D6A9C()->fn_802D800C(field_0x244[i])) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x244[i])) {
                 flags[i] = getGameView_802D6A9C()->fn_802D7E1C(field_0x244[i]);
                 count++;
                 if (flags[i] == 0xFF) {
@@ -119,16 +119,16 @@ void FourSwitchMonitor_804A80A0::update() {
     case 1:
     case 6:
     default:
-        if (!getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> 22) & 0x1F)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 22) & 0x1F)) {
             setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
-        } else if (!getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> 17) & 0x1F)) {
+        } else if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 17) & 0x1F)) {
             setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
-        } else if (!getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> 12) & 0x1F)) {
+        } else if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 12) & 0x1F)) {
             setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
-        } else if (!getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> 7) & 0x1F)) {
+        } else if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 7) & 0x1F)) {
             setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
         }
@@ -239,7 +239,7 @@ void FourSwitchMonitor_804A80A0::update() {
     case 7: {
         for (s32 i = 0; i < 4; i++) {
             flags[i] = 0xFF;
-            if (getGameView_802D6A9C()->fn_802D800C(field_0x244[i])) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x244[i])) {
                 flags[i] = getGameView_802D6A9C()->fn_802D7E1C(field_0x244[i]);
                 count++;
                 if (flags[i] == 0xFF) {

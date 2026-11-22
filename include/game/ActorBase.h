@@ -123,7 +123,7 @@ public:
     // callers' clrlwi nor the missing bool conversion in 0x801F47CC would
     // come out.
     /* 0x30 */ virtual void setScreenFlag_0x30(u8, bool);
-    // 0x801F4760: getScreenFlagBit_0x3C() ? fn_802D800C(view, getScreenFlagBit_0x3C()) (a bit
+    // 0x801F4760: getScreenFlagBit_0x3C() ? isScreenFlagSet_802D800C(view, getScreenFlagBit_0x3C()) (a bit
     // test, 0 or 1) : 0. Never overridden; 196 calls in 118 units, 190 of
     // them test r3 with clrlwi 24 (the rest store it with stb).
     /* 0x34 */ virtual bool isScreenFlagSet_0x34();
@@ -175,7 +175,7 @@ public:
     // is not part of the mangled name. Where a function takes ints and floats,
     // their order is not visible in the asm; ints first is a guess. Out-pointers
     // are NULL-checked by the body unless said otherwise. Exports that are not
-    // members are below the class (fn_801EE3C0, releaseEmitter_801EE434 C++; fn_801EF574,
+    // members are below the class (fn_801EE3C0, releaseEmitter_801EE434 C++; drawSobSprite_801EF574,
     // fn_801EF830 extern "C").
 
     // 1 unit / 4 calls. Looks for a 'WARP' actor (fn_801F78F4) on this
@@ -210,20 +210,20 @@ public:
     // when the actor is gone, 0x801EED14, 0x801EED24).
     void fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer,
                      s32 player, s32 mode);
-    // 7 units / 10 calls. fn_801F2DB4(this, 'NULL', 'NULL', list) with a
+    // 7 units / 10 calls. checkActorHit_801F2DB4(this, 'NULL', 'NULL', list) with a
     // stack copy of the 0x44-byte list lbl_80469FC8 (0x801EF518-0x801EF560).
     void fn_801EF510();
     // 23 units / 49 calls. drawSprite_801F06F0 with a resource already loaded
     // (fn_801EF830's res, used when no name is given) instead of a name;
     // skipped while mSpriteParams.mMtx is set. f1-f3 are kept in f30, f31,
     // f28. `res` is only passed on; void* is still a guess.
-    void fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX, f32 scaleY,
+    void drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX, f32 scaleY,
                      f32 arg_f3);
     // 42 units / 59 calls. drawSprite_801F06F0 with a scale mode (cmpwi 0 / 2 picks
     // the PSMTXScale variant, 0x801F031C-0x801F0344). `arg` is only stored
     // to the stack with stb (0x801F02E8), a byte; callers pass li 0 / li 1
     // or a clrlwi 24 value, as for a bool.
-    void fn_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params, s32 flags,
+    void drawSpriteScaled_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params, s32 flags,
                      s32 mode, bool arg, f32 scaleX, f32 scaleY);
     // 116 units / 193 calls. Draws frame `frame` of the "SOB " sprite bank
     // `name` at mPos on this actor's layer: fn_801EF830(mLayer_0x4, &mPos,
@@ -264,7 +264,7 @@ public:
     // passing their own (layer, pos) and a member
     // (this + 0x230), a countdown: while *timer runs nothing blocks; tiles
     // 0x10-0x13 / 0x140-0x15F start it at 0x78. Otherwise the base isBlocked_0x4C's
-    // tests (fn_8020D6AC, then the tile codes of fn_8022461C/fn_80226850);
+    // tests (fn_8020D6AC, then the tile codes of getTileCollisionCode_8022461C/getRawTile_80226850);
     // returns 0 or 1.
     bool fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer);
     // 1 call (fn_801F23BC). Probes the four edges of `box` at *pos on
@@ -289,7 +289,7 @@ public:
     // box, ...)), moves mPos to the result and stores a vector in *out
     // (0x801F2670-0x801F2688); returns 0 or 1. Callers pass 0 or a stack
     // TVec3f for out and 0 for `flag` (197 of 201).
-    // u8, as fn_801F23BC / fn_801F2DB4 / fn_801F2FAC / fn_801F305C: each
+    // u8, as fn_801F23BC / checkActorHit_801F2DB4 / fn_801F2FAC / fn_801F305C: each
     // narrows its bool local at the return (clrlwi r3, rN, 24) and the
     // callers keep r3 raw (EnemyBase vfunc_0x5C/0x60/0x64 and their
     // overrides return it with mr; update()s keep it in a u8 local, tested
@@ -306,7 +306,7 @@ public:
     s32 fn_801F2718(u32 actorId) const;
     // 16 units / 17 calls. Bit i set for each player i (other than
     // skipPlayer; callers pass -1 in 16 of 17) whose box overlaps mBox
-    // around mPos in screen space (0x801F2828-0x801F2844). fn_801F2B7C
+    // around mPos in screen space (0x801F2828-0x801F2844). damagePlayersInBox_801F2B7C
     // inlines it. u8: the callers keep r3 raw and narrow it with clrlwi 24
     // where they use it. const: loads off `this` before the register saves.
     u8 fn_801F2740(s32 skipPlayer) const;
@@ -352,18 +352,18 @@ public:
     // calls) whose box (fn_8023B190) overlaps mBox on this layer, with
     // fn_80238548(player, damage, &pos, arg); damage -100 means mParamAtcp_0x114
     // (EnemyParam "atcp", 0x801F2D60). Returns the bitmask of players hit.
-    u8 fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg);
+    u8 damagePlayersInBox_801F2B7C(s32 damage, s32 skipPlayer, s32 arg);
     // 27 units / 41 calls. Takes a hit from an overlapping actor
     // (fn_801F82CC) whose mActorId is includeId (or any, 'NULL'), is not
     // excludeId and is not in the 'NULL'-ended list excludeIds (or NULL):
     // fn_801F37AC(this, attacker->mParamAtcn_0x118, ...) (0x801F2ECC). Returns
     // 0 or 1.
-    u8 fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excludeIds);
+    u8 checkActorHit_801F2DB4(u32 includeId, u32 excludeId, const u32* excludeIds);
     // 20 units / 22 calls. For each player overlapping this actor
     // (fn_801F285C), fn_801F37AC(this, fn_8023B6CC(i), getPlayerPos_8023E724(i), 0,
     // flag, i); returns whether any hit landed.
     u8 fn_801F2FAC();
-    // 22 units / 25 calls. fn_801F2FAC(), else fn_801F2DB4(this, 'NULL',
+    // 22 units / 25 calls. fn_801F2FAC(), else checkActorHit_801F2DB4(this, 'NULL',
     // 'NULL', NULL) (0x801F30F0-0x801F3104).
     u8 fn_801F305C();
     // 9 units / 9 calls. The centre of mBox around mPos in screen space
@@ -449,7 +449,7 @@ public:
     // u8, not bool: EnemyBase_804A4808::update() passes a bool local with
     // clrlwi r4, r31, 24 (0x801CDE0C), which MWCC emits for a bool going to
     // an unsigned char parameter (a bool one takes it with mr).
-    s32 fn_801F3D94(u8 flag);
+    s32 updateHitReaction_801F3D94(u8 flag);
     // 0x801F52A4, called by die_0x24 (0x801F50FC). Drops items by
     // EnemyParam "dasu" (mParamDasu_0x18c): a chance per dasu, then one of eight
     // drops ('HART' / 'RUPY', count and spawn parameter) spawned at the
@@ -546,7 +546,7 @@ public:
     /* 0x018 */ JGeometry::TVec3f mPrevPos;  // copy of mPos before update()
     /* 0x024 */ JGeometry::TVec3f mSpawnPos; // set only by the spawner
     /* 0x030 */ JGeometry::TVec3f field_0x30;
-    /* 0x03C */ JGeometry::TVec3f mVel_0x3c; // knock-back velocity (fn_801F37AC, fn_801F3D94)
+    /* 0x03C */ JGeometry::TVec3f mVel_0x3c; // knock-back velocity (fn_801F37AC, updateHitReaction_801F3D94)
     /* 0x048 */ JGeometry::TVec3f field_0x48; // 1.0f
     /* 0x054 */ JGeometry::TVec3f field_0x54; // 1.0f
     /* 0x060 */ JGeometry::TBox2f mBox;  // (-8, -8)-(8, 8)
@@ -583,7 +583,7 @@ public:
     /* 0x0D0 */ s32 field_0xd0;
     /* 0x0D4 */ u8 field_0xd4;
     /* 0x0D5 */ u8 mHitPlayers_0xd5; // players that hit during mHitTimer_0xd8 (1 << player; fn_801F37AC)
-    /* 0x0D8 */ s32 mHitTimer_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / fn_801F3D94)
+    /* 0x0D8 */ s32 mHitTimer_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / updateHitReaction_801F3D94)
     /* 0x0DC */ s32 mHitTimerStart_0xdc; // its start value
     /* 0x0E0 */ s32 mDeathTimer_0xe0; // death timer (1 or 30; die_0x24 at 0)
     /* 0x0E4 */ s32 mSparkTimer_0xe4; // frames to the next hit spark
@@ -640,7 +640,7 @@ public:
 // (their callers never pass an actor in r3). extern "C" keeps the dtk names
 // as link names until that unit names them.
 // 4 units / 8 calls. A map tile code (callers pass the lhz/clrlwi 16 result
-// of fn_80226850, e.g. act_spreading_fire 0x802BC9F8) in one of the ranges
+// of getRawTile_80226850, e.g. act_spreading_fire 0x802BC9F8) in one of the ranges
 // 0x68-0x6B, 0x70-0x71, 0x74-0x75, 0xAA-0xAB or 0x4E, 0xFA, 0x146, 0x159.
 // Defined in this unit, so a C++ name (fn_801EE3C0__Fl; an int, the
 // callee truncates each test to 16 bits).
@@ -673,7 +673,7 @@ extern "C" {
 // 0x801EF7B4-0x801EF7F4) and hands it with pos, arg1 and params (a
 // SpriteParams_801F5AE0 or NULL, then defaults are used) to fn_802F86CC
 // (gGameRoot2_8053AB10->0x20).
-void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
+void drawSobSprite_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
                  const SpriteParams_801F5AE0* params);
 
 } // extern "C"

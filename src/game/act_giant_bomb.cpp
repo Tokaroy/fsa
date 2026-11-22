@@ -83,7 +83,7 @@ void GiantBomb_804AC588::init() {
 // Only the register of the loop counter differs (r26 in the original) and the .sdata2 reloc names.
 void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
     getGameView_802D6A9C()->fn_802D79E8(layer, 16.0f, 0.0f, false);
-    gGameRoot_8053AAF8->fn_80134DE4(3, 0);
+    gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
 
     u8 unk[4];
     unk[0] = 0;
@@ -151,7 +151,7 @@ void GiantBomb_804AC588::update() {
         if (field_0x238 > 0) {
             field_0x238--;
         }
-        if (fn_801F3D94(0) == 0 && field_0x238 <= 0) {
+        if (updateHitReaction_801F3D94(0) == 0 && field_0x238 <= 0) {
             field_0xb0 = 0x41304;
             s32 hit0 = fn_801A4D1C(mSerial, &box, &pos2);
             s32 hit1 = fn_801A6108(mSerial, &box, &pos2);
@@ -228,7 +228,7 @@ void GiantBomb_804AC588::update() {
         } else {
             mVel_0x3c.z -= 0.2f;
             if (field_0x24c != 2) {
-                fn_801F2B7C(1, -1, 2);
+                damagePlayersInBox_801F2B7C(1, -1, 2);
                 fn_801F2B20(0);
             }
         }
@@ -249,7 +249,7 @@ void GiantBomb_804AC588::update() {
             field_0x254.z = 0.75f;
             mState = 6;
         } else {
-            fn_801F2B7C(1, -1, 2);
+            damagePlayersInBox_801F2B7C(1, -1, 2);
             fn_801F2B20(0);
             if (mTimer > 10) {
                 field_0x254.x = 0.75f * (1.0f + (0.2f * (15 - mTimer)) / 5.0f);
@@ -375,7 +375,7 @@ void GiantBomb_804AC588::draw() {
         setRotScaleMtx(mtx, rot, 0.5f);
         params.mMtx = mtx;
         params.field_0x2c = 0;
-        void* numberRes = fn_804030C4('TIMG', lbl_804AC558[count]);
+        void* numberRes = getMain2DResource_804030C4('TIMG', lbl_804AC558[count]);
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, numberRes, &params);
         }

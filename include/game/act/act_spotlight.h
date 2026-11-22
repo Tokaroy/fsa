@@ -21,7 +21,7 @@ public:
     /* 0x23C */ JPABaseEmitter* mEmitter23c; // effect 0xBF while on
     /* 0x240 */ JPABaseEmitter* mEmitter240; // effect 0xC0 while on
     /* 0x244 */ JPABaseEmitter* mEmitter244; // effect 0x54A while on
-    /* 0x248 */ s32 mViewBit0;               // (mSpawnParam_0x90 >> 22) & 0x1F, tested with GameView::fn_802D800C
+    /* 0x248 */ s32 mViewBit0;               // (mSpawnParam_0x90 >> 22) & 0x1F, tested with GameView::isScreenFlagSet_802D800C
     /* 0x24C */ s32 mViewBit1;               // (mSpawnParam_0x90 >> 17) & 0x1F
     /* 0x250 */ s32 mViewBit2;               // (mSpawnParam_0x90 >> 12) & 0x1F
     /* 0x254 */ s32 mOn;                     // 1 while lit, selects the shadow fade direction

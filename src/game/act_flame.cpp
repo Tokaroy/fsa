@@ -290,7 +290,7 @@ void Flame_804A0330::fn_8015DF7C() {
             }
             if (field_0x260 > 0.7f) {
                 fn_801F2B20(5);
-                if (!fn_801F2B7C(mParamAtcp_0x114, -1, 9) && gGameRoot_8053AAF8->field_0x7f == 1) {
+                if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9) && gGameRoot_8053AAF8->field_0x7f == 1) {
                     mMapBox_0x80.set(lbl_80466110.mHitBoxes[mDir_0x98]);
                     if (field_0x258 == 1) {
                         mMapBox_0x80.i.x *= 1.5f;
@@ -314,7 +314,7 @@ void Flame_804A0330::fn_8015DF7C() {
             box = mBox;
             box.addPos(pos2);
             fn_801F2B20(5);
-            if (!fn_801F2B7C(mParamAtcp_0x114, -1, 9)) {
+            if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9)) {
                 for (s32 i = 0; i < 4; i++) {
                     if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) != 8) {
                         JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);

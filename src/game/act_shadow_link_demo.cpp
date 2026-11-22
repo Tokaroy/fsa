@@ -152,7 +152,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         if (hop(this, field_0x23c, 2.5f, 0.0f, 0.0f)) {
             field_0x23c = 0;
         }
-        if (fn_801F2B7C(0, -1, 1)) {
+        if (damagePlayersInBox_801F2B7C(0, -1, 1)) {
             fn_8011B878(26);
         }
         break;
@@ -234,7 +234,7 @@ void ShadowLinkCutscene_8049DB90::draw() {
     params.field_0x2e = 0x40;
     drawShadowSob(this, "player_sob.bin", mSequencer.mFrame, &params, 7);
     drawSob(mLayer_0x4, getPos(), "player_sob.bin", mSequencer.mFrame);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
 
 void ShadowLinkCutscene_8049DB90::vfunc_0x54() {

@@ -133,8 +133,8 @@ void ColourBlock1Player_804AE620::update() {
             probe.scale(16.0f);
             probe += mPos;
 
-            u16 tileA = fn_8022461C(&probe, mLayer_0x4);
-            u16 tileB = fn_8022461C(&mPos, mLayer_0x4);
+            u16 tileA = getTileCollisionCode_8022461C(&probe, mLayer_0x4);
+            u16 tileB = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
             if (tileB == 0x50 && (tileA == 0 || tileA == 0x50)) {
                 JGeometry::TVec3f savedSpeed = mVel_0x3c;
                 if (fn_80374964(mSpawnParam_0x90 & 3) == 1) {
@@ -205,7 +205,7 @@ void ColourBlock1Player_804AE620::update() {
                             probe.normalize();
                             probe.scale(16.0f);
                             probe += mPos;
-                            if (fn_8022461C(&probe, mLayer_0x4) == 0x50) {
+                            if (getTileCollisionCode_8022461C(&probe, mLayer_0x4) == 0x50) {
                                 mVel_0x3c.normalize();
                                 mVel_0x3c.scale(1.0f);
                             }

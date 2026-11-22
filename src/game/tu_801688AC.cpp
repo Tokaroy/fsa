@@ -338,7 +338,7 @@ void UnknownBOME_804A0738::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
 }
 
 
@@ -407,7 +407,7 @@ void UnknownBOME_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, 
             p.x = 512.0f;
             break;
         }
-        u16 tile = fn_80226850(&p, layer);
+        u16 tile = getRawTile_80226850(&p, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             break;
         }
@@ -420,7 +420,7 @@ void UnknownBOME_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, 
             p.x = 0.0f;
             break;
         }
-        u16 tile = fn_80226850(&p, layer);
+        u16 tile = getRawTile_80226850(&p, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             p.x += 8.0f;
             break;
@@ -436,7 +436,7 @@ void UnknownBOME_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, 
             p.y = 512.0f;
             break;
         }
-        u16 tile = fn_80226850(&p, layer);
+        u16 tile = getRawTile_80226850(&p, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             break;
         }
@@ -449,7 +449,7 @@ void UnknownBOME_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, 
             p.y = 0.0f;
             break;
         }
-        u16 tile = fn_80226850(&p, layer);
+        u16 tile = getRawTile_80226850(&p, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             p.y += 8.0f;
             break;

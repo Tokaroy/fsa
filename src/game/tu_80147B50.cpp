@@ -324,7 +324,7 @@ bool BigMoldorm_8049F6C8::fn_80149AEC() {
                 mEmitters798[i] = NULL;
             }
         }
-        gGameRoot_8053AAF8->fn_80134DE4(0xA8, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(0xA8, 0);
         mState = 6;
     } else {
         if (field_0x274 == 1) {
@@ -465,17 +465,17 @@ void BigMoldorm_8049F6C8::update() {
         }
         fn_801EF510();
         if (field_0x274 > 0) {
-            fn_801F2B7C(mParamAtcp_0x114, -1, 2);
+            damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 2);
         }
-        if (fn_801F3D94(0)) {
+        if (updateHitReaction_801F3D94(0)) {
             field_0x25c = 4;
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 field_0x270++;
                 if (field_0x270 == 20) {
                     s32 tries = 0;
                     while (field_0x280 == field_0x278 && tries < 100) {
                         tries++;
-                        field_0x280 = (s32)(gGameRoot_8053AAF8->fn_80138A30() * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                        field_0x280 = (s32)(gGameRoot_8053AAF8->getPlayerCount_80138A30() * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                         field_0x280 &= 3;
                     }
                     field_0x270 = 21;
@@ -610,7 +610,7 @@ void BigMoldorm_8049F6C8::update() {
                 !fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(field_0x280), &mMapBox_0x80, NULL, NULL, false)) {
                 field_0x286 = angle;
             } else if (field_0x23c == 0) {
-                if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+                if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                     for (s32 i = 0; i < 4; i++) {
                         if (i != field_0x280 && fn_8023F264(i) && !fn_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
                             !fn_80230188(i) && !fn_8022DCD8(i)) {
@@ -767,7 +767,7 @@ void BigMoldorm_8049F6C8::update() {
                 pos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 getActorManager_801F856C()->spawnActor_801F9484('HART', mLayer_0x4, &pos, 0, -1, -1);
             }
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
             if (--lbl_8053AB30 == 0) {
                 getGameView_802D6A9C()->fn_802D7440(1);
                 fn_8022ADCC();
@@ -785,7 +785,7 @@ void BigMoldorm_8049F6C8::update() {
             if (lbl_8053AB30 != 0 && kind == 4) {
                 kind = 3;
             }
-            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &field_0x2c0[segment], kind);
+            getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &field_0x2c0[segment], kind);
         }
         field_0x2c0[field_0x260].set(mPos);
         break;
@@ -802,14 +802,14 @@ void BigMoldorm_8049F6C8::update() {
         }
         field_0xb0 = 0;
         if (mSpawnParam_0x90 == 2 && lbl_80539F58 < 0) {
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 30, -1, -1);
                 getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &mPos, 5, -1, -1);
             }
             mAlive = false;
         }
         if (mSpawnParam_0x90 == 3 && lbl_80539F5C < 0) {
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 30, -1, -1);
                 getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &mPos, 5, -1, -1);
             }
@@ -829,7 +829,7 @@ void BigMoldorm_8049F6C8::draw() {
     params.field_0x1d = 1;
     if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
         if (lbl_8053AB34 == 1) {
-            fn_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 0, true, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 0, true, 1.0f, 1.0f);
         }
         return;
     }
@@ -839,7 +839,7 @@ void BigMoldorm_8049F6C8::draw() {
     mPos.z = field_0x2c0[7].z;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[7] / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    fn_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x278 + 8]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x278 + 8]), &params, -1, 0.0f, 0.0f, 0.0f);
     for (s32 i = 4; i >= 0; i--) {
         params.field_0x1d = 6 - i;
         mPos.x = field_0x2c0[i + 1].x;
@@ -848,12 +848,12 @@ void BigMoldorm_8049F6C8::draw() {
         f32 scale = 1.0f - 0.08f * i;
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[i + 1] / -10430.219f, 0.0f), scale);
         params.mMtx = mtx;
-        fn_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
     }
     mPos.set(saved);
     params.field_0x1d = 7;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x284 / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    fn_801EFD34(fn_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
 }
 

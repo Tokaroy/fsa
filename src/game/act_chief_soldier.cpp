@@ -142,9 +142,9 @@ void ChiefSoldier_804A0B90::fn_80175024() {
                     const f32* box = lbl_804A0A58[mDir_0x98];
                     mBox.set(JGeometry::TVec2f(box[0], box[1]), JGeometry::TVec2f(box[2], box[3]));
                 }
-                fn_801F2B7C(-100, -1, 1);
+                damagePlayersInBox_801F2B7C(-100, -1, 1);
             } else {
-                fn_801F2B7C(4, -1, 3);
+                damagePlayersInBox_801F2B7C(4, -1, 3);
                 partner->field_0x94 = 2;
             }
         } else {
@@ -495,9 +495,9 @@ void ChiefSoldier_804A0B90::fn_80174220() {
             ActorBase_804A5770* partner = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (partner != NULL && partner->mHitTimer_0xd8 == 0) {
                 if (field_0x94 == 0) {
-                    fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+                    damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
                 } else {
-                    fn_801F2B7C(4, -1, 3);
+                    damagePlayersInBox_801F2B7C(4, -1, 3);
                 }
             }
         }
@@ -556,7 +556,7 @@ void ChiefSoldier_804A0B90::update() {
         fn_801752D8();
     }
     fn_80175024();
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         fn_801F2618(NULL, false);
         if (field_0x23c == 0) {
             field_0x250 = 20;
@@ -578,7 +578,7 @@ void ChiefSoldier_804A0B90::update() {
                 f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
                 s16 heading = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                if (mDir_0x98 == fn_801F681C((u16)heading)) {
+                if (mDir_0x98 == angleToDir_801F681C((u16)heading)) {
                     field_0x254 = 1;
                     f32 y0 = mBox.i.y + mPos.y;
                     f32 y1 = mBox.f.y + mPos.y;
@@ -638,7 +638,7 @@ void ChiefSoldier_804A0B90::update() {
         field_0x94 = 0;
         s32 life = mLife;
         if (mHitTimer_0xd8 == 0) {
-            if ((field_0x254 == 0 && fn_801F2FAC()) || fn_801F2DB4('NULL', 'NULL', NULL)) {
+            if ((field_0x254 == 0 && fn_801F2FAC()) || checkActorHit_801F2DB4('NULL', 'NULL', NULL)) {
                 if (life != mLife) {
                     if (getType() != 6 && mLayer_0x4 >= 8 && field_0x23c == 1) {
                         field_0x284 -= 10000 - mLife;
@@ -719,9 +719,9 @@ void ChiefSoldier_804A0B90::update() {
             mPos += mVel_0x3c;
             fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
             if (field_0x29c != 2 || field_0x264 < 4) {
-                fn_801F2B7C(-100, -1, 1);
+                damagePlayersInBox_801F2B7C(-100, -1, 1);
             } else if (getType() == 6) {
-                fn_801F2B7C(4, -1, 3);
+                damagePlayersInBox_801F2B7C(4, -1, 3);
             }
         }
     }
@@ -1087,11 +1087,11 @@ void ChiefSoldier_804A0B90::draw() {
                 pos.x += box.i.x;
                 pos.y += box.i.y;
                 if (getType() != 6) {
-                    fn_801EF574("enemy_gc_sob.bin", field_0x280 + 0x226, &pos, &params);
+                    drawSobSprite_801EF574("enemy_gc_sob.bin", field_0x280 + 0x226, &pos, &params);
                 }
-                fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x280 + 0x318, hasMtx != 0, 2, -1, 0, 0, 0);
+                showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x280 + 0x318, hasMtx != 0, 2, -1, 0, 0, 0);
             } else {
-                fn_801F02BC("enemy_gc_sob.bin", field_0x280 + 0x226, &params, 7, 0, false, 1.0f,
+                drawSpriteScaled_801F02BC("enemy_gc_sob.bin", field_0x280 + 0x226, &params, 7, 0, false, 1.0f,
                             1.0f);
             }
         }

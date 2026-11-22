@@ -139,7 +139,7 @@ void InextinguishableFlame_804A9D28::update() {
             tile.x = mPos.x + lbl_8046F0C8[i];
             tile.y = mPos.y + lbl_8046F108[i];
             tile.z = mPos.z;
-            if (fn_801EE3C0(fn_80226850(&tile, mLayer_0x4)) == true) {
+            if (fn_801EE3C0(getRawTile_80226850(&tile, mLayer_0x4)) == true) {
                 getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &tile, (mDir_0x98 << 4) | 0xF, -1, -1);
                 mActorId = 'BLZE';
                 mState = 4;
@@ -178,7 +178,7 @@ void InextinguishableFlame_804A9D28::update() {
                     }
                     JGeometry::TBox2f box(mBox);
                     box.addPos(mPos.x, mPos.y);
-                    fn_801F2B7C(mParamAtcp_0x114, -1, 7);
+                    damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 7);
                     box = mMapBox_0x80;
                     box.addPos(mPos.x, mPos.y);
                     fn_80239914(&box, mLayer_0x4, mSerial);
@@ -221,7 +221,7 @@ void InextinguishableFlame_804A9D28::update() {
         }
         break;
     case 6:
-        if (fn_801F2B7C(mParamAtcp_0x114, -1, 7)) {
+        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 7)) {
             if (!fn_80234CF8(0)) {
                 mTimer = 1;
             } else {
@@ -281,7 +281,7 @@ bool InextinguishableFlame_804A9D28::vfunc_0x58(JGeometry::TVec3f* pos) {
         f32 y = pos->y + lbl_8046F188[i];
         f32 x = pos->x + lbl_8046F148[i];
         JGeometry::TVec3f p(x, y, pos->z);
-        s32 tile = fn_80226850(&p, mLayer_0x4);
+        s32 tile = getRawTile_80226850(&p, mLayer_0x4);
         if (fn_801EE3C0(tile) == true) {
             result = true;
             break;

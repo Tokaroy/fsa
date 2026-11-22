@@ -90,11 +90,11 @@ void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
     fn_801D76B4();
     field_0x40 = layer;
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
-    if (fn_801CD2F8(field_0x40)) {
+    if (isUpperLayer_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
     s32 count;
-    if (fn_801CD2F8(field_0x40)) {
+    if (isUpperLayer_801CD2F8(field_0x40)) {
         field_0x44 = 1;
         count = 1;
     } else {
@@ -111,7 +111,7 @@ void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
 // FIXME(shotgun): the original stores d.x/d.y as one paired-single pair; ours uses separate stores.
 void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
-    if (fn_801CD2F8(field_0x40)) {
+    if (isUpperLayer_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
     s32 serial;
@@ -138,7 +138,7 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
 
 void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
-    if (fn_801CD2F8(field_0x40)) {
+    if (isUpperLayer_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
     s32 serial = field_0x0[0];
@@ -154,12 +154,12 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
                 } else {
                     d.normalize();
                 }
-                s16 ang = -(s16)(fn_801CD664(0xE39) - 0x71C);
+                s16 ang = -(s16)(randInt_801CD664(0xE39) - 0x71C);
                 f32 c = JMath::sincosTable_.cosShort(ang);
                 f32 s = JMath::sincosTable_.sinShort(ang);
                 v.set(d.x * c - d.y * s, d.x * s + d.y * c);
             } else {
-                s16 ang = fn_801CD664(0x10000);
+                s16 ang = randInt_801CD664(0x10000);
                 v.set(JMath::sincosTable_.sinShort(ang), JMath::sincosTable_.cosShort(ang));
             }
             v.scale(5.0f);
@@ -172,7 +172,7 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
 // FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
 void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
-    if (fn_801CD2F8(field_0x40)) {
+    if (isUpperLayer_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
     switch (field_0x44) {

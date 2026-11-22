@@ -350,7 +350,7 @@ BattleHud_804B146C::BattleHud_804B146C()
     for (s32 p = 0; p < 4; p++) {
         for (s32 i = 0; i < 8; i++) {
             for (s32 k = 0; k < 3; k++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1428[k]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1428[k]));
                 static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[p][i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[p][i]))->append(res, 1.0f);
             }
@@ -358,7 +358,7 @@ BattleHud_804B146C::BattleHud_804B146C()
     }
     for (s32 p = 0; p < 4; p++) {
         for (s32 k = 1; k < 4; k++) {
-            const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B145C[k]));
+            const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B145C[k]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048EF20[p]))->append(res, 1.0f);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048EF40[p]))->append(res, 1.0f);
         }
@@ -366,7 +366,7 @@ BattleHud_804B146C::BattleHud_804B146C()
     for (s32 p = 0; p < 4; p++) {
         for (s32 i = 0; i < 8; i++) {
             for (s32 k = 0; k < 3; k++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1428[k]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1428[k]));
                 static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048EE20[i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048EEA0[i]))->append(res, 1.0f);
             }
@@ -526,7 +526,7 @@ void BattleHud_804B146C::fn_804263A8() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B145C[0]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B145C[0]));
         static_cast<J2DPicture*>(mScreen->search(lbl_8048EF20[i]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048EF40[i]))->changeTexture(res, 0);
     }
@@ -1164,7 +1164,7 @@ void BattleHud_804B146C::fn_80423248(s32 player) {
             val = -5000;
         }
         val *= -1;
-        tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
+        tex = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_rupyNumMinus.bti"));
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[player][0]))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][0]))->changeTexture(tex, 0);
         field_0x4->search(lbl_8048EBE0[player][4])->show();
@@ -1180,26 +1180,26 @@ void BattleHud_804B146C::fn_80423248(s32 player) {
     }
     s32 n1000 = val / 1000;
     val %= 1000;
-    tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[n1000]));
+    tex = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[n1000]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[player][start]))->changeTexture(tex, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
     start++;
 
     s32 n100 = val / 100;
     val %= 100;
-    tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[n100]));
+    tex = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[n100]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[player][start]))->changeTexture(tex, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
     start++;
 
     s32 n10 = val / 10;
     val %= 10;
-    tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[n10]));
+    tex = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[n10]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[player][start]))->changeTexture(tex, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
     start++;
 
-    tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[val]));
+    tex = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[val]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[player][start]))->changeTexture(tex, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
 }
@@ -1405,7 +1405,7 @@ void BattleHud_804B146C::fn_80421D78(s32 player) {
                 sec = 0;
             }
             if (sec < 10) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[sec]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[sec]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[1]))->changeTexture(res, 0);
                 if (field_0x2c[player]->search(lbl_8048F158[2])->isVisible() == true) {
@@ -1413,10 +1413,10 @@ void BattleHud_804B146C::fn_80421D78(s32 player) {
                     field_0x2c[player]->search(lbl_8048F158[3])->hide();
                 }
             } else {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[sec / 10]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[sec / 10]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[1]))->changeTexture(res, 0);
-                res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1434[sec % 10]));
+                res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1434[sec % 10]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[2]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048F158[3]))->changeTexture(res, 0);
                 if (field_0x2c[player]->search(lbl_8048F158[2])->isVisible() == false) {

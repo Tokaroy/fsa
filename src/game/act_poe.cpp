@@ -135,7 +135,7 @@ void Poe_8049F330::update() {
         fn_801F37AC(0x80, &mPos, 3, 0, -1);
         field_0x234 = 0;
     }
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         if (mDeathTimer_0xe0 == 0x1D) {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1FF, 1, 1, NULL, NULL, true, 1.0f);
             if (field_0x94 == 9) {
@@ -248,7 +248,7 @@ void Poe_8049F330::update() {
         if (field_0x94 >= 4 && field_0x94 <= 7) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         break;
     case 2: {
         f32 dist;
@@ -322,7 +322,7 @@ void Poe_8049F330::draw() {
             mtx[2][3] = 0.0f;
             params.mMtx = mtx;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_8049F318[index]);
-            fn_801EFD34(res, &params, 7, 0.0f, -8.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -8.0f, 0.0f);
         } else {
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x25c + 0x84, &params, 7, 1.0f, 1.0f);
         }

@@ -156,7 +156,7 @@ void SpriteAnim_801D267C::fn_801D1F14(f32 frame) {
 }
 
 void SpriteAnim_801D267C::fn_801D1D60() {
-    setFrameInline(fn_801CD664(mLength + 1));
+    setFrameInline(randInt_801CD664(mLength + 1));
 }
 
 void SpriteAnim_801D267C::fn_801D1C18() {

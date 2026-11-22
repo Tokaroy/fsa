@@ -326,10 +326,10 @@ MapScreen_804B1288::MapScreen_804B1288() {
         mMapAreaScreen_0x10->search('Ndata03')->show();
         s32 tens = fn_803B8C90() / 10;
         s32 ones = fn_803B8C90() % 10;
-        const ResTIMG* digit = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1260[tens]));
+        const ResTIMG* digit = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1260[tens]));
         static_cast<J2DPicture*>(mMapAreaScreen_0x10->search('Pfsk01'))->changeTexture(digit, 0);
         static_cast<J2DPicture*>(mMapAreaScreen_0x10->search('Pfs01'))->changeTexture(digit, 0);
-        digit = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1260[ones]));
+        digit = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1260[ones]));
         static_cast<J2DPicture*>(mMapAreaScreen_0x10->search('Pfsk02'))->changeTexture(digit, 0);
         static_cast<J2DPicture*>(mMapAreaScreen_0x10->search('Pfs02'))->changeTexture(digit, 0);
     } else {
@@ -467,8 +467,8 @@ MapScreen_804B1288::MapScreen_804B1288() {
     static_cast<J2DPicture*>(field_0x23c->mPane)->append(static_cast<const ResTIMG*>(fn_80403184('TIMG', "kk_mStick_02.bti")), 1.0f);
     static_cast<J2DPicture*>(field_0x23c->mPane)->setBlendRatio(1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     field_0x2b4 = lbl_8053AED8->field_0x8;
-    lbl_8053AED8->fn_80440D78(static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_kettei_01.bti")));
-    lbl_8053AED8->fn_80440CE4(static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_modoru_01.bti")));
+    lbl_8053AED8->fn_80440D78(static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_kettei_01.bti")));
+    lbl_8053AED8->fn_80440CE4(static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_modoru_01.bti")));
     for (s32 i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             JUtility::TColor white = static_cast<J2DPicture*>(mLevelRowPanes_0x28[i][j]->mPane)->getWhite();
@@ -1190,7 +1190,7 @@ void MapScreen_804B1288::fn_8040F480() {
                 }
             }
             field_0x4->fn_804446F0(0);
-            gAudioMgr_8053AF80->fn_80458880(0x56, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x56, -1);
         } else {
             if (field_0x65d == 0) {
                 for (int i = 0; i < 15; i++) {
@@ -1212,7 +1212,7 @@ void MapScreen_804B1288::fn_8040F480() {
                 }
             }
             field_0x4->fn_804446F0(0);
-            gAudioMgr_8053AF80->fn_80458880(0x56, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x56, -1);
         } else {
             if (field_0x65d == 0) {
                 for (int i = 0; i < 15; i++) {
@@ -1540,7 +1540,7 @@ void MapScreen_804B1288::fn_8040E298() {
                 }
             }
             field_0x4->fn_804446F0(0);
-            gAudioMgr_8053AF80->fn_80458880(0x56, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x56, -1);
         } else {
             mState_0x350 = 0x15;
         }
@@ -1586,7 +1586,7 @@ void MapScreen_804B1288::fn_8040D3D0() {
         field_0x41e = 0;
         loadStageInfo();
         if (!field_0x657) {
-            gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         } else {
             fn_804083D8();
             setStageName();
@@ -1615,11 +1615,11 @@ void MapScreen_804B1288::fn_8040D3D0() {
             field_0x668 = 4;
             lbl_80529DEC.mStage_0x118 = mStage_0x340;
             lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
-            gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
         field_0x668 = 4;
-        gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
     } else if (lbl_8053AD30->fn_80309B74(4, -1) || lbl_8053AD30->fn_80309B74(1, -1)) {
         mPrevStage_0x344 = mStage_0x340;
         mStage_0x340--;
@@ -1634,7 +1634,7 @@ void MapScreen_804B1288::fn_8040D3D0() {
             fn_80411A94(1.0f);
             field_0x426 = 0;
             mState_0x350 = 0xC;
-            gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         }
     } else if (lbl_8053AD30->fn_80309B74(8, -1) || lbl_8053AD30->fn_80309B74(2, -1)) {
         mPrevStage_0x344 = mStage_0x340;
@@ -1650,7 +1650,7 @@ void MapScreen_804B1288::fn_8040D3D0() {
             fn_80411A94(1.0f);
             field_0x426 = 0;
             mState_0x350 = 0xD;
-            gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         }
     }
 }
@@ -1831,7 +1831,7 @@ void MapScreen_804B1288::fn_8040BC1C() {
                 }
             }
             field_0x4->fn_804446F0(0);
-            gAudioMgr_8053AF80->fn_80458880(0x56, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x56, -1);
         } else if (field_0x657) {
             mState_0x350 = 0x15;
         } else {
@@ -1840,7 +1840,7 @@ void MapScreen_804B1288::fn_8040BC1C() {
         field_0x657 = 0;
     }
     if (field_0x41e >= 15) {
-        gAudioMgr_8053AF80->fn_80458880(0x55, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x55, -1);
     }
 }
 
@@ -1941,7 +1941,7 @@ void MapScreen_804B1288::fn_8040B388() {
     case 0:
         if (lbl_8053AEC4->fn_8042EC7C()) {
             field_0x428 = 1;
-            gAudioMgr_8053AF80->fn_80458880(0x57, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x57, -1);
         }
         break;
     case 1:
@@ -2038,7 +2038,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             }
             field_0x34c = mLevel_0x348;
             inl_80405B10();
-            gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         } else if (lbl_8053AD30->fn_80309A9C(4, -1)) {
             mLevel_0x348++;
             if (mLevel_0x348 >= 4) {
@@ -2046,14 +2046,14 @@ void MapScreen_804B1288::fn_80409FDC() {
             }
             field_0x34c = mLevel_0x348;
             inl_80405B10();
-            gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x1000, -1)) {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 lbl_80529DEC.field_0x237 = 4;
                 field_0x668 = 4;
                 lbl_80529DEC.mStage_0x118 = mStage_0x340;
                 lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
-                gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
             mCursorX_0x394 = x;
@@ -2068,7 +2068,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             field_0x41e = 0;
             mMapAreaScreen_0x10->search('Ndata10')->hide();
             mState_0x350 = 0x14;
-            gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             if (field_0x663) {
                 for (int i = 0; i < 2; i++) {
@@ -2097,7 +2097,7 @@ void MapScreen_804B1288::fn_80409FDC() {
                 field_0x34c = mLevel_0x348;
             } else {
                 inl_80405B10();
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         }
     } else if (lbl_8053AD30->fn_80309A9C(4, -1)) {
@@ -2115,7 +2115,7 @@ void MapScreen_804B1288::fn_80409FDC() {
                 field_0x34c = mLevel_0x348;
             } else {
                 inl_80405B10();
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         }
     } else if (lbl_8053AD30->fn_80309A9C(1, -1)) {
@@ -2140,7 +2140,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             field_0x668 = 4;
             lbl_80529DEC.mStage_0x118 = mStage_0x340;
             lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
-            gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
         mCursorX_0x394 = x;
@@ -2155,7 +2155,7 @@ void MapScreen_804B1288::fn_80409FDC() {
         field_0x41e = 0;
         mMapAreaScreen_0x10->search('Ndata10')->hide();
         mState_0x350 = 0x14;
-        gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
     } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
         if (field_0x663) {
             for (int i = 0; i < 2; i++) {
@@ -2291,7 +2291,7 @@ void MapScreen_804B1288::fn_804096E8() {
         }
     }
     if (field_0x41e >= 0) {
-        gAudioMgr_8053AF80->fn_80458880(0x54, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x54, -1);
     }
 }
 
@@ -2905,14 +2905,14 @@ void MapScreen_804B1288::fn_80405D00(s32 dir) {
                 mLevel_0x348 = 2;
                 field_0x34c = mLevel_0x348;
                 inl_80405B10();
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         } else if (mLevel_0x348 == 2) {
             if (lbl_80543888[mStage_0x340] == dir) {
                 mLevel_0x348 = 0;
                 field_0x34c = mLevel_0x348;
                 inl_80405B10();
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         }
         return;
@@ -2921,13 +2921,13 @@ void MapScreen_804B1288::fn_80405D00(s32 dir) {
         mLevel_0x348++;
         field_0x34c = mLevel_0x348;
         inl_80405B10();
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
     }
     if (mLevel_0x348 > 0 && dir == lbl_8048C924[mStage_0x340][mLevel_0x348 - 1]) {
         mLevel_0x348--;
         field_0x34c = mLevel_0x348;
         inl_80405B10();
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
     }
 }
 
@@ -2948,13 +2948,13 @@ void MapScreen_804B1288::fn_80405B10(s32 dir) {
         field_0x34c++;
         mLevel_0x348 = lbl_8048C88C[mStage_0x340][field_0x34c];
         inl_80405B10();
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
     }
     if (field_0x34c > 0 && dir == lbl_8048C94C[mStage_0x340][field_0x34c - 1]) {
         field_0x34c--;
         mLevel_0x348 = lbl_8048C88C[mStage_0x340][field_0x34c];
         inl_80405B10();
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
     }
 }
 #pragma auto_inline reset
@@ -3167,7 +3167,7 @@ void MapScreen_804B1288::fn_804049DC() {
         mState_0x350 = 0x13;
     } else {
         field_0x668 = 4;
-        gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
     }
 }
 
@@ -3227,7 +3227,7 @@ void MapScreen_804B1288::fn_80404648() {
         mState_0x350 = 0x13;
     } else {
         field_0x668 = 4;
-        gAudioMgr_8053AF80->fn_80458880(0xb, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
     }
 }
 

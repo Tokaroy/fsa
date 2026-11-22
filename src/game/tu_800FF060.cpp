@@ -40,7 +40,7 @@ void HammerShopMinigame_8049C858::init() {
 void HammerShopMinigame_8049C858::fn_801003F4() {
     s32 rank = 0;
     u8 used[4] = {0, 0, 0, 0};
-    s32 count = gGameRoot_8053AAF8->fn_80138A30();
+    s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     for (s32 i = 0; i < count; i++) {
         if (field_0x250[i] == 0) {
             getGameView_802D6A9C()->fn_802D7844(1, i);
@@ -148,12 +148,12 @@ void HammerShopMinigame_8049C858::update() {
         if (fn_803865B8(field_0x240)) {
             switch (fn_8037EFB4(field_0x240)) {
             case 0:
-                if (gGameRoot_8053AAF8->fn_80138A30() == 1) {
+                if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1) {
                     fn_8038470C(field_0x240, 0x285);
                     field_0x230 = 2;
                     field_0x248 = 0;
                 } else {
-                    s32 count = gGameRoot_8053AAF8->fn_80138A30();
+                    s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
                     field_0x284 = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     if (field_0x284 == 4) {
                         field_0x284 = 3;
@@ -321,7 +321,7 @@ void HammerShopMinigame_8049C858::update() {
                     lbl_8053AED0->fn_8043D874(field_0x264[field_0x248 - 1], prize, 0);
                 }
             }
-            if (field_0x248 < gGameRoot_8053AAF8->fn_80138A30()) {
+            if (field_0x248 < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 fn_803894BC(field_0x240, field_0x264[field_0x248] + 1);
                 u32 msg;
                 switch ((&field_0x274)[field_0x248]) {
@@ -385,7 +385,7 @@ void HammerShopMinigame_8049C858::update() {
 // FIXME(shotgun): register allocation differs in the unrolled score loop
 void HammerShopMinigame_8049C858::draw() {
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         for (s32 i = 0; i < count; i++) {
             lbl_8053AF00->field_0x30 |= (u8)(1 << i);
             s32 score = field_0x250[i];
@@ -403,7 +403,7 @@ void HammerShopMinigame_8049C858::draw() {
             mPos.y -= 20.0f;
             drawSprite_801F06F0("enemy_both2_sob.bin", 0x314, NULL, -1, 1.0f, 1.0f);
             if (getPlayerLayer_8023DE58(field_0x240) != 0) {
-                fn_803075AC(mSerial, getPlayerLayer_8023DE58(field_0x240), &mPos, 0x314, 0, 2, -1, false, 0, 0);
+                showGbaSprite_803075AC(mSerial, getPlayerLayer_8023DE58(field_0x240), &mPos, 0x314, 0, 2, -1, false, 0, 0);
             }
             mPos.x = savedPos.x;
             mPos.y = savedPos.y;

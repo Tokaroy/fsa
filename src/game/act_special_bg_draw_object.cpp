@@ -10,7 +10,7 @@ void SpecialBGDrawObject_804AC760::init() {
     mSoundState = 0;
     mTriggered = 0;
     mTimer = 0;
-    if (getGameView_802D6A9C()->fn_802D800C(mBit1) == true) {
+    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(mBit1) == true) {
         switch (mKind) {
         case 0:
             mTimer = 120;
@@ -54,7 +54,7 @@ void SpecialBGDrawObject_804AC760::update() {
         switch (mKind) {
         case 0:
             if (mTimer >= 120) {
-                if (!getGameView_802D6A9C()->fn_802D800C(mBit1)) {
+                if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(mBit1)) {
                     getGameView_802D6A9C()->fn_802D8050(mBit1, true, 0xFF);
                 }
                 mTimer = 120;
@@ -70,7 +70,7 @@ void SpecialBGDrawObject_804AC760::update() {
             break;
         case 1:
             if (mTimer >= 30) {
-                if (!getGameView_802D6A9C()->fn_802D800C(mBit1)) {
+                if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(mBit1)) {
                     getGameView_802D6A9C()->fn_802D8050(mBit1, true, 0xFF);
                 }
                 mTimer = 30;
@@ -132,7 +132,7 @@ void SpecialBGDrawObject_804AC760::update() {
         break;
     }
     case 1:
-        if (!getGameView_802D6A9C()->fn_802D800C(mBit2)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(mBit2)) {
             f32 value = mTimer / 30.0f;
             GameRootSub20_801902C0::Request& req = fn_801902C0()->mRequests[1];
             if (req.field_0xc != NULL && req.mActive == 0) {

@@ -17,7 +17,7 @@ public:
     /* 0x238 */ s32 field_0x238; // frame counter
     /* 0x23C */ s32 field_0x23c; // (mSpawnParam_0x90 & 0x7F) * 10, 0x78 if not positive
     /* 0x240 */ s32 field_0x240; // index 0..3 into the u16 tile table
-    /* 0x244 */ s32 field_0x244; // (mSpawnParam_0x90 >> 22) & 0x1F: bit for GameView::fn_802D800C
+    /* 0x244 */ s32 field_0x244; // (mSpawnParam_0x90 >> 22) & 0x1F: bit for GameView::isScreenFlagSet_802D800C
 }; // Size: 0x248
 
 #endif

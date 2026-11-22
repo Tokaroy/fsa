@@ -16,7 +16,7 @@ static const s16* lbl_804A3A58[4] = {lbl_80469138, lbl_80469144, lbl_80469150, l
 // A state start the original inlines at each call (walk, the other one, is a plain function
 // further down).
 inline void Rope_804A3A68::idle() {
-    field_0x250 = fn_801CD664(0x3d) + 0x28;
+    field_0x250 = randInt_801CD664(0x3d) + 0x28;
     mTargetSpeed = 0.0f;
     mStateTimer = 0;
     mState = 0;
@@ -31,7 +31,7 @@ void Rope_804A3A68::init() {
         field_0x250 = -1;
     } else {
         mState = 0;
-        field_0x250 = fn_801CD664(0x3d) + 0x28;
+        field_0x250 = randInt_801CD664(0x3d) + 0x28;
     }
     mStateTimer = 0;
     mSpeed = 0.0f;
@@ -96,7 +96,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
                 }
             }
             if (found) {
-                field_0x250 = fn_801CD664(0x29) + 0x3c;
+                field_0x250 = randInt_801CD664(0x29) + 0x3c;
                 mTargetSpeed = 1.5f;
                 mStateTimer = 0;
                 mState = 2;
@@ -158,7 +158,7 @@ void Rope_804A3A68::updateAnim_0x94() {
 // updateAnim_0x94's 0.9090909f, so it is a plain function generated before updateAnim_0x94.
 // R2 pool helper (inlined at 3 call sites); was walk.
 void Rope_804A3A68::pool_8053EAF4() {
-    field_0x250 = fn_801CD664(0x29) + 0x3c;
+    field_0x250 = randInt_801CD664(0x29) + 0x3c;
     mTargetSpeed = 0.4f;
     if (mState != 2) {
         mDir_0x98 = fn_801CF6B8();

@@ -28,7 +28,7 @@ public:
     /* 0x2B8 */ s32 mKind;
     // Hops made; state 4 adds one and odd counts flip the velocity's sign.
     /* 0x2BC */ s32 mHops;
-    // Hops before the next state (3 or 4, from fn_801CD664(1)).
+    // Hops before the next state (3 or 4, from randInt_801CD664(1)).
     /* 0x2C0 */ s32 field_0x2c0;
 }; // Size: 0x2C4
 

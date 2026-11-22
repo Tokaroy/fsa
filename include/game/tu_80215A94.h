@@ -47,11 +47,11 @@ struct HorseRaceEntry_80216238 {
 // The table the horse-race man keeps at 0x2B8 (constructor 0x80216178);
 // named after its lowest-address member function that takes it as `this`.
 struct HorseRaceTable_80215E48 {
-    /* 0x00 */ s32 mCount; // fn_80138A30(): the number of players
+    /* 0x00 */ s32 mCount; // getPlayerCount_80138A30(): the number of players
     /* 0x04 */ HorseRaceEntry_80216238 mEntries[4];
     /* 0x94 */ cls_8021C024 field_0x94; // a cls_8021C024 (tu_8021BFA8.cpp), reset by fn_8021C078
     /* 0xA0 */ u8 field_0xa0;      // zeroed by fn_802160F4
-    // 0x80216178: stores the player count (fn_80138A30), constructs the four
+    // 0x80216178: stores the player count (getPlayerCount_80138A30), constructs the four
     // entries and field_0x94, then resets with fn_802160F4.
     HorseRaceTable_80215E48();
     // Entry `index`'s mKey.
@@ -85,14 +85,14 @@ struct HorseRaceTable_80215E48 {
     // is positive, lbl_8053AED0 gets fn_8043D874(mId, value, 0).
     void fn_80215B6C(s32 index);
     // When exactly one entry still has a negative mKey, the index of the
-    // first such entry for which fn_801CD2F8(getPlayerLayer_8023DE58(i)) is
+    // first such entry for which isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i)) is
     // true; -1 otherwise.
     s32 fn_80215A94();
     // Reads entry `index`'s byte at 0x1C, its stopwatch (fn_801ED7B0) and the
     // save row's bytes at 0x78/0x79 (lbl_8050EC80); see the asm.
     bool fn_80215C6C(s32 index);
     // Unless gGameRoot's field_0x4c is 9 or 0xB, sets field_0xa0 to
-    // fn_801CD664(10); then calls fn_801ED458(field_0xa0) on every entry's
+    // randInt_801CD664(10); then calls fn_801ED458(field_0xa0) on every entry's
     // mWatch.
     void fn_80215F30();
     // Resets every entry (mId = its index, mKey = -1, the three flag bytes

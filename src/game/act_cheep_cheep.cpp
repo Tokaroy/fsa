@@ -64,7 +64,7 @@ void CheepCheep_804A11B8::init() {
 }
 
 bool CheepCheep_804A11B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tile = fn_8022461C(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
     if (tile != 0x3B && tile != 0 && tile != 2 && tile != 3) {
         return true;
     }
@@ -87,7 +87,7 @@ void CheepCheep_804A11B8::update() {
     if (field_0x258 == 1 && hitVec.y != 0.0f) {
         hit = 0;
     }
-    if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
+    if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1)) {
         if (field_0x258 == 1 && field_0x230 == 3) {
             turnAround = 1;
         }
@@ -321,7 +321,7 @@ void CheepCheep_804A11B8::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x143, hasMtx != 0, 2, -1, false, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x143, hasMtx != 0, 2, -1, false, 0, 0);
 }
 
 CheepCheep_804A11B8::~CheepCheep_804A11B8() {}

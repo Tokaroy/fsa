@@ -47,7 +47,7 @@ TotalScreen_804B03D8::TotalScreen_804B03D8() {
     field_0x4->setPriority("total.blo", 0x1100000, lbl_8053AD68->field_0x14);
     field_0x8 = new J2DScreen;
     field_0x8->setPriority("total_star.blo", 0x1100000, lbl_8053AD68->field_0x14);
-    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
+    const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
     field_0x1c = new J2DPicture(tex);
     field_0x1c->setBlackWhite(JUtility::TColor(0x000000FF), JUtility::TColor(0x00000000));
     field_0x20 = new J2DPicture(tex);
@@ -157,7 +157,7 @@ TotalScreen_804B03D8::~TotalScreen_804B03D8() {
 void TotalScreen_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
-        if (i >= gGameRoot_8053AAF8->fn_80138A30() - 1) {
+        if (i >= gGameRoot_8053AAF8->getPlayerCount_80138A30() - 1) {
             field_0x4->search(lbl_804773A0[i])->show();
             field_0x4->search(lbl_804773B8[i])->hide();
             field_0x4->search(lbl_804773D0[i])->hide();
@@ -206,9 +206,9 @@ void TotalScreen_804B03D8::fn_803D87C0() {
         field_0x34[i]->moveFromCentre_80402E08(0.0f, 500.0f);
         field_0x34[i]->field_0x22 = 0;
     }
-    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_kettei_01.bti");
     lbl_8053AED8->fn_80440D78(tex);
-    fn_804030C4('TIMG', "kk_modoru_01.bti");
+    getMain2DResource_804030C4('TIMG', "kk_modoru_01.bti");
     lbl_8053AED8->fn_80440BF4(false);
     field_0x2c->mPane->hide();
     field_0x2c->mPane->setAlpha(0);
@@ -327,14 +327,14 @@ void TotalScreen_804B03D8::fn_803D75B0() {
                 field_0x78--;
                 field_0x79 = field_0x78;
                 field_0x6e = 1;
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(2, -1)) {
             if (field_0x78 < 1) {
                 field_0x78++;
                 field_0x79 = field_0x78;
                 field_0x6e = 1;
-                gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
             field_0x72 = 0;
@@ -342,11 +342,11 @@ void TotalScreen_804B03D8::fn_803D75B0() {
             field_0x79 = field_0x78;
             if (field_0x78 == 0) {
                 field_0x76 = 8;
-                gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
             } else {
                 lbl_8053AEC0->fn_80431A9C(0x10B, 0, &field_0x78);
                 field_0x7f = 2;
-                gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
             }
             field_0x6e = 1;
         }
@@ -367,16 +367,16 @@ void TotalScreen_804B03D8::fn_803D75B0() {
         if (lbl_8053AD30->fn_80309A9C(2, -1)) {
             if (field_0x78 == 0) {
                 field_0x78 = 1;
-                gAudioMgr_8053AF80->fn_80458880(0, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
             }
         } else if (lbl_8053AD30->fn_80309A9C(1, -1)) {
             if (field_0x78 == 1) {
                 field_0x78 = 0;
-                gAudioMgr_8053AF80->fn_80458880(0, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
             field_0x7f = 4;
-            gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         }
         break;
     case 4:

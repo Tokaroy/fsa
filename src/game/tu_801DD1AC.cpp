@@ -501,7 +501,7 @@ u8 cls_804A4C58::fn_801DD28C() {
         mBox.i.y = y0;
         mBox.f.x = x1;
         mBox.f.y = y1;
-        hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
         mBox.i.x = sx0;
         mBox.i.y = sy0;
         mBox.f.x = sx1;

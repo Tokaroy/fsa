@@ -87,13 +87,13 @@ void RankDisplay_804A8F74::update() {
             // One time per player that takes part in the stage, ranked by
             // fn_80236100 (the lowest time first).
             s32 times[4];
-            for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+            for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
                 times[i] = fn_80236100(i);
             }
-            for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+            for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
                 s32 rank = 0;
                 s32 time = times[i];
-                for (s32 j = 0; j < gGameRoot_8053AAF8->fn_80138A30(); j++) {
+                for (s32 j = 0; j < gGameRoot_8053AAF8->getPlayerCount_80138A30(); j++) {
                     if (i != j && time < times[j]) {
                         rank++;
                     }
@@ -223,7 +223,7 @@ void RankDisplay_804A8F74::draw() {
             params.mMtx = mtx;
             mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
             {
-                void* res = fn_804030C4('TIMG', lbl_804A8F50[field_0x244[i]]);
+                void* res = getMain2DResource_804030C4('TIMG', lbl_804A8F50[field_0x244[i]]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
@@ -253,7 +253,7 @@ void RankDisplay_804A8F74::draw() {
             params.mMtx = mtx;
             mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
             {
-                void* res = fn_804030C4('TIMG', "kk_noItem_01.bti");
+                void* res = getMain2DResource_804030C4('TIMG', "kk_noItem_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
@@ -283,7 +283,7 @@ void RankDisplay_804A8F74::draw() {
             params.mMtx = mtx;
             mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
             {
-                void* res = fn_804030C4('TIMG', "kk_noMagic_01.bti");
+                void* res = getMain2DResource_804030C4('TIMG', "kk_noMagic_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
@@ -317,7 +317,7 @@ void RankDisplay_804A8F74::draw() {
             params.mMtx = mtx;
             mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
             {
-                void* res = fn_804030C4('TIMG', lbl_804A8F60[field_0x28c[i] - 4]);
+                void* res = getMain2DResource_804030C4('TIMG', lbl_804A8F60[field_0x28c[i] - 4]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);

@@ -53,7 +53,7 @@ void cls_804A48B0::update() {
             mAlive = false;
         } else if (fn_801F2A10(-1, mDir_0x98, false, false)) {
             mTimer = 2;
-        } else if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
+        } else if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1)) {
             mAlive = false;
         }
     }

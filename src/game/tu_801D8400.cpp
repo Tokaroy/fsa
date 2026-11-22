@@ -217,7 +217,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
         mTargetSpeed = 1.2f;
         mSeq2a8.fn_801DA994(8, 2);
         if (mState != 0xC) {
-            field_0x33c = fn_801CD664(0xF1) + 0x78;
+            field_0x33c = randInt_801CD664(0xF1) + 0x78;
         }
         break;
     case 12:
@@ -249,7 +249,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 17:
         mFlags |= 0x80;
         field_0x250 = -1;
-        field_0x336 = fn_801CD664(1) + 0xF0;
+        field_0x336 = randInt_801CD664(1) + 0xF0;
         mTargetSpeed = 0.0f;
         mSeq2a8.fn_801DA994(0xC, 2);
         startSound_801F0E34(0x40057, 0);
@@ -324,14 +324,14 @@ void cls_804A4C58::fn_801D9960() {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             }
@@ -394,7 +394,7 @@ bool cls_804A4C58::fn_801D95F4() {
                 JGeometry::TVec2f base(0.0f, 1.0f);
                 dir.set(base.x * c - base.y * s, base.x * s + base.y * c);
             }
-            s16 jitter = fn_801CD664(0xE39) - 0x71C;
+            s16 jitter = randInt_801CD664(0xE39) - 0x71C;
             f32 s = JMath::sincosTable_.sinShort(-jitter);
             f32 c = JMath::sincosTable_.cosShort(-jitter);
             dir.set(dir.x * c - dir.y * s, dir.x * s + dir.y * c);
@@ -439,7 +439,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         if (mSeq2a8.field_0x14 & 1) {
             getActorManager_801F856C()->fn_801F6884();
             gAudioMgr_8053AF80->fn_80458FF0(0x1000004, true, 0);
-            field_0x33a = fn_801CD664(0x1E1) + 0x258;
+            field_0x33a = randInt_801CD664(0x1E1) + 0x258;
             fn_801D9C58(4);
         } else if (mStateTimer == 6) {
             mFlags &= ~0x4000;
@@ -462,7 +462,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
     case 4:
         field_0x33a--;
         if (field_0x33a == 0) {
-            field_0x33a = fn_801CD664(0x1E1) + 0x258;
+            field_0x33a = randInt_801CD664(0x1E1) + 0x258;
             bool ok = false;
             if (fn_801D05F8(&mPos, 0.0f) >= 0 && fn_801DAC6C()->mCount < 30 && !(fn_801DAC6C()->field_0x84 & 1)) {
                 ok = true;
@@ -502,7 +502,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         if (mPos.y >= field_0x2d0) {
             mPos.y = field_0x2d0;
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 12.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
             fn_801D9C58(9);
         }
         break;
@@ -518,14 +518,14 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (isColumnRight(this)) {
                 mFlags |= 0x2000;
             } else {
@@ -593,14 +593,14 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
                 fn_801D9C58(12);
             } else {
@@ -624,7 +624,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         if (mPos.y >= field_0x2d0) {
             mPos.y = field_0x2d0;
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 6.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
             fn_801D9C58(17);
         }
         break;
@@ -645,14 +645,14 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
                 fn_801D9C58(12);
             } else {
@@ -773,14 +773,14 @@ void cls_804A4C58::onHitReactionEnd_0x74() {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (isColumnRight(this)) {
                 mFlags &= ~0x2000;
             } else {
@@ -797,14 +797,14 @@ void cls_804A4C58::onHitReactionEnd_0x74() {
                     }
                 }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(n)];
+                    field_0x334 = columns[randInt_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
             } else {
-                field_0x334 = fn_801CD664(12);
+                field_0x334 = randInt_801CD664(12);
             }
-            field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            field_0x338 = randInt_801CD664(0x3D) + 0x3C;
             if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             } else {

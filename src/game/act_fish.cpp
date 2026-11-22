@@ -57,7 +57,7 @@ void Fish_804AC658::init() {
                 JGeometry::TVec3f p;
                 p.x = x + x0;
                 p.y = y + y0;
-                s32 tile = fn_802265FC(&p, mLayer_0x4);
+                s32 tile = getTileCollisionCodeAlt_802265FC(&p, mLayer_0x4);
                 if (tile == 0xD || tile == 0x3A) {
                     if (n >= 0x2C9) {
                         return;
@@ -106,7 +106,7 @@ void Fish_804AC658::init() {
 }
 
 bool Fish_804AC658::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tile = (u16)fn_8022461C(pos, layer);
+    s32 tile = (u16)getTileCollisionCode_8022461C(pos, layer);
     if (tile == 0xD || tile == 0x3A) {
         return false;
     }
@@ -134,7 +134,7 @@ s32 Fish_804AC658::fn_80346330() {
                     field_0x264 = std::sqrtf(dx * dx + dy * dy);
                     field_0x268 = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     field_0x270 = p;
-                    field_0x26c = fn_801F681C(field_0x268);
+                    field_0x26c = angleToDir_801F681C(field_0x268);
                     return true;
                 }
             }

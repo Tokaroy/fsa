@@ -15,7 +15,7 @@ static inline void setBox(JGeometry::TBox2f& box, f32 lo, f32 hi) {
 ShadowLinkJumpMinor_804A68D0::ShadowLinkJumpMinor_804A68D0() {
     mKind = 0;
     mHops = 0;
-    field_0x2c0 = fn_801CD664(1) + 3;
+    field_0x2c0 = randInt_801CD664(1) + 3;
 }
 
 void ShadowLinkJumpMinor_804A68D0::init() {
@@ -92,7 +92,7 @@ void ShadowLinkJumpMinor_804A68D0::fn_8022089C(s32 state) {
         mVel_0x3c.y = (field_0x2b0.y - mPos.y) * 0.008333334f;
         s32 angle = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) *
                     (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-        mDir_0x98 = fn_801F681C((u16)angle);
+        mDir_0x98 = angleToDir_801F681C((u16)angle);
         mAnim.startAnim_801D22DC(mDir_0x98 + 8, 0, false);
         break;
     }

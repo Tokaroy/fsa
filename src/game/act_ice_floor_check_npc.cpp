@@ -1,5 +1,5 @@
 // The IFCK actor ("Ice-floor check NPC", docs/names/actors.tsv, medium
-// confidence). init() records the collision tile under it (fn_80226850) and
+// confidence). init() records the collision tile under it (getRawTile_80226850) and
 // registers its serial in the list of tu_8012F3E4; update() watches for the
 // tile to change.
 
@@ -15,7 +15,7 @@ IceFloorCheckNPC_8049E950::~IceFloorCheckNPC_8049E950() {}
 
 void IceFloorCheckNPC_8049E950::init() {
     ActorBase_804A5770::init();
-    mTile = fn_80226850(&mPos, mLayer_0x4);
+    mTile = getRawTile_80226850(&mPos, mLayer_0x4);
     fn_8012F554()->fn_8012F530(this);
 }
 
@@ -23,7 +23,7 @@ void IceFloorCheckNPC_8049E950::update() {
     ActorBase_804A5770::update();
     switch (mState) {
     case 0:
-        if (mTile != fn_80226850(&mPos, mLayer_0x4)) {
+        if (mTile != getRawTile_80226850(&mPos, mLayer_0x4)) {
             if (getScreenFlagBit_0x3C() > 0) {
                 setScreenFlag_0x30(0xFF, true);
             }

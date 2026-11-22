@@ -25,7 +25,7 @@ void cls_804A51E4::fn_8020D2AC() const {
 }
 
 void cls_804A51E4::fn_8020D16C() const {
-    if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+    if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15C, -1, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400E0, 0);
@@ -41,7 +41,7 @@ void cls_804A51E4::fn_8020D16C() const {
 }
 
 void cls_804A51E4::fn_8020CFC4() const {
-    switch (fn_8022461C(&mPos, mLayer_0x4)) {
+    switch (getTileCollisionCode_8022461C(&mPos, mLayer_0x4)) {
     case 0xD:
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.2f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
@@ -49,7 +49,7 @@ void cls_804A51E4::fn_8020CFC4() const {
         startSound_801F0E34(0x30022, 0);
         break;
     case 0xE:
-        if (fn_801CD2F8(mLayer_0x4)) {
+        if (isUpperLayer_801CD2F8(mLayer_0x4)) {
             startSound_801F0E34(0x4003E, 0);
         } else {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 0, NULL, NULL, true, 1.0f);
@@ -103,7 +103,7 @@ void cls_804A51E4::draw() {
     s32 frame = mAnim.mCel + 0xC0;
     s32 flags = 7;
     if (fn_801E1D7C()) {
-        if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+        if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
             flags = 0;
         }
     }
@@ -117,7 +117,7 @@ void cls_804A51E4::draw() {
     if (mLayer_0x4 == 8) {
         JGeometry::TVec3f pos;
         fn_801CD0D0(&mPos, &pos);
-        fn_801EF574("enemy_both2_sob.bin", frame, &pos, &params);
+        drawSobSprite_801EF574("enemy_both2_sob.bin", frame, &pos, &params);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
 }

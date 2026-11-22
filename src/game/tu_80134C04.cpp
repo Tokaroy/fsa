@@ -157,7 +157,7 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     mTitle_0x20 = new (field_0x98, 0) Title_804AF820();
     field_0x98->changeGroupID(group);
     field_0x87 = 0;
-    ResTIMG* img = (ResTIMG*)fn_804030C4('TIMG', "kk_rival_01.bti");
+    ResTIMG* img = (ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rival_01.bti");
     field_0xb8 = new (field_0x98, 0) J2DPicture(img);
     field_0xb8->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xFF, 0xD2, 0, 0xFF));
     img = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "go.bti");
@@ -344,7 +344,7 @@ bool fn_80138AB0() {
 }
 
 // The number of players that take part: the set bits 0-3 of mPlayerMask.
-s32 GameRoot_8049EF20::fn_80138A30() {
+s32 GameRoot_8049EF20::getPlayerCount_80138A30() {
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
@@ -422,7 +422,7 @@ void GameRoot_8049EF20::fn_80137300() {
                         inSet = isGameModeSetB(gGameRoot_8053AAF8->field_0x4c);
                     }
                     if (inSet) {
-                        if (getGameView_802D6A9C()->fn_802DCD0C() == 1 && field_0xfc != 0) {
+                        if (getGameView_802D6A9C()->isInTransition_802DCD0C() == 1 && field_0xfc != 0) {
                             allowed = 0;
                         } else {
                             u32 seq = gAudioMgr_8053AF80->field_0x58 - 0x1000000;
@@ -580,7 +580,7 @@ void GameRoot_8049EF20::fn_80137300() {
                 field_0x6c = 0xFF;
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
                     field_0x80 = 1;
-                    field_0xa0->fn_80458880(0x23, -1);
+                    field_0xa0->playSystemSound_80458880(0x23, -1);
                 }
                 break;
             case 1:
@@ -589,7 +589,7 @@ void GameRoot_8049EF20::fn_80137300() {
                     field_0x64 = 0x28;
                     field_0x60++;
                     if (gGameRoot_8053AAF8->field_0x7e != 0) {
-                        field_0xa0->fn_80458880(0x24, -1);
+                        field_0xa0->playSystemSound_80458880(0x24, -1);
                     }
                 }
                 if (field_0x8c >= 1.0f) {
@@ -780,7 +780,7 @@ void GameRoot_8049EF20::fn_80137300() {
             break;
         case 14:
             getGameView_802D6A9C()->fn_802DBD60();
-            field_0xa0->fn_80458880(0x38, -1);
+            field_0xa0->playSystemSound_80458880(0x38, -1);
             fn_80138B7C();
             field_0x50 = 7;
             field_0x58 = 1;
@@ -1277,7 +1277,7 @@ void GameRoot_8049EF20::fn_80136500() {
 
 void GameRoot_8049EF20::fn_80136364() {
     s32 stage;
-    if (!(field_0xfe != 1 || getGameView_802D6A9C()->fn_802DCD0C() || gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B)) {
+    if (!(field_0xfe != 1 || getGameView_802D6A9C()->isInTransition_802DCD0C() || gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B)) {
         if (lbl_8053AD30->fn_80309C4C(0x1000, -1) == 0) {
             return;
         }
@@ -1302,7 +1302,7 @@ void GameRoot_8049EF20::fn_80136364() {
                 field_0x4c = 9;
                 lbl_8053AD70->fn_8037ADA4();
                 lbl_8053AD70->field_0xc = 1;
-                field_0xa0->fn_80458880(1, -1);
+                field_0xa0->playSystemSound_80458880(1, -1);
                 field_0xa0->fn_804593D4();
                 JUTGamePad* pad = JUTGamePad::getGamePad(0);
                 field_0x10c = 0;
@@ -1727,7 +1727,7 @@ void GameRoot_8049EF20::fn_80134FBC(u8 value) {
 }
 
 // 0x80134DE4
-void GameRoot_8049EF20::fn_80134DE4(s32 kind, s32 frames) {
+void GameRoot_8049EF20::startRumble_80134DE4(s32 kind, s32 frames) {
     if (lbl_80529DEC.field_0x246 == 0) {
         return;
     }
@@ -1784,7 +1784,7 @@ void GameRoot_8049EF20::fn_80134D20(bool arg) {
     field_0x4c = 9;
     lbl_8053AD70->fn_8037ADA4();
     lbl_8053AD70->field_0xc = 1;
-    field_0xa0->fn_80458880(1, -1);
+    field_0xa0->playSystemSound_80458880(1, -1);
     if (arg) {
         field_0xa0->fn_804593D4();
     }

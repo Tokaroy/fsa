@@ -200,7 +200,7 @@ public:
     // 0x801EDC0C (draw's body): adds the offset of field_0x52c to mPos,
     // shakes mPos.x by 1.0f every other frame in state 0xB once the timer is
     // 0x3C or more, then draws "enemy_both_sob.bin" frame `frame`
-    // (fn_801F02BC) on the lower layers, else fn_801EDD0C.
+    // (drawSpriteScaled_801F02BC) on the lower layers, else fn_801EDD0C.
     void fn_801EDC0C(s32 frame);
     // 0x801EDD0C: draws the 'TIMG' resource e_gufu_<mAnim.mCel + 1>.bti with
     // a matrix scaled in z by 1.0f + the z shake (at least 0.001f); in

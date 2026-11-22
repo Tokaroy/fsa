@@ -57,7 +57,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.x = 512.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, mLayer_0x4);
+            u16 tile = getRawTile_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 break;
             }
@@ -71,7 +71,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.x = 0.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, mLayer_0x4);
+            u16 tile = getRawTile_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 pos.x += 8.0f;
                 break;
@@ -88,7 +88,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.y = 512.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, mLayer_0x4);
+            u16 tile = getRawTile_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 break;
             }
@@ -102,7 +102,7 @@ void AllEnemiesDefeatedCheckSwitch_804A8AC8::fn_802BDCC0() {
                 pos.y = 0.0f;
                 break;
             }
-            u16 tile = fn_80226850(&pos, mLayer_0x4);
+            u16 tile = getRawTile_80226850(&pos, mLayer_0x4);
             if (tile >= 8 && tile < 16 && (tile & 1)) {
                 pos.y += 8.0f;
                 break;

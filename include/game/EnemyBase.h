@@ -9,7 +9,7 @@
 // Its code is game/tu_801CDC8C.cpp; its vtable is at 0x804A4808
 // (__vt__18EnemyBase_804A4808). "EnemyBase" is provisional (docs/PLAN.md,
 // "Placeholder names"): its update() runs the hit handling of ActorBase
-// (fn_801F3D94, fn_801F2FAC, fn_801F2DB4, fn_801F2B7C) and a death hook once
+// (updateHitReaction_801F3D94, fn_801F2FAC, checkActorHit_801F2DB4, damagePlayersInBox_801F2B7C) and a death hook once
 // mLife reaches 0, and most descendants are enemies in docs/names/actors.tsv.
 //
 // Destructor: inline. The vtable's slot 0x08 is __dt__18EnemyBase_804A4808Fv
@@ -35,13 +35,13 @@
 // and the movement steps (0x801CE120, 0x801CE694). update() clears the low
 // five bits each frame (clrrwi 5, 0x801CDDA8).
 enum EnemyFlag_804A4808 {
-    ENEMY_FLAG_HIT = 0x1,          // fn_801F3D94 reported a hit this frame
+    ENEMY_FLAG_HIT = 0x1,          // updateHitReaction_801F3D94 reported a hit this frame
     ENEMY_FLAG_HIT_PLAYER = 0x2,   // checkHitByPlayer_0x5C held (then onHitByPlayer_0x6C)
     ENEMY_FLAG_HIT_ACTOR = 0x4,    // checkHitByActor_0x60 held (then onHitByActor_0x70)
     ENEMY_FLAG_LANDED = 0x8,       // set by fn_801CE694 / fn_801CE800
     ENEMY_FLAG_NO_FLOOR = 0x20,    // fn_801CE694 skips the floor check
     ENEMY_FLAG_BOUNCE = 0x40,      // move_0x98 bounces off the ground (onBounce_0x7C)
-    ENEMY_FLAG_NO_HURT = 0x80,     // fn_801F3D94 gets false
+    ENEMY_FLAG_NO_HURT = 0x80,     // updateHitReaction_801F3D94 gets false
     ENEMY_FLAG_NO_ATTACK = 0x100,  // skips attackPlayers_0x68
     ENEMY_FLAG_KEEP_LIFE = 0x200,  // mLife = mLifeBackup before and after the hits
     ENEMY_FLAG_STARTED = 0x400,    // onFirstUpdate_0x54 ran
@@ -70,16 +70,16 @@ public:
     // caller does around the call.
     virtual ~EnemyBase_804A4808() {}
     // 0x801D0ED0. Sets mBox and mMapBox_0x80 to (-8, -8)-(8, 8), field_0xb0 =
-    // 0x11101, mDir_0x98 = fn_801CD664(4) (a random direction) and
+    // 0x11101, mDir_0x98 = randInt_801CD664(4) (a random direction) and
     // mLifeBackup = mLife; 40 derived init()s call it first.
     /* 0x0C */ virtual void init();
     // 0x801CDD58, the per-frame driver (tu_801D8400 and tu_801E6D48 call it
     // from their own update()): onFirstUpdate_0x54 once, the hit checks
-    // (vfunc_0x58, fn_801F3D94, checkHitByPlayer_0x5C/0x6C or checkHitByActor_0x60/0x70),
+    // (vfunc_0x58, updateHitReaction_801F3D94, checkHitByPlayer_0x5C/0x6C or checkHitByActor_0x60/0x70),
     // onHitReactionEnd_0x74 when mHitTimer_0xd8 drops from 1 to 0, onDeath_0x78 once mLife
     // <= 0, then move_0x98, sweepMap_0x64, attackPlayers_0x68 into mPlayersHit,
     // updateBehavior_0x9C(sweepMap_0x64's result), and vfunc_0xA0 unless
-    // fn_801CD2F8(mLayer_0x4).
+    // isUpperLayer_801CD2F8(mLayer_0x4).
     /* 0x14 */ virtual void update();
 
     // 0x801D0ECC, empty. 9 overrides, no arguments read; update() calls it
@@ -92,7 +92,7 @@ public:
     // else 0. 16 overrides, no arguments read; update() tests r3 with
     // clrlwi. and then sets ENEMY_FLAG_HIT_PLAYER and calls onHitByPlayer_0x6C.
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
-    // 0x801CE9F8: fn_801F2DB4('NULL', 'NULL', NULL) (hit by an actor) when
+    // 0x801CE9F8: checkActorHit_801F2DB4('NULL', 'NULL', NULL) (hit by an actor) when
     // mBox is not empty, else 0. 19 overrides, no arguments read; update()
     // tests r3 with clrlwi. and then sets ENEMY_FLAG_HIT_ACTOR and calls
     // onHitByActor_0x70.
@@ -101,10 +101,10 @@ public:
     // false) when mMapBox_0x80 is not empty, else 0. 5 overrides, no
     // arguments read; update() passes r3 on to updateBehavior_0x9C (clrlwi 24).
     // checkHitByPlayer_0x5C/0x60/0x64 are u8 like the ActorBase hit tests they return
-    // (fn_801F2FAC / fn_801F2DB4 / fn_801F2618 results go out with mr, no
+    // (fn_801F2FAC / checkActorHit_801F2DB4 / fn_801F2618 results go out with mr, no
     // bool conversion; overrides likewise).
     /* 0x64 */ virtual u8 sweepMap_0x64();
-    // 0x801CE928: fn_801F2B7C(mParamAtcp_0x114, -1, 1) (the players hit, a
+    // 0x801CE928: damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1) (the players hit, a
     // bitmask) when mBox is not empty, else 0. 9 overrides, no arguments
     // read; update() stores r3 with stb to mPlayersHit (0x801CDFB0).
     /* 0x68 */ virtual u8 attackPlayers_0x68();
@@ -161,11 +161,11 @@ public:
     // 4 of them read r4 (act_horse_race_man, act_vaati_boss, act_thief,
     // act_kaepora_gaebora); update() passes sweepMap_0x64's result with
     // clrlwi 24 (0x801CDFB8), as for an unsigned char parameter (a bool
-    // local passed to a bool parameter is a plain mr; see fn_801F3D94 in
+    // local passed to a bool parameter is a plain mr; see updateHitReaction_801F3D94 in
     // ActorBase.h). fn_801CE2BC is the same without the test.
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     // 0x801CE00C, empty. 14 functions in 20 overrides, no arguments read;
-    // update() calls it last, when fn_801CD2F8(mLayer_0x4) is false.
+    // update() calls it last, when isUpperLayer_801CD2F8(mLayer_0x4) is false.
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // Non-virtual members other units call: the exports of
@@ -204,7 +204,7 @@ public:
     // as in move_0x98).
     void fn_801CE5D4();
     // 1 unit / 1 call (tu_801C9AF8). The landing half of checkFloor_0x80 (map
-    // tile under mMapBox_0x80's box via fn_802265FC) without its own tests;
+    // tile under mMapBox_0x80's box via getTileCollisionCodeAlt_802265FC) without its own tests;
     // sets ENEMY_FLAG_LANDED.
     void fn_801CE800();
     // 2 units / 2 calls (act_vulture, act_wallmaster vfunc_0x60s). Hit by
@@ -224,7 +224,7 @@ public:
     // one was spawned.
     bool fn_801CECF4(u32 actorId, f32 speed, f32 range);
     // 1 unit / 1 call (tu_801D2C60, stored to mDir_0x98). The direction
-    // of mVel_0x3c (atan2 to a 16-bit angle, clrlwi 16, then fn_801F681C).
+    // of mVel_0x3c (atan2 to a 16-bit angle, clrlwi 16, then angleToDir_801F681C).
     s32 fn_801CF0F4() const;
     // 1 unit / 4 calls (clrlwi.). fn_801CCB1C on (x, y - z - 16, 0) and
     // mLayer_0x4: a map test 16 units in front; returns 0 or 1.
@@ -237,7 +237,7 @@ public:
     // with mDir_0x98.
     s32 fn_801CF1B0(bool turn, f32 range, f32 margin);
     // 3 units / 7 calls (stored to mDir_0x98). A random direction
-    // (fn_801CD664(4)), or fn_801CF720's when blocked (fn_801CFCF0).
+    // (randInt_801CD664(4)), or fn_801CF720's when blocked (fn_801CFCF0).
     s32 fn_801CF6B8();
     // 3 units / 9 calls (callers pass mDir_0x98 or li 3; stored to
     // mDir_0x98). A random direction other than `dir` (fn_801CD580),
@@ -252,10 +252,10 @@ public:
     bool fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 5 calls (clrlwi; cmplwi 1). Both points inside the view's
     // box for `layer` (0xCC, or 0xDC for layer 8 and up) and the map
-    // between them clear (fn_8022461C-style lookups on layer).
+    // between them clear (getTileCollisionCode_8022461C-style lookups on layer).
     // It reads only (x, y) of both points, and fn_801CF888 passes it 8-byte
     // TVec2f slots: the original's parameters were likely TVec2f (as are
-    // fn_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
+    // getTileCollisionCodeAlt_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
     // 8-byte slots too). Kept TVec3f for the TVec3f callers (tu_801C5B08).
     bool fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 6 calls (clrlwi.). fn_801CFD68(dir, 6.0f + the box edge on
@@ -359,7 +359,7 @@ extern const bool lbl_8053EFC0;
 bool fn_801CD1D0(s32 player);
 // Takes a layer, returns a bool (clrlwi 24); act_vaati_boss's update tests it before its first state.
 bool fn_801CD228(s32 layer);
-bool fn_801CD2F8(s32 layer);
+bool isUpperLayer_801CD2F8(s32 layer);
 // Moves *value toward target by `step` (forwards r3, f1, f2 to
 // fn_801CD9F0). EnemyBase_804A4808's movement step passes &mSpeed,
 // mTargetSpeed and mAccel or mDecel. Returns nonzero while the value has
@@ -379,7 +379,7 @@ s32 fn_801CD30C(s32 value);
 void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out);
 void fn_801CCCC4(JGeometry::TVec3f* pos);
 // game/tu_801CB270.cpp. The opposite direction: 0 <-> 1, 2 <-> 3 (else 0).
-s32 fn_801CD354(s32 dir);
+s32 oppositeDir_801CD354(s32 dir);
 // game/tu_801CB270.cpp: the step fn_801CD950 wraps.
 s32 fn_801CD9F0(f32* value, f32 target, f32 step);
 // Convert a position between the two view-box spaces: out = (in.x, in.y)

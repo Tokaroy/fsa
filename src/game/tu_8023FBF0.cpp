@@ -119,7 +119,7 @@ static inline bool shownOrState49(const Player_804A6F38* player) {
 // inlined). The group loops read the leader through an inline with a local of its own, not as a
 // local of the loop: MWCC creates an inlined function's locals when its call is expanded, so this
 // value is created, and coloured, after every loop counter of the caller. Written as a plain local
-// of fn_80248970 / fn_80248778 it lands in another register in about 30 callers.
+// of fn_80248970 / getFollowerIndex_80248778 it lands in another register in about 30 callers.
 static inline s32 leaderOf(const Player_804A6F38* player) {
     s32 leader = player->mLeader_0xd60;
     return leader;
@@ -131,7 +131,7 @@ static inline s32 selfOf(const Player_804A6F38* player) {
     return self;
 }
 
-// The leader as the group loops (fn_80248970 / fn_80248778) read it: one inline level above
+// The leader as the group loops (fn_80248970 / getFollowerIndex_80248778) read it: one inline level above
 // leaderOf. Provisional name (always inlined; the original's accessor is not known, the level is
 // what the registers show). Each level delays the expansion of the call inside it by one inlining
 // pass, so leaderOf's local is created, and coloured, after selfOf's in the same copy and after
@@ -149,7 +149,7 @@ static inline bool teamCheck(Player_804A6F38* player) {
     if (!playerFlagsGate(player)) {
         return false;
     }
-    if ((player->fn_802486A0() == 4 && player->fn_80240888() != player->fn_80248778()) || !player->field_0x11ea) {
+    if ((player->fn_802486A0() == 4 && player->fn_80240888() != player->getFollowerIndex_80248778()) || !player->field_0x11ea) {
         return false;
     }
     return true;
@@ -183,7 +183,7 @@ static inline void joinCue(Player_804A6F38* player, s32 at, s32 off) {
             fn_8030381C(player->mPlayerNo_0x4);
         }
         // The original converts the index to s8 (extsb) for the sound call.
-        gAudioMgr_8053AF80->fn_80458880(0x25, (s8)player->mPlayerNo_0x4);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x25, (s8)player->mPlayerNo_0x4);
     } else if (player->mJoinTimer_0xd38 == off) {
         fn_8043A170(player->mPlayerNo_0x4, false);
     }
@@ -252,7 +252,7 @@ void Player_804A6F38::fn_80254744() {
         mRequestedState_0x1244 = 0;
         mState_0x1240 = 0;
         mPrevState_0x1248 = 0;
-    } else if (gGameRoot_8053AAF8->fn_80138A30() == 2) {
+    } else if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2) {
         mActive = true;
         if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
             mLeader_0xd60 = -1;
@@ -264,7 +264,7 @@ void Player_804A6F38::fn_80254744() {
         mRequestedState_0x1244 = 0;
         mState_0x1240 = 0;
         mPrevState_0x1248 = 0;
-    } else if (gGameRoot_8053AAF8->fn_80138A30() == 3) {
+    } else if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 3) {
         mActive = true;
         if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
             mLeader_0xd60 = -1;
@@ -301,9 +301,9 @@ void Player_804A6F38::fn_80254744() {
     if (mLeader_0xd60 >= 0 && !field_0xcfe) {
         mReturnPos_0x2c4 = *getPlayerPos_8023E724(mLeader_0xd60);
         if (field_0xd04) {
-            mReturnPos_0x2c4.y += 16.0f * fn_80248778();
+            mReturnPos_0x2c4.y += 16.0f * getFollowerIndex_80248778();
         } else {
-            mReturnPos_0x2c4.x += 16.0f * fn_80248778();
+            mReturnPos_0x2c4.x += 16.0f * getFollowerIndex_80248778();
         }
     }
     field_0x11ea = 1;
@@ -1193,7 +1193,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
         JGeometry::TVec2f probe;
         probe.x = box.i.x + 8.0f;
         probe.y = pos.y;
-        u16 tile = fn_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
+        u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
         if (tile == 1 || (tile == 0x22 && getGameView_802D6A9C()->field_0x170 == 1)) {
             return false;
         }
@@ -1206,7 +1206,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
         JGeometry::TVec2f probe;
         probe.x = box.f.x - 8.0f;
         probe.y = pos.y;
-        u16 tile = fn_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
+        u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
         if (tile == 1 || (tile == 0x22 && getGameView_802D6A9C()->field_0x170 == 1)) {
             return false;
         }
@@ -1219,7 +1219,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
         JGeometry::TVec2f probe;
         probe.x = pos.x;
         probe.y = box.i.y + 8.0f;
-        u16 tile = fn_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
+        u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
         if (tile == 1 || (tile == 0x22 && getGameView_802D6A9C()->field_0x170 == 1)) {
             return false;
         }
@@ -1232,7 +1232,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
         JGeometry::TVec2f probe;
         probe.x = pos.x;
         probe.y = box.f.y - 8.0f;
-        u16 tile = fn_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
+        u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&probe, mLayer_0x3b4);
         if (tile == 1 || (tile == 0x22 && getGameView_802D6A9C()->field_0x170 == 1)) {
             return false;
         }
@@ -1556,7 +1556,7 @@ bool Player_804A6F38::fn_80250D30() {
 // lasted long enough: 0x12 frames for a follower, 0x14 otherwise; never when
 // it is not this player's turn in group mode 4, nor for a follower in mode 5.
 bool Player_804A6F38::fn_80250ACC() {
-    if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         return false;
     }
     if (fn_802486A0() == 5 && mLeader_0xd60 >= 0) {
@@ -1919,7 +1919,7 @@ void Player_804A6F38::fn_8024F0E8(s32 sound) {
     }
 }
 
-// Plays sound `id` for this player (AudioMgr fn_80458880); with the pad
+// Plays sound `id` for this player (AudioMgr playSystemSound_80458880); with the pad
 // flag (fn_80247534) and fn_8030381C the ids 4 / 9 / 5 go to fn_803037D4 as
 // 4 / 5 / 6, and id 3 on a layer of 8 or more as 0xF.
 void Player_804A6F38::fn_8024EFF8(u32 id) {
@@ -1941,7 +1941,7 @@ void Player_804A6F38::fn_8024EFF8(u32 id) {
         fn_803037D4(mPlayerNo_0x4, 0xf);
         return;
     }
-    gAudioMgr_8053AF80->fn_80458880(id, mPlayerNo_0x4);
+    gAudioMgr_8053AF80->playSystemSound_80458880(id, mPlayerNo_0x4);
 }
 
 bool Player_804A6F38::fn_8024EFA0(bool arg) {
@@ -1984,7 +1984,7 @@ void Player_804A6F38::fn_8024EE24() {
                         fn_8030381C(mPlayerNo_0x4);
                     }
                     // The original converts the index to s8 (extsb) for the sound call.
-                    gAudioMgr_8053AF80->fn_80458880(9, (s8)mPlayerNo_0x4);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(9, (s8)mPlayerNo_0x4);
                 }
             }
         }
@@ -2085,7 +2085,7 @@ void Player_804A6F38::fn_8024ECCC(s32 value) {
 void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
     JGeometry::TVec3f pos = mPos;
     s32 layer = mLayer_0x3b4;
-    if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         pos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
         layer = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
     }
@@ -2263,7 +2263,7 @@ void Player_804A6F38::fn_8024E0A0() {
                     fn_8030381C(mPlayerNo_0x4);
                 }
                 // The original converts the index to s8 (extsb) for the sound call.
-                gAudioMgr_8053AF80->fn_80458880(5, (s8)mPlayerNo_0x4);
+                gAudioMgr_8053AF80->playSystemSound_80458880(5, (s8)mPlayerNo_0x4);
             }
         }
     }
@@ -2394,7 +2394,7 @@ bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
     if (mState_0x1240 != 0) {
         return false;
     }
-    if (id == 0xe8 && fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (id == 0xe8 && fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         field_0x450 = 0x1c5;
     } else if (id >= 0) {
         field_0x450 = id;
@@ -2772,7 +2772,7 @@ void Player_804A6F38::fn_8024BDBC() {
         fn_8030381C(mPlayerNo_0x4);
     }
     // The original converts the index to s8 (extsb) for the sound call.
-    gAudioMgr_8053AF80->fn_80458880(0x1e, (s8)mPlayerNo_0x4);
+    gAudioMgr_8053AF80->playSystemSound_80458880(0x1e, (s8)mPlayerNo_0x4);
 }
 
 // Requests state 0x3F (once, for the first match) when another present
@@ -3228,7 +3228,7 @@ void Player_804A6F38::fn_80248DAC() {
 }
 
 // As fn_80248A24, after first stepping the probe up to tile 0x3E
-// (fn_802265FC; false when it leaves the view box first); also clears
+// (getTileCollisionCodeAlt_802265FC; false when it leaves the view box first); also clears
 // mSavedVelZ_0x444.
 bool Player_804A6F38::fn_80248B9C() {
     JGeometry::TVec2f pos;
@@ -3240,7 +3240,7 @@ bool Player_804A6F38::fn_80248B9C() {
         if (!inViewBox(pos, mLayer_0x3b4)) {
             return false;
         }
-    } while (fn_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x3e);
+    } while (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x3e);
     do {
         pos.y += 8.0f;
         if (!inViewBox(pos, mLayer_0x3b4)) {
@@ -3276,7 +3276,7 @@ bool Player_804A6F38::fn_80248A24() {
             clamped = true;
             break;
         }
-        fn_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
+        getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
     } while (fn_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
     pos.y += 24.0f;
     if (fn_8026E5F8(&pos)) {
@@ -3338,7 +3338,7 @@ s32 Player_804A6F38::fn_802487FC() const {
 // The place of this player in its partner's line (1 for the first follower),
 // or 0 without a partner. fn_80254744 inlines it and reloads both fields on
 // every pass; this const copy keeps them in registers.
-s32 Player_804A6F38::fn_80248778() const {
+s32 Player_804A6F38::getFollowerIndex_80248778() const {
     if (mLeader_0xd60 < 0) {
         return 0;
     }
@@ -3394,7 +3394,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     if (viewLayerFlag(getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4))) && mode != 4) {
         mode = 5;
     }
-    if (gGameRoot_8053AAF8->fn_80138A30() == 2 || gGameRoot_8053AAF8->fn_80138A30() == 3) {
+    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2 || gGameRoot_8053AAF8->getPlayerCount_80138A30() == 3) {
         if (mode == 2) {
             mode = 1;
         } else if (mode == 3) {
@@ -3426,7 +3426,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
             mPosHistory_0x38[i].set(*fn_8023E4E4(fn_8022EA0C(mPlayerNo_0x4), 0));
             field_0x284[i] = fn_8023E45C(fn_8022EA0C(mPlayerNo_0x4), 0);
         }
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             field_0x1216 = true;
         }
     }
@@ -3940,12 +3940,12 @@ bool Player_804A6F38::fn_80243194(s32 other) {
     return fn_8022E438(mPlayerNo_0x4, other);
 }
 
-// Conveyor tiles: the tile under mPos (fn_80226850) pushes mConveyorVel_0x414 by
+// Conveyor tiles: the tile under mPos (getRawTile_80226850) pushes mConveyorVel_0x414 by
 // 0.05 (tiles 0xB4-0xB7, speed up to 0.5) or 0.15 (0x95-0x98, up to 2.0)
 // along +x / -x / +y / -y; off them the push slows by 0.05 a frame. The
 // push is added to mPos.
 void Player_804A6F38::fn_80242DAC() {
-    u16 tile = fn_80226850(&mPos, mLayer_0x3b4);
+    u16 tile = getRawTile_80226850(&mPos, mLayer_0x3b4);
     if (tile == 0xb7) {
         mConveyorVel_0x414.x += 0.05f;
     } else if (tile == 0xb6) {
@@ -4705,7 +4705,7 @@ bool Player_804A6F38::fn_80240670() const {
         return true;
     }
     if (fn_802486A0() == 4) {
-        return fn_80240888() != fn_80248778();
+        return fn_80240888() != getFollowerIndex_80248778();
     }
     return mLeader_0xd60 >= 0;
 }
@@ -4714,7 +4714,7 @@ s32 Player_804A6F38::fn_8024064C() const {
     return fn_8022EA0C(mPlayerNo_0x4);
 }
 
-s32 Player_804A6F38::fn_80240644() {
+s32 Player_804A6F38::getLeader_80240644() {
     return mLeader_0xd60;
 }
 

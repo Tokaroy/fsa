@@ -504,7 +504,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   getter drops it (94.02 -> 93.79); act_horse_race_man fn_801EC7B8 reuses one register for a layer read
   twice into the same local, and the getter drops it (98.28 -> 98.11).
 - Two calls compared, `cmpw r3, r29` with the FIRST call's result in r29: write the call made second
-  on the left, `if (fn_80240888() != fn_80248778())` (MWCC calls the right operand first); a local for
+  on the left, `if (fn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
   the first result gives `cmpw r29, r3` (tu_80285E58). Same in tu_8027E5BC fn_8027E7E0 (to 100 %) and
   act_princess_zelda `getPlayerLayer_8023DE58(p) == fn_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;
@@ -526,7 +526,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   99.8 -> 99.2, so fn_80270ABC (100 % const) stays plain; act_icicle fn_8010B284 (mPos.z for a TVec3
   copy above the saves) made const falls 97.4 -> 84.2. A function already at reloc-name-only with the
   load above the saves needs nothing (tu_80125B58 fn_80125BF4 const: 99.8 -> 48).
-- The tile-code `isBlocked_0x4C` family (fn_8022461C code, fn_80226850 tile): act_bombchu's form generalises —
+- The tile-code `isBlocked_0x4C` family (getTileCollisionCode_8022461C code, getRawTile_80226850 tile): act_bombchu's form generalises —
   the never-blocking codes as ONE `!=` chain `if (code != 0 && code != 4 && ...) { ... }` around the
   remaining tests, `return (u8)(view->field_0x171 == 0)` / `== 1` for 0x25 / 0x26 (extrwi), `if (code !=
   0x22 || view->field_0x170 == 1) return true;`, then `return false`. A switch gives a search tree, a

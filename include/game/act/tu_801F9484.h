@@ -364,7 +364,7 @@ public:
     /* 0x288 */ f32 field_0x288;
     /* 0x28C */ f32 field_0x28c;
     /* 0x290 */ f32 field_0x290;
-    /* 0x294 */ JGeometry::TVec3f field_0x294; // zeroed as a whole by update() (fn_801546BC)
+    /* 0x294 */ JGeometry::TVec3f field_0x294; // zeroed as a whole by update() (zeroVec_801546BC)
     /* 0x2A0 */ JGeometry::TVec3f field_0x2a0;
     /* 0x2AC */ JGeometry::TVec3f field_0x2ac; // draw scale; set as a whole by update() (fn_8017EADC)
     /* 0x2B8 */ u16 field_0x2b8; // angle step (lhz in update())

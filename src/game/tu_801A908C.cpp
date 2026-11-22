@@ -139,7 +139,7 @@ Manhandla_804A2FB0::~Manhandla_804A2FB0() {
 // FIXME(shotgun): 99.85 %, regalloc-only + reloc-name; behaviour drift.
 void Manhandla_804A2FB0::fn_801A9CF4() {
     mLife = 10000;
-    fn_801F3D94(0);
+    updateHitReaction_801F3D94(0);
     if (field_0x250 > 0 && field_0x26c == 0) {
         s32 parentSerial = field_0x268;
         if (parentSerial >= 0) {
@@ -159,7 +159,7 @@ void Manhandla_804A2FB0::fn_801A9CF4() {
                         field_0x250 = 0;
                         parent->field_0x250--;
                     } else {
-                        gAudioMgr_8053AF80->fn_80458880(6, -1);
+                        gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                         field_0x244 = 1;
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x482, 0, 0, 0, 0, true, 2.0f);
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x483, 0, 0, 0, 0, true, 2.0f);
@@ -171,7 +171,7 @@ void Manhandla_804A2FB0::fn_801A9CF4() {
                 }
             }
         }
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
     switch (field_0x230) {
     case 5:
@@ -232,7 +232,7 @@ void Manhandla_804A2FB0::fn_801A9CF4() {
                         vel.y = 3.0f * JMASCos(32768.0f + field_0x2b4);
                         vel.z = 0.0f;
                         oktm->mVel_0x3c = vel;
-                        oktm->mDir_0x98 = fn_801F681C(field_0x2b4);
+                        oktm->mDir_0x98 = angleToDir_801F681C(field_0x2b4);
                     }
                 }
             }
@@ -332,7 +332,7 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         }
         field_0x26c = 0;
         mPos.add(mVel_0x3c);
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
     if (field_0x254 == 1 && gGameRoot_8053AAF8->field_0x7f == 1) {
         if (field_0x258 != 5 && lbl_8053ABD0 == 0) {
@@ -433,7 +433,7 @@ void Manhandla_804A2FB0::fn_801A9374() {
     setRotScaleMtx(mtx, rot, 1.0f);
     params.mMtx = mtx;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A2F2C[field_0x24c]);
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 }
 
 // FIXME: 98.99 %, regalloc-only; behaviour clean.
@@ -451,7 +451,7 @@ void Manhandla_804A2FB0::fn_801A90D4() {
     setRotScaleMtx(mtx, rot, 1.0f);
     params.mMtx = mtx;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A2F2C[32]);
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 }
 
 void Manhandla_804A2FB0::draw() {

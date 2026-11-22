@@ -173,7 +173,7 @@ public:
     // GameView_804A9950::vfunc_0x10 stores x, y and a constant z
     // (0x802DD594-0x802DD59C).
     /* 0x1DC */ JGeometry::TVec3f mOffset_0x1dc;
-    // Read by GameView fn_802DCD0C / fn_802DA000; cleared by fn_8030C85C.
+    // Read by GameView isInTransition_802DCD0C / fn_802DA000; cleared by fn_8030C85C.
     /* 0x1E8 */ u8 mInTransition_0x1e8;
     /* 0x1E9 */ u8 field_0x1e9[0x1EC - 0x1E9];
     /* 0x1EC */ s32 mTransitionTimer_0x1ec; // 30 when fn_8030C9E4 arms the transition

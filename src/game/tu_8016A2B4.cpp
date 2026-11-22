@@ -289,7 +289,7 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
             }
         }
 
-        if (field_0x1c4 && (getGameView_802D6A9C()->fn_802DCD0C() || !field_0x1bc)) {
+        if (field_0x1c4 && (getGameView_802D6A9C()->isInTransition_802DCD0C() || !field_0x1bc)) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
             f32 camX = -camera->mViewMtx_0x4[0][3];
@@ -328,7 +328,7 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
         field_0x1c0++;
     }
 
-    if ((!isGameModeSet() || !getGameView_802D6A9C()->fn_802DCD0C()) && gGameRoot_8053AAF8->field_0x94 == 0 &&
+    if ((!isGameModeSet() || !getGameView_802D6A9C()->isInTransition_802DCD0C()) && gGameRoot_8053AAF8->field_0x94 == 0 &&
         gGameRoot_8053AAF8->field_0x96 == 0 &&
         (!gGameRoot_8053AAF8->field_0x7f ||
          (!fn_80239D38() && !(gGameRoot_8053AAF8->field_0x4c == 11 ? true : gGameRoot_8053AAF8->field_0x88 == 2))) &&
@@ -352,7 +352,7 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
         field_0x1dd = 0;
     }
 
-    field_0x1bc = getGameView_802D6A9C()->fn_802DCD0C();
+    field_0x1bc = getGameView_802D6A9C()->isInTransition_802DCD0C();
 
     if (isGameModeSet()) {
         s32 frame = field_0x1c0;

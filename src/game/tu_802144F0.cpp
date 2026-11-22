@@ -113,7 +113,7 @@ void cls_802150B8::fn_80214AF8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
-    if (fn_801CD2F8(mOwner->mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mOwner->mLayer_0x4)) {
         field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->mLayer_0x4, &pos, 0, -1, -1);
     } else {
         f32 lift = depthLift(&pos);
@@ -133,7 +133,7 @@ void cls_802150B8::fn_80214AF8() {
 void cls_802150B8::fn_80214994() {
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
-    if (fn_801CD2F8(mOwner->mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mOwner->mLayer_0x4)) {
         s32 serial = field_0x30;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -176,7 +176,7 @@ void cls_802150B8::fn_80214740(s32 layer, const JGeometry::TVec3f* pos, bool fla
     }
     // field_0x50 is a u32 in GameGlobals.h, but the original tests its sign
     // (cmpwi; blt). Retyping it breaks fn_801C53F8 (act_shadow_link_2).
-    if ((s32)fn_801C0D70()->field_0x50 >= 0) {
+    if ((s32)getShadowLinkFight_801C0D70()->field_0x50 >= 0) {
         spawnEmitter_8013CC50(layer, pos, 0x1D6, 0, extra, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, 0x1D7, 0, extra, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, 0x1D8, 0, extra, NULL, NULL, true, 1.0f);

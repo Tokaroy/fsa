@@ -13,7 +13,7 @@ void SpotlightSE_804A85E0::update() {
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         bits = mSpawnParam_0x90 & sFieldMask[i];
-        if (bits != 0 && getGameView_802D6A9C()->fn_802D800C(bits >> sFieldShift[i])) {
+        if (bits != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(bits >> sFieldShift[i])) {
             count++;
         }
     }

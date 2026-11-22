@@ -34,14 +34,14 @@ void Rock_804A9480::update() {
         mPos += mVel_0x3c;
         if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
             if (mPos.z < 0.0f) {
-                if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
+                if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
-                } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91) {
+                } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91) {
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
                 }
             }
             die_0x24();
-        } else if (fn_801F2B7C(0, field_0xc8, 5) || fn_801F2B20(0)) {
+        } else if (damagePlayersInBox_801F2B7C(0, field_0xc8, 5) || fn_801F2B20(0)) {
             die_0x24();
         }
     }
@@ -49,11 +49,11 @@ void Rock_804A9480::update() {
 
 void Rock_804A9480::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x2B, NULL, 7, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2B, false, 2, -1, 1, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x2B, false, 2, -1, 1, 0, 0);
 }
 
 void Rock_804A9480::die_0x24() {
-    s32 tile = fn_8022461C(&mPos, mLayer_0x4);
+    s32 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
         mVel_0x3c.x = 0.0f;

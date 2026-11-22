@@ -103,7 +103,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
     s32 fade = 200;
     switch (mSpawnParam_0x90) {
     case 0:
-        if (!getGameView_802D6A9C()->fn_802D800C(0x10)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x10)) {
             field_0x230 = 0;
         } else {
             mSpawnParam_0x90 = 2;

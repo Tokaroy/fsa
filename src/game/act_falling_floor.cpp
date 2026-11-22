@@ -116,7 +116,7 @@ void FallingFloor_804A9078::update() {
                     }
                 }
             }
-            if (fn_80226850(&mPos, mLayer_0x4) != 0x90 && field_0x238 != 3) {
+            if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x90 && field_0x238 != 3) {
                 field_0x230 = 5;
             }
         }
@@ -177,8 +177,8 @@ void FallingFloor_804A9078::update() {
                     break;
                 }
             }
-            if (fn_80226850(&mPos, mLayer_0x4) != 0x91 && fn_80226850(&mPos, mLayer_0x4) != 0x22E &&
-                fn_80226850(&mPos, mLayer_0x4) != 1) {
+            if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x91 && getRawTile_80226850(&mPos, mLayer_0x4) != 0x22E &&
+                getRawTile_80226850(&mPos, mLayer_0x4) != 1) {
                 mAlive = false;
             }
         }

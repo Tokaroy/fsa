@@ -8,7 +8,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   inline virtual dtor (weak copy in act_rope, dtor_801B7E1C), fields
   0x230-0x26C + `SpriteAnim_801D267C mAnim` at 0x270, size 0x2A8 (spawner
   __nw__(0x2A8) for FSPO), `EnemyFlag_804A4808` bits, 37 exported members of
-  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), fn_801CD2F8, fn_801CD950.
+  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), isUpperLayer_801CD2F8, fn_801CD950.
 - `include/game/SpriteAnim.h`: the 0x270 member (tu_801D1C18), 0x38 bytes.
 - `libs/sdk/include/JSystem/J3D/J3DFrameCtrl.h` (mkdd): tww's enums and accessors added; one definition.
 - `include/game/act/act_fuse_point.h`: FusePoint_804A54C0.
@@ -16,7 +16,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
 ## SHARED-EDITS
 - ActorBase.h `field_0x94` s16 -> u16 (311/324 loads are lhz; fn_801CC910
   cmplwi). No matched code changes.
-- ActorBase.h `fn_801F3D94(bool)` -> `(u8)` and symbols.txt
+- ActorBase.h `updateHitReaction_801F3D94(bool)` -> `(u8)` and symbols.txt
   `...Fb` -> `...FUc`: update() passes a bool local with clrlwi 24, the
   code MWCC emits for an unsigned char parameter (bool -> bool is `mr`).
   Same reason for vfunc_0x90 / vfunc_0x9C / fn_801CE2BC (FUc).
@@ -24,7 +24,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
 
 ## Units
 - tu_801CDC8C 0 -> 23/57; tu_801D1C18 0 -> 5/12; tu_801CB270 5 -> 8 (+
-  fn_801CC910/960/9B0, fn_801CD2F8); act_fuse_point 0 -> 4/5.
+  fn_801CC910/960/9B0, isUpperLayer_801CD2F8); act_fuse_point 0 -> 4/5.
 - Resistant (FIXMEs in source): update 92.3 (regalloc this/flag, mFlags
   reloads, hit-bit bool test); vfunc_0x98 / fn_801CE32C ~96; fn_801CE5D4
   99.8 regalloc; fn_801D0DA0 / fn_801D0D50 (target does not fuse

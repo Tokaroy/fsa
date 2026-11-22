@@ -36,7 +36,7 @@ void Cactus_804AB580::update() {
     case 0:
     case 1: {
         fn_80239914(&box, mLayer_0x4, mSerial);
-        s32 hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        s32 hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (hit > 0 || player >= 0 || field_0x9c >= 0 || fn_8023BB50(&hitBox, mLayer_0x4, &pos, true) >= 0) {
             if (field_0x230 == 0) {

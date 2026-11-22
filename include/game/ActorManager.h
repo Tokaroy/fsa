@@ -267,7 +267,7 @@ public:
     // 1 unit / 1 call (ActorBase_804A5770::fn_801F2B20, result unused).
     s32 fn_801F84C4(ActorBase_804A5770* actor);
     // spawnActor_801F9484 with arg_0x16c = arg_0x110 = -1. 32 units / 43 calls.
-    s32 fn_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVec3f* pos, u32 arg_0x90);
+    s32 spawnActorSimple_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVec3f* pos, u32 arg_0x90);
     // 1 unit / 1 call each (GameRoot, tu_80139BE8), with GameRoot
     // 0x4->0x8:
     // fn_801F857C deletes every actor (virtual destructor, delete flag 1)
@@ -364,10 +364,10 @@ bool fn_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin);
 // 29 units / 49 calls. The direction (0-3) of a 16-bit angle: 2 below
 // 0x2000 or from 0xE000, 0 below 0x6000, 3 up to 0xA000, else 1. Callers
 // pass a clrlwi 16 or lhz value.
-s32 fn_801F681C(u16 angle);
+s32 angleToDir_801F681C(u16 angle);
 
 // 23 units / 43 calls. The angle of direction dir: lbl_8053F800[dir & 3]
-// (lhzx), fn_801F681C's inverse.
+// (lhzx), angleToDir_801F681C's inverse.
 u16 fn_801F6874(s32 dir);
 
 // 9 units / 13 calls. Moves *value toward target by (s16)(target -

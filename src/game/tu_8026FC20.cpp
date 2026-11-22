@@ -304,7 +304,7 @@ static inline void fireSwordBeam(Player_804A6F38* player) {
     }
     if (!(player->fn_80241284() && player->field_0x11ac == 1 && player->fn_80241544() >= 2)) {
         if (player->fn_80240808()) {
-            if (fn_80237774(player->fn_80240644()) < fn_80237810(player->fn_80240644())) {
+            if (fn_80237774(player->getLeader_80240644()) < fn_80237810(player->getLeader_80240644())) {
                 return;
             }
         } else if (player->fn_8024189C() < player->fn_802417CC()) {
@@ -524,7 +524,7 @@ void Player_804A6F38::fn_8027D320() {
 // (down to -6.5); on flagged layers it is drawn as a move up the screen (y -= z, height 0.5)
 // and lands on a wall (cls_804A71A8 0x4A) or at the view box less 16. Frames 0-11 the jump
 // poses; at frame 11 on the ground: tiles 3 / 0xE without fn_8024B24C cancel it (state 0),
-// else the impact: view shake, rumble (fn_80134DE4), the TV effect of kind 1, sound 0x20024,
+// else the impact: view shake, rumble (startRumble_80134DE4), the TV effect of kind 1, sound 0x20024,
 // emitters 0x23D-0x23F, 0x3D0 plus a 'PEFF' at 0x5C0 on tiles 0x39 / 0xD (else 0x3CF) and a
 // 'PEFF' at the player; at frame 20 state 6. Every frame the emitter point 0x12A4 (mPos +
 // lbl_8046BB78[facing]) is handed to the callbacks 0x1278 / 0x1290 and the actor 0x12C0, the
@@ -573,14 +573,14 @@ void Player_804A6F38::fn_8027CC90() {
             field_0x458 = 1;
         }
         if (mPos.z <= 0.0f) {
-            u16 tile = fn_8022461C(&mPos, mLayer_0x3b4);
+            u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4);
             if ((tile == 3 || tile == 0xe) && !fn_8024B24C()) {
                 fn_80251AEC(0);
             } else {
                 field_0x458 = 1;
                 field_0xbf4 = 10;
                 getGameView_802D6A9C()->fn_802D79E8(mLayer_0x3b4, 4.0f, 0.0f, false);
-                gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
                 if (mLayer_0x3b4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 1, NULL, 1.0f, 1.0f);
                 }
@@ -730,7 +730,7 @@ void Player_804A6F38::fn_8027C6C4() {
             JGeometry::TVec3f pos;
             fn_8024B298(2, &pos);
             pos.y += 2.0f;
-            if (fn_8022461C(&pos, mLayer_0x3b4) != 2) {
+            if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) != 2) {
                 landState7(this);
             }
         }
@@ -1135,7 +1135,7 @@ void Player_804A6F38::fn_8027AAD0() {
         pos.y += 20.0f * JMath::sincosTable_.sinShort(mSpinAngle_0x11c0);
         setEmitterPos_8013CB44(mSpinEmitter_0x12bc, &pos, fn_8024EE14(), fn_8024EE0C() + 1, false);
     }
-    if (fn_8022461C(&mPos, mLayer_0x3b4) == 0x39) {
+    if (getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4) == 0x39) {
         if (field_0x1378 == NULL) {
             field_0x1378 = spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x3d4, 0, -1, &field_0x13a8, NULL, true, 1.0f);
         } else {
@@ -1228,7 +1228,7 @@ void Player_804A6F38::fn_8027A1E0() {
                 mAnimTimer_0x3fa = 6;
             }
         }
-        if (fn_8022461C(&mPos, mLayer_0x3b4) == 0x39) {
+        if (getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4) == 0x39) {
             if (field_0x1378 != NULL && dir != mFacing_0x3dc) {
                 field_0x1378->becomeInvalidEmitter();
                 field_0x1378 = NULL;
@@ -1437,7 +1437,7 @@ void Player_804A6F38::fn_80279CFC() {
 // The step emitters under the player: 0x3D4 (0x1370) on tile 0x39, else 0x3D3 (0x136C); the
 // other one is stopped (fn_80279824, fn_80277220).
 static inline void updateStepEmitters(Player_804A6F38* player) {
-    if (fn_8022461C(&player->mPos, player->mLayer_0x3b4) == 0x39) {
+    if (getTileCollisionCode_8022461C(&player->mPos, player->mLayer_0x3b4) == 0x39) {
         if (player->field_0x1370 == NULL) {
             player->field_0x1370 = spawnEmitter_8013CC50(player->mLayer_0x3b4, &player->mPos, 0x3d4, 0, -1,
                                                          &player->field_0x13a8, NULL, true, 1.0f);
@@ -1556,7 +1556,7 @@ void Player_804A6F38::fn_80279824() {
 // By the last hit kind 0x11E4 (fn_802710C8): 4 / 7, 5 / 8, 6 / 9 each have their own reaction
 // (tu_8023FBF0), for the acting player of a group or a lone one; then four emitters stop.
 void Player_804A6F38::fn_802796B8() {
-    if ((fn_802486A0() == 4 && fn_80240888() == fn_80248778()) || (fn_802486A0() != 4 && !fn_80240808())) {
+    if ((fn_802486A0() == 4 && fn_80240888() == getFollowerIndex_80248778()) || (fn_802486A0() != 4 && !fn_80240808())) {
         s32 kind = field_0x11e4;
         if (kind == 4 || kind == 7) {
             fn_8024E46C();
@@ -1610,7 +1610,7 @@ void Player_804A6F38::fn_802791B0() {
         box = *layerBox(mLayer_0x3b4);
         growBox(box, -16.0f);
         if (field_0xbf0->anyFlag48() || !contains(box, mPos) ||
-            (fn_80240808() && fn_802486A0() != 4 && !fn_80234B24(fn_80240644()))) {
+            (fn_80240808() && fn_802486A0() != 4 && !fn_80234B24(getLeader_80240644()))) {
             if (mAnimTimer_0x3fa >= 20) {
                 if (fn_8024189C() <= 0) {
                     fn_80251AEC(0x33);
@@ -1697,7 +1697,7 @@ void Player_804A6F38::fn_802790C0() {
 // offset's float temporaries (as in tu_8025EB18 fn_8025FDD0) and the operand order of the two
 // `-x * 0.5f` products.
 void Player_804A6F38::fn_80277F98() {
-    u16 tile = fn_8022461C(&mPos, mLayer_0x3b4);
+    u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4);
     if (gGameRoot_8053AAF8->field_0x4c != 11 && field_0xcfc == 1 && !fn_8025F448() &&
         (tile == 3 || tile == 0xe || tile == 0x3a)) {
         spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x503, 1, 1, NULL, NULL, true, 1.0f);
@@ -1761,7 +1761,7 @@ void Player_804A6F38::fn_80277F98() {
                     rank++;
                 }
             }
-            if (rank >= gGameRoot_8053AAF8->fn_80138A30()) {
+            if (rank >= gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 rank = 4;
             }
             switch (rank) {
@@ -1875,8 +1875,8 @@ void Player_804A6F38::fn_80277F98() {
     } else if (field_0xd2d == 1) {
         if (field_0xd30 == 0) {
             if (!fn_80240808() ||
-                (fn_80240808() && !(fn_8023E98C(fn_80240644()) && fn_80236B50(fn_80240644())) &&
-                 !(!fn_80236AB4(fn_80240644()) && fn_80236B50(fn_80240644())))) {
+                (fn_80240808() && !(fn_8023E98C(getLeader_80240644()) && fn_80236B50(getLeader_80240644())) &&
+                 !(!fn_80236AB4(getLeader_80240644()) && fn_80236B50(getLeader_80240644())))) {
                 fn_8024F0E8(0x20033);
                 field_0xd30++;
             }
@@ -1891,7 +1891,7 @@ void Player_804A6F38::fn_80277F98() {
                 mVel_0x344.z -= 0.25f;
             } else {
                 mPos.z = 0.0f;
-                if (!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))) {
+                if (!fn_80240808() || (fn_80240808() && !fn_80236B50(getLeader_80240644()))) {
                     mStateLocked_0x124d = 0;
                     if (fn_80251AEC(0)) {
                         field_0xc00 = 0;
@@ -2075,7 +2075,7 @@ void Player_804A6F38::fn_8027776C() {
         }
         tingleHeal(this);
         if (field_0xd30 >= 480) {
-            if (!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))) {
+            if (!fn_80240808() || (fn_80240808() && !fn_80236B50(getLeader_80240644()))) {
                 mStateLocked_0x124d = 0;
                 fn_80251AEC(0);
             }
@@ -2412,7 +2412,7 @@ bool Player_804A6F38::fn_80275D9C() {
     if (fn_80240808() && fn_802486A0() == 5) {
         return false;
     }
-    if (fn_80240808() && fn_8023EA28(fn_80240644()) && fn_802486A0() != 4) {
+    if (fn_80240808() && fn_8023EA28(getLeader_80240644()) && fn_802486A0() != 4) {
         return false;
     }
     if (fn_802DEBF8()) {
@@ -2824,7 +2824,7 @@ void Player_804A6F38::fn_80274CB8() {
         }
     }
     if (!fn_80246464()) {
-        if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+        if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
             fn_80251AEC(0);
         }
         if (mSwordCharge_0x403 < 48) {
@@ -3668,7 +3668,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         mLife_0xbfc = 0;
     } else if (attacker == mPlayerNo_0x4) {
         if (fn_80240808()) {
-            fn_80236468(fn_80240644(), damage);
+            fn_80236468(getLeader_80240644(), damage);
         } else {
             fn_80236468(mPlayerNo_0x4, damage);
         }
@@ -3684,9 +3684,9 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         lbl_8053AED0->fn_8043D67C(0x18f, mPlayerNo_0x4, 0);
     }
     if (damage >= 4) {
-        gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
     } else if (damage >= 1) {
-        gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     }
     if (kind == 0x16) {
         if (fn_80240B5C()) {
@@ -3963,7 +3963,7 @@ void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
     }
     mLife_0xbfc = life;
     if (fn_80240808()) {
-        mLife_0xbfc = fn_802376D8(fn_80240644());
+        mLife_0xbfc = fn_802376D8(getLeader_80240644());
     } else {
         mLife_0xbfc += amount;
     }
@@ -3976,7 +3976,7 @@ void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
 // The argument is subtracted from mLife_0xbfc.
 void Player_804A6F38::fn_80270D34(s32 amount) {
     if (fn_80240808()) {
-        mLife_0xbfc = fn_80237774(fn_80240644());
+        mLife_0xbfc = fn_80237774(getLeader_80240644());
     } else {
         mLife_0xbfc -= amount;
     }
@@ -4003,7 +4003,7 @@ bool Player_804A6F38::fn_80270C88() {
         return true;
     }
     if (fn_802486A0() == 4) {
-        if (fn_80240888() != fn_80248778()) {
+        if (fn_80240888() != getFollowerIndex_80248778()) {
             return true;
         }
     }
@@ -4464,7 +4464,7 @@ s32 Player_804A6F38::fn_8026FC68() {
 
 s32 Player_804A6F38::fn_8026FC20() {
     if (fn_80240808()) {
-        return fn_8023A1A4(fn_80240644());
+        return fn_8023A1A4(getLeader_80240644());
     }
     return field_0xbac;
 }

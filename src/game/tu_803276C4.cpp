@@ -198,7 +198,7 @@ void OshinUnidentified_804AB528::update() {
     case 3:
         switch (field_0x230) {
         case 0:
-            if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 for (s32 i = 0; i < 4; i++) {
                     if (fn_80233EDC(i) == 1) {
                         break;
@@ -337,7 +337,7 @@ void OshinUnidentified_804AB528::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
 }
 
 OshinUnidentified_804AB528::~OshinUnidentified_804AB528() {}

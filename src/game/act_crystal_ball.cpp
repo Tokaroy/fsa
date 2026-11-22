@@ -36,7 +36,7 @@ inline s32 adjustItem_80320374(CrystalBall_804AB308* ball, s32 item) {
                     item = 3;
                 }
             } else if (item == 4) {
-                if (!fn_802DE814() && gGameRoot_8053AAF8->fn_80138A30() == 2) {
+                if (!fn_802DE814() && gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2) {
                     item = 3;
                 }
             }
@@ -164,9 +164,9 @@ void CrystalBall_804AB308::vfunc_0x54() {
     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
     s32 mask;
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        mask = fn_801F2B7C(2, -1, 1);
+        mask = damagePlayersInBox_801F2B7C(2, -1, 1);
     } else {
-        mask = fn_801F2B7C(0, -1, 1);
+        mask = damagePlayersInBox_801F2B7C(0, -1, 1);
     }
     if (mask > 0) {
         for (s32 i = 0; i < 4; i++) {
@@ -426,8 +426,8 @@ void CrystalBall_804AB308::fn_803226EC() {
 bool CrystalBall_804AB308::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u16 effectA;
     u16 effectB;
-    s32 code = fn_8022461C(pos, layer);
-    fn_80226850(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
+    getRawTile_80226850(pos, layer);
     if (code == 0x10 || code == 0x11 || code == 0x12 || code == 0x13 || code == 0x14 || code == 0x15 ||
         code == 0x16 || code == 0x17) {
         field_0x274 = 1;
@@ -483,7 +483,7 @@ bool CrystalBall_804AB308::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         code != 0x29 && code != 0x2A && code != 0x2B && code != 0x2C && code != 0x2D && code != 0x2E &&
         code != 0x2F && code != 0x20 && code != 0x39 && code != 0x3A && code != 0x4C && code != 0x4D &&
         code != 0x4E && code != 0x4F) {
-        if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+        if (getRawTile_80226850(pos, layer) == 0x3A || getRawTile_80226850(pos, layer) == 0x3D) {
             field_0x274 = 0;
             return false;
         }
@@ -907,13 +907,13 @@ void CrystalBall_804AB308::draw() {
         frame = 10;
     }
     drawSprite_801F06F0("enemy_both2_sob.bin", frame + 0x90, &params, flags, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x90, 0, 2, -1, held, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x90, 0, 2, -1, held, 0, 0);
 }
 
 // FIXME(shotgun): 96.33 %, missing/extra + reloc-name; behaviour drift.
 // item switch / spawn sequences are laid out differently
 void CrystalBall_804AB308::die_0x24() {
-    s32 code = fn_8022461C(&mPos, mLayer_0x4);
+    s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (code == 3 && mPos.z < 0.1f) {
         field_0x2b8.x = 8.0f + (f32)((s32)mPos.x & 0xFFF0);
         field_0x2b8.y = 8.0f + (f32)((s32)mPos.y & 0xFFF0);

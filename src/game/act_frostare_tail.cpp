@@ -50,7 +50,7 @@ void FrostareTail_804A4F90::updateState_0x90(u8 mapHit) {
         break;
     case 1:
         getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.5f, false);
-        gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
         if (mStateTimer >= 60) {
             startSound_801F0E34(0x40055, 0);
             fn_801DAC6C()->field_0x84 &= ~1;
@@ -117,7 +117,7 @@ u8 FrostareTail_804A4F90::checkHitByPlayer_0x5C() {
                     mHitCount++;
                     u8 upper = viewLayerFlag(mLayer_0x4);
                     s32 serial =
-                        getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 2);
+                        getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, 2);
                     if (serial >= 0) {
                         ActorBase_804A5770* rupee =
                             getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -152,16 +152,16 @@ u8 FrostareTail_804A4F90::checkHitByPlayer_0x5C() {
 
 u8 FrostareTail_804A4F90::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        fn_801F2DB4(mActorId, 'NULL', NULL);
+        checkActorHit_801F2DB4(mActorId, 'NULL', NULL);
     }
     return 0;
 }
 
 void FrostareTail_804A4F90::draw() {
-    if (fn_801CD2F8(mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0xE3, 0, 0, -1);
     } else {
-        fn_801F02BC("enemy_both_sob.bin", mAnim.mCel + 0xE3, NULL, -1, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", mAnim.mCel + 0xE3, NULL, -1, 0, false, 1.0f, 1.0f);
     }
 }
 

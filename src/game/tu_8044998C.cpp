@@ -60,13 +60,13 @@ MgFishingScreen_804B1CC8::~MgFishingScreen_804B1CC8() {
 // panes 'Ndata01' and 'Ndata00'.
 void MgFishingScreen_804B1CC8::fn_8044A06C() {
     field_0x13 &= ~1;
-    const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[0]));
+    const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[0]));
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[2]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[3]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[4]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[5]))->changeTexture(res, 0);
     field_0x13 &= ~2;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[0]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[0]));
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[4]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[5]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[6]))->changeTexture(res, 0);
@@ -108,10 +108,10 @@ void MgFishingScreen_804B1CC8::fn_8044998C() {
         }
         s32 value = field_0x10;
         s32 units = value - (value / 10) * 10;
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[value / 10]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[value / 10]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[2]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[3]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[units]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[units]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[4]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[5]))->changeTexture(res, 0);
     }
@@ -136,16 +136,16 @@ void MgFishingScreen_804B1CC8::fn_8044998C() {
         s32 b = field_0x12;
         s32 bTens = b / 10;
         s32 aUnits = a - (a / 10) * 10;
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[a / 10]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[a / 10]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[4]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[5]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[aUnits]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[aUnits]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[6]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[7]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[bTens]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[bTens]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[8]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[9]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[b % 10]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[b % 10]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[10]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[11]))->changeTexture(res, 0);
     }

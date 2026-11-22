@@ -36,7 +36,7 @@ void cls_801E6AB8::fn_801E67C4(s32 state) {
         mActive[1] = 0;
         mActive[2] = 0;
         mActive[3] = 0;
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         s32 j; // j before i to match (99.49 % otherwise)
         s32 i;
         for (i = 0; i < count; i++) {

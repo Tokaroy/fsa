@@ -105,7 +105,7 @@ void HammerBulge_804A88E8::update() {
                                 if (kind < 5) {
                                     arg = kind + 3;
                                 }
-                                serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, arg);
+                                serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, arg);
                             } else if (kind == 5 || kind == 6) {
                                 serial = getActorManager_801F856C()->spawnActor_801F9484('KEY0', mLayer_0x4, &pos, ((kind - 5) * 6) | 0x300, -1, -1);
                             } else {

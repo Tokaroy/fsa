@@ -214,7 +214,7 @@ void ShadowLinkBase_804A6A00::updateBehavior_0x9C(u8 mapHit) {
 void ShadowLinkBase_804A6A00::onHitByPlayer_0x6C() {
     s32 angle = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) *
                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-    mDir_0x98 = fn_801F681C(angle - 0x8000);
+    mDir_0x98 = angleToDir_801F681C(angle - 0x8000);
     mAnim.startAnim_801D22DC(mDir_0x98 + 0xC, 0, false);
     startSound_801F0E34(0x400C2, 0);
 }
@@ -241,7 +241,7 @@ void ShadowLinkBase_804A6A00::draw() {
         params.field_0x1f = false;
     }
     if (mState == 2) {
-        fn_801EF574("player_sob.bin", mAnim.mCel, &mPos, &params);
+        drawSobSprite_801EF574("player_sob.bin", mAnim.mCel, &mPos, &params);
     } else {
         drawSprite_801F06F0("player_sob.bin", mAnim.mCel, &params, 7, 1.0f, 1.0f);
         fn_80307830(mSerial, mLayer_0x4, &mPos, mAnim.mCel, 0, true, 0, 4);

@@ -557,7 +557,7 @@ void ShootingGallery_804A2B18::vfunc_0x44() {
     if (field_0x268 == 3 && mState != 15) {
         field_0x290 = 1.5f;
         mPos.y -= 16.0f;
-        gAudioMgr_8053AF80->fn_80458880(6, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
         mState = 15;
     }
 }
@@ -729,7 +729,7 @@ void ShootingGallery_804A2B18::fn_8019E480() {
 void ShootingGallery_804A2B18::draw() {
     switch (field_0x268) {
     case 0:
-        fn_801F02BC("enemy_both2_sob.bin", field_0x264 + 0x1AB, NULL, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x264 + 0x1AB, NULL, 0, 0, false, 1.0f, 1.0f);
         if (field_0x28c) {
             for (int i = 0; i < 4; i++) {
                 if (!fn_8022F478(i)) {

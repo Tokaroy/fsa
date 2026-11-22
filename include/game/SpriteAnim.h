@@ -6,7 +6,7 @@
 // Code: game/tu_801D1C18.cpp. No vtable; named after its constructor
 // (0x801D267C). "SpriteAnim" is descriptive: 34 sites in enemy units load
 // mCel (this + 0x270 + 0x10) and pass it as the frame of a "SOB " sprite
-// draw (ActorBase_804A5770::drawSprite_801F06F0 9 times, fn_801F02BC 5 times).
+// draw (ActorBase_804A5770::drawSprite_801F06F0 9 times, drawSpriteScaled_801F02BC 5 times).
 // Members: EnemyBase_804A4808 at 0x270 (game/EnemyBase.h); act_escort_woman
 // at 0x230, act_princess_zelda_demo at 0x2F4 and 0x32C, and about 20 other
 // actor units.
@@ -29,7 +29,7 @@ public:
     // no animation is set (mAnim outside [0, mTableCount)).
     void fn_801D1C18();
     // 11 units / 11 calls. fn_801D1F14 at a random frame in [0, mLength]
-    // (fn_801CD664(mLength + 1)).
+    // (randInt_801CD664(mLength + 1)).
     void fn_801D1D60();
     // 25 units / 102 calls (callers pass lfs values). Sets the frame,
     // clamped to [0, mLength] and kept below mLength (0 for a looping

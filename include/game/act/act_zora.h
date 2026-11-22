@@ -22,7 +22,7 @@ public:
     // once mState is set, the camera collects mPos (addFocusPoint_8030C210) so that it
     // stays in view.
     /* 0xA0 */ virtual void vfunc_0xA0();
-    // Vtable slot 0x4C (fn_801BA88C): tile code 0xD (fn_8022461C) blocks
+    // Vtable slot 0x4C (fn_801BA88C): tile code 0xD (getTileCollisionCode_8022461C) blocks
     // the position outright; anything else falls to ActorBase's test.
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // Slots 0xA4-0xB0, the four this class appends. ZoraEnemy's own are

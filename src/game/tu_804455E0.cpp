@@ -103,7 +103,7 @@ void MgHorseRaceScreen_804B1BB0::fn_80445D24() {
     for (s32 i = 0; i < 4; i++) {
         field_0x44 &= ~(u8)(1 << i);
         field_0x44 &= ~(u8)(1 << (i + 4));
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[0]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[0]));
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][13]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][14]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][15]))->changeTexture(res, 0);
@@ -114,7 +114,7 @@ void MgHorseRaceScreen_804B1BB0::fn_80445D24() {
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][20]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][21]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][22]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1BA0[0]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1BA0[0]));
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][0]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][1]))->changeTexture(res, 0);
         mScreen->search(lbl_8048FC08[i][8])->hide();
@@ -165,19 +165,19 @@ void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
             s32 centis = field_0x38[i];
             s32 secTens = secs / 10;
             s32 centiTens = centis / 10;
-            const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[seconds / 60]));
+            const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[seconds / 60]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][13]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][14]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[secTens]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[secTens]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][15]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][16]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[secs % 10]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[secs % 10]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][17]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][18]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[centiTens]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[centiTens]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][19]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][20]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1B78[centis % 10]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[centis % 10]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][21]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][22]))->changeTexture(res, 0);
         }
@@ -193,7 +193,7 @@ void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
         if (mScreen->search(lbl_8048FC08[i][1])->isVisible()) {
             u8 rank = field_0x40[i];
             if (rank >= 1 && rank <= 4) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1BA0[rank - 1]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1BA0[rank - 1]));
                 static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][1]))->changeTexture(res, 0);
             }

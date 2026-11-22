@@ -199,7 +199,7 @@ void Wizzrobe_804A0EDC::update() {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     }
 
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         field_0xb0 = 0;
         fn_801F2618(NULL, false);
         return;
@@ -209,7 +209,7 @@ void Wizzrobe_804A0EDC::update() {
         s32 prevLife = mLife;
         bool hit = false;
         const u32 excludeIds[7] = { ACTOR_WIZR, ACTOR_FIRE, ACTOR_BLZE, ACTOR_DDGO, ACTOR_FLME, ACTOR_THCL, ACTOR_NULL };
-        if (fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, excludeIds)) {
+        if (checkActorHit_801F2DB4(ACTOR_NULL, ACTOR_NULL, excludeIds)) {
             if (prevLife != mLife) {
                 hit = true;
             } else {
@@ -258,14 +258,14 @@ void Wizzrobe_804A0EDC::update() {
             while (field_0x2c4 > 0 && count < 100 && idx >= 0) {
                 if (field_0x2c4 >= lbl_804A0EBC[idx]) {
                     field_0x2c4 -= lbl_804A0EBC[idx];
-                    s32 s = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, idx | 0x220000);
+                    s32 s = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, idx | 0x220000);
                     if (s >= 0) {
                         ActorBase_804A5770* rupy = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (rupy != NULL) {
                             JGeometry::TVec3f vel;
-                            vel.x = 2.0f - 4.0f * fn_80154744();
-                            vel.y = 2.0f - 4.0f * fn_80154744();
-                            vel.z = 5.0f * fn_80154744() + 10.0f;
+                            vel.x = 2.0f - 4.0f * randFloat_80154744();
+                            vel.y = 2.0f - 4.0f * randFloat_80154744();
+                            vel.z = 5.0f * randFloat_80154744() + 10.0f;
                             rupy->mVel_0x3c = vel;
                         }
                     }
@@ -287,7 +287,7 @@ void Wizzrobe_804A0EDC::update() {
     mPos.add(mVel_0x3c);
 
     if (field_0x2e4 == 1 || field_0x94 == 10 || field_0x94 == 11) {
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
 
     if (field_0x94 == 3) {
@@ -316,14 +316,14 @@ void Wizzrobe_804A0EDC::update() {
         field_0x238 = 0;
         switch (field_0x94) {
         case 0:
-            field_0x23c = (s32)(30.0f * fn_80154744()) + 30;
+            field_0x23c = (s32)(30.0f * randFloat_80154744()) + 30;
             break;
         case 4:
         case 5:
-            field_0x23c = (s32)(50.0f * fn_80154744()) + 50;
+            field_0x23c = (s32)(50.0f * randFloat_80154744()) + 50;
             break;
         default:
-            field_0x23c = (s32)(100.0f * fn_80154744()) + 100;
+            field_0x23c = (s32)(100.0f * randFloat_80154744()) + 100;
             break;
         }
         field_0x2d4 = 0.0f;
@@ -342,11 +342,11 @@ void Wizzrobe_804A0EDC::update() {
                 for (s32 i = 0; i < 4; i++) {
                     fn_80178F10(&mPos, &*getPlayerPos_8023E724(player));
                     f32 sinVal = JMath::sincosTable_.sinShort(field_0x250 * 0x4000);
-                    mPos.x += (64.0f * fn_80154744() + 64.0f) * sinVal;
+                    mPos.x += (64.0f * randFloat_80154744() + 64.0f) * sinVal;
                     f32 cosVal = JMath::sincosTable_.cosShort(field_0x250 * 0x4000);
-                    mPos.y += (64.0f * fn_80154744() + 64.0f) * cosVal;
+                    mPos.y += (64.0f * randFloat_80154744() + 64.0f) * cosVal;
                     mPos.z = 0.0f;
-                    field_0x250 = (field_0x250 + (s32)(2.99f * fn_80154744()) + 1) & 3;
+                    field_0x250 = (field_0x250 + (s32)(2.99f * randFloat_80154744()) + 1) & 3;
                     if (!fn_801F2618(NULL, false)) {
                         fn_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 1);
                         if (dir != -1) {
@@ -886,7 +886,7 @@ void Wizzrobe_804A0EDC::update() {
                         f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                         if (-1.0f == dist || dist > fn_80154378(dx * dx + dy * dy)) {
                             dist = fn_80154378(dx * dx + dy * dy);
-                            fn_801F681C(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+                            angleToDir_801F681C(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                             bestPlayer = i;
                             if (fn_8022F3DC(i) < 0) {
                                 player = i;

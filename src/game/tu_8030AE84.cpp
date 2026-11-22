@@ -47,7 +47,7 @@ void cls_804AA8D8::fn_8030B97C() {
             v.x = 512.0f;
             break;
         }
-        u16 tile = fn_80226850(&v, layer);
+        u16 tile = getRawTile_80226850(&v, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             break;
         }
@@ -63,7 +63,7 @@ void cls_804AA8D8::fn_8030B97C() {
             v.x = 0.0f;
             break;
         }
-        u16 tile = fn_80226850(&v, layer);
+        u16 tile = getRawTile_80226850(&v, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             v.x += 8.0f;
             break;
@@ -83,7 +83,7 @@ void cls_804AA8D8::fn_8030B97C() {
             v.y = 512.0f;
             break;
         }
-        u16 tile = fn_80226850(&v, layer);
+        u16 tile = getRawTile_80226850(&v, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             break;
         }
@@ -99,7 +99,7 @@ void cls_804AA8D8::fn_8030B97C() {
             v.y = 0.0f;
             break;
         }
-        u16 tile = fn_80226850(&v, layer);
+        u16 tile = getRawTile_80226850(&v, layer);
         if (tile >= 8 && tile < 16 && (tile & 1)) {
             v.y += 8.0f;
             break;

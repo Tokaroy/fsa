@@ -117,7 +117,7 @@ void BigMoldormTail_804A1FA0::update() {
     if (field_0x230 == 0) {
         for (s32 i = 0; i < 3; i++) {
             mPos = field_0x288[i];
-            if (fn_801F3D94(true) != 0 || fn_801F305C()) {
+            if (updateHitReaction_801F3D94(true) != 0 || fn_801F305C()) {
                 fn_801F2618(NULL, false);
                 hit = 1;
                 break;
@@ -129,7 +129,7 @@ void BigMoldormTail_804A1FA0::update() {
             addCalc2_801F71A4(&mVel_0x3c.x, field_0x27c.x, field_0x268, field_0x26c);
             addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, field_0x268, field_0x26c);
             mPos += mVel_0x3c;
-            fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+            damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
             if (fn_801F2618(NULL, false) && field_0x234[1] == 0) {
                 mDir_0x98 += 8;
                 mDir_0x98 &= 0xF;

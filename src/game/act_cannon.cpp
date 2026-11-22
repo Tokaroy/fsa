@@ -175,7 +175,7 @@ void Cannon_8049CCF0::update() {
             }
             if (hit) {
                 fn_80231590(field_0x26c, mSerial);
-            } else if (fn_801F2DB4(mActorId, 'NULL', NULL)) {
+            } else if (checkActorHit_801F2DB4(mActorId, 'NULL', NULL)) {
                 fn_80231590(field_0x26c, mSerial);
             }
         }
@@ -203,7 +203,7 @@ void Cannon_8049CCF0::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }
 
 // FIXME: 98.39 %, missing/extra; behaviour clean.
@@ -218,7 +218,7 @@ bool Cannon_8049CCF0::fn_80107360() {
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5A, 0, 1, NULL, NULL, true, 1.0f);
     }
     fn_80230FD0(field_0x26c, 0x20036);
-    gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+    gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     field_0x278 = field_0x274;
     field_0x274 = 3;
     // FIXME: 98.15 %. Only the branch layout differs: the original has one

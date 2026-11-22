@@ -65,7 +65,7 @@ void HeartContainer_804A7E58::update() {
 
 void HeartContainer_804A7E58::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x31, NULL, 1, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x31, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x31, false, 2, -1, 0, 0, 0);
 }
 
 HeartContainer_804A7E58::~HeartContainer_804A7E58() {}

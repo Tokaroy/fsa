@@ -135,7 +135,7 @@ static inline u8 isQueueBusy(s32 player) {
 
 // Forward declarations.
 bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, bool e, s32 f, u8 g);
-bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e, s32 player, bool g, u8 h, u8 i);
+bool showGbaSprite_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e, s32 player, bool g, u8 h, u8 i);
 
 // 0x8030905C
 // The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
@@ -541,7 +541,7 @@ void fn_80307AC8(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, s3
     if (id < 0x45) {
         fn_80307830(serial, layer, pos, id, d != 0, false, e != 0, 4);
     } else {
-        fn_803075AC(serial, layer, pos, id + 0x400, d != 0, 2, f, 0, e != 0, 0);
+        showGbaSprite_803075AC(serial, layer, pos, id + 0x400, d != 0, 2, f, 0, e != 0, 0);
     }
 }
 
@@ -612,7 +612,7 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 // `layer` (or of player `player` when it is 0 or more), in their 40-entry
 // lists; returns whether any list took it.
 // 0x803075AC
-bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e,
+bool showGbaSprite_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e,
                  s32 player, bool g, u8 h, u8 i) {
     if (layer < 8 && layer != -1) {
         return false;

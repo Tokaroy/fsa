@@ -109,10 +109,10 @@ void MagicJar_804AF018::draw() {
     if (field_0x234 >= 0x100 || !(field_0x234 & 2)) {
         if (mSpawnParam_0x90 == 0) {
             drawSprite_801F06F0("enemy_both2_sob.bin", 0x5C, NULL, 2, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x5C, false, 2, -1, 0, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x5C, false, 2, -1, 0, 0, 0);
         } else {
             drawSprite_801F06F0("enemy_both2_sob.bin", 0x5D, NULL, 1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x5D, false, 2, -1, 0, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x5D, false, 2, -1, 0, 0, 0);
         }
     }
 }

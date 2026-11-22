@@ -179,13 +179,13 @@ void Dodongo_804A3334::fn_801ACFF4() {
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x274[0], field_0x274[3], 0.1f, 0.1f);
-    fn_801F3D94(0);
+    updateHitReaction_801F3D94(0);
     field_0x274[1] = field_0x274[0];
     mPos += mVel_0x3c;
 
     if (mTimers[3] == 0) {
         if (field_0x230 == 2 || field_0x230 == 5) {
-            fn_801F2B7C(-100, -1, 1);
+            damagePlayersInBox_801F2B7C(-100, -1, 1);
         }
     }
     fn_801EF510();
@@ -448,7 +448,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                             f32 dx = bombBase->mPos.x - mPos.x;
                             f32 dy = bombBase->mPos.y - mPos.y;
                             s16 angle = (s16)(JMath::atanTable_.atan2_(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                            if (fn_801F681C((u16)angle) == mDir_0x98) {
+                            if (angleToDir_801F681C((u16)angle) == mDir_0x98) {
                                 Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(bombBase);
                                 bomb->field_0x280 = 1;
                                 field_0x230 = 6;
@@ -546,7 +546,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                         }
                     }
                 }
-                gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
             } else {
                 startSound_801F0E34(0x40005, 0);
             }
@@ -635,7 +635,7 @@ void Dodongo_804A3334::fn_801ACCF0() {
             mBox.i.y = boxData[1] * scale;
             mBox.f.x = boxData[2] * scale;
             mBox.f.y = boxData[3] * scale;
-            fn_801F2B7C(mParamAtcp_0x114, -1, 9);
+            damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
             fn_801F2B20(5);
 
             JGeometry::TVec3f pos = mPos;
@@ -647,7 +647,7 @@ void Dodongo_804A3334::fn_801ACCF0() {
                 for (s32 i = 0; i < 8; i++) {
                     pos.y = mPos.y + mBox.i.y;
                     for (s32 j = 0; j < 8; j++) {
-                        if ((s32)fn_8022461C(&pos, mLayer_0x4) == 0x21 || fn_8022517C(&pos, mLayer_0x4) == 1) {
+                        if ((s32)getTileCollisionCode_8022461C(&pos, mLayer_0x4) == 0x21 || fn_8022517C(&pos, mLayer_0x4) == 1) {
                             getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &pos, 0xE0C0, -1, -1);
                         }
                         pos.y += stepY;
@@ -744,7 +744,7 @@ void Dodongo_804A3334::fn_801AC930() {
     } else {
         res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A3208[texIdx]);
     }
-    fn_801EFD34(res, &params, 7, 0.0f, -2.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -2.0f, 0.0f);
 }
 
 void Dodongo_804A3334::draw() {

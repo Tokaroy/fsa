@@ -142,7 +142,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
         field_0x231 = 0;
     }
     field_0x23c = field_0x23c & 3;
-    fn_801F2B7C(2, -1, 6);
+    damagePlayersInBox_801F2B7C(2, -1, 6);
     s32 serial = fn_801F2718(ACTOR_OIWA);
     if (serial != -1) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -174,7 +174,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
                 JGeometry::TVec3f p = mPos;
                 p.x += lbl_80463678[k * 2];
                 p.y += lbl_80463678[k * 2 + 1];
-                s32 code = fn_8022461C(&p, mLayer_0x4);
+                s32 code = getTileCollisionCode_8022461C(&p, mLayer_0x4);
                 if ((code == 3 || code == 0xE || code == 2) && !isScreenFlagSet_0x34()) {
                     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x76, 0, 0, NULL, NULL, true, 0.8f);
@@ -278,9 +278,9 @@ void Boulder_8049C4C0::fn_800F555C() {
             if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 startSound_801F0E34(0x30060, 0);
             }
-            fn_801F2B7C(2, -1, 6);
+            damagePlayersInBox_801F2B7C(2, -1, 6);
         }
-        s32 code = fn_8022461C(&mPos, mLayer_0x4);
+        s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (code == 3 || code == 0xE || code == 2) {
             fn_800F82CC(&mVel_0x3c, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0.22f);
             if (mVel_0x3c.x == 0.0f && mVel_0x3c.y == 0.0f) {
@@ -414,7 +414,7 @@ void Boulder_8049C4C0::update() {
         break;
     case 1:
         if (mVel_0x3c.x || mVel_0x3c.y || mVel_0x3c.z) {
-            fn_801F2B7C(2, -1, 6);
+            damagePlayersInBox_801F2B7C(2, -1, 6);
             mVel_0x3c.z -= 0.2f;
         } else {
             field_0x23c = 0;
@@ -429,7 +429,7 @@ void Boulder_8049C4C0::update() {
         }
         break;
     case 2:
-        fn_801F2B7C(1, -1, 1);
+        damagePlayersInBox_801F2B7C(1, -1, 1);
         mVel_0x3c.z -= 0.2f;
         mPos += mVel_0x3c;
         if (mPos.z <= 0.0f) {
@@ -461,7 +461,7 @@ void Boulder_8049C4C0::update() {
 
 // FIXME(shotgun): 91.96 %, scheduling+regalloc; behaviour clean.
 bool Boulder_8049C4C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 3 || code == 0xE || code == 2) {
         return false;
     }
@@ -569,7 +569,7 @@ void Boulder_8049C4C0::draw() {
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x244 / -10430.228f, 0.0f), 1.0f);
         params.mMtx = mtx;
         void* res = fn_804032E8('TIMG', lbl_8049C458[field_0x240]);
-        fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
         return;
     }
     }
@@ -579,7 +579,7 @@ void Boulder_8049C4C0::draw() {
     if (mLayer_0x4 <= 8) {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23c + 0xB1, &params, flags, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both_sob.bin", field_0x23c, &params, flags, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x23c, &params, flags, 0, false, 1.0f, 1.0f);
     }
     mPos.set(savedPos);
 }

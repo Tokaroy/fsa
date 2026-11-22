@@ -97,7 +97,7 @@ bool ShadowLinkFight_801C0D70::fn_801C1314() {
 
 // 0x801C12B8
 void ShadowLinkFight_801C0D70::fn_801C12B8() {
-    s32 serial = mSerials[fn_801CD664(mCount)];
+    s32 serial = mSerials[randInt_801CD664(mCount)];
     ShadowLink2_804A43E8* actor = static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
     if (actor != NULL) {
         actor->mFlags |= 0x10000;
@@ -250,7 +250,7 @@ void ShadowLinkFight_801C0D70::fn_801C0DCC() {
 }
 
 // 0x801C0D70
-ShadowLinkFight_801C0D70* fn_801C0D70() {
+ShadowLinkFight_801C0D70* getShadowLinkFight_801C0D70() {
     static ShadowLinkFight_801C0D70 lbl_804C7E70;
     return &lbl_804C7E70;
 }

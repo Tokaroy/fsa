@@ -323,7 +323,7 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
                     } else if (fn_8022F514(p)) {
                         v = fn_80230CFC(fn_8022F3DC(p));
                     } else {
-                        v = fn_801CD354(fn_801D0020(&mPos, p, false));
+                        v = oppositeDir_801CD354(fn_801D0020(&mPos, p, false));
                     }
                     fn_80230BF4(p, v);
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
@@ -399,7 +399,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
         bool flag = false;
         s32 param = field_0x2b0;
         if (param != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(param)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(param)) {
                 flag = true;
             }
         } else {
@@ -579,7 +579,7 @@ void Navi_804A6708::draw() {
             break;
         }
         params.field_0x20 = flag;
-        fn_801F02BC("enemy_both2_sob.bin", lbl_8046A7C0[field_0x2ac] + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", lbl_8046A7C0[field_0x2ac] + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
     }
 }
 

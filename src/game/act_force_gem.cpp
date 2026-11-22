@@ -255,7 +255,7 @@ bool ForceGem_804AB6D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) 
         return true;
     }
     bool result;
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0x3B || code == 0x23) {
         result = false;
     } else {
@@ -665,9 +665,9 @@ void ForceGem_804AB6D8::draw() {
         frame = field_0x254 + lbl_80471948[field_0x268 - 4];
     }
     if (field_0x230 == 0xB) {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, gc != 0, 2, -1, true, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, gc != 0, 2, -1, true, 0, 0);
     } else {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, gc != 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, gc != 0, 2, -1, false, 0, 0);
     }
     mPos = saved;
 }
@@ -705,7 +705,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                             dir = field_0x94 - 8;
                         }
                     }
-                    s32 serial = getActorManager_801F856C()->fn_801F8544(id, mLayer_0x4, &mPos, field_0x268);
+                    s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(id, mLayer_0x4, &mPos, field_0x268);
                     if (serial >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                         switch (dir) {
@@ -950,7 +950,7 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     if (mPos.z > 4.0f) {
         return false;
     }
-    s32 tile = fn_8022461C(&mPos, mLayer_0x4);
+    s32 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (tile == 3) {
         field_0x24c = 0x3ff;
         pool_80541D88();

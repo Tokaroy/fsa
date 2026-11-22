@@ -126,7 +126,7 @@ void LifeMeter_804B174C::draw() {
     mtx[2][1] = 0.0f;
     mtx[2][2] = sy;
     params.mMtx = mtx;
-    void* res = fn_804030C4('TIMG', lbl_804B1738[field_0x24c]);
+    void* res = getMain2DResource_804030C4('TIMG', lbl_804B1738[field_0x24c]);
     if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }

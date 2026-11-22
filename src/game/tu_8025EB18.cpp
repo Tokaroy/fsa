@@ -515,7 +515,7 @@ void Player_804A6F38::fn_80263078() {
                 if (!containsPoint(*layerBox(mLayer_0x3b4), pos)) {
                     break;
                 }
-                u16 tile = fn_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
+                u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
                 if (tile >= 0x10 && tile <= 0x17) {
                     left--;
                 }
@@ -791,7 +791,7 @@ void Player_804A6F38::fn_80262254() {
         JGeometry::TVec3f below;
         fn_8024B298(2, &below);
         below.y += 2.0f;
-        if (fn_8022461C(&below, mLayer_0x3b4) != 2) {
+        if (getTileCollisionCode_8022461C(&below, mLayer_0x3b4) != 2) {
             if (mLifting_0xd64 == 1) {
                 fn_80251AEC(0x12);
             } else {
@@ -1291,7 +1291,7 @@ bool Player_804A6F38::fn_802604CC() {
             pos = xy(mPos) - myBox->i + box->i;
             if ((fn_802260DC(&pos, getPlayerLayer_8023DE58(i), true)
                  || fn_802684A4((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)))
-                && fn_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
+                && getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
                 continue;
             }
             // The midpoint of the two players, relative to the view corners.
@@ -1304,14 +1304,14 @@ bool Player_804A6F38::fn_802604CC() {
             pos = mid + box->i;
             if ((fn_802260DC(&pos, getPlayerLayer_8023DE58(i), true)
                  || fn_802684A4((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)))
-                && fn_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
+                && getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
                 continue;
             }
             if (getLayer() != getPlayerLayer_8023DE58(i)) {
                 myBox = layerBox(mLayer_0x3b4);
                 pos = mid + myBox->i;
                 if ((fn_802260DC(&pos, mLayer_0x3b4, true) || fn_802684A4((const JGeometry::TVec3f*)&pos, mLayer_0x3b4))
-                    && fn_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
+                    && getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, getPlayerLayer_8023DE58(i)) != 0x20) {
                     continue;
                 }
             }
@@ -1419,7 +1419,7 @@ bool Player_804A6F38::fn_802600A0(s32 player) {
         mPadPlayer_0x11ec = fn_8022F340(player);
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TSNO, mLayer_0x3b4, &mPos, (player & 3) | (mPlayerNo_0x4 << 2), -1, player);
         if (player > mPlayerNo_0x4) {
-            fn_80233F78(fn_80240644());
+            fn_80233F78(getLeader_80240644());
         }
     } else if (fn_80251AEC(0x19)) {
         mHeldPlayer_0xd70 = player;
@@ -1541,7 +1541,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
                 int walls = 0;
                 for (int i = 0; i < 3; i++) {
                     pos += step;
-                    u16 tile = fn_8022461C(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70));
+                    u16 tile = getTileCollisionCode_8022461C(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70));
                     if (tile == 3 || tile == 0xE || tile == 0x3A) {
                         walls++;
                     }
@@ -1847,7 +1847,7 @@ bool Player_804A6F38::fn_8025EB18() {
         f32 y2 = box->i.y;
         pos.x += x - x2;
         pos.y += y - y2;
-        u16 tile = fn_8022461C(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70));
+        u16 tile = getTileCollisionCode_8022461C(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70));
         if ((fn_802265DC(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70), true) && tile != 0xE && tile != 0x39 && tile != 0xD)
             || fn_802684A4(&pos, getPlayerLayer_8023DE58(mHeldPlayer_0xd70))) {
             mHeldPos_0x2f4.x = mPos.x;
@@ -1855,7 +1855,7 @@ bool Player_804A6F38::fn_8025EB18() {
             return true;
         }
     } else {
-        u16 tile = fn_8022461C(&mHeldPos_0x2f4, mLayer_0x3b4);
+        u16 tile = getTileCollisionCode_8022461C(&mHeldPos_0x2f4, mLayer_0x3b4);
         if (fn_8025F590()) {
             if ((fn_802265DC(&mHeldPos_0x2f4, mLayer_0x3b4, true) && tile != 0xE && tile != 0x39 && tile != 0xD)
                 || fn_802684A4(&mHeldPos_0x2f4, mLayer_0x3b4)) {

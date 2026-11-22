@@ -861,7 +861,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::updateFacing() {
 
 // Picks the flap step table for the new facing (fn_80360914, fn_8036003C).
 inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
-    if ((field_0x248 & 1) == 1 || fn_801CD664(100) < 5 ||
+    if ((field_0x248 & 1) == 1 || randInt_801CD664(100) < 5 ||
         (field_0x250 == 0 && field_0x27C != 0 && field_0x27C != 1 && field_0x26C < 100.0f)) {
         field_0x244++;
         if (!(field_0x248 & 1)) {
@@ -966,7 +966,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
             mAlive = false;
         } else {
             mPtmfIndex = 3;
-            field_0x244 = fn_801CD664(2) + 8;
+            field_0x244 = randInt_801CD664(2) + 8;
             resetStep(field_0x244);
         }
         return;
@@ -980,7 +980,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
             field_0x288.x = *field_0x284++;
             field_0x288.y = *field_0x284++;
             field_0x288.z = *field_0x284++;
-            field_0x244 = fn_801CD664(2) + 10;
+            field_0x244 = randInt_801CD664(2) + 10;
             resetStep(field_0x244);
         }
         return;
@@ -1047,7 +1047,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     if (field_0x270 == 0) {
         if (advanceStep() == true && field_0x2B0 == 1) {
             field_0x244 = lbl_80474020[field_0x274];
-            if (fn_801CD664(100) < 5 ||
+            if (randInt_801CD664(100) < 5 ||
                 (field_0x250 == 0 && field_0x27C != 0 && field_0x27C != 1 && field_0x26C < 100.0f)) {
                 field_0x244++;
             }

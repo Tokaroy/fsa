@@ -214,7 +214,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             vfunc_0x6C(0);
             break;
         }
-        if (hasNearbyBari() && !getGameView_802D6A9C()->fn_802DCD0C() && fn_8011921C()->fn_801186B0(0xE)) {
+        if (hasNearbyBari() && !getGameView_802D6A9C()->isInTransition_802DCD0C() && fn_8011921C()->fn_801186B0(0xE)) {
             cls_801192AC* seq = fn_8011921C();
             seq->field_0x2 = 1;
             fn_8011921C()->fn_80118454();
@@ -226,7 +226,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
                 }
             }
         } else {
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 vfunc_0x9C(fn_8012285C(), 1.2f, 0.6f, 2.0f, 0.2f, 16.0f);
             } else {
                 vfunc_0x9C(fn_8012285C(), 1.2f, 0.6f, 2.0f, 0.2f, 8.0f);
@@ -253,7 +253,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
 
     case 11:
         fn_80122548();
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             vfunc_0x6C(7);
         }
         break;
@@ -449,7 +449,7 @@ bool ZoraEscort_8049DF78::stepToPlayer() {
     }
     u16 angle = (s32)(JMath::atanTable_.atan2_(targetPos.x - mPos.x, targetPos.y - mPos.y) *
                       (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-    mDir_0x98 = fn_801F681C(angle);
+    mDir_0x98 = angleToDir_801F681C(angle);
     f32 stepX = 0.7f * JMath::sincosTable_.sinShort(angle);
     f32 stepY = 0.7f * JMath::sincosTable_.cosShort(angle);
     bool arrived = true;

@@ -91,14 +91,14 @@ void NPCDisguisedAsAStone_804A8750::update() {
         mVel_0x3c.z -= 0.1f;
         mPos.add(mVel_0x3c);
         JGeometry::TVec3f savedPos(mPos);
-        if (fn_801F3D94(true) || fn_801F305C()) {
+        if (updateHitReaction_801F3D94(true) || fn_801F305C()) {
             die_0x24();
         } else if (fn_801F2618(NULL, false)) {
             mPos = savedPos;
             die_0x24();
         } else if (mPos.z < 0.0f) {
             die_0x24();
-        } else if (fn_801F2B7C(mParamAtcp_0x114, -1, 4) || fn_801F2B20(0)) {
+        } else if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4) || fn_801F2B20(0)) {
             die_0x24();
         }
         break;
@@ -115,7 +115,7 @@ void NPCDisguisedAsAStone_804A8750::die_0x24() {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, mLayer_0x4, &pos, 0, -1, -1);
-    } else if (mPos.z < 0.0f && fn_8022461C(&mPos, mLayer_0x4) == 0xD) {
+    } else if (mPos.z < 0.0f && getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xD) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
     } else {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x8C, 1, 0, NULL, NULL, true, 1.0f);

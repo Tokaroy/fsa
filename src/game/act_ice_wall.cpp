@@ -230,11 +230,11 @@ void IceWall_8049DE18::draw() {
         }
     }
 
-    fn_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x1CA, &params1, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x1CA, &params1, 7, 0, false, 1.0f, 1.0f);
     if (field_0x230 == 0) {
         params1.field_0x1c = 1;
     }
-    fn_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x1CB, &params1, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x1CB, &params1, 7, 0, false, 1.0f, 1.0f);
 }
 
 // The three functions below are plain functions that update inlines (state 0) and whose own copies

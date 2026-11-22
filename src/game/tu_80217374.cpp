@@ -8,7 +8,7 @@
 void WanderTurnTimer_80217374::fn_80217484() {
     mState = 0;
     mTimer = 0;
-    mDuration = fn_801CD664(1) + 180;
+    mDuration = randInt_801CD664(1) + 180;
     mDuration = mDuration * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
 }
 
@@ -21,20 +21,20 @@ s16 WanderTurnTimer_80217374::fn_80217374(s16 angle) {
     if (mTimer >= mDuration) {
         switch (mState) {
         case 0:
-            if (fn_801CD664(2) == 0) {
-                mDuration = fn_801CD664(61) + 60;
+            if (randInt_801CD664(2) == 0) {
+                mDuration = randInt_801CD664(61) + 60;
                 mState = 1;
                 mTimer = 0;
                 return angle - 0x4000;
             } else {
-                mDuration = fn_801CD664(61) + 60;
+                mDuration = randInt_801CD664(61) + 60;
                 mState = 2;
                 mTimer = 0;
                 return angle + 0x4000;
             }
         case 1:
         case 2:
-            mDuration = fn_801CD664(1) + 180;
+            mDuration = randInt_801CD664(1) + 180;
             if (mState == 1) {
                 angle += 0x4000;
             } else {

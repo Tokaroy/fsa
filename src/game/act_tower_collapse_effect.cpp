@@ -79,17 +79,17 @@ void TowerCollapseEffect_8049CA40::update() {
                 startSound_801F0E34(0x30071, 0);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49d, 2, 2, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49e, 2, 2, NULL, NULL, true, 1.0f);
-                gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
             } else if (field_0x288 == 0x1E) {
                 startSound_801F0E34(0x30071, 0);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49b, 2, 2, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49c, 2, 2, NULL, NULL, true, 1.0f);
-                gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
             } else if (field_0x288 == 0x3C) {
                 startSound_801F0E34(0x30070, 0);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49f, 2, 2, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4a0, 2, 2, NULL, NULL, true, 1.0f);
-                gGameRoot_8053AAF8->fn_80134DE4(3, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
             }
             if (field_0x288 == 0x46) {
                 u32 bit = field_0x25c;
@@ -114,7 +114,7 @@ void TowerCollapseEffect_8049CA40::update() {
                 field_0x230 = 2;
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xd3, 2, 2, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xd4, 2, 2, NULL, NULL, true, 1.0f);
-                gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
                 startSound_801F0E34(0x30001, 0);
             }
             break;
@@ -138,7 +138,7 @@ void TowerCollapseEffect_8049CA40::draw() {
         if (field_0x230 == 2) {
             SpriteParams_801F5AE0 params;
             void* res = fn_804032E8('TIMG', "gareki.bti");
-            fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
         }
         break;
     case 2:
@@ -155,7 +155,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     JGeometry::TVec3f savedPos = mPos;
     params.field_0x1d = -3;
     void* res = fn_804032E8('TIMG', "kowareyuka_a.bti");
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[0].x;
     mPos.y = field_0x238[0].y;
@@ -167,7 +167,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     params.mMtx = mtx;
     params.field_0x1d = 1;
     res = fn_804032E8('TIMG', "kowareyuka_b.bti");
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[1].x;
     mPos.y = field_0x238[1].y;
@@ -178,7 +178,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[1] / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
     res = fn_804032E8('TIMG', "kowareyuka_c.bti");
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[2].x;
     mPos.y = field_0x238[2].y;
@@ -189,7 +189,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[2] / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
     res = fn_804032E8('TIMG', "kowareyuka_d.bti");
-    fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.set(savedPos);
 }

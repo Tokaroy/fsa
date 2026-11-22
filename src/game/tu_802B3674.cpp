@@ -143,7 +143,7 @@ void EnvironmentSwitchControl_804A8638::init() {
             field_0x2c0[1] = 30.0f;
             field_0x2c0[2] = 0.17f;
             field_0x2c0[3] = 0.5f;
-            field_0x24c = fn_801CD664(100);
+            field_0x24c = randInt_801CD664(100);
             field_0x250 = 0;
             field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
             field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
@@ -160,7 +160,7 @@ void EnvironmentSwitchControl_804A8638::init() {
             field_0x2c0[1] = 30.0f;
             field_0x2c0[2] = 0.17f;
             field_0x2c0[3] = 0.5f;
-            field_0x24c = fn_801CD664(100);
+            field_0x24c = randInt_801CD664(100);
             field_0x250 = 0;
             field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
             field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
@@ -584,7 +584,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         case 0xC: {
             field_0x338 = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (getGameView_802D6A9C()->fn_802D800C(field_0x324[i])) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x324[i])) {
                     field_0x338++;
                 }
             }
@@ -682,9 +682,9 @@ void EnvironmentSwitchControl_804A8638::update() {
                         mSoundObj->startSound(0x30031);
                     }
                     spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x488, 1, 0, NULL, NULL, true, 1.0f);
-                    field_0x24c = fn_801CD664(0x97) + 50;
+                    field_0x24c = randInt_801CD664(0x97) + 50;
                     if (fn_802DEBF8()) {
-                        field_0x24c += fn_801CD664(0xDD) + 80;
+                        field_0x24c += randInt_801CD664(0xDD) + 80;
                     }
                 }
             }

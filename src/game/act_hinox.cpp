@@ -177,7 +177,7 @@ void Hinox_8049F9B4::update() {
     if (mLife > 0) {
         dead = false;
     }
-    if (fn_801F3D94(dead) != 0 && mLife <= 0) {
+    if (updateHitReaction_801F3D94(dead) != 0 && mLife <= 0) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -198,7 +198,7 @@ void Hinox_8049F9B4::update() {
         }
     }
 
-    if (fn_801F2DB4('HBMB', 'NULL', NULL) || fn_801F2FAC() || hitByActor == true) {
+    if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL) || fn_801F2FAC() || hitByActor == true) {
         field_0xbc = 3;
         if (mLife > 0) {
             mVel_0x3c.set(savedVel);
@@ -265,9 +265,9 @@ void Hinox_8049F9B4::update() {
 
     if (mState != 8 && mState != 9) {
         if (mState == 5) {
-            fn_801F2B7C(4, -1, 3);
+            damagePlayersInBox_801F2B7C(4, -1, 3);
         } else {
-            fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+            damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
         }
     }
 
@@ -537,7 +537,7 @@ void Hinox_8049F9B4::update() {
                                          2.0f);
                 for (s32 i = 0; i < 8; i++) {
                     if (field_0x254 >= 0 && fn_80236228(field_0x254) >= lbl_8049F840.dropAmounts[dropIdx]) {
-                        s32 gemSerial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, dropIdx);
+                        s32 gemSerial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, dropIdx);
                         if (gemSerial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(gemSerial);
                             if (gem != NULL) {

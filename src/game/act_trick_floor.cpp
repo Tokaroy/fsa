@@ -262,14 +262,14 @@ void TrickFloor_804A83A0::update() {
         vbox = *src;
         s32 tx = (s32)(x - vbox.i.x);
         s32 ty = (s32)(y - vbox.i.y);
-        field_0x250 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, tileIndex(tx, ty));
+        field_0x250 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIndex(tx, ty));
         field_0x230 = 1;
         break;
     }
     case 1:
         s32 bit = field_0x238;
         if (bit != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(bit)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
                 field_0x230 = 2;
             }
         } else {

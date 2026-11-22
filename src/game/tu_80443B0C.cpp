@@ -165,7 +165,7 @@ void MapYaguraWindow_804B1B60::fn_80443DAC() {
             for (s32 i = 0; i < 2; i++) {
                 field_0x28[i]->moveFromCentre_80402E08(0.0f, 0.0f);
             }
-            gAudioMgr_8053AF80->fn_80458880(0, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(8, -1)) {
         if (field_0x4c == 1) {
@@ -178,15 +178,15 @@ void MapYaguraWindow_804B1B60::fn_80443DAC() {
             for (s32 i = 0; i < 2; i++) {
                 field_0x28[i]->moveFromCentre_80402E08(0.0f, field_0x40);
             }
-            gAudioMgr_8053AF80->fn_80458880(0, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
         field_0x8->field_0x22 = 0;
         field_0x4d = 3;
         if (field_0x4c == 0) {
-            gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         } else {
-            gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
         field_0x4c = 1;
@@ -200,7 +200,7 @@ void MapYaguraWindow_804B1B60::fn_80443DAC() {
         }
         field_0x8->field_0x22 = 0;
         field_0x4d = 3;
-        gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
     }
 
     if (--field_0x48 <= 0) {

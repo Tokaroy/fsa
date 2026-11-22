@@ -176,7 +176,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (field_0x250 != 0) {
             break;
         }
-        field_0x264 = gGameRoot_8053AAF8->fn_80138A30();
+        field_0x264 = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         if (field_0x264 > 1) {
             for (s32 i = 1; i < field_0x264; i++) {
                 s32 layer = getPlayerLayer_8023DE58(i);
@@ -481,7 +481,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 field_0x240 = 0;
             }
             if (field_0x270 == 0) {
-                getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 0x230007);
+                getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, 0x230007);
             }
             field_0x258 = -1;
             mState = 10;

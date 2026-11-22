@@ -285,7 +285,7 @@ void Quicksand_804A6270::fn_80211C94() {
     case 5:
         if (field_0x2ac == 3) {
             s32 viewBit = field_0x2b0;
-            if (viewBit != 0 && !getGameView_802D6A9C()->fn_802D800C(viewBit)) {
+            if (viewBit != 0 && !getGameView_802D6A9C()->isScreenFlagSet_802D800C(viewBit)) {
                 leaveSand(this);
                 return;
             }
@@ -317,7 +317,7 @@ void Quicksand_804A6270::updateState_0x90(u8 mapHit) {
         case 2:
         case 3: {
             s32 viewBit = field_0x2b0;
-            if (viewBit != 0 && getGameView_802D6A9C()->fn_802D800C(viewBit)) {
+            if (viewBit != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(viewBit)) {
                 trigger = true;
             }
             break;

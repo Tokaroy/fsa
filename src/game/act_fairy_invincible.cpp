@@ -175,7 +175,7 @@ void InvincibilityFairy_804AB4C0::draw() {
     if (mCounters[0] >= 0x100 || (mCounters[0] & 2) == 0) {
         params.field_0x2d = 1;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x5E, &params, 0, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 0);
     }
 }
 

@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/GameState.h"
-void* fn_804030C4(u32 type, const char* name);
+void* getMain2DResource_804030C4(u32 type, const char* name);
 #include "game/Message.h"
 #include "game/act/tu_80440BF4.h"
 #include "JSystem/J2D/J2DScreen.h"
@@ -45,9 +45,9 @@ cls_804AF860::cls_804AF860() {
     field_0x30 = new PaneCtrl_804AF86C;
     field_0x30->setPane_80402F04(field_0x4->search('Ptopbb07'));
     field_0x34 = lbl_8053AED8->field_0x8;
-    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_kettei_01.bti");
     lbl_8053AED8->fn_80440D78(tex);
-    lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
+    lbl_8053AED8->fn_80440CE4((const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_modoru_01.bti"));
     ((J2DTextBox*)field_0x4->search('Tsi01'))->setFont(lbl_8053AD78->getFont());
     ((J2DTextBox*)field_0x4->search('Tsi02'))->setFont(lbl_8053AD78->getFont());
     ((J2DTextBox*)field_0x4->search('Tso01'))->setFont(lbl_8053AD78->getFont());
@@ -201,7 +201,7 @@ void cls_804AF860::fn_803A6608() {
         lbl_80529DEC.mSoundMode_0x245 = field_0x77;
         lbl_80529DEC.field_0x246 = field_0x78;
         field_0x80 = 2;
-        gAudioMgr_8053AF80->fn_80458880(11, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(11, -1);
     } else if (lbl_8053AD30->fn_80309C4C(0x200, 1)) {
         if (lbl_80529DEC.mSoundMode_0x245 == 1) {
             gAudioMgr_8053AF80->fn_804594E4(1);
@@ -211,36 +211,36 @@ void cls_804AF860::fn_803A6608() {
             OSSetSoundMode(0);
         }
         field_0x80 = 2;
-        gAudioMgr_8053AF80->fn_80458880(12, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(12, -1);
     } else if (lbl_8053AD30->fn_80309A9C(4, 1)) {
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         field_0x64++;
         if (field_0x64 > 1) {
             field_0x64 = 0;
         }
         pool_80543370();
     } else if (lbl_8053AD30->fn_80309A9C(8, 1)) {
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         field_0x64--;
         if (field_0x64 < 0) {
             field_0x64 = 1;
         }
         pool_80543370();
     } else if (lbl_8053AD30->fn_80309A9C(1, 1)) {
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         field_0x6e = -1;
         if (field_0x64 == 0) {
             if (field_0x77 == 1) {
                 field_0x77 = 0;
                 getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso02'))->getStringPtr(), 0x99, 0, NULL, NULL);
                 gAudioMgr_8053AF80->fn_804594E4(0);
-                gAudioMgr_8053AF80->fn_80458880(0x43, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x43, -1);
                 OSSetSoundMode(0);
             } else {
                 field_0x77 = 1;
                 getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso02'))->getStringPtr(), 0x98, 0, NULL, NULL);
                 gAudioMgr_8053AF80->fn_804594E4(1);
-                gAudioMgr_8053AF80->fn_80458880(0x43, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x43, -1);
                 OSSetSoundMode(1);
             }
         } else {
@@ -260,20 +260,20 @@ void cls_804AF860::fn_803A6608() {
             }
         }
     } else if (lbl_8053AD30->fn_80309A9C(2, 1)) {
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
         field_0x6e = 1;
         if (field_0x64 == 0) {
             if (field_0x77 == 1) {
                 field_0x77 = 0;
                 getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso02'))->getStringPtr(), 0x99, 0, NULL, NULL);
                 gAudioMgr_8053AF80->fn_804594E4(0);
-                gAudioMgr_8053AF80->fn_80458880(0x43, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x43, -1);
                 OSSetSoundMode(0);
             } else {
                 field_0x77 = 1;
                 getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso02'))->getStringPtr(), 0x98, 0, NULL, NULL);
                 gAudioMgr_8053AF80->fn_804594E4(1);
-                gAudioMgr_8053AF80->fn_80458880(0x43, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x43, -1);
                 OSSetSoundMode(1);
             }
         } else {

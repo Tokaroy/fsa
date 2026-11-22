@@ -184,7 +184,7 @@ void GbaWindow_804B1668::fn_80432AF8() {
                 val = 0;
             }
             if (val < 10) {
-                const ResTIMG* img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val]);
+                const ResTIMG* img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == true) {
@@ -192,10 +192,10 @@ void GbaWindow_804B1668::fn_80432AF8() {
                     field_0xc->search(lbl_8048F438[3])->hide();
                 }
             } else {
-                const ResTIMG* img10 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val / 10]);
+                const ResTIMG* img10 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val / 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img10, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img10, 0);
-                const ResTIMG* img1 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val % 10]);
+                const ResTIMG* img1 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val % 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[2]))->changeTexture(img1, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[3]))->changeTexture(img1, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == false) {
@@ -217,7 +217,7 @@ void GbaWindow_804B1668::fn_80432AF8() {
                 val = 0;
             }
             if (val < 10) {
-                const ResTIMG* img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val]);
+                const ResTIMG* img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == true) {
@@ -225,10 +225,10 @@ void GbaWindow_804B1668::fn_80432AF8() {
                     field_0xc->search(lbl_8048F438[3])->hide();
                 }
             } else {
-                const ResTIMG* img10 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val / 10]);
+                const ResTIMG* img10 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val / 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img10, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img10, 0);
-                const ResTIMG* img1 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val % 10]);
+                const ResTIMG* img1 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val % 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[2]))->changeTexture(img1, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[3]))->changeTexture(img1, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == false) {
@@ -250,7 +250,7 @@ void GbaWindow_804B1668::fn_80432AF8() {
                 val = 0;
             }
             if (val < 10) {
-                const ResTIMG* img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val]);
+                const ResTIMG* img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == true) {
@@ -258,10 +258,10 @@ void GbaWindow_804B1668::fn_80432AF8() {
                     field_0xc->search(lbl_8048F438[3])->hide();
                 }
             } else {
-                const ResTIMG* img10 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val / 10]);
+                const ResTIMG* img10 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val / 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[0]))->changeTexture(img10, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[1]))->changeTexture(img10, 0);
-                const ResTIMG* img1 = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1640[val % 10]);
+                const ResTIMG* img1 = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1640[val % 10]);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[2]))->changeTexture(img1, 0);
                 static_cast<J2DPicture*>(field_0xc->search(lbl_8048F438[3]))->changeTexture(img1, 0);
                 if (field_0xc->search(lbl_8048F438[2])->isVisible() == false) {

@@ -154,7 +154,7 @@ void UnknownFSOB_804A5568::updateState_0x90(u8 mapHit) {
     case 0: {
         u16 trigger = field_0x94;
         if (trigger != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(trigger)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(trigger)) {
                 mFlags |= 0x2000;
                 deleteEmitterKeep(&mEmitter3c0);
                 mEmitter3c0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
@@ -216,7 +216,7 @@ u8 UnknownFSOB_804A5568::attackPlayers_0x68() {
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
         mBox.f.y = 8.0f;
-        result = fn_801F2B7C(0, -1, 0x16);
+        result = damagePlayersInBox_801F2B7C(0, -1, 0x16);
         mBox.i.x = savedIX;
         mBox.i.y = savedIY;
         mBox.f.x = savedFX;

@@ -10,7 +10,7 @@
 
 // A random offset in [-range / 2, range / 2].
 static inline s32 spread(s32 range) {
-    return fn_801CD664(range + 1) - range / 2;
+    return randInt_801CD664(range + 1) - range / 2;
 }
 
 // FIXME(shotgun): 98.83 %, missing/extra; behaviour near.
@@ -122,7 +122,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
                 JGeometry::TVec3f pos2;
                 fn_800FE294(&pos2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f p = pos2;
-                if (fn_801CC9F8(&mPos, mLayer_0x4) && fn_8022461C(&p, mLayer_0x4) == 0) {
+                if (fn_801CC9F8(&mPos, mLayer_0x4) && getTileCollisionCode_8022461C(&p, mLayer_0x4) == 0) {
                     field_0x32c.x = p.x;
                     field_0x32c.y = p.y;
                     field_0x32c.z = p.z;
@@ -218,7 +218,7 @@ void ShadowLink2_804A43E8::fn_801C8BC4(u8 flag) {
         if (result <= 3) {
             field_0x55c[1] = 1;
         } else {
-            field_0x55c[1] = fn_801CD664(4) + 1;
+            field_0x55c[1] = randInt_801CD664(4) + 1;
             if (field_0x524.field_0x0 & 0x100) {
                 field_0x55c[1]++;
             }
@@ -230,7 +230,7 @@ void ShadowLink2_804A43E8::fn_801C8BC4(u8 flag) {
             field_0x55c[1] = cap;
         }
     } else {
-        field_0x55c[1] = fn_801CD664(0xC) + 1;
+        field_0x55c[1] = randInt_801CD664(0xC) + 1;
     }
 }
 
@@ -440,7 +440,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
                 JGeometry::TVec3f p2;
                 fn_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f copy2 = p2;
-                if (fn_801CC9F8(&mPos, mLayer_0x4) && fn_8022461C(&copy2, mLayer_0x4) == 0) {
+                if (fn_801CC9F8(&mPos, mLayer_0x4) && getTileCollisionCode_8022461C(&copy2, mLayer_0x4) == 0) {
                     field_0x32c.x = copy2.x;
                     field_0x32c.y = copy2.y;
                     field_0x32c.z = copy2.z;
@@ -505,7 +505,7 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     if (field_0x524.field_0x0 & 0x4) {
         mLayer_0x4 = field_0x56c;
         mPos.set(field_0x570);
-        if (fn_801CD2F8(field_0x56c)) {
+        if (isUpperLayer_801CD2F8(field_0x56c)) {
             field_0x58c = 1;
         } else {
             field_0x58c = 0;

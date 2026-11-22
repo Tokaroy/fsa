@@ -114,7 +114,7 @@ void NaviAfterCrystalCutscene_8049ED30::update() {
 void NaviAfterCrystalCutscene_8049ED30::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
-    fn_801F02BC("enemy_both2_sob.bin", lbl_804652C0[field_0x234] + field_0x240.mCel, &params, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", lbl_804652C0[field_0x234] + field_0x240.mCel, &params, 7, 0, false, 1.0f, 1.0f);
 }
 
 // 0x80133B58.

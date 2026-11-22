@@ -15,7 +15,7 @@ static inline void pickNext(HeadSway_8021ACE0* self) {
     if (self->field_0xc == 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.9f) {
             self->mState = 1;
-            self->mTimer2 = fn_801CD664(0xB5) + 0x78;
+            self->mTimer2 = randInt_801CD664(0xB5) + 0x78;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                 self->mSpeed = -0x180;
             } else {
@@ -23,7 +23,7 @@ static inline void pickNext(HeadSway_8021ACE0* self) {
             }
         } else {
             self->mState = 0;
-            self->mTimer2 = fn_801CD664(0xB5) + 0x78;
+            self->mTimer2 = randInt_801CD664(0xB5) + 0x78;
             self->mSpeed = 0;
         }
     } else {
@@ -67,7 +67,7 @@ bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
                 if (flag) {
                     if (field_0xc == 0) {
                         mState = 1;
-                        mTimer = fn_801CD664(0xB5) + 0x78;
+                        mTimer = randInt_801CD664(0xB5) + 0x78;
                         mTimer2 = 0;
                         if (mFlipped) {
                             mSpeed = -0x180;
@@ -142,7 +142,7 @@ bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
                     mTimer = 0xF;
                     result = true;
                 } else if (mState == 1) {
-                    mTimer = fn_801CD664(0xB5) + 0x78;
+                    mTimer = randInt_801CD664(0xB5) + 0x78;
                 }
             } else {
                 pickNext(this);

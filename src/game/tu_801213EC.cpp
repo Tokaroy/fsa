@@ -200,11 +200,11 @@ void EscortBase_8049E0C8::draw() {
     if (field_0x333) {
         params.field_0x10.a = (s32)(255.0f * JMath::sincosTable_.sinDegree((f32)(field_0x354 * 60)));
     }
-    fn_801F02BC(mSobName, field_0x338 + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC(mSobName, field_0x338 + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
 }
 
 bool EscortBase_8049E0C8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    u16 tile = fn_8022461C(pos, layer);
+    u16 tile = getTileCollisionCode_8022461C(pos, layer);
     for (s32 i = 0; i < 8; i++) {
         if (tile == lbl_80464D84[i]) {
             return false;
@@ -239,7 +239,7 @@ s32 EscortBase_8049E0C8::vfunc_0x78() const {
 }
 
 void EscortBase_8049E0C8::vfunc_0x7C() {
-    if (gGameRoot_8053AAF8->fn_80138A30() == 1) {
+    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1) {
         field_0x360 = 1;
     } else {
         field_0x360 = 4;
@@ -279,7 +279,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (target != NULL) {
                 JGeometry::TVec3f pos = target->mPos;
-                mDir_0x98 = fn_801F681C(pool_8053C9F0(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
+                mDir_0x98 = angleToDir_801F681C(pool_8053C9F0(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
             }
         }
         vfunc_0x94();
@@ -334,7 +334,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     } else {
         mDrawEnabled = true;
     }
-    if (getGameView_802D6A9C()->fn_802DCD0C()) {
+    if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
         vfunc_0x84();
         return;
     }
@@ -353,7 +353,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     s32 who = 0;
     f32 dist = 0.0f;
     vfunc_0xA0(&angle, &dir, &dist, &who, player);
-    if (gGameRoot_8053AAF8->fn_80138A30() == 1 && fn_8022CAF8(player) == 5) {
+    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1 && fn_8022CAF8(player) == 5) {
         arg6 = 2.0f * arg6;
     }
     if (dist >= arg6) {
@@ -382,7 +382,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         if (index >= 0x30) {
             index = 0x30;
         }
-        if (fn_8023EA28(player) && fn_802265FC(&mPos, 0)) {
+        if (fn_8023EA28(player) && getTileCollisionCodeAlt_802265FC(&mPos, 0)) {
             if (isPlayerHidden(player)) {
                 mPos = *fn_8023E4E4(player, index);
             } else {
@@ -394,7 +394,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         }
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
-        dir = fn_801F681C(pool_8053C9F0(-dx, -dy));
+        dir = angleToDir_801F681C(pool_8053C9F0(-dx, -dy));
         JGeometry::TVec3f moved = mPos - mPrevPos;
         if (PSVECMag(&moved) >= 1.0f) {
             field_0x380 = 0.5f;
@@ -468,7 +468,7 @@ void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, 
         f32 dy = mPos.y - (y + getPlayerPos_8023E724(who)->y);
         *outDist = std::sqrtf(dx * dx + dy * dy);
         *outAngle = pool_8053C9F0(-dx, -dy);
-        *outDir = fn_801F681C(*outAngle);
+        *outDir = angleToDir_801F681C(*outAngle);
         *outPlayer = player;
     }
 }
@@ -948,7 +948,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     mVel_0x3c.y = step.y;
     mVel_0x3c.z = step.z;
     mPos.add(mVel_0x3c);
-    s32 dir = fn_801F681C(angle);
+    s32 dir = angleToDir_801F681C(angle);
     if (dir >= 0) {
         field_0x364[4]++;
         if (field_0x364[4] >= 10) {

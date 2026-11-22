@@ -73,7 +73,7 @@ inline bool SlimeManager_804A5BD8::checkTrigger() {
         }
         break;
     case 3:
-        if (field_0x346 != fn_8022461C(&mPos, mLayer_0x4) || field_0x348 != fn_80226850(&mPos, mLayer_0x4)) {
+        if (field_0x346 != getTileCollisionCode_8022461C(&mPos, mLayer_0x4) || field_0x348 != getRawTile_80226850(&mPos, mLayer_0x4)) {
             trigger = true;
         }
         break;
@@ -115,7 +115,7 @@ inline s32 SlimeManager_804A5BD8::chooseDir() {
     calcCenter(&center.x, &center.y);
     s32 player = fn_801D05F8(&center, 0.0f);
     if (player < 0) {
-        return fn_801CD664(4);
+        return randInt_801CD664(4);
     }
     bool turn = false;
     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.1f) {
@@ -137,7 +137,7 @@ void SlimeManager_804A5BD8::init() {
     EnemyBase_804A4808::init();
     field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
-        field_0x2ac = fn_801CD664(2);
+        field_0x2ac = randInt_801CD664(2);
     }
     s32 mode = (mSpawnParam_0x90 >> 4) & 3;
     if (mode > 3) {
@@ -159,7 +159,7 @@ void SlimeManager_804A5BD8::init() {
 
     if (field_0x340 == 0) {
         mState = 2;
-        field_0x250 = fn_801CD664(0x79) + 60;
+        field_0x250 = randInt_801CD664(0x79) + 60;
         spawnSlimes();
     } else {
         mState = 0;
@@ -171,8 +171,8 @@ void SlimeManager_804A5BD8::init() {
 }
 
 void SlimeManager_804A5BD8::onFirstUpdate_0x54() {
-    field_0x346 = fn_8022461C(&mPos, mLayer_0x4);
-    field_0x348 = fn_80226850(&mPos, mLayer_0x4);
+    field_0x346 = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
+    field_0x348 = getRawTile_80226850(&mPos, mLayer_0x4);
 }
 
 void SlimeManager_804A5BD8::vfunc_0xA4() {
@@ -212,7 +212,7 @@ void SlimeManager_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TV
     }
     JGeometry::TVec2f center;
     calcCenter(&center.x, &center.y);
-    s32 dir = fn_801CD354(chooseDir());
+    s32 dir = oppositeDir_801CD354(chooseDir());
     JGeometry::TVec2f offset;
     offset.x = 0.0f;
     offset.y = 0.0f;
@@ -245,11 +245,11 @@ void SlimeManager_804A5BD8::fn_80208244(int state) {
     case 1:
         break;
     case 2:
-        field_0x250 = fn_801CD664(0x79) + 60;
+        field_0x250 = randInt_801CD664(0x79) + 60;
         break;
     case 3: {
         s32 dir = chooseDir();
-        const u8 steps = fn_801CD664(3) + 1;
+        const u8 steps = randInt_801CD664(3) + 1;
         field_0x34a += steps;
         for (s32 i = 0; i < 4; i++) {
             if (!mSlots[i].mUsed && !mSlots[i].mDone) {

@@ -5,14 +5,14 @@
 //
 // * game/tu_802F5040.cpp: TileMap_804AA858, the object at gGameRoot2_8053AB10->0x20
 //   (124 consumer units). It holds the screen's tile layers (u16 tile codes
-//   on a 32 x 32 grid of 16-unit cells, fn_802F9908 / fn_802F9974) and
+//   on a 32 x 32 grid of 16-unit cells, getTile_802F9908 / fn_802F9974) and
 //   draws the "SOB " sprites (fn_802F86CC, fn_802F745C).
 // * game/tu_8022461C.cpp: the tile queries for a position (112 consumer
 //   units): the position, relative to the view's visible box
 //   (GameView_804A9950::mVisibleBox, or field_0xdc for layers 8 and up), is
 //   clamped to [0, 0x200) and packed into a cell index, x & 0x100 |
 //   (y & 0x100) << 1 | y & 0xF0 | x >> 4 & 0xF, whose tile comes from
-//   fn_802F9908; positions outside the box give 0xF.
+//   getTile_802F9908; positions outside the box give 0xF.
 // * game/tu_8020D58C.cpp: the actor collision boxes (42 consumer units),
 //   double-buffered lists of boxes that actors register each frame and
 //   ActorBase_804A5770::isBlocked_0x4C tests a position against after the tile
@@ -314,7 +314,7 @@ public:
     void fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
                      SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY);
     // Draws the sprite `res` (a "TIMG" resource, act_life_meter's heart image
-    // from fn_804030C4) at pos with the stack SpriteParams_801F5AE0 `params`
+    // from getMain2DResource_804030C4) at pos with the stack SpriteParams_801F5AE0 `params`
     // (fn_801EF830 calls it the same way, 0x801EFC74).
     void fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
     // 0x802F6298 / 0x802F654C: queue a sprite (pos, the "SOB " resource and
@@ -387,7 +387,7 @@ public:
     // 17 units. The tile code of cell `index` on `layer` (lhzx from the
     // layer's u16 grid, a pointer at 0x28 + layer * 4; the body has three
     // identical branches for layers 0-3, 4-7 and the rest).
-    u16 fn_802F9908(s32 layer, s32 index);
+    u16 getTile_802F9908(s32 layer, s32 index);
     // 9 units / 198 calls. Sets it (sthx; callers clrlwi 16 the value,
     // act_panel_rewrite_npc 0x802C8AC4).
     void fn_802F9974(s32 layer, s32 index, u16 value);
@@ -456,7 +456,7 @@ public:
     /* 0x000C */ u8* mTilePalettesRaw_0xc[3];   // 0x200
     /* 0x0018 */ u8* mTilePalettes_0x18[3];  // 0x200
     /* 0x0024 */ u16* mTileDefs_0x24;    // 0x1000 (fn_802F9BE8 stores u16s)
-    // The u16 tile grids of layers 0-3 and 4-7 (fn_802F9908 / fn_802F9974
+    // The u16 tile grids of layers 0-3 and 4-7 (getTile_802F9908 / fn_802F9974
     // test the two ranges separately; 32 x 32 cells). 0x2000 each.
     /* 0x0028 */ u16* mLayerGrid[4];
     /* 0x0038 */ u16* mLayerGrid2[4];
@@ -566,23 +566,23 @@ extern "C" {
 // Owner tu_8022461C (0x8022486C, not written yet). A tile test at pos (byte result, callers
 // clrlwi.): Player fn_8027BE74 picks the sound 0x20062 / 0x20061 by it.
 bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer);
-// 73 units. The tile's collision code: the tile code (as in fn_80226850)
+// 73 units. The tile's collision code: the tile code (as in getRawTile_80226850)
 // mapped through the u16 table lbl_8046CB88, adjusted when the layer's
 // GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage
 // (7, 2) / (7, 3) (0xE -> 0x51); 0xF outside the box. Callers clrlwi 16
 // the result.
-u16 fn_8022461C(const JGeometry::TVec3f* pos, s32 layer);
+u16 getTileCollisionCode_8022461C(const JGeometry::TVec3f* pos, s32 layer);
 // The tile code -> collision code table (0x800 bytes; .rodata of
 // game/act_fire_rod_fire.cpp). Also read directly by tu_8029D898 (fn_802A1490, fn_802A1554).
 extern const u16 lbl_8046CB88[0x400];
-// 15 units. The same result as fn_8022461C; its 0x61 -> 0 case compiles
+// 15 units. The same result as getTileCollisionCode_8022461C; its 0x61 -> 0 case compiles
 // branch-free (0x80226770), so the source differs. Callers compare it with
 // codes such as 3 and 0x50 (act_bomb 0x8014BFF4).
-u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer);
-// 46 units. The raw tile code (clrlwi 22 of fn_802F9908), 0xF outside the
+u16 getTileCollisionCodeAlt_802265FC(const JGeometry::TVec3f* pos, s32 layer);
+// 46 units. The raw tile code (clrlwi 22 of getTile_802F9908), 0xF outside the
 // box; callers clrlwi 16 the result.
-u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer);
-// 13 units. The same as fn_80226850 (only the register allocation differs).
+u16 getRawTile_80226850(const JGeometry::TVec3f* pos, s32 layer);
+// 13 units. The same as getRawTile_80226850 (only the register allocation differs).
 u16 fn_80226998(const JGeometry::TVec3f* pos, s32 layer);
 // 7 units each. The packed cell index of pos (no lookup; clamped like the
 // queries, no outside test in fn_80226AE0).
@@ -592,7 +592,7 @@ s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer); // reads only x, y
 // unpacked x, y) with a constant z (psq_st/stfs to out 0/8, 0x80226D88).
 void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out);
 // 2 units. Whether the tile at pos blocks: the collision code of
-// fn_8022461C (computed inline), 0 / 2 / 0x50 never, 0x22 only while
+// getTileCollisionCode_8022461C (computed inline), 0 / 2 / 0x50 never, 0x22 only while
 // GameView field_0x170 is set; `flag` (clrlwi 24, 0x80226344) selects
 // further cases. Returns 0 or 1.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag); // reads pos+0/+4 only

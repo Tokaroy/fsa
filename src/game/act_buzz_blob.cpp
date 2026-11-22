@@ -29,7 +29,7 @@ void BuzzBlob_8049F444::init() {
 // FIXME: 99.82% (regalloc-only). Target vs ours: r5->r4, r4->r5 in the mRandom
 // loads after dir.scale(0.3f) in case 0.
 void BuzzBlob_8049F444::update() {
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         field_0x258.set(1.0f, 1.0f, 1.0f);
         fn_801F2618(NULL, false);
         return;
@@ -51,7 +51,7 @@ void BuzzBlob_8049F444::update() {
     mPos += mVel_0x3c;
     u8 landed = 0;
     if (field_0x230 != 4) {
-        s32 code = fn_8022461C(&mPos, mLayer_0x4);
+        s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (code == 0xe) {
             startSound_801F0E34(0x4001A, 0);
             field_0x230 = 4;
@@ -93,7 +93,7 @@ void BuzzBlob_8049F444::update() {
                     }
                 }
             }
-            fn_801F2DB4('NULL', 'NULL', NULL);
+            checkActorHit_801F2DB4('NULL', 'NULL', NULL);
             landed = fn_801F2618(NULL, false);
         }
     }

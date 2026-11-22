@@ -219,7 +219,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         mBox.f.y - mBox.i.y > 0.0f) {
         // one hit type for both loops below: the original keeps it in a single stack slot (0x8)
         s32 type;
-        if (gGameRoot_8053AAF8->field_0x7e && !fn_801CD2F8(mLayer_0x4) && mState != 0xB && !field_0x5d1) {
+        if (gGameRoot_8053AAF8->field_0x7e && !isUpperLayer_801CD2F8(mLayer_0x4) && mState != 0xB && !field_0x5d1) {
             JGeometry::TBox2f box;
             fn_801F31C4(&box);
             box.i.x -= 8.0f;
@@ -250,7 +250,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                 }
             }
         }
-        if (fn_801CD2F8(mLayer_0x4)) {
+        if (isUpperLayer_801CD2F8(mLayer_0x4)) {
             for (s32 i = 0; i < 4; i++) {
                 if (i == fn_801F285C(NULL, &type, true, i)) {
                     if (fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
@@ -340,9 +340,9 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
         stateOk = false;
         break;
     }
-    if (stateOk && (mFlags & 0x2000) && fn_801CD2F8(mLayer_0x4) && mBox.f.x - mBox.i.x > 0.0f &&
+    if (stateOk && (mFlags & 0x2000) && isUpperLayer_801CD2F8(mLayer_0x4) && mBox.f.x - mBox.i.x > 0.0f &&
         mBox.f.y - mBox.i.y > 0.0f) {
-        result = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        result = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
     return result;
 }
@@ -372,7 +372,7 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
     if (stateOk && !(mFlags & 0x1000) && !(mFlags & 0x2000) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f &&
         mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
         JGeometry::TBox2f area;
-        fn_801E4618(&area, fn_801CD2F8(mLayer_0x4));
+        fn_801E4618(&area, isUpperLayer_801CD2F8(mLayer_0x4));
         result = fn_801E44CC(&area, &mPos, &mMapHitDir);
     }
     return result;
@@ -382,7 +382,7 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
 u8 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
     JGeometry::TBox2f area;
-    bool onLayer = fn_801CD2F8(layer);
+    bool onLayer = isUpperLayer_801CD2F8(layer);
     bool inside = true;
     fn_801E4618(&area, onLayer);
     if (pos->x < area.i.x || pos->y < area.i.y || pos->x >= area.f.x || pos->y >= area.f.y) {

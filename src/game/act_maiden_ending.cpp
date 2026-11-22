@@ -176,9 +176,9 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
         }
     } else if (field_0x238 == 4) {
         if (field_0x244 == 0) {
-            field_0x24c = fn_801CD664(6);
+            field_0x24c = randInt_801CD664(6);
             fn_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
-            field_0x244 = fn_801CD664(4);
+            field_0x244 = randInt_801CD664(4);
             field_0x238 = 0;
         } else if (field_0x244 == 0x28) {
             field_0x248 = 0xA;

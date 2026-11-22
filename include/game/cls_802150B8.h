@@ -34,14 +34,14 @@ public:
     void fn_80214900();
 
     // game/tu_802144F0.cpp: from mOwner's position (y - 16): while
-    // fn_801CD2F8(mOwner->field_0x4) holds, the actor at serial 0x30 (if >= 0
+    // isUpperLayer_801CD2F8(mOwner->field_0x4) holds, the actor at serial 0x30 (if >= 0
     // and live) takes that position; otherwise, with an emitter at 0x18, the
     // callback at 0x1C gets the position fn_80214E50 computes and that emitter
     // is moved with setEmitterPos_8013CB44 (height and depth from z, adjust on).
     void fn_80214994();
 
     // game/tu_802144F0.cpp: called by act_shadow_link_2 with this+0x4EC, layer,
-    // this+0xC and flag 0. Unless fn_801C0D70's object has bit 31 of its word
+    // this+0xC and flag 0. Unless getShadowLinkFight_801C0D70's object has bit 31 of its word
     // 0x50 set, spawns effects 0x1D6-0x1D9 at pos with depth (bit 0x400 of the
     // owner's field_0x524); otherwise three effects from the table for flag
     // (depth bit - 1, then the bit), and mOwner's fn_801CDCD0 with sound 0x40048
@@ -50,7 +50,7 @@ public:
 
     // game/tu_802144F0.cpp: (re)starts the position's owner: unlinks the actor
     // at 0x30 and deletes the emitter at 0x18, runs mOwner's fn_801CDC8C(0x4000E),
-    // then spawns actor 'SLEF' (serial to 0x30) while fn_801CD2F8(mOwner->field_0x4)
+    // then spawns actor 'SLEF' (serial to 0x30) while isUpperLayer_801CD2F8(mOwner->field_0x4)
     // holds, else effect 0x565 at the position with the callback at 0x1C (scale
     // 0.5, emitter to 0x18); ends with mOwner's sound 0x4000E.
     void fn_80214AF8();

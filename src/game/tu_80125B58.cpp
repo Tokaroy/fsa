@@ -171,7 +171,7 @@ void EscortedWomanArrivalPoint_8049E350::draw() {
         baseFrame = 0x2E6;
         break;
     }
-    fn_801F02BC("enemy_gc_sob.bin", baseFrame + mAnim244.mCel,
+    drawSpriteScaled_801F02BC("enemy_gc_sob.bin", baseFrame + mAnim244.mCel,
                 &params, 0x407, 0, false, 1.0f, 1.0f);
     if (field_0x231) {
         JGeometry::TVec3f pos(mPos);

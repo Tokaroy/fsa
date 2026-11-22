@@ -56,7 +56,7 @@ void Vulture_804A4230::init() {
     mPos.z = 1.0f;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(55) + 6;
+    field_0x250 = randInt_801CD664(55) + 6;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_8053A128, 2);
@@ -138,7 +138,7 @@ void Vulture_804A4230::fn_801C0634() {
 void Vulture_804A4230::fn_801C0438(s32 state) {
     switch (state) {
     case 0:
-        field_0x250 = fn_801CD664(55) + 6;
+        field_0x250 = randInt_801CD664(55) + 6;
         field_0x2a8 = -1;
         mAnim.startAnim_801D22DC(0, 0, false);
         break;
@@ -150,9 +150,9 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
         break;
     case 2:
         if (mFlags & 0x4000) {
-            field_0x250 = fn_801CD664(421) + 180;
+            field_0x250 = randInt_801CD664(421) + 180;
         } else {
-            field_0x250 = fn_801CD664(181) + 120;
+            field_0x250 = randInt_801CD664(181) + 120;
         }
         mAnim.fn_801D22A0(1, 2);
         field_0x2b8.x = mPos.x;
@@ -213,9 +213,9 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
     case 1:
         if (mPos.z >= 18.0f) {
             mPos.z = 18.0f;
-            field_0x2ac = fn_801CD664(33) + 48;
-            field_0x2b0 = fn_801CD664(257) + 512;
-            if (fn_801CD664(2) == 0) {
+            field_0x2ac = randInt_801CD664(33) + 48;
+            field_0x2b0 = randInt_801CD664(257) + 512;
+            if (randInt_801CD664(2) == 0) {
                 mFlags &= ~0x2000;
             } else {
                 mFlags |= 0x2000;
@@ -314,8 +314,8 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 JGeometry::TVec2f point;
                 point.x = mPos.x;
                 point.y = 8.0f + (mPos.y - mPos.z);
-                // fn_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
-                if (fn_802265FC((const JGeometry::TVec3f*)&point, mLayer_0x4) == 2) {
+                // getTileCollisionCodeAlt_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
+                if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&point, mLayer_0x4) == 2) {
                     hit = true;
                 }
             }

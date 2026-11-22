@@ -42,12 +42,12 @@ void PointCheckNPC_804A81C8::update() {
             y = 0x1FF;
         }
         field_0x23c = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
-        field_0x240 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x23c) & 0x3FF;
+        field_0x240 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, field_0x23c) & 0x3FF;
         field_0x230 = 1;
         break;
     }
     case 1: {
-        u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x23c) & 0x3FF;
+        u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, field_0x23c) & 0x3FF;
         if (tile == field_0x240) {
             break;
         }

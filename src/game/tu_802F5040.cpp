@@ -759,7 +759,7 @@ void TileMap_804AA858::fn_802FCE74() {
                 field_0x138[i]++;
                 u32 type = gGameRoot_8053AAF8->field_0x83 >> (i * 2) & 3;
                 if (((type == 2 && i == 0) || (type == 1 && i == field_0x230)) && !field_0x215) {
-                    gAudioMgr_8053AF80->fn_80458880(0x52, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x52, -1);
                     field_0x215 = 1;
                 }
             }
@@ -767,7 +767,7 @@ void TileMap_804AA858::fn_802FCE74() {
             field_0x138[i]--;
             if (field_0x215 == 1) {
                 if (gGameRoot_8053AAF8->field_0x4c != 10 && gGameRoot_8053AAF8->field_0x4c != 12) {
-                    gAudioMgr_8053AF80->fn_80458880(0x53, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x53, -1);
                 }
                 field_0x215 = 0;
             }
@@ -2068,7 +2068,7 @@ void TileMap_804AA858::fn_802F9974(s32 layer, s32 index, u16 value) {
 
 // Layers 0-3 and 4-7 have their own grid arrays; any other layer indexes
 // the first array as is.
-u16 TileMap_804AA858::fn_802F9908(s32 layer, s32 index) {
+u16 TileMap_804AA858::getTile_802F9908(s32 layer, s32 index) {
     s32 tile;
     if (layer >= 0 && layer < 4) {
         tile = mLayerGrid[layer][index];
@@ -2491,7 +2491,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
     t0 /= 128.0f;
 
     if (params != NULL && params->field_0x23 && params->mMtx == NULL &&
-        !getGameView_802D6A9C()->fn_802DCD0C() && isOnScreen(pos))
+        !getGameView_802D6A9C()->isInTransition_802DCD0C() && isOnScreen(pos))
     {
         f32 du = 8.0f / w;
         s32 cols = 0.125f * w;

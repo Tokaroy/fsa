@@ -46,7 +46,7 @@ void Carrot_804AC6B0::init() {
     field_0x24c = 0x400;
     if (((mSpawnParam_0x90 >> 4) & 1) == 1) {
         field_0x230 = 1;
-        field_0x264 = fn_80226850(&mPos, mLayer_0x4);
+        field_0x264 = getRawTile_80226850(&mPos, mLayer_0x4);
         field_0xb0 = 0;
     } else {
         field_0x230 = 0;
@@ -66,7 +66,7 @@ void Carrot_804AC6B0::init() {
 }
 
 bool Carrot_804AC6B0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tileCode = fn_8022461C(pos, layer);
+    s32 tileCode = getTileCollisionCode_8022461C(pos, layer);
     if (tileCode == 0x4C || tileCode == 0x4D || tileCode == 0x4E || tileCode == 0x4F) {
         return false;
     }
@@ -228,7 +228,7 @@ void Carrot_804AC6B0::update() {
         }
         break;
     case 1:
-        if (field_0x264 != fn_80226850(&mPos, mLayer_0x4)) {
+        if (field_0x264 != getRawTile_80226850(&mPos, mLayer_0x4)) {
             field_0x230 = 0;
             mVel_0x3c.z = 2.0f;
         }
@@ -298,7 +298,7 @@ void Carrot_804AC6B0::draw() {
                 params.field_0x1d = 3;
             }
             drawSprite_801F06F0("enemy_both2_sob.bin", 0x2AA, &params, flags, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2AA, 0, 2, -1, false, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x2AA, 0, 2, -1, false, 0, 0);
         }
     }
 }

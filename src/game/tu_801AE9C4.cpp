@@ -165,7 +165,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
             mBox.set(-7.0f + field_0x26c, -18.0f + field_0x270, 7.0f + field_0x26c, 18.0f + field_0x270);
         }
         mMapBox_0x80 = mBox;
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         break;
     case 2:
         mBox.set(-6.0f + field_0x26c, -6.0f + field_0x270, 6.0f + field_0x26c, 6.0f + field_0x270);
@@ -182,7 +182,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
     case 1:
         mBox.set(-28.0f + field_0x26c, -7.0f + field_0x270, 28.0f + field_0x26c, 7.0f + field_0x270);
         mMapBox_0x80 = mBox;
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         break;
     case 3:
         break;
@@ -201,7 +201,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
     case 5:
         mBox.set(-7.0f + field_0x26c, -28.0f + field_0x270, 7.0f + field_0x26c, 28.0f + field_0x270);
         mMapBox_0x80 = mBox;
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         break;
     }
 
@@ -232,7 +232,7 @@ void OkameSan_804A3448::init() {
     field_0x238 = 0;
     field_0x23c = 0;
 
-    if (gGameRoot_8053AAF8->fn_80138A30() <= 1) {
+    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() <= 1) {
         s32 k = (mSpawnParam_0x90 >> 8) & 0xF;
         if (k > 2) {
             k = 0;
@@ -273,7 +273,7 @@ void OkameSan_804A3448::init() {
 
 // FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
 void OkameSan_804A3448::update() {
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -390,7 +390,7 @@ void OkameSan_804A3448::update() {
 void OkameSan_804A3448::draw() {
     SpriteParams_801F5AE0 params;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A33D0[field_0x24c]);
-    fn_801EFD34(res, &params, -1, field_0x26c, field_0x270, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, field_0x26c, field_0x270, 0.0f);
 }
 
 OkameSan_804A3448::~OkameSan_804A3448() {}

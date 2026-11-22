@@ -210,58 +210,58 @@ HudMgr_804B1920::HudMgr_804B1920() {
         field_0x40[i]->moveFromCentre_80402E08(0.0f, 100.0f);
     }
 
-    const ResTIMG* img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_00.bti");
+    const ResTIMG* img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_00.bti");
     field_0x258[0] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_01.bti");
     field_0x258[1] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_02.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_02.bti");
     field_0x258[2] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_03.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_03.bti");
     field_0x258[3] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_04.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_04.bti");
     field_0x258[4] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_05.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_05.bti");
     field_0x258[5] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_06.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_06.bti");
     field_0x258[6] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_07.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_07.bti");
     field_0x258[7] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_08.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_08.bti");
     field_0x258[8] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_rupyNum_09.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_rupyNum_09.bti");
     field_0x258[9] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1810[0]);
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1810[0]);
     field_0x280[0] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1810[1]);
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1810[1]);
     field_0x280[1] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1810[2]);
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1810[2]);
     field_0x280[2] = new J2DPicture(img);
-    img = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B1810[3]);
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B1810[3]);
     field_0x280[3] = new J2DPicture(img);
 
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_1Pwin_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_1Pwin_01.bti");
 
     field_0x14[0] = new J2DPicture(img);
     field_0x14[0]->setCornerColor(JUtility::TColor(255, 210, 0, 255), JUtility::TColor(255, 210, 0, 255),
                                   JUtility::TColor(212, 34, 0, 255), JUtility::TColor(212, 34, 0, 255));
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_2Pwin_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_2Pwin_01.bti");
     field_0x14[1] = new J2DPicture(img);
     field_0x14[1]->setCornerColor(JUtility::TColor(255, 210, 0, 255), JUtility::TColor(255, 210, 0, 255),
                                   JUtility::TColor(212, 34, 0, 255), JUtility::TColor(212, 34, 0, 255));
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_3Pwin_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_3Pwin_01.bti");
     field_0x14[2] = new J2DPicture(img);
     field_0x14[2]->setCornerColor(JUtility::TColor(255, 210, 0, 255), JUtility::TColor(255, 210, 0, 255),
                                   JUtility::TColor(212, 34, 0, 255), JUtility::TColor(212, 34, 0, 255));
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_4Pwin_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_4Pwin_01.bti");
     field_0x14[3] = new J2DPicture(img);
     field_0x14[3]->setCornerColor(JUtility::TColor(255, 210, 0, 255), JUtility::TColor(255, 210, 0, 255),
                                   JUtility::TColor(212, 34, 0, 255), JUtility::TColor(212, 34, 0, 255));
-    img = (const ResTIMG*)fn_804030C4('TIMG', "kk_draw_01.bti");
+    img = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_draw_01.bti");
     field_0x14[4] = new J2DPicture(img);
     field_0x14[4]->setCornerColor(JUtility::TColor(255, 170, 210, 255), JUtility::TColor(255, 170, 210, 255),
                                   JUtility::TColor(4, 36, 130, 255), JUtility::TColor(4, 36, 130, 255));
     // The original loads this texture once more and drops the result.
-    fn_804030C4('TIMG', "kk_rupyNum_01.bti");
+    getMain2DResource_804030C4('TIMG', "kk_rupyNum_01.bti");
 
     for (s32 i = 0; i < 10; i++) {
         field_0x118[i] = 0.0f;
@@ -809,12 +809,12 @@ bool HudMgr_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     case 0x197:
     case 0x198:
     case 0x1A8:
-        gAudioMgr_8053AF80->fn_80458880(0x40, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x40, -1);
         break;
     case 0x23F:
         break;
     default:
-        gAudioMgr_8053AF80->fn_80458880(0x39, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x39, -1);
         break;
     }
     return true;
@@ -1244,7 +1244,7 @@ void HudMgr_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     if (index != 1) {
         res = fn_804032E8('TIMG', lbl_804B1900[index]);
     } else {
-        res = fn_804030C4('TIMG', lbl_804B1900[index]);
+        res = getMain2DResource_804030C4('TIMG', lbl_804B1900[index]);
     }
     static_cast<J2DPicture*>(field_0x8->search('Pdf01'))->changeTexture((const ResTIMG*)res, 0);
     field_0x8->search('Pdf01')->show();
@@ -1325,7 +1325,7 @@ void HudMgr_804B1920::fn_8043A450(s32 stage, s32 sub) {
         if (index != 0) {
             res = fn_804032E8('TIMG', lbl_804B1820[index]);
         } else {
-            res = fn_804030C4('TIMG', lbl_804B1820[index]);
+            res = getMain2DResource_804030C4('TIMG', lbl_804B1820[index]);
         }
         static_cast<J2DPicture*>(field_0x8->search('Pw0101'))->changeTexture((const ResTIMG*)res, 0);
         field_0x8->search('Pw0101')->show();
@@ -1347,7 +1347,7 @@ void HudMgr_804B1920::fn_8043A268(s32 stage, s32 sub, s16 value, f32 x, f32 y) {
         if (index != 0) {
             res = fn_804032E8('TIMG', lbl_804B1820[index]);
         } else {
-            res = fn_804030C4('TIMG', lbl_804B1820[index]);
+            res = getMain2DResource_804030C4('TIMG', lbl_804B1820[index]);
         }
         static_cast<J2DPicture*>(field_0x8->search('Pw0101'))->changeTexture((const ResTIMG*)res, 0);
         field_0x8->search('Pw0101')->show();

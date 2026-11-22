@@ -147,7 +147,7 @@ Figures:
 | act_rainbow_bridge | checkActivate | `{ if (isScreenFlagSet_0x34()) { field_0x238 = 1; // The original stores the stat` | 35 | 2 | 0 | 1 | 2 call sites | y | y | y | accepted |
 | act_rainbow_bridge | isPlayerOn | `{ if (player < 0) { return false; } if (field_0x4 != getPlayerLayer_80` | 26 | 1 | 1 | 1 | same name in act_extending_lift | - | - | y | accepted |
 | act_room_transfer_lift | isInside | `{ s32 layer = field_0x4; s32 playerLayer = getPlayerLayer_8023DE58(pla` | 14 | 1 | 1 | 1 | pool only | - | - | - | accepted |
-| act_rope | walk | `{ field_0x250 = fn_801CD664(0x29) + 0x3c; mTargetSpeed = 0.4f; if (mSt` | 9 | 3 | 0 | 0 | 3 call sites | y | y | y |  |
+| act_rope | walk | `{ field_0x250 = randInt_801CD664(0x29) + 0x3c; mTargetSpeed = 0.4f; if (mSt` | 9 | 3 | 0 | 0 | 3 call sites | y | y | y |  |
 | act_score | updateState1 | `{ if (mTimer >= 0x50) { s32 d = 90 - mTimer; field_0x3c.y = -3.0f * (1` | 10 | 1 | 2 | 3 | pool only | - | - | - |  |
 | act_score | updateState2 | `{ field_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << ` | 7 | 1 | 2 | 3 | pool only | - | - | - |  |
 | act_score | putScoreDigit | `{ Vec v; v.x = x; v.y = self->mPos.y; v.z = self->mPos.z; if (self->fi` | 10 | 8 | 2 | 3 | 8 call sites | y | y | y |  |
@@ -176,7 +176,7 @@ Figures:
 | act_thwomp_launch_npc | launch | `{ field_0x3c = JGeometry::TVec3f((field_0x278.x - mPos.x) / 40.0f, (fi` | 5 | 2 | 1 | 1 | 2 call sites; same name in act_thwomp_launch_npc_2 | y | y | y |  |
 | act_thwomp_launch_npc_2 | launch | `{ field_0x3c = JGeometry::TVec3f( (field_0x278.x - mPos.x) / 40.0f, (f` | 8 | 2 | 0 | 1 | 2 call sites; same name in act_thwomp_launch_npc | y | y | y |  |
 | act_thwomp_launch_npc_2 | addRandomDelay | `{ field_0x234 += (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1` | 3 | 1 | 1 | 1 | one statement | - | y | - |  |
-| act_tingle_first | selectNearestPlayer | `{ s32 count = gGameRoot_8053AAF8->fn_80138A30(); s32 bestPlayer = 0; f` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_tingle_first | selectNearestPlayer | `{ s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30(); s32 bestPlayer = 0; f` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_vaati_demo | updateBobbing | `{ static s16 lbl_8053AA88 = 0; mPos.z = 4.0f * JMath::sincosTable_.sin` | 11 | 2 | 1 | 1 | 2 call sites | y | y | y |  |
 | act_vaati_demo | updateDescent | `{ if (mSpawnPos.y - mPos.y <= 24.0f) { fn_801CD950(&field_0x3c.y, 0.4f` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_vaati_time_up | steer | `{ if (field_0x2c4 <= 0 \|\| (field_0x2c0 <= 0 && mPos.x >= field_0x290` | 12 | 1 | 1 | 1 | same name in tu_80334318 | - | - | y |  |

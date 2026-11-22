@@ -63,7 +63,7 @@ GameRoot2_8049F108::GameRoot2_8049F108(JKRHeap* heap) {
     field_0x28 = new (heap, 0) EffectSystem_8049F178(heap);
     field_0x2c = new (heap, 0) ShadowCircle_804A0160(heap);
     field_0x30 = new (heap, 0) cls_804A03A8(heap);
-    ResTIMG* black = (ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
+    ResTIMG* black = (ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
     field_0x1c = new (heap, 0) J2DPicture(black);
     field_0x1c->setBlackWhite(JUtility::TColor(0xFF), JUtility::TColor(0));
 }

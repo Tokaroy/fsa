@@ -88,7 +88,7 @@ bool cls_804A46F4::fn_801D12CC() {
         }
         probe.set(pos.x, pos.y, 0.0f);
         if (isBlocked_0x4C(mLayer_0x4, &probe)) {
-            s32 code = fn_802265FC(&pos, mLayer_0x4);
+            s32 code = getTileCollisionCodeAlt_802265FC(&pos, mLayer_0x4);
             if (code >= 0x2C || code < 0x27) {
                 mPathCount = 0;
                 return false;

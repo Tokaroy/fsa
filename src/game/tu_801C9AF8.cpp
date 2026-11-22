@@ -521,7 +521,7 @@ bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) 
         }
     }
     if (special) {
-        switch (fn_8022461C(&p, layer)) {
+        switch (getTileCollisionCode_8022461C(&p, layer)) {
         case 0x27:
         case 0x28:
         case 0x29:
@@ -529,12 +529,12 @@ bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) 
         case 0x2B:
             return false;
         case 3:
-            if (fn_80226850(&p, layer) == 0x7A) {
+            if (getRawTile_80226850(&p, layer) == 0x7A) {
                 return false;
             }
             break;
         case 1:
-            switch (fn_80226850(&p, layer)) {
+            switch (getRawTile_80226850(&p, layer)) {
             case 0x9B:
             case 0x9C:
             case 0x322:

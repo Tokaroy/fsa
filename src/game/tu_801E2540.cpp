@@ -41,7 +41,7 @@ static inline void releaseTarget(cls_804A51E4* self) {
 // FIXME: 82.61 %, scheduling; behaviour clean.
 bool cls_804A51E4::fn_801E2F40() {
     bool result = false;
-    switch (fn_8022461C(&mPos, mLayer_0x4)) {
+    switch (getTileCollisionCode_8022461C(&mPos, mLayer_0x4)) {
     case 3:
     case 13:
     case 14:

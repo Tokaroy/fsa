@@ -23,7 +23,7 @@ public:
     // 0x801DC3C4: the players hitting the tail (fn_801F285C, fn_801F37AC);
     // each one spawns a 'RUPY' thrown up and away.
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
-    // 0x801DC364: actor hits (fn_801F2DB4) are processed but never reported.
+    // 0x801DC364: actor hits (checkActorHit_801F2DB4) are processed but never reported.
     /* 0x60 */ virtual u8 checkHitByActor_0x60();
     // 0x801DC6B4.
     /* 0x74 */ virtual void onHitReactionEnd_0x74();

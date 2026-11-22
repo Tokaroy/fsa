@@ -97,7 +97,7 @@ void Thwomp_804AB5D8::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x17A, NULL, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x17A, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x17A, false, 2, -1, 0, 0, 0);
 }
 
 Thwomp_804AB5D8::~Thwomp_804AB5D8() {}

@@ -98,7 +98,7 @@ static inline u16 tileAt(TrickFloor2_804AA628* self, f32 x, f32 y) {
     vbox = view;
     s32 tx = (s32)(x - vbox.i.x);
     s32 ty = (s32)(y - vbox.i.y);
-    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->mLayer_0x4, tileIndex(tx, ty));
+    return gGameRoot2_8053AB10->field_0x20->getTile_802F9908(self->mLayer_0x4, tileIndex(tx, ty));
 }
 
 // The four dust emitters 0x381-0x384 at the floor's corner.

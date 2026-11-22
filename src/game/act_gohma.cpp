@@ -196,7 +196,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
 
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -256,7 +256,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     }
 
     if (mTimers[2] == 0) {
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         if (mEmitters[0] == NULL && mEmitters[1] == NULL) {
             if (fn_801F2718('FIRE') >= 0 || fn_801F2718('BLZE') >= 0) {
                 mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBB, 0, -1, NULL, NULL, true, 1.0f);
@@ -265,7 +265,7 @@ void Gohma_804A307C::fn_801AB6A8() {
             }
         }
     } else {
-        fn_801F2B7C(mParamAtcp_0x114, -1, 8);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 8);
         setEmitterPos_8013CB44(mEmitters[0], &mPos, 0, -1, true);
         setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
         if (mTimers[2] == 1) {
@@ -414,7 +414,7 @@ void Gohma_804A307C::fn_801AB6A8() {
 void Gohma_804A307C::fn_801AAF44() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -428,7 +428,7 @@ void Gohma_804A307C::fn_801AAF44() {
     f32 saveVelX = mVel_0x3c.x;
     f32 saveVelY = mVel_0x3c.y;
     f32 saveVelZ = mVel_0x3c.z;
-    if (fn_801F2DB4('NULL', 'HBMB', NULL)) {
+    if (checkActorHit_801F2DB4('NULL', 'HBMB', NULL)) {
         mVel_0x3c.x = saveVelX;
         mVel_0x3c.y = saveVelY;
         mVel_0x3c.z = saveVelZ;
@@ -441,7 +441,7 @@ void Gohma_804A307C::fn_801AAF44() {
 
     mPos += mVel_0x3c;
 
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     u8 r31 = fn_801F2618(NULL, false);
 
     field_0x270 = 1.5f;
@@ -513,7 +513,7 @@ void Gohma_804A307C::fn_801AAF44() {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
                         actor->mVel_0x3c = JGeometry::TVec3f(3.0f * JMASinShort(angle), 3.0f * JMACosShort(angle), 0.0f);
-                        actor->mDir_0x98 = fn_801F681C(angle);
+                        actor->mDir_0x98 = angleToDir_801F681C(angle);
                         mTimers[1] = (s32)(100.0f - 20.0f * (3 - field_0x258));
                     }
                 }
@@ -637,5 +637,5 @@ void Gohma_804A307C::draw() {
     }
 
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A3020[field_0x250]);
-    fn_801EFD34(res, &params, r30, 0.0f, f31, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, r30, 0.0f, f31, 0.0f);
 }

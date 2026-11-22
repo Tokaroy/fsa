@@ -75,7 +75,7 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
     pos.y += 12.0f;
     pos.z = 0.0f;
     u32 kind = (u32)(2.5 * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    s32 idx = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, src->mLayer_0x4, &pos, kind);
+    s32 idx = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, src->mLayer_0x4, &pos, kind);
     if (idx < 0) {
         return;
     }
@@ -125,7 +125,7 @@ void ForceGemSpawner_804AB660::update() {
                 continue;
             }
             field_0x238 -= lbl_804AB630[kind];
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind);
             if (serial < 0) {
                 continue;
             }
@@ -189,7 +189,7 @@ void ForceGemSpawner_804AB660::update() {
             pos.x += 8.0f;
             pos.y += 12.0f;
             field_0x234 = 200;
-            gAudioMgr_8053AF80->fn_80458880(0x1D, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x1D, -1);
             mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
             mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
             mEmitter254 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
@@ -235,7 +235,7 @@ void ForceGemSpawner_804AB660::update() {
             }
         }
         addCalc2_801F71A4(&field_0x248, 1.0f, 0.2f, 0.4f);
-        if (fn_801F3D94(1) != 0) {
+        if (updateHitReaction_801F3D94(1) != 0) {
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             if (mSparkTimer_0xe4 != 1 || mSparksLeft_0xe8 == 0) {
                 break;
@@ -270,7 +270,7 @@ void ForceGemSpawner_804AB660::update() {
             pos.x += 8.0f;
             pos.y += 12.0f;
             field_0x234 = 200;
-            gAudioMgr_8053AF80->fn_80458880(0x1D, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x1D, -1);
             mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
             mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
             mEmitter254 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
@@ -289,7 +289,7 @@ void ForceGemSpawner_804AB660::update() {
     }
     case 5: {
         field_0x238 %= 12;
-        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, field_0x238);
+        s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, field_0x238);
         if (serial >= 0) {
             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (gem != NULL) {

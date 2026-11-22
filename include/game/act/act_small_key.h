@@ -74,7 +74,7 @@ public:
     void fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer);
     // 0x803A3220 (game/tu_803944C8.cpp, the message tag processor's unit):
     // returns field_0x280. fn_8039FE78 calls it on the key the player holds
-    // ('KEY0', fn_8015445C of fn_8023EF50's serial) and compares it with 0, 1,
+    // ('KEY0', findActorBySerial_8015445C of fn_8023EF50's serial) and compares it with 0, 1,
     // 2 and 9.
     s32 fn_803A3220();
     /* 0x230 */ JGeometry::TVec2f field_0x230; // position (x, y)

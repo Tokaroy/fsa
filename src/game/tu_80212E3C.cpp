@@ -73,9 +73,9 @@ void Antlion_804A6340::fn_80213774(int mode) {
         mBox.f.x = -1.0f;
         mBox.f.y = -1.0f;
         if (mState == 0 || mState == 1) {
-            field_0x250 = fn_801CD664(0x15) + 10;
+            field_0x250 = randInt_801CD664(0x15) + 10;
         } else {
-            field_0x250 = fn_801CD664(0x79) + 0x3C;
+            field_0x250 = randInt_801CD664(0x79) + 0x3C;
         }
         break;
     case 3:
@@ -96,7 +96,7 @@ void Antlion_804A6340::fn_80213774(int mode) {
             mBox.f.x = 8.0f * vx;
             mBox.f.y = 8.0f * vy;
         }
-        field_0x250 = fn_801CD664(0x3D) + 0x1E;
+        field_0x250 = randInt_801CD664(0x3D) + 0x1E;
         mAnim.fn_801D22A0(1, 2);
         startSound_801F0E34(0x50035, 0);
         break;

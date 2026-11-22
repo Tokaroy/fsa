@@ -104,7 +104,7 @@ public:
     /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
     /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
     /* 0x01C */ JKRArchive* mMsgArchive_0x1c; // "/GC4Sword_usa/msgus.arc"
-    /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
+    /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; getMain2DResource_804030C4 (36 units)
     /* 0x024 */ JKRArchive* mTitleArchive_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
     /* 0x028 */ JKRArchive* mEntryArchive_0x28; // fn_80135494 (mode 4); fn_804031C4
     /* 0x02C */ JKRArchive* mGameModeArchive_0x2c; // fn_80135494 (modes 2, 5)
@@ -235,7 +235,7 @@ extern GameState_804B0FE0 lbl_80529DEC;
 // above (vtable slot 0x18, the arguments passed through).
 void* fn_804032E8(u32 type, const char* name); // field_0x10; 29 units (also in GameGlobals.h)
 void* fn_80403244(u32 type, const char* name); // field_0x18
-void* fn_804030C4(u32 type, const char* name); // field_0x20; 36 units
+void* getMain2DResource_804030C4(u32 type, const char* name); // field_0x20; 36 units
 void* fn_80403204(u32 type, const char* name); // field_0x24
 void* fn_804031C4(u32 type, const char* name); // field_0x28
 void* fn_80403184(u32 type, const char* name); // mMapArchive_0x34

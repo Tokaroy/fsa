@@ -427,7 +427,7 @@ void StrangeBlock_804AC2D8::draw() {
             name = "enemy_both2_sob.bin";
         }
         drawSprite_801F06F0(name, frame, NULL, 3, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
         break;
     }
     case 2:
@@ -456,7 +456,7 @@ void StrangeBlock_804AC2D8::draw() {
         }
         JGeometry::TVec3f saved = mPos;
         mPos += JGeometry::TVec3f(0.0f, -16.0f, 0.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame2, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame2, 0, 2, -1, false, 0, 0);
         mPos = saved;
         break;
     }
@@ -475,12 +475,12 @@ void StrangeBlock_804AC2D8::draw() {
         mtx[2][2] = 2.0f;
         params.mMtx = mtx;
         drawSprite_801F06F0("enemy_both2_sob.bin", 0x1C1, &params, 3, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x1C1, 1, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x1C1, 1, 2, -1, false, 0, 0);
         break;
     }
     case 4: {
         void* res = fn_804032E8('TIMG', "kazari_piramid.bti");
-        fn_801EFD34(res, NULL, 7, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(res, NULL, 7, 0.0f, 0.0f, 0.0f);
         break;
     }
     }

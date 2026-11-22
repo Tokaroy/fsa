@@ -83,10 +83,10 @@ static inline void normalize2D(JGeometry::TVec2f& v) {
     v.y *= norm;
 }
 
-// fn_802265FC reads only the x and y of its position, so the 8-byte
+// getTileCollisionCodeAlt_802265FC reads only the x and y of its position, so the 8-byte
 // TVec2f temporaries are passed as the TVec3f it declares.
 static inline u16 probeTile(const JGeometry::TVec2f& p, s32 layer) {
-    return fn_802265FC((const JGeometry::TVec3f*)&p, layer);
+    return getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&p, layer);
 }
 
 // probeTile at (x, y), through the caller's temporary `p`.
@@ -206,9 +206,9 @@ static inline void followLeader(cls_804A71A8* p) {
             return;
         }
     }
-    if (fn_8022BC38(p->field_0x4->fn_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos)) {
-        fn_802381B8(p->field_0x4->fn_80240644());
-        fn_802348C4(p->field_0x4->fn_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
+    if (fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos)) {
+        fn_802381B8(p->field_0x4->getLeader_80240644());
+        fn_802348C4(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
     }
 }
 
@@ -219,11 +219,11 @@ static inline void checkSlowFloor(cls_804A71A8* p) {
         JGeometry::TVec3f above(lbl_8046BA88[2][0], lbl_8046BA88[2][1], lbl_8046BA88[2][2]);
         above += p->field_0x4->mPos;
         above.z += 2.0f;
-        u16 tile = fn_80226850(&above, p->field_0x4->mLayer_0x3b4);
+        u16 tile = getRawTile_80226850(&above, p->field_0x4->mLayer_0x3b4);
         if (tile == 0x3EB || tile == 0x34) {
             p->field_0xb7 = 1;
         }
-    } else if (fn_8022461C(&p->field_0x4->mPos, p->field_0x4->mLayer_0x3b4) == 0x50) {
+    } else if (getTileCollisionCode_8022461C(&p->field_0x4->mPos, p->field_0x4->mLayer_0x3b4) == 0x50) {
         p->field_0xb7 = 1;
     }
 }
@@ -333,7 +333,7 @@ static inline void askLeader(cls_804A71A8* p) {
             return;
         }
     }
-    fn_8022BC38(p->field_0x4->fn_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
+    fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
 }
 
 // A direction marked in field_0x60 (tile 0x60): unless one of its states
@@ -370,8 +370,8 @@ static inline s32 cellY(const cls_804A71A8* p) {
 // The probe point is open floor: marked in field_0x20 unless the owner's
 // layer has a hole there (tile 6, 0xB8 or 0x59).
 static inline void markFloor(cls_804A71A8* p) {
-    u16 floor = fn_80226850(&p->field_0x8, p->field_0x4->mLayer_0x3b4);
-    if (floor != 6 && floor != 0xB8 && fn_80226850(&p->field_0x8, p->field_0x4->mLayer_0x3b4) != 0x59) {
+    u16 floor = getRawTile_80226850(&p->field_0x8, p->field_0x4->mLayer_0x3b4);
+    if (floor != 6 && floor != 0xB8 && getRawTile_80226850(&p->field_0x8, p->field_0x4->mLayer_0x3b4) != 0x59) {
         setDir(p, p->field_0x20);
     }
 }
@@ -500,7 +500,7 @@ static inline bool canPush(cls_804A71A8* p) {
         step.y = d.y;
         step.z = d.z;
         ahead += step;
-        u16 tile = fn_8022461C(&ahead, p->field_0x4->mLayer_0x3b4);
+        u16 tile = getTileCollisionCode_8022461C(&ahead, p->field_0x4->mLayer_0x3b4);
         if (tile == 0 || tile == 2 || tile == 0x50) {
             return true;
         }
@@ -585,7 +585,7 @@ static inline void pushOrTurn(cls_804A71A8* self) {
         pos.z = 0.0f;
         s32 dir = self->field_0x4->getFacing();
         s32 serial = spawnActor(ACTOR_BLCK, self->field_0x4->mLayer_0x3b4, &pos, (dir & 3) << 2, -1, -1);
-        if (fn_8022461C(&pos, self->field_0x4->mLayer_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
+        if (getTileCollisionCode_8022461C(&pos, self->field_0x4->mLayer_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
             self->field_0x4->field_0xd94 = serial;
         }
     } else {
@@ -608,7 +608,7 @@ void cls_804A71A8::fn_8026EC88(s32 player) {
         s32 dir = field_0x4->getFacing();
         s32 serial = spawnActor(ACTOR_BLCK, field_0x4->mLayer_0x3b4, &pos,
                                 (dir & 3) << 2 | ((player + 1) & 7) << 4, -1, -1);
-        if (fn_8022461C(&pos, field_0x4->mLayer_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
+        if (getTileCollisionCode_8022461C(&pos, field_0x4->mLayer_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
             field_0x4->field_0xd94 = serial;
         }
     } else {
@@ -1093,7 +1093,7 @@ void cls_804A71A8::fn_8026C350(u16 tile) {
         // be followed (its bit in the root's mask, or in group mode 4 when
         // it is the owner's turn).
         if (((field_0x4->fn_802486A0() != 4 && isPlayerBitSet(gGameRoot_8053AAF8, field_0x4->mPlayerNo_0x4) == true) ||
-             (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() == field_0x4->fn_80248778())) &&
+             (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() == field_0x4->getFollowerIndex_80248778())) &&
             tile - 0x4C != field_0x4->getIndex() && !field_0x4->fn_80270A8C() && !field_0x4->fn_80241230())
         {
             mark68(this);
@@ -1107,9 +1107,9 @@ void cls_804A71A8::fn_8026C350(u16 tile) {
         if (!field_0x4->fn_80270C88()) {
             u16 under;
             if (field_0x4->mLayer_0x3b4 >= 8) {
-                under = fn_8022461C(&field_0x8, field_0x4->mLayer_0x3b4 + 8);
+                under = getTileCollisionCode_8022461C(&field_0x8, field_0x4->mLayer_0x3b4 + 8);
             } else {
-                under = fn_8022461C(&field_0x8, 1);
+                under = getTileCollisionCode_8022461C(&field_0x8, 1);
             }
             if (under == 0x60) {
                 field_0xba = 1;
@@ -1423,8 +1423,8 @@ void cls_804A71A8::fn_8026B81C(u16 tile) {
 // Ours is 4 instructions shorter (2214 vs 2218). The gotos at
 // blockMarked50, liftOn60, the counter and the near-'WARP' exit are
 // FAKEMATCH(crack-pass) (docs/CRACK_PASS.md). Left: &mPos kept in a saved
-// register across fn_80240644 (followLeader x2, askLeader), the type-4 'WARP'
-// turn test (field_0x4->field_0x4 loaded before fn_80248778), the near-'WARP'
+// register across getLeader_80240644 (followLeader x2, askLeader), the type-4 'WARP'
+// turn test (field_0x4->field_0x4 loaded before getFollowerIndex_80248778), the near-'WARP'
 // TVec2f's two stack stores, the 0xB7 store (one shared stb in the original),
 // the four-sides test before the box marks (the original's last test is
 // `beq block; b skip`, the same unrolled-exit shape over 4: a goto there gives
@@ -1471,7 +1471,7 @@ void cls_804A71A8::fn_80269574() {
             field_0xbc++;
         }
 warp: // the counter runs: look for a 'WARP' actor
-        if (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() != field_0x4->fn_80248778()) {
+        if (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() != field_0x4->getFollowerIndex_80248778()) {
             field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 9);
             field_0xbc = 0;
             return;
@@ -1497,7 +1497,7 @@ warp: // the counter runs: look for a 'WARP' actor
                     continue;
                 }
                 if (!fn_8022F514(field_0x4->mPlayerNo_0x4) && fn_8022CAF8(field_0x4->mPlayerNo_0x4) == 4 &&
-                    fn_80234004(field_0x4->mPlayerNo_0x4) != field_0x4->fn_80248778())
+                    fn_80234004(field_0x4->mPlayerNo_0x4) != field_0x4->getFollowerIndex_80248778())
                 {
                     continue;
                 }
@@ -1708,11 +1708,11 @@ slowFloor: // the owner stands near a 'WARP' actor, or the alignment is done
 void cls_804A71A8::fn_8026947C(JGeometry::TVec3f* pos) {
     *pos = field_0x4->mPos;
     if (field_0x4->fn_802486A0() == 2) {
-        pos->x += lbl_8046BA68[field_0x4->fn_80248778()][0];
+        pos->x += lbl_8046BA68[field_0x4->getFollowerIndex_80248778()][0];
         if (viewLayerFlag(field_0x4->mLayer_0x3b4) != 0) {
-            pos->y -= lbl_8046BA68[field_0x4->fn_80248778()][1];
+            pos->y -= lbl_8046BA68[field_0x4->getFollowerIndex_80248778()][1];
         } else {
-            pos->y += lbl_8046BA68[field_0x4->fn_80248778()][1];
+            pos->y += lbl_8046BA68[field_0x4->getFollowerIndex_80248778()][1];
         }
     }
 }
@@ -1743,7 +1743,7 @@ void cls_804A71A8::fn_80268BC4() {
                 field_0x8.set(lbl_8046BAE8[i][0], lbl_8046BAE8[i][1], lbl_8046BAE8[i][2]);
                 field_0x1c = i;
                 field_0x8 += field_0x4->mPos;
-                u16 tile = fn_8022461C(&field_0x8, field_0x4->mLayer_0x3b4);
+                u16 tile = getTileCollisionCode_8022461C(&field_0x8, field_0x4->mLayer_0x3b4);
                 if (field_0x4->fn_8025F590() && field_0x4->mLayer_0x3b4 == 8 &&
                     getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70) < 8)
                 {
@@ -1757,13 +1757,13 @@ void cls_804A71A8::fn_80268BC4() {
                     if (field_0x4->fn_802684A4(&field_0x8, getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70))) {
                         setDir(this, field_0x28);
                     } else {
-                        fn_8026B81C(fn_8022461C(&field_0x8, getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70)));
+                        fn_8026B81C(getTileCollisionCode_8022461C(&field_0x8, getPlayerLayer_8023DE58(field_0x4->mHeldPlayer_0xd70)));
                     }
                     field_0x8 = saved;
                 }
                 if (field_0x4->fn_802684A4(&field_0x8, field_0x4->mLayer_0x3b4)) {
                     setDir(this, field_0x28);
-                } else if (field_0x4->fn_8026FC20() <= 0 && !getGameView_802D6A9C()->fn_802DCD0C() &&
+                } else if (field_0x4->fn_8026FC20() <= 0 && !getGameView_802D6A9C()->isInTransition_802DCD0C() &&
                            !contains(*layerBox(field_0x4->mLayer_0x3b4), field_0x8))
                 {
                     setDir(this, field_0x38);
@@ -1869,7 +1869,7 @@ void Player_804A6F38::fn_802685D4() {
     mPrevPos_0x2c.set(mPos);
     field_0x3bc = mLayer_0x3b4;
     field_0x3c0 = true;
-    u16 tile = fn_80226850(&mPos, mLayer_0x3b4);
+    u16 tile = getRawTile_80226850(&mPos, mLayer_0x3b4);
     if (mPos.z > 0.0f) {
         field_0x420.x = 0.0f;
         field_0x420.y = 0.0f;

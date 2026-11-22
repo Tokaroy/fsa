@@ -14,7 +14,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     bool fn_80104EB0();
-    /* 0x230 */ s32 field_0x230[4]; // init(): (mSpawnParam_0x90 >> shift) & 0x1F per slot; bits for GameView::fn_802D800C
+    /* 0x230 */ s32 field_0x230[4]; // init(): (mSpawnParam_0x90 >> shift) & 0x1F per slot; bits for GameView::isScreenFlagSet_802D800C
     /* 0x240 */ s32 field_0x240;    // mSpawnParam_0x90 & 0xF; update()'s mode (0: all four, 1: any, 2: some but not all)
     /* 0x244 */ s32 field_0x244;    // mSpawnParam_0x90 & 0x10
     /* 0x248 */ u16 field_0x248;    // countdown

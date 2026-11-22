@@ -44,7 +44,7 @@ struct SaveSector_803BACF8 {
 SaveSector_803BACF8 lbl_8051E2C0 ATTRIBUTE_ALIGN(32);
 SaveSector_803BACF8 lbl_805202C0 ATTRIBUTE_ALIGN(32);
 // The card file's first sector (card offset 0): fn_803BBF08 copies two resources that
-// fn_804030C4 returns to +0x0 and +0xE00 and writes it.
+// getMain2DResource_804030C4 returns to +0x0 and +0xE00 and writes it.
 u8 lbl_805222C0[0x2000] ATTRIBUTE_ALIGN(32);
 // The three save-file bodies of each image (memset / memcpy of 0x1D4C = 3 * 0x9C4).
 SaveFileBody_803B950C lbl_805242C0[3] ATTRIBUTE_ALIGN(32);
@@ -81,8 +81,8 @@ s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 body
     OSTicksToCalendarTime(OSGetTime(), &cal);
     snprintf((char*)(lbl_805222C0 + 0x1C20), 0x20, "%d/%d Save Data", cal.mon + 1, cal.mday);
 
-    const ResTIMG* banner = (const ResTIMG*)fn_804030C4('TIMG', "kk_diskbanner_01.bti");
-    const ResTIMG* icon = (const ResTIMG*)fn_804030C4('TIMG', "kk_ipl_icon_01.bti");
+    const ResTIMG* banner = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_diskbanner_01.bti");
+    const ResTIMG* icon = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_ipl_icon_01.bti");
     memcpy(lbl_805222C0, (const u8*)banner + banner->mImageDataOffset, (banner->mPaletteEntryCount << 1) + 0xC00);
     memcpy(lbl_805222C0 + 0xE00, (const u8*)icon + icon->mImageDataOffset, (icon->mPaletteEntryCount << 1) + 0x400);
 

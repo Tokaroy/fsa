@@ -236,9 +236,9 @@ void Log_804ACD70::update() {
             mPos.add(mVel_0x3c);
             if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
-                    if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
+                    if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
-                    } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91) {
+                    } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
@@ -305,7 +305,7 @@ void Log_804ACD70::draw() {
             JGeometry::TVec3f saved(mPos);
             mPos.y += 1.0f;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
-            fn_801EFD34(res, &params, 7, 0.0f, -1.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -1.0f, 0.0f);
             mPos = saved;
         }
         break;
@@ -358,7 +358,7 @@ void Log_804ACD70::die_0x24() {
 
 bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0x230 == 0) {
-        s32 kind = fn_8022461C(pos, layer);
+        s32 kind = getTileCollisionCode_8022461C(pos, layer);
         if (kind == 0x27 || kind == 3) {
             return false;
         }

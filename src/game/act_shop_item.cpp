@@ -238,7 +238,7 @@ void ShopItem_8049CDC0::update() {
 void ShopItem_8049CDC0::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
-    fn_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x17B, &params, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x17B, &params, 7, 0, false, 1.0f, 1.0f);
 }
 
 ShopItem_8049CDC0::~ShopItem_8049CDC0() {}

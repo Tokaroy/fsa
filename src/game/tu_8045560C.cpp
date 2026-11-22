@@ -22,7 +22,7 @@ static const char* lbl_804B1DF0[11] = {
 // the original; swapped here.
 RupeeDigitSprites_804B1E1C::RupeeDigitSprites_804B1E1C() {
     for (int i = 0; i < 11; i++) {
-        const ResTIMG* timg = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1DF0[i]));
+        const ResTIMG* timg = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1DF0[i]));
         mDigits[i] = new J2DPicture(timg);
     }
     fn_8045560C();

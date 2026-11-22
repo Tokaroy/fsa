@@ -193,7 +193,7 @@ Baseline total 8693 honest. Now 8693 honest (fn_80233C08 is 99.73 %), structural
   The original calls the unit's own EARLIER-defined queries out of line (fn_8022D75C,
   fn_8022F514, fn_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C) and also the JGeometry inlines
   normalize / operator- / TBox2::set (fn_80233C08, fn_80233BC4, fn_80233BA0, act_sword_soldier's
-  fn_801546F4), while it inlines isPlayerActive, layerBox, viewLayerFlag, isZero, scale, addPos.
+  copyBox_801546F4), while it inlines isPlayerActive, layerBox, viewLayerFlag, isZero, scale, addPos.
   Our MWCC auto-inlines the earlier queries; `#pragma inline_max_total_size` (10..8000) and
   `auto_inline off` around the caller change nothing (diagnostic only). Same inlining-mode
   blocker as the "inline later-defined" list: left unwritten.

@@ -26,7 +26,7 @@ void Pot2_804AA750::draw() {
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&spritePos, res, 0x21, NULL, 1.0f, 1.0f);
     }
     JGeometry::TVec3f pos(mPos.x, mPos.y - 2.0f, 0.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &pos, 0x21, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &pos, 0x21, false, 2, -1, 0, 0, 0);
 }
 
 Pot2_804AA750::~Pot2_804AA750() {}

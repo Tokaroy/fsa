@@ -6,11 +6,11 @@
 #include "game/ActorBase.h"
 
 // Small out-of-line helpers of game/act_sword_soldier.cpp, called from other units.
-void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
-void fn_801546BC(JGeometry::TVec3f* v);
+void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
+void zeroVec_801546BC(JGeometry::TVec3f* v);
 s32 fn_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
-void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
+void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
 f32 fn_801544FC(s16 angle);
 f32 fn_801544E4(s16 angle);
 

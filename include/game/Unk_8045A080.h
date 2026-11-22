@@ -8,7 +8,7 @@
 // ".../Waves/" and ".../Seqs/JaiSeqs.arc" (the unit's .sdata string
 // pointers) and owns the sound manager, the SE / sequence managers, the
 // audience and the section heap. Its members play system sounds
-// (fn_80458880, 393 calls), start and stop the background music (the
+// (playSystemSound_80458880, 393 calls), start and stop the background music (the
 // sequence handle at 0x80: fn_80458FF0, fn_80458F9C), the second sequence
 // at 0x84 (fn_80458F04), and pause / fade the SE categories (fn_80458658,
 // fn_80459274, fn_804593D4). Its role matches Twilight Princess's
@@ -43,7 +43,7 @@ struct AudioMgr_8045A080 {
     /* 0x06 */ u8 field_0x6;
     /* 0x07 */ u8 field_0x7;
     /* 0x08 */ JGeometry::TVec3f field_0x8;
-    /* 0x14 */ JAUSoundObject* field_0x14;    // system sounds (fn_80458880 with player < 0)
+    /* 0x14 */ JAUSoundObject* field_0x14;    // system sounds (playSystemSound_80458880 with player < 0)
     /* 0x18 */ JAUSoundObject* field_0x18[4]; // per-player system sounds
     /* 0x28 */ JAUSoundObject* field_0x28;
     /* 0x2C */ JASAudioReseter* field_0x2c; // fn_80459AE4 news it
@@ -125,7 +125,7 @@ struct AudioMgr_8045A080 {
     // field_0x5 is 2-4 (getPlayerPan); ids 0x38 and 0x57 start the second
     // sequence instead (startSecondSeq_80458F04, inlined). fn_8045B030 (game/tu_8045B010.cpp)
     // passes an id from lbl_8052DEE0.
-    void fn_80458880(u32 id, s8 player);
+    void playSystemSound_80458880(u32 id, s8 player);
     // The pan of a player's system sounds (game/tu_80457DFC.cpp, inline there).
     inline f32 getPlayerPan(s8 player);
     // game/tu_80457DFC.cpp (0x804593D4, not written yet). Sets 0x8e and pauses

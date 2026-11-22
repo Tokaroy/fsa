@@ -33,7 +33,7 @@ void cls_804A4038::init() {
 }
 
 void cls_804A4038::update() {
-    mPlayersHit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+    mPlayersHit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
     if (mSpawnParam_0x90 == 0) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54D, 1, 1, NULL, NULL, true, 1.0f);
     }

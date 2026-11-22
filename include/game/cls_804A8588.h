@@ -18,7 +18,7 @@ public:
     /* 0x14 */ virtual void update();
 
     // Gated by field_0x25c: drawSprite_801F06F0 on "enemy_both2_sob.bin", the shadow,
-    // then fn_803075AC.
+    // then showGbaSprite_803075AC.
     /* 0x20 */ virtual void fn_802B2728();
 
     // 0x802B21EC (a plain `fn_802B21EC` symbol): moves by mVel_0x3c and field_0x270, bouncing

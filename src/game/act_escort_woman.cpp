@@ -188,7 +188,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             vfunc_0x6C(14);
             break;
         }
-        if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+        if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             vfunc_0x9C(fn_8012285C(), 0.03f, 0.08f, 1.0f, 0.2f, 16.0f);
         } else {
             vfunc_0x9C(fn_8012285C(), 0.03f, 0.08f, 1.0f, 0.2f, 8.0f);
@@ -228,7 +228,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
 
     case 7:
         fn_80122548();
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             vfunc_0x6C(4);
         }
         break;

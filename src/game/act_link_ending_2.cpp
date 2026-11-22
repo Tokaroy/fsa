@@ -208,7 +208,7 @@ void Link2Ending_804AE338::update() {
         if (field_0x2B0 == 0) {
             s32 area;
             do {
-                area = fn_801CD664(4);
+                area = randInt_801CD664(4);
             } while (area == field_0x2AC);
             static JGeometry::TBox2f sAreas[4] = {
                 JGeometry::TBox2f(30.0f, 30.0f, 274.0f, 129.0f),
@@ -220,8 +220,8 @@ void Link2Ending_804AE338::update() {
             JGeometry::TVec3f p;
             bool inside;
             do {
-                f32 y = fn_801CD664(0x1A2);
-                f32 x = fn_801CD664(0x242);
+                f32 y = randInt_801CD664(0x1A2);
+                f32 x = randInt_801CD664(0x242);
                 p.y = y;
                 p.z = 0.0f;
                 p.x = x;
@@ -230,7 +230,7 @@ void Link2Ending_804AE338::update() {
                     inside = true;
                 }
             } while (!inside);
-            s32 kind = fn_801CD664(8);
+            s32 kind = randInt_801CD664(8);
             bool spawned;
             if (kind >= 5) {
                 spawned = spawnSparkles(p);
@@ -238,7 +238,7 @@ void Link2Ending_804AE338::update() {
                 spawned = spawnSparkles2(p, kind);
             }
             if (spawned == true) {
-                field_0x2B0 = fn_801CD664(6) + 0x1E;
+                field_0x2B0 = randInt_801CD664(6) + 0x1E;
                 field_0x2AC = area;
             } else {
                 field_0x2B0 = 0;

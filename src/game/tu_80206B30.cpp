@@ -75,7 +75,7 @@ u8 Thief_804A5A30::checkHitByActor_0x60() {
     u8 hit = 0;
     if (field_0xc4 == 0 && mState != 3 && mState != 4 && mBox.getWidth() > 0.0f &&
         mBox.getHeight() > 0.0f) {
-        hit = fn_801F2DB4('NULL', 'NULL', NULL);
+        hit = checkActorHit_801F2DB4('NULL', 'NULL', NULL);
         if (hit) {
             fn_80205E0C(7);
         }
@@ -171,7 +171,7 @@ bool Thief_804A5A30::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0xc4 != 0 || mState == 3) {
         return false;
     }
-    switch (fn_8022461C(pos, layer)) {
+    switch (getTileCollisionCode_8022461C(pos, layer)) {
     case 0x39:
         return false;
     case 0x20:

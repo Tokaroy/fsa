@@ -36,10 +36,10 @@ void Beamos_804A40E0::init() {
     mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_NO_ATTACK;
-    field_0x2a8 = fn_801CD664(0x10000);
+    field_0x2a8 = randInt_801CD664(0x10000);
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(1) + 0x5A;
+    field_0x250 = randInt_801CD664(1) + 0x5A;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     if (field_0x2aa != 0) {
@@ -81,7 +81,7 @@ void Beamos_804A40E0::fn_801BE86C() {
 void Beamos_804A40E0::fn_801BE6C4(s32 state) {
     switch (state) {
     case 0:
-        field_0x250 = fn_801CD664(1) + 0x5A;
+        field_0x250 = randInt_801CD664(1) + 0x5A;
         break;
     case 2: {
         const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
@@ -98,7 +98,7 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
         break;
     }
     case 3:
-        field_0x250 = fn_801CD664(1) + 0x5A;
+        field_0x250 = randInt_801CD664(1) + 0x5A;
         fn_801BE86C();
         startSound_801F0E34(0x30063, 0);
         break;
@@ -117,14 +117,14 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
 void Beamos_804A40E0::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         s32 sw = field_0x2b0;
-        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
+        if (sw != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(sw)) {
             mFlags &= ~0x2000;
             fn_801BE6C4(0);
         }
     }
     if (!(mFlags & 0x2000)) {
         s32 sw = field_0x2b4;
-        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
+        if (sw != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(sw)) {
             mFlags |= 0x2000;
         }
     }
@@ -199,7 +199,7 @@ void Beamos_804A40E0::move_0x98() {}
 
 u8 Beamos_804A40E0::checkHitByActor_0x60() {
     u32 includeId = field_0x2aa != 0 ? 'NULL' : mActorId;
-    return fn_801F2DB4(includeId, 'SWBM', NULL);
+    return checkActorHit_801F2DB4(includeId, 'SWBM', NULL);
 }
 
 u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {

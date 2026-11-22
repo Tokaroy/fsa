@@ -92,7 +92,7 @@ void Geldman_804A1790::update() {
     f32 dist = 0.0f;
     s32 player = -1;
 
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         followHeld(this);
         return;
     }
@@ -107,7 +107,7 @@ void Geldman_804A1790::update() {
     fn_80212AC0()->fn_80212AF0(&mPos);
     fn_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
     if (field_0x258 != 0) {
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
     fn_801F2618(NULL, false);
 

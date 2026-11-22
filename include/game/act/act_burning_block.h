@@ -16,7 +16,7 @@ public:
     /* 0x24 */ virtual void die_0x24();
     /* 0x230 */ JGeometry::TVec3f field_0x230; // mPos at the last grid snap
     /* 0x23C */ s32 field_0x23c;               // frames to wait after a push (8)
-    /* 0x240 */ u16 field_0x240;               // tile code under the block (fn_80226850)
+    /* 0x240 */ u16 field_0x240;               // tile code under the block (getRawTile_80226850)
     // 0x242..0x244: padding
 }; // Size: 0x244
 

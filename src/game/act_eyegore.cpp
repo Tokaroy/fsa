@@ -82,7 +82,7 @@ void Eyegore_804A3548::update() {
     s32 dir = -1;
     f32 dist;
 
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -115,7 +115,7 @@ void Eyegore_804A3548::update() {
         }
     }
 
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
     u8 hit = fn_801F2618(NULL, false);
 
@@ -344,7 +344,7 @@ void Eyegore_804A3548::draw() {
     mtx[2][3] = 0.0f;
     params.mMtx = mtx;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A34F8[field_0x250]);
-    fn_801EFD34(res, &params, 3, 0.0f, -9.0f, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, 3, 0.0f, -9.0f, 0.0f);
 }
 
 Eyegore_804A3548::~Eyegore_804A3548() {}

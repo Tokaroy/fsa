@@ -63,7 +63,7 @@ void Block_804A7A10::init() {
         checkPos.normalize();
         checkPos.scale(16.0f);
         checkPos += mPos;
-        if (fn_8022461C(&checkPos, mLayer_0x4) == 0x50) {
+        if (getTileCollisionCode_8022461C(&checkPos, mLayer_0x4) == 0x50) {
             mVel_0x3c.normalize();
             mVel_0x3c.scale(1.0f);
         }
@@ -140,7 +140,7 @@ u8 fn_8028D4DC(JGeometry::TVec3f* pos, s32 index, s32 layer) {
 }
 
 bool Block_804A7A10::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    if ((s32)fn_8022461C(pos, layer) == 0xD) {
+    if ((s32)getTileCollisionCode_8022461C(pos, layer) == 0xD) {
         return false;
     }
     return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
@@ -174,8 +174,8 @@ void Block_804A7A10::update() {
         checkPos.scale(16.0f);
         checkPos += mPos;
         if (PSVECDistance(&checkPos, &field_0x230) >= 16.0f) {
-            u16 tile1 = fn_8022461C(&checkPos, mLayer_0x4);
-            s32 tile2 = fn_8022461C(&mPos, mLayer_0x4);
+            u16 tile1 = getTileCollisionCode_8022461C(&checkPos, mLayer_0x4);
+            s32 tile2 = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
             if ((u16)tile2 == 0x50 && ((u16)tile1 == 0 || (u16)tile1 == 0x50)) {
                 JGeometry::TVec3f savedVel = mVel_0x3c;
                 if (fn_8028C518((mSpawnParam_0x90 >> 2) & 3)) {

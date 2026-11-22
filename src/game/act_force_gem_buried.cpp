@@ -33,7 +33,7 @@ void BuriedForceGem_804AB258::init() {
     mPos.y = 16.0f * ((s32)mPos.y / 16) + 8.0f;
     if (field_0x94 == 1 || field_0x94 == 4) {
         field_0x230 = 1;
-        field_0x26c = fn_80226850(&mPos, mLayer_0x4);
+        field_0x26c = getRawTile_80226850(&mPos, mLayer_0x4);
     }
     if (field_0x94 == 2) {
         field_0x230 = 2;
@@ -97,9 +97,9 @@ void BuriedForceGem_804AB258::update() {
             }
             s32 serial;
             if (field_0x248 == 0) {
-                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &pos, field_0x244 + 4);
+                serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &pos, field_0x244 + 4);
             } else if (field_0x248 == 1) {
-                serial = getActorManager_801F856C()->fn_801F8544(ACTOR_ESRY, mLayer_0x4, &pos, field_0x244 + 0x10000);
+                serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_ESRY, mLayer_0x4, &pos, field_0x244 + 0x10000);
             }
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -118,7 +118,7 @@ void BuriedForceGem_804AB258::update() {
                 break;
             }
         }
-        if (field_0x26c != fn_80226850(&mPos, mLayer_0x4)) {
+        if (field_0x26c != getRawTile_80226850(&mPos, mLayer_0x4)) {
             if (field_0x94 == 4 || field_0x94 == 5) {
                 fn_801F0D20(3);
                 fn_801F3668();
@@ -149,7 +149,7 @@ void BuriedForceGem_804AB258::update() {
                     if (field_0x25c[i] < 3) {
                         s32 idx = fn_8022F340(i);
                         if ((u32)((gGameRoot_8053AAF8->field_0x83 >> (idx * 2)) & 3) == 2) {
-                            gGameRoot_8053AAF8->fn_80134DE4(8, 0);
+                            gGameRoot_8053AAF8->startRumble_80134DE4(8, 0);
                             startSound_801F0E34(0x30080, 0);
                         } else {
                             fn_803037D4(i, 3);
@@ -161,7 +161,7 @@ void BuriedForceGem_804AB258::update() {
                     if (field_0x25c[i] < 2) {
                         s32 idx = fn_8022F340(i);
                         if ((u32)((gGameRoot_8053AAF8->field_0x83 >> (idx * 2)) & 3) == 2) {
-                            gGameRoot_8053AAF8->fn_80134DE4(7, 0);
+                            gGameRoot_8053AAF8->startRumble_80134DE4(7, 0);
                             startSound_801F0E34(0x3007F, 0);
                         } else {
                             fn_803037D4(i, 2);
@@ -173,7 +173,7 @@ void BuriedForceGem_804AB258::update() {
                     if (field_0x25c[i] < 1) {
                         s32 idx = fn_8022F340(i);
                         if ((u32)((gGameRoot_8053AAF8->field_0x83 >> (idx * 2)) & 3) == 2) {
-                            gGameRoot_8053AAF8->fn_80134DE4(6, 0);
+                            gGameRoot_8053AAF8->startRumble_80134DE4(6, 0);
                             startSound_801F0E34(0x3007E, 0);
                         } else {
                             fn_803037D4(i, 1);
@@ -192,7 +192,7 @@ void BuriedForceGem_804AB258::update() {
                 fn_801F0D20(3);
                 field_0x230 = 0;
             } else if (field_0x94 == 3 || field_0x94 == 5) {
-                field_0x26c = fn_80226850(&mPos, mLayer_0x4);
+                field_0x26c = getRawTile_80226850(&mPos, mLayer_0x4);
                 field_0x230 = 1;
             }
         }

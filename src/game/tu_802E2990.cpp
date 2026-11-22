@@ -213,7 +213,7 @@ void Goal2_804A9C20::init() {
     field_0x238 = mSpawnParam_0x90 & 0x1F;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x244 = (mSpawnParam_0x90 >> 7) & 1;
-    field_0x23c = gGameRoot_8053AAF8->fn_80138A30();
+    field_0x23c = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     for (s32 i = 0; i < 4; i++) {
         mEmitters2c8[i] = NULL;
         mEmitters2d8[i] = NULL;
@@ -221,7 +221,7 @@ void Goal2_804A9C20::init() {
     mEmitter2e8 = NULL;
     mEmitter2ec = NULL;
     field_0x2f4 = 0xFF;
-    if (!getGameView_802D6A9C()->fn_802D800C(field_0x240)) {
+    if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x240)) {
         for (s32 i = 0; i < 4; i++) {
             field_0x258[i].x = mPos.x + lbl_8046EA10.x1[field_0x238][i];
             field_0x258[i].y = mPos.y + lbl_8046EA10.y1[field_0x238][i];
@@ -334,7 +334,7 @@ void Goal2_804A9C20::update() {
                         field_0x2a8[i] = 0;
                         field_0x2c0[i] = 0xFF;
                         startSound_801F0E34(0x3003A, 0);
-                        gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+                        gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
                         if (downCount >= 3) {
                             field_0x288[i] = 3;
                             field_0x2c0[i] = 0;
@@ -394,7 +394,7 @@ void Goal2_804A9C20::update() {
                         area.set(mBox);
                         xy.set(mPos.x, mPos.y);
                         area.addPos(xy);
-                        if (!fn_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
+                        if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
                             mMapBox_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i][0],
                                            lbl_8046EA10.attackDefault[field_0x238][i][1],
                                            lbl_8046EA10.attackDefault[field_0x238][i][2],
@@ -414,7 +414,7 @@ void Goal2_804A9C20::update() {
                             area.set(mBox);
                             xy.set(mPos.x, mPos.y);
                             area.addPos(xy);
-                            if (!fn_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
+                            if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
                                 mMapBox_0x80.set(lbl_8046EA10.attackMode1[i][j][0],
                                                lbl_8046EA10.attackMode1[i][j][1],
                                                lbl_8046EA10.attackMode1[i][j][2],
@@ -437,7 +437,7 @@ void Goal2_804A9C20::update() {
                                     area.set(mBox);
                                     xy.set(mPos.x, mPos.y);
                                     area.addPos(xy);
-                                    if (!fn_801F2B7C(mParamAtcp_0x114, -1, 4)) {
+                                    if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4)) {
                                         mMapBox_0x80.set(lbl_8046EA10.attackMode4[i][j][0],
                                                        lbl_8046EA10.attackMode4[i][j][1],
                                                        lbl_8046EA10.attackMode4[i][j][2],
@@ -453,7 +453,7 @@ void Goal2_804A9C20::update() {
                                 area.set(mBox);
                                 xy.set(mPos.x, mPos.y);
                                 area.addPos(xy);
-                                if (!fn_801F2B7C(mParamAtcp_0x114, -1, 4)) {
+                                if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4)) {
                                     mMapBox_0x80.set(0.0f, -7.0f, 64.0f, 7.0f);
                                     area.set(mMapBox_0x80);
                                     xy.set(mPos.x, mPos.y);

@@ -71,7 +71,7 @@ HorseRaceEntry_80216238::HorseRaceEntry_80216238() {
     init(0);
 }
 
-HorseRaceTable_80215E48::HorseRaceTable_80215E48() : mCount(gGameRoot_8053AAF8->fn_80138A30()) {
+HorseRaceTable_80215E48::HorseRaceTable_80215E48() : mCount(gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
     fn_802160F4();
 }
 
@@ -111,7 +111,7 @@ void HorseRaceTable_80215E48::fn_80215FB8(s32 index, s32 key, f32 fraction) {
 
 void HorseRaceTable_80215E48::fn_80215F30() {
     if (gGameRoot_8053AAF8->field_0x4c != 9 && gGameRoot_8053AAF8->field_0x4c != 0xB) {
-        field_0xa0 = fn_801CD664(10);
+        field_0xa0 = randInt_801CD664(10);
     }
     for (s32 i = 0; i < mCount; i++) {
         mEntries[i].mWatch.fn_801ED458(field_0xa0);
@@ -250,7 +250,7 @@ s32 HorseRaceTable_80215E48::fn_80215A94() {
         s32 count = mCount;
         for (s32 i = 0; i < count; i++) {
             bool finished = fn_80215E48(i) >= 0;
-            if (!finished && fn_801CD2F8(getPlayerLayer_8023DE58(i))) {
+            if (!finished && isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i))) {
                 result = i;
                 break;
             }

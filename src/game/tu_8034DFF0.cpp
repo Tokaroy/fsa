@@ -54,7 +54,7 @@ void FourPersonSwitch_804AC9A8::update() {
             }
         }
         bool leader = false;
-        if (gGameRoot_8053AAF8->fn_80138A30() != 1) {
+        if (gGameRoot_8053AAF8->getPlayerCount_80138A30() != 1) {
             leader = true;
         } else if (fn_8022CAF8(0) == 2) {
             leader = true;

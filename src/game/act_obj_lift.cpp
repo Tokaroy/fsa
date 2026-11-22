@@ -463,7 +463,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
     if (field_0x289 == 1) {
         for (s32 i = 0; i < 4; i++) {
             if (field_0x283[i] == 0) {
-                if (fn_8022461C(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i)) == 0) {
+                if (getTileCollisionCode_8022461C(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i)) == 0) {
                     field_0x289 = 0;
                     break;
                 }
@@ -640,7 +640,7 @@ u8 OBJLift_804ACA00::fn_803502CC() {
 
 // 0x80350274.
 bool OBJLift_804ACA00::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0x3A || code == 0x3 || code == 0xD || code == 0xE || code == 0x3B) {
         return false;
     }

@@ -34,7 +34,7 @@ void Rat_8049C400::init() {
 // FIXME(shotgun): 98.26 %, different + reloc-name (one instruction-order change around the chase flag)
 
 void Rat_8049C400::update() {
-    if (fn_801F3D94(true) || fn_801F305C()) {
+    if (updateHitReaction_801F3D94(true) || fn_801F305C()) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -48,9 +48,9 @@ void Rat_8049C400::update() {
     }
     bool bumped;
     if (mSpawnParam_0x90 != 0) {
-        bumped = fn_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
+        bumped = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
     } else {
-        bumped = fn_801F2B7C(mParamAtcp_0x114, -1, 1) != 0;
+        bumped = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1) != 0;
     }
     u8 hit = fn_801F2618(NULL, false);
     if (hit) {

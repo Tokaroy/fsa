@@ -95,7 +95,7 @@ void Stalfos_804A0CD8::init() {
 
 // FIXME: 99.70%, scheduling+regalloc. The two mPos.z == 0.0f style float compares load
 // the 0.0f literal before/after the field (0x1A0, 0x4B0), one add has swapped operands
-// (0x8BC) and r28/r30 are swapped around the fn_801F681C call (0x970).
+// (0x8BC) and r28/r30 are swapped around the angleToDir_801F681C call (0x970).
 void Stalfos_804A0CD8::update() {
     u16 angle;
     s32 dir;
@@ -134,7 +134,7 @@ void Stalfos_804A0CD8::update() {
         field_0x230 = 7;
     }
 
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -172,7 +172,7 @@ void Stalfos_804A0CD8::update() {
     mPos += mVel_0x3c;
 
     if (mTimers[2] == 0 && field_0x230 != 4 && field_0x230 != 8) {
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
 
     u8 blocked = fn_801F2618(&push, false);
@@ -363,7 +363,7 @@ void Stalfos_804A0CD8::update() {
                         mVel_0x3c.z = 4.0f;
                         field_0x26c.x = 1.3f * JMASinShort(randAngle);
                         field_0x26c.y = 1.3f * JMACosShort(randAngle);
-                        mDir_0x98 = fn_801F681C(randAngle);
+                        mDir_0x98 = angleToDir_801F681C(randAngle);
                     }
                 } else {
                     mVel_0x3c.z -= 1.0f;
@@ -422,7 +422,7 @@ void Stalfos_804A0CD8::draw() {
     if (field_0x264 != 0) {
         flag = 1;
     }
-    fn_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x158, NULL, 7, flag, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x158, NULL, 7, flag, false, 1.0f, 1.0f);
     mPos.set(oldPos);
 }
 

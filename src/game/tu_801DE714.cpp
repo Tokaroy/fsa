@@ -43,7 +43,7 @@ static const s16* lbl_804A51A0[17] = {
     lbl_80469B6C, lbl_80469B88, lbl_80469B9C, lbl_80469BB0,
     lbl_80469BD8,
 };
-s32 fn_801CD664(s32 n);
+s32 randInt_801CD664(s32 n);
 bool fn_801CD290(s32 layer);
 
 // Whether x lies in the left half of the view's box for `layer`.
@@ -225,7 +225,7 @@ void cls_804A51E4::init() {
     mLifeBackup = mLife;
     field_0x194 = 1;
     mLayer_0x4 = 0;
-    field_0x2cc = fn_801CD664(0x3D) + 0x3C;
+    field_0x2cc = randInt_801CD664(0x3D) + 0x3C;
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -292,7 +292,7 @@ void cls_804A51E4::fn_801E1E08() {
     field_0x2b4 = -1;
     mTargetSerial = -1;
     field_0x2c0 = 0;
-    field_0x2cc = fn_801CD664(0x79) + 0xB4;
+    field_0x2cc = randInt_801CD664(0x79) + 0xB4;
     field_0x2ce = 0;
     field_0x2d0 = -1;
     field_0x250 = -1;
@@ -511,7 +511,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
         mAnim.startAnim_801D22DC(2, 0, false);
         break;
     case 7:
-        field_0x250 = fn_801CD664(1) + 0x5A;
+        field_0x250 = randInt_801CD664(1) + 0x5A;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         field_0x2ce = 0x2D;
@@ -545,7 +545,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
         break;
     case 12:
         mDir_0x98 = 2;
-        field_0x250 = fn_801CD664(0x259) + 0x12C;
+        field_0x250 = randInt_801CD664(0x259) + 0x12C;
         mTargetSpeed = 0.0f;
         mAnim.startAnim_801D22DC(mDir_0x98 + 8, 0, false);
         break;
@@ -635,7 +635,7 @@ void cls_804A51E4::fn_801E0CF4() {
             s32 layers[4];
             for (s32 i = 0; i < 4; i++) {
                 s32 layer = getPlayerLayer_8023DE58(i);
-                if (fn_801CD2F8(layer) && layer != 8 && !fn_801E3250(layer, false)) {
+                if (isUpperLayer_801CD2F8(layer) && layer != 8 && !fn_801E3250(layer, false)) {
                     if (getActorManager_801F856C()->fn_801F750C(layer, -1) >= 0 ||
                         getActorManager_801F856C()->fn_801F7464(layer, -1) >= 0) {
                         layers[count] = layer;
@@ -646,7 +646,7 @@ void cls_804A51E4::fn_801E0CF4() {
             if (count == 0) {
                 mLayer_0x4 = 0;
             } else {
-                mLayer_0x4 = layers[fn_801CD664(count)];
+                mLayer_0x4 = layers[randInt_801CD664(count)];
             }
         }
     } else {
@@ -654,7 +654,7 @@ void cls_804A51E4::fn_801E0CF4() {
             fn_801E1594(0);
             return;
         }
-        if (fn_801CD2F8(mLayer_0x4) && !fn_801CD290(mLayer_0x4)) {
+        if (isUpperLayer_801CD2F8(mLayer_0x4) && !fn_801CD290(mLayer_0x4)) {
             fn_801E1594(0);
             return;
         }
@@ -663,7 +663,7 @@ void cls_804A51E4::fn_801E0CF4() {
             switch (mState) {
             case 5:
             case 6:
-                mDir_0x98 = fn_801CD354(mDir_0x98);
+                mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
                 field_0x2d0 = -1;
                 break;
             }
@@ -983,7 +983,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
                 if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) {
                     cond = true;
                 }
-                if (cond && player < gGameRoot_8053AAF8->fn_80138A30()) {
+                if (cond && player < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                     ok = true;
                 }
                 if (ok) {
@@ -1045,7 +1045,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         break;
     case 5:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            mDir_0x98 = fn_801CD354(mDir_0x98);
+            mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
             if (mPos.z >= 30.0f) {
                 mPos.z = 30.0f;
                 fn_801E1594(1);
@@ -1056,7 +1056,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         break;
     case 6:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            mDir_0x98 = fn_801CD354(mDir_0x98);
+            mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
             if (field_0x2d0 >= 0) {
                 fn_801E1594(field_0x2d0);
                 field_0x2d0 = -1;
@@ -1277,7 +1277,7 @@ void cls_804A51E4::calcVelocity_0x88() {
 
 void cls_804A51E4::onMoved_0x8C() {
     if (fn_801E1D7C()) {
-        if (!fn_801CD2F8(mLayer_0x4)) {
+        if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
             fn_80212AC0()->fn_80212AF0(&mPos);
         }
     }

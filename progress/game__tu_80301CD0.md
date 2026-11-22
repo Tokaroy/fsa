@@ -12,7 +12,7 @@ Structurally done / close (FIXME in source):
 - fn_80304D64 98.47 regalloc-only
 - fn_80308E90 95.36 regalloc-only
 - __sinit 99.64 reloc-name (section anchor ...bss.0 vs lbl_804DBC18)
-- fn_803075AC 94.01 / fn_80307830 94.97 missing/extra, fn_80307AC8 92.17 scheduling: the callees
+- showGbaSprite_803075AC 94.01 / fn_80307830 94.97 missing/extra, fn_80307AC8 92.17 scheduling: the callees
   convert d (u8 -> 0/1) once before the loop. Declaring d u8 makes 7830 and AC8 100 % and 75AC
   96.27 %, but drops act_chief_soldier / act_pot_smoke / tu_802E6EC4 draw (they pass d as bool).
   Unresolved conflict; left as bool.
@@ -30,8 +30,8 @@ lbl_80506D48 is s32[4][4], lbl_805071E8 s16[4][0x80] then the 8 pool dtor chains
 fn_8030801C / fn_803085A4 (bitfield records lbl_80506DE8, cls_804AA858Sub11C), fn_803064A8,
 fn_803066F0, fn_80303870, fn_80303CE4, fn_80304FB0.
 
-Review (Sonnet 5.5, 2026-11-05): d is u8 and g bool in fn_803075AC/fn_80307830 (callers pass `x != 0`
-where they hold an s32): fn_803075AC, fn_80307830, fn_80307AC8 now 100 %, the three callers
+Review (Sonnet 5.5, 2026-11-05): d is u8 and g bool in showGbaSprite_803075AC/fn_80307830 (callers pass `x != 0`
+where they hold an s32): showGbaSprite_803075AC, fn_80307830, fn_80307AC8 now 100 %, the three callers
 (act_chief_soldier, act_pot_smoke, tu_802E6EC4) stay at their old matches. The .bss boundary
 with tu_803006E8 moves to 0x804DBC18 (lbl_804DB798 belongs to the previous unit): __sinit now
 counts. sbss placeholder sizes of the per-player byte arrays set to 4. Remaining: lbl_8053AD28 is

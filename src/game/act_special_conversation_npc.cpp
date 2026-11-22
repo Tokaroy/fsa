@@ -127,7 +127,7 @@ void SpecialConversationNPC_804AAFB8::init() {
         field_0x26c = 0x126;
         field_0x244 = 0x591;
         field_0x260 = 10;
-        if (getGameView_802D6A9C()->fn_802D800C(0x1F) == true) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1F) == true) {
             field_0x264 = 3;
         }
         break;
@@ -138,7 +138,7 @@ void SpecialConversationNPC_804AAFB8::init() {
         field_0x26c = 0x120;
         field_0x244 = 0x58E;
         field_0x260 = 20;
-        if (getGameView_802D6A9C()->fn_802D800C(0x1E) == true) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1E) == true) {
             field_0x264 = 3;
         }
         break;
@@ -228,7 +228,7 @@ void SpecialConversationNPC_804AAFB8::draw() {
             break;
         case 2:
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x25c, NULL, 7, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + field_0x25c, 0, 2, -1, false, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + field_0x25c, 0, 2, -1, false, 0, 0);
             break;
         case 3:
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x26c + field_0x25c, NULL, 7, 1.0f, 1.0f);
@@ -574,8 +574,8 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, mLayer_0x4, mSerial);
-    if ((!getGameView_802D6A9C()->fn_802D800C(0x1F) && field_0x264 == 2) ||
-        getGameView_802D6A9C()->fn_802D800C(0x1F) == true) {
+    if ((!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1F) && field_0x264 == 2) ||
+        getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1F) == true) {
         box = field_0x248;
         box.i.x += mPos.x;
         box.i.y += mPos.y;
@@ -587,7 +587,7 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
             if (player >= 0) {
                 if (fn_802300EC(player)) {
                     if (openMessage(player)) {
-                        if (!getGameView_802D6A9C()->fn_802D800C(0x1F)) {
+                        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1F)) {
                             setPartnerFacing(3);
                         }
                     }
@@ -598,7 +598,7 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
             if (fn_80388CAC(mPlayer, mSerial)) {
                 mPlayer = -1;
                 mState = 0;
-                if (!getGameView_802D6A9C()->fn_802D800C(0x1E)) {
+                if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1E)) {
                     setPartnerFacing(2);
                 }
             }
@@ -626,8 +626,8 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, mLayer_0x4, mSerial);
-    if ((!getGameView_802D6A9C()->fn_802D800C(0x1E) && field_0x264 == 2) ||
-        getGameView_802D6A9C()->fn_802D800C(0x1E) == true) {
+    if ((!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1E) && field_0x264 == 2) ||
+        getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1E) == true) {
         box = field_0x248;
         box.i.x += mPos.x;
         box.i.y += mPos.y;
@@ -639,7 +639,7 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
             if (player >= 0) {
                 if (fn_802300EC(player)) {
                     if (openMessage(player)) {
-                        if (!getGameView_802D6A9C()->fn_802D800C(0x1E)) {
+                        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1E)) {
                             setPartnerFacing(3);
                         }
                     }
@@ -650,7 +650,7 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
             if (fn_80388CAC(mPlayer, mSerial)) {
                 mPlayer = -1;
                 mState = 0;
-                if (!getGameView_802D6A9C()->fn_802D800C(0x1F)) {
+                if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x1F)) {
                     setPartnerFacing(2);
                 }
             }

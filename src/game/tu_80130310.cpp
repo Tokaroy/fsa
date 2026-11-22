@@ -102,7 +102,7 @@ void MalonAndTalonController_8049EA88::update() {
                 static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125BF4();
             }
         }
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x23c)) {
             setState(2);
         }
         break;
@@ -237,7 +237,7 @@ bool MalonAndTalonController_8049EA88::fn_80130370() {
         pos.x += 20.0f;
         JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
         u16 angle = (s32)(JMath::atanTable_.atan2_(pos.x - p.x, pos.y - p.y) * 10430.378f);
-        s32 dir = fn_801F681C(angle);
+        s32 dir = angleToDir_801F681C(angle);
         bool xDone;
         bool yDone;
         f32 sn = sincos.sinShort(angle);

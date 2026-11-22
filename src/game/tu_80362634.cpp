@@ -272,8 +272,8 @@ void OtherCharactersEnding_804ADF28::init() {
                 field_0x25c = field_0x270[0];
                 field_0x264 = field_0x274[0];
             } else {
-                field_0x268 = fn_801CD664(lbl_80542AE0[lbl_80474914[field_0x238]]);
-                field_0x25c = fn_801CD664(field_0x270[field_0x268] + 1);
+                field_0x268 = randInt_801CD664(lbl_80542AE0[lbl_80474914[field_0x238]]);
+                field_0x25c = randInt_801CD664(field_0x270[field_0x268] + 1);
                 field_0x264 = field_0x274[field_0x268];
             }
             if (mSpawnParam_0x90 & 0x80000000) {
@@ -282,17 +282,17 @@ void OtherCharactersEnding_804ADF28::init() {
                 field_0x258 = lbl_804749B0[field_0x238];
             }
             if (field_0x238 >= 4 && field_0x238 <= 7) {
-                field_0x25c = fn_801CD664(50);
+                field_0x25c = randInt_801CD664(50);
             }
             if (field_0x238 == 4) {
-                field_0x278 = fn_801CD664(2) != 0;
+                field_0x278 = randInt_801CD664(2) != 0;
             }
         } else {
             field_0x26c = lbl_804745B8[field_0x238 + 125];
             field_0x270 = lbl_804ADED0[lbl_804748E8[field_0x238]];
             field_0x274 = lbl_804ADF08[lbl_80474994[field_0x238]];
-            field_0x268 = fn_801CD664(lbl_80542AE0[lbl_80474994[field_0x238]]);
-            field_0x25c = fn_801CD664(field_0x270[field_0x268] + 1);
+            field_0x268 = randInt_801CD664(lbl_80542AE0[lbl_80474994[field_0x238]]);
+            field_0x25c = randInt_801CD664(field_0x270[field_0x268] + 1);
             field_0x264 = field_0x274[field_0x268];
             if (mSpawnParam_0x90 & 0x80000000) {
                 field_0x258 = 3;
@@ -362,20 +362,20 @@ void OtherCharactersEnding_804ADF28::init() {
     case 9: {
         field_0x238 = 0;
         field_0x258 = 3;
-        field_0x248 = fn_801CD664(60);
+        field_0x248 = randInt_801CD664(60);
         mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
         JGeometry::TVec3f oldPos = mPos;
         for (s32 i = 0; i < 60; i++) {
             JGeometry::TVec3f off;
-            off.x = (f32)fn_801CD664(380) - 190.0f;
-            off.y = (f32)fn_801CD664(280) - 140.0f;
+            off.x = (f32)randInt_801CD664(380) - 190.0f;
+            off.y = (f32)randInt_801CD664(280) - 140.0f;
             off.z = 0.0f;
             mPos.add(off);
             if (pool_80542B20()) {
                 mPos = oldPos;
                 i--;
             } else {
-                u32 param = fn_801CD664(8) | 0x30000;
+                u32 param = randInt_801CD664(8) | 0x30000;
                 getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &mPos, param, -1, -1);
                 mPos = oldPos;
             }
@@ -453,9 +453,9 @@ void OtherCharactersEnding_804ADF28::init() {
         break;
     }
     case 13:
-        field_0x23c = fn_801CD664(5);
+        field_0x23c = randInt_801CD664(5);
         if (field_0x23c == 4) {
-            field_0x23c = fn_801CD664(4);
+            field_0x23c = randInt_801CD664(4);
             mVel_0x3c.zero();
         } else {
             mVel_0x3c.set(lbl_8050C088[field_0x23c]);
@@ -467,12 +467,12 @@ void OtherCharactersEnding_804ADF28::init() {
         field_0x264 = field_0x274[0];
         field_0x268 = 0;
         field_0x258 = 1;
-        field_0x248 = fn_801CD664(20) + 30;
+        field_0x248 = randInt_801CD664(20) + 30;
         mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         break;
     case 14: {
         field_0x27c[0] = mPos;
-        field_0x240 = fn_801CD664(0x10000);
+        field_0x240 = randInt_801CD664(0x10000);
         mVel_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
         mVel_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
         u16 angle = (s32)(JMath::atanTable_.atan2_(mVel_0x3c.y, mVel_0x3c.x) * 10430.378f);
@@ -485,7 +485,7 @@ void OtherCharactersEnding_804ADF28::init() {
         } else {
             field_0x23c = 3;
         }
-        field_0x248 = fn_801CD664(20) + 0x40;
+        field_0x248 = randInt_801CD664(20) + 0x40;
         field_0x26c = lbl_804745A8[field_0x23c];
         field_0x260 = 12;
         field_0x25c = 12;
@@ -719,7 +719,7 @@ void OtherCharactersEnding_804ADF28::fn_8036509C() {
             }
         }
         if (field_0x248 == 1) {
-            field_0x25c = fn_801CD664(9);
+            field_0x25c = randInt_801CD664(9);
             field_0x264 = 0;
         }
     } else if (field_0x25c == 0) {
@@ -743,7 +743,7 @@ void OtherCharactersEnding_804ADF28::fn_80364F60() {
             field_0x264 = field_0x274[field_0x268];
         }
         if (oldAnim != field_0x264 && field_0x238 >= 4 && field_0x238 <= 7 && !field_0x264) {
-            field_0x25c += fn_801CD664(5) * 6;
+            field_0x25c += randInt_801CD664(5) * 6;
         }
         if (field_0x238 == 0x1d || field_0x238 == 0x1e) {
             if (field_0x268 == 2) {
@@ -992,17 +992,17 @@ void OtherCharactersEnding_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
         JGeometry::TVec3f off;
         JGeometry::TVec3f oldPos = mPos;
-        off.x = (f32)fn_801CD664(380) - 190.0f;
-        off.y = (f32)fn_801CD664(380) - 140.0f;
+        off.x = (f32)randInt_801CD664(380) - 190.0f;
+        off.y = (f32)randInt_801CD664(380) - 140.0f;
         off.z = 0.0f;
         mPos.add(off);
         if (pool_80542B20()) {
             mPos = oldPos;
         } else {
-            field_0x248 = fn_801CD664(50) + 60;
+            field_0x248 = randInt_801CD664(50) + 60;
             off.z = 100.0f;
             mPos = oldPos;
-            u32 param = fn_801CD664(8) | 0x250000;
+            u32 param = randInt_801CD664(8) | 0x250000;
             const JGeometry::TVec3f& spawnPos = mPos + off;
             getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &spawnPos, param, -1, -1);
         }
@@ -1030,7 +1030,7 @@ void OtherCharactersEnding_804ADF28::fn_80363FFC() {
     }
     if (mVel_0x3c.z == 0.0f && mPos.z == 0.0f) {
         s32 cell = ((tileY & 0x100) << 1) | (tileX & 0x100) | (tileY & 0xF0) | ((tileX >> 4) & 0xF);
-        field_0x27a = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, cell) & 0x3FF;
+        field_0x27a = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, cell) & 0x3FF;
         if (field_0x27a == 0x1a8) {
             field_0x264 = 0;
             mVel_0x3c.z = 3.0f;
@@ -1143,7 +1143,7 @@ void OtherCharactersEnding_804ADF28::fn_80363880() {
         }
         if (field_0x24c < 0) {
             if (field_0x248 == 0) {
-                s32 r = fn_801CD664(3);
+                s32 r = randInt_801CD664(3);
                 if (r == 0) {
                     field_0x24c = -1;
                     mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
@@ -1152,7 +1152,7 @@ void OtherCharactersEnding_804ADF28::fn_80363880() {
                     field_0x248 = 0x20;
                 } else {
                     if (mVel_0x3c.squared() <= 32.0f * FLT_EPSILON) {
-                        field_0x240 = fn_801CD664(0x10000);
+                        field_0x240 = randInt_801CD664(0x10000);
                     } else if (r == 1) {
                         field_0x240 += 0x1000;
                     } else {
@@ -1200,21 +1200,21 @@ void OtherCharactersEnding_804ADF28::fn_80363664() {
         if (mVel_0x3c.squared() <= 32.0f * FLT_EPSILON) {
             s32 oldFrame = field_0x26c;
             do {
-                field_0x23c = fn_801CD664(4);
+                field_0x23c = randInt_801CD664(4);
                 mVel_0x3c.set(lbl_8050C088[field_0x23c]);
-                field_0x248 = fn_801CD664(20) + 30;
+                field_0x248 = randInt_801CD664(20) + 30;
                 field_0x26c = lbl_804745B8[field_0x23c + 20];
             } while (field_0x26c == oldFrame);
         } else {
             mVel_0x3c.zero();
-            field_0x248 = fn_801CD664(10) + 15;
+            field_0x248 = randInt_801CD664(10) + 15;
             field_0x264 = 0;
         }
     }
     if (!(mVel_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
         if (fn_801F2618(NULL, false)) {
             mVel_0x3c.zero();
-            field_0x248 = fn_801CD664(10) + 15;
+            field_0x248 = randInt_801CD664(10) + 15;
             field_0x264 = 0;
         } else {
             mPos.add(mVel_0x3c);
@@ -1232,7 +1232,7 @@ void OtherCharactersEnding_804ADF28::fn_80363664() {
 
 void OtherCharactersEnding_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
-        s32 r = fn_801CD664(3);
+        s32 r = randInt_801CD664(3);
         if (r == 0) {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
@@ -1242,7 +1242,7 @@ void OtherCharactersEnding_804ADF28::fn_80363360() {
             field_0x248 = 0x20;
         } else {
             if (mVel_0x3c.squared() <= 32.0f * FLT_EPSILON) {
-                field_0x240 = fn_801CD664(0x10000);
+                field_0x240 = randInt_801CD664(0x10000);
             } else if (r == 1) {
                 field_0x240 += 0x1000;
             } else {

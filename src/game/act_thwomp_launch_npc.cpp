@@ -253,7 +253,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
         }
         /* fallthrough */
     case 2:
-        if (isScreenFlagSet_0x34() == 1 && !getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (isScreenFlagSet_0x34() == 1 && !getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             field_0x254 = 1;
             field_0x23c = ((mSpawnParam_0x90 >> 16) & 3) * 0x46 + 0x1E;
             mPos = field_0x278;
@@ -378,7 +378,7 @@ void NPCLaunchedByThwomp_804AC010::draw() {
     case 1:
     case 2:
     case 3:
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
         break;
     }
 }

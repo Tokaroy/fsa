@@ -51,7 +51,7 @@ static inline void moveTempo(JAITempoMgr* tempoMgr, f32 tempo, u32 frames) {
 
 // The bodies of fn_80458508 and fn_80458F04. Both are inlined into functions
 // that come before their out-of-line copies (fn_80457E54, fn_8045815C;
-// fn_80458880), which MWCC does only for an inline defined earlier, while
+// playSystemSound_80458880), which MWCC does only for an inline defined earlier, while
 // other units call the copies (18 and 10 calls): so the original defined them
 // inline ahead of their users, and the copies at their addresses call them,
 // as Player_804A6F38::fn_802413F0 does playerFlags_802413F0.
@@ -78,9 +78,9 @@ inline void AudioMgr_8045A080::moveMusicTempo_80458508(u8 kind) {
     }
 }
 
-// Stops sounds 0x13-0x1C of `object`; fn_80458880 does it before every system
+// Stops sounds 0x13-0x1C of `object`; playSystemSound_80458880 does it before every system
 // sound it starts. An inline of its own: its ten sound-ID temporaries take the
-// lowest stack slots, below fn_80458880's own, as an inlined body's do.
+// lowest stack slots, below playSystemSound_80458880's own, as an inlined body's do.
 static inline void stopSounds13To1C(JAUSoundObject* object) {
     object->stopSound(0x13, 0);
     object->stopSound(0x14, 0);
@@ -96,7 +96,7 @@ static inline void stopSounds13To1C(JAUSoundObject* object) {
 
 // The pan of player `player`'s system sounds: left (0.2) for players 0 and 2,
 // right (0.8) for 1 and 3 in a 2-4 player game, else the centre. Inlined into
-// fn_80458880, which tests player < 0 a second time for it.
+// playSystemSound_80458880, which tests player < 0 a second time for it.
 inline f32 AudioMgr_8045A080::getPlayerPan(s8 player) {
     if (player < 0) {
         return 0.5f;
@@ -449,7 +449,7 @@ void AudioMgr_8045A080::fn_80459674() {
         field_0x6c--;
     }
     if (field_0x6a != 0) {
-        fn_80458880(0x48, -1);
+        playSystemSound_80458880(0x48, -1);
         field_0x6a = 0;
     }
     if (field_0x6d != 0 && field_0x8e == 0 && !fn_8045A0D8()) {
@@ -653,7 +653,7 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 // 0x80458880
 // FIXME: 99.93 %, reloc-name; behaviour clean.
 // FIXME: reloc-name only (.sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7 in fn_80459674).
-void AudioMgr_8045A080::fn_80458880(u32 id, s8 player) {
+void AudioMgr_8045A080::playSystemSound_80458880(u32 id, s8 player) {
     if (player >= 4) {
         return;
     }

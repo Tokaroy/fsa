@@ -54,7 +54,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
         addCalc2_801F71A4(&field_0x254, 1.0f, 10.0f, 0.0f);
         mEmitter26c->setGlobalAlpha((s32)field_0x254);
     }
-    if (fn_801F3D94(1) != 0 || fn_801F305C()) {
+    if (updateHitReaction_801F3D94(1) != 0 || fn_801F305C()) {
         if (mEmitter26c != NULL) {
             mEmitter26c->becomeInvalidEmitter();
             mEmitter26c = NULL;
@@ -79,7 +79,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
     mPos += mVel_0x3c;
     u8 hitWall = 0;
     if (field_0x230 != 3) {
-        s32 code = fn_8022461C(&mPos, mLayer_0x4);
+        s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (code == 0xE) {
             startSound_801F0E34(0x4001A, 0);
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -88,7 +88,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
             field_0x268 = 0.0f;
             field_0x230 = 3;
         } else {
-            fn_801F2B7C(-100, -1, 1);
+            damagePlayersInBox_801F2B7C(-100, -1, 1);
             hitWall = fn_801F2618(NULL, false);
         }
     }

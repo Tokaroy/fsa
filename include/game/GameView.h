@@ -118,7 +118,7 @@ public:
     // 18 units / 26 calls. field_0x24 = a, field_0x28 = b.
     void fn_802D9FF4(s32 a, s32 b);
     // 1 unit (this unused). gGameRoot2_8053AB10->0x24's byte at 0x1E8, like
-    // fn_802DCD0C. Returns the byte as is: the caller converts it to bool.
+    // isInTransition_802DCD0C. Returns the byte as is: the caller converts it to bool.
     u8 fn_802DA000();
     // 1 unit; no arguments. Enters the screen (field_0x24, field_0x28):
     // resets its state, rebuilds it (fn_802D8D50, fn_802D8328), places the
@@ -150,8 +150,8 @@ public:
     // 3 units / 6 calls. 0xFAC bytes; no arguments.
     void fn_802DBD60();
     // 31 units / 42 calls (this unused). gGameRoot2_8053AB10->0x24's byte at 0x1E8.
-    u8 fn_802DCD0C();
-    // 2 units / 5 calls. Unless fn_802DCD0C(), steps mScreenX_0x14 by the sign
+    u8 isInTransition_802DCD0C();
+    // 2 units / 5 calls. Unless isInTransition_802DCD0C(), steps mScreenX_0x14 by the sign
     // of dir[0] or mScreenY_0x18 by that of dir[1], reloads the screen
     // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
@@ -253,7 +253,7 @@ public:
     void fn_802D7F84(s32 bit, bool set);
     // 46 units / 103 calls. Tests bit `bit` of field_0x178[row][col]
     // (ActorBase_804A5770::isScreenFlagSet_0x34 passes getScreenFlagBit_0x3C()).
-    bool fn_802D800C(s32 bit);
+    bool isScreenFlagSet_802D800C(s32 bit);
     // 44 units / 126 calls. With set: sets the bit, increments
     // field_0x308[bit] (saturating at 0xFF) and stores value in
     // field_0x328[bit]; else clears the bit and stores 0xFF there.
@@ -362,7 +362,7 @@ public:
     /* 0x00170 */ u8 field_0x170; // fn_802D7920; 21 units read it
     /* 0x00171 */ u8 field_0x171; // fn_802D790C; 21 units read it
     /* 0x00174 */ u32 field_0x174; // bits: fn_802D7888 / fn_802D78B4
-    /* 0x00178 */ u32 field_0x178[10][10]; // bits per screen: fn_802D800C / fn_802D8050
+    /* 0x00178 */ u32 field_0x178[10][10]; // bits per screen: isScreenFlagSet_802D800C / fn_802D8050
     /* 0x00308 */ u8 field_0x308[0x20]; // counters per bit: fn_802D8050, fn_802D7E04
     /* 0x00328 */ u8 field_0x328[0x20]; // values per bit: fn_802D8050, fn_802D7E1C
     /* 0x00348 */ u32 field_0x348[8][4]; // bits per (stage, level): fn_802D7F40

@@ -16,7 +16,7 @@ public:
     bool fn_8012F008();
 
     /* 0x230 */ s32 mState;   // 0 until update() sees the floor tile change, then 1
-    /* 0x234 */ u16 mTile;    // fn_80226850 result at init()
+    /* 0x234 */ u16 mTile;    // getRawTile_80226850 result at init()
     /* 0x236 */ u8 field_0x236[2]; // padding
 }; // Size: 0x238
 

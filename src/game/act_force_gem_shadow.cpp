@@ -15,7 +15,7 @@ void ForceGemShadowNPC_804ACD18::update() {
 }
 
 void ForceGemShadowNPC_804ACD18::draw() {
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x3CD, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x3CD, false, 2, -1, 0, 0, 0);
 }
 
 ForceGemShadowNPC_804ACD18::~ForceGemShadowNPC_804ACD18() {}

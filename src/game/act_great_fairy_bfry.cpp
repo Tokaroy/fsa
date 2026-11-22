@@ -145,7 +145,7 @@ void GreatFairy_804AF338::update() {
     if (field_0x248 != 1) {
         JGeometry::TBox2f box;
         if (mSpawnParam_0x90 != 3) {
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1 && mLayer_0x4 >= 8) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 && mLayer_0x4 >= 8) {
                 for (s32 i = 0; i < 4; i++) {
                     if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !fn_80236B50(i) &&
                         field_0x24c[fn_8022F340(i)] == 0)
@@ -229,7 +229,7 @@ void GreatFairy_804AF338::update() {
                 case 2:
                     if (fn_80236E3C(fn_8022F340(field_0x234)) ||
                         (field_0x274[fn_8022F340(field_0x234)] != 0 &&
-                         getGameView_802D6A9C()->fn_802D800C(field_0x274[fn_8022F340(field_0x234)]) == 1))
+                         getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x274[fn_8022F340(field_0x234)]) == 1))
                     {
                         field_0x260 = 0x267;
                         fn_8038470C(field_0x234, field_0x260);
@@ -517,7 +517,7 @@ void GreatFairy_804AF338::update() {
             }
         }
     }
-    if (mSpawnParam_0x90 != 3 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
+    if (mSpawnParam_0x90 != 3 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
         u8 active[4];
         active[0] = 0;
         active[1] = 0;
@@ -528,7 +528,7 @@ void GreatFairy_804AF338::update() {
                 active[fn_8022F340(i)] = 1;
             }
         }
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
             if (active[i] == 0 && field_0x24c[i] == 1) {
                 fn_803037D4(i, 0x12);
                 field_0x24c[i] = 0;
@@ -541,7 +541,7 @@ void GreatFairy_804AF338::update() {
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && mSpawnParam_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x244 + 0x61, false, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x244 + 0x61, false, 2, -1, 0, 0, 0);
     }
     if (mState == 8 || mState == 10 || mState == 11 || mState == 12) {
         if (field_0x26c == 0 && mSpawnParam_0x90 == 3) {
@@ -561,7 +561,7 @@ void GreatFairy_804AF338::draw() {
                 flags = -1;
             }
             drawSprite_801F06F0("enemy_both2_sob.bin", frame, &params, flags, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
             mPos = savedPos;
         }
     }
@@ -573,7 +573,7 @@ static inline s32 getFlagBit(const s32* flags, s32 player) {
 
 void GreatFairy_804AF338::fn_8038DE74() {
     if (getFlagBit(field_0x274, field_0x234) != 0 &&
-        getGameView_802D6A9C()->fn_802D800C(getFlagBit(field_0x274, field_0x234)) == 1) {
+        getGameView_802D6A9C()->isScreenFlagSet_802D800C(getFlagBit(field_0x274, field_0x234)) == 1) {
         field_0x29c = 0xC;
     } else {
         switch (fn_802373EC(fn_8022F340(field_0x234))) {

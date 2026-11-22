@@ -20,7 +20,7 @@ public:
     // Bits 12-19 of mSpawnParam_0x90, counted down once in init.
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244; // init stores -1
-    // Bits 22-26 of mSpawnParam_0x90; a GameView screen bit (fn_802D800C) in init.
+    // Bits 22-26 of mSpawnParam_0x90; a GameView screen bit (isScreenFlagSet_802D800C) in init.
     /* 0x248 */ s32 field_0x248;
     /* 0x24C */ u8 field_0x24c[0x250 - 0x24C];
     /* 0x250 */ f32 field_0x250; // init stores 1.0f

@@ -18,7 +18,7 @@ public:
 
     // tu_802684A4: copies the owner's mPos into *pos, then, while the owner
     // is in state 2, offsets x and y by the corner table entry for its
-    // fn_80248778 index (y's sign follows viewLayerFlag of its layer).
+    // getFollowerIndex_80248778 index (y's sign follows viewLayerFlag of its layer).
     void fn_8026947C(JGeometry::TVec3f* pos);
     // 0x80268BC4: called by the owner's fn_802685D4 each frame. Probes the
     // eight directions around the owner (lbl_8046BAE8) and hands each to

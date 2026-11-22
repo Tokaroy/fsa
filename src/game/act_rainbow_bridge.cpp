@@ -80,7 +80,7 @@ void RainbowBridge_8049E610::pool_8053CB48() {
         case 0:
             break;
         case 1:
-            if (!getGameView_802D6A9C()->fn_802D800C(field_0x230)) {
+            if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230)) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39f, 0, -1, NULL, NULL, true, 1.0f);
                 for (int i = 0; i < 5; i++) {
                     if (field_0x23c[i] == NULL) {
@@ -99,7 +99,7 @@ void RainbowBridge_8049E610::pool_8053CB48() {
                     }
                 }
             }
-            if (!getGameView_802D6A9C()->fn_802D800C(field_0x230)) {
+            if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230)) {
                 startSound_801F0E34(0x5004d, 0);
                 field_0x234 = 0;
             }

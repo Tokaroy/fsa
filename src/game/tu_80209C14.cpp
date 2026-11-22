@@ -74,7 +74,7 @@ void SlimeFormation_804A5D60::init() {
         if (player >= 0) {
             angle = fn_801D0280(player) - 0x8000;
         } else {
-            angle = fn_801CD664(0x10000);
+            angle = randInt_801CD664(0x10000);
         }
         mVel.set(JMASSin(angle) * 1.5f, JMASCos(angle) * 1.5f, 0.5f * (50.0f * (0.3f * -lbl_8053EFB8)));
         mVel_0x3c.set(mVel);
@@ -165,7 +165,7 @@ void SlimeFormation_804A5D60::fn_8020AA78(s32 state) {
         if (player >= 0) {
             angle = fn_801D0280(player) - 0x8000;
         } else {
-            angle = fn_801CD664(0x10000);
+            angle = randInt_801CD664(0x10000);
         }
         mVel.set(JMASSin(angle) * 4.0f, JMASCos(angle) * 4.0f, 0.5f * (12.0f * -lbl_8053EFB8));
         field_0x2b1 = 3;
@@ -477,7 +477,7 @@ bool SlimeFormation_804A5D60::vfunc_0x58() {
 }
 
 u8 SlimeFormation_804A5D60::checkHitByActor_0x60() {
-    fn_801F2DB4(mActorId, 'NULL', NULL);
+    checkActorHit_801F2DB4(mActorId, 'NULL', NULL);
     return 0;
 }
 

@@ -77,7 +77,7 @@ void Armos_8049F260::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    if (fn_801F3D94(true) != 0) {
+    if (updateHitReaction_801F3D94(true) != 0) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -205,7 +205,7 @@ void Armos_8049F260::update() {
                     box.f.y += mPos.y;
                     fn_80239914(&box, mLayer_0x4, mSerial);
                     fn_801EF510();
-                    fn_801F2B7C(-100, -1, 1);
+                    damagePlayersInBox_801F2B7C(-100, -1, 1);
                     fn_801F2618(NULL, false);
                     return;
                 }
@@ -216,7 +216,7 @@ void Armos_8049F260::update() {
             mVel_0x3c.y = p.y;
             mVel_0x3c.z = 2.0f;
         }
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         fn_801F2618(NULL, false);
         break;
     case 3: {
@@ -274,7 +274,7 @@ void Armos_8049F260::update() {
             mPos.x += mVel_0x3c.x;
             mPos.y += mVel_0x3c.y;
             mVel_0x3c = savedVel;
-            if (fn_802265DC(&mPos, mLayer_0x4, false) == 1 || fn_80226850(&mPos, mLayer_0x4) == 0x8F) {
+            if (fn_802265DC(&mPos, mLayer_0x4, false) == 1 || getRawTile_80226850(&mPos, mLayer_0x4) == 0x8F) {
                 mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             } else if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 ActorBase_804A5770* actors[1024];
@@ -382,7 +382,7 @@ void Armos_8049F260::update() {
             mVel_0x3c.y = step.y;
             mVel_0x3c.z = 2.0f;
         }
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         fn_801F2618(NULL, false);
         s32 serial = fn_801F8108(this, 'LNBM', -1, 32.0f);
         if (serial != 0) {
@@ -421,9 +421,9 @@ void Armos_8049F260::draw() {
     mtx[2][2] = 1.0f;
     params.mMtx = mtx;
     if (field_0x94 == 3 || field_0x94 == 4 || field_0x94 == 5 || field_0x94 == 7) {
-        fn_801F02BC("enemy_gc_sob.bin", field_0x318 + 0x444, &params, 3, mode, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", field_0x318 + 0x444, &params, 3, mode, false, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", field_0x318 + 0x152, &params, flags, mode, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x318 + 0x152, &params, flags, mode, false, 1.0f, 1.0f);
     }
 }
 

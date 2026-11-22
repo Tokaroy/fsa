@@ -56,7 +56,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         mVel_0x3c.scale(1.2f);
         mVel_0x3c.z = 4.0f;
         mAnim.startAnim_801D22DC(mDir_0x98 + 0xC, 0, false);
-        if (!fn_801CD2F8(mLayer_0x4)) {
+        if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
             s32 serial = getActorManager_801F856C()->fn_801F7884('LFGN', mLayer_0x4);
             if (serial >= 0) {
                 ActorBase_804A5770* gen = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -73,7 +73,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         } else {
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
         }
-        gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
         JGeometry::TVec3f n(-mVel_0x3c.y, -mVel_0x3c.x, 0.0f);
         n.normalize();
         JGeometry::TVec3f at = mPos + off;
@@ -188,7 +188,7 @@ void ShadowLinkThwompMinor_804A6D00::updateState_0x90(u8 mapHit) {
         break;
     case 5: {
         u32 sound = 0x400E7;
-        if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+        if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
             sound = 0x400E8;
         } else if (fn_80224B88(&mPos, mLayer_0x4)) {
             sound = 0x400E9;
@@ -273,7 +273,7 @@ u8 ShadowLinkThwompMinor_804A6D00::attackPlayers_0x68() {
         mBox.i.y = y0;
         mBox.f.x = x1;
         mBox.f.y = y1;
-        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
         mBox.i.x = s0;
         mBox.i.y = s1;
         mBox.f.x = s2;

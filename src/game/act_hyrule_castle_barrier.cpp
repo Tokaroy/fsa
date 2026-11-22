@@ -97,10 +97,10 @@ void HyruleCastleBarrier_8049DEE8::update() {
             }
             break;
         }
-        if (fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
+        if (checkActorHit_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
             mHitTimer_0xd8 = 0;
         }
-        u8 hitMask = fn_801F2B7C(mParamAtcp_0x114, -1, 10);
+        u8 hitMask = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 10);
         if (hitMask == 0) {
             fn_80239914(&box, mLayer_0x4, mSerial);
         } else {

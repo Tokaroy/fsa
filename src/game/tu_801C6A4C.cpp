@@ -12,7 +12,7 @@ void ShadowLink2_804A43E8::fn_801C6C7C() {
         f32 dist = fn_801D0DA0(field_0x338, &mPos);
         if (mStateTimer > 1 && (field_0x524.field_0x0 & 0x8) && dist <= square(field_0x5b0)) {
             if (field_0x524.field_0x0 & 0x20) {
-                switch (fn_801CD664(6)) {
+                switch (randInt_801CD664(6)) {
                 case 0:
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
                         fn_801C3B7C(0x23);
@@ -29,7 +29,7 @@ void ShadowLink2_804A43E8::fn_801C6C7C() {
                     break;
                 }
             } else if (field_0x524.field_0x0 & 0x10) {
-                switch (fn_801CD664(3)) {
+                switch (randInt_801CD664(3)) {
                 case 0:
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
                         fn_801C3B7C(0x23);

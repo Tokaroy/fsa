@@ -138,7 +138,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
         if (lbl_804C5E30[j] == 1) {
             switch (mField_0x238) {
             case 0:
-                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &lbl_804C1E30[j], 2);
+                getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &lbl_804C1E30[j], 2);
                 break;
             case 1:
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ZASL, mLayer_0x4, &lbl_804C1E30[j], lbl_804C4E30[j], 0, -1);
@@ -167,7 +167,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D958() {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x423, 1, 7, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x425, 1, 7, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30001, 0);
-        gGameRoot_8053AAF8->fn_80134DE4(3, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
         s32 layer;  // Declared outside the loop: matches the original's register allocation.
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
@@ -239,7 +239,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D2AC() {
         mField_0x24c++;
         if (mField_0x24c == 2) {
             startSound_801F0E34(0x3005D, 0);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
         }
         if (mField_0x24c < 90) {
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);

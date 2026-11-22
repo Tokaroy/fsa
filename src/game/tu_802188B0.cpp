@@ -10,7 +10,7 @@
 
 BombDropTimer_80218A8C::BombDropTimer_80218A8C() {
     mOwner = NULL;
-    mTimer = fn_801CD664(0x79) + 0x3c;
+    mTimer = randInt_801CD664(0x79) + 0x3c;
 }
 
 bool BombDropTimer_80218A8C::fn_802189AC() {
@@ -32,7 +32,7 @@ bool BombDropTimer_80218A8C::fn_802189AC() {
 }
 
 void BombDropTimer_80218A8C::fn_802188B0() {
-    if (fn_801C0D70()->field_0x0 & 0x400) {
+    if (getShadowLinkFight_801C0D70()->field_0x0 & 0x400) {
         return;
     }
     if (mOwner->field_0x564 == 3) {
@@ -48,7 +48,7 @@ void BombDropTimer_80218A8C::fn_802188B0() {
         case 0x11:
         case 0x1b:
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, mOwner->mLayer_0x4, &mOwner->mPos, 10, -1, -1);
-            mTimer = fn_801CD664(0x79) + 0xf0;
+            mTimer = randInt_801CD664(0x79) + 0xf0;
             break;
         }
     }

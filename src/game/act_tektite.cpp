@@ -73,7 +73,7 @@ void Tektite_8049FD50::update() {
         // fn_80226998 (declared with TVec3f in Map.h) reads only the x and y of
         // its position, so the 8-byte stack TVec2f is passed as a TVec3f.
         if (field_0x254 == 0xFFFF) {
-            if (getGameView_802D6A9C()->fn_802DCD0C()) {
+            if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 return;
             }
             s32 layer = mLayer_0x4;
@@ -88,7 +88,7 @@ void Tektite_8049FD50::update() {
         }
         mSpawnParam_0x90 &= 1;
     }
-    if (fn_801F3D94(1)) {
+    if (updateHitReaction_801F3D94(1)) {
         fn_801F2618(NULL, false);
         return;
     }
@@ -111,7 +111,7 @@ void Tektite_8049FD50::update() {
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x258.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x258.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     u8 hit = fn_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
@@ -206,7 +206,7 @@ void Tektite_8049FD50::draw() {
 void Tektite_8049FD50::die_0x24() {
     setField_0x18C(0);
     if (mSpawnParam_0x90 != 0) {
-        getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 3);
+        getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 3);
     } else {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
     }

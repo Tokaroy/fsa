@@ -144,7 +144,7 @@ void SpiralStaircase_804A7A68::update() {
                 }
             }
         }
-        if (gGameRoot_8053AAF8->fn_80138A30() > inside) {
+        if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > inside) {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
@@ -439,7 +439,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             key[i] = getPlayerPos_8023E724(i)->x;
         }
     }
-    switch (gGameRoot_8053AAF8->fn_80138A30()) {
+    switch (gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
     case 2: {
         s32 n = 1;
         if (key[0] <= key[1]) {

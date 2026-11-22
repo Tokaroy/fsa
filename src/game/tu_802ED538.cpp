@@ -167,7 +167,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
 void GiantGeneratorEffect_804AA350::update() {
     switch (field_0x24c) {
     case 0:
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             setCameraScript(mPos);
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 field_0x250 = 20;
@@ -207,7 +207,7 @@ void GiantGeneratorEffect_804AA350::update() {
         }
         break;
     case 4:
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x258)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x258)) {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 notifySlr4(field_0x260[0], 1);
                 notifySlr4(field_0x260[1], 1);

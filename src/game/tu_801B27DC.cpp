@@ -94,7 +94,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         u16 angle;
         mRail.fn_800FDEA0(&pos, 20.0f, &step, &railLayer, &angle, 0x200);
     }
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x334, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x338, 0.3f, 1.0f);
     mPos += mVel_0x3c;
@@ -368,7 +368,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                 }
             }
         }
-        if (near < gGameRoot_8053AAF8->fn_80138A30() || dir < 0 || dist > 32.0f) {
+        if (near < gGameRoot_8053AAF8->getPlayerCount_80138A30() || dir < 0 || dist > 32.0f) {
             break;
         }
         field_0x2f8 = 9;
@@ -407,7 +407,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         break;
     }
     case 0xA:
-        if (getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             fn_8022ADE4();
             field_0x2f8 = 0;
         }
@@ -557,8 +557,8 @@ void PrincessZeldaSpawnerEscape_804A3698::draw() {
 // 0x801B27DC.
 // FIXME(shotgun): 94.59 %, scheduling+regalloc; behaviour clean.
 bool PrincessZeldaSpawnerEscape_804A3698::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 code = fn_8022461C(pos, layer);
-    s32 tile = fn_80226850(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
+    s32 tile = getRawTile_80226850(pos, layer);
     if (tile == 0x230 || tile == 0x231 || tile == 0x234) {
         return false;
     }

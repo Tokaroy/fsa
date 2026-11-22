@@ -129,8 +129,8 @@ bool SlingshotSeed_804AB3A8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ids) == 1) {
         return true;
     }
-    s32 tile = fn_8022461C(pos, layer);
-    s32 code = fn_80226850(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
+    s32 code = getRawTile_80226850(pos, layer);
     if ((tile - 0x10) <= 7u || (code >= 0x140 && code <= 0x15F)) {
         if (field_0x250 == 0) {
             field_0x250 = 1;
@@ -183,7 +183,7 @@ bool SlingshotSeed_804AB3A8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
             }
             return seedBump(this);
         }
-        if ((u16)fn_80226850(pos, layer) == 0x3A || (u16)fn_80226850(pos, layer) == 0x3D) {
+        if ((u16)getRawTile_80226850(pos, layer) == 0x3A || (u16)getRawTile_80226850(pos, layer) == 0x3D) {
             field_0x250 = 0;
             return false;
         }
@@ -333,8 +333,8 @@ void SlingshotSeed_804AB3A8::update() {
             break;
         }
         if (mPos.z < 0.0f) {
-            s32 tile = fn_8022461C(&mPos, mLayer_0x4);
-            fn_80226850(&mPos, mLayer_0x4);
+            s32 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
+            getRawTile_80226850(&mPos, mLayer_0x4);
             if (tile == 0xC || tile == 3) {
                 mAlive = false;
                 break;
@@ -464,5 +464,5 @@ void SlingshotSeed_804AB3A8::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0xE7, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0xE7, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0xE7, false, 2, -1, 0, 0, 0);
 }

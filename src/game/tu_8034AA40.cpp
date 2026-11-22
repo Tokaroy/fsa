@@ -277,7 +277,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             s32 count = 0;
             s32 winners[4];
             s32 target;
-            if (gGameRoot_8053AAF8->fn_80138A30() == 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1) {
                 target = 0;
             } else {
                 for (s32 i = 1; i < 4; i++) {
@@ -405,7 +405,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         if (fn_803865B8(field_0x240)) {
             switch (field_0x244) {
             case 0:
-                if (field_0x258 < gGameRoot_8053AAF8->fn_80138A30()) {
+                if (field_0x258 < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                     fn_803894BC(field_0x240, field_0x258 + 1);
                     fn_8038938C(field_0x240, field_0x274[field_0x258]);
                     fn_80389254(field_0x240, field_0x274[field_0x258] * 100);
@@ -417,7 +417,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                     } else if (fn_8038470C(field_0x240, 0x428) == 1) {
                         field_0x258++;
                     }
-                } else if (field_0x258 == gGameRoot_8053AAF8->fn_80138A30()) {
+                } else if (field_0x258 == gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                     if (fn_8038470C(field_0x240, 0x429) == 1) {
                         field_0x258++;
                     }

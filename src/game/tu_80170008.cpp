@@ -164,7 +164,7 @@ void BallAndChainSoldier_804A0810::update() {
     if (field_0x94 == 5) {
         mLife = 10000;
         fn_801F2B20(0);
-        fn_801F2B7C(2, -1, 3);
+        damagePlayersInBox_801F2B7C(2, -1, 3);
         return;
     }
     if ((mSpawnParam_0x90 >> 27) != 0) {
@@ -254,7 +254,7 @@ void BallAndChainSoldier_804A0810::update() {
     mPos.x = savedPos.x;
     mPos.y = savedPos.y;
     mPos.z = savedPos.z;
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         if (field_0x260 != 0) {
             field_0x320.x = mPos.x;
             field_0x320.y = mPos.y;
@@ -352,7 +352,7 @@ void BallAndChainSoldier_804A0810::update() {
             f32 vx = mVel_0x3c.x;
             f32 vy = mVel_0x3c.y;
             f32 vz = mVel_0x3c.z;
-            if (fn_801F2DB4('HBMB', 'NULL', NULL) && life != mLife) {
+            if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL) && life != mLife) {
                 mVel_0x3c.x = vx;
                 mVel_0x3c.y = vy;
                 mVel_0x3c.z = vz;
@@ -361,7 +361,7 @@ void BallAndChainSoldier_804A0810::update() {
             }
         }
     }
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     fn_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:

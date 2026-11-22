@@ -30,7 +30,7 @@ void SandCrab_8049F3B0::init() {
 }
 
 void SandCrab_8049F3B0::update() {
-    if (fn_801F3D94(true) || fn_801F305C()) {
+    if (updateHitReaction_801F3D94(true) || fn_801F305C()) {
         fn_801F2618(NULL, false);
         mTimers[2] = 0;
         if (field_0x230 != 0) {
@@ -48,7 +48,7 @@ void SandCrab_8049F3B0::update() {
         return;
     }
     mPos += mVel_0x3c;
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     u8 hit = fn_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:

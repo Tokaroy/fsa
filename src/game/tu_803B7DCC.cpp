@@ -24,7 +24,7 @@ cls_804AFAB0::cls_804AFAB0() {
     for (s32 i = 0; i < 50; i++) {
         field_0x24[i] = NULL;
     }
-    const ResTIMG* black = (const ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
+    const ResTIMG* black = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
     field_0x4 = new J2DPicture(black);
     field_0x4->setBlackWhite(JUtility::TColor(0x000000FF), JUtility::TColor(0x00000000));
     field_0xec.x = 0.0f;

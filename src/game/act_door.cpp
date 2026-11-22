@@ -363,7 +363,7 @@ void Door_804A8D88::update() {
         break;
     }
     case 1:
-        if (!getGameView_802D6A9C()->fn_802DCD0C() && field_0x234 == 0) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C() && field_0x234 == 0) {
             field_0x230 = 4;
         } else {
             field_0x230 = 2;

@@ -115,7 +115,7 @@ void UnknownLNBM_804A4188::update() {
         burnTiles();
         spawnBurst();
     } else {
-        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
 }
 
@@ -124,7 +124,7 @@ void UnknownLNBM_804A4188::update() {
 // (this code: result r31, this r30, pos r29, layer r28), so the prologue stores and the argument
 // moves are ordered differently.
 bool UnknownLNBM_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    switch (fn_8022461C(pos, layer)) {
+    switch (getTileCollisionCode_8022461C(pos, layer)) {
     case 3:
     case 0xD:
     case 0xE:

@@ -20,7 +20,7 @@ void ShovelOldTimer_804AAB40::init() {
     field_0x258 = false;
     field_0x259 = false;
     field_0x25a = false;
-    if (getGameView_802D6A9C()->fn_802D800C(0x14)) {
+    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x14)) {
         GameView_804A9950* view = getGameView_802D6A9C();
         gBgRewrite_8053AC98->fn_802A3948(&view->field_0x13280, 0, 0, 0x7A);
     } else {
@@ -62,7 +62,7 @@ void ShovelOldTimer_804AAB40::update() {
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
-                if (getGameView_802D6A9C()->fn_802D800C(0x14)) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x14)) {
                     if (talk(player, 0x834, mLayer_0x4, mSerial, mPos, 0x28)) {
                         field_0x254 = player;
                         mState = 3;
@@ -96,11 +96,11 @@ void ShovelOldTimer_804AAB40::update() {
         }
         break;
     case 2:
-        if (!getGameView_802D6A9C()->fn_802D800C(0x14)) {
+        if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x14)) {
             fn_8031179C();
         } else if (!field_0x25a) {
             gBgRewrite_8053AC98->fn_802A3948(&field_0x240, 0, 0, 0x7A);
-            gAudioMgr_8053AF80->fn_80458880(3, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(3, -1);
             field_0x25a = true;
         }
         if (!field_0x258) {
@@ -110,7 +110,7 @@ void ShovelOldTimer_804AAB40::update() {
                 if (fn_802300EC(p)) {
                     u32 msg;
                     if (fn_8022E438(p, field_0x250)) {
-                        if (getGameView_802D6A9C()->fn_802D800C(0x14)) {
+                        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(0x14)) {
                             msg = 0x834;
                         } else {
                             msg = 0x832;
@@ -144,7 +144,7 @@ void ShovelOldTimer_804AAB40::update() {
 
 void ShovelOldTimer_804AAB40::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x386, NULL, 0, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
 }
 
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
@@ -163,7 +163,7 @@ bool ShovelOldTimer_804AAB40::findDigSpot() {
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
             JGeometry::TVec3f pos(x, y, z);
-            if (fn_80226850(&pos, 0) == 0x1B0) {
+            if (getRawTile_80226850(&pos, 0) == 0x1B0) {
                 pos.x = (f32)((u32)pos.x & ~0xF);
                 pos.y = (f32)((u32)pos.y & ~0xF);
                 setDigPos(pos);

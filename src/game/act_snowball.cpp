@@ -114,7 +114,7 @@ void Snowball_8049D020::update() {
     }
     switch (field_0x238) {
     case 0: {
-        fn_801F2DB4('NULL', 'NULL', NULL);
+        checkActorHit_801F2DB4('NULL', 'NULL', NULL);
         field_0x26c = 0.0f;
         u16 angle;
         s32 dir;
@@ -139,8 +139,8 @@ void Snowball_8049D020::update() {
             chase(field_0x23c);
         }
         grow();
-        fn_801F2DB4('NULL', 'NULL', NULL);
-        if (fn_801F2B7C(-100, -1, 1)) {
+        checkActorHit_801F2DB4('NULL', 'NULL', NULL);
+        if (damagePlayersInBox_801F2B7C(-100, -1, 1)) {
             fn_8010C294(7);
         }
         {
@@ -158,8 +158,8 @@ void Snowball_8049D020::update() {
         if (field_0x258 > 0) {
             followRail();
         }
-        fn_801F2DB4('NULL', 'NULL', NULL);
-        fn_801F2B7C(-100, -1, 1);
+        checkActorHit_801F2DB4('NULL', 'NULL', NULL);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         break;
     case 5: {
         if (pool_8053C4AC()) {
@@ -169,7 +169,7 @@ void Snowball_8049D020::update() {
     }
     case 6:
         field_0x26c = 0.0f;
-        fn_801F2DB4('NULL', 'NULL', NULL);
+        checkActorHit_801F2DB4('NULL', 'NULL', NULL);
         fn_80239914(&box, mLayer_0x4, mSerial);
         field_0x244++;
         if (field_0x244 >= 180) {
@@ -179,7 +179,7 @@ void Snowball_8049D020::update() {
     case 7: {
         field_0x248++;
         if (field_0x248 > 60) {
-            fn_801F2B7C(-100, -1, 1);
+            damagePlayersInBox_801F2B7C(-100, -1, 1);
             field_0x248 = 60;
         }
         JGeometry::TVec3f unkVec;
@@ -208,7 +208,7 @@ void Snowball_8049D020::update() {
         break;
     case 9: {
         JGeometry::TVec3f unkVec;
-        if (fn_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
+        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
             fn_8010C294(10);
             break;
         }
@@ -478,7 +478,7 @@ void Snowball_8049D020::dropRupee() {
     if (field_0x258 >= 1) {
         kind = 1;
     }
-    s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, lbl_80464328[kind]);
+    s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, lbl_80464328[kind]);
     if (serial >= 0) {
         getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     }

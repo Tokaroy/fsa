@@ -19,7 +19,7 @@ public:
 
     // 0x8010B284: looks at the first player (0-3) that lines up with the
     // icicle (within 40 units in x, not above it in y) and probes the map
-    // tiles above the icicle every 16 units, up to 24 steps (fn_80226850),
+    // tiles above the icicle every 16 units, up to 24 steps (getRawTile_80226850),
     // until the player's height is reached. Returns true when no blocking
     // tile was found; false when no player lines up.
     bool fn_8010B284();

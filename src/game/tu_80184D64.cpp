@@ -74,7 +74,7 @@ void ChainChomp_804A18E0::update() {
     mLife = 10000;
 
     if (field_0x270 == 0xFFFF) {
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             JGeometry::TVec3f p;
             p.x = field_0x384[0];
             p.y = field_0x384[1];
@@ -104,7 +104,7 @@ void ChainChomp_804A18E0::update() {
         }
     }
 
-    if (fn_801F2B7C(mParamAtcp_0x114, field_0x260, 6) && field_0x230 == 8 && field_0x238 == 0) {
+    if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, field_0x260, 6) && field_0x230 == 8 && field_0x238 == 0) {
         mVel_0x3c.x *= -1.0f;
         mVel_0x3c.y *= -1.0f;
         field_0x288[2] = 0.0f;
@@ -203,7 +203,7 @@ void ChainChomp_804A18E0::update() {
         if (field_0x23c == 0) {
             field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
             field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
-            mDir_0x98 = fn_801F681C(field_0x272);
+            mDir_0x98 = angleToDir_801F681C(field_0x272);
         }
         if (field_0x240 == 0 && field_0x23c != 0) {
             for (int i = 0; i < 4; i++) {
@@ -222,7 +222,7 @@ void ChainChomp_804A18E0::update() {
     case 2:
         field_0x288[0] = 4.0f * JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = 4.0f * JMath::sincosTable_.cosShort(field_0x272);
-        mDir_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = angleToDir_801F681C(field_0x272);
         startSound_801F0E34(0x400B0, 0);
         field_0x26c = 12.0f;
         field_0x264 = mDir_0x98 * 2;
@@ -277,7 +277,7 @@ void ChainChomp_804A18E0::update() {
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
-        mDir_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = angleToDir_801F681C(field_0x272);
         if (mPos.z > 0.0f) {
             mVel_0x3c.z -= 1.0f;
         }
@@ -296,7 +296,7 @@ void ChainChomp_804A18E0::update() {
         f32 dy = mPos.y - field_0x384[1];
         field_0x272 = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        mDir_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = angleToDir_801F681C(field_0x272);
         f32 distSq = dx * dx + dy * dy;
         field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
@@ -309,7 +309,7 @@ void ChainChomp_804A18E0::update() {
         break;
     }
     case 7:
-        if (field_0x248 == 0 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
+        if (field_0x248 == 0 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             for (int i = 0; i < 4; i++) {
                 if (i != field_0x260 && fn_8023F264(i) && !fn_8022F478(i) &&
                     mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
@@ -395,7 +395,7 @@ void ChainChomp_804A18E0::update() {
                     f32 dy = mPos.y - target->mPos.y;
                     field_0x272 = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                                         (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                    outDir = fn_801F681C(field_0x272);
+                    outDir = angleToDir_801F681C(field_0x272);
                 }
             }
             if (outDir >= 0) {
@@ -430,7 +430,7 @@ void ChainChomp_804A18E0::update() {
         JGeometry::TVec3f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (fn_802265FC(&center, mLayer_0x4) == 0xC || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;

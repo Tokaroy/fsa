@@ -125,7 +125,7 @@ void Score_804AF4C0::fn_80393514() {
         if (mValue < 10) {
             idx = mValue - 1;
         }
-        gAudioMgr_8053AF80->fn_80458880(sScoreSounds[idx], -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(sScoreSounds[idx], -1);
     }
     s16 angle = (mTimer % 60) << 10;
     if (mState == 0) {
@@ -149,14 +149,14 @@ void Score_804AF4C0::fn_80393514() {
                 case 1:
                 case 2: {
                     JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
+                    serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
                     break;
                 }
                 case 3:
                 case 4:
                 case 5: {
                     JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 3);
+                    serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 3);
                     break;
                 }
                 default: {
@@ -174,7 +174,7 @@ void Score_804AF4C0::fn_80393514() {
         }
         if (field_0x240 >= 15 && field_0x244 < 15) {
             JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (gem != NULL) {

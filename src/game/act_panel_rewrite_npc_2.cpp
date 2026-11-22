@@ -29,7 +29,7 @@ void PanelRewriteNPC2_804A9F58::update() {
 
     if (isScreenFlagSet_0x34() == true) {
         for (s32 i = 0; i < 0x400; i++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, i);
+            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, i);
             if (field_0x230 == tile) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, i, field_0x234);
                 if (field_0x23c != 0) {

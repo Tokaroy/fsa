@@ -67,7 +67,7 @@ ShadowLink2_804A43E8::ShadowLink2_804A43E8() {
 
 // 0x801C5680.
 ShadowLink2_804A43E8::~ShadowLink2_804A43E8() {
-    fn_801C0D70()->fn_801C1440(mSerial);
+    getShadowLinkFight_801C0D70()->fn_801C1440(mSerial);
 }
 
 // Packs five fields into one word: bits 0-4, 5-7, 8-11, 12-15, 20-27.
@@ -78,25 +78,25 @@ u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e) {
 // 0x801C544C.
 void ShadowLink2_804A43E8::init() {
     EnemyBase_804A4808::init();
-    field_0x94 = fn_801C0D70()->fn_801C14A8(mSerial);
+    field_0x94 = getShadowLinkFight_801C0D70()->fn_801C14A8(mSerial);
     u32 kind = (mSpawnParam_0x90 >> 5) & 7;
     if (kind == 1 || kind == 2) {
         mFlags |= 0x6000;
-        ShadowLinkFight_801C0D70* obj = fn_801C0D70();
+        ShadowLinkFight_801C0D70* obj = getShadowLinkFight_801C0D70();
         obj->field_0x54.set(mPos);
         switch (kind) {
         case 1:
-            fn_801C0D70()->field_0x0 |= 2;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 2;
             break;
         case 2:
-            fn_801C0D70()->field_0x0 |= 4;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 4;
             break;
         }
     } else if (kind == 3) {
         mFlags |= 0x4000;
     }
     if (mFlags & 0x4000) {
-        fn_801C0D70()->field_0x2++;
+        getShadowLinkFight_801C0D70()->field_0x2++;
     }
     field_0x55c[2] = (mSpawnParam_0x90 >> 20) & 0xFF;
     if (field_0x55c[2] == 0) {
@@ -130,15 +130,15 @@ void ShadowLink2_804A43E8::init() {
     field_0x32c.set(mPos);
 }
 
-// Member: calls fn_801C12B8 on the fn_801C0D70 object when that object's
+// Member: calls fn_801C12B8 on the getShadowLinkFight_801C0D70 object when that object's
 // word at 0x50 has its top bit set and mFlags has bit 0x2000.
 void ShadowLink2_804A43E8::fn_801C53F8() {
-    bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
+    bool clear = (getShadowLinkFight_801C0D70()->field_0x50 >> 31) == 0;
     if (clear) {
         return;
     }
     if (mFlags & 0x2000) {
-        fn_801C0D70()->fn_801C12B8();
+        getShadowLinkFight_801C0D70()->fn_801C12B8();
     }
 }
 
@@ -210,7 +210,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
             field_0x59b = 6;
         } else {
             if (mState == 0x19) {
-                field_0x560 = fn_801CD664(4);
+                field_0x560 = randInt_801CD664(4);
             }
             mLayer_0x4 = field_0x57c;
             mPos = field_0x580;
@@ -246,13 +246,13 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 2:
         field_0x250 = 1;
         if (!(mFlags & 0x2000) && (mFlags & 0x4000)) {
-            if (fn_801C0D70()->field_0x2 >= 2) {
-                field_0x250 += fn_801CD664(0x2D);
+            if (getShadowLinkFight_801C0D70()->field_0x2 >= 2) {
+                field_0x250 += randInt_801CD664(0x2D);
             }
         }
         break;
     case 3:
-        if ((s32)fn_801C0D70()->field_0x50 >= 0) {
+        if ((s32)getShadowLinkFight_801C0D70()->field_0x50 >= 0) {
             field_0x250 = 0xA0;
         } else {
             field_0x250 = 0xEB;
@@ -261,7 +261,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 4:
         mDrawEnabled = true;
-        if ((s32)fn_801C0D70()->field_0x50 >= 0) {
+        if ((s32)getShadowLinkFight_801C0D70()->field_0x50 >= 0) {
             mPos.y += 32.0f;
         }
         mVel_0x3c.z = 4.5f;
@@ -272,7 +272,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         break;
     case 5:
-        if (fn_801C0D70()->fn_801C11F0() || (fn_801C0D70()->field_0x0 & 1)) {
+        if (getShadowLinkFight_801C0D70()->fn_801C11F0() || (getShadowLinkFight_801C0D70()->field_0x0 & 1)) {
             field_0x250 = 0x3C;
         } else {
             field_0x250 = 0xF;
@@ -280,12 +280,12 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x340.fn_800FEB78(0);
         break;
     case 6: {
-        if (fn_801C0D70()->field_0x0 & 2) {
+        if (getShadowLinkFight_801C0D70()->field_0x0 & 2) {
             if (mFlags & 0x2000) {
                 startSound_801F0E34(0x400D7, 0);
             }
             field_0x250 = 0x1E;
-        } else if (fn_801C0D70()->field_0x0 & 4) {
+        } else if (getShadowLinkFight_801C0D70()->field_0x0 & 4) {
             if (mFlags & 0x2000) {
                 startSound_801F0E34(0x4003A, 0);
             }
@@ -295,16 +295,16 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             if (viewLayerFlag(mLayer_0x4) != 0) {
                 mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             }
-            ShadowLinkFight_801C0D70* p = fn_801C0D70();
+            ShadowLinkFight_801C0D70* p = getShadowLinkFight_801C0D70();
             mPos = p->field_0x54;
             mPrevPos = p->field_0x54;
             mVel_0x3c.x = (mSpawnPos.x - mPos.x) * (1.0f / (f32)field_0x250);
             mVel_0x3c.y = (mSpawnPos.y - mPos.y) * (1.0f / (f32)field_0x250);
-            if (fn_801C0D70()->field_0x0 & 2) {
+            if (getShadowLinkFight_801C0D70()->field_0x0 & 2) {
                 mVel_0x3c.z = 0.0f;
                 field_0x33c = 0;
                 field_0x340.fn_800FEB78(0);
-            } else if (fn_801C0D70()->field_0x0 & 4) {
+            } else if (getShadowLinkFight_801C0D70()->field_0x0 & 4) {
                 mVel_0x3c.z = -lbl_8053EFB8 * (f32)field_0x250 * 0.5f;
                 field_0x33c = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
                 field_0x340.fn_800FEB78(4);
@@ -322,7 +322,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
         if (state != 0xB) {
-            if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+            if ((getShadowLinkFight_801C0D70()->field_0x50 >> 31) != 0) {
                 mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
             }
         }
@@ -355,15 +355,15 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x10:
         if (state == 0xE) {
             if (mFlags & 0x2000) {
-                if ((s32)fn_801C0D70()->field_0x50 >= 0) {
-                    fn_801C0D70()->field_0x0 |= 0x40;
+                if ((s32)getShadowLinkFight_801C0D70()->field_0x50 >= 0) {
+                    getShadowLinkFight_801C0D70()->field_0x0 |= 0x40;
                 }
                 getActorManager_801F856C()->fn_801F6884();
                 fn_8022ADE4();
             }
             mDrawEnabled = true;
             if (!(field_0x524.field_0x0 & 2)) {
-                if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+                if ((getShadowLinkFight_801C0D70()->field_0x50 >> 31) != 0) {
                     mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
@@ -376,24 +376,24 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             field_0x358.fn_8021425C(0, (mSpawnParam_0x90 >> 8) & 0xF, mPos, mLayer_0x4);
             field_0x358.fn_80214254(0);
-            field_0x250 = fn_801CD664(0x1A) + 5;
+            field_0x250 = randInt_801CD664(0x1A) + 5;
             field_0x550.fn_80217484();
         } else if (state == 0x10) {
             u16 minVal = lbl_8046A748[field_0x564][3];
             u16 maxVal = lbl_8046A748[field_0x564][4];
-            field_0x250 = minVal + fn_801CD664(maxVal - minVal + 1);
+            field_0x250 = minVal + randInt_801CD664(maxVal - minVal + 1);
             mFlags &= ~0x00800000;
         } else if (state == 0xF) {
-            field_0x250 = fn_801CD664(0x10) + 0xF;
+            field_0x250 = randInt_801CD664(0x10) + 0xF;
             field_0x550.fn_80217484();
         }
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
-        field_0x5a4 = (f32)(fn_801CD664(0x1F) + 0x46);
-        field_0x5a0 = fn_801CD664(0x12D) + 0x12C;
-        field_0x5a2 = fn_801CD664(0x12C1) + 0x258;
+        field_0x5a4 = (f32)(randInt_801CD664(0x1F) + 0x46);
+        field_0x5a0 = randInt_801CD664(0x12D) + 0x12C;
+        field_0x5a2 = randInt_801CD664(0x12C1) + 0x258;
         break;
     case 0x11:
         if (mState != 0x17 && mState != 0x18) {
@@ -402,7 +402,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
                 field_0x340.fn_800FEB78(1);
             }
             if (mState != 0x16) {
-                field_0x5a8 = (f32)(fn_801CD664(0x51) + 0x78);
+                field_0x5a8 = (f32)(randInt_801CD664(0x51) + 0x78);
                 mPathCount = 0;
                 fn_801C7F98();
                 fn_801C7EE4();
@@ -470,7 +470,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (field_0x340.mState != 1) {
             field_0x340.fn_800FEB78(1);
         }
-        field_0x5ac = (f32)(fn_801CD664(0x10) + 0x41);
+        field_0x5ac = (f32)(randInt_801CD664(0x10) + 0x41);
         field_0x595 = 0;
         field_0x596 = 1;
         break;
@@ -490,7 +490,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        if (fn_801C0D70()->field_0x0 & 0x400) {
+        if (getShadowLinkFight_801C0D70()->field_0x0 & 0x400) {
             field_0x4ec.fn_80214E50();
             field_0x59c = 0x3C;
             if (field_0x340.mState != 0) {
@@ -502,7 +502,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (mState == 0xD) {
             mDrawEnabled = true;
             if (!(field_0x524.field_0x0 & 2)) {
-                if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+                if ((getShadowLinkFight_801C0D70()->field_0x50 >> 31) != 0) {
                     mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
@@ -531,7 +531,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x32c.x += 90.0f * s - 0.0f * c;
             field_0x32c.y += 90.0f * c + 0.0f * s;
             startSound_801F0E34(0x40035, 0);
-        } else if (fn_801C0D70()->field_0x0 & 0x400) {
+        } else if (getShadowLinkFight_801C0D70()->field_0x0 & 0x400) {
             startSound_801F0E34(0x40036, 0);
         } else {
             fn_801D3320();
@@ -553,7 +553,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         } else {
             u16 minVal = lbl_8046A748[field_0x564][1];
             u16 maxVal = lbl_8046A748[field_0x564][2];
-            field_0x250 = minVal + fn_801CD664(maxVal - minVal + 1);
+            field_0x250 = minVal + randInt_801CD664(maxVal - minVal + 1);
         }
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
@@ -594,14 +594,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         startSound_801F0E34(0x400C2, 0);
         break;
     case 0x22:
-        field_0x250 = fn_801CD664(0x10) + 5;
+        field_0x250 = randInt_801CD664(0x10) + 5;
         mTargetSpeed = 1.0f;
         if (field_0x340.mState != 1) {
             field_0x340.fn_800FEB78(1);
         }
         mPathCount = 0;
         mFlags |= 0x1000;
-        field_0x5b0 = (f32)(fn_801CD664(0x15) + 0x14);
+        field_0x5b0 = (f32)(randInt_801CD664(0x15) + 0x14);
         break;
     case 0x23:
     case 0x24:
@@ -621,9 +621,9 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x27:
     case 0x28:
         if (state == 0x27) {
-            field_0x250 = fn_801CD664(1) + 0x5A;
+            field_0x250 = randInt_801CD664(1) + 0x5A;
         } else {
-            field_0x250 = fn_801CD664(1) + 0x5A;
+            field_0x250 = randInt_801CD664(1) + 0x5A;
         }
         mTargetSpeed = 0.0f;
         if (field_0x340.mState != 3 && field_0x340.mState != 0) {
@@ -641,12 +641,12 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mBox2.set(mBox);
         field_0xb0 = 0;
         startSound_801F0E34(0x40037, 0);
-        fn_801C0D70()->field_0x6++;
-        if (fn_801C0D70()->fn_801C1314()) {
+        getShadowLinkFight_801C0D70()->field_0x6++;
+        if (getShadowLinkFight_801C0D70()->fn_801C1314()) {
             mFlags |= 0x08000000;
-            gGameRoot_8053AAF8->fn_80134DE4(0xA0, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(0xA0, 0);
         } else if (mFlags & 0x10000) {
-            gGameRoot_8053AAF8->fn_80134DE4(3, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
         }
         break;
     case 0x2A:
@@ -675,7 +675,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             }
         }
         if (field_0x560 == 4) {
-            field_0x560 = fn_801CD664(4);
+            field_0x560 = randInt_801CD664(4);
         }
         // FIXME(shotgun): field_0x548 is cls_802153A8 (fn_80215558((u8)field_0x560)), not typed in header
         if (field_0x560 >= 0 && field_0x560 <= 3) {
@@ -719,7 +719,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     }
     mStateTimer = 0;
     mState = state;
-    mDir_0x98 = fn_801F681C(field_0x33c);
+    mDir_0x98 = angleToDir_801F681C(field_0x33c);
 }
 
 // 0x801C2ED4.
@@ -735,7 +735,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             mPos.y += nudge.y;
         }
     }
-    if ((fn_801C0D70()->field_0x0 & 0x400) && fn_801D0DD4()) {
+    if ((getShadowLinkFight_801C0D70()->field_0x0 & 0x400) && fn_801D0DD4()) {
         switch (mState) {
         case 0xE:
         case 0xF:
@@ -744,8 +744,8 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         case 0x22:
         case 0x27: {
             JGeometry::TVec2f out;
-            if (fn_801C0D70()->fn_801C0FEC(&mPos, &out)) {
-                if (fn_801C0D70()->field_0x0 & 0x800) {
+            if (getShadowLinkFight_801C0D70()->fn_801C0FEC(&mPos, &out)) {
+                if (getShadowLinkFight_801C0D70()->field_0x0 & 0x800) {
                     field_0x32c.set(out.x, out.y, 0.0f);
                     fn_801C3B7C(0x1D);
                 }
@@ -790,7 +790,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 1:
         if (getActorManager_801F856C()->fn_801F68E0() != 0) {
             gAudioMgr_8053AF80->fn_80458F9C(0x3C);
-            fn_801C0D70()->field_0x0 |= 8;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 8;
         }
         break;
     case 2:
@@ -811,13 +811,13 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 5:
         if (mStateTimer >= field_0x250) {
             mFlags |= 0x8000;
-            fn_801C0D70()->field_0x0 |= 0x10;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 0x10;
         }
         break;
     case 6:
         if (mStateTimer >= field_0x250) {
             field_0x33c = 0;
-            if (!(fn_801C0D70()->field_0x0 & 1)) {
+            if (!(getShadowLinkFight_801C0D70()->field_0x0 & 1)) {
                 fn_801C3B7C(9);
             } else {
                 fn_801C3B7C(7);
@@ -855,7 +855,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 0xC:
         if ((mFlags & 0x2000) && lbl_8053AED0->field_0x10a == 0) {
-            fn_801C0D70()->field_0x0 |= 0x20;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 0x20;
         }
         break;
     case 0xD:
@@ -873,7 +873,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             }
             fn_801C3B7C(0x11);
         } else {
-            bool hit = fn_801CD2F8(mLayer_0x4);
+            bool hit = isUpperLayer_801CD2F8(mLayer_0x4);
             if ((!hit && mStateTimer >= field_0x5a0) || (hit == 1 && mStateTimer >= field_0x5a2)) {
                 fn_801C3B7C(0x11);
                 fn_801C8BC4(0);
@@ -986,7 +986,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 0x1D:
         if (fn_801D0DD4()) {
-            if (fn_801C0D70()->field_0x0 & 0x400) {
+            if (getShadowLinkFight_801C0D70()->field_0x0 & 0x400) {
                 if (mStateTimer > 0x1E) {
                     fn_801C3B7C(0x1E);
                 }
@@ -1047,7 +1047,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x29:
         if (mStateTimer >= 0xA0) {
             if (mFlags & 0x10000) {
-                fn_801C0D70()->fn_801C1224(mSerial);
+                getShadowLinkFight_801C0D70()->fn_801C1224(mSerial);
             }
             die_0x24();
         } else {
@@ -1094,7 +1094,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 0x2F:
-        if (!(fn_801C0D70()->field_0x0 & 0x400)) {
+        if (!(getShadowLinkFight_801C0D70()->field_0x0 & 0x400)) {
             fn_801C3B7C(0xF);
         }
         break;
@@ -1102,7 +1102,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x100000) {
         fn_801C71BC();
     }
-    mDir_0x98 = fn_801F681C(field_0x33c);
+    mDir_0x98 = angleToDir_801F681C(field_0x33c);
 }
 
 // Member: copies mDir_0x98 into the sequencer's direction, advances the
@@ -1227,7 +1227,7 @@ void ShadowLink2_804A43E8::move_0x98() {
     }
     field_0x4ec.fn_80214CE4();
     field_0x4ec.fn_80214994();
-    if ((field_0x524.field_0x0 & 1) && !fn_801CD2F8(mLayer_0x4) && mPos.z <= 0.0f) {
+    if ((field_0x524.field_0x0 & 1) && !isUpperLayer_801CD2F8(mLayer_0x4) && mPos.z <= 0.0f) {
         switch (mState) {
         case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
         case 0xB: case 0xC: case 0xD: case 0xE:
@@ -1235,7 +1235,7 @@ void ShadowLink2_804A43E8::move_0x98() {
         case 0x29:
             break;
         default:
-            if (fn_8022461C(&mPos, mLayer_0x4) == 0 && fn_80226850(&mPos, mLayer_0x4) != 0xAD) {
+            if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0 && getRawTile_80226850(&mPos, mLayer_0x4) != 0xAD) {
                 gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0xAD);
                 startSound_801F0E34(0x3008A, 0);
             }
@@ -1324,7 +1324,7 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
 
 void ShadowLink2_804A43E8::fn_801C27F0() {
     bool flag = (mFlags & 0x08000000) != 0;
-    ShadowLinkFight_801C0D70* tracker = fn_801C0D70();
+    ShadowLinkFight_801C0D70* tracker = getShadowLinkFight_801C0D70();
     tracker->fn_801C1374(flag);
     ActorBase_804A5770::die_0x24();
 }
@@ -1342,9 +1342,9 @@ void ShadowLink2_804A43E8::fn_801C27A8() {
 
 void ShadowLink2_804A43E8::fn_801C272C() {
     mDrawEnabled = true;
-    if (fn_801C0D70()->fn_801C11F0()) {
+    if (getShadowLinkFight_801C0D70()->fn_801C11F0()) {
         fn_801C3B7C(6);
-    } else if (fn_801C0D70()->field_0x0 & 1) {
+    } else if (getShadowLinkFight_801C0D70()->field_0x0 & 1) {
         fn_801C3B7C(7);
     } else {
         fn_801C3B7C(9);

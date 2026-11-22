@@ -87,7 +87,7 @@ void TreasureChest_804AA178::update() {
 
     switch (field_0x230) {
     case 0:
-        if (gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, mCell) == 0x30) {
+        if (gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, mCell) == 0x30) {
             field_0x230 = 1;
         }
         break;
@@ -195,15 +195,15 @@ bool TreasureChest_804AA178::vfunc_0x54() {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             BOOL open = isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c);
             if (open && (field_0x234 <= 2 || field_0x234 == 0x2F)) {
-                s32 count = gGameRoot_8053AAF8->fn_80138A30();
+                s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
                 if (getActorManager_801F856C()->fn_801F6058(count - 1) == field_0x240) {
                     s32 limit = 20;
-                    if (gGameRoot_8053AAF8->fn_80138A30() == 3) {
+                    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 3) {
                         limit = 30;
-                    } else if (gGameRoot_8053AAF8->fn_80138A30() == 4) {
+                    } else if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 4) {
                         limit = 50;
                     }
-                    if (fn_801CD664(100) <= limit) {
+                    if (randInt_801CD664(100) <= limit) {
                         field_0x234 = 0x20;
                     }
                 }

@@ -14,7 +14,7 @@ void FlyingPieces_8021C2B4::fn_8021C468() {
         FlyingPiece_8021C5B0* piece = &mPieces[i];
         if (fn_8023F264(i)) {
             JGeometry::TVec2f target;
-            if (fn_801C0D70()->fn_801C0FEC(getPlayerPos_8023E724(i), &target)) {
+            if (getShadowLinkFight_801C0D70()->fn_801C0FEC(getPlayerPos_8023E724(i), &target)) {
                 piece->mActive = true;
                 piece->mDone = false;
                 piece->mPlayer = i;
@@ -33,7 +33,7 @@ void FlyingPieces_8021C2B4::fn_8021C468() {
                 s32 angle = JMath::atanTable_.atan2_(piece->mStart.x - piece->mTarget.x,
                                                      piece->mStart.y - piece->mTarget.y) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-                piece->mAnim.fn_8021C9C4(fn_801F681C(angle));
+                piece->mAnim.fn_8021C9C4(angleToDir_801F681C(angle));
                 continue;
             }
         }

@@ -21,7 +21,7 @@ void ViewMode_804A9A18::update() {
                 break;
             }
         }
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x230) || found) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x230) || found) {
             getGameView_802D6A9C()->fn_802D7790(mLayer_0x4, 2);
         } else {
             getGameView_802D6A9C()->fn_802D77BC(mLayer_0x4, 2);
@@ -30,7 +30,7 @@ void ViewMode_804A9A18::update() {
     if (mSpawnParam_0x90 & 0xC) {
         bit = field_0x230;
         if (bit != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(bit)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
                 getGameView_802D6A9C()->fn_802D77BC(mLayer_0x4, mSpawnParam_0x90 & 0xC);
             } else {
                 getGameView_802D6A9C()->fn_802D7790(mLayer_0x4, 0xC);
@@ -40,7 +40,7 @@ void ViewMode_804A9A18::update() {
     if (mSpawnParam_0x90 & 0x3000) {
         bit = field_0x230;
         if (bit != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(bit)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
                 getGameView_802D6A9C()->fn_802D77BC(mLayer_0x4, mSpawnParam_0x90 & 0x3000);
             } else {
                 getGameView_802D6A9C()->fn_802D7790(mLayer_0x4, 0x3000);

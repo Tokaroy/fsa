@@ -55,7 +55,7 @@ static inline JGeometry::TVec3f* playerOffset2B8(s32 player) {
 }
 
 // act_sword_soldier.cpp: the out-of-line TBox2f::set copy fn_80232A0C calls.
-void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
+void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 
 // forward declarations (functions reversed for -inline deferred)
 s32 getPlayerLayer_8023DE58(s32 player);
@@ -2605,7 +2605,7 @@ void fn_80233BA0(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src) {
 
 // Per frame: pushes overlapping players apart (first pass, up to four nudges per pair),
 // then the player-on-player hits (second pass). Called from the battle frame
-// (Player.h). The out-of-line JGeometry copies it calls (fn_801546F4, fn_80233BA0,
+// (Player.h). The out-of-line JGeometry copies it calls (copyBox_801546F4, fn_80233BA0,
 // fn_80233BC4, fn_80233C08) are the ones MWCC did not inline here; under the default
 // inline budget it also calls the unit's small queries out of line.
 // The three pushes of j by -dir pass the address of negated(dir)'s value (the
@@ -2640,7 +2640,7 @@ void fn_80232A0C() {
             continue;
         }
         JGeometry::TBox2f boxA;
-        fn_801546F4(&boxA, &a->field_0x4c0);
+        copyBox_801546F4(&boxA, &a->field_0x4c0);
         JGeometry::TBox2f* viewA = layerBox(getPlayerLayer_8023DE58(i));
         boxA.addPos(JGeometry::TVec2f(-viewA->i.x, -viewA->i.y));
 
@@ -2672,7 +2672,7 @@ void fn_80232A0C() {
                 continue;
             }
             JGeometry::TBox2f boxB;
-            fn_801546F4(&boxB, &b->field_0x4c0);
+            copyBox_801546F4(&boxB, &b->field_0x4c0);
             JGeometry::TBox2f* viewB = layerBox(getPlayerLayer_8023DE58(j));
             boxB.addPos(JGeometry::TVec2f(-viewB->i.x, -viewB->i.y));
 
@@ -3631,7 +3631,7 @@ s32 fn_8022F3DC(s32 player) {
     if (!fn_8023F264(player)) {
         return -1;
     }
-    return gPlayerManager_8053AC90->mPlayers[player]->fn_80240644();
+    return gPlayerManager_8053AC90->mPlayers[player]->getLeader_80240644();
 }
 
 s32 fn_8022F340(s32 player) {
@@ -3687,7 +3687,7 @@ s32 fn_8022E8D4(s32 player) {
         return 0;
     }
     if (fn_8023F264(player)) {
-        return gPlayerManager_8053AC90->mPlayers[player]->fn_80248778();
+        return gPlayerManager_8053AC90->mPlayers[player]->getFollowerIndex_80248778();
     }
     return 0;
 }

@@ -269,7 +269,7 @@ void TingleFirstAppearance_804AADD8::draw() {
     if (field_0x230 == 0xC || field_0x230 == 0xB) {
         return;
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x23c + 0xC0, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x23c + 0xC0, false, 2, -1, 0, 0, 0);
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x23c + 0xC0, NULL, 7, 1.0f, 1.0f);
 }
 
@@ -279,7 +279,7 @@ void TingleFirstAppearance_804AADD8::draw() {
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 void TingleFirstAppearance_804AADD8::selectNearestPlayer() {
-    s32 count = gGameRoot_8053AAF8->fn_80138A30();
+    s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     s32 bestPlayer = 0;
     f32 bestDist = 65536.0f;
     for (s32 i = 0; i < count; i++) {

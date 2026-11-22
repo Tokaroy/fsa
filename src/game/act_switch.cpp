@@ -14,7 +14,7 @@ static const u32 lbl_8046C838[5] = { 'AMOS', 'BRBL', 'BLCK', 'BCK2', 'SMRI' };
 // Looks up the tile under the switch (inlined four times in update and vfunc_0x10).
 inline void Switch_804A7F38::readTileId() {
     field_0x244 = fn_80226AE0(&mPos, mLayer_0x4);
-    field_0x258 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x244) & 0x3FF;
+    field_0x258 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, field_0x244) & 0x3FF;
 }
 
 void Switch_804A7F38::init() {
@@ -94,7 +94,7 @@ void Switch_804A7F38::vfunc_0x10() {
                             for (int j = 0; j < 4; j++) {
                                 if (field_0x25c == ((param >> lbl_8046C828[j]) & 0x1F)) {
                                     field_0x260 = param >> 27;
-                                    if (getGameView_802D6A9C()->fn_802D800C(field_0x260)) {
+                                    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x260)) {
                                         vfunc_0x54(-1);
                                         mAlive = false;
                                     } else {
@@ -122,7 +122,7 @@ void Switch_804A7F38::vfunc_0x10() {
                         }
                     }
                 } else {
-                    if (getGameView_802D6A9C()->fn_802D800C(switchBit)) {
+                    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(switchBit)) {
                         vfunc_0x54(-1);
                         mAlive = false;
                     } else if (field_0x258 == 0x43 || field_0x258 == 0x68 || field_0x258 == 0x6a) {
@@ -210,7 +210,7 @@ void Switch_804A7F38::update() {
                     break;
                 }
                 s32 switchBit = getScreenFlagBit_0x3C();
-                if (getGameView_802D6A9C()->fn_802D800C(switchBit) == false) {
+                if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(switchBit) == false) {
                     if (gGameRoot_8053AAF8->field_0x7e == 1) {
                         bool found = false;
                         s32 end = getActorManager_801F856C()->getActorEnd();
@@ -307,14 +307,14 @@ void Switch_804A7F38::update() {
             if ((u32)field_0x234 <= 1 || field_0x234 == 5) {
                 s32 bit = field_0x264;
                 if (bit >= 0) {
-                    if (getGameView_802D6A9C()->fn_802D800C(bit)) {
+                    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
                         mAlive = false;
                         break;
                     }
                 } else {
                     bit = field_0x260;
                     if (bit >= 0) {
-                        if (getGameView_802D6A9C()->fn_802D800C(bit)) {
+                        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
                             mAlive = false;
                             break;
                         }

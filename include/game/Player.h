@@ -89,7 +89,7 @@ public:
     s32 fn_8024018C(); // via fn_802366CC
     s32 fn_80240354(); // via fn_80236768
     void fn_8024051C(); // via fn_802384BC
-    s32 fn_80240644(); // via fn_8022F3DC
+    s32 getLeader_80240644(); // via fn_8022F3DC
     bool fn_80240670() const; // via fn_8022F478
     bool fn_80240808() const; // via fn_8022F514
     bool fn_80247C0C(); // tu_8023FBF0 (li 1 / li 0); via fn_8023C830 (on the leader, fn_8022F3DC, of a follower)
@@ -205,7 +205,7 @@ public:
     bool fn_80246228(); // via fn_8022C310
     void fn_80248004(s32 a, bool b); // via fn_8022CA6C
     s32 fn_802486A0() const; // via fn_8022CAF8
-    s32 fn_80248778() const; // via fn_8022E8D4
+    s32 getFollowerIndex_80248778() const; // via fn_8022E8D4
     s32 fn_80248970() const; // via fn_8022E970
     void fn_80248DB8(); // via fn_802381B8
     void fn_80248DCC(); // via fn_80238244
@@ -469,7 +469,7 @@ public:
     void followCamera();  // tu_8028FBA0 inline: camera on mPos - (0, 150) on the TV
     bool requestArrival(); // tu_8028FBA0 inline: 0x33 / 0x3E / 0x12 / 0 after an arrival
     void spawnEffect15B(); // tu_8028FBA0 inline: effects 0x15B, 0x15C at the player
-    s32 life(); // tu_8028FBA0 inline: fn_80237774(fn_80240644()) if fn_80240808(), else fn_8024189C()
+    s32 life(); // tu_8028FBA0 inline: fn_80237774(getLeader_80240644()) if fn_80240808(), else fn_8024189C()
     void fallStep(); // tu_8028FBA0 inline: gravity on 0x344, then mPos += 0x344
     void riseToTarget(s32 state); // tu_8028FBA0 inline: rise above 128, then request `state`
     // Called by fn_802870C8 after the state update (r3 = this; results unused
@@ -517,7 +517,7 @@ public:
     bool fn_80275D9C(); // tu_8026FC20 (li r3, 1 / 0); true ends the state updates of tu_8027E5BC early
     void followStep();
     void fn_8027FA08(JGeometry::TVec3f* out); // tu_8027E5BC; called by update B and fn_8028676C
-    // tu_8023FBF0 (0x80242DAC): tile pushes on 0x414 / 0x418 by the tile under mPos (fn_80226850);
+    // tu_8023FBF0 (0x80242DAC): tile pushes on 0x414 / 0x418 by the tile under mPos (getRawTile_80226850);
     // called by the state 0x4A / 0x4B updates.
     void fn_80242DAC();
     void fn_80280074(); // tu_8027E5BC: the 0x4B movement (follow step 4.5 or the 0x3FF dash)
@@ -1488,7 +1488,7 @@ bool fn_8022DD74(s32 player); // -> fn_8024AFF8; else false
 bool fn_8022DEAC(s32 player); // -> fn_8024B24C; else false
 void fn_8022DF48(s32 player); // -> fn_8024B274
 bool fn_8022E39C(s32 player, s32 arg); // -> fn_80240840; else false
-s32 fn_8022E8D4(s32 player); // -> fn_80248778; else 0
+s32 fn_8022E8D4(s32 player); // -> getFollowerIndex_80248778; else 0
 s32 fn_8022E970(s32 player); // -> fn_80248970; else 0
 bool fn_8022F5B0(s32 player); // -> fn_8024C35C; else false
 bool fn_8022F64C(s32 player); // -> fn_80240DCC; else false
@@ -1621,7 +1621,7 @@ void fn_8023764C(s32 player, s32 value);
 bool fn_8022CCAC(s32 player);            // 2 units. -> fn_80249068 (byte 0x121F); else false
 bool fn_8022D75C(s32 player);            // 29 units. -> fn_8024BBB0 (byte 0xCE8); else false
 
-// 48 units. -> fn_80240644 (word 0xD60: another player's index, or -1);
+// 48 units. -> getLeader_80240644 (word 0xD60: another player's index, or -1);
 // else -1.
 s32 fn_8022F3DC(s32 player);
 
@@ -1788,7 +1788,7 @@ void fn_8022FF8C(s32 player, const JGeometry::TBox2f* box, s32 layer, s32 serial
 // and stores r5/r6 (mPlayerNo_0x4, serial) as words.
 
 // Owner unit not written yet (C linkage, 0x802378AC, 1 unit: act_bumper).
-// Called with a player index and a box centre after fn_80134DE4; the result
+// Called with a player index and a box centre after startRumble_80134DE4; the result
 // is not used.
 
 // Owner unit tu_8022AD64 (not written yet). 1 unit (act_eyeball_switch). Index (0-3)
@@ -1814,7 +1814,7 @@ s32 fn_80239108(s32 serial);
 // the other's leader, or both following one leader). Many units.
 bool fn_8022E438(s32 player, s32 other);
 // Hits `player` at `pos` and every player of its group at the same offset from its own
-// position (fn_801F2B7C: fn_80238548(player, damage, &pos, arg)); reads pos+0/+4 only.
+// position (damagePlayersInBox_801F2B7C: fn_80238548(player, damage, &pos, arg)); reads pos+0/+4 only.
 bool fn_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg);
 // Whether fn_8024D058(flag) / fn_8024157C(arg) accepts for every present player of a present
 // `player`'s group (fn_8022E438). fn_8023061C: 4 units (act_dummy_conversation, act_shop_item,

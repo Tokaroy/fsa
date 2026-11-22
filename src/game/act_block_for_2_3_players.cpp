@@ -1,7 +1,7 @@
 // The TMI2 actor ("Block for 2-3 players", docs/names/actors.tsv, medium
 // confidence). Spawned by spawnActor_801F9484: __nw__ 0x238, inline constructor
 // fn_8020020C (base constructor and vtable only). Each frame it checks the
-// value fn_80226850 returns for its position; at 0x12 it spawns a BCK2
+// value getRawTile_80226850 returns for its position; at 0x12 it spawns a BCK2
 // ("Colour block (1-player)") in its place and removes itself. Overrides
 // the destructor, init() and update().
 
@@ -19,7 +19,7 @@ void BlockFor2Or3Players_804AE728::init() {
 }
 
 void BlockFor2Or3Players_804AE728::update() {
-    if (fn_80226850(&mPos, mLayer_0x4) == 0x12) {
+    if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x12) {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BCK2, mLayer_0x4, &mPos, 0x100, -1, -1);
         mAlive = false;
     }

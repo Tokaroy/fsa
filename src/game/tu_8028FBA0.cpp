@@ -100,11 +100,11 @@ inline void Player_804A6F38::spawnEffect15B() {
 }
 
 // The life that decides between landing and state 0x33: the leader's
-// (fn_80237774 of fn_80240644) when fn_80240808 holds, else the player's own.
+// (fn_80237774 of getLeader_80240644) when fn_80240808 holds, else the player's own.
 // fn_80293900 inlines it, and the unwritten fn_80290FC0 twice.
 inline s32 Player_804A6F38::life() {
     if (fn_80240808()) {
-        return fn_80237774(fn_80240644());
+        return fn_80237774(getLeader_80240644());
     }
     return fn_8024189C();
 }
@@ -625,9 +625,9 @@ void Player_804A6F38::fn_80293B30() {
             if (fn_80251AEC(0x1F)) {
                 if (fn_80241E28(mDestLayer_0xce4, &mDestPos_0xcd4)) {
                     if (fn_802486A0() == 5 && fn_80240808()) {
-                        mDestPos_0xcd4.set(*getPlayerPos_8023E724(fn_80240644()));
+                        mDestPos_0xcd4.set(*getPlayerPos_8023E724(getLeader_80240644()));
                     }
-                    u16 tile = fn_8022461C(&mDestPos_0xcd4, mDestLayer_0xce4);
+                    u16 tile = getTileCollisionCode_8022461C(&mDestPos_0xcd4, mDestLayer_0xce4);
                     if (fn_802265DC(&mDestPos_0xcd4, mDestLayer_0xce4, true) || tile == 3 || tile == 0xE ||
                         fn_802684A4(&mDestPos_0xcd4, mDestLayer_0xce4))
                     {
@@ -1572,7 +1572,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         if (layer != mLayer_0x3b4) {
             return false;
         }
-        u16 tile = fn_8022461C(to, layer);
+        u16 tile = getTileCollisionCode_8022461C(to, layer);
         if (fn_802265DC(to, layer, true) || tile == 3 || tile == 0xE || fn_802684A4(to, layer)) {
             if (layer < 8) {
                 mPos.set(mReturnPos_0x2c4);
@@ -1608,7 +1608,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         }
     } else if (kind == 0xC || kind == 0xD || kind == 0x26) {
         if ((!fn_80240808() && field_0x1216 == true) ||
-            (fn_80240808() && !fn_8022D75C(fn_80240644()) && field_0x1238 > 0))
+            (fn_80240808() && !fn_8022D75C(getLeader_80240644()) && field_0x1238 > 0))
         {
             return false;
         }
@@ -1621,7 +1621,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
     } else if (kind == 5) {
         if (fn_80251AEC(0x20)) {
             field_0xcf1 = field_0xcf0;
-            u16 tile = fn_8022461C(&dest, layer);
+            u16 tile = getTileCollisionCode_8022461C(&dest, layer);
             if (tile == 0 || tile == 2 || tile == 3 || tile == 0x21) {
                 field_0xcf0 = 0;
             } else {
@@ -1662,7 +1662,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         if (mLayer_0x3b4 == 8) {
             if (fn_80251AEC(0x2A)) {
                 field_0xcf1 = field_0xcf0;
-                u16 tile = fn_8022461C(&dest, layer);
+                u16 tile = getTileCollisionCode_8022461C(&dest, layer);
                 if (tile == 0 || tile == 2 || tile == 0x21) {
                     field_0xcf0 = 0;
                 } else {
@@ -1710,8 +1710,8 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         }
     }
     if (kind == 0x12) {
-        mDestPos_0xcd4 = *getPlayerPos_8023E724(fn_80240644());
-        mDestLayer_0xce4 = getPlayerLayer_8023DE58(fn_80240644());
+        mDestPos_0xcd4 = *getPlayerPos_8023E724(getLeader_80240644());
+        mDestLayer_0xce4 = getPlayerLayer_8023DE58(getLeader_80240644());
     } else {
         mDestPos_0xcd4 = dest;
         mDestLayer_0xce4 = layer;

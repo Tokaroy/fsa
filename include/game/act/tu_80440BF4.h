@@ -15,7 +15,7 @@ class PaneCtrl_804AF86C;
 // 0x804B1988 (only the destructor, fn_80440F30); the constructor is
 // fn_80440FDC, which stores the object in lbl_8053AED8. The panes are the
 // seven 'Pba01'..'Pba04' / 'Pbb01'..'Pbb03' ones; the callers pass textures
-// from main2D.arc (fn_804030C4) to the 'Pba04'/'Pbb02' pictures.
+// from main2D.arc (getMain2DResource_804030C4) to the 'Pba04'/'Pbb02' pictures.
 class ButtonIcons_804B1988 {
 public:
     ButtonIcons_804B1988();

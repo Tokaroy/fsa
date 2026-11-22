@@ -25,11 +25,11 @@ void WaitSwitch_804A8B20::init() {
 void WaitSwitch_804A8B20::update() {
     switch (mState) {
     case 0:
-        if (getGameView_802D6A9C()->fn_802D800C(mBit)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(mBit)) {
             mState = 1;
             if (mMode >= 1 && mMode <= 5) {
                 if (!getGameView_802D6A9C()->fn_802D75BC(field_0x16c)) {
-                    gGameRoot_8053AAF8->fn_80134DE4(10, mCount);
+                    gGameRoot_8053AAF8->startRumble_80134DE4(10, mCount);
                 }
             }
         }

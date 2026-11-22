@@ -197,7 +197,7 @@ void TinglesTowerTingleAndSign_804AAD60::draw() {
             cel = lbl_80471518[field_0x270];
         }
         drawSprite_801F06F0("enemy_both2_sob.bin", cel + 0xC0, NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, cel + 0xC0, 0, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, cel + 0xC0, 0, 2, -1, 0, 0, 0);
     }
 }
 
@@ -361,7 +361,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
         switch (field_0x238) {
         case 0: {
             if (nextMessage(0x486)) {
-                for (s32 n = gGameRoot_8053AAF8->fn_80138A30() - 1; n > 0; n--) {
+                for (s32 n = gGameRoot_8053AAF8->getPlayerCount_80138A30() - 1; n > 0; n--) {
                     for (s32 i = 0; i < n; i++) {
                         s32 vNext = fn_80236228(field_0x244[i + 1]);
                         if (fn_80236228(field_0x244[i]) < vNext) {
@@ -403,7 +403,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
         }
         case 5:
         default: {
-            s32 count = gGameRoot_8053AAF8->fn_80138A30();
+            s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
             s32 total = 0;
             for (s32 i = 0; i < count; i++) {
                 total += fn_80236228(i);
@@ -431,7 +431,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 5) {
                 if (field_0x238 == 0) {
-                    field_0x238 = 5 - gGameRoot_8053AAF8->fn_80138A30();
+                    field_0x238 = 5 - gGameRoot_8053AAF8->getPlayerCount_80138A30();
                 } else {
                     field_0x238++;
                 }
@@ -454,7 +454,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315460() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 == 0) {
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         switch (field_0x238) {
         case 0: {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
@@ -517,7 +517,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315080() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 == 0) {
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         switch (field_0x238) {
         case 0: {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
@@ -580,7 +580,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80314B1C() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 == 0) {
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         switch (field_0x238) {
         case 0: {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
@@ -730,7 +730,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_803146DC() {
                     }
                 }
             }
-            if (field_0x238 >= gGameRoot_8053AAF8->fn_80138A30()) {
+            if (field_0x238 >= gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 field_0x238 = 4;
             }
             if (field_0x238 < 4) {
@@ -768,7 +768,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_803142E4() {
             break;
         case 2: {
             fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-            s32 maxP = gGameRoot_8053AAF8->fn_80138A30();
+            s32 maxP = gGameRoot_8053AAF8->getPlayerCount_80138A30();
             f32 r = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             s32 rnd = (s32)(r * maxP) & 3;
             fn_803894BC(field_0x254, rnd + 1);
@@ -807,7 +807,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80313D7C() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 == 0) {
-        s32 count = gGameRoot_8053AAF8->fn_80138A30();
+        s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         switch (field_0x238) {
         case 0: {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);

@@ -133,11 +133,11 @@ void BirdManager_804A5C88::init() {
     EnemyBase_804A4808::init();
     field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
-        field_0x2ac = fn_801CD664(2);
+        field_0x2ac = randInt_801CD664(2);
     }
     field_0x340 = (mSpawnParam_0x90 >> 4) & 3;
     if (field_0x340 >= 2 || field_0x340 < 0) {
-        field_0x340 = fn_801CD664(2);
+        field_0x340 = randInt_801CD664(2);
     }
     field_0x344 = (mSpawnParam_0x90 >> 8) & 1;
     field_0x348 = (u32)mSpawnParam_0x90 >> 27;
@@ -153,7 +153,7 @@ void BirdManager_804A5C88::init() {
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(0x4B1) + 600;
+    field_0x250 = randInt_801CD664(0x4B1) + 600;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
 

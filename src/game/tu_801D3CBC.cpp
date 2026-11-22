@@ -11,7 +11,7 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
     s32 id;
     u8 alpha;
     bool onTile = false;
-    if (fn_801CD2F8(field_0x56c)) {
+    if (isUpperLayer_801CD2F8(field_0x56c)) {
         id = 0x3E;
         pos.set(mPos);
         alpha = (u8)(255.0f * mStateTimer * (1.0f / lbl_8053EE00));
@@ -20,8 +20,8 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
         pos.set(field_0x570);
         alpha = (u8)(255.0f - 255.0f * mStateTimer * (1.0f / lbl_8053EE00));
     }
-    if (fn_8022461C(&pos, 0) == 1) {
-        switch (fn_80226850(&pos, 0)) {
+    if (getTileCollisionCode_8022461C(&pos, 0) == 1) {
+        switch (getRawTile_80226850(&pos, 0)) {
         case 0x9B:
         case 0x9C:
             onTile = true;
@@ -87,7 +87,7 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
             if (mLayer_0x4 == 8) {
                 JGeometry::TVec3f pos;
                 fn_801CD0D0(&mPos, &pos);
-                fn_801EF574("player_sob.bin", frame, &pos, &params);
+                drawSobSprite_801EF574("player_sob.bin", frame, &pos, &params);
             }
         } else {
             drawSprite_801F06F0("player_sob.bin", frame, &params, 7, 1.0f, 1.0f);
@@ -124,10 +124,10 @@ void ShadowLink2_804A43E8::fn_801D3CBC() {
         }
         fn_801D3DAC(frame);
         if (mFlags & 0x10000) {
-            if (!fn_801CD2F8(mLayer_0x4)) {
+            if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
                 JGeometry::TVec3f pos;
                 fn_801CD150(&mPos, &pos);
-                fn_803075AC(mSerial, 8, &pos, 0x176, false, 2, -1, 0, 0, 0);
+                showGbaSprite_803075AC(mSerial, 8, &pos, 0x176, false, 2, -1, 0, 0, 0);
             }
         }
         break;

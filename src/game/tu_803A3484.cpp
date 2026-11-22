@@ -141,7 +141,7 @@ Title_804AF820::Title_804AF820() {
     field_0x18 = new J2DPicture(tex);
     tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_no.bti");
     field_0x1c = new J2DPicture(tex);
-    tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
+    tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
     field_0x20 = new J2DPicture(tex);
     field_0x20->setBlackWhite(JUtility::TColor(8, 24, 40, 255), JUtility::TColor(0, 0, 0, 0));
     if (lbl_80529DEC.field_0x249[0] != 0) {
@@ -552,7 +552,7 @@ void Title_804AF820::fn_803A34A0() {
             if (lbl_80529DEC.field_0x249[0] != 0) {
                 if ((lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(0)) || lbl_8053AD30->fn_8030A388(getPlayerInputSlot_8030AAF4(0))) &&
                     field_0x82 <= 0 && lbl_8053AD30->fn_80309C4C(0x1100, 1) != 0) {
-                    gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
                     field_0x154 = 2;
                     gAudioMgr_8053AF80->fn_80458F9C(60);
                     lbl_80529DEC.field_0x1a0 = 60;

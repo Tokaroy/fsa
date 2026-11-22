@@ -42,7 +42,7 @@ void BeeFormation_804AC7B8::update() {
     if (field_0x262 == 1) {
         return;
     }
-    if (fn_801F3D94(0) != 0) {
+    if (updateHitReaction_801F3D94(0) != 0) {
         return;
     }
 
@@ -184,7 +184,7 @@ void BeeFormation_804AC7B8::update() {
     }
 
     if (field_0x230 == 2 || field_0x230 == 3) {
-        if (fn_801F2B7C(0, -1, 1)) {
+        if (damagePlayersInBox_801F2B7C(0, -1, 1)) {
             if (field_0x230 == 3) {
                 field_0x234 = 30;
                 field_0x230 = 2;

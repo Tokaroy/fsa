@@ -198,13 +198,13 @@ void BigPoe_804A0440::update() {
         if (field_0x25c > 0 && field_0x230 != 6 && field_0x230 != 7) {
             addCalc2_801F71A4(&field_0x27c, field_0x280, 0.2f, field_0x284);
         }
-        if (fn_801F3D94(0) != 0) {
+        if (updateHitReaction_801F3D94(0) != 0) {
             return;
         }
         if (field_0x230 == 2 || field_0x230 == 4) {
             f32 dx = field_0x294[0] - mPos.x;
             f32 dy = field_0x294[1] - mPos.y;
-            if (getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
                 if (std::sqrtf(dx * dx + dy * dy) < 40.0f && field_0x258 != 3) {
                     field_0x258 = 3;
                     field_0x234 = 10;
@@ -244,7 +244,7 @@ void BigPoe_804A0440::update() {
     }
     switch (field_0x230) {
     case 0:
-        if (getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> 7) & 0x1F)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 7) & 0x1F)) {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
             bool visible = false;
             JGeometry::TVec3f p1(x0, y0, 0.0f);
@@ -359,7 +359,7 @@ void BigPoe_804A0440::update() {
                 child->field_0x294[6] += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.sinShort((u16)field_0x290);
                 child->field_0x294[7] += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.cosShort((u16)field_0x290);
             }
-            fn_801F2B7C(mParamAtcp_0x114, -1, 9);
+            damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
             if (field_0x23c == 0) {
                 field_0x28c = (u16)field_0x290;
                 addCalc2_801F71A4(&field_0x28c, 0.0f, 0.3f, 100.0f);
@@ -379,8 +379,8 @@ void BigPoe_804A0440::update() {
         if (field_0x258 == 3) {
             startSound_801F0E34(0x40020, 0);
         }
-        if (gGameRoot_8053AAF8->fn_80138A30() > 1 && field_0x258 == 3) {
-            if (!getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
+        if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 && field_0x258 == 3) {
+            if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
                 field_0x23c = 0;
                 field_0x248 = 60;
             }
@@ -509,7 +509,7 @@ void BigPoe_804A0440::update() {
             field_0x234 = 3;
         }
         mPos.add(mVel_0x3c);
-        fn_801F2B7C(mParamAtcp_0x114, -1, 9);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
         if (field_0x2e8 != NULL) {
             JGeometry::TVec3f emitPos(field_0x294[6], field_0x294[7], field_0x294[8]);
             setEmitterPos_8013CB44(field_0x2e8, &emitPos, 1, 1, true);
@@ -576,7 +576,7 @@ void BigPoe_804A0440::draw() {
     if (field_0x268 == 2) {
         params.field_0x1d = 3;
         params.field_0x1c = 1;
-        fn_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x1B1, &params, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x1B1, &params, 0, 0, false, 1.0f, 1.0f);
         return;
     }
     params.field_0x1c = 1;

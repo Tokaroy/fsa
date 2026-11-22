@@ -125,7 +125,7 @@ void WarpCannon_8049EAE0::draw() {
     mtx[2][1] = 0.0f;
     mtx[2][2] = 2.0f;
     params.mMtx = mtx;
-    fn_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x14C, &params, 0x407, 1, false,
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mAnim.mCel + 0x14C, &params, 0x407, 1, false,
                 1.0f, 1.0f);
 }
 
@@ -140,7 +140,7 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     case 2:
         field_0x27c = 13.0f;
         fn_80230FD0(0, 0x20036);
-        gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+        gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
         lbl_8053AD70->fn_8037AE00();
         break;
     case 3: {

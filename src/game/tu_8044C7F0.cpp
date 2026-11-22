@@ -322,7 +322,7 @@ void CollectScreen_804B1D58::fn_80452350() {
          (lbl_80529DEC.mStage_0x118 == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
          (lbl_80529DEC.mStage_0x118 == 6 && lbl_80529DEC.mLevel_0x11c == 2) ||
          (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 1))) {
-        const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_pYback_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     } else {
         const ResTIMG* image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
@@ -500,7 +500,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                 }
             }
-            gAudioMgr_8053AF80->fn_80458880(0, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         } else if (field_0xf8 < 2 && lbl_8053AD30->fn_80309A9C(4, -1)) {
             field_0xf8++;
             field_0xfc = 1;
@@ -518,7 +518,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                 }
             }
-            gAudioMgr_8053AF80->fn_80458880(0, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
             if (field_0xf8 == 0) {
                 field_0xfa = 10;
@@ -527,7 +527,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
             }
             field_0xfc = 1;
             field_0x132 = 30;
-            gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             field_0xf8 = 0;
             for (s32 i = 0; i < 3; i++) {
@@ -546,7 +546,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
             field_0xfa = 10;
             field_0xfc = 1;
             field_0x132 = 30;
-            gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         }
         s32 bounce = field_0xfc < 5 ? field_0xfc : 10 - field_0xfc;
         f32 offset = 5.0f * (bounce * bounce) / 25.0f;
@@ -574,9 +574,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     field_0xa4[i]->clearStatus(2);
                     field_0xa4[i]->clearStatus(4);
                 }
-                gAudioMgr_8053AF80->fn_80458880(0x5E, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x5E, -1);
                 if (!fn_8019CE40(6, 3) && field_0x138 == 6) {
-                    gAudioMgr_8053AF80->fn_80458880(0x60, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x60, -1);
                 }
             }
         } else if (field_0x134 == 172) {
@@ -603,9 +603,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     field_0xc0[i]->clearStatus(2);
                     field_0xc0[i]->clearStatus(4);
                 }
-                gAudioMgr_8053AF80->fn_80458880(0x5D, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x5D, -1);
                 if (!fn_8019CE40(6, 0) && field_0x138 == 3) {
-                    gAudioMgr_8053AF80->fn_80458880(0x5F, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x5F, -1);
                 }
             }
             mScreen->search(lbl_80491210[field_0x138])->setAlpha(0);
@@ -740,7 +740,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
             field_0x184 = 7;
             field_0x140 = 0;
             if (field_0x137 == 0) {
-                gAudioMgr_8053AF80->fn_80458880(2, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(2, -1);
                 gAudioMgr_8053AF80->fn_80459274();
             }
             field_0x137 = 0;
@@ -767,23 +767,23 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
         if (lbl_8053AD30->fn_80309A9C(2, -1)) {
             if (field_0x136 == 0) {
                 field_0x136 = 1;
-                gAudioMgr_8053AF80->fn_80458880(0, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
             }
         } else if (lbl_8053AD30->fn_80309A9C(1, -1)) {
             if (field_0x136 == 1) {
                 field_0x136 = 0;
-                gAudioMgr_8053AF80->fn_80458880(0, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
             field_0xfa = 9;
             if (field_0x136 == 1) {
-                gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             field_0x136 = 1;
             field_0xfa = 9;
             if (field_0x136 == 1) {
-                gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
             }
         }
         lbl_8053AEC0->fn_80431174(field_0x136);
@@ -801,7 +801,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
         if (arrived && lbl_8053AEC0->fn_80431740()) {
             if (field_0x136 == 0) {
                 if (field_0xf8 == 1) {
-                    gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
                     gAudioMgr_8053AF80->fn_80459274();
                     s32 mode;
@@ -828,7 +828,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     }
                 } else {
                     field_0x184 = 2;
-                    gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
                     gAudioMgr_8053AF80->fn_80458F9C(0);
                     gAudioMgr_8053AF80->fn_80459274();
                 }
@@ -1009,10 +1009,10 @@ void CollectScreen_804B1D58::fn_8044D894() {
         u8 rupees = lbl_80529DEC.field_0x24f;
         s32 ones = rupees % 10;
         s32 tens = rupees / 10;
-        const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1D30[tens]));
+        const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[tens]));
         static_cast<J2DPicture*>(mScreen->search('Pfsk01'))->changeTexture(image, 0);
         static_cast<J2DPicture*>(mScreen->search('Pfs01'))->changeTexture(image, 0);
-        image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1D30[ones]));
+        image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[ones]));
         static_cast<J2DPicture*>(mScreen->search('Pfsk02'))->changeTexture(image, 0);
         static_cast<J2DPicture*>(mScreen->search('Pfs02'))->changeTexture(image, 0);
     } else {
@@ -1183,7 +1183,7 @@ void CollectScreen_804B1D58::fn_8044D894() {
     }
 
     field_0x11c = 0;
-    for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+    for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
         field_0x11c += fn_80236100(i);
     }
     if (fn_80237060(0) == 2) {
@@ -1202,7 +1202,7 @@ void CollectScreen_804B1D58::fn_8044D894() {
                 if (leading) {
                     leading = false;
                 }
-                const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1D30[digit]));
+                const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[digit]));
                 static_cast<J2DPicture*>(mScreen->search(lbl_80491070[i]))->changeTexture(image, 0);
                 static_cast<J2DPicture*>(mScreen->search(lbl_804910A0[i]))->changeTexture(image, 0);
                 mScreen->search(lbl_80491070[i])->show();
@@ -1235,7 +1235,7 @@ void CollectScreen_804B1D58::fn_8044D894() {
                 if (leading) {
                     leading = false;
                 }
-                const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1D30[digit]));
+                const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[digit]));
                 static_cast<J2DPicture*>(mScreen->search(lbl_80491070[i]))->changeTexture(image, 0);
                 static_cast<J2DPicture*>(mScreen->search(lbl_804910A0[i]))->changeTexture(image, 0);
                 mScreen->search(lbl_80491070[i])->show();

@@ -46,7 +46,7 @@ void IronBall_804AB968::init() {
 // FIXME: 99.74%. Regalloc only: the |x| + |y| speed sum uses f1, f0 / f0, f1 here;
 // the original has f1 (|y|), f3 (|x|) then frsp into f0, f1.
 void IronBall_804AB968::update() {
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     if (!isScreenFlagSet_0x34()) {
         mPos += mVel_0x3c;
         if (isBlocked_0x4C(mLayer_0x4, &mPos) || field_0x244 > 600) {
@@ -127,7 +127,7 @@ bool IronBall_804AB968::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) 
         }
         break;
     }
-    s32 code = fn_8022461C(&p, layer);
+    s32 code = getTileCollisionCode_8022461C(&p, layer);
     switch (field_0x240) {
     case 0:
         if (code == 0x41) {

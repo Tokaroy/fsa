@@ -50,7 +50,7 @@ void HardhatBeetle_804A06C0::update() {
             mHome.y = (f32)((s32)mHome.y & 0xFFF8);
             mHome.x += -16.0f * JMath::sincosTable_.sinShort(field_0x24c);
             mHome.y += -16.0f * JMath::sincosTable_.cosShort(field_0x24c);
-            s32 code = fn_8022461C(&mHome, mLayer_0x4);
+            s32 code = getTileCollisionCode_8022461C(&mHome, mLayer_0x4);
             if ((code >= 2 && code <= 3) || code == 0xE) {
                 if (fn_802DE9A0() == true && code == 0xE) {
                     field_0x25c = 1;
@@ -65,7 +65,7 @@ void HardhatBeetle_804A06C0::update() {
                 mState = 2;
             }
         }
-        if (fn_801F3D94(true) != 0 || fn_801F2DB4('NULL', 'NULL', NULL)) {
+        if (updateHitReaction_801F3D94(true) != 0 || checkActorHit_801F2DB4('NULL', 'NULL', NULL)) {
             field_0x234[2] = 20;
             fn_801F2618(NULL, false);
             return;
@@ -74,7 +74,7 @@ void HardhatBeetle_804A06C0::update() {
         addCalc2_801F71A4(&mVel_0x3c.y, field_0x26c.y, 0.1f, field_0x27c);
         mPos += mVel_0x3c;
         fn_801EEC98(mSerial, &angle, &outDir, &outDist, NULL, 0, 0);
-        if (fn_801F2B7C(-100, -1, 1) && mState == 0) {
+        if (damagePlayersInBox_801F2B7C(-100, -1, 1) && mState == 0) {
             mVel_0x3c.x = -2.0f * JMath::sincosTable_.sinShort(angle);
             mVel_0x3c.y = -2.0f * JMath::sincosTable_.cosShort(angle);
             field_0x26c.set(0.0f, 0.0f, 0.0f);

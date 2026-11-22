@@ -70,16 +70,16 @@ public:
     void fn_801C2E70();
     // act_shadow_link_2.cpp: switches to state 0xD (fn_801C3B7C only).
     void fn_801C26D8();
-    // act_shadow_link_2.cpp (0x801C27F0): passes mFlags bit 0x08000000 to the fn_801C0D70 object's
+    // act_shadow_link_2.cpp (0x801C27F0): passes mFlags bit 0x08000000 to the getShadowLinkFight_801C0D70 object's
     // fn_801C1374, then die_0x24.
     void fn_801C27F0();
     // act_shadow_link_2.cpp: switches to state 0xE unless mState is 0xE.
     void fn_801C26FC();
     // act_shadow_link_2.cpp (0x801C272C, not written yet): sets the byte at
-    // 0x11D, then picks a state by the fn_801C0D70 object (fn_801C11F0 and
+    // 0x11D, then picks a state by the getShadowLinkFight_801C0D70 object (fn_801C11F0 and
     // its bit 1). Called by ShadowLinkFight_801C0D70::fn_801C0DCC.
     void fn_801C272C();
-    // act_shadow_link_2.cpp: if the object from fn_801C0D70 has bit 0x80000000
+    // act_shadow_link_2.cpp: if the object from getShadowLinkFight_801C0D70 has bit 0x80000000
     // at 0x50 and mFlags has bit 0x2000, calls its fn_801C12B8.
     void fn_801C53F8();
     // act_shadow_link_2.cpp: if mFlags has bit 0x4000 and mState is 0 or 1,
@@ -91,8 +91,8 @@ public:
     void fn_801C6BA8();
     void fn_801C6C7C();
     // game/tu_801C71BC.cpp: for a nonzero flag, sets the byte at 0x55D from
-    // a rail query (fn_800FD894 on field_0x358) and fn_801CD664; otherwise
-    // from fn_801CD664(0xC) alone.
+    // a rail query (fn_800FD894 on field_0x358) and randInt_801CD664; otherwise
+    // from randInt_801CD664(0xC) alone.
     void fn_801C8BC4(u8 flag);
     // game/tu_801C71BC.cpp: rail step. Clears mFlags 0x2000000, sets or clears
     // 0x20000 from fn_800FD594 on field_0x358, reads the rail point at 0xFF

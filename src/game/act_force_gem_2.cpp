@@ -81,7 +81,7 @@ void ForceGem2_804AB850::init() {
 }
 
 bool ForceGem2_804AB850::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0xC || code == 0x3 || code == 0xE) {
         mVel_0x3c.zero();
         mState = 5;
@@ -303,5 +303,5 @@ void ForceGem2_804AB850::draw() {
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x24c + lbl_804AB810[field_0x264], false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x24c + lbl_804AB810[field_0x264], false, 2, -1, 0, 0, 0);
 }

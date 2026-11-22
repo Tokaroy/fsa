@@ -65,7 +65,7 @@ void UnknownSWBM_804A1160::init() {
 
 // The tile codes as act_bombchu's isBlocked_0x4C (a != chain around the remaining tests).
 // FIXME: 98.97. Register allocation only, plus one move: the target keeps a second copy of
-// layer in r29 (mr r29, r28 before the fn_8020D6AC call) for the two later fn_80226850
+// layer in r29 (mr r29, r28 before the fn_8020D6AC call) for the two later getRawTile_80226850
 // calls, as if they read it through another variable; ours reuses one register. this / pos
 // / layer also take r31 / r27 / r28 there, r29 / r28 / r27 here.
 bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
@@ -75,8 +75,8 @@ bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         return true;
     }
 
-    s32 code = fn_8022461C(pos, layer);
-    s32 code2 = fn_80226850(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
+    s32 code2 = getRawTile_80226850(pos, layer);
     if (code == 0x10 || code == 0x11 || code == 0x12 || code == 0x13 || code == 0x14 ||
         code == 0x15 || code == 0x16 || code == 0x17 || (code2 >= 0x140 && code2 <= 0x15F)) {
         field_0x238 = 0;
@@ -95,7 +95,7 @@ bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         code != 0x2D && code != 0x2E && code != 0x2F && code != 0x20 && code != 0xD &&
         code != 0x39 && code != 0x3A && code != 0x3B && code != 0x4C && code != 0x4D &&
         code != 0x4E && code != 0x4F && code != 0x24) {
-        if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+        if (getRawTile_80226850(pos, layer) == 0x3A || getRawTile_80226850(pos, layer) == 0x3D) {
             field_0x234 = 0;
             return false;
         }
@@ -261,7 +261,7 @@ void UnknownSWBM_804A1160::draw() {
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f,
                                               1.0f);
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + 0x12d, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + 0x12d, false, 2, -1, 0, 0, 0);
 }
 
 UnknownSWBM_804A1160::~UnknownSWBM_804A1160() {}

@@ -101,8 +101,8 @@ bool ArrowPlayer_804A05E0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_804662E8) == true) {
         return true;
     }
-    s32 code = fn_8022461C(pos, layer);
-    s32 tile = fn_80226850(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
+    s32 tile = getRawTile_80226850(pos, layer);
     if ((u32)(code - 0x10) <= 7 || (tile >= 0x140 && tile <= 0x15F)) {
         field_0x23c = 0;
         field_0x238 = 1;
@@ -168,7 +168,7 @@ bool ArrowPlayer_804A05E0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
             }
             return false;
         }
-        if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+        if (getRawTile_80226850(pos, layer) == 0x3A || getRawTile_80226850(pos, layer) == 0x3D) {
             field_0x238 = 0;
             return false;
         }
@@ -284,7 +284,7 @@ void ArrowPlayer_804A05E0::update() {
         setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox2.set(-8.0f, -8.0f, 8.0f, 8.0f);
-        fn_801F2B7C(mParamAtcp_0x114, mSpawnParam_0x90, 7);
+        damagePlayersInBox_801F2B7C(mParamAtcp_0x114, mSpawnParam_0x90, 7);
     }
     switch (field_0x230) {
     case 0:
@@ -524,7 +524,7 @@ void ArrowPlayer_804A05E0::draw() {
             if ((field_0x94 == 0 || field_0x94 == 4) && field_0x230 == 0) {
                 base = 0x2DF;
             }
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, base + field_0x268, false, 2, -1, 0, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, base + field_0x268, false, 2, -1, 0, 0, 0);
         }
         if ((field_0x94 == 2 || field_0x94 == 4) && field_0x230 != 4) {
             drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);

@@ -186,7 +186,7 @@ void EffectSystem_8049F178::inl_8013DDEC(u16 id, u8 group, s32 word) {
 void EffectSystem_8049F178::fn_8013DC44() {
     bool update = false;
     if (isGameModeSet() && gGameRoot_8053AAF8->field_0x4c != GAME_MODE_C) {
-        if (!getGameView_802D6A9C()->fn_802DCD0C()) {
+        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             update = true;
         }
     } else {

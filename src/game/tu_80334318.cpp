@@ -80,7 +80,7 @@ void IronBallHoming_804AB9C0::init() {
 // 0x80335688.
 // FIXME(shotgun): 99.68 %, different; behaviour clean.
 bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tile = fn_8022461C(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
     if (field_0x230 != 3 && (tile == 0xC || tile == 3 || tile == 0xE)) {
         if (field_0x230 != 7) {
             field_0x25c = 30;
@@ -117,9 +117,9 @@ void IronBallHoming_804AB9C0::update() {
     if (0.0f == mPos.z && field_0x230 != 7) {
         bool hit;
         if (field_0x250 == 1) {
-            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 5) != 0;
+            hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 5) != 0;
         } else {
-            hit = fn_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
+            hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
         }
         if (hit) {
             mVel_0x3c.x = -mVel_0x3c.x;

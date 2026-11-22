@@ -118,7 +118,7 @@ public:
     // 1 unit (tu_802957CC); body unwritten (tu_8029D898).
     void fn_802A1050(const JGeometry::TVec3f* pos);
     // 1 unit (tu_80256C74, the dig of state 0x47 at frame 12). Reads the map tile
-    // under pos (fn_80226BC4 into field_0x20, fn_802F9908 into field_0x24) and
+    // under pos (fn_80226BC4 into field_0x20, getTile_802F9908 into field_0x24) and
     // returns a result code that the caller tests for 1-4 and 8.
     s32 fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     // 1 unit (tu_80256C74, the ground smash of state 0x3C). Reads the tile under pos
@@ -158,7 +158,7 @@ public:
     void fn_8029E9EC(const JGeometry::TVec3f* pos, s32 layer, u16 tile, s32 arg4, u8 dir);
     // 1 unit (tu_802957CC, 2 calls each). Read the tile under pos on layer 0
     // into fields 0x20 / 0x24; true when its lbl_8046CB88 collision code is 0
-    // or fn_8022461C gives 0x22 while GameView field_0x170 is clear
+    // or getTileCollisionCode_8022461C gives 0x22 while GameView field_0x170 is clear
     // (fn_802A1554 also for a list of tile codes and the codes 0xE / 3).
     bool fn_802A1490(const JGeometry::TVec3f* pos);
     // 0x802A1688 (game/tu_8029D898.cpp): the tile on pos is 0x81: unless tag is 'SBAL', rewrites it to 0x9D and spawns
@@ -179,7 +179,7 @@ public:
     /* 0x18 */ s32 field_0x18; // delay
     /* 0x1C */ s32 field_0x1c; // frame, mod 8
     /* 0x20 */ s32 field_0x20; // the last cell written (fn_802A3884 / fn_802A3948)
-    /* 0x24 */ u16 field_0x24; // the tile code at field_0x20 (fn_802F9908; sth / lhz)
+    /* 0x24 */ u16 field_0x24; // the tile code at field_0x20 (getTile_802F9908; sth / lhz)
     /* 0x26 */ u8 field_0x26[0x28 - 0x26];
 }; // Size: 0x28
 

@@ -43,7 +43,7 @@ void Gibdo_804A3BF8::init() {
     mFlags |= ENEMY_FLAG_NO_HURT;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(0x3D) + 0x3C;
+    field_0x250 = randInt_801CD664(0x3D) + 0x3C;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3BB8, 0x10);
@@ -62,7 +62,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             mFlags |= 0x8000;
             mTargetSpeed = 0.0f;
         }
-        field_0x250 = fn_801CD664(0x3D) + 0x3C;
+        field_0x250 = randInt_801CD664(0x3D) + 0x3C;
         mAnim.fn_801D22A0(mDir_0x98, 2);
         break;
     case 1:

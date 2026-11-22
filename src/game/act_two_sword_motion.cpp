@@ -102,7 +102,7 @@ bool TwoSwordMotion_804ABA90::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == true) {
         return true;
     }
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0 || code == 2 || code == 0x50 || code == 0x39 || code == 0xd || code == 0x61) {
         return false;
     }

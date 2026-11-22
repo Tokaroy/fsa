@@ -20,8 +20,8 @@ union SpriteParamsColor_801F5AE0 {
 // named after the constructor it is inlined into, ActorBase's at
 // 0x801F5AE0). One lives in every actor at 0x120, and draw() overrides
 // build others on the stack (act_rat 0x800F3C70: the same stores in the same
-// order) to pass to the "SOB " sprite functions (drawSprite_801F06F0, fn_801F02BC,
-// fn_801EFD34, fn_801EF830, fn_801EF574), which NULL-check it and read
+// order) to pass to the "SOB " sprite functions (drawSprite_801F06F0, drawSpriteScaled_801F02BC,
+// drawSpriteRes_801EFD34, fn_801EF830, drawSobSprite_801EF574), which NULL-check it and read
 // 0x13, 0x18, 0x1C and 0x1D (fn_801EF830, 0x801EFA64-0x801EFBB0).
 // The colours 0x10 / 0x14 are JUtility::TColor: the constructor stores -1
 // to both (TColor's default constructor) before reset() sets them again,

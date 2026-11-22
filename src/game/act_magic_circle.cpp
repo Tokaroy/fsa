@@ -99,7 +99,7 @@ void MagicCircle_804A7960::init() {
     field_0x24c = (mSpawnParam_0x90 >> 4) & 0xF;
     field_0x25c = mSpawnParam_0x90 & 7;
     if (field_0x25c == 6) {
-        s32 playerCount = gGameRoot_8053AAF8->fn_80138A30();
+        s32 playerCount = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         if (playerCount >= 2) {
             field_0x25c = (s32)((f32)playerCount * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
         } else {

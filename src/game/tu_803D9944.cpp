@@ -148,7 +148,7 @@ void Tingle_804B0478::update() {
     case 2:
         gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         if (fn_80388CAC(field_0x244, mSerial)) {
-            if (gGameRoot_8053AAF8->fn_80138A30() == 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1) {
                 startSound_801F0E34(0x5006c, 0);
             }
             fn_80384C58(field_0x244, mSerial);
@@ -166,7 +166,7 @@ void Tingle_804B0478::update() {
         break;
     case 3:
         gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
-        if (field_0x23c == 30 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
+        if (field_0x23c == 30 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             startSound_801F0E34(0x5006c, 0);
         }
         if (field_0x23c == 0) {
@@ -311,13 +311,13 @@ void Tingle_804B0478::draw() {
                 mPos.x = field_0x260[i].x;
                 mPos.y = field_0x260[i].y;
                 mPos.z = field_0x260[i].z;
-                fn_803075AC(i - 0x22b, getPlayerLayer_8023DE58(i), &mPos, id, false, 2, -1, true, 0, 1);
+                showGbaSprite_803075AC(i - 0x22b, getPlayerLayer_8023DE58(i), &mPos, id, false, 2, -1, true, 0, 1);
             }
         }
         mPos.x = x;
         mPos.y = y;
         mPos.z = z;
     } else {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, base + field_0x24c, false, 2, -1, true, 0, 1);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, base + field_0x24c, false, 2, -1, true, 0, 1);
     }
 }

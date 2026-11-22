@@ -23,9 +23,9 @@ inline s32 Bombchu_804AB464::kind() const {
 // and in three update states (the same call pair each time).
 inline s32 Bombchu_804AB464::hitPlayers() {
     if (gGameRoot_8053AAF8->field_0x7f == 0 || kind() == 4 || kind() == 3) {
-        return fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+        return damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
-    return fn_801F2B7C(0, -1, 1);
+    return damagePlayersInBox_801F2B7C(0, -1, 1);
 }
 
 void Bombchu_804AB464::init() {
@@ -138,7 +138,7 @@ void Bombchu_804AB464::vfunc_0x54() {
     field_0xb0 = 0;
     mBox.set(-16.0f, -16.0f, 16.0f, 16.0f);
     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
-    gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+    gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     s32 hit = hitPlayers();
     field_0x250 = 0;
     field_0x238 = lbl_804AB440[field_0x250];
@@ -154,7 +154,7 @@ void Bombchu_804AB464::vfunc_0x54() {
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 1, 1, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30001, 0);
-    s32 code = fn_8022461C(&mPos, mLayer_0x4);
+    s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (code == 0x39 || code == 0xD || code == 0x3B) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F3, -1, 1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F4, 0, 0, NULL, NULL, true, 1.0f);
@@ -334,7 +334,7 @@ void Bombchu_804AB464::draw() {
     bool held = false;
     s32 flags = 7;
     if (mPos.z == 0.0f) {
-        s32 code = fn_8022461C(&mPos, mLayer_0x4);
+        s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (code == 0x39) {
             flags = 0;
         }
@@ -367,9 +367,9 @@ void Bombchu_804AB464::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x8C, &params, flags, 1.0f, 1.0f);
     }
     if (field_0x230 != 3) {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x8C, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x8C, 0, 2, -1, false, 0, 0);
     } else {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0xE8, 0, 2, -1, held, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0xE8, 0, 2, -1, held, 0, 0);
     }
 }
 
@@ -379,8 +379,8 @@ bool Bombchu_804AB464::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
         return true;
     }
-    s32 code = fn_8022461C(pos, layer);
-    s32 tile = fn_80226850(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
+    s32 tile = getRawTile_80226850(pos, layer);
     if (code == 0x20) {
         return true;
     }

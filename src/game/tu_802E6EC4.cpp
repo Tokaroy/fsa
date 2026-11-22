@@ -43,7 +43,7 @@ void DamageNPC_804A9E50::draw() {
     if (mFlag != 0) {
         flag = 1;
     }
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, mStep + 0x26D, flag != 0, 2, -1, 1, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mStep + 0x26D, flag != 0, 2, -1, 1, 0, 0);
 }
 
 DamageNPC_804A9E50::~DamageNPC_804A9E50() {}

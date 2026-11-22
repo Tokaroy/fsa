@@ -66,7 +66,7 @@ void SnowWall_8049E8A0::update() {
     switch (field_0x230) {
     case 0: {
         startSound_801F0E34(0x50069, 0);
-        fn_801F2DB4('NULL', 'NULL', NULL);
+        checkActorHit_801F2DB4('NULL', 'NULL', NULL);
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             startSound_801F0E34(0x400d1, 0);

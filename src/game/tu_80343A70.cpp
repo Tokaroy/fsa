@@ -77,7 +77,7 @@ void Bee_804AC600::update() {
     diff.x = diff.y = diff.z = 0.0f;
     if (field_0x230 != 0) {
         if (field_0x230 != 6 && field_0x230 != 1) {
-            if (fn_801F3D94(1) == 0) {
+            if (updateHitReaction_801F3D94(1) == 0) {
                 bool handled = false;
                 s32 serial = fn_801F2718('HBMB');
                 if (serial >= 0) {
@@ -139,7 +139,7 @@ void Bee_804AC600::update() {
         addCalcAngle2_801F714C(&field_0x294, field_0x2a2, 4, 0x400);
         mPos = field_0x2a4[0];
         if (field_0x230 != 4 && field_0x230 - 5 > 1U) {
-            if (fn_801F2B7C(1, -1, 1)) {
+            if (damagePlayersInBox_801F2B7C(1, -1, 1)) {
                 field_0x250++;
                 if (field_0x250 >= 5) {
                     gGameRoot_8053AAF8->mRandom.get_ufloat_1();
@@ -362,7 +362,7 @@ void Bee_804AC600::die_0x24() {
     } else if (field_0x274 == 2) {
         kind = 1;
     }
-    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind | 0x261E00);
+    getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind | 0x261E00);
     ActorBase_804A5770::die_0x24();
 }
 

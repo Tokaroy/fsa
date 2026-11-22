@@ -36,7 +36,7 @@ void UnknownSLEF_804A6400::calcVelocity_0x88() {
 }
 
 void UnknownSLEF_804A6400::draw() {
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C3, false, 1, -1, 1, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1C3, false, 1, -1, 1, 0, 0);
 }
 
 UnknownSLEF_804A6400::~UnknownSLEF_804A6400() {}

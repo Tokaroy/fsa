@@ -330,7 +330,7 @@ void FireRodFire_804A89F0::update() {
                 dmg = 0;
             }
             if (field_0x264 != 1 || (!fn_8022CCAC(field_0x260) && !fn_80230188(field_0x260))) {
-                if (fn_801F2B7C(dmg, field_0x260, 0x16) || fn_801F2B20(5)) {
+                if (damagePlayersInBox_801F2B7C(dmg, field_0x260, 0x16) || fn_801F2B20(5)) {
                     if (field_0x264 == 0) {
                         if (mLayer_0x4 < 8) {
                             mAlive = false;
@@ -383,7 +383,7 @@ void FireRodFire_804A89F0::update() {
                 field_0x25c = 5;
                 field_0x238 = 5;
             } else if (field_0x264 != 5 && field_0x293 == 0) {
-                fn_801F2B7C(-100, -1, true);
+                damagePlayersInBox_801F2B7C(-100, -1, true);
             }
             if (fn_801F2618(NULL, false)) {
                 if (field_0x264 == 3 || field_0x264 == 4) {
@@ -456,7 +456,7 @@ void FireRodFire_804A89F0::draw() {
         s32 layer = mLayer_0x4;
         if (layer >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                fn_803075AC(mSerial, layer, &mPos, 0x109 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
+                showGbaSprite_803075AC(mSerial, layer, &mPos, 0x109 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
                 return;
             }
             if (field_0x264 == 1) {
@@ -483,7 +483,7 @@ void FireRodFire_804A89F0::draw() {
                 break;
             }
 
-            fn_803075AC(mSerial, mLayer_0x4, &pos, 0xF1 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &pos, 0xF1 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
         } else {
             switch (mDir_0x98) {
             case 0:
@@ -724,7 +724,7 @@ bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         if (field_0x254 == 0) {
             JGeometry::TVec3f tmp;
             const s32 cell = fn_80226AE0(pos, mLayer_0x4);
-            field_0x288 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, cell);
+            field_0x288 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, cell);
             if (fn_801EE3C0(field_0x288) == 1) {
                 fn_80226CA8(cell, mLayer_0x4, &tmp);
                 tmp.x += 8.0f;
@@ -798,7 +798,7 @@ bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
         return false;
     }
     JGeometry::TVec3f p(*pos);
-    s32 code = fn_8022461C(&p, layer);
+    s32 code = getTileCollisionCode_8022461C(&p, layer);
     if (code != 0 && !(code >= 0x28 && code <= 0x2B)) {
         switch (mDir_0x98) {
         case 2:

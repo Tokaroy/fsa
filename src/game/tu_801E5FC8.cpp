@@ -62,6 +62,6 @@ void cls_804A4C58::draw() {
         params.field_0x14.r += d;
         params.field_0x14.g += d;
         params.field_0x14.b += d;
-        fn_801EFD34(res, &params, -1, 0.0f, mState < 8 ? 0.0f : -40.0f, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, 0.0f, mState < 8 ? 0.0f : -40.0f, 0.0f);
     }
 }

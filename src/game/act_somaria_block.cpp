@@ -288,7 +288,7 @@ void CaneOfSomariaBlock_804AA9F0::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x24c + 0x2FF, &params, 0, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2FF, false, 2, -1, field_0xc4, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x2FF, false, 2, -1, field_0xc4, 0, 0);
 }
 
 // Same shape as act_bombchu's isBlocked_0x4C (the blocking tile codes as a != chain, the 0x25 /
@@ -301,8 +301,8 @@ bool CaneOfSomariaBlock_804AA9F0::isBlocked_0x4C(s32 layer, const JGeometry::TVe
     if (field_0x245 != 0) {
         return false;
     }
-    s32 tile = fn_8022461C(pos, layer);
-    s32 code = fn_80226850(pos, layer);
+    s32 tile = getTileCollisionCode_8022461C(pos, layer);
+    s32 code = getRawTile_80226850(pos, layer);
     if (tile == 0x10 || tile == 0x11 || tile == 0x12 || tile == 0x13 || tile == 0x14 ||
         tile == 0x15 || tile == 0x16 || tile == 0x17 || (code >= 0x140 && code <= 0x15F)) {
         field_0x245 = 1;
@@ -360,7 +360,7 @@ bool CaneOfSomariaBlock_804AA9F0::pool_80541738() {
     JGeometry::TVec3f centre;
     centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
-    s32 tile = fn_802265FC(&centre, mLayer_0x4);
+    s32 tile = getTileCollisionCodeAlt_802265FC(&centre, mLayer_0x4);
     if (tile == 3 || tile == 0xD || tile == 0xE || tile == 0x3B) {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;

@@ -486,7 +486,7 @@ void MessageSequenceProcessor_804AF774::do_character(int c) {
                 field_0x4c = lbl_8050DB0C.field_0x4c[0];
             }
         }
-        gAudioMgr_8053AF80->fn_80458880(8, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(8, -1);
         if (field_0x58 == 2 || field_0x54 >= 3 || field_0x50 >= 0xFF) {
             field_0x4c = 99999;
             field_0x60->field_0x3ae = 8;
@@ -614,9 +614,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x20006:
             if (p[1] != 0) {
-                fn_8018E8DC(p[0], true, 0xFF);
+                setScreenFlag_8018E8DC(p[0], true, 0xFF);
             } else {
-                fn_8018E8DC(p[0], false, 0xFF);
+                setScreenFlag_8018E8DC(p[0], false, 0xFF);
             }
             return true;
         case 0x20007: {
@@ -636,9 +636,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             u32 set = p[3];
             if (fn_8018E930(check != 0 && state == 1) || !fn_8018E930(check != 0 && state == 0)) {
                 if (set != 0) {
-                    fn_8018E8DC(bit, true, 0xFF);
+                    setScreenFlag_8018E8DC(bit, true, 0xFF);
                 } else {
-                    fn_8018E8DC(bit, false, 0xFF);
+                    setScreenFlag_8018E8DC(bit, false, 0xFF);
                 }
             }
             return true;
@@ -743,7 +743,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 16:
                 if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
-                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                        findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
                         (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
                         work[2] = work[0];
@@ -797,7 +797,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 9:
             case 10:
                 if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
-                    ActorBase_804A5770* pot = fn_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
+                    ActorBase_804A5770* pot = findActorBySerial_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
@@ -844,7 +844,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x20017: {
             u8 range = p[0];
-            s32 pick = (s32)(range * fn_80154744()) + 1;
+            s32 pick = (s32)(range * randFloat_80154744()) + 1;
             if (pick > range) {
                 pick = range;
             }
@@ -966,7 +966,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
+                    field_0x60->fn_803A3084(i, spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
                                                            getPlayerPos_8023E724(fn_8022EA0C(i)),
                                                            (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
                 }
@@ -1044,7 +1044,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20032:
             if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
-                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                spawnActor_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
                             getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
                             (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
                                 fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
@@ -1197,9 +1197,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x20006:
             if (p[1] != 0) {
-                fn_8018E8DC(p[0], true, 0xFF);
+                setScreenFlag_8018E8DC(p[0], true, 0xFF);
             } else {
-                fn_8018E8DC(p[0], false, 0xFF);
+                setScreenFlag_8018E8DC(p[0], false, 0xFF);
             }
             return true;
         case 0x20007: {
@@ -1219,9 +1219,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             u32 set = p[3];
             if (fn_8018E930(check != 0 && state == 1) || !fn_8018E930(check != 0 && state == 0)) {
                 if (set != 0) {
-                    fn_8018E8DC(bit, true, 0xFF);
+                    setScreenFlag_8018E8DC(bit, true, 0xFF);
                 } else {
-                    fn_8018E8DC(bit, false, 0xFF);
+                    setScreenFlag_8018E8DC(bit, false, 0xFF);
                 }
             }
             return true;
@@ -1326,7 +1326,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 16:
                 if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
-                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                        findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
                         (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
                         work[2] = work[0];
@@ -1380,7 +1380,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 9:
             case 10:
                 if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
-                    ActorBase_804A5770* pot = fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
+                    ActorBase_804A5770* pot = findActorBySerial_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
@@ -1426,7 +1426,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20017: {
             u8 range = p[0];
-            s32 pick = (s32)(range * fn_80154744()) + 1;
+            s32 pick = (s32)(range * randFloat_80154744()) + 1;
             if (pick > range) {
                 pick = range;
             }
@@ -1548,7 +1548,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
+                    field_0x60->fn_803A3084(i, spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
                                                            getPlayerPos_8023E724(fn_8022EA0C(i)),
                                                            (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
                 }
@@ -1626,7 +1626,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20032:
             if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
-                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                spawnActor_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
                             getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
                             (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
                                 fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
@@ -3421,27 +3421,27 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0x20[3] = new J2DScreen;
     field_0x20[3]->setPriority("op_zelda.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
 
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_linkGr_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_linkGr_01.bti");
     field_0x30[0] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_linkRe_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_linkRe_01.bti");
     field_0x30[1] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_linkBl_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_linkBl_01.bti");
     field_0x30[2] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_linkPu_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_linkPu_01.bti");
     field_0x30[3] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_angou_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_angou_01.bti");
     field_0x30[4] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_angou_02.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_angou_02.bti");
     field_0x30[5] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_angou_03.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_angou_03.bti");
     field_0x30[6] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "heart.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "heart.bti");
     field_0x30[7] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "heart_01.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "heart_01.bti");
     field_0x30[8] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "heart_02.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "heart_02.bti");
     field_0x30[9] = new J2DPicture(timg);
-    timg = (const ResTIMG*)fn_804030C4('TIMG', "heart_03.bti");
+    timg = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "heart_03.bti");
     field_0x30[10] = new J2DPicture(timg);
 
     field_0xb8 = field_0x20[0]->search('Pm00')->getWidth();
@@ -3603,7 +3603,7 @@ inline void cls_804AF5A0::playMoveSound() {
     if (field_0x1aa) {
         fn_803037D4(field_0x160, 9);
     } else {
-        gAudioMgr_8053AF80->fn_80458880(0x26, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
     }
 }
 

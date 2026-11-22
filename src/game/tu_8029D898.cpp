@@ -173,7 +173,7 @@ void BgRewrite_804A7C98::fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u1
 bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     bool result = true;
     s32 serial;
     ActorBase_804A5770* actor;
@@ -239,7 +239,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     s32 bit = fn_80226AE0(pos, layer);
     if (field_0x24 == 0x69) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7A);
@@ -248,7 +248,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         if (actor != NULL) {
             actor->die_0x24();
         }
-        gAudioMgr_8053AF80->fn_80458880(3, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(3, -1);
     } else if (field_0x24 == 0x68) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x12);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a, -1, -1);
@@ -402,7 +402,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
 bool BgRewrite_804A7C98::fn_802A1D44(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     bool result = true;
     if (field_0x24 == 0x76) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x77);
@@ -430,7 +430,7 @@ bool BgRewrite_804A7C98::fn_802A1D44(const JGeometry::TVec3f* pos, s32 player, s
 s32 BgRewrite_804A7C98::fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     if ((layer == 0 && field_0x24 >= 0x1B0 && field_0x24 <= 0x1CF) || field_0x24 == 0x231 || field_0x24 == 0x8A ||
         field_0x24 == 0x79 || field_0x24 == 0x7B || field_0x24 == 0x7D) {
         u16 tile = field_0x24;
@@ -480,7 +480,7 @@ s32 BgRewrite_804A7C98::fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s3
 bool BgRewrite_804A7C98::fn_802A1688(const JGeometry::TVec3f* pos, s32 layer, u32 tag) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     if (field_0x24 == 0x81) {
         if (tag != 'SBAL') {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x9D);
@@ -499,7 +499,7 @@ bool BgRewrite_804A7C98::fn_802A1688(const JGeometry::TVec3f* pos, s32 layer, u3
 bool BgRewrite_804A7C98::fn_802A1554(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(0, field_0x20);
     u16 tile = field_0x24;
     if (lbl_8046CB88[tile] == 0) {
         return true;
@@ -509,7 +509,7 @@ bool BgRewrite_804A7C98::fn_802A1554(const JGeometry::TVec3f* pos) {
         tile == 0x42 || tile == 0x43 || tile == 0x44 || tile == 0xE5 || tile == 0x58) {
         return true;
     }
-    s32 code = fn_8022461C(pos, 0);
+    s32 code = getTileCollisionCode_8022461C(pos, 0);
     if (code == 0xE || code == 3 || (code == 0x22 && getGameView_802D6A9C()->field_0x170 == 0)) {
         return true;
     }
@@ -519,11 +519,11 @@ bool BgRewrite_804A7C98::fn_802A1554(const JGeometry::TVec3f* pos) {
 bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(0, field_0x20);
     if (lbl_8046CB88[field_0x24] == 0) {
         return true;
     }
-    s32 code = fn_8022461C(pos, 0);
+    s32 code = getTileCollisionCode_8022461C(pos, 0);
     if (code == 0x22 && getGameView_802D6A9C()->field_0x170 == 0) {
         return true;
     }
@@ -535,7 +535,7 @@ bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
 void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(0, field_0x20);
     if (field_0x24 == 0x69 || field_0x24 == 0x68 || field_0x24 == 0x75 || field_0x24 == 0x6A || field_0x24 == 0x6B ||
         field_0x24 == 0x82 || field_0x24 == 0x5F || field_0x24 == 0x70 || field_0x24 == 0x71 || field_0x24 == 0x72 ||
         field_0x24 == 0x73 || field_0x24 == 0x40 || field_0x24 == 0x41 || field_0x24 == 0x42 || field_0x24 == 0x43 ||
@@ -588,7 +588,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
         layerOffset = 1;
     }
     s32 item = fn_802373EC(leader);
-    u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer + layerOffset, field_0x20);
+    u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + layerOffset, field_0x20);
     if (tile == 0xE) {
         return false;
     }
@@ -716,7 +716,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
                 }
             }
         } else {
-            gAudioMgr_8053AF80->fn_80458880(6, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
         }
         return false;
     }
@@ -764,7 +764,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
 static inline void readTileAt(BgRewrite_804A7C98* self, const JGeometry::TVec3f* pos, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     self->field_0x20 = fn_80226BC4(&p, layer);
-    self->field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, self->field_0x20);
+    self->field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, self->field_0x20);
 }
 
 // FIXME(shotgun): 99.05 %, regalloc-only; behaviour drift.
@@ -779,7 +779,7 @@ s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s3
     case 0x69:
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7A);
         fn_80230FD0(player, 0x20007);
-        gAudioMgr_8053AF80->fn_80458880(3, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(3, -1);
         return 0;
     case 0x16:
     case 0x17:
@@ -897,7 +897,7 @@ s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s3
 bool BgRewrite_804A7C98::fn_802A01F0(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     bool result = false;
     switch (field_0x24) {
     case 0x16:
@@ -939,7 +939,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     y = 0x1FF;
                 }
                 s32 cell = (x & 0x100) | ((y & 0x100) << 1) | (y & 0xF0) | ((x >> 4) & 0xF);
-                u32 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, cell);
+                u32 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
                 JGeometry::TVec3f cellPos;
                 fn_80226CA8(cell, layer, &cellPos);
                 s32 serial;
@@ -992,7 +992,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     if (actor != NULL) {
                         actor->die_0x24();
                     }
-                    gAudioMgr_8053AF80->fn_80458880(3, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(3, -1);
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x68) {
                     gBgRewrite_8053AC98->fn_802A3948(&p, 0, layer, 0x12);
@@ -1169,12 +1169,12 @@ void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 t
 void BgRewrite_804A7C98::fn_8029E9EC(const JGeometry::TVec3f* pos, s32 layer, u16 tile, s32 arg4, u8 dir) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     if (arg4 == 0) {
         if ((tile >= 0x21 && tile <= 0x25) || tile == 0x26 || tile == 0x27 || tile == 0x36 || tile == 0x37) {
             JGeometry::TVec2f q(pos->x + lbl_8046C508[dir][0], pos->y + lbl_8046C508[dir][1]);
             field_0x20 = fn_80226BC4(&q, layer);
-            field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+            field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, field_0x24);
         } else {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, tile);
@@ -1191,7 +1191,7 @@ void BgRewrite_804A7C98::fn_8029E928(const JGeometry::TVec3f* pos, s32 layer, s3
 u8 BgRewrite_804A7C98::fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(player);
     return field_0x24 == 0x30;
 }
@@ -1201,7 +1201,7 @@ u8 BgRewrite_804A7C98::fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32
 bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(player);
     if (field_0x24 == 0x19C || field_0x24 == 0x19D) {
         s32 blocked = false;
@@ -1255,7 +1255,7 @@ bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    field_0x24 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, field_0x20);
     if (field_0x24 == 0x19C || field_0x24 == 0x19D) {
         if (field_0x24 == 0x19D) {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x19F);

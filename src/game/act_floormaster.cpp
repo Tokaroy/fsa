@@ -108,7 +108,7 @@ void Floormaster_804A6004::init() {
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(61) + 60;
+    field_0x250 = randInt_801CD664(61) + 60;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A5FE8, 7);
@@ -129,7 +129,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
-        field_0x250 = fn_801CD664(61) + 60;
+        field_0x250 = randInt_801CD664(61) + 60;
         mPos.x = mSpawnPos.x;
         mPos.y = mSpawnPos.y;
         mPos.z = mSpawnPos.z;
@@ -606,7 +606,7 @@ bool Floormaster_804A6004::vfunc_0x58() {
 u8 Floormaster_804A6004::checkHitByActor_0x60() {
     u8 result = 0;
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
-        result = fn_801F2DB4(mActorId, 'NULL', NULL);
+        result = checkActorHit_801F2DB4(mActorId, 'NULL', NULL);
         if (result) {
             startSound_801F0E34(0x5007D, 0);
             onHit();

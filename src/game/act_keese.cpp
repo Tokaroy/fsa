@@ -80,7 +80,7 @@ void Keese_804A02B8::update() {
     }
     if (field_0x264 == 1) {
         if (field_0x26a == 0xFFFF) {
-            if (getGameView_802D6A9C()->fn_802DCD0C()) {
+            if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 return;
             }
             // fn_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
@@ -96,7 +96,7 @@ void Keese_804A02B8::update() {
         }
         field_0x264 = 0;
     }
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         return;
     }
     if (fn_801F2FAC()) {
@@ -105,7 +105,7 @@ void Keese_804A02B8::update() {
         }
         return;
     }
-    if ((s32)fn_8022461C(&mPos, mLayer_0x4) == 0x3B) {
+    if ((s32)getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x3B) {
         die_0x24();
         return;
     }
@@ -120,7 +120,7 @@ void Keese_804A02B8::update() {
             }
         }
     }
-    if (bmtySerial < 0 && fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
+    if (bmtySerial < 0 && checkActorHit_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
         if (field_0x25e == 1 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
         }
@@ -134,7 +134,7 @@ void Keese_804A02B8::update() {
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x274, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x278, 0.3f, 1.0f);
     mPos += mVel_0x3c;
-    fn_801F2B7C(-100, -1, 1);
+    damagePlayersInBox_801F2B7C(-100, -1, 1);
     switch (field_0x230) {
     case 0: {
         bool started = false;
@@ -294,9 +294,9 @@ void Keese_804A02B8::draw() {
         setRotScaleMtx(mtx, rot2, 2.0f);
         params.mMtx = mtx;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x258 + 0x155, &params, -1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x176, 0, 2, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x176, 0, 2, -1, false, 0, 0);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x155, &params, -1, mode, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x155, &params, -1, mode, false, 1.0f, 1.0f);
     }
 }
 

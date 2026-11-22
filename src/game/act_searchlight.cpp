@@ -176,7 +176,7 @@ void Searchlight_804A0FF8::update() {
         break;
     case 6:
         if (field_0x328 != 0) {
-            gAudioMgr_8053AF80->fn_80458880(0x36, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x36, -1);
         }
         if (lbl_80539F80 >= 0 && mLayer_0x4 == getPlayerLayer_8023DE58(lbl_80539F80)) {
             f32 dx = getPlayerPos_8023E724(lbl_80539F80)->x - mPos.x;
@@ -320,7 +320,7 @@ void Searchlight_804A0FF8::draw() {
         SpriteParams_801F5AE0 params;
         params.field_0x1d = -1;
         drawSprite_801F06F0("enemy_gc_sob.bin", 0x431, &params, -1, 1.0f, 1.0f);
-        fn_801F02BC("enemy_gc_sob.bin", 0x431, &params, -1, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_gc_sob.bin", 0x431, &params, -1, 0, false, 1.0f, 1.0f);
     } else {
         gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, JUtility::TColor(0x3F3F1F7F), 0.7f * field_0x344);
         gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, JUtility::TColor(0x3F3F1F3F), field_0x344);

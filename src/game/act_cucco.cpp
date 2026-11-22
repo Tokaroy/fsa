@@ -94,7 +94,7 @@ void Cucco_804AB8C0::init() {
     field_0x28c = 1;
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         field_0x28c = 4;
-        s32 players = gGameRoot_8053AAF8->fn_80138A30();
+        s32 players = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         for (s32 i = 0; i < players; i++) {
             u32 bits = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
             if (bits == 2) {
@@ -237,7 +237,7 @@ inline bool Cucco_804AB8C0::checkActorHit() {
 // Differs only in the registers of checkActorHit's hit (r29) and serial/other (r28), swapped in ours.
 // FIXME: 99.79 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80332A60() {
-    if (fn_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
+    if (updateHitReaction_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
         field_0xb0 = 0x41302;
         if (field_0x268 > 0) {
             JGeometry::TBox2f box = mBox;
@@ -248,7 +248,7 @@ void Cucco_804AB8C0::fn_80332A60() {
             s32 result = 0;
             if (checkActorHit()) {
                 result = 2;
-            } else if (fn_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
+            } else if (checkActorHit_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
                        fn_801A4D1C(mSerial, &box, &center) || fn_801A6108(mSerial, &box, &center) ||
                        fn_801A4F5C(mSerial, &box, &center) || fn_801A46FC(mSerial, &box, &center))
             {
@@ -592,7 +592,7 @@ void Cucco_804AB8C0::fn_80331D38() {
 #pragma auto_inline off
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
-        s32 tile = fn_8022461C(&mPos, mLayer_0x4);
+        s32 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (tile == 0x39) {
             if (((field_0x230 == 0 && field_0x258 == 0) || field_0x230 == 1) && mPos.z < 4.0f) {
                 startSound_801F0E34(0x4007F, 0);
@@ -671,11 +671,11 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (fn_801F6758(pos, layer, -8.0f)) {
         return true;
     }
-    s32 tile = fn_80226850(pos, layer);
+    s32 tile = getRawTile_80226850(pos, layer);
     if (tile == 0x19C || tile == 0x19D) {
         return true;
     }
-    s32 code = fn_8022461C(pos, layer);
+    s32 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0x20 && mPos.z > 8.0f) {
         return false;
     }
@@ -762,7 +762,7 @@ void Cucco_804AB8C0::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x23c != 0) {
-            if (field_0x23c < 10 && fn_801F2B7C(mParamAtcp_0x114, -1, 5)) {
+            if (field_0x23c < 10 && damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 5)) {
                 if (mVel_0x3c.x != 0.0f) {
                     field_0x2b8.y = -3.0f;
                     field_0x2b8.z = 3.0f;
@@ -1194,7 +1194,7 @@ void Cucco_804AB8C0::update() {
                             fn_80238548(hitPlayer, 2, (const JGeometry::TVec2f*)&mPos, 1);
                         }
                     } else {
-                        fn_801F2B7C(0, -1, 1);
+                        damagePlayersInBox_801F2B7C(0, -1, 1);
                     }
                     hit = 1;
                 }
@@ -1213,7 +1213,7 @@ void Cucco_804AB8C0::update() {
         if (field_0x2a4[2] == 1) {
             dmg = 1;
         }
-        fn_801F2B7C(dmg, -1, 5);
+        damagePlayersInBox_801F2B7C(dmg, -1, 5);
     }
         // fallthrough
     case 8:
@@ -1234,7 +1234,7 @@ void Cucco_804AB8C0::update() {
                 outDist = fn_80154378(dx * dx + dy * dy);
                 field_0x29e = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                 outPlayer = field_0x25c;
-                outDir = fn_801F681C((u16)field_0x29e);
+                outDir = angleToDir_801F681C((u16)field_0x29e);
             } else {
                 outDir = -1;
             }
@@ -1390,7 +1390,7 @@ void Cucco_804AB8C0::draw() {
     s32 flags = 7;
     s32 tint = 0;
     if (mPos.z == 0.0f) {
-        s32 ground = fn_8022461C(&mPos, mLayer_0x4);
+        s32 ground = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (ground == 0x39) {
             flags = 0;
         }
@@ -1452,19 +1452,19 @@ void Cucco_804AB8C0::draw() {
         params.field_0x1c = fn_8023CA88(field_0x25c);
         if (field_0x290 != 2) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x11, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x11, 0, 2, -1, 1, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x11, 0, 2, -1, 1, 0, 0);
         } else {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x1D, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
         }
         return;
     }
     if (field_0x290 == 2 || ((field_0x290 == 0 || field_0x290 == 6 || field_0x290 == 1) && field_0x2a1 == 1)) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x2C7, &params, flags, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2C7, 0, 2, -1, held, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2C7, 0, 2, -1, held, 0, 0);
     } else {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x2AF, &params, flags, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2AF, 0, 2, -1, held, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x2AF, 0, 2, -1, held, 0, 0);
     }
 }
 
@@ -1524,7 +1524,7 @@ void Cucco_804AB8C0::fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* ou
         *outAngle = angle;
     }
     if (outDir != NULL) {
-        *outDir = fn_801F681C((u16)angle);
+        *outDir = angleToDir_801F681C((u16)angle);
     }
     if (outDist != NULL) {
         *outDist = dist;

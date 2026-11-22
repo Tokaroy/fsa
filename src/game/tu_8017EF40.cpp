@@ -164,7 +164,7 @@ void HelmarocKing_804A1630::init() {
         lbl_8053AB70 = 0;
         lbl_80539F98 = 8;
         lbl_80539F9C = 180;
-        if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+        if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             lbl_80539F9C = 110;
         }
         lbl_8053AB74 = 0;
@@ -363,8 +363,8 @@ void HelmarocKing_804A1630::update() {
             lbl_8053AB74 = 1;
         }
     }
-    fn_801F3D94(0);
-    if (field_0x23c != 0 && field_0x260 == 2 && fn_801F2DB4('HBMB', 'NULL', NULL) && mLife != 10000) {
+    updateHitReaction_801F3D94(0);
+    if (field_0x23c != 0 && field_0x260 == 2 && checkActorHit_801F2DB4('HBMB', 'NULL', NULL) && mLife != 10000) {
         mVel_0x3c.zero();
         field_0x27c.zero();
         mLife = 10000;
@@ -921,7 +921,7 @@ void HelmarocKing_804A1630::update() {
         }
         if (field_0x254 == 0) {
             if (lbl_80539F98 <= 0) {
-                fn_801F2B7C(mParamAtcp_0x114, -1, 6);
+                damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 6);
             }
         } else if (lbl_80539F98 > 0) {
             field_0x274 = fn_801F2718('GROK');
@@ -942,7 +942,7 @@ void HelmarocKing_804A1630::update() {
         mPos.y = field_0x288.y + lbl_804A13E0.field_0x00[mDir_0x98][1];
         if (lbl_8053AB70 == (s32)mSpawnParam_0x90) {
             field_0x238 = 1000;
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 field_0x238 = 240;
             }
             field_0xb0 = 0x9040304;
@@ -971,7 +971,7 @@ void HelmarocKing_804A1630::update() {
         box40.i.add(pos1c);
         box40.f.add(pos1c);
         bool hit = false;
-        if (fn_801F2DB4('HBMB', 'NULL', NULL)) {
+        if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL)) {
             if (mLife != 10000) {
                 hit = true;
             }
@@ -1212,14 +1212,14 @@ void HelmarocKing_804A1630::draw() {
         void* res = fn_804032E8('GROC', "geki_ana.bti");
         params.field_0x1d = -2;
         params.field_0x1c = 1;
-        fn_801EFD34(res, &params, -1, x, -6.0f, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, x, -6.0f, 0.0f);
         return;
     }
     if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4]) {
         u32 kind = mSpawnParam_0x90;
         if (kind == 8) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
-                fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
+                showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
             }
             return;
         }
@@ -1231,13 +1231,13 @@ void HelmarocKing_804A1630::draw() {
         }
         if (kind == 10) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
-                fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
+                showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
             }
             return;
         }
         if (kind == 9) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
-                fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
+                showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
                 mPos.x = saved.x;
                 mPos.y = saved.y;
                 mPos.z = saved.z;
@@ -1296,7 +1296,7 @@ void HelmarocKing_804A1630::draw() {
     mPos.z = 0.0f;
     params.field_0x1d = -1;
     params.field_0x1c = 1;
-    fn_801EFD34(res, &params, -1, 0.0f, -8.0f + offset, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, -8.0f + offset, 0.0f);
     mPos.x = saved.x;
     mPos.y = saved.y;
     mPos.z = saved.z;
@@ -1336,7 +1336,7 @@ void HelmarocKing_804A1630::draw() {
     if (lbl_80539F98 <= 0) {
         params.field_0x30 = 0x11;
     }
-    fn_801EFD34(res, &params, -1, 0.0f, -8.0f + offset, 0.0f);
+    drawSpriteRes_801EFD34(res, &params, -1, 0.0f, -8.0f + offset, 0.0f);
 }
 
 void HelmarocKing_804A1630::die_0x24() {

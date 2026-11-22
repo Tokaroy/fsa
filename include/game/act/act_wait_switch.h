@@ -16,7 +16,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;        // 0: waiting for the switch, 1: switch seen, 2: done
-    /* 0x234 */ s32 mCount;        // mSpawnParam_0x90 & 0x3FFFF, passed to fn_80134DE4; period of mode 6
+    /* 0x234 */ s32 mCount;        // mSpawnParam_0x90 & 0x3FFFF, passed to startRumble_80134DE4; period of mode 6
     /* 0x238 */ s32 mTimer;        // starts at mCount
     /* 0x23C */ s32 mMode;         // (mSpawnParam_0x90 >> 19) & 7: 1-5 move the view bounds, 6 toggles the switch
     /* 0x240 */ s32 mBit;          // (mSpawnParam_0x90 >> 22) & 0x1F: the switch bit to wait for

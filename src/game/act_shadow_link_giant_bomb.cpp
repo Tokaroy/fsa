@@ -66,7 +66,7 @@ void ShadowLinkGiantBomb_804AC4D0::init() {
     }
     field_0x250 = 1.0f;
     GameView_804A9950* view = getGameView_802D6A9C();
-    bool inView = view->fn_802D800C(field_0x248);
+    bool inView = view->isScreenFlagSet_802D800C(field_0x248);
     if (!inView && gGameRoot_8053AAF8->field_0x7f == 1) {
         field_0x255 = 1;
     } else {

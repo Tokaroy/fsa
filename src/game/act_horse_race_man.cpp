@@ -19,7 +19,7 @@ static const s16* lbl_804A5620[4] = {
 };
 
 HorseRaceMan_804A5630::HorseRaceMan_804A5630()
-    : field_0x2a8(gGameRoot_8053AAF8->fn_80138A30()),
+    : field_0x2a8(gGameRoot_8053AAF8->getPlayerCount_80138A30()),
       field_0x2ac(0),
       field_0x2b0(-1),
       field_0x2b4(0) {
@@ -56,7 +56,7 @@ void HorseRaceMan_804A5630::init() {
 static inline void shuffle(s32 count, s32* order, s32* pool) {
     if (count > 1) {
         for (s32 i = 0, rem = count; i < count; i++, rem--) {
-            s32 idx = fn_801CD664(rem);
+            s32 idx = randInt_801CD664(rem);
             order[i] = pool[idx];
             for (s32 j = idx; j < rem - 1; j++) {
                 pool[j] = pool[j + 1];

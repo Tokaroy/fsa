@@ -98,7 +98,7 @@ public:
     // ceiling) and sets mMapHitDir; true when it clamped.
     bool fn_801DD1AC();
     // 0x801DD28C (game/tu_801DD1AC.cpp): tests the players against a box (state 9 uses a wide
-    // one, mirrored when the sequencer flips) with fn_801F2B7C; the hit mask.
+    // one, mirrored when the sequencer flips) with damagePlayersInBox_801F2B7C; the hit mask.
     u8 fn_801DD28C();
     // 0x801E61C4 (tu_801D8400's code calls it): moves the pair at 0x2C8 to
     // 40 units below mPos (in y).

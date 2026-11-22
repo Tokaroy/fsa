@@ -71,7 +71,7 @@ void IronPot_804A5418::fn_801E728C(int state) {
             mBox.i.y *= 1.5f;
             mBox.f.x *= 1.5f;
             mBox.f.y *= 1.5f;
-            fn_801F2B7C(4, -1, 0x16);
+            damagePlayersInBox_801F2B7C(4, -1, 0x16);
             JGeometry::TVec2f center;
             fn_801F3128(&center);
             JGeometry::TVec3f spot;
@@ -92,7 +92,7 @@ void IronPot_804A5418::fn_801E728C(int state) {
             mBox.f.x = savedFx;
             mBox.f.y = savedFy;
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 2.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 0, 0, NULL, NULL, true, 2.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 0, 0, NULL, NULL, true, 2.0f);
@@ -102,7 +102,7 @@ void IronPot_804A5418::fn_801E728C(int state) {
                 for (s32 g = 0; g < 4; g++) {
                     s32 count = lbl_80469C40[g][1];
                     for (s32 k = 0; k < count; k++) {
-                        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_80469C40[g][0]);
+                        s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_80469C40[g][0]);
                         if (serial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                             if (gem != NULL) {

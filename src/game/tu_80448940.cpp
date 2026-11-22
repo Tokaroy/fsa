@@ -97,14 +97,14 @@ void cls_804B1C90::fn_804490B8() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = 1 << i;
         field_0x32 &= ~bit;
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[0]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[0]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490940[i][9]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490940[i][10]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490940[i][11]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490940[i][12]))->changeTexture(res, 0);
     }
     field_0x32 &= ~0x10;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[0]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[0]));
     static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[4]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[5]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[6]))->changeTexture(res, 0);
@@ -126,7 +126,7 @@ void cls_804B1C90::fn_80449070() {
 }
 
 // FIXME: 91.28 %. In the slot loop the original divides field_0x2c[i] by ten
-// twice, once for the units (kept in r26 across the first fn_804030C4 call)
+// twice, once for the units (kept in r26 across the first getMain2DResource_804030C4 call)
 // and once for the index; ours shares one division and computes the units
 // after that call. Its stack frame is 0x30 with r25 saved (the original 0x20,
 // r26 to r31), so the registers of this and i also differ.
@@ -159,10 +159,10 @@ void cls_804B1C90::fn_80448940() {
             }
             s32 value = field_0x2c[i];
             s32 units = value - (value / 10) * 10;
-            const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[value / 10]));
+            const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[value / 10]));
             static_cast<J2DPicture*>(mScreen->search(row[9]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(row[10]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[units]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[units]));
             static_cast<J2DPicture*>(mScreen->search(row[11]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(row[12]))->changeTexture(res, 0);
         }
@@ -188,16 +188,16 @@ void cls_804B1C90::fn_80448940() {
         s32 b = field_0x31;
         s32 aUnits = a - (a / 10) * 10;
         s32 bTens = b / 10;
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[a / 10]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[a / 10]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[4]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[5]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[aUnits]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[aUnits]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[6]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[7]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[bTens]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[bTens]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[8]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[9]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C68[b % 10]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1C68[b % 10]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[10]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490B00[11]))->changeTexture(res, 0);
     }

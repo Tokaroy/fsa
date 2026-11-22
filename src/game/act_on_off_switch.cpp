@@ -31,7 +31,7 @@ void OnOffSwitch_804A8FC8::init() {
     field_0x254 = 0;
     mEmitter230 = NULL;
     mEmitter234 = NULL;
-    u8 players = gGameRoot_8053AAF8->fn_80138A30();
+    u8 players = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     s32 active = 0;
     if (field_0x248 == 0) {
         active = 1;
@@ -103,7 +103,7 @@ void OnOffSwitch_804A8FC8::vfunc_0x10() {
             for (s32 j = 0; j < 4; j++) {
                 if (field_0x244 == ((params >> lbl_8046D8F8[j]) & 0x1F)) {
                     field_0x258 = params >> 27;
-                    if (getGameView_802D6A9C()->fn_802D800C(field_0x258)) {
+                    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x258)) {
                         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0xBE);
                         if (mEmitter230 == NULL) {
                             mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x428, 1, 0, NULL, NULL, true, 1.0f);

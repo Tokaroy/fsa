@@ -130,7 +130,7 @@ void SpawnerGenerator_804A9328::update() {
                 }
             } else if (field_0x248 == 29) {
                 s32 flag = -1;
-                s32 rand = fn_801CD664(100);
+                s32 rand = randInt_801CD664(100);
                 if (rand < 10) {
                     field_0x254 = 2;
                 } else if (rand < 40) {

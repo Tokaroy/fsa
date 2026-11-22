@@ -65,7 +65,7 @@ void TwoPersonLiftableRock_804AC950::init() {
 // FIXME: 99.13 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): float register assignment differs
 void TwoPersonLiftableRock_804AC950::vfunc_0x10() {
-    s32 tile = fn_80226850(&mPos, mLayer_0x4);
+    s32 tile = getRawTile_80226850(&mPos, mLayer_0x4);
     if ((u32)(tile - 0x64) <= 3 || (u32)(tile - 0x2C2) <= 1 || tile == 0x2D2 || tile == 0x2D3) {
         field_0x380[0] = 1;
         field_0x380[5] = 1;
@@ -293,9 +293,9 @@ void TwoPersonLiftableRock_804AC950::update() {
             mPos.add(mVel_0x3c);
             if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
-                    if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
+                    if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
-                    } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91) {
+                    } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
@@ -360,14 +360,14 @@ void TwoPersonLiftableRock_804AC950::draw() {
         flags = -1;
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, 0xC, 0, 0, -1);
     } else {
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2B, false, 2, -1, true, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x2B, false, 2, -1, true, 0, 0);
     }
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x2B, &params, flags, 1.0f, 1.0f);
     mPos = saved;
 }
 
 void TwoPersonLiftableRock_804AC950::die_0x24() {
-    s32 tile = fn_8022461C(&mPos, mLayer_0x4);
+    s32 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
         mVel_0x3c.x = 0.0f;

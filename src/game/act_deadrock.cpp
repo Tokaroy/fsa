@@ -51,7 +51,7 @@ void Deadrock_8049F498::update() {
         }
     }
 
-    if (fn_801F3D94(1) != 0) {
+    if (updateHitReaction_801F3D94(1) != 0) {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
@@ -86,7 +86,7 @@ void Deadrock_8049F498::update() {
     if (field_0x230 != 2 && field_0x230 != 3 && field_0x230 != 4) {
         s32 oldLife = mLife;
         u32 list[4] = {'SWBM', 'THCL', 'GRAS', 'NULL'};
-        if (fn_801F2DB4('NULL', 'NULL', list)) {
+        if (checkActorHit_801F2DB4('NULL', 'NULL', list)) {
             if (oldLife == mLife) {
                 mVel_0x3c.z = 0.0f;
                 mVel_0x3c.y = 0.0f;
@@ -97,7 +97,7 @@ void Deadrock_8049F498::update() {
             return;
         }
     } else {
-        if (fn_801F2DB4('NULL', 'HBMB', NULL)) {
+        if (checkActorHit_801F2DB4('NULL', 'HBMB', NULL)) {
             startSound_801F0E34(0x400D1, 0);
             mVel_0x3c.x = 0.0f;
             mVel_0x3c.y = 0.0f;
@@ -123,7 +123,7 @@ void Deadrock_8049F498::update() {
     mPos += mVel_0x3c;
     u8 landed = fn_801F2618(NULL, false);
     if (field_0x230 != 2 && field_0x230 != 3 && field_0x230 != 4) {
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
 
     switch (field_0x230) {

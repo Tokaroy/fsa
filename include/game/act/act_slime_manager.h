@@ -17,7 +17,7 @@ public:
     /* 0x08 */ virtual ~SlimeManager_804A5BD8();
     /* 0x0C */ virtual void init();
     // 0x80208924: the tile codes under mPos on this layer, from
-    // fn_8022461C and fn_80226850.
+    // getTileCollisionCode_8022461C and getRawTile_80226850.
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x88 */ virtual void calcVelocity_0x88();
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
@@ -53,8 +53,8 @@ public:
     /* 0x340 */ s32 field_0x340;
     /* 0x344 */ u8 field_0x344;
     /* 0x345 */ u8 field_0x345;
-    /* 0x346 */ u16 field_0x346; // fn_8022461C(&mPos, mLayer_0x4)
-    /* 0x348 */ u16 field_0x348; // fn_80226850(&mPos, mLayer_0x4)
+    /* 0x346 */ u16 field_0x346; // getTileCollisionCode_8022461C(&mPos, mLayer_0x4)
+    /* 0x348 */ u16 field_0x348; // getRawTile_80226850(&mPos, mLayer_0x4)
     /* 0x34A */ u8 field_0x34a;
 };
 

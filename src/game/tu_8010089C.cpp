@@ -43,7 +43,7 @@ void WhackAMoleShop_8049C8EC::init() {
     field_0x25c[3] = 0;
     field_0x260[3] = 0;
     field_0x268[3] = 0;
-    field_0x244 = gGameRoot_8053AAF8->fn_80138A30();
+    field_0x244 = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (isScreenFlagSet_0x34()) {
         field_0x230 = 9;
@@ -77,7 +77,7 @@ void WhackAMoleShop_8049C8EC::update() {
                 pool_8053C140();
                 fn_801F3668();
             }
-            fn_801F3D94(1);
+            updateHitReaction_801F3D94(1);
         }
     } else {
         fn_80100D28();
@@ -411,7 +411,7 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
     field_0x245 = 0;
     field_0x240 = 0;
     s32 roll = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    s32 players = (u8)gGameRoot_8053AAF8->fn_80138A30();
+    s32 players = (u8)gGameRoot_8053AAF8->getPlayerCount_80138A30();
     if (field_0x290->field_0x23c > 720) {
         if (roll < 10) {
             field_0x244 = 1;

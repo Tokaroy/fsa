@@ -39,7 +39,7 @@ GameOverScreen_804B17A0::GameOverScreen_804B17A0() {
     field_0xc[7] = NULL;
     field_0xc[8] = NULL;
     field_0xc[9] = NULL;
-    const ResTIMG* black = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_black.bti"));
+    const ResTIMG* black = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_black.bti"));
     field_0x34 = new J2DPicture(black);
     field_0x34->setBlackWhite(JUtility::TColor(0xFF), JUtility::TColor(0));
     field_0x4c = 255.0f;
@@ -143,7 +143,7 @@ static inline void sparkEmitter(JPABaseEmitter*& slot, JGeometry::TVec3f& pos, f
     if (slot != NULL) {
         slot->setStatus(JPAEMIT_Immortal);
     }
-    gAudioMgr_8053AF80->fn_80458880(0xD, -1);
+    gAudioMgr_8053AF80->playSystemSound_80458880(0xD, -1);
 }
 
 // 0x80438E94
@@ -237,8 +237,8 @@ u8 GameOverScreen_804B17A0::fn_80438E94() {
             }
             field_0x40 = 4;
             field_0x42 = 0;
-            gAudioMgr_8053AF80->fn_80458880(0x48, -1);
-            gAudioMgr_8053AF80->fn_80458880(0xC, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0x48, -1);
+            gAudioMgr_8053AF80->playSystemSound_80458880(0xC, -1);
         }
         break;
     case 4:

@@ -78,7 +78,7 @@ void SpreadingFire_804A8A50::init() {
         mMapBox_0x80.f.x = 8.0f;
         mMapBox_0x80.f.y = 8.0f;
 
-        mTile = fn_80226850(&mPos, mLayer_0x4);
+        mTile = getRawTile_80226850(&mPos, mLayer_0x4);
         if (mLayer_0x4 >= 8) {
             field_0x240 = 3;
             field_0x280 = 0;
@@ -146,7 +146,7 @@ void SpreadingFire_804A8A50::update() {
         damage = 0;
     }
     if (field_0x250 != 4) {
-        if (fn_801F2B7C(damage, -1, 7) == 0) {
+        if (damagePlayersInBox_801F2B7C(damage, -1, 7) == 0) {
             fn_801F2B20(5);
         }
     } else {
@@ -156,7 +156,7 @@ void SpreadingFire_804A8A50::update() {
     switch (field_0x240) {
     case 0: {
         field_0x240 = 1;
-        mTile = fn_80226850(&mPos, mLayer_0x4);
+        mTile = getRawTile_80226850(&mPos, mLayer_0x4);
         if (fn_801EE3C0(mTile) == true) {
             startSound_801F0E34(0x3002F, 0);
             gBgRewrite_8053AC98->fn_802A20F0(&mPos, field_0x258, mLayer_0x4, 0x10000, 1);
@@ -166,7 +166,7 @@ void SpreadingFire_804A8A50::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x254, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x255, 0, 0, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f tmp(mPos.x, mPos.y - 16.0f, 0.0f);
-            if (fn_80226850(&tmp, mLayer_0x4) == 0x3EB) {
+            if (getRawTile_80226850(&tmp, mLayer_0x4) == 0x3EB) {
                 field_0x284 = mPos;
                 mPos.y -= 16.0f;
                 field_0x240 = 5;
@@ -201,7 +201,7 @@ void SpreadingFire_804A8A50::update() {
                                       mPos.z);
                 field_0x27c = step + 1;
                 field_0x278++;
-                u16 tile = fn_80226850(&tmp, mLayer_0x4);
+                u16 tile = getRawTile_80226850(&tmp, mLayer_0x4);
                 if (fn_801EE3C0(tile) == true) {
                     if (field_0x250 != 5 && field_0x250 != 6) {
                         field_0x270 = (s32)(tmp.x - field_0x25c.i.x);
@@ -272,7 +272,7 @@ void SpreadingFire_804A8A50::update() {
             }
             field_0x284.y -= 16.0f;
             mPos.y -= 32.0f;
-            if (fn_80226850(&mPos, mLayer_0x4) != 0x3EB) {
+            if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x3EB) {
                 break;
             }
             gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3E0);
@@ -299,11 +299,11 @@ void SpreadingFire_804A8A50::draw() {
     if (field_0x240 != 6) {
         s32 layer = mLayer_0x4;
         if (layer >= 8) {
-            fn_803075AC(mSerial, layer, &mPos, (field_0x280 >> 1) + 0x109, false, 2, -1, 0, 0, 0);
+            showGbaSprite_803075AC(mSerial, layer, &mPos, (field_0x280 >> 1) + 0x109, false, 2, -1, 0, 0, 0);
         }
     } else {
         drawSprite_801F06F0("enemy_both2_sob.bin", 0x18E, NULL, 0, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x18E, false, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x18E, false, 2, -1, 0, 0, 0);
     }
 }
 

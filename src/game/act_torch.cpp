@@ -24,7 +24,7 @@ void Torch_804A8520::init() {
     mEmitter230 = NULL;
     mEmitter234 = NULL;
     s32 bit = mViewBit;
-    if (bit == 0 || getGameView_802D6A9C()->fn_802D800C(bit)) {
+    if (bit == 0 || getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
         mOn = 1;
         if (mType == 0 || mType == 2 || mType == 4) {
             mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
@@ -54,7 +54,7 @@ Torch_804A8520::~Torch_804A8520() {
 void Torch_804A8520::update() {
     switch (mState) {
     case 0:
-        if (getGameView_802D6A9C()->fn_802D800C(mViewBit) || field_0x94 != 0) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(mViewBit) || field_0x94 != 0) {
             mOn = 1;
             if (mType == 0 || mType == 2 || mType == 4) {
                 mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
@@ -71,7 +71,7 @@ void Torch_804A8520::update() {
         break;
     case 1: {
         s32 bit = mViewBit;
-        if (bit != 0 && !getGameView_802D6A9C()->fn_802D800C(bit)) {
+        if (bit != 0 && !getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
             if (mEmitter230 != NULL) {
                 mEmitter230->becomeInvalidEmitter();
                 mEmitter230 = NULL;

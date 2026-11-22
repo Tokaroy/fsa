@@ -41,7 +41,7 @@ void RandomToggleSwitch_8049DE90::init() {
 // Picks the next table entry (random, or in turn when mCycle is 1) and shows it alone. An inline
 // of its own: its values get their registers before update's (docs/REGALLOC.md, rule 4).
 static inline void showPickedEntry(RandomToggleSwitch_8049DE90* self) {
-    s32 pick = fn_801CD664(4);
+    s32 pick = randInt_801CD664(4);
     if (self->mCycle == 1) {
         pick = self->mNext;
         self->mNext++;

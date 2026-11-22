@@ -36,7 +36,7 @@ bool cls_804A51E4::fn_80218538() const {
     JGeometry::TBox2f box(p, p);
     bool result = false;
     growBox(box, mBox);
-    if (fn_801CD2F8(mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         if (fn_8022B978(mLayer_0x4, &box, false)) {
             result = true;
         }
@@ -72,7 +72,7 @@ void cls_804A51E4::fn_8021835C() {
         a.x += mBox.i.x;
         b.x += mBox.f.x;
     }
-    if (fn_801CD2F8(mLayer_0x4)) {
+    if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         if (fn_8022BA58(mLayer_0x4, &a) && fn_8022BA58(mLayer_0x4, &b)) {
             visible = true;
         }

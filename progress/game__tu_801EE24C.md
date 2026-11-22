@@ -30,8 +30,8 @@ Baseline 8397 -> 8401 (+4 honest). 100 %: releaseEmitter_801EE434 (now C++
 releaseEmitter_801EE434__FP14JPABaseEmitter; it replaces the destructor's inline copy, the
 destructor inlines it), fn_801F0D20, fn_801F32F4, fn_801F33C4.
 Structural (FIXME each): fn_801EE24C 99.95 reloc-name (200.0f), startSound_801F0E34
-99.25 regalloc, fn_801F2B7C 98.2 regalloc+reloc (inlines fn_801F2740),
-fn_801F2DB4 99.4, fn_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
+99.25 regalloc, damagePlayersInBox_801F2B7C 98.2 regalloc+reloc (inlines fn_801F2740),
+checkActorHit_801F2DB4 99.4, fn_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
 clrlwi at the return: a u8 return type matches the bodies 100 % but lowers ~20
 bool-using callers, EnemyBase vfunc_0x60/0x64 etc.; left bool), fn_801F305C
 97.9 (inlines fn_801F2FAC), isBlockedOrOutOfView_0x50 94.4 regalloc, fn_801F2740 85.0 (an
@@ -90,7 +90,7 @@ Written:
 - fn_801EEC98 100 % (104 callers; layerBox for the view box, std::sqrtf).
 - fn_801F11B4 99.4 regalloc, die_0x24 99.75 regalloc (death), updateBossDeath_0x2C 98.8
   regalloc (boss death explosion), fn_801F285C 88.8 scheduling (box before the
-  register saves, as fn_801F2740), fn_801F3D94 99.0 missing/extra 1 (hit
+  register saves, as fn_801F2740), updateHitReaction_801F3D94 99.0 missing/extra 1 (hit
   reaction), fn_801F37AC 94.4 missing/extra (hit handler: .rodata base hoist +
   bool narrowing), fn_801F23BC 98.7 (bool narrowing only).
 - lbl_80469EF8 (hurt voices) as data; fn_801F4694 now pairs (rodata offsets).
@@ -98,8 +98,8 @@ Simplified: isPlayerBelowLayer8 / isPlayerOnActorLayer inline workarounds are
 gone; fn_801F329C (now const, symbols.txt renamed) and fn_801F320C are plain
 functions their callers inline under deferred, every % kept.
 Re-measured under deferred, unchanged: the ctor (99.91, reloc-name only: 1.0f
-needs fn_801EF574 written first, 6.0f/doubles drawSprite, ...); the bool
-narrowing family (fn_801F2618, fn_801F2FAC, fn_801F2DB4, fn_801F305C, now also
+needs drawSobSprite_801EF574 written first, 6.0f/doubles drawSprite, ...); the bool
+narrowing family (fn_801F2618, fn_801F2FAC, checkActorHit_801F2DB4, fn_801F305C, now also
 fn_801F23BC, fn_801F37AC): u8 returns make all five bodies 100 % (fn_801F305C
 with `u8 hit; if (hit == false)`), but 15 written callers drop (EnemyBase
 vfunc_0x5C/0x60/0x64 100 -> 84-86, Terrorpin/Beamos/Thief vfunc_0x60/0x64,
@@ -110,7 +110,7 @@ caller; fn_8019CE40 stays 100, Player fn_80254744 98.72 -> 98.83);
 ActorManager::fn_801F6718 takes s32 a/b/c (callers pass raw words; callee 100,
 symbols.txt renamed).
 Not written (drafts in the round's scratchpad): drawSprite_801F06F0,
-fn_801EF574, fn_801F02BC, fn_801EFD34 all copy a SpriteParams_801F5AE0 from
+drawSobSprite_801EF574, drawSpriteScaled_801F02BC, drawSpriteRes_801EFD34 all copy a SpriteParams_801F5AE0 from
 *params into a stack one that is later passed by address. The original loads
 every field first (with spills) and then stores; ours interleaves load/store,
 which shifts registers and the frame (60-75 %). With the local's address not
@@ -149,7 +149,7 @@ drops (compared by address across the whole report against the main report_hones
   the return from a bool local). Differences: the .rodata base hoist (r31, as in
   fn_801EF830 / fn_801F37AC) and the counter increment's scheduling.
 Tried, not merged:
-- fn_801EF574 (struct copy blocker): written naturally it is 60 % (interleaved copy, no
+- drawSobSprite_801EF574 (struct copy blocker): written naturally it is 60 % (interleaved copy, no
   stmw); a named temporary `tmp = *params; sp = tmp;` gives stmw r14 and load-all but a
   second stack struct (70 %); a pointer helper and a by-value helper: no change / worse.
   The target copies like a non-aliasing destination (all loads, spills, then stores)

@@ -49,7 +49,7 @@ void Grass_804A92D0::update() {
                 }
                 if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
                     die_0x24();
-                } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
+                } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
                     die_0x24();
                 }
             } else {
@@ -67,7 +67,7 @@ void Grass_804A92D0::update() {
                 }
                 if (fn_801F2618(NULL, false)) {
                     die_0x24();
-                } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
+                } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
                     die_0x24();
                 }
             }
@@ -135,7 +135,7 @@ void Grass_804A92D0::draw() {
         params.field_0x1d = fn_8023CB24(field_0xc8) + 1;
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
-    fn_801F02BC("enemy_both2_sob.bin", 0x27, &params, flags, 0, true, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x27, &params, flags, 0, true, 1.0f, 1.0f);
 }
 
 void Grass_804A92D0::die_0x24() {
@@ -149,10 +149,10 @@ void Grass_804A92D0::die_0x24() {
             startSound_801F0E34(0x5002F, 0);
         }
     } else if (field_0x238 == 0) {
-        if (fn_8022461C(&mPos, mLayer_0x4) == 0xD || fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+        if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xD || getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30022, 0);
-        } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xE) {
+        } else if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xE) {
             if (fn_802DE9A0()) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
@@ -180,29 +180,29 @@ void Grass_804A92D0::die_0x24() {
 void Grass_804A92D0::fn_802CEC10() {
     if (field_0x234 == 1) {
         if (field_0x230 == 4) {
-            if (fn_801CD664(100) < 60) {
+            if (randInt_801CD664(100) < 60) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
             }
         } else if (field_0x238 == 3) {
             // FIXME: 99.27 %. Only the float registers of the first jittered
             // position differ (the original has the constant in f2 and the
             // loaded mPos.x in f3; ours swaps them).
-            JGeometry::TVec3f a(mPos.x + (fn_801CD664(13) - 6), mPos.y, 0.0f);
+            JGeometry::TVec3f a(mPos.x + (randInt_801CD664(13) - 6), mPos.y, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &a, 0, -1, -1);
-            JGeometry::TVec3f b(mPos.x + (fn_801CD664(13) - 6), mPos.y, 0.0f);
+            JGeometry::TVec3f b(mPos.x + (randInt_801CD664(13) - 6), mPos.y, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &b, 0, -1, -1);
         } else if (field_0x238 == 2) {
-            s32 dy = fn_801CD664(13) - 6;
-            JGeometry::TVec3f c(mPos.x + (fn_801CD664(13) - 6), mPos.y + dy, 0.0f);
+            s32 dy = randInt_801CD664(13) - 6;
+            JGeometry::TVec3f c(mPos.x + (randInt_801CD664(13) - 6), mPos.y + dy, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &c, 0x262D01, -1, -1);
         } else {
-            s32 dy = fn_801CD664(13) - 6;
-            JGeometry::TVec3f d(mPos.x + (fn_801CD664(13) - 6), mPos.y + dy, 0.0f);
+            s32 dy = randInt_801CD664(13) - 6;
+            JGeometry::TVec3f d(mPos.x + (randInt_801CD664(13) - 6), mPos.y + dy, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &d, 0x262D00, -1, -1);
         }
     } else if (field_0x238 != 2 && !fn_802DEBF8()) {
         if (field_0x230 < 1) {
-            s32 r = fn_801CD664(100);
+            s32 r = randInt_801CD664(100);
             if (field_0x238 == 0) {
                 if (r >= 40 && r <= 60) {
                     if (r & 1) {
@@ -228,9 +228,9 @@ void Grass_804A92D0::fn_802CEC10() {
             } else if (field_0x230 == 2) {
                 getActorManager_801F856C()->spawnActor_801F9484('MTBO', mLayer_0x4, &mPos, 0, -1, -1);
             } else if (field_0x230 == 3) {
-                JGeometry::TVec3f e(mPos.x + (fn_801CD664(13) - 6), mPos.y, 0.0f);
+                JGeometry::TVec3f e(mPos.x + (randInt_801CD664(13) - 6), mPos.y, 0.0f);
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &e, 0, -1, -1);
-                JGeometry::TVec3f f(mPos.x + (fn_801CD664(13) - 6), mPos.y, 0.0f);
+                JGeometry::TVec3f f(mPos.x + (randInt_801CD664(13) - 6), mPos.y, 0.0f);
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &f, 0, -1, -1);
             }
         }

@@ -185,7 +185,7 @@ void Goal_804A7EB0::update() {
         field_0x244--;
         if (field_0x244 == 0) {
             if (field_0x23c != 0 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                s32 r = fn_801CD664(100);
+                s32 r = randInt_801CD664(100);
                 u32 id = 'CRTL';
                 u32 param = 0;
                 if (r < 0x21) {
@@ -199,7 +199,7 @@ void Goal_804A7EB0::update() {
                 pos.x = mPos.x + lbl_8046C6C8.dropX[field_0x234];
                 pos.y = mPos.y + lbl_8046C6C8.dropY[field_0x234];
                 pos.z = 300.0f + mPos.z;
-                s32 serial = getActorManager_801F856C()->fn_801F8544(id, mLayer_0x4, &pos, param);
+                s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(id, mLayer_0x4, &pos, param);
                 if (id == 'HBMB') {
                     ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (bomb != NULL) {
@@ -226,7 +226,7 @@ void Goal_804A7EB0::update() {
         JGeometry::TVec3f pos;
         pos.z = mPos.z;
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
-            u8 n = gGameRoot_8053AAF8->fn_80138A30();
+            u8 n = gGameRoot_8053AAF8->getPlayerCount_80138A30();
             u8 found[4] = {0, 0, 0, 0};
             for (s32 i = 0; i < 4; i++) {
                 field_0x254[i] = -1;
@@ -443,7 +443,7 @@ void Goal_804A7EB0::update() {
             pos.x = mPos.x + (f32)lbl_8046C658[field_0x234][field_0x318];
             pos.y = mPos.y + (f32)lbl_8046C6C8.y[field_0x234][field_0x318];
             pos.z = 0.0f;
-            getActorManager_801F856C()->fn_801F8544('FARY', mLayer_0x4, &pos, 0x30);
+            getActorManager_801F856C()->spawnActorSimple_801F8544('FARY', mLayer_0x4, &pos, 0x30);
             field_0x314--;
             if (field_0x314 == 0) {
                 lbl_8053AED0->fn_8043D67C(0x33A, 0, lbl_80529DEC.field_0x24f);

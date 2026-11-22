@@ -66,7 +66,7 @@ void ShadowLinkGenerator_804A4310::init() {
             mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDA8[i], 0, 0, NULL, NULL, true, 1.0f);
         }
     }
-    fn_801C0D70()->field_0x50 = mSerial;
+    getShadowLinkFight_801C0D70()->field_0x50 = mSerial;
 }
 
 // FIXME(shotgun): 94.36 %, missing/extra; behaviour drift.
@@ -78,14 +78,14 @@ void ShadowLinkGenerator_804A4310::update() {
     }
     switch (mState) {
     case 0:
-        if (fn_801C0D70()->field_0x0 & 0x40) {
+        if (getShadowLinkFight_801C0D70()->field_0x0 & 0x40) {
             mStateTimer = 0;
             mState = 1;
         }
         break;
     case 1:
         if (mStateTimer >= 0xB4) {
-            mWaitTimer = fn_801CD664(0x3D) + 0xB4;
+            mWaitTimer = randInt_801CD664(0x3D) + 0xB4;
             mStateTimer = 0;
             mState = 2;
         }
@@ -96,7 +96,7 @@ void ShadowLinkGenerator_804A4310::update() {
             if (mWaitTimer == 0) {
                 fn_801C186C();
             }
-        } else if (!(fn_801C0D70()->field_0x0 & 0x40)) {
+        } else if (!(getShadowLinkFight_801C0D70()->field_0x0 & 0x40)) {
             mStateTimer = 0;
             mState = 3;
         }
@@ -126,7 +126,7 @@ void ShadowLinkGenerator_804A4310::update() {
         if (mStateTimer == 0xB4) {
             startSound_801F0E34(0x5004B, 0);
         }
-        if (fn_801C0D70()->field_0x0 & 0x80) {
+        if (getShadowLinkFight_801C0D70()->field_0x0 & 0x80) {
             setScreenFlag_0x30(0xFF, true);
             for (s32 i = 0; i < 3; i++) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDB0[i], 0, 0, NULL, NULL, true, 1.0f);
@@ -159,7 +159,7 @@ void ShadowLinkGenerator_804A4310::update() {
                     ((PrincessZeldaDemo_8049D208*)actor)->fn_8010F9F0();
                 }
             }
-            fn_801C0D70()->field_0x0 |= 0x1000;
+            getShadowLinkFight_801C0D70()->field_0x0 |= 0x1000;
             mStateTimer = 0;
             mState = 8;
         } else if (field_0x2ac != 0) {
@@ -182,7 +182,7 @@ void ShadowLinkGenerator_804A4310::update() {
         break;
     case 8:
         startSound_801F0E34(0x5004C, 0);
-        if (!(fn_801C0D70()->field_0x0 & 0x1000)) {
+        if (!(getShadowLinkFight_801C0D70()->field_0x0 & 0x1000)) {
             mSequence.fn_8021F914(5);
             mStateTimer = 0;
             mState = 9;
@@ -247,7 +247,7 @@ void ShadowLinkGenerator_804A4310::draw() {
 void ShadowLinkGenerator_804A4310::fn_801C186C() const {
     for (s32 i = 0; i < 4; i++) {
         u8 first = mSlotFirst;
-        s32 slot = first + fn_801CD664(mSlotLast - first + 1);
+        s32 slot = first + randInt_801CD664(mSlotLast - first + 1);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLK2, mLayer_0x4, &mPos, fn_801C5660(8, 0, slot, 0, 0), -1, -1);
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);

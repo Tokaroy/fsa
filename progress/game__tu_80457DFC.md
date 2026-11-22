@@ -26,7 +26,7 @@ Left unwritten, with reasons:
   getTempoMgr call, per-branch handle check). Drafts in the scratchpad were 81.5 / 91.8 %.
 - fn_80459274, fn_804593D4: with fn_80458744 written MWCC inlines it into both; the original calls it.
   Bodies are simple (category pause / moveVolume 3); unknown why the original did not inline.
-- fn_80458880 (393 callers): inlines fn_80458F04 (defined later). Prototype corrected to (u32, s8):
+- playSystemSound_80458880 (393 callers): inlines fn_80458F04 (defined later). Prototype corrected to (u32, s8):
   extsb on entry, cmplwi equality tests; symbol renamed FUlSc. No caller changed %.
 - fn_80459674 (per-frame update; calls 8880, inlines 959C and the music-start block shared with
   fn_80458FF0's else branch: a dead-stripped helper candidate). fn_80459AE4, the audience class
@@ -38,7 +38,7 @@ new include/game/Unk_8045A080.h; symbols.txt renames (4 lines above).
 ## 2026-11-05 leverage wave 10 (Opus): AudioMgr round 2
 Baseline 8652 (honest). Unit 18/33 -> 19/33.
 Inlining resolved (reviewer's lead): fn_80458508 and fn_80458F04 are inlined into earlier
-functions (fn_80457E54, fn_8045815C; fn_80458880) while 7 / 6 other units call them out of
+functions (fn_80457E54, fn_8045815C; playSystemSound_80458880) while 7 / 6 other units call them out of
 line. Tested on MWCC GC/2.6 -inline auto: a later definition is never inlined, whether the
 class declaration and/or the definition say `inline` (no copy emitted either), so the bodies
 were inline ahead of their users. Written as the playerFlags_802413F0 / fn_802413F0
@@ -50,10 +50,10 @@ Written:
 - fn_8045815C 99.97 % reloc-name only (0.5f pooled after 0.7f, used first by unwritten
   fn_80459674). Needed JAISound::getID() by value (TP JAudio2 form; mkdd has const&): the
   original copies the ID through a temporary. SHARED-EDIT libs/sdk/include/.../JAISound.h.
-- fn_80458880 (393 callers) 99.66 % missing/extra (1 instr) + reloc-name. Two more inlines
+- playSystemSound_80458880 (393 callers) 99.66 % missing/extra (1 instr) + reloc-name. Two more inlines
   proven by the code: getPlayerPan (re-tests player < 0 inside the player >= 0 branch, and
   &aux is computed before the pan) and stopSounds13To1C (its ten JAISoundID temporaries take
-  the lowest stack slots, below fn_80458880's own and startSecondSeq's, as inlined bodies'
+  the lowest stack slots, below playSystemSound_80458880's own and startSecondSeq's, as inlined bodies'
   do). Left: case 1 / default of getPlayerPan reload 0.5f in the original. Try budget spent.
 Not written:
 - fn_80459274, fn_804593D4: bodies drafted (category pause / moveVolume 3, structure clear),

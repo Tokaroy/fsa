@@ -32,7 +32,7 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
     switch (state) {
     case 1: {
         JGeometry::TVec3f rail;
-        if (fn_801CD2F8(mLayer_0x4)) {
+        if (isUpperLayer_801CD2F8(mLayer_0x4)) {
             field_0x58c = 2;
             JGeometry::TVec3f pos(field_0x570.x, 24.0f + field_0x570.y, 0.0f);
             fn_801CD150(&pos, &field_0x580);

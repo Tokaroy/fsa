@@ -133,7 +133,7 @@ void Player_804A6F38::fn_8025E79C() {
     fn_8027221C(6);
     field_0x458 = 1;
     if (fn_80240808() && fn_802486A0() != 4) {
-        s32 facing = fn_80230CFC(fn_80240644());
+        s32 facing = fn_80230CFC(getLeader_80240644());
         mFacing_0x3dc = facing;
         mMoveDir_0x3e8 = facing;
     } else if (fn_80246B10(2)) {
@@ -189,9 +189,9 @@ void Player_804A6F38::fn_8025DACC() {
         JGeometry::TVec3f probe;
         fn_8024B298(2, &probe);
         probe.y += 2.0f;
-        tile = fn_8022461C(&probe, mLayer_0x3b4);
+        tile = getTileCollisionCode_8022461C(&probe, mLayer_0x3b4);
     } else {
-        tile = fn_8022461C(&mPos, mLayer_0x3b4);
+        tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4);
     }
     if (tile == 0x39) {
         if (field_0x1368 == NULL) {
@@ -244,7 +244,7 @@ void Player_804A6F38::fn_8025DACC() {
     }
     if (fn_802415CC() >= 2 && !viewLayerFlag(mLayer_0x3b4)) {
         if (fn_80240808()) {
-            s32 count = fn_8023A1A4(fn_80240644());
+            s32 count = fn_8023A1A4(getLeader_80240644());
             if (count > 0) {
                 if (field_0xbac == 0 && !field_0xce8) {
                     field_0xce8 = true;
@@ -255,7 +255,7 @@ void Player_804A6F38::fn_8025DACC() {
             }
             if (fn_8026FC20() == 4 && field_0xba8 == 0) {
                 field_0xba8 = 1;
-                JGeometry::TVec3f* leader = getPlayerPos_8023E724(fn_80240644());
+                JGeometry::TVec3f* leader = getPlayerPos_8023E724(getLeader_80240644());
                 mPos.x = leader->x;
                 mPos.y = leader->y;
                 mPos.z = leader->z;
@@ -271,25 +271,25 @@ void Player_804A6F38::fn_8025DACC() {
                     switch (mFacing_0x3dc) {
                     case 0:
                         pos.x += 16.0f;
-                        if (fn_8022461C(&pos, mLayer_0x3b4) == 0x12) {
+                        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x12) {
                             found = true;
                         }
                         break;
                     case 1:
                         pos.x -= 16.0f;
-                        if (fn_8022461C(&pos, mLayer_0x3b4) == 0x13) {
+                        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x13) {
                             found = true;
                         }
                         break;
                     case 2:
                         pos.y += 16.0f;
-                        if (fn_8022461C(&pos, mLayer_0x3b4) == 0x10) {
+                        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x10) {
                             found = true;
                         }
                         break;
                     case 3:
                         pos.y -= 16.0f;
-                        if (fn_8022461C(&pos, mLayer_0x3b4) == 0x11) {
+                        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x11) {
                             found = true;
                         }
                         break;
@@ -306,25 +306,25 @@ void Player_804A6F38::fn_8025DACC() {
                 switch (mFacing_0x3dc) {
                 case 0:
                     pos.x += 16.0f;
-                    if (fn_8022461C(&pos, mLayer_0x3b4) == 0x12) {
+                    if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x12) {
                         found = true;
                     }
                     break;
                 case 1:
                     pos.x -= 16.0f;
-                    if (fn_8022461C(&pos, mLayer_0x3b4) == 0x13) {
+                    if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x13) {
                         found = true;
                     }
                     break;
                 case 2:
                     pos.y += 16.0f;
-                    if (fn_8022461C(&pos, mLayer_0x3b4) == 0x10) {
+                    if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x10) {
                         found = true;
                     }
                     break;
                 case 3:
                     pos.y -= 16.0f;
-                    if (fn_8022461C(&pos, mLayer_0x3b4) == 0x11) {
+                    if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x11) {
                         found = true;
                     }
                     break;
@@ -373,7 +373,7 @@ void Player_804A6F38::fn_8025DACC() {
                 fn_80251AEC(0);
             }
         }
-        u16 under = fn_8022461C(&mPos, mLayer_0x3b4);
+        u16 under = getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4);
         if (under == 0x39 || under == 0xd) {
             fn_8024F0E8(0x20052);
         } else if (fn_80224B88(&mPos, mLayer_0x3b4)) {
@@ -423,7 +423,7 @@ void Player_804A6F38::fn_8025DACC() {
             fn_80251AEC(0x41);
         }
     }
-    if (fn_80240808() && fn_802350A0(fn_80240644())) {
+    if (fn_80240808() && fn_802350A0(getLeader_80240644())) {
         fn_80251AEC(0x41);
     }
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xbb4);
@@ -466,7 +466,7 @@ void Player_804A6F38::fn_8025D7E4() {
     } else {
         getGameView_802D6A9C()->fn_802D79E8(mLayer_0x3b4, 0.0f, 4.0f, false);
     }
-    gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+    gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     JGeometry::TVec3f offset;
     if (mFacing_0x3dc == 0 || mFacing_0x3dc == 1) {
         offset.set(0.0f, -8.0f, 0.0f);
@@ -1305,14 +1305,14 @@ void Player_804A6F38::fn_8025B3F0() {
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23d, 0, 0, NULL, NULL, true, 5.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23e, 0, 0, NULL, NULL, true, 2.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23f, 0, 0, NULL, NULL, true, 2.0f);
-            u16 tile = fn_8022461C(&field_0x5c0, mLayer_0x3b4);
+            u16 tile = getTileCollisionCode_8022461C(&field_0x5c0, mLayer_0x3b4);
             if (tile == 0x39 || tile == 0xd) {
                 spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x3d0, 0, 0, NULL, NULL, true, 2.0f);
             } else {
                 spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x3cf, 0, 0, NULL, NULL, true, 2.0f);
             }
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x3b4, 4.0f, 0.0f, false);
-            gGameRoot_8053AAF8->fn_80134DE4(2, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(2, 0);
         } else {
             if (mLayer_0x3b4 < 8) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F601C(&field_0x5c0, 1, NULL, 2.0f, strength);
@@ -1321,13 +1321,13 @@ void Player_804A6F38::fn_8025B3F0() {
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23d, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23e, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x23f, 0, 0, NULL, NULL, true, 1.0f);
-            u16 tile = fn_8022461C(&field_0x5c0, mLayer_0x3b4);
+            u16 tile = getTileCollisionCode_8022461C(&field_0x5c0, mLayer_0x3b4);
             if (tile == 0x39 || tile == 0xd) {
                 spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x3d0, 0, 0, NULL, NULL, true, 1.0f);
             } else {
                 spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x5c0, 0x3cf, 0, 0, NULL, NULL, true, 1.0f);
             }
-            gGameRoot_8053AAF8->fn_80134DE4(1, 0);
+            gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
         }
     }
     if (field_0xb9b == true) {
@@ -1675,7 +1675,7 @@ void Player_804A6F38::fn_8025A15C() {
                         count++;
                     }
                 }
-                if (count < 1 && (!fn_80240808() || fn_802486A0() == 4 || fn_8023B400(fn_80240644())) &&
+                if (count < 1 && (!fn_80240808() || fn_802486A0() == 4 || fn_8023B400(getLeader_80240644())) &&
                     fn_80247594(0)) {
                     JGeometry::TVec3f placed = mPos;
                     switch (mFacing_0x3dc) {
@@ -2141,7 +2141,7 @@ void Player_804A6F38::fn_80258BE8() {
         JGeometry::TVec3f probe;
         fn_8024B298(2, &probe);
         probe.y += 2.0f;
-        if (fn_8022461C(&probe, mLayer_0x3b4) != 2) {
+        if (getTileCollisionCode_8022461C(&probe, mLayer_0x3b4) != 2) {
             fn_80251AEC(0);
         }
     }
@@ -2227,7 +2227,7 @@ void Player_804A6F38::fn_80258890() {
             } else {
                 mPose_0x3fb = 0;
                 mSubPose_0x3fd = 1;
-                if (fn_8022461C(&pos, mLayer_0x3b4) == 0x39) {
+                if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0x39) {
                     fn_8024F0E8(0x20040);
                 } else if (field_0xba0 == 8) {
                     fn_8024F0E8(0x2004F);
@@ -2464,7 +2464,7 @@ bool Player_804A6F38::fn_80257DB4() {
     if (field_0x1174) {
         return false;
     }
-    if (fn_80240808() && fn_80230188(fn_80240644())) {
+    if (fn_80240808() && fn_80230188(getLeader_80240644())) {
         return false;
     }
     if (fn_802413E8()) {
@@ -2542,8 +2542,8 @@ void Player_804A6F38::fn_8025785C() {
     }
     if (fn_8022B334(mPlayerNo_0x4)) {
         if (fn_80240808()) {
-            if (fn_802373EC(fn_80240644()) != fn_802416C4()) {
-                fn_80241618(fn_802373EC(fn_80240644()), 1);
+            if (fn_802373EC(getLeader_80240644()) != fn_802416C4()) {
+                fn_80241618(fn_802373EC(getLeader_80240644()), 1);
             }
         }
         if (fn_8022C310(mPlayerNo_0x4)) {
@@ -2588,7 +2588,7 @@ void Player_804A6F38::fn_8025785C() {
                         pos.z = d.z;
                         pos += mPos;
                         pos.z = 0.0f;
-                        if (fn_8022461C(&pos, mLayer_0x3b4) == 0xe) {
+                        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 0xe) {
                             break;
                         }
                         s32 serial;
@@ -2661,7 +2661,7 @@ inline void Player_804A6F38::requestJump_8025785C() {
         JGeometry::TVec3f pos;
         fn_8024B298(2, &pos);
         pos.y += 2.0f;
-        if (fn_8022461C(&pos, mLayer_0x3b4) == 2) {
+        if (getTileCollisionCode_8022461C(&pos, mLayer_0x3b4) == 2) {
             return;
         }
     }

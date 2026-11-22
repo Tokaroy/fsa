@@ -76,7 +76,7 @@ void Pot_804A9428::init() {
 }
 
 Pot_804A9428::~Pot_804A9428() {
-    if (fn_8022461C(&mPos, mLayer_0x4) != 0xD) {
+    if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) != 0xD) {
         lbl_804C0EA0[0] = mPos.x;
         lbl_804C0EA0[1] = mPos.y;
         lbl_804C0EA0[2] = mPos.z;
@@ -120,9 +120,9 @@ void Pot_804A9428::update() {
             mPos += mVel_0x3c;
             if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
-                    if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
+                    if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
-                    } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91 || fn_80226850(&mPos, mLayer_0x4) == 0x22E) {
+                    } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91 || getRawTile_80226850(&mPos, mLayer_0x4) == 0x22E) {
                         gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
@@ -141,7 +141,7 @@ void Pot_804A9428::update() {
                     }
                 }
                 die_0x24();
-            } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
+            } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
                 die_0x24();
             }
         } else {
@@ -153,7 +153,7 @@ void Pot_804A9428::update() {
             }
             mVel_0x3c.y += 0.15f;
             mPos += mVel_0x3c;
-            if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || fn_801F2618(NULL, false)) {
+            if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || fn_801F2618(NULL, false)) {
                 die_0x24();
             }
         }
@@ -193,9 +193,9 @@ void Pot_804A9428::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
     if (viewLayerFlag(mLayer_0x4)) {
-        fn_801F02BC("enemy_both2_sob.bin", 0x1BB + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x1BB + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", 0x21 + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x21 + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
     }
     if (field_0x234 == 1) {
         drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 24.0f);
@@ -213,7 +213,7 @@ void Pot_804A9428::die_0x24() {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, mLayer_0x4, &pos, 0, -1, -1);
         }
         if (field_0x240 <= 1) {
-            s32 r = fn_801CD664(100);
+            s32 r = randInt_801CD664(100);
             if ((getGameView_802D6A9C()->mStage_0x4 == 5 && getGameView_802D6A9C()->mLevel_0x8 == 3) ||
                 (getGameView_802D6A9C()->mStage_0x4 == 3 && getGameView_802D6A9C()->mLevel_0x8 == 3)) {
                 s32 type;
@@ -239,19 +239,19 @@ void Pot_804A9428::die_0x24() {
         } else if (field_0x240 == 3) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_MTBO, mLayer_0x4, &pos, 0, -1, -1);
         } else if (field_0x240 == 4) {
-            JGeometry::TVec3f heartPos1(pos.x + (f32)(fn_801CD664(13) - 6), pos.y, 0.0f);
+            JGeometry::TVec3f heartPos1(pos.x + (f32)(randInt_801CD664(13) - 6), pos.y, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &heartPos1, 0, -1, -1);
-            JGeometry::TVec3f heartPos2(pos.x + (f32)(fn_801CD664(13) - 6), pos.y, 0.0f);
+            JGeometry::TVec3f heartPos2(pos.x + (f32)(randInt_801CD664(13) - 6), pos.y, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &heartPos2, 0, -1, -1);
         } else if (field_0x240 == 5) {
-            if (fn_801CD664(100) < 60) {
+            if (randInt_801CD664(100) < 60) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &pos, 0, -1, -1);
             }
         }
-        if (fn_8022461C(&mPos, mLayer_0x4) == 0xD || fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
+        if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xD || getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0x39) {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30022, 0);
-        } else if (fn_8022461C(&mPos, mLayer_0x4) == 0xE) {
+        } else if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) == 0xE) {
             if (fn_802DE9A0()) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
@@ -275,7 +275,7 @@ void Pot_804A9428::die_0x24() {
                 pos.y = mPos.y + lbl_8046E070_y5[i];
                 pos.z = 0.0f;
                 s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
-                gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, tileIdx);
+                gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
                 fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
                 tilePos.y += 8.0f;
@@ -290,7 +290,7 @@ void Pot_804A9428::die_0x24() {
                 pos.y = mPos.y + lbl_8046E070_y13[i];
                 pos.z = 0.0f;
                 s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
-                gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, tileIdx);
+                gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
                 fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
                 tilePos.y += 8.0f;

@@ -26,7 +26,7 @@ public:
     void fn_801EC7B8();
     void fn_801ECB08(s32 state);
 
-    /* 0x2A8 */ s32 field_0x2a8;   // fn_80138A30(): the number of players taking part
+    /* 0x2A8 */ s32 field_0x2a8;   // getPlayerCount_80138A30(): the number of players taking part
     /* 0x2AC */ s32 field_0x2ac;   // zeroed by the constructor
     /* 0x2B0 */ s32 field_0x2b0;   // -1 from the constructor
     /* 0x2B4 */ u8 field_0x2b4;    // zeroed by the constructor

@@ -89,7 +89,7 @@ void TinglesWallet_804A3948::draw() {
     params.field_0x20 = 0;
     params.field_0x2d = 1;
     drawSprite_801F06F0("enemy_both2_sob.bin", 0xE6, &params, 0, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0xE6, false, 2, -1, 0, 0, 1);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0xE6, false, 2, -1, 0, 0, 1);
 }
 
 TinglesWallet_804A3948::~TinglesWallet_804A3948() {}

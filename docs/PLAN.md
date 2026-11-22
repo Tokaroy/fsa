@@ -288,7 +288,7 @@ these flags, and each of the alternatives breaks one:
 |---|---|---|
 | getActorManager_801F856C | `return gGame->mStage->mActorMgr;` | baseline |
 | fn_80154248 | `getActorMgr()->spawn(a, b, c, d);` | `-O4,p`: 4 saved registers as separate `stw` (`-O4,s` emits `stmw r28`) |
-| fn_80154310 | `getActorMgr()->create(id, a, b, c, d, e);` | `-use_lmw_stmw on`: `stmw r26` (off: six `stw`) |
+| spawnActor_80154310 | `getActorMgr()->create(id, a, b, c, d, e);` | `-use_lmw_stmw on`: `stmw r26` (off: six `stw`) |
 | fn_80154528 | midpoint, `0.5f * (a - b) + b` | `-fp_contract on`: `fmadds` (off: `fmuls` + `fadds`) |
 | fn_80105DD4 | an empty virtual destructor | `-Cpp_exceptions on`: extab entries, as the DOL has for all three non-leaf functions |
 

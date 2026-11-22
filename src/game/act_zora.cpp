@@ -62,7 +62,7 @@ void ZoraEnemy_804A3D7C::init() {
     field_0x54.set(0.0f, 0.0f, 0.0f);
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(121) + 60;
+    field_0x250 = randInt_801CD664(121) + 60;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3D68, 5);
@@ -76,11 +76,11 @@ void ZoraEnemy_804A3D7C::init() {
 void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
     switch (state) {
     case 0:
-        field_0x250 = fn_801CD664(121) + 60;
+        field_0x250 = randInt_801CD664(121) + 60;
         field_0x54.set(0.0f, 0.0f, 0.0f);
         break;
     case 1:
-        field_0x250 = fn_801CD664(121) + 60;
+        field_0x250 = randInt_801CD664(121) + 60;
         mAnim.startAnim_801D22DC(0, 2, false);
         if (mActorId == 'ZORA') {
             JGeometry::TVec3f probePos;
@@ -94,7 +94,7 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
                         probePos.set(mSpawnPos);
                         probePos.x += dx * 16.0f;
                         probePos.y += dy * 16.0f;
-                        if (fn_8022461C(&probePos, mLayer_0x4) == 0xD) {
+                        if (getTileCollisionCode_8022461C(&probePos, mLayer_0x4) == 0xD) {
                             tiles[count].x = dx;
                             tiles[count].y = dy;
                             count++;
@@ -102,7 +102,7 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
                     }
                 }
                 if (count > 0) {
-                    s32 pick = fn_801CD664(count);
+                    s32 pick = randInt_801CD664(count);
                     spawnPos.x += tiles[pick].x * 16.0f;
                     spawnPos.y += tiles[pick].y * 16.0f;
                 }
@@ -129,7 +129,7 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         mFlags &= ~ENEMY_FLAG_NO_ATTACK;
-        field_0x250 = fn_801CD664(41) + 40;
+        field_0x250 = randInt_801CD664(41) + 40;
         mAnim.fn_801D22A0(2, 2);
         break;
     case 4:
@@ -259,7 +259,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
 }
 
 bool ZoraEnemy_804A3D7C::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    if (fn_8022461C(pos, layer) == 0xD) {
+    if (getTileCollisionCode_8022461C(pos, layer) == 0xD) {
         return false;
     }
     return ActorBase_804A5770::isBlocked_0x4C(layer, pos);

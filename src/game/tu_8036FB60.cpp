@@ -207,7 +207,7 @@ void FourGirlsControl_804AE4B0::fn_803721F4() {
             for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
-                gAudioMgr_8053AF80->fn_80458880(0x37, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x37, -1);
             }
         } else if (mTimer < 0x76) {
             field_0x398 = 1;
@@ -947,7 +947,7 @@ void FourGirlsControl_804AE4B0::fn_8036FB60() {
             for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
-                gAudioMgr_8053AF80->fn_80458880(0x37, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x37, -1);
             }
         } else if (mTimer < 0x76) {
             field_0x398 = 1;

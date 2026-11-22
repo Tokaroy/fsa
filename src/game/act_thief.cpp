@@ -213,8 +213,8 @@ void Thief_804A5A30::fn_80206168() {
     if (field_0x344 == 0) {
         return;
     }
-    bool inDark = fn_801CD2F8(mLayer_0x4);
-    u32 max = fn_801CD664(31) + 20;
+    bool inDark = isUpperLayer_801CD2F8(mLayer_0x4);
+    u32 max = randInt_801CD664(31) + 20;
     u32 count = field_0x344;
     if (count >= max) {
         count = max;
@@ -239,7 +239,7 @@ void Thief_804A5A30::fn_80206168() {
             gemType = 0;
             toDrop -= 1;
         }
-        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, gemType);
+        s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, gemType);
         if (serial >= 0) {
             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (gem != NULL) {
@@ -253,13 +253,13 @@ void Thief_804A5A30::fn_80206168() {
     }
 }
 
-// True in state 1 when no fn_801CD2F8 hit is set for the layer and mPos lies
+// True in state 1 when no isUpperLayer_801CD2F8 hit is set for the layer and mPos lies
 // outside the view box of that layer.
 bool Thief_804A5A30::fn_8020609C() const {
     s32 layer;
     bool result = false;
     if (field_0x94 == 1) {
-        if (!fn_801CD2F8(mLayer_0x4)) {
+        if (!isUpperLayer_801CD2F8(mLayer_0x4)) {
             layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
@@ -509,7 +509,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
                     }
                 }
                 JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z + 24.0f);
-                s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &spawnPos, gemType);
+                s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &spawnPos, gemType);
                 if (serial >= 0) {
                     ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (gem != NULL) {
@@ -562,7 +562,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     case 6:
     case 8:
     case 9:
-        mDir_0x98 = fn_801F681C((u16)field_0x33c);
+        mDir_0x98 = angleToDir_801F681C((u16)field_0x33c);
         break;
     case 3:
     case 4:
@@ -571,7 +571,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         break;
     default:
         field_0x33c = fn_801D02E0(&field_0x32c);
-        mDir_0x98 = fn_801F681C((u16)field_0x33c);
+        mDir_0x98 = angleToDir_801F681C((u16)field_0x33c);
         break;
     }
 }

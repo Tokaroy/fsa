@@ -14,7 +14,7 @@
 
 // Indexed by field_0x238 (0-4). Passed to fn_802362C4 (the player's word).
 static const s32 lbl_80471438[5] = {1, 100, 150, 300, 1000};
-// Sprite ids (the chest's sprite frame and fn_803075AC's id).
+// Sprite ids (the chest's sprite frame and showGbaSprite_803075AC's id).
 static const s32 lbl_8047144C[5] = {1, 0x11, 0x15, 0x1D, 0x45A};
 
 void GamblingShopChest_804AAAE8::init() {
@@ -112,11 +112,11 @@ void GamblingShopChest_804AAAE8::draw() {
             PSMTXScale(mtx, 2.0f, 2.0f, 2.0f);
             params.mMtx = mtx;
             drawSprite_801F06F0("enemy_gc_sob.bin", 0x45A, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x11, true, 2, -1, 1, 0, 0);
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x11, true, 2, -1, 1, 0, 0);
         } else {
             drawSprite_801F06F0("enemy_both2_sob.bin", lbl_8047144C[field_0x238], &params, -1, 1.0f,
                         1.0f);
-            fn_803075AC(mSerial, mLayer_0x4, &mPos, lbl_8047144C[field_0x238], false, 2, -1, 1, 0,
+            showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, lbl_8047144C[field_0x238], false, 2, -1, 1, 0,
                         0);
         }
         mPos = savedPos;

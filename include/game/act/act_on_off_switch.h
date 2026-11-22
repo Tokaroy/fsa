@@ -24,7 +24,7 @@ public:
     /* 0x24C */ s32 field_0x24c;      // mSpawnParam_0x90 & 0xFFF; update copies it into the countdown
     /* 0x250 */ u8 field_0x250[0x4];  // not yet known
     /* 0x254 */ s32 field_0x254;      // flag: init 0; update sets 0 or 1
-    /* 0x258 */ s32 field_0x258;      // top 5 bits of the switch's mSpawnParam_0x90; fn_802D800C reads it
+    /* 0x258 */ s32 field_0x258;      // top 5 bits of the switch's mSpawnParam_0x90; isScreenFlagSet_802D800C reads it
 }; // Size: 0x25C
 
 #endif

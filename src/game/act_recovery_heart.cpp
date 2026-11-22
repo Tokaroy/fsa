@@ -161,7 +161,7 @@ void RecoveryHeart_8049F4F0::draw() {
     params.field_0x2d = 1;
     if (field_0x234 >= 0x100 || (field_0x234 & 2) == 0) {
         drawSprite_801F06F0("enemy_both2_sob.bin", 0x2C, &params, 1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2C, false, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x2C, false, 2, -1, 0, 0, 0);
     }
 }
 
@@ -175,8 +175,8 @@ bool RecoveryHeart_8049F4F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == true) {
         return true;
     }
-    s32 kind = fn_8022461C(pos, layer);
-    s32 floor = fn_80226850(pos, layer);
+    s32 kind = getTileCollisionCode_8022461C(pos, layer);
+    s32 floor = getRawTile_80226850(pos, layer);
     if (kind == 0x10 || kind == 0x11 || kind == 0x12 || kind == 0x13 || kind == 0x14 ||
         kind == 0x15 || kind == 0x16 || kind == 0x17 || (floor >= 0x140 && floor <= 0x15F)) {
         return false;

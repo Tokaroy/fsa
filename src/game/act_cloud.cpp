@@ -87,7 +87,7 @@ void Cloud_8049CBE0::update() {
         fn_80239914(&box, mLayer_0x4, mSerial);
     }
     s32 bit = field_0x368;
-    if (bit > 0 && getGameView_802D6A9C()->fn_802D800C(bit)) {
+    if (bit > 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit)) {
         mAlive = false;
         return;
     }

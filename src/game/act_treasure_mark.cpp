@@ -24,7 +24,7 @@ void TreasureMark_804ABAE8::update() {
 
 void TreasureMark_804ABAE8::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", mFrame + 431, NULL, -1, 1.0f, 1.0f);
-    fn_803075AC(mSerial, mLayer_0x4, &mPos, mFrame + 431, false, 2, -1, 0, 0, 0);
+    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mFrame + 431, false, 2, -1, 0, 0, 0);
 }
 
 TreasureMark_804ABAE8::~TreasureMark_804ABAE8() {}

@@ -35,7 +35,7 @@ void TalkingSign_804AF428::init() {
 // The view helper's layer then lands in r30/r29 instead of r28/r30. Also the area box's
 // f.x store (0x28) is scheduled after the mPos.y load in the original.
 void TalkingSign_804AF428::update() {
-    s32 tile = fn_80226850(&mPos, mLayer_0x4);
+    s32 tile = getRawTile_80226850(&mPos, mLayer_0x4);
     if (tile == 0x1C7) {
         mBox.set(0.0f, 0.0f, 32.0f, 32.0f);
     }

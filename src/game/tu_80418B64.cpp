@@ -20,7 +20,7 @@ static const char* lbl_804B1390[3] = {
     "kk_heart_03.bti",
 };
 
-// The digit textures fn_8041918C passes to fn_804030C4 ('TIMG').
+// The digit textures fn_8041918C passes to getMain2DResource_804030C4 ('TIMG').
 static const char* lbl_804B139C[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
@@ -401,7 +401,7 @@ AdventureHud_804B13D4::AdventureHud_804B13D4() : field_0x244(0xFFFFFFFF), field_
     field_0x294[3] = 0;
     field_0x218 = 1;
     field_0x298 = 0;
-    if (gGameRoot_8053AAF8->fn_80138A30() >= 2) {
+    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() >= 2) {
         field_0x50 = new PlayerWindowSelect_804B19E0();
     } else {
         field_0x50 = NULL;
@@ -488,7 +488,7 @@ AdventureHud_804B13D4::AdventureHud_804B13D4() : field_0x244(0xFFFFFFFF), field_
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         for (s32 i = 0; i < 8; i++) {
             for (s32 j = 0; j < 3; j++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1390[j]));
                 static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->append(res, 1.0f);
             }
@@ -496,7 +496,7 @@ AdventureHud_804B13D4::AdventureHud_804B13D4() : field_0x244(0xFFFFFFFF), field_
     } else {
         for (s32 i = 0; i < 4; i++) {
             for (s32 j = 1; j < 4; j++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B13C4[j]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B13C4[j]));
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE00[i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE20[i]))->append(res, 1.0f);
             }
@@ -506,7 +506,7 @@ AdventureHud_804B13D4::AdventureHud_804B13D4() : field_0x244(0xFFFFFFFF), field_
         for (s32 p = 0; p < 4; p++) {
             for (s32 i = 0; i < 8; i++) {
                 for (s32 j = 0; j < 3; j++) {
-                    const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
+                    const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1390[j]));
                     static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DF40[i]))->append(res, 1.0f);
                     static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DFC0[i]))->append(res, 1.0f);
                 }
@@ -1056,7 +1056,7 @@ void AdventureHud_804B13D4::fn_8041E3B4(s32 player) {
         return;
     }
     if (lbl_8053AEC8->field_0x5e == 1) {
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
             field_0x28f |= (u8)(1 << i);
         }
         lbl_8053AEC8->field_0x5e = 0;
@@ -1337,7 +1337,7 @@ void AdventureHud_804B13D4::fn_8041CC04() {
             n = -5000;
         }
         n *= -1;
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_rupyNumMinus.bti"));
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D658[4])->show();
@@ -1352,26 +1352,26 @@ void AdventureHud_804B13D4::fn_8041CC04() {
     }
     s32 n1000 = n / 1000;
     n %= 1000;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n1000]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n1000]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
     digit++;
 
     s32 n100 = n / 100;
     n %= 100;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n100]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n100]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
     digit++;
 
     s32 n10 = n / 10;
     n %= 10;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n10]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n10]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
     digit++;
 
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
 }
@@ -1412,7 +1412,7 @@ void AdventureHud_804B13D4::fn_8041C67C() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B13C4[0]));
+        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B13C4[0]));
         static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE00[i]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE20[i]))->changeTexture(res, 0);
     }
@@ -1442,7 +1442,7 @@ void AdventureHud_804B13D4::fn_8041C0C0(s32 player) {
             n = -5000;
         }
         n *= -1;
-        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_rupyNumMinus.bti"));
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D6D8[player][4])->show();
@@ -1457,26 +1457,26 @@ void AdventureHud_804B13D4::fn_8041C0C0(s32 player) {
     }
     s32 n1000 = n / 1000;
     n %= 1000;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n1000]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n1000]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
     digit++;
 
     s32 n100 = n / 100;
     n %= 100;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n100]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n100]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
     digit++;
 
     s32 n10 = n / 10;
     n %= 10;
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n10]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n10]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
     digit++;
 
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n]));
+    res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[n]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
 }
@@ -1941,7 +1941,7 @@ void AdventureHud_804B13D4::fn_8041918C(s32 player) {
                 level = 0;
             }
             if (level < 10) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[level]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[level]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[1]))->changeTexture(res, 0);
                 if (field_0x2c[player]->search(lbl_8048DDD0[2])->isVisible() == true) {
@@ -1949,10 +1949,10 @@ void AdventureHud_804B13D4::fn_8041918C(s32 player) {
                     field_0x2c[player]->search(lbl_8048DDD0[3])->hide();
                 }
             } else {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[level / 10]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[level / 10]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[1]))->changeTexture(res, 0);
-                res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[level % 10]));
+                res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B139C[level % 10]));
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[2]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(field_0x2c[player]->search(lbl_8048DDD0[3]))->changeTexture(res, 0);
                 if (!field_0x2c[player]->search(lbl_8048DDD0[2])->isVisible()) {

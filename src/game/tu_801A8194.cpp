@@ -84,7 +84,7 @@ void KeeseSwarm_804A2EC0::update() {
         }
         field_0x258 = 1;
     }
-    if (getGameView_802D6A9C()->fn_802DCD0C()) {
+    if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
         if (field_0x25c == 1) {
             mAlive = false;
             return;
@@ -121,7 +121,7 @@ void KeeseSwarm_804A2EC0::update() {
                 f32 dist = std::sqrtf(dx * dx + dy * dy);
                 if (dist < 16.0f) {
                     mPos.set(field_0x294[i].x, field_0x294[i].y, 0.0f);
-                    fn_801F2B7C(mParamAtcp_0x114, -1, 5);
+                    damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 5);
                 }
             }
         }
@@ -136,7 +136,7 @@ void KeeseSwarm_804A2EC0::update() {
     if (field_0x230 == 2) {
         addCalc2_801F71A4(&field_0x274, 0.0f, 0.3f, 5.0f);
     }
-    if (fn_801F3D94(0) != 0) {
+    if (updateHitReaction_801F3D94(0) != 0) {
         return;
     }
     if (field_0x264 > 0) {
@@ -145,7 +145,7 @@ void KeeseSwarm_804A2EC0::update() {
             if (hitter < 0) {
                 continue;
             }
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1 || fn_8022CAF8(hitter) == 1 || fn_8022CAF8(hitter) == 0) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 || fn_8022CAF8(hitter) == 1 || fn_8022CAF8(hitter) == 0) {
                 if (fn_801F2FAC()) {
                     field_0x264 -= 10000 - mLife;
                     if (field_0x264 <= 0) {
@@ -167,7 +167,7 @@ void KeeseSwarm_804A2EC0::update() {
         addCalc2_801F71A4(&field_0x278, 10.0f, 0.3f, 1.0f);
         addCalc2_801F71A4(&mPos.z, field_0x27c.z, 0.3f, 1.0f);
         field_0x27c.z = 16.0f;
-        fn_801F2B7C(-100, -1, 1);
+        damagePlayersInBox_801F2B7C(-100, -1, 1);
         startSound_801F0E34(0x400EC, 0);
         switch (field_0x230) {
         case 0:
@@ -200,7 +200,7 @@ void KeeseSwarm_804A2EC0::update() {
         case 2:
             if (field_0x274 < 1.0f) {
                 for (s32 i = 0; i < 40; i++) {
-                    getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &field_0x294[i], 0);
+                    getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &field_0x294[i], 0);
                 }
                 die_0x24();
             }
@@ -241,7 +241,7 @@ void KeeseSwarm_804A2EC0::draw() {
     mtx[2][1] = 0.0f;
     mtx[2][2] = field_0x26c;
     params.mMtx = mtx;
-    fn_801F02BC("enemy_both2_sob.bin", field_0x260 + 0x155, &params, 7, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x260 + 0x155, &params, 7, 0, false, 1.0f, 1.0f);
     f32 scale = field_0x26c;
     f32 alpha = field_0x274;
     s32 frame = field_0x260;
@@ -277,7 +277,7 @@ void KeeseSwarm_804A2EC0::draw() {
             mPos.x = field_0x294[i].x;
             mPos.y = field_0x294[i].y;
             mPos.z = field_0x294[i].z;
-            fn_801F02BC("enemy_both2_sob.bin", frame + 0x155, &params, 7, 0, false, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", frame + 0x155, &params, 7, 0, false, 1.0f, 1.0f);
         }
     }
     mPos.x = savedX;

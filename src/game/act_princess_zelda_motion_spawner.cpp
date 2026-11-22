@@ -137,7 +137,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
                     }
                 }
             }
-            if (count < gGameRoot_8053AAF8->fn_80138A30() || dir < 0 || dist > 32.0f) {
+            if (count < gGameRoot_8053AAF8->getPlayerCount_80138A30() || dir < 0 || dist > 32.0f) {
                 break;
             }
         }

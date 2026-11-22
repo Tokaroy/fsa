@@ -88,7 +88,7 @@ void FleeingForceGem_804AB170::init() {
 
 // FIXME(shotgun): 89.23 %, missing/extra; behaviour clean.
 bool FleeingForceGem_804AB170::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    s32 tile = (u16)fn_8022461C(pos, layer);
+    s32 tile = (u16)getTileCollisionCode_8022461C(pos, layer);
     if (tile == 3) {
         mVel_0x3c.z = 0.0f;
         mVel_0x3c.y = 0.0f;
@@ -567,7 +567,7 @@ void FleeingForceGem_804AB170::draw() {
         JGeometry::TVec3f savedPos = mPos;
         mPos += field_0x294;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x254 + lbl_804AB130[field_0x268], &params, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
         mPos = savedPos;
     } else {
         if (field_0x264 >= 0 && field_0x264 <= 3) {
@@ -580,7 +580,7 @@ void FleeingForceGem_804AB170::draw() {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
     }
 }
 

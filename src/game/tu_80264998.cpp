@@ -19,7 +19,7 @@ static inline void drawSob(const char* name, const JGeometry::TVec3f& pos, s32 f
 }
 
 // drawSob on the TV layers (below 8); the GBA layers draw through
-// fn_803075AC instead. The draw tests the layer again after loading the
+// showGbaSprite_803075AC instead. The draw tests the layer again after loading the
 // frame (a second bge on the same compare), so the test is part of a helper.
 static inline void drawSobOnTv(s32 layer, const char* name, const JGeometry::TVec3f& pos, s32 frame,
                                SpriteParams_801F5AE0* params) {
@@ -42,10 +42,10 @@ static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
     m[2][2] = z;
 }
 
-// Frame `frame` on the GBA layers (fn_803075AC: serial, layer, pos, id). The
+// Frame `frame` on the GBA layers (showGbaSprite_803075AC: serial, layer, pos, id). The
 // draw builds the position as the call's argument, with no named copy.
 static inline void drawGba(s32 serial, s32 layer, const JGeometry::TVec3f& pos, s32 frame) {
-    fn_803075AC(serial, layer, &pos, frame, 0, 1, -1, false, 0, 0);
+    showGbaSprite_803075AC(serial, layer, &pos, frame, 0, 1, -1, false, 0, 0);
 }
 
 // The body frame mCel_0x3c4 by facing (mFacing_0x3dc: right, left, down, up).
@@ -63,11 +63,11 @@ static inline void setFacingFrame(Player_804A6F38* player, u16 right, u16 left, 
 
 // The standing frame (0x3C-0x3F), or the carried pose (frames 0x1BF-0x1C3)
 // of player 4 of a group outside the leader's own slot (fn_80240888 !=
-// fn_80248778). Inlined by the frame
+// getFollowerIndex_80248778). Inlined by the frame
 // functions below; fn_80265E88, defined before it, calls the out-of-line copy
 // MWCC emits at the end of the file (0x80268194).
 inline void Player_804A6F38::fn_80268194() {
-    if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         setFacingFrame(this, 0x1BF, 0x1C1, 0x1C3, 0x1C3);
     } else {
         setFacingFrame(this, 0x3C, 0x3D, 0x3E, 0x3F);
@@ -257,7 +257,7 @@ void Player_804A6F38::fn_80267384() {
 }
 
 void Player_804A6F38::fn_802671C8() {
-    if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         setFacingFrame(this, 0x1BF, 0x1C1, 0x1C3, 0x1C3);
         return;
     }
@@ -282,7 +282,7 @@ void Player_804A6F38::fn_802671C8() {
 }
 
 void Player_804A6F38::fn_802670CC() {
-    if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
         setFacingFrame(this, 0x1BF, 0x1C1, 0x1C3, 0x1C3);
     } else {
         setFacingFrame(this, 0x20C, 0x214, 0x21C, 0x224);
@@ -751,7 +751,7 @@ void Player_804A6F38::fn_80265AE4() {
     } else {
         mFloorCel_0x3ca = 0x190;
     }
-    if (mPos.z <= 0.0f && fn_8022461C(&mPos, mLayer_0x3b4) == 0x39 &&
+    if (mPos.z <= 0.0f && getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4) == 0x39 &&
         (mCel_0x3c4 != mPrevCel_0x3c6 || magnitude(mPos - mLastPos_0x14) > 0.5f))
     {
         if (field_0x1384 == NULL) {
@@ -951,7 +951,7 @@ void Player_804A6F38::fn_80264998() {
     if (alpha < 0x20) {
         return;
     }
-    if (fn_80240808() && fn_802486A0() != 4 && !fn_8023188C(fn_80240644())) {
+    if (fn_80240808() && fn_802486A0() != 4 && !fn_8023188C(getLeader_80240644())) {
         return;
     }
     u16 frame = mCel_0x3c4;
@@ -970,7 +970,7 @@ void Player_804A6F38::fn_80264998() {
     if (field_0x458 == 1 && mFacing_0x3dc == 2) {
         floorParams.field_0x10.a = 0x80;
     }
-    u16 tile = fn_8022461C(&mPos, mLayer_0x3b4);
+    u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x3b4);
     JGeometry::TVec3f floorPos(mPos);
     floorPos.y += 1.0f;
     if (mPos.z <= 0.0f && fn_8022517C(&mPos, mLayer_0x3b4)) {

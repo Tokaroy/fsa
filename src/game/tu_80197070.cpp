@@ -50,7 +50,7 @@ extern const s32 lbl_8053A0F0[2];
 bool fn_8017EB1C(f32 value);
 u8 fn_8017EB44(const JGeometry::TVec3f* pos);
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value);
-void fn_8018E8DC(s32 idx, bool flag, u8 alpha);
+void setScreenFlag_8018E8DC(s32 idx, bool flag, u8 alpha);
 void fn_80196D30(s32 a, s32 b);
 
 void LifeMeter_804B174C::fn_8019CEF8(s32 serial, f32 yOffset, s32 index) {
@@ -299,9 +299,9 @@ void fn_8019C4F4(JGeometry::TVec2f* v, f32 x, f32 y) {
 // FIXME(shotgun): 80.13 %, missing/extra + reloc-name; behaviour drift.
 void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     JGeometry::TVec3f savedPos;
-    fn_801F3D94(1);
+    updateHitReaction_801F3D94(1);
     if (mTimers[2] == 0 && (mState == 0x1F || mState == 0x21)) {
-        if (fn_801F2DB4('NULL', 'NULL', NULL) && mLife != 10000) {
+        if (checkActorHit_801F2DB4('NULL', 'NULL', NULL) && mLife != 10000) {
             field_0x274 = 0.0f;
             field_0x278 = 0.0f;
             field_0x27c = 0.0f;
@@ -1064,7 +1064,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         f32 dy = field_0x280[2].y - mPos.y;
         field_0x274 = 0.7f * JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         field_0x278 = 0.7f * JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
-        mDir_0x98 = fn_801F681C((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
+        mDir_0x98 = angleToDir_801F681C((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         field_0x248 = 0;
         field_0x24c = 0;
         mTimers[1] = 0;
@@ -1114,7 +1114,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
                 if (std::sqrtf(dx * dx + dy * dy) < 24.0f) {
                     u16 ang = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
-                    s32 dir = fn_801F681C((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
+                    s32 dir = angleToDir_801F681C((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
                     field_0x274 = 1.2f * JMath::sincosTable_.sinShort(ang);
                     field_0x278 = 1.2f * JMath::sincosTable_.cosShort(ang);
                     mTimers[1] = 20;
@@ -1128,7 +1128,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             mTimers[1] = 10;
             field_0x274 = 0.7f * JMath::sincosTable_.sinShort(ang);
             field_0x278 = 0.7f * JMath::sincosTable_.cosShort(ang);
-            mDir_0x98 = fn_801F681C(ang);
+            mDir_0x98 = angleToDir_801F681C(ang);
         }
         break;
     }
@@ -1661,7 +1661,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (field_0x248 == 990) {
             lbl_8053ABA4 = 4;
             startSound_801F0E34(0x5000F, 0);
-            fn_8018E8DC(1, true, 0xFF);
+            setScreenFlag_8018E8DC(1, true, 0xFF);
         }
         if (field_0x248 == 1000) {
             JGeometry::TVec3f savedPos;
@@ -2112,7 +2112,7 @@ void PrincessZeldaGanonBattle_804A2944::draw() {
             SpriteParams_801F5AE0 params;
             params.field_0x1d = 5;
             params.field_0x30 = 0x11;
-            fn_801F02BC("enemy_both2_sob.bin", field_0x254 + lbl_80468428[field_0x94], &params, -1, 0, false,
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x254 + lbl_80468428[field_0x94], &params, -1, 0, false,
                         1.0f, 1.0f);
             params.field_0x10.a = (u8)field_0x270;
             s32 frame = field_0x254 + lbl_80468428[field_0x94];

@@ -590,7 +590,7 @@ void CrystalCutscene5464_804AE088::fn_8036AC58(s32 arg) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
     } else {
         JGeometry::TVec3f* pos = getPos();
         s32 frame = arg + field_0x318.mCel;
@@ -598,7 +598,7 @@ void CrystalCutscene5464_804AE088::fn_8036AC58(s32 arg) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, mLayer_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
     }
 }
 
@@ -1318,7 +1318,7 @@ void CrystalCutscene5464_804AE088::fn_80368660() {
                         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
                     }
-                    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
+                    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
                     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
                 }

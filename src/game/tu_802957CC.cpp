@@ -214,8 +214,8 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
     for (s32 row = 0; row < 6; row++) {
         p.y = origin.y;
         for (s32 col = 0; col < 6; col++) {
-            mTilesA[row][col] = fn_80226850(&p, 1);
-            mTilesB[row][col] = fn_80226850(&p, 0);
+            mTilesA[row][col] = getRawTile_80226850(&p, 1);
+            mTilesB[row][col] = getRawTile_80226850(&p, 0);
             if (!field_0x2b5) {
                 if (field_0x244 == 0 || field_0x244 == 2) {
                     mTiles[row][col] = 0x78;
@@ -1043,8 +1043,8 @@ void MovingHouse_804A7AE0::update() {
                         p1.y += 40.0f;
                         JGeometry::TVec3f p2 = p1;
                         p2.x += 16.0f;
-                        if (fn_80226850(&p1, 0) == 0x19E || fn_80226850(&p2, 0) == 0x19F ||
-                            fn_80226850(&p1, 0) == 0x338 || fn_80226850(&p2, 0) == 0x339) {
+                        if (getRawTile_80226850(&p1, 0) == 0x19E || getRawTile_80226850(&p2, 0) == 0x19F ||
+                            getRawTile_80226850(&p1, 0) == 0x338 || getRawTile_80226850(&p2, 0) == 0x339) {
                             JGeometry::TVec3f p = mPos;
                             p.x += mBox.i.x;
                             p.y += mBox.i.y;
@@ -1055,8 +1055,8 @@ void MovingHouse_804A7AE0::update() {
                             for (s32 row = 0; row < 6; row++) {
                                 p.y = baseY;
                                 for (s32 col = 0; col < 6; col++) {
-                                    mTilesA[row][col] = fn_80226850(&p, 1);
-                                    mTilesB[row][col] = fn_80226850(&p, 0);
+                                    mTilesA[row][col] = getRawTile_80226850(&p, 1);
+                                    mTilesB[row][col] = getRawTile_80226850(&p, 0);
                                     if (!field_0x2b5) {
                                         if (field_0x244 == 0 || field_0x244 == 2) {
                                             mTiles[row][col] = 0x78;
@@ -1078,7 +1078,7 @@ void MovingHouse_804A7AE0::update() {
                         p1.y -= 40.0f;
                         JGeometry::TVec3f p2 = p1;
                         p2.x += 16.0f;
-                        if (fn_80226850(&p1, 0) == 0x32A || fn_80226850(&p2, 0) == 0x32B) {
+                        if (getRawTile_80226850(&p1, 0) == 0x32A || getRawTile_80226850(&p2, 0) == 0x32B) {
                             JGeometry::TVec3f p = mPos;
                             p.x += mBox.i.x;
                             p.y += mBox.i.y;
@@ -1089,8 +1089,8 @@ void MovingHouse_804A7AE0::update() {
                             for (s32 row = 0; row < 6; row++) {
                                 p.y = baseY;
                                 for (s32 col = 0; col < 6; col++) {
-                                    mTilesA[row][col] = fn_80226850(&p, 1);
-                                    mTilesB[row][col] = fn_80226850(&p, 0);
+                                    mTilesA[row][col] = getRawTile_80226850(&p, 1);
+                                    mTilesB[row][col] = getRawTile_80226850(&p, 0);
                                     if (!field_0x2b5) {
                                         if (field_0x244 == 0 || field_0x244 == 2) {
                                             mTiles[row][col] = 0x78;
@@ -1230,7 +1230,7 @@ void MovingHouse_804A7AE0::update() {
                                     for (s32 row = 0; row < 6; row++) {
                                         p.y = baseY;
                                         for (s32 col = 0; col < 6; col++) {
-                                            mTiles[row][col] = fn_80226850(&p, 0);
+                                            mTiles[row][col] = getRawTile_80226850(&p, 0);
                                             gBgRewrite_8053AC98->fn_802A381C(&p, 0, mTilesB[row][col]);
                                             gBgRewrite_8053AC98->fn_802A381C(&p, 1, mTilesA[row][col]);
                                             p.y += 16.0f;
@@ -1342,7 +1342,7 @@ void MovingHouse_804A7AE0::update() {
                     }
                 }
                 die_0x24();
-            } else if (fn_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
+            } else if (damagePlayersInBox_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
                 for (s32 i = 0; i < 4; i++) {
                     s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
                     s32 layer = v == 0 ? 0 : v + 7;
@@ -1372,7 +1372,7 @@ void MovingHouse_804A7AE0::update() {
                 for (s32 row = 0; row < 6; row++) {
                     p.y = baseY;
                     for (s32 col = 0; col < 6; col++) {
-                        mTiles[row][col] = fn_80226850(&p, 0);
+                        mTiles[row][col] = getRawTile_80226850(&p, 0);
                         gBgRewrite_8053AC98->fn_802A381C(&p, 0, mTilesB[row][col]);
                         gBgRewrite_8053AC98->fn_802A381C(&p, 1, mTilesA[row][col]);
                         p.y += 16.0f;

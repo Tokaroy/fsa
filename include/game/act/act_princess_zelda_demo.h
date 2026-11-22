@@ -56,7 +56,7 @@ public:
     /* 0x244 */ s32 field_0x244; // bits 8..11 of mSpawnParam_0x90 (init)
     /* 0x248 */ s32 field_0x248; // bits 12..15 of mSpawnParam_0x90
     /* 0x24C */ s32 field_0x24c; // zero after the ctor
-    /* 0x250 */ s32 field_0x250; // bits 22..26 of mSpawnParam_0x90: a GameView bit (fn_802D800C)
+    /* 0x250 */ s32 field_0x250; // bits 22..26 of mSpawnParam_0x90: a GameView bit (isScreenFlagSet_802D800C)
     /* 0x254 */ s32 field_0x254; // bits 17..21 of mSpawnParam_0x90
     /* 0x258 */ s32 field_0x258; // zero after the ctor
     /* 0x25C */ s32 field_0x25c; // -1 after the ctor

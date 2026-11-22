@@ -107,9 +107,9 @@ fn_8022DFD4's `const TVec2f*`), zeroed by update A every frame.
   with 0x7F, fn_802DE814 and the bit clear); fn_802DEBF8 or 0x7E clear ->
   active, 0xD60 = -1 for player 0 and 0 for the others; otherwise players
   taking part lead (0xD60 = -1, pad 0x11EC = index) and the rest follow:
-  2 players (fn_80138A30) -> 0xD60 = index - 2, 3 players -> 0xD60 =
+  2 players (getPlayerCount_80138A30) -> 0xD60 = index - 2, 3 players -> 0xD60 =
   lbl_80529DEC.field_0x64 (0-2), else inactive in state 1. A follower starts at its leader's
-  position (getPlayerPos_8023E724) plus 16 per place in line (inlined fn_80248778).
+  position (getPlayerPos_8023E724) plus 16 per place in line (inlined getFollowerIndex_80248778).
   Then mPos is copied into the position history, fn_80276538 / fn_80276078,
   cls_804A71A8::fn_8026F710, fn_8027221C(0), fn_8027023C; with
   fn_802DEBF8 it requests state 3 (inlined fn_80251AEC(3)); last the camera
@@ -400,7 +400,7 @@ fn_8026E464 (include/game/cls_804A71A8.h has the layout):
   (start-of-frame reset, inlined: it also sets the owner's field_0xef0[0x50]
   to -1); unless fn_80240B84 / fn_8025F448, passes of: clear the flags,
   probe the 8 directions (inside an owner box -> 0x28; else in view or
-  fn_8026FC20 > 0 or fn_802DCD0C -> fn_8026C350(tile); else 0x38), with a
+  fn_8026FC20 > 0 or isInTransition_802DCD0C -> fn_8026C350(tile); else 0x38), with a
   second probe on another player's layer (getPlayerLayer_8023DE58(owner->0xD70)) when
   the owner is on layer 8 and fn_8025F590 holds (fn_8026B81C on a miss);
   then fn_80269574, and fn_8026E1E0 after the first pass. Then 0xC90 = (1,
@@ -458,7 +458,7 @@ tu_8023FBF0 is affected. The findings below are what the inlining proved.)
 - **groupMode** (fn_802486A0): 5 alone, else the leader's mode (fn_8022CAF8)
   or, leading, **0x120C**. Mode 4 = turn-based: **groupTurn** (fn_80240888:
   the leader's fn_80234004 or, leading, **0x1224**) against **linePlace**
-  (fn_80248778).
+  (getFollowerIndex_80248778).
 - **follows_80240670** (fn_80240670): not taking part without a leader; in
   mode 4 not its turn; else has a leader. fn_8023FFC4 / fn_8024018C /
   fn_80240354 return the leader's value (0xBE4 / 0xBE0 / 0xBD8, valid while
@@ -473,7 +473,7 @@ tu_8023FBF0 is affected. The findings below are what the inlining proved.)
   those axes with the facing 0x3DC (fn_80243234 also turns 0x3DC/0x3E8 to 3).
 - fn_802486A0 / fn_802487FC / fn_80248970 / fn_80240670 / fn_80240888 /
   fn_8023FC5C are **const**: the loop test's field_0x4 is hoisted, which
-  MWCC only does through a const `this` (as in fn_80248778).
+  MWCC only does through a const `this` (as in getFollowerIndex_80248778).
 
 **The 0xCE9 test (coordinator decision, 2026-11-05):** the ~40 inlined
 copies branch on byte 0xCE9 (`cmplwi; bne; li 0 / li 1`), which
@@ -595,7 +595,7 @@ effects (spawnEmitter_8013CC50):
 | states | enter / update | what it is |
 |---|---|---|
 | 0x1C / 0x1D | 80294ADC, 802948C0 / 80294374, 80293FE4 | **walk out through an entrance / walk in**: 0x398 = start, 0x3A4 = 20 (stairs: 1.25) along the kind's direction (0x17 right, 0x18 left, 1/2 down, else up; 0x15 / 0x23 by layer), steps toward it (fn_8027E5BC(0.5)) for up to 50 / 80 frames; the walk mode comes from the previous state (0x4A/0x4B -> 0xCEB, 0xB -> 0xCEC: walk, push, carry animations). Arrival requests 0, 0x12 (carrying), 0xB, 0x4A/0x4B or 0x33 (no life) |
-| 0x1E / 0x1F | 80293E8C, 80293B30 / 80293B1C, 80293900 | **drop through a hole**: after 58 frames the landing is checked by tile (fn_8022461C 3 / 0xE, fn_802265DC, fn_802684A4; else 0x2C4 / 0xCBC) and the player appears at height 128 (or 0); 0x1F falls 4 a frame spinning, then 0 / 0x12 / 0x33 |
+| 0x1E / 0x1F | 80293E8C, 80293B30 / 80293B1C, 80293900 | **drop through a hole**: after 58 frames the landing is checked by tile (getTileCollisionCode_8022461C 3 / 0xE, fn_802265DC, fn_802684A4; else 0x2C4 / 0xCBC) and the player appears at height 128 (or 0); 0x1F falls 4 a frame spinning, then 0 / 0x12 / 0x33 |
 | 0x20 / 0x21 | 802938B8, 80293774 / 80293760, 802935A4 | **leave / arrive with sparkle 0x17D** (118 frames out; in after the GBA wait) |
 | 0x22 / 0x23 | 80293534, 80293398 / 802932BC, 80292ECC | **spin up out of the screen** (riseToTarget, camera on mPos - 150) / **warp in**: per-player effects 0x13D-0x149, 0x143, 0x545 at 0xCD4, 171 frames |
 | 0x24 / 0x25 | 80292E90, 802929FC / 80292944, 80292820 | **warp out** (per-player 0x14A-0x15A, 0x152, 0x546 at 0xCC8; 118 frames) / **arrive** (60 frames, then requestArrival) while a held actor (0xD68) follows at 0x2F4 |
@@ -681,7 +681,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
   fn_80270C88, kind 0x1B in stage (0, 2) of the save. 0x11E4 = last kind; kind 0x12
   sets 0x499 and kills (0xBFC = 0); the attacker's own hit goes to fn_80236468
   (group damage, tu_8022AD64). Life <= 0 requests 0x33. 0x488 = 4 on damage;
-  fn_80134DE4(2 / 1, 0) on damage >= 4 / >= 1 (rumble?). Kind 0x16 (with 0x484 /
+  startRumble_80134DE4(2 / 1, 0) on damage >= 4 / >= 1 (rumble?). Kind 0x16 (with 0x484 /
   0x480 = 60 and effects 0x28D / 0x28E 6 above mPos, sound 0x2003D) and 0x18
   request 0x50 / 0x51 and turn 0x3DC / 0x3E8 toward the hit (4-way by the s16
   atan2 angle; 2-way on layers with viewLayerFlag). Otherwise a knockback
@@ -784,7 +784,7 @@ fn_80267018-fn_80267ECC (all Player members now, r3 = this). Examples:
 standing 0x3C-0x3F (state 0 / 0x1F / 0x2A / 0x42; fn_80268194), walk 0x00 +
 8 * facing + 0x3F9 (states 2, 3, 0x38), spin 0x8F-0x96 (fn_80267D30, states
 9 / 0xA), the carried pose 0x1BF-0x1C3 of player 4 of a group outside the
-leader's slot (fn_802486A0() == 4 && fn_80240888() != fn_80248778()), state
+leader's slot (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()), state
 0x49 by field_0x1178 (0 / 1 / 2 -> 0x35F / 0x3D0 / 0x296 + 0x3FD).
 **fn_80268194 is inlined** into the frame functions after fn_80265E88
 (fn_80267384 / fn_80267598 are just its body, fn_80267ECC and fn_80267470 use it)
@@ -811,7 +811,7 @@ do the same (historical note, not re-tested).
    the air (floor 79); colour 0 / blend 0x28; scale matrix (1, 1, 1) on layer
    8, else (0.9, 0.5, 0.5) (PSMTXScale, a squashed shadow). Skipped while
    0x43F. In the air on the GBA layers (>= 8, view flag clear) a shadow cel
-   0x3CD goes through fn_803075AC (serial -40000 - index).
+   0x3CD goes through showGbaSprite_803075AC (serial -40000 - index).
 5. Body: SpriteParams with [7] = index + 12 (the player's palette), [10] = 6
    at fn_80241544() >= 2, 0x2D = 1, 0x30 = index + 4 with 0x11E9, alpha;
    mMtx = diag(0xC84 * 0xC90) (squash / stretch); priorities 0x1C / 0x1D from
@@ -828,7 +828,7 @@ do the same (historical note, not re-tested).
    (fn_80265AE4's 0x195-0x197 cycle); tile 0x39 / 0xD / 0x3B with fn_80270A8C
    -> cel 0x3CA (0x18F-0x191; +3 on frames 0xC2-0xC4); else, unless
    fn_802412A4 without fn_80241200 or fn_8024BBB0, tile 0x39 or fn_80225BE4 ->
-   cel 0x3CA. GBA layers: fn_803075AC (serial -10000 / -20000 - index).
+   cel 0x3CA. GBA layers: showGbaSprite_803075AC (serial -10000 / -20000 - index).
 Helpers in the unit: drawSob / drawSobOnTv (the TV check is tested again
 after the frame load, so it is inside a helper), drawGba (the position is
 the call's argument, no named copy), setScaleMtx (the three scales are
@@ -868,8 +868,8 @@ names provisional, evidence = what the handlers do):
   the leader (fn_80230CFC / fn_80230B70); else from the pad bits fn_80246B10 (2 right, 1 left,
   8 up, 4 down; diagonals give 0x3E8 4-7 and keep a compatible facing).
 - **fn_8027FA08(out) = the follow target** (update B, the state 3 update): the history head 0x38[0]
-  (0x1216), mPos, or the leader's position (fn_80240644) plus this player's place by
-  fn_802486A0: 0 a row (16 * fn_80248778 along x), 1 a column (along y, sign by viewLayerFlag),
+  (0x1216), mPos, or the leader's position (getLeader_80240644) plus this player's place by
+  fn_802486A0: 0 a row (16 * getFollowerIndex_80248778 along x), 1 a column (along y, sign by viewLayerFlag),
   2 a 2x2 square, 3 a diamond around the leader (rotated by 0x11C0 around fn_80252F48 =
   &0x11B4 with fn_80241284, else by both indices), 4 mPos, 5 the leader's history 12 frames per
   place back (fn_8023E4E4).
@@ -1077,7 +1077,7 @@ State names stay provisional (evidence: the state requested, the tables, the act
 - **Probe up** fn_80248A24 / fn_80248B9C (Player members, symbols renamed): step a point 8 up
   from mPos until tile 0x231 (fn_80226998), clamped to 24 inside the view box (viewBox /
   inViewBox file inlines; layer read before getGameView), then fn_8026E5F8 24 further on sets
-  0x43F (and 0x440 when clamped); B9C first climbs to tile 0x3E (fn_802265FC) and clears 0x444.
+  0x43F (and 0x440 when clamped); B9C first climbs to tile 0x3E (getTileCollisionCodeAlt_802265FC) and clears 0x444.
   fn_8024BBB8 requests state 0x3F when an unreachable player on the layer is within 50 / 80 / 100.
 - fn_80241BA0 = the four-corner view test of a TBox2f (any / all); the bounds call takes
   `&TBox2f(*box)` (a temporary copy below the corner temporaries).
@@ -1125,7 +1125,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
   member, returns bool, caller ignores it) acts on the tile 16 in front (lbl_8046B120),
   the TV effect kind 2 / 1 (fn_802F601C) with strength 1 / player count (fn_802487FC,
   unless formation 5 or fn_80240AF0), halved below level 2; dust emitters 0x23B-0x23F and
-  0x3CF / 0x3D0 by tile (0x39 / 0xD), a view shake and fn_80134DE4(2) when charged.
+  0x3CF / 0x3D0 by tile (0x39 / 0xD), a view shake and startRumble_80134DE4(2) when charged.
 - **0x44** (item 6 below level 2): frame 11 of 0x45 without the Somaria block: while held,
   'FIRE' (0x1040 | facing << 4 | player) sits on field_0x580 in front; letting go places
   one 'FIRE' (0x1000 | ...) 8 in front into field_0xb1c (layer field_0xb5c, field_0xb78)
@@ -1177,8 +1177,8 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
   compiler's locals in symbols.txt (`@2537`, `@3120`, as `@1454` for fn_8026EB1C); .data
   5 % -> 93 %.
 - **What the probe tiles do** (fn_8026C350, the tile under fn_80268BC4's probe point in
-  direction field_0x1c; tile codes from fn_8022461C on the owner's layer):
-  - 0x00 and every unlisted tile: open floor, field_0x20, unless fn_80226850 (the layer's
+  direction field_0x1c; tile codes from getTileCollisionCode_8022461C on the owner's layer):
+  - 0x00 and every unlisted tile: open floor, field_0x20, unless getRawTile_80226850 (the layer's
     other tile query) gives a hole there (6, 0xB8, 0x59). 0x0C, 0x39: nothing.
   - Solid: 0x01, 0x21, 0x24, 0x40-0x43 always; 0x22 while GameView field_0x170, 0x25 / 0x26
     while GameView field_0x171 is 0 / 1; 0x3E unless fn_80237A80(index) (tu_8022AD64).
@@ -1197,7 +1197,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
     field_0x58 (tile 2, low part of 0x23; at height 0), field_0x60 (0x60, height 0),
     field_0x68 (3: on the ground (fn_802413F0, <= 1 up) and not fn_8024BBB0; 0x4C-0x4F the
     same for another player's tile 0x4C + i, i != index, when the root's player mask has the
-    owner or, in group mode 4, fn_80240888() == fn_80248778(), and neither fn_80270A8C nor
+    owner or, in group mode 4, fn_80240888() == getFollowerIndex_80248778(), and neither fn_80270A8C nor
     fn_80241230), field_0x78 (0x0D, 0x3B: solid while fn_80241230, else on the ground),
     field_0x88 (0x0E, 0x3A: on the ground), field_0x50 (0x20: fn_802413F0, below 1),
     field_0x70 (0x50). 0x58-0x5F: diagonal cells, solid half as 8-0xB, the other half
@@ -1259,7 +1259,7 @@ reproduces both).
 | 0x0E | 80284E04 | **moving with the block**: follows the grabbed actor's motion (its 0x3C) while it moves, 128-frame cycle, frames lbl_8046C098, sound 0x10012; back to 0x1A (fn_802456FC and not fn_80244630) or 0xD |
 | 0x1A | 80284978 | **pushing**: front / back probes lbl_8046BE18 / lbl_8046BE48; carried by the pushed actor 0xDA4 (fn_8024FF6C) while it moves; letting go stands, the facing's pad bit (lbl_8046BE08) goes to 0xD |
 | 0x1B | 802844F8 | **walking onto the screen**: fn_8027E5BC steps (3 for pose 0x3FD 3, else 2) until inside the visible box shrunk 39 across the facing (always after 40 frames, 0x3FE); when every present player in 0x1B (fn_80233EDC) is in it, carried (0x43F) hands over (fn_80248A24), else goes on by pose (0x12 / 0x4A / 0x4B / 0xB / 0); the acting player (lbl_8053A190) calls fn_80231368 |
-| 0x38 | 80283E70 | **dropping down a ledge**: 0x344 motion, gravity 0.25 (0.17 to -6 carried / 0x441); lands at height 8 below the ledge y 0x328 when carried, else stands (0, or 8 with 0xCAD) with landing effects 0x4F3-0x4F6 (half size without 0x440) and fn_80134DE4(1, 0) |
+| 0x38 | 80283E70 | **dropping down a ledge**: 0x344 motion, gravity 0.25 (0.17 to -6 carried / 0x441); lands at height 8 below the ledge y 0x328 when carried, else stands (0, or 8 with 0xCAD) with landing effects 0x4F3-0x4F6 (half size without 0x440) and startRumble_80134DE4(1, 0) |
 | 0x49 | 80283948 | **held down / struggling**: pending layer switch 0xCE8 (fn_80303750 wait, fn_80290E90 / fn_80290D58); mode 0x1178 2 a 36-frame pose cycle; else button mashing (pad trigger 0xF) counts 0x3FC (free at 15, or 30 with more than one player, mode 1), decaying every 20 frames |
 | 0x4A | 80282FE0 | **mode 0x42C walk** (off view-flag layers; 0x4B on them): the mode (0xBE0 = 300, effects 0x15B / 0x15C, sounds 0x20040 / 0x20041) follows the leader's (fn_8022B7C4) or toggles by pad (fn_802466B4) after the cooldown 0x430 (90); movement fn_802804E0 + fn_80242DAC; dust 0x54E by distance moved (0x401) |
 | 0x4B | 80282ACC | the same on view-flag layers: movement fn_80280074, 'PEFF' actor every 50 counts of the random counter 0x402, bob 0x410 on y |
@@ -1303,7 +1303,7 @@ reproduces both).
 | fn_8027A1E0 | 0x0B update | 97.20 scheduling+regalloc | **the dash** (Pegasus-boots like): pose 1 runs along 0x3E8 (eight unit steps lbl_8046BC38, 0.7 diagonals) at 0xBBC, pad 0x100 hops (z 2, gravity 0.1), dust 0x24E / 0x24F (sand 0x250 / 0x251 on tile 0x39) restarted on a turn, BgRewrite at 0x30C and the eight probe points pushed out x2, 0xBC4 = 40x40 box (Player.h TBox2f); into a wall (fn_8025196C) it bounces (pose 2, sound 0x20010, view shake, 0x344 = 2.5 back, z 2) or, under fn_8022AF5C's alternative, turns the group (fn_80230BF4) |
 | fn_8027AAD0 | 0x0A update | 99.60 stack offsets | **the spin attack**: fn_80274728 / fn_8027EB04; group spin (mode 3) moves the centre 0x11B4 2 a frame by the stick unless one of three tiles 24 ahead blocks (fn_802265DC), walks to the group spot from frame 11; else drifts 2 along 0x3E8 (lbl_8046BBD8); sound 0x20029; emitters 0x12B8 / 0x12BC (circling at 20 by 0x11C0) with depth / height from fn_8024EE0C / fn_8024EE14 |
 | fn_8027BE74 | 0x08 update | **100** | **the sword charge**: 0x403 charge, 0x404 frames, hop with pad 0x20 (0x344 = 2.5 * stick or 0x368), walk 1.125, attack check fn_80275D9C, wall push -> 0x37 (0x350 = lbl_8046BBA8 0.25 per facing, sound 0x20062 / 0x20061 by fn_8022486C), blade emitter 0x12B0 moving out `0x403 * 14 / 48 + 6`, 0x12B4 / 0x12B8, camera 0x7F5 after 30 frames, group cancel 0xCAE / 0xCAF |
-| fn_8027CC90 | 0x05 update | 99.37 scheduling | **the ground pound**: from frame 11 falls (gravity 0.25 to -6.5; on flagged layers drawn up the screen); frame 11 on the ground: tiles 3 / 0xE without fn_8024B24C cancel, else shake, rumble (fn_80134DE4(1, 0)), TV effect 1, sound 0x20024, emitters 0x23D-0x23F, 0x3D0 + 'PEFF' at 0x5C0 on tiles 0x39 / 0xD (else 0x3CF); state 6 at frame 20; emitter point 0x12A4 = mPos + lbl_8046BB78[facing] |
+| fn_8027CC90 | 0x05 update | 99.37 scheduling | **the ground pound**: from frame 11 falls (gravity 0.25 to -6.5; on flagged layers drawn up the screen); frame 11 on the ground: tiles 3 / 0xE without fn_8024B24C cancel, else shake, rumble (startRumble_80134DE4(1, 0)), TV effect 1, sound 0x20024, emitters 0x23D-0x23F, 0x3D0 + 'PEFF' at 0x5C0 on tiles 0x39 / 0xD (else 0x3CF); state 6 at frame 20; emitter point 0x12A4 = mPos + lbl_8046BB78[facing] |
 | fn_8027D5F0 | 0x04 update | **100** | **the sword attack**: fn_80275D9C, fn_802756E4, BgRewrite; attacks 0 / 1 / 3 fire the sword beam ('SWBM') at frame 4, 2 at frame 2, the lunge (4) on landing (body hits 0x458 frames 6-15) |
 | fn_8027DEA0 | 0x04 enter | 99.04 regalloc | **attack pick**: 3+ presses in a row or window 0x11C4 -> lunge 4 (history cleared, 0x344 = 4 along the facing, z 1, sound 0x1000B, 0xBF4 = 8); window 0x11CC with the stick toward 0x11D0 -> 3; else combo step 2 / 0 / 1 by the history depth (0x117C[4..7]) |
 | fn_80274CB8 | (charge step, from 0x08) | 95.40 missing/extra | the charge: air poses, walk counter 0x3F8 (reset while epsilonEquals(mPos, 0x14)), poses 0x3F9 (lbl_8046BCA8.chargePose[facing][step] before full charge), emitter point 0x12A4 = mPos + chargeOffset[full][facing]; 0x403 counts (past 48 only at sword level >= 2); 48: emitters 0xCB / 0xCC (immortal), 0x270-0x273, 'PEFF', sound 0x2000D; 168 (full): 0xCB / 0xCC below layer 8, 'PEFF', sound 0x20027; afterwards 0x26B-0x26E by player; spent immortal emitters deleted (isEnableDeleteEmitter); release (fn_80246464 false): < 48 state 0, < 168 spin 9 (0x11AC = 1), else spin 0x0A |
@@ -1332,7 +1332,7 @@ the player 3 a frame toward 16 right of / 8 below itself (released at 16 or by f
 callback point 0x1320 = mPos + (0, -4, 16).
 
 Evidence and fixes:
-- `!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))`: the asm skips when the
+- `!fn_80240808() || (fn_80240808() && !fn_80236B50(getLeader_80240644()))`: the asm skips when the
   second fn_80240808() is false (fn_8027776C had `!(... && ...)`, which reads the other way;
   corrected there too, 99.75 -> 99.77).
 - **fireSwordBeam** (shared by fn_8027B648 and fn_8027D5F0): the life test written as early
@@ -1365,7 +1365,7 @@ fn_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still 
 
 | function | % / try.py class | what it is |
 |---|---|---|
-| fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (fn_80458880, extsb index). Not in 0x454 mode |
+| fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (playSystemSound_80458880, extsb index). Not in 0x454 mode |
 | fn_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, fn_80236074 |
 | fn_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (fn_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (fn_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
 | fn_8024D134 | 99.65 regalloc | **group-spot marker restart** (leader, not GameRoot 0x7E, modes 0-3): clears 0x121D, deletes 0x1388 and spawns 0x35E / 0x360 / 0x35F / 0x361 by mode at fn_8027F1C8's spot (8 a place beside the group in modes 0 / 1 via fn_802487FC, (8, 8) in mode 2, 0x11B4 in states 9 / 0xA else 16 toward the player's side in mode 3) |
@@ -1405,7 +1405,7 @@ tu_80264998's 8-aligned data differs).
 |---|---|---|
 | fn_80263C64 | 100 | **update of state 0x12, the carry** (tu_80285E58's dispatch: case 0x12). The stick step (fn_8027FA08's z of 0 puts mPos.z on the floor unless 0x434); with fn_8022C13C (unless fn_802416C4 is 7): put down (0x18) a held player that fn_80236B50 rejects, a bomb ('HBMB') or a small key ('KEY0' via fn_8025F648), else throw (0x16, also when fn_8024B24C); fn_8022C0A0 throws (0x16); fn_802466B4 starts 0x15 unless the held actor's field_0x1a4 >= 2. Then walks (fn_802808E8 at 1.25 with a player, 1.5 with an actor whose field_0x1a4 is 0, none otherwise), fn_8027EB04, and the carry cycle fn_8026152C(false) inlined three times; a held player that stops being one (fn_8023EA28) or a lost actor ends the carry (state 0). First user of 1.25 / 1.5 |
 | fn_8026152C(slow) | 100 | the carry walk cycle (flipped by the VecEpsilon.h change below) |
-| fn_80263078 | 99.78 regalloc | **enter of state 0x13** (dispatch case 0x13; update fn_80262BAC): after fn_8028414C, with a held cucco ('NIWA', Cucco_804AB8C0 byte 0x2A1 == 1) and no 0x441, probe 16-steps along field_0x344.x inside the layer's view box (layerBox + containsPoint) for the second tile 0x10-0x17 (fn_802265FC); found, field_0x324 = the point one step further and the glide speed z 2; else mPos.y = field_0x324.y (z takes the difference). Faces along field_0x344.x (0x3DC / 0x3E8 = 0 right, 1 left) |
+| fn_80263078 | 99.78 regalloc | **enter of state 0x13** (dispatch case 0x13; update fn_80262BAC): after fn_8028414C, with a held cucco ('NIWA', Cucco_804AB8C0 byte 0x2A1 == 1) and no 0x441, probe 16-steps along field_0x344.x inside the layer's view box (layerBox + containsPoint) for the second tile 0x10-0x17 (getTileCollisionCodeAlt_802265FC); found, field_0x324 = the point one step further and the glide speed z 2; else mPos.y = field_0x324.y (z takes the difference). Faces along field_0x344.x (0x3DC / 0x3E8 = 0 right, 1 left) |
 
 Corrections and evidence:
 - **State numbers**: tu_80285E58's update switch has case 0x12 -> fn_80263C64 and case 0x13 ->
@@ -1464,7 +1464,7 @@ What the asm proves (all source forms in docs/RULES_CARD.md "Known game-code sha
   MWCC does for an inlined call, never for a member read. Player_804A6F38::getIndex() /
   getLayer() (Player.h) are used for every read in the unit; they flip those sites and change
   nothing else (the other functions are byte-identical with them).
-- **Partner checks**: `fn_80240888() != fn_80248778()` (fn_80248778 is called first and kept in
+- **Partner checks**: `fn_80240888() != getFollowerIndex_80248778()` (getFollowerIndex_80248778 is called first and kept in
   r29; `cmpw r3, r29`), three sites, no local.
 - **States 8 / 9-10 / 0x39** (partner warp): `field_0x1240 == 8 || field_0x1240 == 9 ||
   field_0x1240 == 10 || field_0x1240 == 0x39` on the member; a local folds 8-10.

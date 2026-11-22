@@ -259,7 +259,7 @@ void Warp_804A6DC8::update() {
     }
     JGeometry::TBox2f box(mBox.i, mBox.f);
     JGeometry::TVec2f at(mPos.x, mPos.y);
-    u16 tile = fn_802265FC((const JGeometry::TVec3f*)&at, mLayer_0x4);
+    u16 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&at, mLayer_0x4);
     if (tile == 1 || tile == 0x21) {
         return;
     }
@@ -299,7 +299,7 @@ void Warp_804A6DC8::update() {
         JGeometry::TBox2f arg = box;
         fn_802278A8(&arg);
     }
-    s32 destTile = fn_80226850(&field_0x238, warpLayer(mSpawnParam_0x90));
+    s32 destTile = getRawTile_80226850(&field_0x238, warpLayer(mSpawnParam_0x90));
     if (destTile == 0x19C || destTile == 0x19D) {
         return;
     }
@@ -423,7 +423,7 @@ void Warp_804A6DC8::draw() {
             mPos.x += lbl_8046AC58[field_0x278];
             field_0x278++;
             if (field_0x278 >= 0x18) {
-                field_0x278 = fn_801CD664(10) - 0x69;
+                field_0x278 = randInt_801CD664(10) - 0x69;
             }
         }
         params.field_0x24 = 1;

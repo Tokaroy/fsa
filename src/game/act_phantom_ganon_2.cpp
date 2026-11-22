@@ -74,20 +74,20 @@ s32 lbl_8053AB80;
 extern u8 lbl_80539FBC;
 u8 lbl_8053AB84;
 
-void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
+void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 void fn_80154718(const JGeometry::TVec3f* pos);
-void fn_801546BC(JGeometry::TVec3f* v);
+void zeroVec_801546BC(JGeometry::TVec3f* v);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
-void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
+void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
 void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
 void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src);
 s32 fn_8015465C(f32 y, f32 x);
 f32 fn_801544FC(s16 angle);
 f32 fn_801544E4(s16 angle);
 f32 fn_80154378(f32 x);
-f32 fn_8015436C(f32 x);
-ActorBase_804A5770* fn_8015445C(s32 serial);
-s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
+f32 fabsf_8015436C(f32 x);
+ActorBase_804A5770* findActorBySerial_8015445C(s32 serial);
+s32 spawnActor_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
 u8 fn_8017ECC0();
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value);
 void fn_8017ED08();
@@ -390,7 +390,7 @@ void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
     JGeometry::TBox2f box44;
-    fn_801546F4(&box44, &mBox);
+    copyBox_801546F4(&box44, &mBox);
     JGeometry::TVec2f vec14;
     fn_8018A6A0(&vec14, field_0x2bc.x, field_0x2bc.y);
     s32 outDir = -1;
@@ -427,7 +427,7 @@ void PhantomGanon2_804A1A98::update() {
     if (field_0x248 > 0) {
         field_0x248--;
     }
-    fn_801F3D94(0);
+    updateHitReaction_801F3D94(0);
     if (field_0x230 == 22 && (mSpawnParam_0x90 == 0 || mSpawnParam_0x90 == 1)) {
         field_0x250++;
         if (field_0x250 > 250) {
@@ -448,7 +448,7 @@ void PhantomGanon2_804A1A98::update() {
                     field_0x230 = 25;
                 }
             }
-            fn_801546BC(&mVel_0x3c);
+            zeroVec_801546BC(&mVel_0x3c);
         }
     }
     if (mSpawnParam_0x90 == 0 || mSpawnParam_0x90 == 1) {
@@ -466,8 +466,8 @@ void PhantomGanon2_804A1A98::update() {
             JGeometry::TBox2f box28;
             fn_8017EC5C(&box28, -80.0f, -80.0f, 80.0f, 80.0f);
             fn_8017EC38(&box44, &box28);
-            fn_80154558(&box44.i, &vec14);
-            fn_80154558(&box44.f, &vec14);
+            addVec2_80154558(&box44.i, &vec14);
+            addVec2_80154558(&box44.f, &vec14);
             if (!fn_8017EB94(&box44)) {
                 break;
             }
@@ -563,9 +563,9 @@ void PhantomGanon2_804A1A98::update() {
         fn_8017EB1C(0.05f);
         if (field_0x238 == 0) {
             for (s32 i = 1; i < 4; i++) {
-                s32 ser = fn_80154310('FGN2', fn_8015461C(), &mPos, (i << 4) | 1, -1, -1);
+                s32 ser = spawnActor_80154310('FGN2', fn_8015461C(), &mPos, (i << 4) | 1, -1, -1);
                 if (ser >= 0) {
-                    PhantomGanon2_804A1A98* child = (PhantomGanon2_804A1A98*)fn_8015445C(ser);
+                    PhantomGanon2_804A1A98* child = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(ser);
                     if (child != NULL && child->fn_8018A5B0() == true) {
                         lbl_8053AB7C++;
                         fn_8018A684(&child->field_0x2e0, &field_0x2e0);
@@ -668,7 +668,7 @@ void PhantomGanon2_804A1A98::update() {
                 fn_8017EACC(mEmitter314, (u8)field_0x294, (u8)field_0x298, (u8)field_0x29c);
             }
         }
-        field_0x238 = (s32)(200.0f + 100.0f * fn_80154744());
+        field_0x238 = (s32)(200.0f + 100.0f * randFloat_80154744());
         if (field_0x268 >= 0) {
             lbl_804C17A8[field_0x268] = 0;
             field_0x23c = 0;
@@ -696,7 +696,7 @@ void PhantomGanon2_804A1A98::update() {
             f32 dx = field_0x2bc.x - mPos.x;
             f32 dy = field_0x2bc.y - mPos.y;
             if (mPos.z >= 40.0f) {
-                s16 rndAngle = (s32)(8192.0f - 16384.0f * fn_80154744());
+                s16 rndAngle = (s32)(8192.0f - 16384.0f * randFloat_80154744());
                 s16 angle = fn_8015465C(dx, dy) + rndAngle;
                 if (field_0x250 != 0) {
                     angle = fn_8015465C(dx, dy);
@@ -704,12 +704,12 @@ void PhantomGanon2_804A1A98::update() {
                 if (field_0x23c == 0) {
                     field_0x2b0.x = 2.0f * fn_801544FC(angle);
                     field_0x2b0.y = 2.0f * fn_801544E4(angle);
-                    field_0x23c = (s32)(50.0f + 50.0f * fn_80154744());
+                    field_0x23c = (s32)(50.0f + 50.0f * randFloat_80154744());
                 }
             }
             if (fn_80154378(dx * dx + dy * dy) > 64.0f) {
                 if (field_0x250 == 0) {
-                    fn_801546BC(&field_0x2b0);
+                    zeroVec_801546BC(&field_0x2b0);
                     field_0x250 = 1;
                 }
             } else {
@@ -723,7 +723,7 @@ void PhantomGanon2_804A1A98::update() {
             }
         }
         if (field_0x238 == 0) {
-            field_0x268 = (s32)(3.99f * fn_80154744());
+            field_0x268 = (s32)(3.99f * randFloat_80154744());
             switch (lbl_8053AB7C) {
             case 3:
                 for (s32 i = 0; i < 4; i++) {
@@ -739,7 +739,7 @@ void PhantomGanon2_804A1A98::update() {
                 break;
             case 2:
                 if (field_0x268 > 2) {
-                    field_0x268 = (s32)(2.99f * fn_80154744());
+                    field_0x268 = (s32)(2.99f * randFloat_80154744());
                 }
                 for (s32 i = 0; i < 3; i++) {
                     if (lbl_804C17A8[field_0x268] == 0) {
@@ -757,7 +757,7 @@ void PhantomGanon2_804A1A98::update() {
                 break;
             case 1:
                 if (field_0x268 > 1) {
-                    field_0x268 = (s32)(1.99f * fn_80154744());
+                    field_0x268 = (s32)(1.99f * randFloat_80154744());
                 }
                 for (s32 i = 0; i < 2; i++) {
                     if (lbl_804C17A8[field_0x268] == 0) {
@@ -788,13 +788,13 @@ void PhantomGanon2_804A1A98::update() {
     case 10:
         field_0x2b0.x = 0.0f;
         field_0x2b0.y = 0.0f;
-        fn_801546BC(&mVel_0x3c);
+        zeroVec_801546BC(&mVel_0x3c);
         field_0x230 = 11;
         // fall through
     case 11:
-        addCalc2_801F71A4(&mPos.x, field_0x2d4.x, 0.5f, 0.08f * fn_8015436C(mPos.x - field_0x2d4.x));
-        addCalc2_801F71A4(&mPos.y, field_0x2d4.y, 0.5f, 0.08f * fn_8015436C(mPos.y - field_0x2d4.y));
-        if (fn_8015436C(mPos.x - field_0x2d4.x) <= 2.0f && fn_8015436C(mPos.y - field_0x2d4.y) <= 2.0f) {
+        addCalc2_801F71A4(&mPos.x, field_0x2d4.x, 0.5f, 0.08f * fabsf_8015436C(mPos.x - field_0x2d4.x));
+        addCalc2_801F71A4(&mPos.y, field_0x2d4.y, 0.5f, 0.08f * fabsf_8015436C(mPos.y - field_0x2d4.y));
+        if (fabsf_8015436C(mPos.x - field_0x2d4.x) <= 2.0f && fabsf_8015436C(mPos.y - field_0x2d4.y) <= 2.0f) {
             field_0x26c = 0;
             field_0x2ec = 0;
             field_0x230 = 12;
@@ -813,11 +813,11 @@ void PhantomGanon2_804A1A98::update() {
                 ballArg = 11;
             }
             u16 targetPlayer = fn_80189DEC();
-            field_0x274 = fn_80154310('FGN2', fn_8015461C(), &pos60, (targetPlayer << 4) | ballArg, -1, -1);
+            field_0x274 = spawnActor_80154310('FGN2', fn_8015461C(), &pos60, (targetPlayer << 4) | ballArg, -1, -1);
             if (field_0x274 >= 0) {
                 field_0x278 = 2;
                 field_0x238 = 40;
-                PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
+                PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                 if (ball != NULL) {
                     field_0x258 = -1;
                     startSound_801F0E34(0x3002C, 0);
@@ -833,13 +833,13 @@ void PhantomGanon2_804A1A98::update() {
             field_0x26c = 0;
             field_0x234 = lbl_804A19A8[field_0x26c];
             if (field_0x274 >= 0) {
-                PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
+                PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                 field_0x278 = 1;
                 if (ball != NULL) {
                     JGeometry::TVec3f oldPos;
                     fn_801546D0(&oldPos, &mPos);
                     startSound_801F0E34(0x40043, 0);
-                    fn_801546BC(&vec54);
+                    zeroVec_801546BC(&vec54);
                     fn_8018A684(&mPos, ball->fn_801544DC());
                     if (field_0x27c != field_0x94 && field_0x27c != fn_8022F3DC(field_0x94) && field_0x94 != fn_8022F3DC(field_0x27c)) {
                         field_0x94 = field_0x27c;
@@ -848,7 +848,7 @@ void PhantomGanon2_804A1A98::update() {
                         fn_80189DEC();
                         spawnEmitter_8013CC50(mLayer_0x4, ball->fn_801544DC(), lbl_80539FC0[field_0x94], 1, 2, NULL, NULL, true, 1.0f);
                     } else {
-                        field_0x258 = (s32)(1.99f * fn_80154744());
+                        field_0x258 = (s32)(1.99f * randFloat_80154744());
                     }
                     fn_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, field_0x94, 2);
                     fn_8018A684(&mPos, &oldPos);
@@ -859,13 +859,13 @@ void PhantomGanon2_804A1A98::update() {
                     }
                     field_0x258 = (field_0x258 + 1) & 1;
                     field_0x2ec = 0x800;
-                    fn_801546BC(&vec54);
+                    zeroVec_801546BC(&vec54);
                     vec54.x = field_0x28c * fn_801544FC(outAngle);
                     vec54.y = field_0x28c * fn_801544E4(outAngle);
                     ball->field_0x2ef = 0;
                     ball->fn_8018A5A8(field_0x94);
                     ball->fn_8017EAF8(vec54);
-                    ball->fn_8018A5A0(fn_801F681C(outAngle));
+                    ball->fn_8018A5A0(angleToDir_801F681C(outAngle));
                 } else {
                     field_0x274 = -1;
                 }
@@ -899,7 +899,7 @@ void PhantomGanon2_804A1A98::update() {
             break;
         }
         if (field_0x274 >= 0) {
-            if (fn_8015445C(field_0x274) == NULL) {
+            if (findActorBySerial_8015445C(field_0x274) == NULL) {
                 field_0x274 = -1;
                 field_0x230 = 8;
                 break;
@@ -941,7 +941,7 @@ void PhantomGanon2_804A1A98::update() {
             break;
         }
         if (field_0x260 < 2) {
-            fn_80154310('GOLD', fn_8015461C(), &mPos, 99, -1, -1);
+            spawnActor_80154310('GOLD', fn_8015461C(), &mPos, 99, -1, -1);
             field_0x260++;
         }
         spawnEmitter_8013CC50(mLayer_0x4, &pos60, 0x370, 0, 1, NULL, NULL, true, 1.0f);
@@ -972,8 +972,8 @@ void PhantomGanon2_804A1A98::update() {
         }
         break;
     case 17:
-        fn_801546BC(&field_0x2b0);
-        fn_801546BC(&mVel_0x3c);
+        zeroVec_801546BC(&field_0x2b0);
+        zeroVec_801546BC(&mVel_0x3c);
         field_0x26c = 0;
         field_0x234 += 30;
         fn_8018A684(&pos60, &mPos);
@@ -1009,17 +1009,17 @@ void PhantomGanon2_804A1A98::update() {
             fn_8018A684(&pos60, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
-            fn_801F2B7C(fn_80154510(), -1, 6);
+            damagePlayersInBox_801F2B7C(fn_80154510(), -1, 6);
             fn_8018A684(&mPos, &pos60);
         }
         break;
     case 19:
         if (field_0x234 != 0) {
             if (fn_801F6758(&mPos, mLayer_0x4, 48.0f)) {
-                fn_801546BC(&field_0x2b0);
-                fn_801546BC(&mVel_0x3c);
+                zeroVec_801546BC(&field_0x2b0);
+                zeroVec_801546BC(&mVel_0x3c);
             }
-        } else if (fn_8015436C(mVel_0x3c.x - field_0x2b0.x) <= 0.1f && fn_8015436C(mVel_0x3c.y - field_0x2b0.y) <= 0.1f) {
+        } else if (fabsf_8015436C(mVel_0x3c.x - field_0x2b0.x) <= 0.1f && fabsf_8015436C(mVel_0x3c.y - field_0x2b0.y) <= 0.1f) {
             field_0x26c--;
             if (field_0x26c >= 0) {
                 field_0x234 = lbl_804A19A8[field_0x26c];
@@ -1136,12 +1136,12 @@ void PhantomGanon2_804A1A98::update() {
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1A00[field_0x94 * 2], 1, 2, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1A00[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
                         s32 baseAngle = (u16)fn_8015465C(250.0f - mPos.x, 200.0f - mPos.y) + 0xD000;
-                        fn_801546BC(&vec54);
+                        zeroVec_801546BC(&vec54);
                         for (s32 i = 0; i < 7; i++) {
-                            s32 sparkSer = fn_80154310('FGN2', fn_8015461C(), &mPos, 12, -1, -1);
+                            s32 sparkSer = spawnActor_80154310('FGN2', fn_8015461C(), &mPos, 12, -1, -1);
                             if (sparkSer >= 0) {
                                 startSound_801F0E34(0x30037, 0);
-                                ActorBase_804A5770* spark = fn_8015445C(sparkSer);
+                                ActorBase_804A5770* spark = findActorBySerial_8015445C(sparkSer);
                                 if (spark != NULL) {
                                     spark->fn_8018A5A8(field_0x94);
                                     s16 a = (s16)baseAngle;
@@ -1152,7 +1152,7 @@ void PhantomGanon2_804A1A98::update() {
                             }
                             baseAngle += 0x1000;
                         }
-                        PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
+                        PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                         if (parent != NULL && parent->fn_8018A5B0() == true) {
                             parent->field_0x274 = -1;
                         }
@@ -1164,7 +1164,7 @@ void PhantomGanon2_804A1A98::update() {
                     hitPlayer = fn_801F285C(NULL, NULL, true, -1);
                     if (hitPlayer >= 0 && (field_0x94 == hitPlayer || field_0x94 == fn_8022F3DC(hitPlayer) || hitPlayer == fn_8022F3DC(field_0x94))) {
                         if (mSpawnParam_0x90 == 10) {
-                            PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
+                            PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                             if (parent != NULL) {
                                 field_0x94 = hitPlayer;
                                 field_0x250++;
@@ -1191,7 +1191,7 @@ void PhantomGanon2_804A1A98::update() {
                     }
                 }
                 if (destroyed == 0) {
-                    if (field_0x23c == 0 && fn_801F2B7C(-100, -1, 1)) {
+                    if (field_0x23c == 0 && damagePlayersInBox_801F2B7C(-100, -1, 1)) {
                         startSound_801F0E34(0x40042, 0);
                         startSound_801F0E34(0x30037, 0);
                         destroyed = 1;
@@ -1200,14 +1200,14 @@ void PhantomGanon2_804A1A98::update() {
                         if (hitPlayer >= 0) {
                             fn_8023B6CC(hitPlayer);
                         }
-                        if (fn_80154744() < 0.3f) {
-                            fn_80154310('HART', fn_8015461C(), &mPos, 0, -1, -1);
+                        if (randFloat_80154744() < 0.3f) {
+                            spawnActor_80154310('HART', fn_8015461C(), &mPos, 0, -1, -1);
                         }
                         destroyed = 1;
                     }
                 }
                 if (destroyed != 0 || mLife == 0) {
-                    PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
+                    PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                     for (s32 i = 0; i < 4; i++) {
                         if (mEmitters2f4[i] != NULL) {
                             fn_8018A5F0()->forceDeleteEmitter(mEmitters2f4[i]);
@@ -1250,7 +1250,7 @@ void PhantomGanon2_804A1A98::update() {
             setEmitterPos_8013CB44(mEmitters304[0], &mPos, 1, 2, true);
             fn_8018A5C8(mEmitters304[0], (u8)field_0x290);
         }
-        if (fn_801F2B7C(-100, -1, 1)) {
+        if (damagePlayersInBox_801F2B7C(-100, -1, 1)) {
             if (mEmitters2f4[0] != NULL) {
                 fn_8018A5F0()->forceDeleteEmitter(mEmitters2f4[0]);
                 mEmitters2f4[0] = NULL;
@@ -1287,7 +1287,7 @@ void PhantomGanon2_804A1A98::update() {
         }
         // fall through
     case 26:
-        if (fn_8015436C(mPos.z - field_0x288) <= 1.0f) {
+        if (fabsf_8015436C(mPos.z - field_0x288) <= 1.0f) {
             if (mEmitter314 != NULL) {
                 fn_8017EAB4(mEmitter314);
                 mEmitter314 = NULL;
@@ -1320,7 +1320,7 @@ void PhantomGanon2_804A1A98::update() {
             }
             field_0x268 = -1;
             if (field_0x274 >= 0) {
-                ActorBase_804A5770* ball = fn_8015445C(field_0x274);
+                ActorBase_804A5770* ball = findActorBySerial_8015445C(field_0x274);
                 if (ball != NULL) {
                     ball->fn_8018A598(false);
                 }
@@ -1335,7 +1335,7 @@ void PhantomGanon2_804A1A98::update() {
         mPos.z = savedZ;
         mPos.y += mPos.z;
         if (hitSer >= 0) {
-            ActorBase_804A5770* hitAct = fn_8015445C(hitSer);
+            ActorBase_804A5770* hitAct = findActorBySerial_8015445C(hitSer);
             if (hitAct != NULL) {
                 if (field_0x94 == hitAct->fn_8018A590() ||
                     field_0x94 == fn_8022F3DC(hitAct->fn_8018A590()) ||
@@ -1433,7 +1433,7 @@ void PhantomGanon2_804A1A98::draw() {
         mtx[2][1] = 0.0f;
         mtx[2][2] = 0.8f;
         params.mMtx = mtx;
-        fn_801EFD34(res, &params, -1, scaleX, scaleY, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, scaleX, scaleY, 0.0f);
         mPos.set(pos);
         params.field_0x1d = field_0x2ee;
         params.field_0x30 = 14;
@@ -1448,7 +1448,7 @@ void PhantomGanon2_804A1A98::draw() {
         mtx[2][2] = field_0x2c8.y;
         params.mMtx = mtx;
         params.field_0x10.set(0xFF, 0xFF, 0xFF, (u8)field_0x290);
-        fn_801EFD34(res, &params, -1, scaleX, scaleY, 0.0f);
+        drawSpriteRes_801EFD34(res, &params, -1, scaleX, scaleY, 0.0f);
     }
 }
 

@@ -34,7 +34,7 @@ void BanditHerdingNPC_804ACB40::update() {
         }
         if (mLayer_0x4 == thief->mLayer_0x4 && (thief->mPos.z < 8.0f || thief->mHitTimer_0xd8 > 0) &&
             thief->field_0xc4 == 0) {
-            if (containsPoint(field_0x240, thief->mPos) == true && !getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
+            if (containsPoint(field_0x240, thief->mPos) == true && !getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x23c)) {
                 thief->field_0x94 = 1;
                 field_0x238++;
                 continue;
@@ -54,7 +54,7 @@ void BanditHerdingNPC_804ACB40::update() {
         fn_80204638()->field_0x0 = 1;
     }
     s32 bit = field_0x23c;
-    if (bit > 0 && getGameView_802D6A9C()->fn_802D800C(bit) == true && isScreenFlagSet_0x34() == true) {
+    if (bit > 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit) == true && isScreenFlagSet_0x34() == true) {
         setScreenFlag_0x30(0xFF, false);
     }
 }

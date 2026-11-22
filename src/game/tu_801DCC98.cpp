@@ -42,7 +42,7 @@ void cls_804A5038::update() {
     bool inside = inBox(box, mPos);
     if (!inside) {
         mAlive = false;
-    } else if (fn_801F2B7C(mParamAtcp_0x114, -1, 24)) {
+    } else if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 24)) {
         mAlive = false;
     }
 }

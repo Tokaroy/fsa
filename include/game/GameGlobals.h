@@ -32,7 +32,7 @@
 // their own headers; included here so existing users keep compiling.
 #include "game/Effect.h"
 #include "game/GameView.h"
-// The map, its collision queries (fn_80226850, ...) and the camera.
+// The map, its collision queries (getRawTile_80226850, ...) and the camera.
 #include "game/Camera.h"
 #include "game/Map.h"
 
@@ -267,7 +267,7 @@ struct GameRoot_8049EF20 {
     /* 0x80 */ u8 field_0x80; // cleared by fn_80138C9C
     /* 0x81 */ u8 field_0x81; // cleared by fn_80138C9C
     // Per-player bits (lbz; and. with 1 << player at ~200 sites). Bits 0-3:
-    // player i takes part (fn_80138A30 counts them, fn_8023F98C tests one,
+    // player i takes part (getPlayerCount_80138A30 counts them, fn_8023F98C tests one,
     // fn_801F6068); bits 4-7: player i's controller is connected (the connect
     // screens AdvEntryScreen_804B0B00::fn_803ED83C and ConnectScreen_804B0F10 set them).
     // Cleared by fn_80138C9C.
@@ -305,7 +305,7 @@ struct GameRoot_8049EF20 {
     // copied by the constructor).
     /* 0x98 */ JKRHeap* field_0x98;
     /* 0x9C */ JKRSolidHeap* field_0x9c; // lbl_80529DEC's field_0x4; destroyed by the destructor
-    // The audio object (fn_80458880 / fn_804593D4 in fn_80134D20, game/tu_80134C04.cpp).
+    // The audio object (playSystemSound_80458880 / fn_804593D4 in fn_80134D20, game/tu_80134C04.cpp).
     /* 0xA0 */ AudioMgr_8045A080* field_0xa0;
     // Copied from lbl_80529DEC+0x14 by the constructor (0x80139360). Game
     // code calls it through vtable slot 0x18 = getResource(u32 type,
@@ -402,7 +402,7 @@ struct GameRoot_8049EF20 {
     // Owner: game/tu_80134C04.cpp (next to fn_80134FBC; not written yet).
     // 1 unit. act_wait_switch calls it with (10, count) when its switch is
     // seen; r3 is gGameRoot_8053AAF8 (the only object this unit's calls pass).
-    void fn_80134DE4(s32 a, s32 b);
+    void startRumble_80134DE4(s32 a, s32 b);
     // Owner: game/tu_80134C04.cpp (0x80135020, 0x801352F4). Create / delete
     // the screen object of game mode `mode` (switch on 0-12; see 0x04-0x30).
     void fn_80135020(s32 mode);
@@ -424,7 +424,7 @@ struct GameRoot_8049EF20 {
     // Owner: game/tu_80134C04.cpp (0x80138A30; not written yet). 107 units.
     // The number of players that take part: the set bits 0-3 of
     // mPlayerMask. Its body reads gGameRoot_8053AAF8 itself; callers load it into r3.
-    s32 fn_80138A30();
+    s32 getPlayerCount_80138A30();
     // game/tu_8022AD64.cpp (0x8023F98C): whether bit `player` of mPlayerMask is set.
     bool fn_8023F98C(s32 player);
     // Owner: not written yet (0x8013670C, 0x8C bytes). Called by
@@ -595,20 +595,20 @@ bool fn_801CCB1C(const JGeometry::TVec3f* pos, s32 layer);
 
 // Random helpers on gGameRoot_8053AAF8->mRandom, defined in game units.
 class ActorBase_804A5770;
-f32 fn_80154744();          // [0, 1); game/act_sword_soldier.cpp
+f32 randFloat_80154744();          // [0, 1); game/act_sword_soldier.cpp
 
 // game/act_sword_soldier.cpp: the actor with a serial; spawns actor `id` on a layer at pos.
-ActorBase_804A5770* fn_8015445C(s32 serial);
-s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
+ActorBase_804A5770* findActorBySerial_8015445C(s32 serial);
+s32 spawnActor_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
 // game/tu_8018A8D8.cpp: a save flag bit (test, set/clear) and a random pick.
 bool fn_8018E930(s32 bit);
-void fn_8018E8DC(s32 bit, bool set, u8 value);
+void setScreenFlag_8018E8DC(s32 bit, bool set, u8 value);
 s32 fn_8018E89C();
 // game/act_phantom_ganon_2.cpp: whether the player takes part.
 bool fn_8018A614(s32 player);
 // game/tu_80134C04.cpp: the 2-bit field of gGameRoot_8053AAF8->field_0x83 for `index` (0-3).
 u8 fn_8013997C(s32 index);
-s32 fn_801CD664(s32 n);     // [0, n); game/tu_801CB270.cpp
+s32 randInt_801CD664(s32 n);     // [0, n); game/tu_801CB270.cpp
 s32 fn_801CD580(s32 except); // [0, 4) except `except`; game/tu_801CB270.cpp
 
 // game/tu_801CB270.cpp: steps *angle towards target by at most step (a
@@ -662,7 +662,7 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer);
 void fn_801CB538(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4);
 
 // game/tu_801CB270.cpp; called from game/tu_80207548.cpp and
-// game/tu_80220F54.cpp. Forwards to ActorManager_804A5800::fn_801F8544 with
+// game/tu_80220F54.cpp. Forwards to ActorManager_804A5800::spawnActorSimple_801F8544 with
 // 'RUPY' and the layer and pos; the flag selects 4 or 5 in the low bits of
 // its last argument. Returns the result (an actor serial).
 s32 fn_801CB434(s32 layer, const JGeometry::TVec3f* pos, bool flag);
@@ -676,7 +676,7 @@ s32 fn_801CB434(s32 layer, const JGeometry::TVec3f* pos, bool flag);
 s32 fn_801CB7CC(s16 angle);
 
 // game/tu_801CB270.cpp; called from game/tu_801DE714.cpp. Whether fn_80230188
-// holds for every player that takes part (fn_80138A30); takes no arguments.
+// holds for every player that takes part (getPlayerCount_80138A30); takes no arguments.
 bool fn_801CCF7C();
 
 // The objects at gGameRoot2_8053AB10->0x2C and 0x30, named after their vtables
@@ -721,7 +721,7 @@ public:
 
     // 0x80159330 (owner unit game/tu_80158624.cpp, not written yet). Returns at
     // once when gGameRoot_8053AAF8->0x4C is 0xC; otherwise sets 0xE to 0xFF and, unless
-    // the GameView check (getGameView_802D6A9C()->fn_802DCD0C()) passes, clears 0xD[0]
+    // the GameView check (getGameView_802D6A9C()->isInTransition_802DCD0C()) passes, clears 0xD[0]
     // when gGameRoot_8053AAF8's 0x94 and 0x96 bytes are 0.
     void fn_80159330();
 
@@ -1261,7 +1261,7 @@ bool fn_8037F2FC(u32 msg, s32 frames, u8 skipMask, f32 x, f32 y, f32 width, f32 
 // The callee converts the byte d to a 0/1 flag (clrlwi, neg, or, srwi), tests g as a bool
 // and reads the two stack arguments as bytes (lbz 0x4b, 0x4f); returns a 0/1 flag. Callers
 // that hold d in a wider variable pass `x != 0`. Argument meanings unknown. Review: fsa-wt/_reviews/game__act_force_gem_shadow.review.md.
-bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e,
+bool showGbaSprite_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e,
                  s32 player, bool g, u8 h, u8 i);
 
 // game/tu_80301CD0.cpp (0x80301CD0, written there with C++ linkage): whether the
@@ -1270,14 +1270,14 @@ bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 bool fn_80301CD0(s32 layer);
 
 // game/tu_80301CD0.cpp (not written yet). 18 units; same leading arguments as
-// fn_803075AC: serial, layer, position, then a sprite id. Adds 0x200 to the
+// showGbaSprite_803075AC: serial, layer, position, then a sprite id. Adds 0x200 to the
 // id only when e == 2; ids below 0x45 then go to fn_80307830, the others get
-// 0x400 added and go to fn_803075AC. d and e are converted to 0/1 flags for
+// 0x400 added and go to showGbaSprite_803075AC. d and e are converted to 0/1 flags for
 // the callee. The result is unused.
 void fn_80307AC8(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, s32 d, s32 e,
                  s32 f);
 
-// game/tu_80301CD0.cpp. Same leading arguments as fn_803075AC (serial, layer,
+// game/tu_80301CD0.cpp. Same leading arguments as showGbaSprite_803075AC (serial, layer,
 // position, sprite id, then d as a byte, e, f and g as a byte masked with 3);
 // returns 0 below layer 8. game/tu_801D3CBC.cpp calls it with (0, 1, 0, player).
 bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, bool e,
@@ -1380,7 +1380,7 @@ struct cls_801192AC {
 extern "C" cls_801192AC* fn_8011921C();
 
 // game/tu_801C0D70.cpp. The 0x60-byte object in .bss at 0x804C7E70, built on
-// first use by fn_801C0D70 (guard byte lbl_8053AC10); named after that
+// first use by getShadowLinkFight_801C0D70 (guard byte lbl_8053AC10); named after that
 // function. It tracks the Shadow Link fight: field_0x0 holds state bits, the
 // serials of the 'SLK2' actors it spawned are in mSerials[0..mCount), and
 // field_0x50 is the serial of the generator (-1 when there is none).
@@ -1401,7 +1401,7 @@ struct ShadowLinkFight_801C0D70 {
     // writes its x/y to *out. Called by FlyingPieces_8021C2B4::fn_8021C468 and act_shadow_link_2.
     bool fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const;
     // Owner tu_801C0D70 (symbol fn_801C12B8). Called by act_shadow_link_2's
-    // fn_801C53F8 on the object from fn_801C0D70: marks one of the actors.
+    // fn_801C53F8 on the object from getShadowLinkFight_801C0D70: marks one of the actors.
     void fn_801C12B8();
     void fn_801C0DCC();
     void fn_801C115C();
@@ -1415,7 +1415,7 @@ struct ShadowLinkFight_801C0D70 {
     void fn_801C151C();
 }; // Size: 0x60
 // Getter of that object (returns its address).
-extern "C" ShadowLinkFight_801C0D70* fn_801C0D70();
+extern "C" ShadowLinkFight_801C0D70* getShadowLinkFight_801C0D70();
 
 // game/tu_80204638.cpp (owner unit, not written yet). The guarded static in
 // .bss at 0x804CADE0 (constructed on first use by fn_80204638, flag lbl_8053AC58);
@@ -2071,7 +2071,7 @@ void fn_8038D454();
 // there). Read with lbz by that unit; stored as 0 by game/tu_80139BE8.cpp.
 extern u8 lbl_8053ACD0;
 // Per-player byte flags (.sbss 0x8053ACD8); game/tu_8037DF68.cpp's fn_8038D570 sets the first
-// fn_80138A30() of them to 1 (at most 4 players).
+// getPlayerCount_80138A30() of them to 1 (at most 4 players).
 extern u8 lbl_8053ACD8[4];
 // .sbss byte at 0x8053AAA0 (8 bytes), owned by game/tu_8011CEC8.cpp (its split starts
 // there). Cleared by tu_801213EC fn_80121ABC, read with lbz (!= 0) by act_escort_woman,

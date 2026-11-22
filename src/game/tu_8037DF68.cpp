@@ -63,7 +63,7 @@ static inline bool checkSync(s32 window, u32 msg) {
         return true;
     }
     if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-        gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
+        gGameRoot_8053AAF8->getPlayerCount_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
         lbl_8053AD78->field_0xed = 1;
         lbl_8053AD78->field_0x110 = index;
         lbl_8053AD78->field_0xee = text[5];
@@ -206,18 +206,18 @@ void fn_8038D570() {
         u32 elapsed = seconds + minutes * 60;
         if (elapsed > manager->field_0x48) {
             if (manager->field_0xeb != 0) {
-                if (!getGameView_802D6A9C()->fn_802D800C(manager->field_0xea)) {
+                if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(manager->field_0xea)) {
                     bit = lbl_8053AD78->field_0xea;
                     getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
                 }
-            } else if (getGameView_802D6A9C()->fn_802D800C(manager->field_0xea) == true) {
+            } else if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(manager->field_0xea) == true) {
                 bit = lbl_8053AD78->field_0xea;
                 getGameView_802D6A9C()->fn_802D8050(bit, false, 0xFF);
             }
         }
     }
     if (lbl_8053AD78->field_0xed != 0) {
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
             lbl_8053ACD8[i] = 1;
         }
     }
@@ -543,7 +543,7 @@ bool MessageManager_804AF070::fn_8038A42C(s32 player, s32 actor, s32 value, s32 
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x2000;
                 }
                 if (plain == 0) {
-                    gAudioMgr_8053AF80->fn_80458880(0x28, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x28, -1);
                 }
                 return true;
             }
@@ -588,7 +588,7 @@ bool MessageManager_804AF070::fn_80389F78(s32 player, s32 arg, s32 value, JGeome
                 lbl_8053AD78->mWindows[player]->field_0x28 |= 0x2000;
             }
             if (plain == 0) {
-                gAudioMgr_8053AF80->fn_80458880(0x28, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(0x28, -1);
             }
             return true;
         }
@@ -796,7 +796,7 @@ bool fn_80387494(s32 player) {
                     if (mappedWindow(window)->field_0x24 == 8) {
                         removeFromOrder(windowIndex(window));
                         if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                            gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                            gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                         }
                     }
                     lbl_8053AD78->mWindows[window]->fn_80391678();
@@ -815,7 +815,7 @@ bool fn_80387494(s32 player) {
             if (mappedWindow(window)->field_0x24 == 8) {
                 removeFromOrder(windowIndex(window));
                 if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                    gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                 }
             }
             lbl_8053AD78->mWindows[window]->fn_80391678();
@@ -856,10 +856,10 @@ static inline bool othersPressed(s32 window) {
 static inline void pageSound(s32 window) {
     switch (lbl_8053AD78->mWindows[window]->fn_80390894(mappedWindow(window)->field_0x2c)) {
     case 1:
-        gAudioMgr_8053AF80->fn_80458880(0x59, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x59, -1);
         break;
     case 2:
-        gAudioMgr_8053AF80->fn_80458880(0x5A, -1);
+        gAudioMgr_8053AF80->playSystemSound_80458880(0x5A, -1);
         break;
     }
 }
@@ -960,7 +960,7 @@ bool fn_80385960(s32 player) {
                     if (mappedWindow(window)->field_0x24 == 8) {
                         removeFromOrder(windowIndex(window));
                         if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                            gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                            gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                         }
                     }
                     lbl_8053AD78->mWindows[window]->fn_80391678();
@@ -972,7 +972,7 @@ bool fn_80385960(s32 player) {
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                        gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                        gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                     }
                 }
                 lbl_8053AD78->mWindows[window]->fn_80391678();
@@ -1005,7 +1005,7 @@ bool fn_80384C58(s32 player, s32 serial) {
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                        gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                        gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                     }
                 }
                 bool a = true;
@@ -1026,7 +1026,7 @@ bool fn_80384C58(s32 player, s32 serial) {
             if (mappedWindow(window)->field_0x24 == 8) {
                 removeFromOrder(windowIndex(window));
                 if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                    gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                    gAudioMgr_8053AF80->playSystemSound_80458880(0x29, -1);
                 }
             }
             bool b = false;
@@ -1111,7 +1111,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 7: {
             u32 yes = operand(p, 6);
             u32 no = operand(p, 10);
-            if (getGameView_802D6A9C()->fn_802D800C((u8)p[5])) {
+            if (getGameView_802D6A9C()->isScreenFlagSet_802D800C((u8)p[5])) {
                 index = yes;
             } else {
                 index = no;
@@ -1232,7 +1232,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             u32 b = operand(p, 9);
             u32 c = operand(p, 13);
             u32 d = operand(p, 17);
-            switch (gGameRoot_8053AAF8->fn_80138A30()) {
+            switch (gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
             case 1:
                 index = a;
                 break;

@@ -28,7 +28,7 @@ void EyeballSwitch_804AE678::init() {
     field_0x244 = false;
     field_0x234 = 0;
     mEmitter = NULL;
-    u8 players = gGameRoot_8053AAF8->fn_80138A30();
+    u8 players = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     s32 active = 0;
     if (field_0x240 == 0) {
         active = 1;
@@ -78,7 +78,7 @@ void EyeballSwitch_804AE678::vfunc_0x10() {
             for (s32 j = 0; j < 4; j++) {
                 if (field_0x248 == ((params >> lbl_80475138[j]) & 0x1F)) {
                     field_0x254 = params >> 27;
-                    if (getGameView_802D6A9C()->fn_802D800C(field_0x254)) {
+                    if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x254)) {
                         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x35);
                         field_0x234 = 2;
                         break;

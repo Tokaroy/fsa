@@ -51,7 +51,7 @@ void DiggingGameKeeper_8049C970::init() {
     field_0x238 = 0;
     field_0x234 = 0;
     field_0x23c = -1;
-    field_0x236 = gGameRoot_8053AAF8->fn_80138A30();
+    field_0x236 = gGameRoot_8053AAF8->getPlayerCount_80138A30();
     field_0x24c = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x10;
     if (field_0x24c == 0x14) {
         field_0x24c = 0x13;
@@ -281,7 +281,7 @@ void DiggingGameKeeper_8049C970::update() {
 void DiggingGameKeeper_8049C970::draw() {
     s32 frame = field_0x238;
     frame += field_0x235 * 2;
-    fn_801F02BC("enemy_gc_sob.bin", frame + 0x311, NULL, 0, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_gc_sob.bin", frame + 0x311, NULL, 0, 0, false, 1.0f, 1.0f);
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6) {
         lbl_8053AED0->fn_8043CB24(field_0x240 / 60, 0xFF, 0, 2, true, 316.0f, 60.0f, 2.0f);
     }

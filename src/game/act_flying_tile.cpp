@@ -134,7 +134,7 @@ bool FlyingTile_804AC100::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == true) {
         return true;
     }
-    u16 code = fn_8022461C(pos, layer);
+    u16 code = getTileCollisionCode_8022461C(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
         return false;
     }
@@ -193,10 +193,10 @@ void FlyingTile_804AC100::update() {
                 gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0xD);
                 break;
             case 1:
-                if (fn_8022461C(&mPos, mLayer_0x4) != 0x21) {
+                if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) != 0x21) {
                     mAlive = false;
                 } else {
-                    field_0x260 = fn_80226850(&mPos, mLayer_0x4);
+                    field_0x260 = getRawTile_80226850(&mPos, mLayer_0x4);
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x79);
                 }
                 break;
@@ -249,7 +249,7 @@ void FlyingTile_804AC100::update() {
                 break;
             }
             case 5:
-                field_0x260 = fn_80226850(&mPos, mLayer_0x4);
+                field_0x260 = getRawTile_80226850(&mPos, mLayer_0x4);
                 if (field_0x260 < 0x40 || field_0x260 > 0x49) {
                     mAlive = false;
                 } else {
@@ -264,7 +264,7 @@ void FlyingTile_804AC100::update() {
                         chest->mAlive = false;
                     }
                 }
-                if (fn_80226850(&mPos, mLayer_0x4) == 0x10) {
+                if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x10) {
                     field_0x258 = 1;
                 }
                 gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x9E);
@@ -276,7 +276,7 @@ void FlyingTile_804AC100::update() {
         } else {
             switch (field_0x24c) {
             case 1:
-                if (fn_8022461C(&mPos, mLayer_0x4) != 0x21) {
+                if (getTileCollisionCode_8022461C(&mPos, mLayer_0x4) != 0x21) {
                     if (getScreenFlagBit_0x3C() > 0) {
                         setScreenFlag_0x30(0xFF, true);
                     }
@@ -285,7 +285,7 @@ void FlyingTile_804AC100::update() {
                 }
                 break;
             case 5:
-                field_0x260 = fn_80226850(&mPos, mLayer_0x4);
+                field_0x260 = getRawTile_80226850(&mPos, mLayer_0x4);
                 if (field_0x260 < 0x40 || field_0x260 > 0x49) {
                     if (getScreenFlagBit_0x3C() > 0) {
                         setScreenFlag_0x30(0xFF, true);
@@ -424,7 +424,7 @@ void FlyingTile_804AC100::update() {
             break;
         }
         if (field_0x254 == 1) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 4);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, 4);
             if (serial >= 0) {
                 ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (gem != NULL) {
@@ -436,7 +436,7 @@ void FlyingTile_804AC100::update() {
         mAlive = false;
         break;
     case 4:
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x250)) {
+        if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x250)) {
             field_0x230 = 0;
             field_0x238 = 0;
         }
@@ -458,7 +458,7 @@ void FlyingTile_804AC100::update() {
     if (field_0x230 == 1 || field_0x230 == 2) {
         if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             mAlive = false;
-        } else if (hitWall || fn_801F2B7C(mParamAtcp_0x114, -1, field_0x268)) {
+        } else if (hitWall || damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, field_0x268)) {
             field_0x230 = 3;
         } else {
             for (s32 i = 0; i < 4; i++) {
@@ -566,13 +566,13 @@ void FlyingTile_804AC100::draw() {
             rotY(rot, field_0x25a);
             params.mMtx = rot;
             if (field_0x288[0] == 'r' || field_0x288[0] == 's' || field_0x288[0] == 'y') {
-                fn_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_ura.bti"), &params, 7, 0.0f,
+                drawSpriteRes_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_ura.bti"), &params, 7, 0.0f,
                             -16.0f, 0.0f);
             } else if (field_0x288[0] == 'l' || field_0x288[0] == 'x' || field_0x288[0] == 'p') {
-                fn_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_yasi.bti"), &params, 7, 0.0f,
+                drawSpriteRes_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_yasi.bti"), &params, 7, 0.0f,
                             -16.0f, 0.0f);
             } else {
-                fn_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_omote.bti"), &params, 7, 0.0f,
+                drawSpriteRes_801EFD34(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_omote.bti"), &params, 7, 0.0f,
                             -16.0f, 0.0f);
             }
             break;

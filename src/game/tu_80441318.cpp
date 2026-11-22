@@ -73,7 +73,7 @@ void PlayerWindowSelect_804B19E0::fn_80441490() {
                     }
                 }
             }
-            if (count == gGameRoot_8053AAF8->fn_80138A30()) {
+            if (count == gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 field_0x4 = 0;
             }
         }
@@ -93,7 +93,7 @@ void PlayerWindowSelect_804B19E0::fn_80441490() {
             setWindow(field_0x4, 0);
         }
     } else {
-        if (getGameView_802D6A9C()->fn_802DCD0C() == true) {
+        if (getGameView_802D6A9C()->isInTransition_802DCD0C() == true) {
             mState = 0;
         }
         (this->*lbl_804B19BC[mState])();

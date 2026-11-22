@@ -126,7 +126,7 @@ void LiftableWood_804A87A8::update() {
             mPos += mVel_0x3c;
             if (mPos.z < 0.0f) {
                 die_0x24();
-            } else if (fn_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
+            } else if (damagePlayersInBox_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
                 die_0x24();
             }
         }
@@ -142,16 +142,16 @@ void LiftableWood_804A87A8::draw() {
         params.field_0x1d = 1;
         if (field_0x248[0] == 'r' || field_0x248[0] == 's' || field_0x248[0] == 'y') {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_ura.bti");
-            fn_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
         } else if (field_0x248[0] == 'l' || field_0x248[0] == 'x' || field_0x248[0] == 'p') {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_yasi.bti");
-            fn_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
         } else if (field_0x248[0] == 'u') {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_yuki.bti");
-            fn_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
         } else {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "wood_omote.bti");
-            fn_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
+            drawSpriteRes_801EFD34(res, &params, 7, 0.0f, -18.0f, 0.0f);
         }
     }
 }
@@ -173,7 +173,7 @@ void LiftableWood_804A87A8::die_0x24() {
     startSound_801F0E34(0x30003, 0);
     if (field_0x238 == 0) {
         for (s32 i = 0; i < 4; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_8046CAF0[i]);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_8046CAF0[i]);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {

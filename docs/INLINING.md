@@ -132,7 +132,7 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
 | tu_8028FBA0 | fn_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, fn_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| tu_80457DFC | fn_80457E54, fn_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
 | tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
 | tu_8023FBF0 | fn_80248FF0 | L | fn_80249070 | progress |
@@ -142,7 +142,7 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
 | tu_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
 | tu_8016A2B4, tu_802F5040, tu_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
-| tu_8021A570, tu_802F5040, tu_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, fn_80248778), tu_8026FC20 (isDown), tu_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
+| tu_8021A570, tu_802F5040, tu_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), tu_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
 | tu_80222CC4, tu_80221B44, act_shadow_link_bow/jump, tu_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
 | tu_801D2C60 | weak dtor first in .text | D | | progress |
 | act_vaati_demo | (matched) | E | "defined after draw(), above it MWCC inlines it" | src comment |

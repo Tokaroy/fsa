@@ -58,9 +58,9 @@ void Player_804A6F38::fn_802870C8() {
     } else {
         if (fn_802486A0() == 4) {
             if (field_0x123c == 1) {
-                if (fn_80240888() != fn_80248778()) {
+                if (fn_80240888() != getFollowerIndex_80248778()) {
                     field_0x123c = 0;
-                    u16 tile = fn_8022461C(&mPos, getLayer());
+                    u16 tile = getTileCollisionCode_8022461C(&mPos, getLayer());
                     if ((tile >= 4 && tile <= 7) || (tile >= 8 && tile <= 0xB) || (tile >= 0x18 && tile <= 0x1B) ||
                         (tile >= 8 && tile <= 0xB) || (tile >= 0x28 && tile <= 0x2B) ||
                         (tile >= 0x2C && tile <= 0x2F)) {
@@ -70,7 +70,7 @@ void Player_804A6F38::fn_802870C8() {
                     }
                 }
             } else {
-                if (fn_80240888() == fn_80248778()) {
+                if (fn_80240888() == getFollowerIndex_80248778()) {
                     field_0x123c = 1;
                 }
             }
@@ -79,54 +79,54 @@ void Player_804A6F38::fn_802870C8() {
         }
 
         if (fn_802486A0() != 4 && fn_80240808() && (!fn_8025F418() || fn_8022F478(mHeldPlayer_0xd70))) {
-            if (fn_8022D75C(fn_80240644()) && !fn_80234ECC(fn_80240644()) && fn_8022D498(fn_80240644()) != 0xC &&
-                fn_8022D498(fn_80240644()) != 0xD && fn_8022D498(fn_80240644()) != 0x26) {
+            if (fn_8022D75C(getLeader_80240644()) && !fn_80234ECC(getLeader_80240644()) && fn_8022D498(getLeader_80240644()) != 0xC &&
+                fn_8022D498(getLeader_80240644()) != 0xD && fn_8022D498(getLeader_80240644()) != 0x26) {
                 if (!fn_8024BBB0() &&
-                    !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
+                    !fn_8022BC38(getLeader_80240644(), fn_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
                     if (mState_0x1240 == 8 || mState_0x1240 == 9 || mState_0x1240 == 10 || mState_0x1240 == 0x39) {
                         if (fn_8022D75C(fn_8022EA0C(getIndex()))) {
                             fn_80251AEC(0);
                         }
                     }
                     field_0xcee = 1;
-                    if (fn_80234E30(fn_80240644())) {
+                    if (fn_80234E30(getLeader_80240644())) {
                         field_0xcef = 1;
                     }
                     fn_80241E64();
-                    if (fn_80234E30(fn_80240644())) {
+                    if (fn_80234E30(getLeader_80240644())) {
                         field_0xce9 = 0;
                     }
-                    if (!fn_8022BC38(fn_80240644(), getLayer(), &mPos)) {
+                    if (!fn_8022BC38(getLeader_80240644(), getLayer(), &mPos)) {
                         bool low = false;
                         if (getLayer() < 8) {
                             low = true;
                         }
-                        mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_80240644());
+                        mLayer_0x3b4 = getPlayerLayer_8023DE58(getLeader_80240644());
                         mDestLayer_0xce4 = getLayer();
-                        mPos = *getPlayerPos_8023E724(fn_80240644());
+                        mPos = *getPlayerPos_8023E724(getLeader_80240644());
                         field_0xd1c = mRespawnPos_0xcbc = mPos;
                         if (low) {
-                            mLastTvPos_0xcb0 = *fn_8023E32C(fn_80240644());
+                            mLastTvPos_0xcb0 = *fn_8023E32C(getLeader_80240644());
                         }
                         mViewBox_0xbec->fn_8030BD3C(getIndex());
                     }
                 }
-            } else if ((field_0xcee == 1 || !fn_8022BC38(fn_80240644(), getLayer(), &mPos)) &&
-                       (field_0xcef != 1 || !fn_80234E30(fn_80240644()))) {
+            } else if ((field_0xcee == 1 || !fn_8022BC38(getLeader_80240644(), getLayer(), &mPos)) &&
+                       (field_0xcef != 1 || !fn_80234E30(getLeader_80240644()))) {
                 bool low = false;
                 if (getLayer() < 8) {
                     low = true;
                 }
                 field_0xcee = 0;
                 field_0xcef = 0;
-                mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_80240644());
+                mLayer_0x3b4 = getPlayerLayer_8023DE58(getLeader_80240644());
                 mDestLayer_0xce4 = getLayer();
-                mPos = *getPlayerPos_8023E724(fn_80240644());
+                mPos = *getPlayerPos_8023E724(getLeader_80240644());
                 field_0xd1c = mRespawnPos_0xcbc = mPos;
                 if (low) {
-                    mLastTvPos_0xcb0 = *fn_8023E32C(fn_80240644());
+                    mLastTvPos_0xcb0 = *fn_8023E32C(getLeader_80240644());
                 }
-                mFacing_0x3dc = mMoveDir_0x3e8 = fn_80230CFC(fn_80240644());
+                mFacing_0x3dc = mMoveDir_0x3e8 = fn_80230CFC(getLeader_80240644());
                 mViewBox_0xbec->fn_8030BD3C(getIndex());
             }
         }
@@ -915,7 +915,7 @@ void Player_804A6F38::fn_802870C8() {
         field_0x3bc = getLayer();
     }
     field_0x3c0 = false;
-    u16 tile = fn_8022461C(&field_0xd1c, getLayer());
+    u16 tile = getTileCollisionCode_8022461C(&field_0xd1c, getLayer());
     if (fn_802265DC(&field_0xd1c, getLayer(), true) || tile == 3 || tile == 0xE) {
         if (getLayer() < 8) {
             field_0xd1c.set(mReturnPos_0x2c4);
@@ -942,7 +942,7 @@ void Player_804A6F38::fn_802870C8() {
         if (mState_0x1240 != 3) {
             fn_80251AEC(3);
         }
-        mPos.set(*getPlayerPos_8023E724(fn_80240644()));
+        mPos.set(*getPlayerPos_8023E724(getLeader_80240644()));
         mPos.z = 0.0f;
     }
     fn_80242BC0();
@@ -1059,13 +1059,13 @@ void Player_804A6F38::fn_802870C8() {
             mAlpha_0xca0 = fn_8023BCD4(mHeldPlayer_0xd70);
         }
     } else if (!fn_8024BBB0()) {
-        if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
+        if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
             fn_80265D8C();
-        } else if (fn_80240808() && fn_8022D75C(fn_80240644()) && fn_8022D498(fn_80240644()) != 0x27 &&
-                   !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
+        } else if (fn_80240808() && fn_8022D75C(getLeader_80240644()) && fn_8022D498(getLeader_80240644()) != 0x27 &&
+                   !fn_8022BC38(getLeader_80240644(), fn_8023E10C(getLeader_80240644()), fn_8023E214(getLeader_80240644()))) {
             mAlpha_0xca0 = 0;
-        } else if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(fn_80240644()) &&
-                   !fn_80236B50(fn_80240644()) && !fn_80270A8C()) {
+        } else if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(getLeader_80240644()) &&
+                   !fn_80236B50(getLeader_80240644()) && !fn_80270A8C()) {
             fn_80265D68();
         } else {
             fn_80265D8C();
@@ -1120,7 +1120,7 @@ void Player_804A6F38::fn_802870C8() {
         }
     }
 
-    fn_80226850(&mPos, getLayer());
+    getRawTile_80226850(&mPos, getLayer());
     if (fn_802413E8() || fn_80270A8C() || fn_802412A4() || fn_80240D50() || !fn_802413F0() ||
         fn_8026FC20() > 0 || viewLayerFlag(getLayer()) || mPos.z > 0.0f ||
         planarLength(mPos - mLastPos_0x14) < 1.0f ||
@@ -1133,7 +1133,7 @@ void Player_804A6F38::fn_802870C8() {
     }
 
     if (!field_0xce9) {
-        if (magnitude(mRespawnPos_0xcbc - mPos) > 10.0f && fn_80240808() && !fn_8022D75C(fn_80240644())) {
+        if (magnitude(mRespawnPos_0xcbc - mPos) > 10.0f && fn_80240808() && !fn_8022D75C(getLeader_80240644())) {
             field_0xce9 = 1;
         }
     }
@@ -1294,16 +1294,16 @@ void Player_804A6F38::fn_8028676C() {
     }
 
     if (!fn_802413E8() && !fn_80270A8C() && !fn_80250D30() && !fn_8024FEFC() && mPos.z <= 0.0f &&
-        fn_8022BC38(fn_80240644(), getLayer(), &mPos)) {
-        if (!fn_80234ECC(fn_80240644()) &&
-            planarLength(*getPlayerPos_8023E724(fn_80240644()) - target) <= planarLength(mPos - target)) {
+        fn_8022BC38(getLeader_80240644(), getLayer(), &mPos)) {
+        if (!fn_80234ECC(getLeader_80240644()) &&
+            planarLength(*getPlayerPos_8023E724(getLeader_80240644()) - target) <= planarLength(mPos - target)) {
             field_0x1228++;
             if (field_0x1238 > 0) {
                 field_0x1238--;
             }
             if ((!(fn_80240DAC() || fn_80240D8C() || field_0x43e) && fn_8025197C(true)) ||
                 (fn_802486A0() == 5 && fn_80240B84()) || field_0x1228 > 180) {
-                mPos.set(*getPlayerPos_8023E724(fn_80240644()));
+                mPos.set(*getPlayerPos_8023E724(getLeader_80240644()));
                 field_0x1228 = 0;
                 field_0x1238 = 0;
             }
@@ -1314,7 +1314,7 @@ void Player_804A6F38::fn_8028676C() {
         field_0x1228 = 0;
     }
 
-    if (fn_80234E30(fn_80240644())) {
+    if (fn_80234E30(getLeader_80240644())) {
         field_0x1228 = 0;
     }
     if (fn_802486A0() == 4) {
@@ -1355,14 +1355,14 @@ void Player_804A6F38::fn_80286688() {
 // while it walks on the ground.
 void Player_804A6F38::fn_80285F44() {
     if (!fn_802413F0() || !fn_80241E28(field_0x3b8, &mLastPos_0x14) ||
-        (fn_80240808() && fn_80234E30(fn_80240644())) || fn_80270A8C()) {
+        (fn_80240808() && fn_80234E30(getLeader_80240644())) || fn_80270A8C()) {
         field_0x448 = 4;
     } else if ((mPos.z <= 0.0f && mLastPos_0x14.z > 0.0f &&
                 (mState_0x1240 != 0x1F || !viewLayerFlag(getLayer()))) ||
                (viewLayerFlag(getLayer()) && field_0xbf0->field_0xb5 == 1 && !field_0xbf0->field_0xb4)) {
         if (field_0x448 == 0) {
             field_0x448 = 4;
-            u16 tile = fn_8022461C(&mPos, getLayer());
+            u16 tile = getTileCollisionCode_8022461C(&mPos, getLayer());
             if (fn_8024B24C()) {
                 if (fn_802DEB58()) {
                     if (fn_802412CC()) {
@@ -1429,7 +1429,7 @@ void Player_804A6F38::fn_80285F44() {
         (viewLayerFlag(getLayer()) && !field_0xbf0->field_0xb4)) {
         if (!fn_802413E8() && !fn_80240B84() && !fn_80240D50() && !fn_802412A4() && !fn_80240670() &&
             !fn_80240F28() && planarLength(mPos - mLastPos_0x14) >= 0.3f) {
-            u16 tile = fn_8022461C(&mPos, getLayer());
+            u16 tile = getTileCollisionCode_8022461C(&mPos, getLayer());
             if (tile == 0xE || tile == 3) {
             } else if (tile == 0xD) {
             } else if (tile == 0x39) {

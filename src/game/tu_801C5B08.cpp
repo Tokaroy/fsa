@@ -71,7 +71,7 @@ void ShadowLink2_804A43E8::fn_801C6260() {
                 }
             } else {
                 field_0x33c = field_0x33c - 0x8000;
-                field_0x33c = field_0x33c + fn_801CD664(0x4001) - 0x2000;
+                field_0x33c = field_0x33c + randInt_801CD664(0x4001) - 0x2000;
             }
             fn_801C3B7C(0x1C);
         } else if (field_0x597 == 0 && notTarget) {
@@ -127,7 +127,7 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
         return;
     }
     field_0x595 = 0;
-    field_0x596 = fn_801CD664(0x15) + 0x14;
+    field_0x596 = randInt_801CD664(0x15) + 0x14;
     JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     if (viewFlag != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
         if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
@@ -164,7 +164,7 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     } else {
         angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     }
-    angle = (s16)(angle + fn_801CD664(0x4001) - 0x2000);
+    angle = (s16)(angle + randInt_801CD664(0x4001) - 0x2000);
     fn_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
@@ -205,7 +205,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
             }
         } else {
             field_0x33c = fn_801D0280(player);
-            s32 rnd = fn_801CD664(0x4001);
+            s32 rnd = randInt_801CD664(0x4001);
             field_0x33c = field_0x33c + rnd - 0x2000;
         }
         fn_801C3B7C(0x1C);

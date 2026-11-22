@@ -157,14 +157,14 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
             break;
         case 3: {
             s32 far = 0;
-            for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+            for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
                 f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
                 if (std::sqrtf(dx * dx + dy * dy) > 33.0f) {
                     far++;
                 }
             }
-            if (far >= gGameRoot_8053AAF8->fn_80138A30()) {
+            if (far >= gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 field_0x230 = 1;
             }
             break;
@@ -208,7 +208,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                         done++;
                         fn_80230498(i, &field_0x264[i], 0x3F, 0xFF, -0x80, -0x80, true);
                     } else {
-                        fn_80230BF4(i, fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
+                        fn_80230BF4(i, angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
                         fn_802303FC(i, &field_0x264[i], true);
                     }
                 } else {
@@ -396,7 +396,7 @@ void TinglesTowerWarp_804A38D4::draw() {
             SpriteParams_801F5AE0 params;
             params.field_0x1d = -1;
             drawSprite_801F06F0("enemy_gc_sob.bin", 0x431, &params, -1, 1.0f, 1.0f);
-            fn_801F02BC("enemy_gc_sob.bin", 0x431, &params, -1, 0, false, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_gc_sob.bin", 0x431, &params, -1, 0, false, 1.0f, 1.0f);
         }
         break;
     case 1:

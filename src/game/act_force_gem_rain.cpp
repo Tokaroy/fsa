@@ -94,17 +94,17 @@ void ForceGemRain_804A8010::update() {
                 break;
             case 5:
                 field_0x240 = 0x80;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 field_0x230 = 3;
                 break;
             case 1:
                 field_0x240 = 8;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 field_0x230 = 3;
                 break;
             case 2:
                 field_0x240 = 8;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 spawnId = 'HBMB';
                 spawnArg = 3;
                 break;
@@ -113,7 +113,7 @@ void ForceGemRain_804A8010::update() {
                 break;
             case 4:
                 field_0x240 = 8;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 spawnId = 'SLR1';
                 spawnArg = 5 << 16;
                 break;
@@ -126,18 +126,18 @@ void ForceGemRain_804A8010::update() {
                 break;
             case 8:
                 field_0x240 = 2;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 spawnId = 'HINO';
                 spawnArg = 1;
                 break;
             case 9:
                 field_0x240 = 8;
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
                 spawnId = 'STAL';
                 spawnArg = 4;
                 break;
             case 11:
-                gAudioMgr_8053AF80->fn_80458880(6, -1);
+                gAudioMgr_8053AF80->playSystemSound_80458880(6, -1);
             // fall through
             case 13:
                 spawnId = 'ROPE';
@@ -202,28 +202,28 @@ void ForceGemRain_804A8010::update() {
     case 1: {
         switch (field_0x238) {
         case 1:
-            if (gGameRoot_8053AAF8->fn_80138A30() == 2) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2) {
                 field_0x240 = 0x50;
             }
-            if (gGameRoot_8053AAF8->fn_80138A30() > 2) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 2) {
                 field_0x240 = 0x50;
                 field_0x234 = 2;
             }
             break;
         case 2:
-            if (gGameRoot_8053AAF8->fn_80138A30() == 2) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2) {
                 field_0x240 = 0xF0;
             }
-            if (gGameRoot_8053AAF8->fn_80138A30() > 2) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 2) {
                 field_0x240 = 0xF0;
                 field_0x234 = 2;
             }
             break;
         case 3:
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+            if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 field_0x240 = 0xFF;
-                if (gGameRoot_8053AAF8->fn_80138A30() > 2) {
-                    field_0x234 = gGameRoot_8053AAF8->fn_80138A30() - 1;
+                if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 2) {
+                    field_0x234 = gGameRoot_8053AAF8->getPlayerCount_80138A30() - 1;
                 }
             }
             break;
@@ -282,7 +282,7 @@ void ForceGemRain_804A8010::update() {
             } else {
                 pick = 0;
             }
-            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, pick);
+            getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, pick);
             field_0x23c++;
         } while (++k < 2 && field_0x23c < field_0x240);
         if (field_0x23c < field_0x240) {
@@ -316,7 +316,7 @@ void ForceGemRain_804A8010::update() {
                 getActorManager_801F856C()->spawnActor_801F9484('LPLK', mLayer_0x4, &mPos, 0x400, -1, -1);
                 break;
             }
-            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, 4);
+            getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, 4);
         }
         break;
     }

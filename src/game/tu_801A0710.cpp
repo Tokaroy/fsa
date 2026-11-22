@@ -270,7 +270,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         if (field_0x238[3] != 0) {
             break;
         }
-        field_0x2c0 = gGameRoot_8053AAF8->fn_80138A30();
+        field_0x2c0 = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         field_0x230 = 1;
     case 1: {
         s32 dir;
@@ -616,7 +616,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
                 continue;
             }
             budget -= lbl_804A2BD0[kind];
-            s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, kind | 0x220000);
+            s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, kind | 0x220000);
             if (serial < 0) {
                 continue;
             }
@@ -770,7 +770,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         if (u8 mask = fn_801F2740(-1)) {
             s32 p = highestPlayer(mask);
             if (field_0x264 == p || field_0x264 == fn_8022F3DC(p)) {
-                if (fn_801F2B7C(0, -1, 1)) {
+                if (damagePlayersInBox_801F2B7C(0, -1, 1)) {
                     startSound_801F0E34(0x3004D, 0);
                     dead = true;
                     lbl_8053ABC5 = 1;
@@ -795,13 +795,13 @@ void TennisShop_804A2BF4::fn_801A0F90() {
                 speed *= 1.5f;
             }
             field_0x264++;
-            if (field_0x264 >= gGameRoot_8053AAF8->fn_80138A30()) {
+            if (field_0x264 >= gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 field_0x264 = 0;
             }
             field_0x248++;
             fn_8023B6CC(field_0x278);
             fn_80230FD0(field_0x278, 0x2003F);
-            if (field_0x248 < gGameRoot_8053AAF8->fn_80138A30()) {
+            if (field_0x248 < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
                 if (fn_8023F264(field_0x264) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x264) && !fn_80230188(field_0x264)) {
                     u16 angle;
                     fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, field_0x264, 2);
@@ -834,7 +834,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
                 if (shop != NULL) {
                     field_0x248 = 0;
                     field_0x264 = 4;
-                    if (gGameRoot_8053AAF8->fn_80138A30() > 1) {
+                    if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                         bumpCount(&shop->field_0x24c[2]);
                         bumpCount(&shop->field_0x26c);
                     }
@@ -1021,7 +1021,7 @@ void TennisShop_804A2BF4::fn_801A0910() {
     mtx[2][2] = field_0x324[1];
     params.mMtx = mtx;
     mPos.y = savedY + (field_0x33c - 16.0f);
-    fn_801EFD34(fn_804032E8('TIMG', lbl_804A2BE4[field_0x264]), &params, 7, 0.0f, -2.0f, 0.0f);
+    drawSpriteRes_801EFD34(fn_804032E8('TIMG', lbl_804A2BE4[field_0x264]), &params, 7, 0.0f, -2.0f, 0.0f);
     mPos.y = savedY;
     if (field_0x2c4 >= 0) {
         lbl_8053AF28->field_0x10 = (u8)field_0x26c;

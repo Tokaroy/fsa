@@ -82,7 +82,7 @@ void ZoraEscortGoal_8049E424::init() {
     mDrawEnabled = false;
     fn_801283E8()->fn_80128398(this);
     if (field_0x234 > 0) {
-        if (!isScreenFlagSet_0x34() && getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
+        if (!isScreenFlagSet_0x34() && getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x234)) {
             fn_80126A4C(1);
         }
     }
@@ -105,7 +105,7 @@ void ZoraEscortGoal_8049E424::update() {
             if (isScreenFlagSet_0x34()) {
                 fn_80126A4C(1);
                 fn_80126A4C(11);
-            } else if (getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
+            } else if (getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x234)) {
                 fn_80126A4C(1);
             }
         }
@@ -225,7 +225,7 @@ void ZoraEscortGoal_8049E424::draw() {
         params.field_0x14.g = field_0x254;
         params.field_0x14.b = field_0x254;
     }
-    fn_801F02BC("enemy_both2_sob.bin", mAnim27c.mCel + 0x242, &params, 0x407, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both2_sob.bin", mAnim27c.mCel + 0x242, &params, 0x407, 0, false, 1.0f, 1.0f);
 }
 
 bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
@@ -381,7 +381,7 @@ bool ZoraEscortGoal_8049E424::walkRail() {
         } else {
             mVel_0x3c.set(step);
             mPos += mVel_0x3c;
-            s32 anim = fn_801F681C(angle);
+            s32 anim = angleToDir_801F681C(angle);
             if (anim != mAnim27c.mAnim) {
                 mAnim27c.startAnim_801D22DC(anim, 2, false);
                 mAnim27c.fn_801D1F14(0.0f);

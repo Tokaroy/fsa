@@ -48,11 +48,11 @@ void FrostareChildFrosteye_804A4EE8::init() {
     mParamAtcp_0x114 = 2;
     field_0x194 = 1;
     if (field_0x16c == -1) {
-        s16 a = fn_801CD664(0x3800);
-        if (fn_801CD664(2) == 0) {
+        s16 a = randInt_801CD664(0x3800);
+        if (randInt_801CD664(2) == 0) {
             a = -a;
         }
-        s32 n = fn_801CD664(0x3C) + 1;
+        s32 n = randInt_801CD664(0x3C) + 1;
         field_0x2b4 = 0.0f;
         field_0x2b8 = 0.1f * n;
         f32 x = field_0x2b4;
@@ -62,9 +62,9 @@ void FrostareChildFrosteye_804A4EE8::init() {
     mState = 0;
     mStateTimer = 0;
     if (field_0x16c == -1) {
-        field_0x250 = fn_801CD664(1) + 1;
+        field_0x250 = randInt_801CD664(1) + 1;
     } else {
-        field_0x250 = fn_801CD664(0x3D) + 0x1E;
+        field_0x250 = randInt_801CD664(0x3D) + 0x1E;
     }
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
@@ -80,14 +80,14 @@ void FrostareChildFrosteye_804A4EE8::init() {
 
 // FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
 void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
-    if (fn_801CD664(2) == 0) {
+    if (randInt_801CD664(2) == 0) {
         mFlags &= ~0x2000;
     } else {
         mFlags |= 0x2000;
     }
-    mTargetRadius = (f32)(fn_801CD664(0x1F) + 0x1E);
+    mTargetRadius = (f32)(randInt_801CD664(0x1F) + 0x1E);
     mAngleSpeed = 0;
-    mAngle = fn_801CD664(0x10000);
+    mAngle = randInt_801CD664(0x10000);
     if (field_0x16c == -1) {
         JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
         if (!v.isZero()) {
@@ -106,7 +106,7 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
                 ry = v.x * s + v.y * c;
                 rx = v.x * c - v.y * s;
             }
-            if (fn_801CD664(2) == 0) {
+            if (randInt_801CD664(2) == 0) {
                 rx = -rx;
                 ry = -ry;
                 mFlags ^= 0x2000;
@@ -132,7 +132,7 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
             field_0x2cc -= p.x;
             field_0x2d0 -= p.y;
         }
-        switch (fn_801CD664(3)) {
+        switch (randInt_801CD664(3)) {
         case 0:
             mSearchRange = 96.0f;
             break;
@@ -330,6 +330,6 @@ void FrostareChildFrosteye_804A4EE8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 1;
     params.field_0x1d = 0;
-    fn_801F02BC(lbl_80469AA4, mAnim.mCel + 0xE3, &params, -1, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC(lbl_80469AA4, mAnim.mCel + 0xE3, &params, -1, 0, false, 1.0f, 1.0f);
 }
 

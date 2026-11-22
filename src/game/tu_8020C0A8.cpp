@@ -38,7 +38,7 @@ void ZolSmallSlime_804A5F40::init() {
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
-    field_0x250 = fn_801CD664(0x3D) + 0x28;
+    field_0x250 = randInt_801CD664(0x3D) + 0x28;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_8053A178, 1);
@@ -90,7 +90,7 @@ void ZolSmallSlime_804A5F40::fn_8020C6E8() {
     }
     if (mState == 2) {
         if (nearest < 0) {
-            field_0x250 = fn_801CD664(0x3D) + 0x28;
+            field_0x250 = randInt_801CD664(0x3D) + 0x28;
             mTargetSpeed = 0.0f;
             field_0x2a8 = -1;
             field_0x2ac = 0;
@@ -122,7 +122,7 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
-            field_0x250 = fn_801CD664(0x29) + 0x3C;
+            field_0x250 = randInt_801CD664(0x29) + 0x3C;
             mTargetSpeed = 0.4f;
             field_0x2a8 = -1;
             field_0x2ac = 0;
@@ -150,14 +150,14 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.35f) {
-                field_0x250 = fn_801CD664(0x3D) + 0x28;
+                field_0x250 = randInt_801CD664(0x3D) + 0x28;
                 mTargetSpeed = 0.0f;
                 field_0x2a8 = -1;
                 field_0x2ac = 0;
                 mStateTimer = 0;
                 mState = 0;
             } else {
-                field_0x250 = fn_801CD664(0x29) + 0x3C;
+                field_0x250 = randInt_801CD664(0x29) + 0x3C;
                 mTargetSpeed = 0.4f;
                 field_0x2a8 = -1;
                 field_0x2ac = 0;
