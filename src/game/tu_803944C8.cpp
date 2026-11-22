@@ -3174,9 +3174,9 @@ bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
         fn_80398A34(field_0x1e4);
         fn_80398700(*(const u8*)data, field_0x1e4);
         return true;
-    // The original reads the save file through a 0xC8-stride row at lbl_8050EC80 (no addi 0x20).
     case 0x30005:
-        fn_80398EF4(lbl_8050EC80.getCurrentFile().field_0x59, lbl_8050EC80.getCurrentFile().field_0x58);
+        fn_80398EF4(lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59,
+                    lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58);
         return true;
     case 0x30006:
         fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x14);
