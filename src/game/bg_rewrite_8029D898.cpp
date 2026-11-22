@@ -235,7 +235,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME: 98.51 %, missing/extra; behaviour near.
+// FIXME: 98.62 %, missing/extra; behaviour clean.
 // Still differs: the original keeps layer in a second register (mr r31, r29; the spawn calls read the first).
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1335,7 +1335,6 @@ static inline void writeCell(int layer, s32 cell, u16 tile) {
     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, tile);
 }
 
-// FIXME: 92.35 %, missing/extra; behaviour clean.
 void BgRewrite_804A7C98::writeTilePair_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b) {
     if (vertical == 0) {
         writeCell(layer, cell, a);
@@ -1355,7 +1354,7 @@ void BgRewrite_804A7C98::writeTilePair_8029DEBC(s32 layer, s32 cell, s32 vertica
 }
 
 // Registers only: cell, the layer copies and b/c/d sit in other callee-saved registers.
-// FIXME: 94.12 %, missing/extra; behaviour clean.
+// FIXME: 97.09 %, regalloc-only; behaviour clean.
 void BgRewrite_804A7C98::writeFourTiles_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
     if (vertical == 0) {
         writeCell(layer, cell, a);
