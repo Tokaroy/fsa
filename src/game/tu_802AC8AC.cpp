@@ -31,7 +31,7 @@ void BlackFade_804A8390::fn_802ACB58() {
 }
 
 void BlackFade_804A8390::fn_802ACA64() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x18 == 0) {
         mPicture->setBlackWhite(JUtility::TColor(0xFF), JUtility::TColor(0));
     } else {
@@ -48,7 +48,7 @@ void BlackFade_804A8390::fn_802AC98C() {
         } else {
             field_0x10 = 0xFF;
         }
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         mPicture->setBlackWhite(JUtility::TColor(0xFF), JUtility::TColor(0));
         mPicture->setAlpha(field_0x10);
         mPicture->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);

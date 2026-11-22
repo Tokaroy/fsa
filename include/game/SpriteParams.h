@@ -21,8 +21,8 @@ union SpriteParamsColor_801F5AE0 {
 // 0x801F5AE0). One lives in every actor at 0x120, and draw() overrides
 // build others on the stack (act_rat 0x800F3C70: the same stores in the same
 // order) to pass to the "SOB " sprite functions (drawSprite_801F06F0, drawSpriteScaled_801F02BC,
-// drawSpriteRes_801EFD34, fn_801EF830, drawSobSprite_801EF574), which NULL-check it and read
-// 0x13, 0x18, 0x1C and 0x1D (fn_801EF830, 0x801EFA64-0x801EFBB0).
+// drawSpriteRes_801EFD34, drawShadow_801EF830, drawSobSprite_801EF574), which NULL-check it and read
+// 0x13, 0x18, 0x1C and 0x1D (drawShadow_801EF830, 0x801EFA64-0x801EFBB0).
 // The colours 0x10 / 0x14 are JUtility::TColor: the constructor stores -1
 // to both (TColor's default constructor) before reset() sets them again,
 // they are written whole (set) and bytewise, and a copy of the parameters
@@ -59,9 +59,9 @@ struct SpriteParams_801F5AE0 {
     }
 
     /* 0x00 */ u8 field_0x0[16]; // 0, 1, ..., 15
-    /* 0x10 */ JUtility::TColor field_0x10; // fn_801EF830 reads a (lbz 0x13)
+    /* 0x10 */ JUtility::TColor field_0x10; // drawShadow_801EF830 reads a (lbz 0x13)
     /* 0x14 */ JUtility::TColor field_0x14;
-    // When set, fn_801EF830 concatenates it with the sprite's scale matrix
+    // When set, drawShadow_801EF830 concatenates it with the sprite's scale matrix
     // (PSMTXConcat, 0x801EFBD0) and keeps its translation column; act_rat's
     // draw points it at a stack Mtx when its spawn parameter is nonzero.
     /* 0x18 */ MtxP mMtx;

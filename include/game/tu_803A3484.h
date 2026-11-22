@@ -16,7 +16,7 @@ class THPMovie_804B15D0;
 
 // The title screen: vtable 0x804AF820 (one slot, the destructor fn_803A56C4),
 // constructor fn_803A59E0 (game/tu_803A3484.cpp); 0x158 bytes (__nw__(0x158)
-// in tu_80134C04's fn_80135020 path). The constructor loads "title.blo" /
+// in tu_80134C04's createModeScreen_80135020 path). The constructor loads "title.blo" /
 // "title.btk" and the pictures ("kk_titleCon_01.bti", the progressive-scan
 // prompt "progressive_*.bti", "kk_black.bti"), builds the six cloud models
 // ("w_kumo*.bmd") in its own solid heap and stores `this` in lbl_8053AD88.

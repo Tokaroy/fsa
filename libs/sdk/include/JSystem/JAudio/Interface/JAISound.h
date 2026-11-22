@@ -320,7 +320,7 @@ public:
     virtual JAITempoMgr *getTempoMgr() = 0;
     virtual bool JAISound_tryDie_() = 0;
 
-    // By value, as in TP's JAudio2 (mkdd: const reference): AudioMgr_8045A080::fn_8045815C
+    // By value, as in TP's JAudio2 (mkdd: const reference): AudioMgr_8045A080::setMusicSlow_8045815C
     // copies it through a temporary before assigning it to a local JAISoundID.
     JAISoundID getID() const { return soundID_; }
     u8 getAnimationState() const { return status_.state.flags.animationState; }

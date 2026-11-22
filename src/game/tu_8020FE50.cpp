@@ -54,7 +54,7 @@ void UnknownIBBM_804A6100::updateState_0x90(u8 mapHit) {
         break;
     case 1:
         if (field_0x54.x != 3.0f) {
-            fn_801CD950(&field_0x54.x, 3.0f, 0.004f);
+            moveToward_801CD950(&field_0x54.x, 3.0f, 0.004f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
             fn_80210990(mDir_0x98, &mBox);
@@ -69,9 +69,9 @@ void UnknownIBBM_804A6100::updateState_0x90(u8 mapHit) {
             fn_80341CB0(mLayer_0x4, &mPos);
             s32 bit = field_0x2ac;
             if (bit != 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -86,7 +86,7 @@ void UnknownIBBM_804A6100::updateState_0x90(u8 mapHit) {
 
 u8 UnknownIBBM_804A6100::checkHitByActor_0x60() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL) {

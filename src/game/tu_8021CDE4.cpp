@@ -45,14 +45,14 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
         field_0x570.set(mPos);
         field_0x358.fn_8021425C(1, (mSpawnParam_0x90 >> 12) & 0xF, field_0x580, field_0x57c);
         field_0x358.fn_80214254(1);
-        fn_800FE294(&rail, field_0x358.fn_80214244(), 0xFF);
+        getRailPointPos_800FE294(&rail, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(rail);
-        fn_801C3B7C(0x19);
+        setState_801C3B7C(0x19);
         break;
     }
     case 2:
         if (field_0x564 == 0) {
-            fn_801C3B7C(0x2B);
+            setState_801C3B7C(0x2B);
         } else if (field_0x564 == 1) {
             field_0x58c = 1;
             field_0x57c = 0;
@@ -60,17 +60,17 @@ void ShadowLink2_804A43E8::fn_8021CDE4(int state) {
             field_0x56c = mLayer_0x4;
             field_0x570.set(mPos);
             field_0x358.fn_80214254(0);
-            fn_801C3B7C(0x1A);
+            setState_801C3B7C(0x1A);
         } else if (field_0x564 == 3) {
             field_0x568 = 1;
             if (mState != 0x2A) {
-                fn_801C3B7C(0x1B);
+                setState_801C3B7C(0x1B);
             }
         }
         break;
     case 3:
         field_0x59e = 0x258;
-        fn_801C3B7C(0x2E);
+        setState_801C3B7C(0x2E);
         break;
     }
     field_0x564 = state;

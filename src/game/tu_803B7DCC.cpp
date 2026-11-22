@@ -99,9 +99,9 @@ void cls_804AFAB0::fn_803B8188() {
     field_0x295 = 1;
     field_0x280 = 0x80;
     if (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 3) {
-        gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
     } else {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100002F, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100002F, true, 0);
     }
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 0;
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 0;
@@ -197,7 +197,7 @@ void cls_804AFAB0::fn_803B7F6C() {
 void setFrameBufferOrtho();
 
 void cls_804AFAB0::fn_803B7E64() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x294 == 3 || field_0x294 == 4) {
         lbl_8053ADC8->field_0x20 = 1;
         lbl_8053ADC8->field_0x21 = 2;
@@ -209,7 +209,7 @@ void cls_804AFAB0::fn_803B7E64() {
 
 void cls_804AFAB0::fn_803B7DCC() {
     if (!(lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3)) {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         field_0x4->setAlpha(field_0x296);
         field_0x4->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
     }

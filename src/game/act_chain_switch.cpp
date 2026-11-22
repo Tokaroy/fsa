@@ -23,9 +23,9 @@ void ChainSwitch_804AA3E8::update() {
                 setScreenFlag_0x30(0xFF, false);
             }
             if (mSwitchMode == 0) {
-                getGameView_802D6A9C()->fn_802D8050(mSwitchBit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(mSwitchBit, true, 0xFF);
             } else if (mSwitchMode == 1) {
-                getGameView_802D6A9C()->fn_802D8050(mSwitchBit, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(mSwitchBit, false, 0xFF);
             }
             if (mCallWhenDone == 1) {
                 die_0x24();

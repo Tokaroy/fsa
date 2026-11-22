@@ -176,12 +176,12 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24(); // empty override
-    // 0x801D652C: gAudioMgr_8053AF80->fn_80458F9C(60).
+    // 0x801D652C: gAudioMgr_8053AF80->stopBgm_80458F9C(60).
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x74 */ virtual void onHitReactionEnd_0x74();
     /* 0x88 */ virtual void calcVelocity_0x88();
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
-    // 0x801D5338: advances the sprite animation (mAnim.fn_801D1C18) unless
+    // 0x801D5338: advances the sprite animation (mAnim.update_801D1C18) unless
     // mState is 6, 7, 0xB or 0x17..0x1A (no call in those states).
     /* 0x94 */ virtual void updateAnim_0x94();
     /* 0x98 */ virtual void move_0x98();
@@ -209,7 +209,7 @@ public:
     void fn_801EDD0C();
     // 0x801D5D84: the state setter (a jump table on `state`, up to 0x1A; it
     // uses the emitters at 0x448).
-    void fn_801D5D84(s32 state);
+    void setState_801D5D84(s32 state);
     // 0x801E4348: runs the attack-state checks for one player in range and
     // returns whether it acted (game/tu_801E3618.cpp).
     bool fn_801E4348();

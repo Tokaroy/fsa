@@ -231,7 +231,7 @@ void cls_804A51E4::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A51A0, 0x11);
+    mAnim.setKeyTables_801D2608(lbl_804A51A0, 0x11);
     mAnim.startAnim_801D22DC(0, 2, false);
 }
 
@@ -398,7 +398,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
         s32 state = gem->field_0x230;
         kind = gem->mSpawnParam_0x90;
         if (state == 0 || (u32)(state - 0xF) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 0xD) {
-            gem->fn_801F3668();
+            gem->markDead_801F3668();
         }
         if (!gem->mAlive) {
             found = true;
@@ -672,7 +672,7 @@ void cls_804A51E4::fn_801E0CF4() {
             switch (mAnim.mAnim) {
             case 13:
             case 14:
-                if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+                if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
                     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
                 }
                 break;
@@ -993,7 +993,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
                             fn_8022FE80(field_0x2a8, mLayer_0x4, mSerial, false, false);
                             if (field_0x2a8 == fn_8022FD8C(mSerial) && fn_802308E0(field_0x2a8)) {
                                 JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                                if (fn_8038AD24(field_0x2a8, 0xF0, mSerial, mLayer_0x4, zero, 4)) {
+                                if (openMessage_8038AD24(field_0x2a8, 0xF0, mSerial, mLayer_0x4, zero, 4)) {
                                     setState_801E1594(0xF);
                                 } else {
                                     fn_8023061C(field_0x2a8, false);
@@ -1044,7 +1044,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
             if (mPos.z >= 30.0f) {
                 mPos.z = 30.0f;
@@ -1055,7 +1055,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 6:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mDir_0x98 = oppositeDir_801CD354(mDir_0x98);
             if (field_0x2d0 >= 0) {
                 setState_801E1594(field_0x2d0);
@@ -1069,17 +1069,17 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         fn_801DF9D8(target);
         break;
     case 8:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801E1594(9);
         }
         break;
     case 9:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801E1594(10);
         }
         break;
     case 10:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             if (isOnGround_801D0DD4()) {
                 if (fn_801E2F40()) {
                     setState_801E1594(14);
@@ -1090,17 +1090,17 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 11:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801E1594(12);
         }
         break;
     case 12:
         if (!blocked) {
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 if (mStateTimer >= field_0x250) {
                     setState_801E1594(13);
                 } else {
-                    s32 player = fn_801D05F8(&mPos, 0.0f);
+                    s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
                     if (player >= 0) {
                         s32 dir = fn_801D0020(&mPos, player, false);
                         if (dir != mDir_0x98) {
@@ -1113,13 +1113,13 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 13:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             enterFromEdge(this);
         }
         break;
     case 14:
         if (field_0x54.x != 0.0f) {
-            fn_801CD950(&field_0x54.x, 0.0f, 0.2f);
+            moveToward_801CD950(&field_0x54.x, 0.0f, 0.2f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
         } else {
@@ -1127,7 +1127,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 15:
-        if (fn_803865B8(field_0x2a8)) {
+        if (stepMessageWindow_803865B8(field_0x2a8)) {
             if (fn_8037EFB4(field_0x2a8) == 0) {
                 if (fn_80236228(field_0x2a8) < 0x14) {
                     if (fn_8038470C(field_0x2a8, 0xF1)) {
@@ -1142,13 +1142,13 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 16:
-        if (fn_803865B8(field_0x2a8) && fn_80384C58(field_0x2a8, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2a8) && fn_80384C58(field_0x2a8, mSerial)) {
             fn_8023061C(field_0x2a8, false);
             enterFromEdge(this);
         }
         break;
     case 17:
-        if (fn_803865B8(field_0x2a8) && fn_80384C58(field_0x2a8, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x2a8) && fn_80384C58(field_0x2a8, mSerial)) {
             setState_801E1594(0x12);
         }
         break;
@@ -1215,7 +1215,7 @@ void cls_804A51E4::calcVelocity_0x88() {
         if (mSpeed != 0.0f && !blocked) {
             JGeometry::TVec2f d(0.0f, 0.0f);
             if (mFlags & 0x4000) {
-                fn_801D01A0((const JGeometry::TVec3f*)&field_0x2c4, &d, mSpeed);
+                calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2c4, &d, mSpeed);
             } else if (mFlags & 0x20000) {
                 if (field_0x2a8 >= 0) {
                     fn_801D00B4(field_0x2a8, &d, mSpeed);
@@ -1239,7 +1239,7 @@ void cls_804A51E4::calcVelocity_0x88() {
                     }
                 }
                 if (target != NULL) {
-                    fn_801D01A0(&target->mPos, &d, mSpeed);
+                    calcVelocityToward_801D01A0(&target->mPos, &d, mSpeed);
                 }
             }
             mVel_0x3c.x = d.x;

@@ -11,7 +11,7 @@ Now:      total: 4449 / 11561 functions, 799960 / 4442088 bytes of code (18.01 %
 - Template: act_boss_display_test_npc (explicit out-of-line dtor first).
   Own members 0x230..0x23C (s32; 0x234 unused here). init: 0x238 = bits
   16-23 of field_0x90, 0x23C = bits 8-15, 0x230 = 0. update calls
-  fn_801F3668(this).
+  markDead_801F3668(this).
 
 ## symbols.txt (placeholder renames)
 - fn_8010307C -> __dt__26DebugWarpSettings_8049C9E8Fv

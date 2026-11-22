@@ -4,7 +4,7 @@
 #include "game/act/act_escort_woman.h"
 #include "game/tu_80131D98.h"
 
-EscortActorList_80131F6C* fn_80131F0C() {
+EscortActorList_80131F6C* getEscortActorList_80131F0C() {
     static EscortActorList_80131F6C lbl_804BE514;
     return &lbl_804BE514;
 }

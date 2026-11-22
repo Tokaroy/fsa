@@ -34,13 +34,13 @@ void FireballGenerator_804A6660::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     if (isScreenFlagSet_0x34()) {
-        fn_801F3668();
+        markDead_801F3668();
     }
 }
 
 void FireballGenerator_804A6660::updateState_0x90(u8 mapHit) {
     if (isScreenFlagSet_0x34()) {
-        fn_801F3668();
+        markDead_801F3668();
     } else {
         switch (mState) {
         case 0:

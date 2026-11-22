@@ -26,7 +26,7 @@ public:
     // calls cls_801E9AFC::fn_801EA108 with it, field_0x2b0 and a static scale of 128.
     void fn_801E6DE8();
     // 0x801E6EAC: with mFlags bit 0x8000, reports field_0x2b4 (if set) to the
-    // view and calls fn_801F3668(); else, unless mState is 1, sets state 1.
+    // view and calls markDead_801F3668(); else, unless mState is 1, sets state 1.
     void fn_801E6EAC();
     // 0x801E728C: state setter (this in r3); its callers pass 1 or 2.
     void fn_801E728C(int state);

@@ -47,7 +47,7 @@ void Grass_804A92D0::update() {
                 if (gGameRoot_8053AAF8->field_0x7f) {
                     damage = 0;
                 }
-                if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+                if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                     die_0x24();
                 } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
                     die_0x24();
@@ -65,7 +65,7 @@ void Grass_804A92D0::update() {
                 if (gGameRoot_8053AAF8->field_0x7f) {
                     damage = 0;
                 }
-                if (fn_801F2618(NULL, false)) {
+                if (sweepMapBox_801F2618(NULL, false)) {
                     die_0x24();
                 } else if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
                     die_0x24();
@@ -75,7 +75,7 @@ void Grass_804A92D0::update() {
     } else {
         field_0x240 -= 1;
         if (field_0x240 == 0) {
-            s32 tile = fn_80226AE0(&mPos, mLayer_0x4);
+            s32 tile = getCellIndexVec3_80226AE0(&mPos, mLayer_0x4);
             getGameView_802D6A9C()->fn_802D7310(tile, false);
             mAlive = false;
         }
@@ -96,7 +96,7 @@ bool Grass_804A92D0::fn_802CF598() {
     box.addPos(-screen->i.x, -screen->i.y);
 
     for (;;) {
-        found = getActorManager_801F856C()->fn_801F78F4(ACTOR_BLZ2, prev);
+        found = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_BLZ2, prev);
         prev = found;
         if (found < 0) {
             return false;
@@ -239,7 +239,7 @@ void Grass_804A92D0::fn_802CEC10() {
 }
 
 bool Grass_804A92D0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x23c);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x23c);
 }
 
 void Grass_804A92D0::vfunc_0x48() {

@@ -9,7 +9,7 @@
 // Its code is game/tu_801CDC8C.cpp; its vtable is at 0x804A4808
 // (__vt__18EnemyBase_804A4808). "EnemyBase" is provisional (docs/PLAN.md,
 // "Placeholder names"): its update() runs the hit handling of ActorBase
-// (updateHitReaction_801F3D94, fn_801F2FAC, checkActorHit_801F2DB4, damagePlayersInBox_801F2B7C) and a death hook once
+// (updateHitReaction_801F3D94, checkPlayerAttacks_801F2FAC, checkActorHit_801F2DB4, damagePlayersInBox_801F2B7C) and a death hook once
 // mLife reaches 0, and most descendants are enemies in docs/names/actors.tsv.
 //
 // Destructor: inline. The vtable's slot 0x08 is __dt__18EnemyBase_804A4808Fv
@@ -88,7 +88,7 @@ public:
     // 0x801CECEC, returns 0. 9 overrides, no arguments read, all return 0
     // or 1 (li/mr r3 of a 0/1 value); update() ignores r3 (0x801CDE04).
     /* 0x58 */ virtual bool vfunc_0x58();
-    // 0x801CEB78: fn_801F2FAC() (hit by a player) when mBox is not empty,
+    // 0x801CEB78: checkPlayerAttacks_801F2FAC() (hit by a player) when mBox is not empty,
     // else 0. 16 overrides, no arguments read; update() tests r3 with
     // clrlwi. and then sets ENEMY_FLAG_HIT_PLAYER and calls onHitByPlayer_0x6C.
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
@@ -97,11 +97,11 @@ public:
     // tests r3 with clrlwi. and then sets ENEMY_FLAG_HIT_ACTOR and calls
     // onHitByActor_0x70.
     /* 0x60 */ virtual u8 checkHitByActor_0x60();
-    // 0x801CE98C: unless ENEMY_FLAG_NO_MAP_HIT, fn_801F2618(&mMapHitDir,
+    // 0x801CE98C: unless ENEMY_FLAG_NO_MAP_HIT, sweepMapBox_801F2618(&mMapHitDir,
     // false) when mMapBox_0x80 is not empty, else 0. 5 overrides, no
     // arguments read; update() passes r3 on to updateBehavior_0x9C (clrlwi 24).
     // checkHitByPlayer_0x5C/0x60/0x64 are u8 like the ActorBase hit tests they return
-    // (fn_801F2FAC / checkActorHit_801F2DB4 / fn_801F2618 results go out with mr, no
+    // (checkPlayerAttacks_801F2FAC / checkActorHit_801F2DB4 / sweepMapBox_801F2618 results go out with mr, no
     // bool conversion; overrides likewise).
     /* 0x64 */ virtual u8 sweepMap_0x64();
     // 0x801CE928: damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1) (the players hit, a
@@ -146,11 +146,11 @@ public:
     // 0x801B9AC4, act_shadow_link_2 0x801C2EE0); updateBehavior_0x9C and fn_801CE2BC
     // call it with their own r4 still in place.
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
-    // 0x801CE4BC: mAnim.fn_801D1C18() (advance the sprite animation). 13
+    // 0x801CE4BC: mAnim.update_801D1C18() (advance the sprite animation). 13
     // overrides, no arguments read; 11 units call the base.
     /* 0x94 */ virtual void updateAnim_0x94();
     // 0x801CE120, the movement step, unless one of the hit bits is set:
-    // mSpeed toward mTargetSpeed (fn_801CD950), calcVelocity_0x88, mPos +=
+    // mSpeed toward mTargetSpeed (moveToward_801CD950), calcVelocity_0x88, mPos +=
     // mVel_0x3c, onMoved_0x8C, then the ground: checkFloor_0x80 on floor layers,
     // a bounce (ENEMY_FLAG_BOUNCE: velocity * -0.6f, onBounce_0x7C) or a stop
     // at z = 0. 7 overrides, no arguments read; fn_801CE32C is the same
@@ -208,12 +208,12 @@ public:
     // sets ENEMY_FLAG_LANDED.
     void fn_801CE800();
     // 2 units / 2 calls (act_vulture, act_wallmaster vfunc_0x60s). Hit by
-    // the overlapping actor (fn_801F82CC) unless it is a live 'BMTY'
-    // (fn_801CC8E4): fn_801F37AC with its attack and direction; sets its
+    // the overlapping actor (findOverlappingActor_801F82CC) unless it is a live 'BMTY'
+    // (fn_801CC8E4): takeHit_801F37AC with its attack and direction; sets its
     // field_0x164 when it landed. Returns 0 or 1.
     bool fn_801CEA60();
     // 3 units / 3 calls. For each player overlapping this actor and
-    // passing fn_801EAC20 (field_0x1dc): fn_801CB538 at the hit point; then
+    // passing startTimer_801EAC20 (field_0x1dc): fn_801CB538 at the hit point; then
     // sound 0x400D1. Returns whether any player was hit (u8: Beamos
     // checkHitByPlayer_0x5C keeps r3 raw, mr).
     u8 fn_801CEBD0();
@@ -237,17 +237,17 @@ public:
     // with mDir_0x98.
     s32 fn_801CF1B0(bool turn, f32 range, f32 margin);
     // 3 units / 7 calls (stored to mDir_0x98). A random direction
-    // (randInt_801CD664(4)), or fn_801CF720's when blocked (isStepBlocked_801CFCF0).
+    // (randInt_801CD664(4)), or pickNewDir_801CF720's when blocked (isStepBlocked_801CFCF0).
     s32 fn_801CF6B8();
     // 3 units / 9 calls (callers pass mDir_0x98 or li 3; stored to
     // mDir_0x98). A random direction other than `dir` (fn_801CD580),
     // or fn_801CF798's when that one is blocked.
-    s32 fn_801CF720(s32 dir);
+    s32 pickNewDir_801CF720(s32 dir);
     // 1 unit / 3 calls (cmpw against both arguments). The first direction
     // that is neither `dir` nor `except` and not blocked.
     s32 fn_801CF798(s32 dir, s32 except);
     // 4 units / 15 calls (clrlwi.). Whether the way from `from` to `to`
-    // (x, y) on `layer` is clear, tested with fn_801CFA70 at the ends and
+    // (x, y) on `layer` is clear, tested with isPathBlocked_801CFA70 at the ends and
     // in between.
     bool isWayBlocked_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 5 calls (clrlwi; cmplwi 1). Both points inside the view's
@@ -257,7 +257,7 @@ public:
     // TVec2f slots: the original's parameters were likely TVec2f (as are
     // getTileCollisionCodeAlt_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
     // 8-byte slots too). Kept TVec3f for the TVec3f callers (tu_801C5B08).
-    bool fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
+    bool isPathBlocked_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 6 calls (clrlwi.). fn_801CFD68(dir, 6.0f + the box edge on
     // that side): whether a step in direction `dir` is free.
     bool isStepBlocked_801CFCF0(s32 dir);
@@ -273,11 +273,11 @@ public:
     // TVec2f is a guess (TVec3f is as likely).
     void fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed);
     // 9 units / 12 calls. The same toward *target (x, y).
-    void fn_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed);
+    void calcVelocityToward_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed);
     // 8 units / 11 calls. The 16-bit angle (atan2 * 10430.378f, fctiwz) from
     // mPos to `player` (mPlayerPos_0x1ac[player]); callers store it with sth or
     // extsh it, the body returns it unnarrowed.
-    s32 fn_801D0280(s32 player) const;
+    s32 getAngleToPlayer_801D0280(s32 player) const;
     // 4 units / 8 calls. The same angle from mPos to *pos.
     s32 fn_801D02E0(const JGeometry::TVec3f* pos) const;
     // 1 unit / 3 calls. The player whose angle from *from is nearest to
@@ -286,12 +286,12 @@ public:
     s32 fn_801D0338(const JGeometry::TVec3f* from, s16 angle);
     // 22 units / 49 calls. The nearest present player within `range`
     // (squared, f1) of *pos, or -1.
-    s32 fn_801D05F8(const JGeometry::TVec3f* pos, f32 range);
+    s32 findNearestPlayer_801D05F8(const JGeometry::TVec3f* pos, f32 range);
     // 5 units / 8 calls (clrlwi.). Whether `player` can be targeted (mr.
     // r27, r4: >= 0 and present) and is within `range` of *pos.
     bool fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f32 range);
     // 9 units / 18 calls (clrlwi.). Whether `player` can be targeted (the
-    // player tests fn_8022CAF8 / fn_8022F514 and the actor-id list of
+    // player tests fn_8022CAF8 / hasPlayerLeader_8022F514 and the actor-id list of
     // fn_801D0338).
     bool canTargetPlayer_801D0B44(s32 player);
     // 2 units / 6 calls (clrlwi.). Whether mPlayerPos_0x1ac[player] is within
@@ -299,7 +299,7 @@ public:
     bool fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f32 dist);
     // 5 units / 7 calls. The squared (x, y) distance from *pos to
     // mPlayerPos_0x1ac[player].
-    f32 fn_801D0DA0(s32 player, const JGeometry::TVec3f* pos);
+    f32 getPlayerDistSq_801D0DA0(s32 player, const JGeometry::TVec3f* pos);
     // 6 units / 13 calls (clrlwi.). On a floor layer: ENEMY_FLAG_LANDED or
     // 0x10 set; elsewhere mPos.z <= 0.
     bool isOnGround_801D0DD4() const;
@@ -313,7 +313,7 @@ public:
     // game/tu_801CDC8C.cpp.
     void moveStep();
     void stateStep(u8 mapHit);
-    // The player search canTargetPlayer_801D0B44 / fn_801D05F8 / fn_801D0DA0 do, inlined
+    // The player search canTargetPlayer_801D0B44 / findNearestPlayer_801D05F8 / getPlayerDistSq_801D0DA0 do, inlined
     // in the other searches of the unit.
     bool isPlayerOnLayer(s32 player);
     bool canTargetPlayer(s32 player);
@@ -341,12 +341,12 @@ public:
     /* 0x258 */ f32 mTargetSpeed; // move_0x98 moves mSpeed toward it
     /* 0x25C */ f32 mAccel;       // 0.1f; the step while mSpeed < mTargetSpeed
     /* 0x260 */ f32 mDecel;       // 0.2f; the step while mSpeed > mTargetSpeed
-    /* 0x264 */ JGeometry::TVec3f mMapHitDir; // sweepMap_0x64's fn_801F2618 out
+    /* 0x264 */ JGeometry::TVec3f mMapHitDir; // sweepMap_0x64's sweepMapBox_801F2618 out
     /* 0x270 */ SpriteAnim_801D267C mAnim;
 }; // Size: 0x2A8
 
 // A const bool defined (false) in game/tu_801CDC8C.cpp, first in its
-// .sdata2. sweepMap_0x64 passes a literal 0 as fn_801F2618's flag (li r5, 0),
+// .sdata2. sweepMap_0x64 passes a literal 0 as sweepMapBox_801F2618's flag (li r5, 0),
 // while overrides in act_thief (0x80204FC0), tu_801C9AF8 and tu_80206B30
 // load this byte for it (lbz r5): they see only this declaration. Its
 // name is unknown.
@@ -354,7 +354,7 @@ extern const bool lbl_8053EFC0;
 
 // Helpers of game/tu_801CB270.cpp the enemy code uses.
 
-// Whether `layer` is 8 or more (cmpwi 8): the layers fn_801EF830 and the
+// Whether `layer` is 8 or more (cmpwi 8): the layers drawShadow_801EF830 and the
 // view's boxes (0xDC instead of 0xCC) treat as the upper ones. 0 or 1.
 bool fn_801CD1D0(s32 player);
 // Takes a layer, returns a bool (clrlwi 24); act_vaati_boss's update tests it before its first state.
@@ -364,12 +364,12 @@ bool isUpperLayer_801CD2F8(s32 layer);
 // fn_801CD9F0). EnemyBase_804A4808's movement step passes &mSpeed,
 // mTargetSpeed and mAccel or mDecel. Returns nonzero while the value has
 // not reached the target (cls_804A61C8::fn_80210A6C tests r3 with cmpwi).
-s32 fn_801CD950(f32* value, f32 target, f32 step);
+s32 moveToward_801CD950(f32* value, f32 target, f32 step);
 // game/tu_801CB270.cpp: finds the closest active player on layer `layer` to *pos, or -1.
 extern "C" s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer);
 // Moves *value towards target by the fraction `factor` (at most 1) of the
 // distance; true while it is further than `threshold` away.
-bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
+bool approachValue_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
 // Returns the next sprite direction for `value` (mDir_0x98 is stored back
 // from it, then startAnim_801D22DC plays it): 0 -> 3, 1 -> 2, 3 -> 1, else 0.
 s32 fn_801CD30C(s32 value);
@@ -380,7 +380,7 @@ void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out);
 void fn_801CCCC4(JGeometry::TVec3f* pos);
 // game/tu_801CB270.cpp. The opposite direction: 0 <-> 1, 2 <-> 3 (else 0).
 s32 oppositeDir_801CD354(s32 dir);
-// game/tu_801CB270.cpp: the step fn_801CD950 wraps.
+// game/tu_801CB270.cpp: the step moveToward_801CD950 wraps.
 s32 fn_801CD9F0(f32* value, f32 target, f32 step);
 // Convert a position between the two view-box spaces: out = (in.x, in.y)
 // minus the view's 0xCC/0xD0 box corner plus its 0xDC/0xE0 one (fn_801CD150),
@@ -395,7 +395,7 @@ void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6);
 // (die_0x24) compares it with the killer's fn_8022F340.
 s32 fn_801CCDA4();
 // game/tu_801CB270.cpp (not written yet; C linkage keeps the dtk name): an
-// effect at *pos on `layer` like fn_801CB688, for strong hits (fn_801F37AC
+// effect at *pos on `layer` like fn_801CB688, for strong hits (takeHit_801F37AC
 // with attack > 4 and type 1, or type 5 with life left).
 extern "C" void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6);
 // game/tu_801CB270.cpp (0x801CBB98, 0x704 bytes).
@@ -404,8 +404,8 @@ extern "C" void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s
 void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* spawnPos, s32 angle, f32 dist,
                  JGeometry::TVec2f* out);
 
-// game/tu_801CB270.cpp (0x801CCF34): fn_80236228 for the player `player` stands for (fn_8022F3DC's
-// while fn_8022F514 says it has one).
+// game/tu_801CB270.cpp (0x801CCF34): fn_80236228 for the player `player` stands for (getPlayerLeader_8022F3DC's
+// while hasPlayerLeader_8022F514 says it has one).
 s32 fn_801CCF34(s32 player);
 
 // game/tu_801CB270.cpp (0x801CC350; 1 caller unit, act_terrorpin updateState_0x90). Reflects the 2D
@@ -426,14 +426,14 @@ extern "C" {
 
 // game/tu_801CB270.cpp (not written yet; 0x801CCFE4, 0xEC bytes). Whether
 // player `player` is present: fn_8023F264 and none of a list of player
-// state tests (fn_80236B50, fn_8022DCD8, ...). Callers test r3 with clrlwi.
+// state tests (isPlayerDead_80236B50, fn_8022DCD8, ...). Callers test r3 with clrlwi.
 bool fn_801CCFE4(s32 player);
 
 // game/tu_801CB270.cpp (owner unit, not written yet; 1 caller unit,
 // tu_80206B30 vfunc_0x58). Each fetches the actor a player's getter
 // (fn_8023B2B0 / fn_8023B22C / fn_8023B358) names, with r3 (the player index)
 // forwarded untouched, and tests its kind at 0x1A0 (and that it is alive).
-// 'ARRW' with field_0x108 > 0: *out = its mVel_0x3c, then fn_801F3668 on
+// 'ARRW' with field_0x108 > 0: *out = its mVel_0x3c, then markDead_801F3668 on
 // it; `out` is zeroed first. Returns whether it was found.
 bool fn_801CC820(s32 player, JGeometry::TVec3f* out);
 // 'BOME': *outPlayer = the index (-1 first), its field_0x254 = 1 and, when

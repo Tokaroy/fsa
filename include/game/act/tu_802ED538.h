@@ -44,7 +44,7 @@ public:
     /* 0x279 */ u8 field_0x279;
     /* 0x27A */ u8 field_0x27a[2]; // not yet known
     /* 0x27C */ Elem_80200544 field_0x27c[4]; // per player
-    /* 0x2CC */ void* field_0x2cc; // the "TIMG" resource (fn_804032E8)
+    /* 0x2CC */ void* field_0x2cc; // the "TIMG" resource (getBossArchiveResource_804032E8)
 }; // Size: 0x2D0
 
 #endif

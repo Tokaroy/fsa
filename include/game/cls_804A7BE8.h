@@ -33,7 +33,7 @@ public:
     /* 0x240 */ s32 field_0x240; // the same value as field_0x23c after init
     /* 0x244 */ bool field_0x244; // 1 after init
     /* 0x248 */ s32 field_0x248; // mSpawnParam_0x90 & 3
-    /* 0x24C */ bool field_0x24c; // 1 when fn_8022F514 is true for exactly three players
+    /* 0x24C */ bool field_0x24c; // 1 when hasPlayerLeader_8022F514 is true for exactly three players
     /* 0x250 */ s32 field_0x250; // 0 after init
     /* 0x254 */ FourGirlsControl_804AE4B0* field_0x254; // the FGAL actor (alive) in the manager
 };

@@ -16,7 +16,7 @@
 // game/tu_80134C04.cpp: the C3ButtonReset callback.
 void fn_80139994(int port, void* arg);
 // game/tu_803006E8.cpp: starts the GBA client threads.
-void fn_803007D0();
+void startGbaClients_803007D0();
 
 BootLoader_804B0F50::BootLoader_804B0F50() {
     lbl_8053AAF0 = this;
@@ -64,7 +64,7 @@ BootLoader_804B0F50::BootLoader_804B0F50() {
     field_0x2c = NULL;
     field_0x30 = NULL;
     field_0xc->fn_802B1EB0();
-    field_0x44 = fn_80401E10("/GC4Sword_usa/agb/client_thread.arc", 0, lbl_80529DEC.mHeap);
+    field_0x44 = requestMountMemArchive_80401E10("/GC4Sword_usa/agb/client_thread.arc", 0, lbl_80529DEC.mHeap);
     lbl_8053ACA8->fn_802B1DE8();
     JUTGamePad::clearResetOccurred();
     JUTGamePad::setResetCallback(fn_80139994, NULL);
@@ -87,14 +87,14 @@ void BootLoader_804B0F50::fn_803FFAA8() {
         if (cmd->field_0x4 == 1) {
             lbl_80529DEC.mClientThreadArchive_0x58 = cmd->field_0x14;
             delete cmd;
-            fn_803007D0();
+            startGbaClients_803007D0();
             field_0x4 = new cls_804AA8C8();
             lbl_80529DEC.field_0x5c = field_0x4;
             field_0x8 = new cls_804AA8B8();
             lbl_80529DEC.field_0x60 = field_0x8;
             field_0x4->fn_8030AB38();
             field_0x8->fn_80308E90();
-            field_0x34 = fn_80401E10("/GC4Sword_usa/logo.arc", 0, lbl_80529DEC.mHeap);
+            field_0x34 = requestMountMemArchive_80401E10("/GC4Sword_usa/logo.arc", 0, lbl_80529DEC.mHeap);
             field_0x79 = 1;
         }
         if (lbl_8053ACA8->fn_802B1DCC()) {
@@ -111,19 +111,19 @@ void BootLoader_804B0F50::fn_803FFAA8() {
             field_0x18 = new J2DScreen();
             field_0x18->setPriority("ZelPac_NIN_logo.blo", 0, lbl_80529DEC.mLogoArchive_0x18);
             ((J2DPicture*)field_0x18->search('NIN_Logo'))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xDC, 0, 0, 0xFF));
-            const ResTIMG* tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_choice.bti");
+            const ResTIMG* tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_choice.bti");
             field_0x1c = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_inter.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_inter.bti");
             field_0x20 = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_pro.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_pro.bti");
             field_0x24 = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_yes.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_yes.bti");
             field_0x28 = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_no.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_no.bti");
             field_0x2c = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_no.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_no.bti");
             field_0x2c = new J2DPicture(tex);
-            tex = (const ResTIMG*)fn_80403244('TIMG', "kk_titleLogo_01.bti");
+            tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "kk_titleLogo_01.bti");
             field_0x30 = new J2DPicture(tex);
             if ((lbl_80529DEC.mSaveRegion.f.field_0x4[0] == 0xA7 || lbl_80529DEC.mSaveRegion.f.field_0x4[1] == 0xA5) && field_0x7a == 0) {
                 field_0x6c = 4;
@@ -158,14 +158,14 @@ void BootLoader_804B0F50::fn_803FFAA8() {
     }
     field_0x14->fn_80442810();
     if (field_0x14->field_0x4 != 0) {
-        field_0x4->fn_8030A43C();
+        field_0x4->pollInputs_8030A43C();
         field_0x8->fn_80304FB0();
     }
     if (field_0x14->field_0x4 != 0 && lbl_80529DEC.mAudioMgr_0xc->fn_804580DC(0) && lbl_80529DEC.mAudioMgr_0xc->fn_804580DC(1) && field_0x79 == 2) {
         OSReport("archive load\n");
-        field_0x38 = fn_80401E10("/GC4Sword_usa/data.arc", 0, lbl_80529DEC.mHeap);
-        field_0x3c = fn_80401E10("/GC4Sword_usa/msgus.arc", 0, lbl_80529DEC.mHeap);
-        field_0x40 = fn_80401E10("/GC4Sword_usa/main2D.arc", 0, lbl_80529DEC.mHeap);
+        field_0x38 = requestMountMemArchive_80401E10("/GC4Sword_usa/data.arc", 0, lbl_80529DEC.mHeap);
+        field_0x3c = requestMountMemArchive_80401E10("/GC4Sword_usa/msgus.arc", 0, lbl_80529DEC.mHeap);
+        field_0x40 = requestMountMemArchive_80401E10("/GC4Sword_usa/main2D.arc", 0, lbl_80529DEC.mHeap);
         field_0x48 = fn_80401BA4("/GC4Sword_usa/title.arc", NULL, 0, lbl_80529DEC.mHeap);
         field_0x54 = fn_80401BA4("/GC4Sword_usa/result.arc", NULL, 0, lbl_80529DEC.mHeap);
         field_0x58 = fn_80401BA4("/GC4Sword_usa/result1.arc", NULL, 0, lbl_80529DEC.mHeap);

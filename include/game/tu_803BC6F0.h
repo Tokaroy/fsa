@@ -11,7 +11,7 @@ class PaneCtrl_804AF86C;
 
 // The file select screen: vtable 0x804AFF60 (one slot, the destructor
 // fn_803CFFBC), constructor fn_803D0264 (game/tu_803BC6F0.cpp); 0x1AC bytes
-// (__nw__(0x1AC) in tu_80134C04's fn_80135020 path). The constructor loads
+// (__nw__(0x1AC) in tu_80134C04's createModeScreen_80135020 path). The constructor loads
 // "file_select.blo" and "file_select_huuin.blo" from lbl_80529DEC's
 // field_0x30 archive and stores `this` in lbl_8053ADB0 (the destructor
 // clears it). Three save files (the 'Pf1..', 'Pf2..', 'Pf3..' and 'Tf1date'
@@ -31,7 +31,7 @@ public:
     // Fades the 'kk_' sprites (fn_803C6690 passes field_0xa4 and
     // 1 - progress).
     void fadeFileRow_803BC6F0(s32 arg, f32 alpha);
-    // fn_803CE4CC: back to the constructor's colours.
+    // refreshFileRows_803CE4CC: back to the constructor's colours.
     void fn_803BDD44(s32 file);
     // fn_803CEED4: after the highlight update.
     void fn_803BE3D8();
@@ -101,17 +101,17 @@ public:
     // tu_80134C04 reads it each frame: 3 while no file select screen
     // exists, else field_0x1a8.
     static s32 fn_803CE4B0();
-    void fn_803CE4CC();
+    void refreshFileRows_803CE4CC();
     // tu_80134C04, each frame: runs the state, the 'kk_' sprite fade and the
     // message window.
     void fn_803CE9EC();
     void fn_803CEED4();
-    // Sets up the rows of a file whose checksum failed (fn_803CE4CC).
+    // Sets up the rows of a file whose checksum failed (refreshFileRows_803CE4CC).
     void fn_803BD5E0(s32 file);
     void fn_803CF504();
 
-    // field_0x115 has a bit per file whose checksum failed (fn_803CE4CC sets
-    // it when fn_803BADAC returns false and clears it otherwise).
+    // field_0x115 has a bit per file whose checksum failed (refreshFileRows_803CE4CC sets
+    // it when isSaveChecksumValid_803BADAC returns false and clears it otherwise).
     bool hasBadChecksum(s32 file) {
         u8 bit = 1 << file; // the u8 temporary gives the original's clrlwi before the and.
         return field_0x115 & bit;

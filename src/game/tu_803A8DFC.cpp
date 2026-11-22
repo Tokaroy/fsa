@@ -320,11 +320,11 @@ void ResultScreen_804AF9A0::fn_803B6768() {
     mState_0x4c1 = 1;
     mStateTimer_0x440 = 128;
     if (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 3) {
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
     } else if (mMode_0x4c0 == 5) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100002F, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100002F, false, 0);
     } else {
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000005, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000005, true, 0);
     }
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 0;
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 0;
@@ -719,7 +719,7 @@ void ResultScreen_804AF9A0::fn_803B31AC() {
         lbl_80529DEC.field_0x237 == 8) {
         return;
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mFadePicture_0x170->setAlpha(mFadeAlpha_0x4c2);
     mFadePicture_0x170->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
@@ -874,27 +874,27 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     s32 t4 = t2 - a - b;
     if (timer == 0) {
         if (mLayout_0x450 == 1) {
-            if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0x106)) {
+            if (field_0x4b8[0] == 0xFF && openMessage_80389BF0(0, 0x106)) {
                 field_0x4b8[0] = 1;
             }
-            if (field_0x4b8[1] == 0xFF && fn_80389BF0(1, 0x107)) {
+            if (field_0x4b8[1] == 0xFF && openMessage_80389BF0(1, 0x107)) {
                 field_0x4b8[1] = 1;
             }
-            if (field_0x4b8[2] == 0xFF && fn_80389BF0(2, 0x108)) {
+            if (field_0x4b8[2] == 0xFF && openMessage_80389BF0(2, 0x108)) {
                 field_0x4b8[2] = 1;
             }
             field_0x4b8[3] = 1;
         } else {
-            if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0xE2)) {
+            if (field_0x4b8[0] == 0xFF && openMessage_80389BF0(0, 0xE2)) {
                 field_0x4b8[0] = 1;
             }
-            if (field_0x4b8[1] == 0xFF && fn_80389BF0(1, 0xE3)) {
+            if (field_0x4b8[1] == 0xFF && openMessage_80389BF0(1, 0xE3)) {
                 field_0x4b8[1] = 1;
             }
-            if (field_0x4b8[2] == 0xFF && fn_80389BF0(2, 0xE4)) {
+            if (field_0x4b8[2] == 0xFF && openMessage_80389BF0(2, 0xE4)) {
                 field_0x4b8[2] = 1;
             }
-            if (field_0x4b8[3] == 0xFF && fn_80389BF0(3, 0xE5)) {
+            if (field_0x4b8[3] == 0xFF && openMessage_80389BF0(3, 0xE5)) {
                 field_0x4b8[3] = 1;
             }
         }
@@ -1030,27 +1030,27 @@ void ResultScreen_804AF9A0::fn_803B0FD4() {
     }
     if (mStateTimer_0x440 >= t1 + t2) {
         if (mLayout_0x450 == 1) {
-            if (field_0x4bc[0] == 0xFF && fn_80389BF0(0, 0x103)) {
+            if (field_0x4bc[0] == 0xFF && openMessage_80389BF0(0, 0x103)) {
                 field_0x4bc[0] = 1;
             }
-            if (field_0x4bc[1] == 0xFF && fn_80389BF0(1, 0x104)) {
+            if (field_0x4bc[1] == 0xFF && openMessage_80389BF0(1, 0x104)) {
                 field_0x4bc[1] = 1;
             }
-            if (field_0x4bc[2] == 0xFF && fn_80389BF0(2, 0x105)) {
+            if (field_0x4bc[2] == 0xFF && openMessage_80389BF0(2, 0x105)) {
                 field_0x4bc[2] = 1;
             }
             field_0x4bc[3] = 1;
         } else {
-            if (field_0x4bc[0] == 0xFF && fn_80389BF0(0, 0xDE)) {
+            if (field_0x4bc[0] == 0xFF && openMessage_80389BF0(0, 0xDE)) {
                 field_0x4bc[0] = 1;
             }
-            if (field_0x4bc[1] == 0xFF && fn_80389BF0(1, 0xDF)) {
+            if (field_0x4bc[1] == 0xFF && openMessage_80389BF0(1, 0xDF)) {
                 field_0x4bc[1] = 1;
             }
-            if (field_0x4bc[2] == 0xFF && fn_80389BF0(2, 0xE0)) {
+            if (field_0x4bc[2] == 0xFF && openMessage_80389BF0(2, 0xE0)) {
                 field_0x4bc[2] = 1;
             }
-            if (field_0x4bc[3] == 0xFF && fn_80389BF0(3, 0xE1)) {
+            if (field_0x4bc[3] == 0xFF && openMessage_80389BF0(3, 0xE1)) {
                 field_0x4bc[3] = 1;
             }
         }
@@ -3125,7 +3125,7 @@ void ResultScreen_804AF9A0::fn_803A9830() {
 }
 
 void ResultScreen_804AF9A0::fn_803A97A0() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (mMode_0x4c0 >= 2) {
         mResultBgPane_0x16c->setAlpha(255 - mFadeAlpha_0x4c2);
     } else {
@@ -3138,7 +3138,7 @@ void ResultScreen_804AF9A0::fn_803A97A0() {
 // Regalloc (the sprite frame of the second loop is in r21, the original
 // r23) and .sdata2 names (literal pool not yet in the original order).
 void ResultScreen_804AF9A0::fn_803A8F5C() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (mMode_0x4c0 >= 2) {
         // Each player's score, digit by digit; leading zeros are hidden and
         // a minus sign goes in front of the first digit shown.
@@ -3231,7 +3231,7 @@ void ResultScreen_804AF9A0::fn_803A8F5C() {
         }
         s32 frame = mPlayerSpriteFrame_0x3c0[i];
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPlayerSpritePos_0x2f0[i], res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPlayerSpritePos_0x2f0[i], res, frame, &params, 1.0f, 1.0f);
         if (field_0x4db & (u8)(1 << i)) {
             SpriteParams_801F5AE0 params2;
             if (field_0x4db & (u8)(1 << (i + 4))) {
@@ -3247,10 +3247,10 @@ void ResultScreen_804AF9A0::fn_803A8F5C() {
             }
             frame = mPlayerSpriteFrame_0x3c0[i];
             res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPlayerSpritePos_0x2f0[i], res, frame, &params2, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPlayerSpritePos_0x2f0[i], res, frame, &params2, 1.0f, 1.0f);
         }
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScoreScreens_0x10[mLayout_0x450]->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     mTitleScreen_0x20->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (mMode_0x4c0 == 3 || mMode_0x4c0 == 4) {

@@ -6,10 +6,10 @@
 
 #include "game/ActorBase.h"
 
-// The guarded static at 0x804BE514 (function-local static of fn_80131F0C):
+// The guarded static at 0x804BE514 (function-local static of getEscortActorList_80131F0C):
 // the serials of the escort actors. No vtable; named after its destructor
 // fn_80131F6C, which is passed to __register_global_object. The constructor
-// is inlined into fn_80131F0C.
+// is inlined into getEscortActorList_80131F0C.
 struct EscortActorList_80131F6C {
     EscortActorList_80131F6C() : mCount(0) {
         mSerials[0] = 0;
@@ -30,6 +30,6 @@ struct EscortActorList_80131F6C {
 
 // True when the 'OPGL' actor (escorted woman) exists and its vfunc_0x60 says so.
 bool fn_80131D98();
-EscortActorList_80131F6C* fn_80131F0C();
+EscortActorList_80131F6C* getEscortActorList_80131F0C();
 
 #endif

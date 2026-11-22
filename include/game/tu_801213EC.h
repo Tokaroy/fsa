@@ -53,7 +53,7 @@ public:
     /* 0x90 */ virtual void vfunc_0x90();
     /* 0x94 */ virtual void vfunc_0x94();
     // Slots 0x98-0xBC are not known yet; declared to number 0xC0 (the zora overrides it).
-    // fn_80123AB4: r4 and r5 are fn_801EEC98's last two parameters, f1 the distance limit its
+    // fn_80123AB4: r4 and r5 are findTargetPlayer_801EEC98's last two parameters, f1 the distance limit its
     // result is compared with.
     /* 0x98 */ virtual void vfunc_0x98(s32 arg1, s32 arg2, f32 arg3);
     // fn_80123394 (tu_801213EC, 0x720 bytes, not written yet; the zora forwards to it).
@@ -123,7 +123,7 @@ public:
     // fn_801227D4 / fn_80122804 (tu_801213EC): count a frame counter up; true (and reset) at 90 / 15.
     bool fn_801227D4();
     bool fn_80122804();
-    // fn_8012285C (tu_801213EC): fn_8022EA0C of the state word 0x344 when it is 0-3, else -1.
+    // fn_8012285C (tu_801213EC): getRepresentativePlayer_8022EA0C of the state word 0x344 when it is 0-3, else -1.
     s32 fn_8012285C() const;
     // fn_80124448 (tu_801213EC): calls ActorBase::init, then the vtable's 0x64
     // slot, then sets the state fields 0x60-0x6C. The escort woman's init calls it.
@@ -160,10 +160,10 @@ public:
     // Size: 0x3C4
 };
 
-// fn_80124600 (tu_801213EC): with no escort list (fn_80131F0C's first word 0) the
+// fn_80124600 (tu_801213EC): with no escort list (getEscortActorList_80131F0C's first word 0) the
 // actor of serial lbl_80539F30 (3 when there is none), else each 'FAZR' escort,
 // is asked through its vtable's 0x5C slot with dir; returns a state number
-// (0-3). fn_80231DE4 (tu_8022AD64) lets a screen change through unless it is
+// (0-3). updateScreenChange_80231DE4 (tu_8022AD64) lets a screen change through unless it is
 // 0 or 1. The const is certain (the mangled name has PC). dir goes to the 0x5C slot in r4 (&dir->x).
 s32 fn_80124600(const JGeometry::TVec2<s32>* dir);
 

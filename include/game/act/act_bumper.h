@@ -22,7 +22,7 @@ public:
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
-    /* 0x24C */ s32 field_0x24c; // angle, u16 (fn_801F6874 of mDir_0x98)
+    /* 0x24C */ s32 field_0x24c; // angle, u16 (dirToAngle_801F6874 of mDir_0x98)
     /* 0x250 */ s32 field_0x250; // angular speed: 100, -100 or doubled
     /* 0x254 */ u8 field_0x254[4];
     /* 0x258 */ s32 field_0x258;

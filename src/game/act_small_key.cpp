@@ -184,7 +184,7 @@ void SmallKey_804A8CD8::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30072, 0);
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x240 = 2;
             fn_801F355C();
             field_0xb0 = 0x20000;
@@ -221,7 +221,7 @@ void SmallKey_804A8CD8::update() {
                     mVel_0x3c.y = 10.0f;
                 }
                 mPos.add(mVel_0x3c);
-                if (fn_801F2618(NULL, false)) {
+                if (sweepMapBox_801F2618(NULL, false)) {
                     field_0x2b2 = 1;
                     mVel_0x3c.z = 0.0f;
                     mVel_0x3c.y = 0.0f;
@@ -316,7 +316,7 @@ void SmallKey_804A8CD8::update() {
                 }
                 mPos.set(field_0x248);
             } else {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 field_0x28c = -1;
                 mVel_0x3c.z = 7.0f;
             }
@@ -389,7 +389,7 @@ void SmallKey_804A8CD8::update() {
             mLayer_0x4 = getPlayerLayer_8023DE58(field_0xd0);
             field_0x2ad = fn_8023BCD4(field_0xd0);
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 1 && field_0x29c >= 1 &&
-                fn_8022F514(field_0x29c) == true) {
+                hasPlayerLeader_8022F514(field_0x29c) == true) {
                 u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
                 if (tile != 0xD && tile != 0x3B && fn_8022F9E4(field_0x29c, mSerial, false, false)) {
                     field_0x29c = -1;
@@ -402,7 +402,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 11:
         fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, true, false);
-        fn_8038AD24(field_0x2a4, 0x168, mSerial, mLayer_0x4, mPos, 4);
+        openMessage_8038AD24(field_0x2a4, 0x168, mSerial, mLayer_0x4, mPos, 4);
         field_0x240 = 12;
         return;
     case 12:
@@ -489,7 +489,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
             JGeometry::TVec2f pos(field_0x230.x, field_0x230.y);
             s32 layer = field_0x238;
             getGameView_802D6A9C()->fn_802D6C10(pos, layer);
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         if (fn_8022F9E4(i, mSerial, true, false)) {
@@ -550,7 +550,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
                 s32 dx = (s32)(f32)fabs(mPos.x - playerPos.x);
                 s32 dy = (s32)(f32)fabs(mPos.y - playerPos.y);
-                s32 dir = fn_80230CFC(i);
+                s32 dir = getPlayerFacing_80230CFC(i);
                 if ((dx >= 0 && dx <= 15 && dir == 0) || dir == 1) {
                     if (mPos.x > playerPos.x) {
                         mPos.x += (15 - dx) >> 1;
@@ -588,7 +588,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         field_0x2ae = 0;
     }
     JGeometry::TVec3f wall(0.0f, 0.0f, 0.0f);
-    fn_801F2618(&wall, false);
+    sweepMapBox_801F2618(&wall, false);
     if (wall.y != 0.0f && wall.x != 0.0f) {
         mPos.y = (u32)((s32)mPos.y & ~0xF);
         if (wall.y < 0.0f) {
@@ -659,7 +659,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             mVel_0x3c.y = 10.0f;
         }
         wall.set(0.0f, 0.0f, 0.0f);
-        if (fn_801F2618(&wall, false)) {
+        if (sweepMapBox_801F2618(&wall, false)) {
             if (field_0x280 == 7) {
                 s32 layer = mLayer_0x4;
                 if (layer < 8) {
@@ -778,7 +778,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     if (mPos.z < 0.0f || field_0x298 != -1) {
         bool moving = (0.0f != mVel_0x3c.x || 0.0f != mVel_0x3c.y);
         if (field_0x2b1 == 1) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x2b1 = 0;
         }
         mPos.z = 0.0f;
@@ -828,7 +828,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
         return;
     }
-    if (fn_801F2618(&wall, false)) {
+    if (sweepMapBox_801F2618(&wall, false)) {
         if ((u16)(tile - 0xD) <= 1 || tile == 0x3B) {
             return;
         }
@@ -1036,7 +1036,7 @@ void SmallKey_804A8CD8::fn_802C24A8() {
     ours.addPos(mPos.x, mPos.y);
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('STBL', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('STBL', serial);
         if (serial < 0) {
             return;
         }
@@ -1109,14 +1109,14 @@ bool SmallKey_804A8CD8::fn_802C2300(u8 playerBits) {
         }
         field_0x2a4 = player;
         u8 index = player;
-        if (fn_8022F514(player)) {
-            index = fn_8022F3DC(player);
+        if (hasPlayerLeader_8022F514(player)) {
+            index = getPlayerLeader_8022F3DC(player);
         }
         field_0x2a0 = index;
     } else {
         u8 index = player;
-        if (fn_8022F514(player)) {
-            index = fn_8022F3DC(player);
+        if (hasPlayerLeader_8022F514(player)) {
+            index = getPlayerLeader_8022F3DC(player);
         }
         field_0x2a4 = index;
         field_0x2a0 = index;
@@ -1150,7 +1150,7 @@ bool SmallKey_804A8CD8::fn_802C2154() {
     ours.f.y += mPos.y;
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('WARP', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('WARP', serial);
         if (serial < 0) {
             return false;
         }
@@ -1328,7 +1328,7 @@ bool SmallKey_804A8CD8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) 
     if (field_0x288 == 0) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+        if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
             return true;
         }
         return fn_802C1970(layer, pos);

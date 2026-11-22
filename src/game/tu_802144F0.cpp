@@ -68,7 +68,7 @@ void cls_802150B8::fn_80214E50() {
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
-    f32 ground = gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(&pos);
+    f32 ground = gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(&pos);
     z += ground - pos.z;
     field_0x4.field_0x4.x = x;
     field_0x4.field_0x4.y = y;
@@ -89,7 +89,7 @@ void cls_802150B8::fn_80214CE4() {
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
-    f32 ground = gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(&pos);
+    f32 ground = gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(&pos);
     z += ground - pos.z;
     field_0x4.field_0x4.x = x;
     field_0x4.field_0x4.y = y;
@@ -120,7 +120,7 @@ void cls_802150B8::fn_80214AF8() {
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
-        f32 ground = gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(&pos);
+        f32 ground = gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(&pos);
         z += ground - pos.z;
         field_0x1c.field_0x4.x = x;
         field_0x1c.field_0x4.y = y;
@@ -146,7 +146,7 @@ void cls_802150B8::fn_80214994() {
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
-        f32 ground = gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(&pos);
+        f32 ground = gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(&pos);
         z += ground - pos.z;
         field_0x1c.field_0x4.x = x;
         field_0x1c.field_0x4.y = y;

@@ -12,8 +12,8 @@ void ItemPedestal_804A82A8::init() {
     field_0x230 = 0;
     field_0x238 = 0x28;
     field_0x240 = field_0x234;
-    if (fn_8022F514(field_0x234)) {
-        field_0x240 = fn_8022F3DC(field_0x234);
+    if (hasPlayerLeader_8022F514(field_0x234)) {
+        field_0x240 = getPlayerLeader_8022F3DC(field_0x234);
     }
 }
 

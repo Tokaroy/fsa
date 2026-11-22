@@ -15,8 +15,8 @@
 #include "std/math.h"
 
 f32 randFloat_80154744();
-f32 fn_80154378(f32);
-void fn_80154590(JGeometry::TBox2f*, f32, f32, f32, f32);
+f32 sqrtf_80154378(f32);
+void setBox_80154590(JGeometry::TBox2f*, f32, f32, f32, f32);
 
 struct Table_8049FFD8 {
     s32 tiles[6][2];
@@ -189,8 +189,8 @@ bool BowSoldier_804A00C8::vfunc_0x54() {
     field_0x2b8.x = (f32)((s32)field_0x2b8.x & 0xFFF8);
     field_0x2b8.y = (f32)((s32)field_0x2b8.y & 0xFFF8);
     const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-    field_0x2b8.x += -12.0f * sincos.sinShort(fn_801F6874(mDir_0x98));
-    field_0x2b8.y += -12.0f * sincos.cosShort(fn_801F6874(mDir_0x98));
+    field_0x2b8.x += -12.0f * sincos.sinShort(dirToAngle_801F6874(mDir_0x98));
+    field_0x2b8.y += -12.0f * sincos.cosShort(dirToAngle_801F6874(mDir_0x98));
     s32 kind = getTileCollisionCode_8022461C(&field_0x2b8, mLayer_0x4);
     if (kind == 2 || kind == 3 || kind == 0xE) {
         if (kind == 0xE && fn_802DE9A0() == true) {
@@ -229,13 +229,13 @@ void BowSoldier_804A00C8::update() {
             JGeometry::TVec3f tmpPos;
             tmpPos.x = mPos.x;
             tmpPos.y = mPos.y;
-            field_0x2aa = fn_80226998(&tmpPos, mLayer_0x4);
+            field_0x2aa = getTileAt_80226998(&tmpPos, mLayer_0x4);
             return;
         }
         JGeometry::TVec3f tmpPos;
         tmpPos.x = mPos.x;
         tmpPos.y = mPos.y;
-        if ((u16)field_0x2aa == fn_80226998(&tmpPos, mLayer_0x4)) {
+        if ((u16)field_0x2aa == getTileAt_80226998(&tmpPos, mLayer_0x4)) {
             return;
         }
         field_0x254 = 40;
@@ -278,22 +278,22 @@ void BowSoldier_804A00C8::update() {
             field_0x2ac = 0.0f;
         }
         if (!vfunc_0x54()) {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
         }
         return;
     }
 
     if (mState == 8 || mState == 11) {
         if (checkActorHit_801F2DB4('BLZE', 'NULL', NULL)) {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     } else if (field_0x254 == 0) {
         u32 excludeId = 'NULL';
         if (mSpawnParam_0x90 == 2 && field_0x258 == 0 && field_0x284 < 0) {
-            fn_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
+            setBox_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
             field_0x284 = findOverlappingActor_801F2718('HBMB');
-            fn_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
+            setBox_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
             if (field_0x284 >= 0) {
                 Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x284));
                 if (bomb != NULL) {
@@ -326,7 +326,7 @@ void BowSoldier_804A00C8::update() {
             }
         }
         if (field_0x290 != 2 && field_0x290 != 3 && field_0x290 != 4 && field_0x290 != 5) {
-            if (fn_801F2FAC() || checkActorHit_801F2DB4('NULL', excludeId, NULL)) {
+            if (checkPlayerAttacks_801F2FAC() || checkActorHit_801F2DB4('NULL', excludeId, NULL)) {
                 if (mLife <= 0) {
                     field_0xbc = 2;
                 }
@@ -337,7 +337,7 @@ void BowSoldier_804A00C8::update() {
                     field_0x2b4 = 0.0f;
                     field_0x2b0 = 0.0f;
                     field_0x2ac = 0.0f;
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
                 if (mState != 3 && mState != 12 && mState != 13 && mState != 4 && mSpawnParam_0x90 != 2) {
@@ -352,14 +352,14 @@ void BowSoldier_804A00C8::update() {
                     }
                     field_0x284 = -1;
                 }
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 return;
             }
         }
     }
 
     if (mState != 12 && mState != 13) {
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &field_0x268, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &field_0x268, 0, 0);
         if (dir == -1) {
             if (mState == 3 || mState == 4) {
                 mState = 0;
@@ -378,7 +378,7 @@ void BowSoldier_804A00C8::update() {
             startSound_801F0E34(0x40010, 0);
         }
         if (mState == 0 || mState == 4 || mState == 5) {
-            moved = fn_801F2618(NULL, false);
+            moved = sweepMapBox_801F2618(NULL, false);
         }
     }
 
@@ -572,7 +572,7 @@ void BowSoldier_804A00C8::update() {
             f32 c = sincos.cosShort(field_0x264);
             f32 py = getPlayerPos_8023E724(field_0x268)->y + 70.0f * c;
             f32 dy = mPos.y - py;
-            dist = fn_80154378(dx * dx + dy * dy);
+            dist = sqrtf_80154378(dx * dx + dy * dy);
             angle = (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dy));
             if (dir != -1) {
                 mDir_0x98 = dir;
@@ -583,7 +583,7 @@ void BowSoldier_804A00C8::update() {
                     f32 ldx = leader->mPos.x - mPos.x;
                     f32 ldy = leader->mPos.y - mPos.y;
                     field_0x250 = (s32)((f32)(field_0x27c & 7) * randFloat_80154744()) + 20;
-                    if (fn_80154378(ldx * ldx + ldy * ldy) > 40.0f) {
+                    if (sqrtf_80154378(ldx * ldx + ldy * ldy) > 40.0f) {
                         angle = (s32)(10430.378f * JMath::atanTable_.atan2_(ldx, ldy));
                         angle += (s32)(4096.0f - 8192.0f * randFloat_80154744());
                     }
@@ -607,7 +607,7 @@ void BowSoldier_804A00C8::update() {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
-            field_0x234 = fn_801F6874(mDir_0x98);
+            field_0x234 = dirToAngle_801F6874(mDir_0x98);
             field_0x248 = 40;
             if (field_0x26c == 0) {
                 if (randFloat_80154744() < 0.5f) {
@@ -836,7 +836,7 @@ void BowSoldier_804A00C8::update() {
         mHitTimerStart_0xdc = 0;
         addCalc2_801F71A4(&mPos.x, field_0x2b8.x, 0.1f, 0.5f);
         addCalc2_801F71A4(&mPos.y, field_0x2b8.y, 0.1f, 0.5f);
-        if (field_0x23c == 0 && fn_80154378((mPos.x - field_0x2b8.x) * (mPos.x - field_0x2b8.x) + (mPos.y - field_0x2b8.y) * (mPos.y - field_0x2b8.y)) < 2.0f) {
+        if (field_0x23c == 0 && sqrtf_80154378((mPos.x - field_0x2b8.x) * (mPos.x - field_0x2b8.x) + (mPos.y - field_0x2b8.y) * (mPos.y - field_0x2b8.y)) < 2.0f) {
             if (mSpawnParam_0x90 == 2) {
                 if (field_0x274 != 20) {
                     startSound_801F0E34(0x4001A, 0);
@@ -854,7 +854,7 @@ void BowSoldier_804A00C8::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30047, 0);
-                    fn_801F3668();
+                    markDead_801F3668();
                 }
                 return;
             }
@@ -865,7 +865,7 @@ void BowSoldier_804A00C8::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x5005F, 0);
                 }
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else if (field_0x238 == 0 && mSpawnParam_0x90 != 2) {
             field_0x25c++;
@@ -878,7 +878,7 @@ void BowSoldier_804A00C8::update() {
     case 14: {
         mState = 0;
         ActorBase_804A5770* list[1024];
-        s32 count = getActorManager_801F856C()->fn_801F7818('SLR4', mLayer_0x4, list, -1);
+        s32 count = getActorManager_801F856C()->collectActorsById_801F7818('SLR4', mLayer_0x4, list, -1);
         for (s32 i = 0; i < count; i++) {
             ChiefSoldier_804A0B90* chief = static_cast<ChiefSoldier_804A0B90*>(list[i]);
             if (chief != NULL && field_0x280 == chief->field_0x28c) {
@@ -1088,13 +1088,13 @@ void BowSoldier_804A00C8::draw() {
             s32 frame = field_0x274 + 0x4F;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         } else {
             s32 frame = field_0x274 + 0x8F;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         }
         return;
@@ -1134,7 +1134,7 @@ void BowSoldier_804A00C8::draw() {
         params.mMtx = mtx;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x6F, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0x6F, &params, 1.0f, 1.0f);
         }
     }
 }

@@ -100,7 +100,7 @@ void WarpPillar_804AC0A8::update() {
     switch (field_0x230) {
     case 0: {
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8023F264(i) || fn_8023EA28(i) || !fn_8023561C(i) || fn_80236B50(i)) {
+            if (!fn_8023F264(i) || fn_8023EA28(i) || !fn_8023561C(i) || isPlayerDead_80236B50(i)) {
                 continue;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -162,8 +162,8 @@ void WarpPillar_804AC0A8::update() {
         } else {
             for (s32 i = 0; i < 4; i++) {
                 s32 owner = i;
-                if (fn_8022F514(i)) {
-                    owner = fn_8022F3DC(i);
+                if (hasPlayerLeader_8022F514(i)) {
+                    owner = getPlayerLeader_8022F3DC(i);
                 }
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
                 if (field_0x260[owner]) {

@@ -452,7 +452,7 @@ void BattleHud_804B146C::fn_804263A8() {
                 clearBit(field_0x25d, i);
             }
         }
-        lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+        lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
         lbl_80529DEC.field_0xe8[i] = fn_80236100(i);
         lbl_80529DEC.field_0x108[i] = fn_802375B0(i);
         field_0x158[i] = 0x180;
@@ -553,34 +553,34 @@ void BattleHud_804B146C::fn_80425F6C() {
     f32 sx = scale * (JFWDisplay::getManager()->getEfbWidth() / zoom);
     f32 sy = scale * (JFWDisplay::getManager()->getEfbHeight() / zoom);
     for (s32 i = 0; i < 4; i++) {
-        if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
+        if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)) >= 8) {
             continue;
         }
         Vec screen;
         f32 x;
         f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
-            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
             pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
             field_0x208[i] = 0;
-        } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
-            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+        } else if (!isPaused() && fn_802366CC(getRepresentativePlayer_8022EA0C(i)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(i)) < 300) {
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
             pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x2c[i]->draw(x, y, field_0x4c);
         }
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0xf0->fn_8044148C();
 }
 
 void BattleHud_804B146C::fn_80425F24() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
@@ -699,12 +699,12 @@ void BattleHud_804B146C::fn_804257E4() {
 }
 
 void BattleHud_804B146C::fn_804253E0(s32 player) {
-    if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
+    if (lbl_80529DEC.getField0xd8(player) < getPlayerLife_80237774(player)) {
         field_0x168[player]++;
         if (field_0x168[player] >= 10) {
             lbl_80529DEC.field_0xd8[player] += 1;
             for (s32 j = 0; j < 4; j++) {
-                if (j != player && fn_8022F514(j) && player == fn_8022F3DC(j)) {
+                if (j != player && hasPlayerLeader_8022F514(j) && player == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0xd8[j] = lbl_80529DEC.field_0xd8[player];
                 }
             }
@@ -716,13 +716,13 @@ void BattleHud_804B146C::fn_804253E0(s32 player) {
             field_0x1a8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1c8[player] = getPlayerMaxLife_80237810(player);
         }
-    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > getPlayerLife_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x168[player]++;
         if (field_0x168[player] >= 10) {
             lbl_80529DEC.field_0xd8[player] -= 1;
             for (s32 j = 0; j < 4; j++) {
-                if (j != player && fn_8022F514(j) && player == fn_8022F3DC(j)) {
+                if (j != player && hasPlayerLeader_8022F514(j) && player == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0xd8[j] = lbl_80529DEC.field_0xd8[player];
                 }
             }
@@ -780,8 +780,8 @@ void BattleHud_804B146C::fn_804253E0(s32 player) {
 
 void BattleHud_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     s32 target;
-    if (fn_8022F514(id)) {
-        target = fn_8022F3DC(id);
+    if (hasPlayerLeader_8022F514(id)) {
+        target = getPlayerLeader_8022F3DC(id);
     } else {
         target = id;
     }
@@ -824,9 +824,9 @@ void BattleHud_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
 void BattleHud_804B146C::fn_80425128() {
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0) {
-            lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+            lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
             for (s32 j = 0; j < 4; j++) {
-                if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
+                if (j != i && hasPlayerLeader_8022F514(j) && i == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0xd8[j] = lbl_80529DEC.field_0xd8[i];
                 }
             }
@@ -998,7 +998,7 @@ void BattleHud_804B146C::fn_80423DF0(s32 player) {
     s32 item = -1;
     bool active = checkBit(field_0x259, player);
     if (!active && !fn_80230188(player)) {
-        if (fn_8023BE0C(fn_8022EA0C(player)) && !checkBit(lbl_8053AED0->field_0x255, player)) {
+        if (fn_8023BE0C(getRepresentativePlayer_8022EA0C(player)) && !checkBit(lbl_8053AED0->field_0x255, player)) {
             setBit(field_0x259, player);
             field_0x4->search(lbl_8048EFE0[player])->show();
         }
@@ -1233,12 +1233,12 @@ void BattleHud_804B146C::fn_80422824() {
         s32 best = -5001;
         tied = 0;
         for (s32 i = 0; i < count; i++) {
-            if (done[i] == 0 && best < fn_80237774(i)) {
-                best = fn_80237774(i);
+            if (done[i] == 0 && best < getPlayerLife_80237774(i)) {
+                best = getPlayerLife_80237774(i);
             }
         }
         for (s32 i = 0; i < count; i++) {
-            if (done[i] == 0 && best == fn_80237774(i)) {
+            if (done[i] == 0 && best == getPlayerLife_80237774(i)) {
                 ranks[i] = ranked;
                 tied++;
                 done[i] = 1;
@@ -1315,7 +1315,7 @@ void BattleHud_804B146C::fn_80422824() {
 
 void BattleHud_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
-        field_0x1a8[player] = fn_80237774(player);
+        field_0x1a8[player] = getPlayerLife_80237774(player);
         field_0x1c8[player] = getPlayerMaxLife_80237810(player);
         return;
     }
@@ -1395,8 +1395,8 @@ void BattleHud_804B146C::fn_8042215C(s32 player) {
 }
 
 void BattleHud_804B146C::fn_80421D78(s32 player) {
-    if (fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
-        s32 sec = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
+    if (fn_802366CC(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(player)) < 300) {
+        s32 sec = fn_802366CC(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (sec != field_0x25e[player]) {
             if (sec > 99) {
                 sec = 99;

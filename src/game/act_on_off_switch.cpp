@@ -63,12 +63,12 @@ void OnOffSwitch_804A8FC8::init() {
                     mState = 4;
                 }
             } else {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
                 setScreenFlag_0x30(0xFF, false);
                 mState = 0;
             }
         } else {
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
             setScreenFlag_0x30(0xFF, false);
             mState = 0;
         }
@@ -228,7 +228,7 @@ void OnOffSwitch_804A8FC8::update() {
                 if (field_0x240 == 3) {
                     getGameView_802D6A9C()->fn_802D78B4(field_0x244, false);
                 }
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
                 setScreenFlag_0x30(0xFF, false);
                 mState = 3;
                 field_0x23c = 25;
@@ -236,7 +236,7 @@ void OnOffSwitch_804A8FC8::update() {
                 releaseEmitter(mEmitter230);
                 releaseEmitter(mEmitter234);
             } else if (field_0x240 == 3 && getGameView_802D6A9C()->fn_802D7888(field_0x244) == false) {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
                 setScreenFlag_0x30(0xFF, false);
                 mState = 3;
                 field_0x23c = 25;
@@ -258,7 +258,7 @@ void OnOffSwitch_804A8FC8::update() {
             if (field_0x240 == 3) {
                 getGameView_802D6A9C()->fn_802D78B4(field_0x244, false);
             }
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0xBF);
             setScreenFlag_0x30(0xFF, false);
             mState = 3;
             startSound_801F0E34(0x30009, 0);

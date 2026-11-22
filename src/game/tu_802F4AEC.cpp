@@ -39,7 +39,7 @@ void UnknownGSCK_804AA800::update() {
                 field_0x230 = 1;
             }
         } else {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -80,8 +80,8 @@ void UnknownGSCK_804AA800::update() {
         if (field_0x238 == 0) {
             if (fn_80230534(false)) {
                 getGameView_802D6A9C()->fn_802D7F84(bit3, true);
-                fn_801F0D20(3);
-                fn_801F3668();
+                playSe_801F0D20(3);
+                markDead_801F3668();
             }
         } else {
             field_0x238--;

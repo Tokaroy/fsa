@@ -26,7 +26,7 @@ void FourPersonPullSwitch_804AE230::init() {
                     (FourPersonPullSwitch_804AE230*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 child->field_0x230 = mSerial;
             } else {
-                fn_801F3668();
+                markDead_801F3668();
             }
         }
     }
@@ -143,7 +143,7 @@ void FourPersonPullSwitch_804AE230::draw() {
     s32 frame = field_0x24c + 0x147;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mSpawnPos, res, frame, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mSpawnPos, res, frame, NULL, 1.0f, 1.0f);
     }
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mSpawnPos, field_0x24c + 0x147, false, 1, -1, 0, 0, 0);
 }

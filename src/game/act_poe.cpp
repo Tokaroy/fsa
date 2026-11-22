@@ -125,14 +125,14 @@ void Poe_8049F330::update() {
         if (isScreenFlagSet_0x34() || field_0x238[4] != 0) {
             field_0x238[4]++;
             if (field_0x238[4] > 30) {
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
                 mAlive = false;
             }
         }
         return;
     }
     if (field_0x234 != 0) {
-        fn_801F37AC(0x80, &mPos, 3, 0, -1);
+        takeHit_801F37AC(0x80, &mPos, 3, 0, -1);
         field_0x234 = 0;
     }
     if (updateHitReaction_801F3D94(1) != 0) {
@@ -182,18 +182,18 @@ void Poe_8049F330::update() {
                 field_0xb0 = 0x201;
             }
             if (field_0x94 != 3 && field_0x94 != 7) {
-                if (fn_801F305C()) {
+                if (checkHits_801F305C()) {
                     field_0x270 = 255.0f;
                     startSound_801F0E34(0x40025, 0);
                     return;
                 }
             } else if (findOverlappingActor_801F2718('SPOT') >= 0) {
                 startSound_801F0E34(0x40025, 0);
-                fn_801F37AC(0x80, &mPos, 3, 0, -1);
+                takeHit_801F37AC(0x80, &mPos, 3, 0, -1);
                 return;
             } else {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_801F285C(NULL, NULL, true, i) >= 0) {
+                    if (findOverlappingPlayer_801F285C(NULL, NULL, true, i) >= 0) {
                         startSound_801F0E34(0x40024, 0);
                         field_0x238[4] = 1;
                         field_0x238[0] = 20;
@@ -208,7 +208,7 @@ void Poe_8049F330::update() {
             field_0x238[1] = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
             field_0x238[6] ^= 1;
         }
-        fn_801EEC98(mSerial, &angle, &dir, NULL, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, NULL, NULL, 0, 0);
         if (dir < 0 || field_0x94 == 3 || field_0x94 == 7) {
             mVel_0x3c.y = 0.0f;
             f32 dx = mPos.x - field_0x260.x;

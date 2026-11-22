@@ -12,7 +12,7 @@
 // pool is complete only once checkHitByPlayer_0x5C and updateState_0x90 are 100 %).
 
 // The two animations' keys (cel pairs for 10 frames each, then -1) and the
-// table the init hands to SpriteAnim::fn_801D2608 (names unknown).
+// table the init hands to SpriteAnim::setKeyTables_801D2608 (names unknown).
 static const s16 lbl_80469180[6] = {0, 10, 1, 10, -1, -1};
 static const s16 lbl_8046918C[6] = {2, 10, 3, 10, -1, -1};
 static const s16* lbl_8053A120[2] = {lbl_80469180, lbl_8046918C};
@@ -126,12 +126,12 @@ void Terrorpin_804A3B10::init() {
     field_0x250 = randInt_801CD664(16) + 30;
     mSpeed = 0.35f;
     mTargetSpeed = 0.35f;
-    mAnim.fn_801D2608(lbl_8053A120, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A120, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 }
 
-void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
+void Terrorpin_804A3B10::setState_801B91A8(s32 state) {
     switch (state) {
     case 0:
         field_0x250 = randInt_801CD664(16) + 30;
@@ -214,12 +214,12 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
         if (found && mPos.z <= 0.0f) {
             switch (mState) {
             case 0:
-                fn_801B91A8(1);
+                setState_801B91A8(1);
                 break;
             case 2:
             case 3:
             case 5:
-                fn_801B91A8(4);
+                setState_801B91A8(4);
                 break;
             }
         }
@@ -227,34 +227,34 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mapHit) {
-            mDir_0x98 = fn_801CF720(mDir_0x98);
+            mDir_0x98 = pickNewDir_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
-            fn_801B91A8(0);
+            setState_801B91A8(0);
         }
         break;
     case 1:
         if (hasLanded()) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
-            fn_801B91A8(2);
+            setState_801B91A8(2);
         }
         break;
     case 2:
         if (mStateTimer >= field_0x250) {
-            fn_801B91A8(3);
+            setState_801B91A8(3);
         }
         break;
     case 3:
         if (mStateTimer >= field_0x250) {
-            fn_801B91A8(4);
+            setState_801B91A8(4);
         }
         break;
     case 4:
         if (hasLanded()) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
-            fn_801B91A8(0);
+            setState_801B91A8(0);
         }
         break;
     case 5:
@@ -272,7 +272,7 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             mSpeed = 0.0f;
-            fn_801B91A8(2);
+            setState_801B91A8(2);
         }
         break;
     }
@@ -356,12 +356,12 @@ void Terrorpin_804A3B10::vfunc_0x44() {
         if (active && mPos.z <= 0.0f) {
             switch (mState) {
             case 0:
-                fn_801B91A8(1);
+                setState_801B91A8(1);
                 break;
             case 2:
             case 3:
             case 5:
-                fn_801B91A8(4);
+                setState_801B91A8(4);
                 break;
             }
         }
@@ -417,9 +417,9 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
         if (mFlags & 0x2000) {
             fn_801CEBD0();
         } else if (0 == mState) {
-            s32 player = fn_801F285C(NULL, NULL, true, -1);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
             if (player >= 0) {
-                fn_801B91A8(5);
+                setState_801B91A8(5);
                 JGeometry::TVec2f dir;
                 dir.y = mPos.y - getPlayerPos_8023E724(player)->y;
                 dir.x = mPos.x - getPlayerPos_8023E724(player)->x;
@@ -436,7 +436,7 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
             }
         }
     } else {
-        hit = fn_801F2FAC();
+        hit = checkPlayerAttacks_801F2FAC();
     }
     return hit;
 }
@@ -457,14 +457,14 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
         }
         if (inState) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             fn_802397B4(&box, mLayer_0x4, mSerial);
         } else {
             hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1);
             if (hit != 0 && mState == 5) {
                 for (s32 i = 0; i < 4; i++) {
                     if (hit & (1 << i)) {
-                        fn_80236074(i, 0x64, 0);
+                        dropPlayerForceGems_80236074(i, 0x64, 0);
                     }
                 }
             }

@@ -29,7 +29,7 @@ public:
     /* 0x250 */ s32 field_0x250; // (0x90 >> 7) & 1
     /* 0x254 */ s32 field_0x254; // the layer of field_0x25c's player, -1 without one
     /* 0x258 */ s32 field_0x258; // the player standing in the box (first one found), -1 if none
-    /* 0x25C */ s32 field_0x25c; // fn_8022EA0C's player (the nearest / leading one), -1 if none
+    /* 0x25C */ s32 field_0x25c; // getRepresentativePlayer_8022EA0C's player (the nearest / leading one), -1 if none
 }; // Size: 0x260
 
 #endif

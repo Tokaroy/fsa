@@ -206,12 +206,12 @@ u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mState == 2) {
         for (s32 i = 0; i < 4; i++) {
-            if (i == fn_801F285C(NULL, NULL, true, i)) {
+            if (i == findOverlappingPlayer_801F285C(NULL, NULL, true, i)) {
                 fn_8023B6CC(i);
                 if (!fn_8023E854(i)) {
                     JGeometry::TVec2f center;
-                    fn_801F3128(&center);
-                    if (fn_80238548(i, mParamAtcp_0x114, &center, 10)) {
+                    getBoxCenter_801F3128(&center);
+                    if (hitPlayerGroup_80238548(i, mParamAtcp_0x114, &center, 10)) {
                         hit = 1;
                     }
                 }

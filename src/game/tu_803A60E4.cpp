@@ -161,7 +161,7 @@ void cls_804AF860::fn_803A7280() {
 
 void cls_804AF860::fn_803A71F0() {
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->draw_80440EE8();
 }
@@ -177,20 +177,20 @@ void cls_804AF860::fn_803A6608() {
         u8 c = 0;
         field_0x68++;
         if (field_0x68 > 0) {
-            a = field_0x8->fn_80402940(0x16, 0, -448.0f, 0.0f);
+            a = field_0x8->animateMoveY_80402940(0x16, 0, -448.0f, 0.0f);
             for (s32 i = 0; i < 6; i++) {
-                field_0xc[i]->fn_80402940(0x16, 0, -448.0f, 0.0f);
+                field_0xc[i]->animateMoveY_80402940(0x16, 0, -448.0f, 0.0f);
             }
             for (s32 i = 0; i < 2; i++) {
-                field_0x24[i]->fn_80402940(0x16, 0, -448.0f, 0.0f);
+                field_0x24[i]->animateMoveY_80402940(0x16, 0, -448.0f, 0.0f);
             }
-            field_0x2c->fn_80402940(0x16, 0, -448.0f, 0.0f);
+            field_0x2c->animateMoveY_80402940(0x16, 0, -448.0f, 0.0f);
         }
         if (field_0x68 > 0) {
-            b = field_0x30->fn_80402940(0x1A, 0, -448.0f, 0.0f);
+            b = field_0x30->animateMoveY_80402940(0x1A, 0, -448.0f, 0.0f);
         }
         if (field_0x68 > 10) {
-            c = field_0x34->fn_80402940(0x16, 0, -448.0f, 0.0f);
+            c = field_0x34->animateMoveY_80402940(0x16, 0, -448.0f, 0.0f);
         }
         if (a && b && c) {
             field_0x76 = 1;

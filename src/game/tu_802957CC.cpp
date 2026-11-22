@@ -16,7 +16,7 @@
 
 static inline bool testBox(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) {
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    return boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds);
+    return boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds);
 }
 
 static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
@@ -100,8 +100,8 @@ inline void MovingHouse_804A7AE0::bakeTiles() {
         for (int row = 0; row < 6; row++) {
             p.y = origin.y;
             for (int col = 0; col < 6; col++) {
-                gBgRewrite_8053AC98->fn_802A381C(&p, 0, mTiles[row][col]);
-                gBgRewrite_8053AC98->fn_802A381C(&p, 1, 0);
+                gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTiles[row][col]);
+                gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, 0);
                 p.y += 16.0f;
             }
             p.x += 16.0f;
@@ -236,7 +236,7 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
     s32 serialFlme = -1;
     s32 serialDoor = -1;
     while (true) {
-        serialWarp = getActorManager_801F856C()->fn_801F78F4(ACTOR_WARP, serialWarp);
+        serialWarp = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_WARP, serialWarp);
         if (serialWarp < 0) {
             break;
         }
@@ -286,7 +286,7 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
         }
     }
     while (true) {
-        serialFlme = getActorManager_801F856C()->fn_801F78F4(ACTOR_FLME, serialFlme);
+        serialFlme = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_FLME, serialFlme);
         if (serialFlme < 0) {
             break;
         }
@@ -301,7 +301,7 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
         mSerialCountC++;
     }
     while (true) {
-        serialDoor = getActorManager_801F856C()->fn_801F78F4(ACTOR_DOOR, serialDoor);
+        serialDoor = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_DOOR, serialDoor);
         if (serialDoor < 0) {
             break;
         }
@@ -627,12 +627,12 @@ void MovingHouse_804A7AE0::fn_80299720() {
             if (field_0x2cc == 1) {
                 s32 n = (mSpawnParam_0x90 >> 27) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             } else {
                 s32 n = (mSpawnParam_0x90 >> 22) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             }
             field_0x2cc = 0;
@@ -640,12 +640,12 @@ void MovingHouse_804A7AE0::fn_80299720() {
         } else if (field_0x2cc == 1) {
             s32 n = (mSpawnParam_0x90 >> 27) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         } else {
             s32 n = (mSpawnParam_0x90 >> 22) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         }
     }
@@ -685,12 +685,12 @@ void MovingHouse_804A7AE0::fn_80299374() {
             if (field_0x2cc == 1) {
                 s32 n = (mSpawnParam_0x90 >> 22) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             } else {
                 s32 n = (mSpawnParam_0x90 >> 27) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             }
             field_0x2cc = 0;
@@ -698,12 +698,12 @@ void MovingHouse_804A7AE0::fn_80299374() {
         } else if (field_0x2cc == 1) {
             s32 n = (mSpawnParam_0x90 >> 22) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         } else {
             s32 n = (mSpawnParam_0x90 >> 27) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         }
     }
@@ -743,12 +743,12 @@ void MovingHouse_804A7AE0::fn_80298FC4() {
             if (field_0x2cc == 1) {
                 s32 n = (mSpawnParam_0x90 >> 17) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             } else {
                 s32 n = (mSpawnParam_0x90 >> 12) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             }
             field_0x2cc = 0;
@@ -756,12 +756,12 @@ void MovingHouse_804A7AE0::fn_80298FC4() {
         } else if (field_0x2cc == 1) {
             s32 n = (mSpawnParam_0x90 >> 17) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         } else {
             s32 n = (mSpawnParam_0x90 >> 12) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         }
     }
@@ -817,12 +817,12 @@ void MovingHouse_804A7AE0::fn_80298C18() {
             if (field_0x2cc == 1) {
                 s32 n = (mSpawnParam_0x90 >> 12) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             } else {
                 s32 n = (mSpawnParam_0x90 >> 17) & 0x1F;
                 if (n > 0) {
-                    getGameView_802D6A9C()->fn_802D8050(n, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(n, false, 0xFF);
                 }
             }
             field_0x2cc = 0;
@@ -830,12 +830,12 @@ void MovingHouse_804A7AE0::fn_80298C18() {
         } else if (field_0x2cc == 1) {
             s32 n = (mSpawnParam_0x90 >> 12) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         } else {
             s32 n = (mSpawnParam_0x90 >> 17) & 0x1F;
             if (n > 0) {
-                getGameView_802D6A9C()->fn_802D8050(n, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(n, true, 0xFF);
             }
         }
     }
@@ -968,9 +968,9 @@ void MovingHouse_804A7AE0::update() {
     if (field_0x2bb == 1) {
         bool done = true;
         for (s32 i = 0; i < 4; i++) {
-            if (mPlayerFlags[i] == 1 && fn_8023F264(i) == 1 && !fn_8022F514(i)) {
+            if (mPlayerFlags[i] == 1 && fn_8023F264(i) == 1 && !hasPlayerLeader_8022F514(i)) {
                 if (!fn_8022D75C(i) &&
-                    fn_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0) == 1) {
+                    hitPlayerGroup_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0) == 1) {
                     mPlayerFlags[i] = 0;
                 } else {
                     done = false;
@@ -1008,7 +1008,7 @@ void MovingHouse_804A7AE0::update() {
         if (field_0x230 == 0) {
             if (field_0x234 == 0) {
                 u32 hitActorId = ACTOR_NULL;
-                s32 hitSerial = getActorManager_801F856C()->fn_801F82CC(this, 0, 32.0f);
+                s32 hitSerial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, 0, 32.0f);
                 if (hitSerial >= 0) {
                     ActorBase_804A5770* hitActor =
                         getActorManager_801F856C()->findActorBySerial_801F666C(hitSerial);
@@ -1231,8 +1231,8 @@ void MovingHouse_804A7AE0::update() {
                                         p.y = baseY;
                                         for (s32 col = 0; col < 6; col++) {
                                             mTiles[row][col] = getRawTile_80226850(&p, 0);
-                                            gBgRewrite_8053AC98->fn_802A381C(&p, 0, mTilesB[row][col]);
-                                            gBgRewrite_8053AC98->fn_802A381C(&p, 1, mTilesA[row][col]);
+                                            gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTilesB[row][col]);
+                                            gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, mTilesA[row][col]);
                                             p.y += 16.0f;
                                         }
                                         p.x += 16.0f;
@@ -1308,7 +1308,7 @@ void MovingHouse_804A7AE0::update() {
             mPos.set(pPos->x, pPos->y, pPos->z);
             if (!mPos.equals(field_0x238)) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (!fn_8022F514(i)) {
+                    if (!hasPlayerLeader_8022F514(i)) {
                         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
                         s32 layer = v == 0 ? 0 : v + 7;
                         if (getPlayerLayer_8023DE58(i) == layer) {
@@ -1337,8 +1337,8 @@ void MovingHouse_804A7AE0::update() {
                 for (s32 i = 0; i < 4; i++) {
                     s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
                     s32 layer = v == 0 ? 0 : v + 7;
-                    if (getPlayerLayer_8023DE58(i) == layer && !fn_8022F514(i)) {
-                        fn_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
+                    if (getPlayerLayer_8023DE58(i) == layer && !hasPlayerLeader_8022F514(i)) {
+                        hitPlayerGroup_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
                     }
                 }
                 die_0x24();
@@ -1346,8 +1346,8 @@ void MovingHouse_804A7AE0::update() {
                 for (s32 i = 0; i < 4; i++) {
                     s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
                     s32 layer = v == 0 ? 0 : v + 7;
-                    if (getPlayerLayer_8023DE58(i) == layer && !fn_8022F514(i)) {
-                        fn_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
+                    if (getPlayerLayer_8023DE58(i) == layer && !hasPlayerLeader_8022F514(i)) {
+                        hitPlayerGroup_80238548(i, 1, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0);
                     }
                 }
                 die_0x24();
@@ -1373,8 +1373,8 @@ void MovingHouse_804A7AE0::update() {
                     p.y = baseY;
                     for (s32 col = 0; col < 6; col++) {
                         mTiles[row][col] = getRawTile_80226850(&p, 0);
-                        gBgRewrite_8053AC98->fn_802A381C(&p, 0, mTilesB[row][col]);
-                        gBgRewrite_8053AC98->fn_802A381C(&p, 1, mTilesA[row][col]);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTilesB[row][col]);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, mTilesA[row][col]);
                         p.y += 16.0f;
                     }
                     p.x += 16.0f;
@@ -1424,7 +1424,7 @@ void MovingHouse_804A7AE0::update() {
 inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, const char* name) {
     if (layer < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(pos, res, params);
     }
 }
 
@@ -1558,7 +1558,7 @@ void MovingHouse_804A7AE0::fn_80295EE8() {
         s32 layer = v == 0 ? 0 : v + 7;
         s32 playerLayer = getPlayerLayer_8023DE58(i);
         if (playerLayer == layer && !fn_80235274(i)) {
-            fn_80238548(i, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 12);
+            hitPlayerGroup_80238548(i, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 12);
         }
     }
     mTimer--;
@@ -1567,14 +1567,14 @@ void MovingHouse_804A7AE0::fn_80295EE8() {
 void MovingHouse_804A7AE0::die_0x24() {
     s32 v;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && !fn_8022F514(i)) {
+        if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
             v = (mSpawnParam_0x90 >> 7) & 0x1F;
             s32 layer = v == 0 ? 0 : v + 7;
             if (layer == getPlayerLayer_8023DE58(i)) {
-                if (fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
+                if (startPlayerTransition_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
                     mPlayerFlags[i] = 1;
                 } else {
-                    mPlayerFlags[i] = fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
+                    mPlayerFlags[i] = startPlayerTransition_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
                 }
             }
         }

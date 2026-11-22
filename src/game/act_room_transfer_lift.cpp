@@ -122,7 +122,7 @@ void RoomTransferLift_8049CC40::draw() {
 
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_80539EC8[0]);
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &mSpriteParams);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &mSpriteParams);
     }
 }
 

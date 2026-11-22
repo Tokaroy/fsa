@@ -7,7 +7,7 @@
 #include "game/act/act_obj_lift.h"
 #include "game/act/act_somaria_block.h"
 
-// Offsets (x, y, z) that init walks mPos along; the index is fn_80230CFC ^ 1.
+// Offsets (x, y, z) that init walks mPos along; the index is getPlayerFacing_80230CFC ^ 1.
 static const f32 lbl_80471368[4][3] = {
     {0.5f, 0.0f, 0.0f}, {-0.5f, 0.0f, 0.0f}, {0.0f, 0.5f, 0.0f}, {0.0f, -0.5f, 0.0f},
 };
@@ -39,8 +39,8 @@ void CaneOfSomariaBlock_804AA9F0::init() {
     field_0x254 = 0;
 
     s32 count = 0;
-    while (fn_801F2618(NULL, false)) {
-        s32 dir = fn_80230CFC(field_0x110) ^ 1;
+    while (sweepMapBox_801F2618(NULL, false)) {
+        s32 dir = getPlayerFacing_80230CFC(field_0x110) ^ 1;
         count++;
         mPos.x += 2.0f * lbl_80471368[dir][0];
         mPos.y += 2.0f * lbl_80471368[dir][1];
@@ -70,7 +70,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 continue;
             }
             JGeometry::TBox2f liftBox;
-            actor->fn_801F31C4(&liftBox);
+            actor->getBoxAtPos_801F31C4(&liftBox);
             OBJLift_804ACA00* lift = static_cast<OBJLift_804ACA00*>(actor);
             if (lift->field_0x258 != 0xB) {
                 continue;
@@ -80,7 +80,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 continue;
             }
             for (s32 serial = -1;;) {
-                serial = getActorManager_801F856C()->fn_801F78F4('SMRI', serial);
+                serial = getActorManager_801F856C()->findNextActorById_801F78F4('SMRI', serial);
                 if (serial < 0) {
                     break;
                 }
@@ -123,7 +123,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             JGeometry::TVec3f saved = mPos;
             JGeometry::TVec3f step(lbl_80471368[dir][0], lbl_80471368[dir][1], lbl_80471368[dir][2]);
             mPos.add(step);
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mPos = saved;
                 break;
             }
@@ -171,7 +171,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         if (!pool_80541738()) {
             break;
         }
-        if (!fn_801F2618(NULL, false)) {
+        if (!sweepMapBox_801F2618(NULL, false)) {
             field_0x238--;
             if (field_0x238 > 0) {
                 break;
@@ -213,7 +213,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         } else {
             mVel_0x3c.z -= 0.8f;
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         if (mPos.z < 0.0f && mVel_0x3c.z < 0.0f) {
             if (!pool_80541738()) {
                 break;

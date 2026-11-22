@@ -75,7 +75,7 @@ void WhackAMoleShop_8049C8EC::update() {
             field_0xb0 = 0x1100;
             if (field_0x234 == 160) {
                 pool_8053C140();
-                fn_801F3668();
+                markDead_801F3668();
             }
             updateHitReaction_801F3D94(1);
         }
@@ -102,7 +102,7 @@ static inline void focusCamera(const JGeometry::TVec3f& pos) {
 static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
     JGeometry::TVec3f dir;
     f32 dist;
-    shop->fn_801EE558(&dir, &dist, player + 1);
+    shop->getNearestPlayerDir_801EE558(&dir, &dist, player + 1);
     if (dist < 100.0f) {
         u32 angle = (u16)(s32)(10430.378f * JMath::atanTable_.atan2_(-dir.x, -dir.y));
         if (!(angle >= 0x2000 && angle < 0xE000)) {
@@ -172,7 +172,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x238 = fn_8022FD8C(mSerial);
         if (field_0x238 >= 0 && fn_802300EC(field_0x238)) {
-            if (fn_8038AD24(field_0x238, field_0x244 == 1 ? 0x328 : 0x31F, mSerial, mLayer_0x4, msgPos, 0)) {
+            if (openMessage_8038AD24(field_0x238, field_0x244 == 1 ? 0x328 : 0x31F, mSerial, mLayer_0x4, msgPos, 0)) {
                 for (s32 i = 0; i < 4; i++) {
                     fn_802308E0(i);
                 }
@@ -188,7 +188,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     case 1:
         focusCamera(focus);
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x238)) {
+        if (stepMessageWindow_803865B8(field_0x238)) {
             switch (fn_8037EFB4(field_0x238)) {
             case 0: {
                 fn_8038470C(field_0x238, field_0x244 == 1 ? 0x329 : 0x320);
@@ -244,22 +244,22 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
                                   0.5f * (f32)(s32)JUTVideo::sManager->getFbWidth(),
                                   0.5f * (f32)(s32)JUTVideo::sManager->getEfbHeight(), 3.0f);
         if (field_0x234 % 60 == 0) {
-            fn_801F0D20(0x3F);
+            playSe_801F0D20(0x3F);
         }
         field_0x234++;
         if (field_0x234 == 180) {
             field_0x230 = 5;
             field_0x234 = 0;
-            fn_801F0D20(0x3A);
-            getGameView_802D6A9C()->fn_802D8050(field_0x248, true, 0xFF);
+            playSe_801F0D20(0x3A);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x248, true, 0xFF);
             field_0x240 = gAudioMgr_8053AF80->field_0x58;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
         }
         break;
     case 5:
         field_0x23c--;
         if (field_0x23c / 60 <= 10 && field_0x23c % 60 == 59) {
-            fn_801F0D20(0x3F);
+            playSe_801F0D20(0x3F);
             gAudioMgr_8053AF80->fn_80458508(1);
         }
         if (field_0x23c / 60 == 10) {
@@ -274,9 +274,9 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
             getActorManager_801F856C()->fn_801F68E0();
             field_0x230 = 6;
             field_0x234 = 0;
-            fn_801F0D20(0x3B);
+            playSe_801F0D20(0x3B);
             gAudioMgr_8053AF80->fn_80458508(0);
-            getGameView_802D6A9C()->fn_802D8050(field_0x248, false, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x248, false, 0xFF);
             field_0x247 = 2;
         }
         break;
@@ -285,14 +285,14 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         field_0x234++;
         s32 count = getActorManager_801F856C()->fn_801F68E0();
         if (field_0x234 > 50 && count == 1) {
-            field_0x238 = fn_8022EA0C(field_0x238);
+            field_0x238 = getRepresentativePlayer_8022EA0C(field_0x238);
             fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                fn_8038AD24(field_0x238, 0x322, mSerial, mLayer_0x4, msgPos, 2);
+                openMessage_8038AD24(field_0x238, 0x322, mSerial, mLayer_0x4, msgPos, 2);
                 field_0x230 = 7;
                 field_0x234 = 0;
                 fn_8022B214();
-                gGameRoot_8053AAF8->fn_80138B7C();
+                gGameRoot_8053AAF8->startStageMusic_80138B7C();
                 field_0x234 = 0;
             }
         }
@@ -300,7 +300,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     case 7:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
-        if (fn_803865B8(field_0x238)) {
+        if (stepMessageWindow_803865B8(field_0x238)) {
             if (field_0x234 > 0 && field_0x260[field_0x234 - 1] != 0) {
                 lbl_8053AED0->fn_8043D874(field_0x234 - 1, field_0x260[field_0x234 - 1] * 20, 0);
             }
@@ -330,12 +330,12 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     case 8:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
-        if (fn_803865B8(field_0x238) && fn_80384C58(field_0x238, mSerial)) {
+        if (stepMessageWindow_803865B8(field_0x238) && fn_80384C58(field_0x238, mSerial)) {
             field_0x230 = 9;
             field_0x234 = 0;
             getActorManager_801F856C()->fn_801F6884();
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
+                if (!hasPlayerLeader_8022F514(i)) {
                     fn_802372F8(i, field_0x270[i], field_0x280[i]);
                 }
             }
@@ -366,7 +366,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     case 9:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x238 = fn_8022FD8C(mSerial);
-        if (field_0x238 >= 0 && fn_8038AD24(field_0x238, 0x328, mSerial, mLayer_0x4, msgPos, 0)) {
+        if (field_0x238 >= 0 && openMessage_8038AD24(field_0x238, 0x328, mSerial, mLayer_0x4, msgPos, 0)) {
             field_0x230 = 10;
             field_0x234 = 0;
             faceTowards(this, field_0x238);
@@ -475,8 +475,8 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
         return;
     }
     startSound_801F0E34(0x40099, 0);
-    if (fn_8022F514(player)) {
-        player = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        player = getPlayerLeader_8022F3DC(player);
     }
     if (field_0x244 == 1) {
         JGeometry::TVec3f pos = mPos;
@@ -486,7 +486,7 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30001, 0);
         JGeometry::TVec2f pos2(pos.x, pos.y);
-        fn_80238548(player, 0, &pos2, 0xb);
+        hitPlayerGroup_80238548(player, 0, &pos2, 0xb);
     } else {
         s32 hits = 1;
         s32 total = 0;

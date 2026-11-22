@@ -102,9 +102,9 @@ FourSwordCutscene_8049DA0C::~FourSwordCutscene_8049DA0C() {
 // (regalloc-only). Minor register allocation differences in visibleBox center computation.
 void FourSwordCutscene_8049DA0C::init() {
     DemoActorBase_8049D140::init();
-    mAnim250.fn_801D2608(lbl_8049DA00, 3);
+    mAnim250.setKeyTables_801D2608(lbl_8049DA00, 3);
     mAnim250.startAnim_801D22DC(0, 2, false);
-    mAnim250.fn_801D1F14(0.0f);
+    mAnim250.setFrame_801D1F14(0.0f);
     JGeometry::TVec3f pos;
     setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
     mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
@@ -145,12 +145,12 @@ void FourSwordCutscene_8049DA0C::update() {
         break;
     case 1:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             switch (fn_8037EFB4(0)) {
             case 0:
                 fn_80388CAC(0, mSerial);
                 for (s32 i = 0; i < 4; i++) {
-                    fn_80230BF4(i, 3);
+                    setPlayerFacing_80230BF4(i, 3);
                     fn_80230498(i, getPlayerPos_8023E724(i), 0x3f, 0xff, -128, -128, true);
                 }
                 fn_80230534(false);
@@ -175,11 +175,11 @@ void FourSwordCutscene_8049DA0C::update() {
             field_0x244.z = mPos.z;
             field_0x244.y += 32.0f;
             for (s32 i = 0; i < 4; i++) {
-                fn_80230BF4(i, 2);
+                setPlayerFacing_80230BF4(i, 2);
                 fn_80230498(i, &field_0x244, 0x31a, 0xff, -128, -128, true);
             }
             mAnim250.startAnim_801D22DC(1, 0, false);
-            mAnim250.fn_801D1F14(0.0f);
+            mAnim250.setFrame_801D1F14(0.0f);
             mAnim250.mFrameCtrl.setRate(0.0f);
         }
         if (fn_8011921C()->field_0x8 > 60) {
@@ -236,20 +236,20 @@ void FourSwordCutscene_8049DA0C::update() {
             startSound_801F0E34(0x3007a, 0);
         }
     }
-    mAnim250.fn_801D1C18();
+    mAnim250.update_801D1C18();
 }
 
 void FourSwordCutscene_8049DA0C::draw() {
     DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
     }
     JGeometry::TVec3f pos = mPos;
     pos.y += 6.0f;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x179, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x179, NULL, 1.0f, 1.0f);
     }
 }
 
@@ -334,7 +334,7 @@ inline void FourSwordCutscene_8049DA0C::startState7() {
 
 inline void FourSwordCutscene_8049DA0C::startState8() {
     mAnim250.startAnim_801D22DC(2, 0, false);
-    mAnim250.fn_801D1F14(0.0f);
+    mAnim250.setFrame_801D1F14(0.0f);
     mAnim250.mFrameCtrl.setRate(1.0f);
     for (s32 i = 0; i < 4; i++) {
         fn_80230FD0(i, 0x20047);
@@ -344,7 +344,7 @@ inline void FourSwordCutscene_8049DA0C::startState8() {
 inline void FourSwordCutscene_8049DA0C::startState11() {
     spawnPlayerEffects();
     for (s32 i = 0; i < 4; i++) {
-        fn_80230BF4(i, 3);
+        setPlayerFacing_80230BF4(i, 3);
         fn_80230498(i, getPlayerPos_8023E724(i), 0x3f, 0xff, -128, -128, true);
         fn_80230FD0(i, 0x10015);
     }
@@ -353,10 +353,10 @@ inline void FourSwordCutscene_8049DA0C::startState11() {
 void FourSwordCutscene_8049DA0C::fn_80117074(s32 index) {
     switch (index) {
     case 2:
-        fn_80119DD0()->fn_80119998(120, 0, 2, 0, 1, 0, 0);
+        fn_80119DD0()->startFade_80119998(120, 0, 2, 0, 1, 0, 0);
         fn_80234810();
         fn_802382D0(0, false);
-        gAudioMgr_8053AF80->fn_80458FF0(0x01000020, 1, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x01000020, 1, 0);
         if (mEmitter2a8 != NULL) {
             mEmitter2a8->becomeInvalidEmitter();
             mEmitter2a8 = NULL;
@@ -409,9 +409,9 @@ bool FourSwordCutscene_8049DA0C::spreadPlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-        fn_801CD950(&field_0x23c, 0.3f, 0.03f);
-        fn_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
-        fn_80230BF4(i, 2);
+        moveToward_801CD950(&field_0x23c, 0.3f, 0.03f);
+        moveToward_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
+        setPlayerFacing_80230BF4(i, 2);
         fn_80230498(i, &pos, mAnim250.mCel, 0xff, -128, -128, true);
         mEmitters288[i]->setGlobalTranslation(pos);
         mEmitters298[i]->setGlobalTranslation(pos);
@@ -446,14 +446,14 @@ bool FourSwordCutscene_8049DA0C::checkPlayers() {
             return false;
         }
     }
-    if (fn_80230CFC(0) != 3) {
+    if (getPlayerFacing_80230CFC(0) != 3) {
         return false;
     }
     u16 angle;
     s32 dir;
     s32 player;
     f32 dist;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (dir != 2) {
         return false;
     }
@@ -493,7 +493,7 @@ void FourSwordCutscene_8049DA0C::fn_80116E8C() {
     case 9: {
         JGeometry::TVec3f pos = mPos;
         pos.y += field_0x240;
-        fn_801CD950(&field_0x240, mPos.y + 32.0f, 0.5f);
+        moveToward_801CD950(&field_0x240, mPos.y + 32.0f, 0.5f);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->mBlendBoxOn_0x840 == 0) {
             camera->mBlendBoxOn_0x840 = 1;

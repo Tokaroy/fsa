@@ -145,9 +145,9 @@ void WingedForceGem_804AB098::init() {
         mBox.set(-8.0f, -32.0f, 8.0f, 16.0f);
     }
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        fn_801F3668();
+        markDead_801F3668();
     } else if (field_0x283 == 1 && gGameRoot_8053AAF8->field_0x7e == 0) {
-        fn_801F3668();
+        markDead_801F3668();
     } else if (field_0x285 == 1) {
         field_0x234 = field_0x230;
         field_0x230 = 1;
@@ -164,7 +164,7 @@ void WingedForceGem_804AB098::update() {
             } else {
                 spawnEmitter_8013CC50(layer, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             }
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x281 = 0;
         }
         return;
@@ -198,7 +198,7 @@ void WingedForceGem_804AB098::update() {
         mPos.y -= mPos.z;
         s32 player = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (viewLayerFlag(mLayer_0x4)) {
-            hitWall = fn_801F2618(NULL, false);
+            hitWall = sweepMapBox_801F2618(NULL, false);
         }
         if (player < 0) {
             for (s32 i = 0; i < 4; i++) {
@@ -235,13 +235,13 @@ void WingedForceGem_804AB098::update() {
                         fn_80230498(player, &pos, 0xED, 0xFF, -0x80, -0x80, true);
                     }
                     s32 who = player;
-                    if (fn_8022F514(player) == 1) {
-                        who = fn_8022F3DC(player);
+                    if (hasPlayerLeader_8022F514(player) == 1) {
+                        who = getPlayerLeader_8022F3DC(player);
                     }
                     showMessage(who);
                     getActorManager_801F856C()->spawnActor_801F9484(
                         'IMUP', mLayer_0x4, &at, field_0x270 + 0xA00000 + (player << 24) + (player << 26) + 4, -1, -1);
-                    fn_801F3668();
+                    markDead_801F3668();
                     return;
                 }
             } else {
@@ -396,8 +396,8 @@ void WingedForceGem_804AB098::update() {
     case 5: {
         fixKind(this);
         s32 who = field_0x26c;
-        if (fn_8022F514(field_0x26c) == 1) {
-            who = fn_8022F3DC(field_0x26c);
+        if (hasPlayerLeader_8022F514(field_0x26c) == 1) {
+            who = getPlayerLeader_8022F3DC(field_0x26c);
         }
         showMessage(who);
         if (field_0x270 != 5 && field_0x270 != 6 && field_0x270 != 7) {
@@ -426,7 +426,7 @@ void WingedForceGem_804AB098::update() {
         }
         if (field_0x250 == 0) {
             setScreenFlag_0x30(0xFF, true);
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -536,7 +536,7 @@ void WingedForceGem_804AB098::draw() {
         params.field_0x1d = -1;
         params.field_0x1c = 0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x25c + lbl_804AB038[kind],
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x25c + lbl_804AB038[kind],
                         NULL);
         }
     } else {
@@ -555,7 +555,7 @@ void WingedForceGem_804AB098::updateRise() {
         s32 serial = -1;
         bool found = false;
         while (true) {
-            serial = getActorManager_801F856C()->fn_801F78F4('BOME', serial);
+            serial = getActorManager_801F856C()->findNextActorById_801F78F4('BOME', serial);
             if (serial < 0) {
                 break;
             }
@@ -572,7 +572,7 @@ void WingedForceGem_804AB098::updateRise() {
         JGeometry::TVec3f dir;
         f32 dist;
         if (!found) {
-            fn_801EE558(&dir, &dist, 0);
+            getNearestPlayerDir_801EE558(&dir, &dist, 0);
         }
         if (found == 1 || dist < 48.0f) {
             addCalc2_801F71A4(&field_0x248, 20.0f, 0.3f, 4.0f);

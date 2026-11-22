@@ -36,14 +36,14 @@ static const GXTlut lbl_8046F940[16] = {
 // pool in .sdata2 (a function's own constants are pooled in first-use order,
 // after the floats of fn_802F5040), and the two white ones are separate.
 static const GXColor lbl_805414E8 = {0xFF, 0xFF, 0xFF, 0xFF}; // fn_802FC80C, TEVREG2
-static const GXColor lbl_805414EC = {0x00, 0x00, 0x00, 0xFF}; // fn_802FB69C, TEVREG0
+static const GXColor lbl_805414EC = {0x00, 0x00, 0x00, 0xFF}; // drawPlayerPanel_802FB69C, TEVREG0
 static const GXColor lbl_805414F0 = {0x00, 0x00, 0x00, 0x7E}; // fn_802FAC10, TEVREG0
 static const GXColor lbl_805414F4 = {0xFF, 0xFF, 0xFF, 0xFF}; // fn_802F8F0C, TEVREG0
 
 // The draw offset of a sprite with params at pos: field_0x1c / field_0x1d
 // in 0x400 / 0x80 units, one step up (0x1c + 1, 0x1d - 1) for a raised sprite
 // (the map's field_0xe461, params' field_0x20, above the ground) below step 1.
-// fn_802F5040 and fn_802F86CC inline it; both read the map through
+// fn_802F5040 and drawSobSprite_802F86CC inline it; both read the map through
 // gGameRoot2_8053AB10, also in the member.
 static inline f32 getDrawOffset(const SpriteParams_801F5AE0* params, const JGeometry::TVec3f* pos) {
     u8 raised = gGameRoot2_8053AB10->field_0x20->field_0xe461;
@@ -62,7 +62,7 @@ static inline f32 getDrawOffset(const SpriteParams_801F5AE0* params, const JGeom
     return (a << 10) + (b << 7);
 }
 
-// One GBA OAM entry (attributes 0-2 and the affine halfword) as fn_802F86CC
+// One GBA OAM entry (attributes 0-2 and the affine halfword) as drawSobSprite_802F86CC
 // unpacks the 6-byte little-endian entries of a "SOB " frame; the bit fields
 // in the GBA's order (big-endian bit fields, so the first is the high bits).
 struct SpriteObj_802F86CC {
@@ -340,11 +340,11 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mQueuedSpriteNum_0xd320; i++) {
         QueuedSprite_8030029C* sprite = &self->mQueuedSprites_0xc220[i];
         if (sprite->mRes != NULL) {
-            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->drawSobSprite_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->drawBlockMap_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
     self->mQueuedSpriteNum_0xd320 = 0;
@@ -375,11 +375,11 @@ static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mLateQueuedSpriteNum_0xe424; i++) {
         QueuedSprite_8030029C* sprite = &self->mLateQueuedSprites_0xd324[i];
         if (sprite->mRes != NULL) {
-            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->drawSobSprite_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->drawBlockMap_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
     self->mLateQueuedSpriteNum_0xe424 = 0;
@@ -394,12 +394,12 @@ void TileMap_804AA858::fn_802FF2D8() {
 // Scheduling and registers only: the original keeps i, the flag,
 // the lbl_8053ACF0 pointer and the three per-player pointers in r22-r29 (ours
 // r24-r31, one pointer induction fewer) and loads field_0x210[i] before
-// field_0x11c[i] for the fn_802FB69C call.
+// field_0x11c[i] for the drawPlayerPanel_802FB69C call.
 // Draws the panels of the players whose field_0x148 byte is set (not in
 // screen mode 12), each after field_0xfc's window when it belongs to that
 // player (field_0x230, -1 for all); a player in state 1 of fn_80301D30
 // passes a count, one in state 2 fades in by its lbl_8053ACF0 counter.
-void TileMap_804AA858::fn_802FF0EC() {
+void TileMap_804AA858::drawPlayerPanels_802FF0EC() {
     bool window = false;
     for (s32 i = 0; i < 4; i++) {
         if (field_0x148[i] == 0 || gGameRoot_8053AAF8->field_0x4c == 12) {
@@ -424,7 +424,7 @@ void TileMap_804AA858::fn_802FF0EC() {
                 }
             }
         }
-        fn_802FB69C(i, field_0x11c[i], &field_0x150[i], &field_0x190[i], field_0x210[i], count, alpha);
+        drawPlayerPanel_802FB69C(i, field_0x11c[i], &field_0x150[i], &field_0x190[i], field_0x210[i], count, alpha);
     }
     if (window) {
         field_0xfc->fn_80432638();
@@ -469,11 +469,11 @@ void TileMap_804AA858::fn_802FEE68() {
                 effect->mParams.mMtx = m;
             }
             if (effect->mRes != NULL) {
-                fn_802F86CC(&effect->mPos, effect->mRes, effect->mFrame, &effect->mParams, 1.0f, 1.0f);
+                drawSobSprite_802F86CC(&effect->mPos, effect->mRes, effect->mFrame, &effect->mParams, 1.0f, 1.0f);
             } else if (effect->mImage != NULL) {
-                fn_802F745C(&effect->mPos, effect->mImage, &effect->mParams);
+                drawTimgImage_802F745C(&effect->mPos, effect->mImage, &effect->mParams);
             } else if (effect->field_0x24 != NULL) {
-                fn_802F6CF4(&effect->mPos, effect->field_0x24, &effect->mParams);
+                drawBlockMap_802F6CF4(&effect->mPos, effect->field_0x24, &effect->mParams);
             }
             if (effect->mScale != 1.0f) {
                 effect->mParams.mMtx = mtx;
@@ -809,13 +809,13 @@ void TileMap_804AA858::fn_802FCE74() {
         for (i = 0; i < 4; i++) {
             if (field_0x138[i] > 0) {
                 if (field_0x230 == i) {
-                    s32 player = fn_8022EA0C(i);
+                    s32 player = getRepresentativePlayer_8022EA0C(i);
                     Vec screen;
                     JGeometry::TVec3f pos;
                     if (getPlayerDestLayer_8023E10C(player) < 8) {
                         pos.set(*fn_8023E214(player));
                     } else {
-                        pos.set(*fn_8023E32C(player));
+                        pos.set(*getPlayerLastTvPos_8023E32C(player));
                     }
                     gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
                     f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
@@ -878,13 +878,13 @@ void TileMap_804AA858::fn_802FCE74() {
             field_0x217[i] = 0;
         }
     } else if (field_0x138[0] > 0 && !fn_8022C8EC(0)) {
-        s32 player = fn_8022EA0C(0);
+        s32 player = getRepresentativePlayer_8022EA0C(0);
         Vec screen;
         JGeometry::TVec3f pos;
         if (getPlayerDestLayer_8023E10C(player) < 8) {
             pos.set(*fn_8023E214(player));
         } else {
-            pos.set(*fn_8023E32C(player));
+            pos.set(*getPlayerLastTvPos_8023E32C(player));
         }
         gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
         f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
@@ -1165,7 +1165,7 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
 // The two mode-11 tests are isGameMode (the byte, as the original); the first
 // tint stores its colour bytes before its box; mode goes through r0; stack
 // slots differ; the literals are reloc-name.
-// One player's panel (fn_802FF0EC): the ortho box rect and viewport / scissor
+// One player's panel (drawPlayerPanels_802FF0EC): the ortho box rect and viewport / scissor
 // rect2; with flag the record's tile layer mValid - 1 (on its palette set's
 // first colour, mPaletteFirstColor_0x114) and, when the overlay flag (mEntries[3].mScrollBit) is set and the pause screen
 // (lbl_8053AEC8's alpha) is not fully up, layer mValid + 7 too, tinted by
@@ -1174,7 +1174,7 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
 // mCircleTex_0xe454. While paused a black box at the pause screen's alpha; count:
 // a mosaic of the panel (points of count + 1 pixels from the EFB); alpha: a
 // black box at 0xFF - alpha.
-void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect,
+void TileMap_804AA858::drawPlayerPanel_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect,
                                    IntRect_803004C0* rect2, u8 flag, s32 count, u8 alpha) {
     JGeometry::TBox2f box(rect->field_0x0, rect->field_0x4, rect->field_0x0 + rect->field_0x8,
                           rect->field_0x4 + rect->field_0xc);
@@ -1305,7 +1305,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRe
         JUtility::TColor color(0, 0, 0, 0xFF - alpha);
         fn_8013B004(&fill, &color);
     }
-    gGameRoot2_8053AB10->field_0x24->fn_8030DFE8(true);
+    gGameRoot2_8053AB10->field_0x24->loadGXState_8030DFE8(true);
 }
 
 // Draws the panel tile grid field_0x48[layer] (2 x 2 blocks of 16 x 16) scrolled
@@ -1508,7 +1508,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
 // FIXME: 98.98 %, regalloc-only; behaviour drift.
 // Register allocation, stack slots and data offsets only (try.py
 // "operands + reloc-name"): the tables and "circle.bti" sit 0x70 / 0x1D8 too
-// early in our .rodata (fn_802FCE74's tables and fn_802F6800's five are not
+// early in our .rodata (fn_802FCE74's tables and addFadeSprite_802F6800's five are not
 // written), the GXColor temporaries' stack slots differ, and registers
 // r16-r29 / f20-f31 rotate.
 // Draws the stage's tile shades: for layer 0 at mLayerOrigin_0x2368 (when
@@ -1854,7 +1854,7 @@ void TileMap_804AA858::fn_802FA3FC() {
 // unrolled nibble-swap loop before storing the previous ones; registers differ.
 // loadSpriteImage_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
 // also keeps bytes 0x200-0x2FF of that buffer in mAnimTileData_0x238c.
-void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
+void TileMap_804AA858::loadTileImages_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
     u8* dst;
     u8* src;
     u32 len;
@@ -2056,7 +2056,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
     }
 }
 
-void TileMap_804AA858::fn_802F9974(s32 layer, s32 index, u16 value) {
+void TileMap_804AA858::setTile_802F9974(s32 layer, s32 index, u16 value) {
     if (layer >= 0 && layer < 4) {
         mLayerGrid[layer][index] = value;
     } else if (layer >= 4 && layer < 8) {
@@ -2236,7 +2236,7 @@ void TileMap_804AA858::fn_802F91AC(const JGeometry::TVec3f* pos, SpriteParams_80
 // The GX state of a textured sprite quad (direct f32 position and texture
 // coordinates, one TEV stage of the texture times the register colours): the
 // TEV colours, blend mode, z mode and alpha update of params, else white /
-// zero, the plain blend and the default z mode. fn_802F86CC calls it after
+// zero, the plain blend and the default z mode. drawSobSprite_802F86CC calls it after
 // fn_802F91AC.
 void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXClearVtxDesc();
@@ -2300,8 +2300,8 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
 // entries, drawn last to first as quads of the 4-bit tile images (mSpriteTexObjs_0xb5c,
 // palettes mSpriteTluts_0x25c; the set is params' field_0x1e) scaled by (scaleX,
 // scaleY). params' bytes 0x21 / 0x22 queue the sprite instead (fn_802F654C /
-// fn_802F6298); field_0x30 adds the effect of fn_802F6800.
-void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
+// fn_802F6298); field_0x30 adds the effect of addFadeSprite_802F6800.
+void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
                                    SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY) {
     // The GX texture maps of the (palette & 1, priority) images.
     static const GXTexMapID lbl_80470F60[8] = {
@@ -2428,7 +2428,7 @@ void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 
         GXEnd();
     }
     if (params != NULL && params->field_0x30 != -1) {
-        fn_802F6800(pos, res, frame, NULL, NULL, params);
+        addFadeSprite_802F6800(pos, res, frame, NULL, NULL, params);
     }
 }
 
@@ -2452,9 +2452,9 @@ static inline bool isOnScreen(const JGeometry::TVec3f* pos) {
 // the matrix and tilted by 45 degrees; else as an upright quad. With params'
 // field_0x24 and mUseFilterTex_0xe450 a further TEV stage multiplies in the player's
 // mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
-// field_0x30 adds the effect of fn_802F6800.
+// field_0x30 adds the effect of addFadeSprite_802F6800.
 // FIXME: 92.19 %, missing/extra; behaviour near.
-void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (!mDrawSprites_0x2364) {
         return;
     }
@@ -2732,7 +2732,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
         GXSetClipMode(GX_CLIP_DISABLE);
     }
     if (params != NULL && params->field_0x30 != -1) {
-        fn_802F6800(pos, NULL, 0, res, NULL, params);
+        addFadeSprite_802F6800(pos, NULL, 0, res, NULL, params);
     }
 }
 
@@ -2741,8 +2741,8 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
 // tile column / row of field_0x4[0], flips, palette), drawn one palette at a
 // time (field_0x18[0]) as 8 x 8 quads; with mUseFilterTex_0xe450 a second TEV stage
 // multiplies in the player's mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22
-// queue it instead; field_0x30 adds the effect of fn_802F6800.
-void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+// queue it instead; field_0x30 adds the effect of addFadeSprite_802F6800.
+void TileMap_804AA858::drawBlockMap_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
         GX_TLUT8, GX_TLUT9, GX_TLUT10, GX_TLUT11, GX_TLUT12, GX_TLUT13, GX_TLUT14, GX_TLUT15,
@@ -2875,7 +2875,7 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
         }
     }
     if (params != NULL && params->field_0x30 != -1) {
-        fn_802F6800(pos, NULL, 0, NULL, res, params);
+        addFadeSprite_802F6800(pos, NULL, 0, NULL, res, params);
     }
 }
 
@@ -2903,7 +2903,7 @@ void TileMap_804AA858::fn_802F6BBC(s32 src, s32 dst) {
 }
 
 // FIXME: 57.44 %, missing/extra; behaviour near.
-u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image,
+u8 TileMap_804AA858::addFadeSprite_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image,
                                  void* res3, SpriteParams_801F5AE0* params) {
     static const GXColor lbl_80471060[18] = {
         {0xFF, 0xFF, 0xFF, 0xBF}, {0xFF, 0xFF, 0xFF, 0xBF}, {0xFF, 0xFF, 0xFF, 0xBF},
@@ -3105,7 +3105,7 @@ f32 fn_802F5FF4(f32 z) {
 
 // FIXME: 99.01 %, regalloc-only; behaviour clean.
 // Register allocation only: the 8.0f literal and mLayerOrigin_0x2368.y swap f5/f6 (and fy is in f6, not f7).
-f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
+f32 TileMap_804AA858::getHeightAt_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
     if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
         pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
@@ -3192,11 +3192,11 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
 }
 
 // FIXME: 99.34 %, regalloc-only; behaviour clean.
-// Register allocation only, as in fn_802F5E9C (inlined here):
+// Register allocation only, as in getHeightAt_802F5E9C (inlined here):
 // 8.0f and pos->x swap f5/f6.
 // The position (out) and parameters (*outParams) a sprite at pos is drawn
 // with: on the height grid's tilt (fn_802F58A8, params' matrix concatenated
-// into tmp) for field_0x38 2 or no params, raised by the height (fn_802F5E9C)
+// into tmp) for field_0x38 2 or no params, raised by the height (getHeightAt_802F5E9C)
 // for 1, else unchanged.
 void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params,
                                     JGeometry::TVec3f* out, SpriteParams_801F5AE0** outParams, Mtx mtx,
@@ -3216,7 +3216,7 @@ void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_80
         }
         out->set(*pos);
     } else if (params->field_0x38 == 1) {
-        out->set(pos->x, pos->y, pos->z + fn_802F5E9C(pos));
+        out->set(pos->x, pos->y, pos->z + getHeightAt_802F5E9C(pos));
         *outParams = params;
     } else {
         out->set(*pos);
@@ -3243,7 +3243,7 @@ void TileMap_804AA858::fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record) {
                 lbl_80506DA8[slot][i] = (record->f.field_0x4.mOdd.field_0x6 >> (i * 2)) & 3;
                 lbl_80506DB8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_4 >> i) & 1;
                 lbl_80506DC8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_0 >> i) & 1;
-                lbl_80506DD8[slot] = fn_8022EA0C(slot);
+                lbl_80506DD8[slot] = getRepresentativePlayer_8022EA0C(slot);
             }
         }
     }

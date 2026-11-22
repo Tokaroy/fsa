@@ -155,7 +155,7 @@ static const s16 lbl_8048C95C[32][2] = {
 static const s16 lbl_8048C9DC[8][2] = {
     {161, 238}, {354, 90}, {435, 90}, {196, 105}, {295, 250}, {352, 125}, {224, 92}, {417, 129},
 };
-// The state handlers, indexed by mState_0x350 (fn_804108B4).
+// The state handlers, indexed by mState_0x350 (update_804108B4).
 static MapScreen_804B1288::StateFunc lbl_804B10F8[22] = {
     &MapScreen_804B1288::fn_8040F3AC,
     &MapScreen_804B1288::fn_8040F35C,
@@ -180,7 +180,7 @@ static MapScreen_804B1288::StateFunc lbl_804B10F8[22] = {
     &MapScreen_804B1288::fn_80409450,
     &MapScreen_804B1288::fn_80409330,
 };
-// The message-box handlers, indexed by mMessageState_0x659 (fn_804108B4).
+// The message-box handlers, indexed by mMessageState_0x659 (update_804108B4).
 static MapScreen_804B1288::StateFunc lbl_804B1230[4] = {
     &MapScreen_804B1288::fn_80403F50,
     &MapScreen_804B1288::fn_80403EAC,
@@ -377,7 +377,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
         field_0x278[i] = new PaneCtrl_804AF86C;
         field_0x278[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658[24 + i]));
         for (s32 j = 0; j < 20; j++) {
-            field_0x278[i]->fn_80402628(20, field_0x278[i]->field_0x28, 0);
+            field_0x278[i]->animateAlpha_80402628(20, field_0x278[i]->field_0x28, 0);
         }
     }
     mTestMapPane_0xc8 = new PaneCtrl_804AF86C;
@@ -660,9 +660,9 @@ MapScreen_804B1288::MapScreen_804B1288() {
     field_0x23c->moveFromCentre_80402E08(0.0f, -150.0f);
     u8 done;
     do {
-        done = mPlanPanes_0x120[0]->fn_80402940(15, 0, 0.0f, -200.0f);
+        done = mPlanPanes_0x120[0]->animateMoveY_80402940(15, 0, 0.0f, -200.0f);
         for (s32 i = 0; i < 2; i++) {
-            mPlanPanes_0x120[i]->fn_80402628(15, mPlanPanes_0x120[i]->field_0x28, 0);
+            mPlanPanes_0x120[i]->animateAlpha_80402628(15, mPlanPanes_0x120[i]->field_0x28, 0);
         }
     } while (!done);
     for (s32 i = 0; i < 8; i++) {
@@ -816,8 +816,8 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
     mMapAreaScreen_0x10->search(0x54746C763134ull /* "Ttlv14" */)->setAlpha(field_0x64b[1] * (1.0f - alpha));
 }
 
-void MapScreen_804B1288::fn_80411230() {
-    gGameRoot2_8053AB10->fn_8013B490();
+void MapScreen_804B1288::draw_80411230() {
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (mStage_0x340 < 7 && !isStageFlagSet(mStage_0x340, 3) && (isCursorState() || mState_0x350 == 0x13)) {
         if (!mMapAreaScreen_0x10->search('Pphu01')->mIsVisible) {
             mMapAreaScreen_0x10->search('Pphu01')->show();
@@ -882,13 +882,13 @@ void MapScreen_804B1288::fn_804111C4() {
     if (mState_0x350 == 0x15) {
         fn_8037AA7C();
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mMessageWindowScreen_0x18->setScissor(true);
     mMessageWindowScreen_0x18->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->draw_80440EE8();
 }
 
-void MapScreen_804B1288::fn_804108B4() {
+void MapScreen_804B1288::update_804108B4() {
     (lbl_8053ADF8->*lbl_804B10F8[mState_0x350])();
     (lbl_8053ADF8->*lbl_804B1230[mMessageState_0x659])();
     fn_80408114();
@@ -954,22 +954,22 @@ void MapScreen_804B1288::fn_804108B4() {
     }
     if (field_0x65d) {
         for (int i = 0; i < 15; i++) {
-            field_0x278[i]->fn_80402628(20, 0, field_0x278[i]->field_0x28);
+            field_0x278[i]->animateAlpha_80402628(20, 0, field_0x278[i]->field_0x28);
         }
     } else {
         for (int i = 0; i < 15; i++) {
-            field_0x278[i]->fn_80402628(20, field_0x278[i]->field_0x28, 0);
+            field_0x278[i]->animateAlpha_80402628(20, field_0x278[i]->field_0x28, 0);
         }
     }
     if (field_0x65e) {
-        mPlanPanes_0x120[0]->fn_80402940(20, 0, -200.0f, 0.0f);
+        mPlanPanes_0x120[0]->animateMoveY_80402940(20, 0, -200.0f, 0.0f);
         for (int i = 0; i < 2; i++) {
-            mPlanPanes_0x120[i]->fn_80402628(20, 0, mPlanPanes_0x120[i]->field_0x28);
+            mPlanPanes_0x120[i]->animateAlpha_80402628(20, 0, mPlanPanes_0x120[i]->field_0x28);
         }
     } else {
-        mPlanPanes_0x120[0]->fn_80402940(15, 0, 0.0f, -200.0f);
+        mPlanPanes_0x120[0]->animateMoveY_80402940(15, 0, 0.0f, -200.0f);
         for (int i = 0; i < 2; i++) {
-            mPlanPanes_0x120[i]->fn_80402628(15, mPlanPanes_0x120[i]->field_0x28, 0);
+            mPlanPanes_0x120[i]->animateAlpha_80402628(15, mPlanPanes_0x120[i]->field_0x28, 0);
         }
     }
     if (mStage_0x340 < 8) {
@@ -1303,18 +1303,18 @@ s32 fn_8040F474() {
 void MapScreen_804B1288::fn_8040F3AC() {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
-            mLevelCursorPanes_0x228[i][j]->fn_80402940(0x14, 0, -150.0f, 0.0f);
+            mLevelCursorPanes_0x228[i][j]->animateMoveY_80402940(0x14, 0, -150.0f, 0.0f);
         }
     }
-    field_0x238->fn_80402940(0x14, 0, -150.0f, 0.0f);
-    field_0x23c->fn_80402940(0x14, 0, -150.0f, 0.0f);
-    if (field_0x11c->fn_80402940(0x14, 0, 200.0f, 0.0f)) {
+    field_0x238->animateMoveY_80402940(0x14, 0, -150.0f, 0.0f);
+    field_0x23c->animateMoveY_80402940(0x14, 0, -150.0f, 0.0f);
+    if (field_0x11c->animateMoveY_80402940(0x14, 0, 200.0f, 0.0f)) {
         mState_0x350 = 0xB;
     }
 }
 
 void MapScreen_804B1288::fn_8040F35C() {
-    if (field_0x11c->fn_80402940(0x14, 0, 200.0f, 0.0f)) {
+    if (field_0x11c->animateMoveY_80402940(0x14, 0, 200.0f, 0.0f)) {
         mState_0x350 = 0xB;
     }
 }
@@ -1738,26 +1738,26 @@ void MapScreen_804B1288::fn_8040BC1C() {
     } else {
         if (mStage_0x340 < 7) {
             if (field_0x41e >= 15) {
-                mTestMapPane_0xc8->fn_80402B10(30, 0, 0.0f, lbl_8048C86C[mStage_0x340]);
-                mTestMapPane_0xc8->fn_80402940(30, 0, 0.0f, lbl_8048C87C[mStage_0x340]);
-                faded = mTestMapPane_0xc8->fn_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
+                mTestMapPane_0xc8->slideX_80402B10(30, 0, 0.0f, lbl_8048C86C[mStage_0x340]);
+                mTestMapPane_0xc8->animateMoveY_80402940(30, 0, 0.0f, lbl_8048C87C[mStage_0x340]);
+                faded = mTestMapPane_0xc8->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 f32 scale = lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18 - 1.0f;
                 f32 dx = scale * (mTowerPane_0xcc->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 f32 dy = scale * (mTowerPane_0xcc->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                mTowerPane_0xcc->fn_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
-                mTowerPane_0xcc->fn_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
-                mTowerPane_0xcc->fn_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
+                mTowerPane_0xcc->slideX_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
+                mTowerPane_0xcc->animateMoveY_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
+                mTowerPane_0xcc->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 dx = scale * (field_0xd0->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 dy = scale * (field_0xd0->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                field_0xd0->fn_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
-                field_0xd0->fn_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
-                field_0xd0->fn_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
+                field_0xd0->slideX_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
+                field_0xd0->animateMoveY_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
+                field_0xd0->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 for (int i = 0; i < 18; i++) {
                     dx = scale * mRoutePanes_0xd4[i]->field_0x10;
                     dy = scale * mRoutePanes_0xd4[i]->field_0x14;
-                    mRoutePanes_0xd4[i]->fn_80402B10(30, 0, 0.0f, dx);
-                    mRoutePanes_0xd4[i]->fn_80402940(30, 0, 0.0f, dy);
-                    mRoutePanes_0xd4[i]->fn_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
+                    mRoutePanes_0xd4[i]->slideX_80402B10(30, 0, 0.0f, dx);
+                    mRoutePanes_0xd4[i]->animateMoveY_80402940(30, 0, 0.0f, dy);
+                    mRoutePanes_0xd4[i]->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 }
             }
         } else {
@@ -1779,11 +1779,11 @@ void MapScreen_804B1288::fn_8040BC1C() {
         if (field_0x41e >= 0 && field_0x41e <= 15) {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
-                    moved = mLevelCursorPanes_0x228[i][j]->fn_80402940(15, 0, 0.0f, -150.0f);
+                    moved = mLevelCursorPanes_0x228[i][j]->animateMoveY_80402940(15, 0, 0.0f, -150.0f);
                 }
             }
-            field_0x238->fn_80402940(15, 0, 0.0f, -150.0f);
-            field_0x23c->fn_80402940(15, 0, 0.0f, -150.0f);
+            field_0x238->animateMoveY_80402940(15, 0, 0.0f, -150.0f);
+            field_0x23c->animateMoveY_80402940(15, 0, 0.0f, -150.0f);
         } else if (field_0x41e > 15) {
             moved = true;
         }
@@ -1797,9 +1797,9 @@ void MapScreen_804B1288::fn_8040BC1C() {
     if (field_0x41e >= 0 && field_0x41e <= rows * 5 + 20) {
         for (int i = 0; i < rows + 1; i++) {
             if (field_0x41e >= i * 5) {
-                mLevelRowPanes_0x28[rows - i][0]->fn_80402B10(20, 0, 0.0f, -150.0f);
+                mLevelRowPanes_0x28[rows - i][0]->slideX_80402B10(20, 0, 0.0f, -150.0f);
                 for (int j = 0; j < 3; j++) {
-                    mLevelRowPanes_0x28[rows - i][j]->fn_80402628(20, mLevelRowPanes_0x28[rows - i][j]->field_0x28, 0);
+                    mLevelRowPanes_0x28[rows - i][j]->animateAlpha_80402628(20, mLevelRowPanes_0x28[rows - i][j]->field_0x28, 0);
                 }
             }
         }
@@ -2064,7 +2064,7 @@ void MapScreen_804B1288::fn_80409FDC() {
             }
             loadStageInfo();
             field_0x65e = 1;
-            gAudioMgr_8053AF80->fn_80458F9C(10);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(10);
             field_0x41e = 0;
             mMapAreaScreen_0x10->search('Ndata10')->hide();
             mState_0x350 = 0x14;
@@ -2151,7 +2151,7 @@ void MapScreen_804B1288::fn_80409FDC() {
         }
         loadStageInfo();
         field_0x65e = 1;
-        gAudioMgr_8053AF80->fn_80458F9C(10);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(10);
         field_0x41e = 0;
         mMapAreaScreen_0x10->search('Ndata10')->hide();
         mState_0x350 = 0x14;
@@ -2180,7 +2180,7 @@ void MapScreen_804B1288::fn_80409FDC() {
 
 // FIXME: 96.86 %, scheduling+regalloc; behaviour clean.
 // Missing/extra (one instruction): in the mRoutePanes_0xd4 loop the original
-// multiplies scale * field_0x10 after fn_8040271C (keeping field_0x10 in f30), ours before
+// multiplies scale * field_0x10 after animateScale_8040271C (keeping field_0x10 in f30), ours before
 // it (an extra fmr); the table / field_0x18 loads of each division are also swapped. The
 // "cleared" test after the stage branch is written in both branches: the original has
 // its own copy of it in the stage 7 branch.
@@ -2212,26 +2212,26 @@ void MapScreen_804B1288::fn_804096E8() {
     } else {
         if (mStage_0x340 < 7) {
             if (field_0x41e >= 0) {
-                mTestMapPane_0xc8->fn_80402B10(20, 0, lbl_8048C86C[mStage_0x340], 0.0f);
-                mTestMapPane_0xc8->fn_80402940(20, 0, lbl_8048C87C[mStage_0x340], 0.0f);
-                faded = mTestMapPane_0xc8->fn_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
+                mTestMapPane_0xc8->slideX_80402B10(20, 0, lbl_8048C86C[mStage_0x340], 0.0f);
+                mTestMapPane_0xc8->animateMoveY_80402940(20, 0, lbl_8048C87C[mStage_0x340], 0.0f);
+                faded = mTestMapPane_0xc8->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 f32 scale = lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18 - 1.0f;
                 f32 dx = scale * (mTowerPane_0xcc->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 f32 dy = scale * (mTowerPane_0xcc->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                mTowerPane_0xcc->fn_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
-                mTowerPane_0xcc->fn_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
-                mTowerPane_0xcc->fn_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
+                mTowerPane_0xcc->slideX_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
+                mTowerPane_0xcc->animateMoveY_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
+                mTowerPane_0xcc->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 dx = scale * (field_0xd0->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 dy = scale * (field_0xd0->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                field_0xd0->fn_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
-                field_0xd0->fn_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
-                field_0xd0->fn_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
+                field_0xd0->slideX_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
+                field_0xd0->animateMoveY_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
+                field_0xd0->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 for (int i = 0; i < 18; i++) {
                     dx = mRoutePanes_0xd4[i]->field_0x10;
                     dy = scale * mRoutePanes_0xd4[i]->field_0x14;
-                    mRoutePanes_0xd4[i]->fn_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
-                    mRoutePanes_0xd4[i]->fn_80402B10(20, 0, scale * dx, 0.0f);
-                    mRoutePanes_0xd4[i]->fn_80402940(20, 0, dy, 0.0f);
+                    mRoutePanes_0xd4[i]->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
+                    mRoutePanes_0xd4[i]->slideX_80402B10(20, 0, scale * dx, 0.0f);
+                    mRoutePanes_0xd4[i]->animateMoveY_80402940(20, 0, dy, 0.0f);
                 }
             }
         } else {
@@ -2250,9 +2250,9 @@ void MapScreen_804B1288::fn_804096E8() {
     if (field_0x41e >= 0 && field_0x41e <= rows * 2 + 16) {
         for (int i = 0; i < rows + 1; i++) {
             if (field_0x41e >= i * 2) {
-                mLevelRowPanes_0x28[i][0]->fn_80402B10(16, 0, -150.0f, 0.0f);
+                mLevelRowPanes_0x28[i][0]->slideX_80402B10(16, 0, -150.0f, 0.0f);
                 for (int j = 0; j < 3; j++) {
-                    mLevelRowPanes_0x28[i][j]->fn_80402628(16, 0, mLevelRowPanes_0x28[i][j]->field_0x28);
+                    mLevelRowPanes_0x28[i][j]->animateAlpha_80402628(16, 0, mLevelRowPanes_0x28[i][j]->field_0x28);
                 }
             }
         }
@@ -2263,11 +2263,11 @@ void MapScreen_804B1288::fn_804096E8() {
         if (field_0x41e >= 10 && field_0x41e <= 30) {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
-                    moved = mLevelCursorPanes_0x228[i][j]->fn_80402940(15, 0, -150.0f, 0.0f);
+                    moved = mLevelCursorPanes_0x228[i][j]->animateMoveY_80402940(15, 0, -150.0f, 0.0f);
                 }
             }
-            field_0x238->fn_80402940(15, 0, -150.0f, 0.0f);
-            field_0x23c->fn_80402940(15, 0, -150.0f, 0.0f);
+            field_0x238->animateMoveY_80402940(15, 0, -150.0f, 0.0f);
+            field_0x23c->animateMoveY_80402940(15, 0, -150.0f, 0.0f);
         } else if (field_0x41e > 30) {
             moved = true;
         }
@@ -2655,7 +2655,7 @@ void MapScreen_804B1288::fn_8040732C() {
         }
         if (rank < 4) {
             // The original passes mPointPanes_0x128[i]'s byte 0x28 (same index as field_0x1a8).
-            field_0x1a8[i]->fn_80402628(100, 0, mPointPanes_0x128[i]->field_0x28);
+            field_0x1a8[i]->animateAlpha_80402628(100, 0, mPointPanes_0x128[i]->field_0x28);
         }
     }
     for (int i = mStage_0x340 * 4; i < mStage_0x340 * 4 + 4; i++) {
@@ -2671,7 +2671,7 @@ void MapScreen_804B1288::fn_8040732C() {
     }
     PaneCtrl_804AF86C* ctrl = mTinkPanes_0x208[mStage_0x340];
     if (ctrl->mPane->getAlpha() != ctrl->field_0x28) {
-        ctrl->fn_80402628(50, 0, ctrl->field_0x28);
+        ctrl->animateAlpha_80402628(50, 0, ctrl->field_0x28);
     }
 }
 
@@ -2693,18 +2693,18 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     params.field_0x0[2] = 2;
     JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
     pos.y += 3.0f;
     params.field_0x0[2] = 3;
     s32 celLeft = lbl_8048CB58[frame] + 0xC0;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
     pos.x += 32.0f;
     params.field_0x0[2] = 4;
     s32 celRight = lbl_8048CB58[frame] + 0xC3;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
 // FIXME(shotgun): 96.30 %, different; behaviour near.
@@ -2764,11 +2764,11 @@ void MapScreen_804B1288::fn_804069E8() {
                 }
                 if (field_0x35c <= 10) {
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x25B, &params, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x25B, &params, 1.0f, 1.0f);
                 }
             } else {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x25A, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x25A, &params, 1.0f, 1.0f);
             }
         }
     }
@@ -2811,7 +2811,7 @@ void MapScreen_804B1288::fn_80406634(s32 stage, bool raised) {
     }
     s32 frame = field_0x432 % 6 + lbl_8048CB68[stage];
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
 }
 
 // FIXME: 99.98 %, regalloc-only; behaviour clean.
@@ -2850,7 +2850,7 @@ void MapScreen_804B1288::fn_80405FC0() {
             s32 frame = field_0x41e / 2;
             if (frame <= 13) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame + 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame + 0xDB, &params, 1.0f, 1.0f);
                 if (field_0x41e == 26) {
                     if (field_0x2cc[i] == NULL) {
                         JGeometry::TVec3f p(7.0f + pos.x, pos.y - 27.0f, pos.z);
@@ -2865,23 +2865,23 @@ void MapScreen_804B1288::fn_80405FC0() {
                 }
             } else {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             }
         } else if (mState_0x350 == 2) {
             s32 frame = lbl_8048CC0C[(field_0x358 / 5) % 4];
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         } else if (mState_0x350 == 4) {
             params.field_0x10.a = field_0x665;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
         } else {
             if (field_0x358 >= 30) {
                 field_0x358 = 0;
             }
             s32 frame = field_0x360 + lbl_8048CB94[field_0x358];
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }
@@ -3319,9 +3319,9 @@ void MapScreen_804B1288::fn_80403F50() {
 }
 
 void MapScreen_804B1288::fn_80403EAC() {
-    u8 done = mMessageWindowPanes_0x240[0]->fn_80402940(0x13, 0, 100.0f, 0.0f);
+    u8 done = mMessageWindowPanes_0x240[0]->animateMoveY_80402940(0x13, 0, 100.0f, 0.0f);
     for (s32 i = 1; i < 12; i++) {
-        mMessageWindowPanes_0x240[i]->fn_80402940(0x13, 0, 100.0f, 0.0f);
+        mMessageWindowPanes_0x240[i]->animateMoveY_80402940(0x13, 0, 100.0f, 0.0f);
     }
     if (done) {
         mMessageTimer_0x42a = 100;
@@ -3340,9 +3340,9 @@ void MapScreen_804B1288::fn_80403E24() {
 }
 
 void MapScreen_804B1288::fn_80403D84() {
-    u8 done = mMessageWindowPanes_0x240[0]->fn_80402940(0xB, 0, 0.0f, 100.0f);
+    u8 done = mMessageWindowPanes_0x240[0]->animateMoveY_80402940(0xB, 0, 0.0f, 100.0f);
     for (s32 i = 1; i < 12; i++) {
-        mMessageWindowPanes_0x240[i]->fn_80402940(0xB, 0, 0.0f, 100.0f);
+        mMessageWindowPanes_0x240[i]->animateMoveY_80402940(0xB, 0, 0.0f, 100.0f);
     }
     if (done) {
         field_0x65a = 0;
@@ -3351,7 +3351,7 @@ void MapScreen_804B1288::fn_80403D84() {
 }
 
 // Slides field_0x2b4 from 200 above its place down to it and fades it in, eased by
-// (frame / frames)^2. Dead-stripped: fn_804108B4 inlines it twice (sliding in and
+// (frame / frames)^2. Dead-stripped: update_804108B4 inlines it twice (sliding in and
 // out); its own copy created the unit's first .sdata2 literals (0.0f, -200.0f,
 // 200.0f and the two int-to-float constants) before fn_80403D84.
 // R2 pool helper (inlined at 2 call sites); was slidePane.

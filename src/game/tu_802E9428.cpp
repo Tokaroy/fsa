@@ -122,7 +122,7 @@ void UnknownENDM_804AA0FC::init() {
     field_0x270 = 300.0f;
     field_0x274 = 300.0f;
     field_0x278 = 0.0f;
-    gAudioMgr_8053AF80->fn_80458FF0(0x1000028, true, 0);
+    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000028, true, 0);
     field_0x234 = 0;
     field_0x231 = 0;
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
@@ -167,7 +167,7 @@ void UnknownENDM_804AA0FC::update() {
         field_0x23c = 1;
         if (field_0x299 == 1) {
             fn_80119DD0()->fn_80119958();
-            fn_80119DD0()->fn_80119998(50, 0, 0, 0, 0, 0, 0);
+            fn_80119DD0()->startFade_80119998(50, 0, 0, 0, 0, 0, 0);
             field_0x299 = 0;
         }
         fn_8016A3AC()->field_0x1d8 = -1;
@@ -176,7 +176,7 @@ void UnknownENDM_804AA0FC::update() {
     case 1:
         lbl_8053AF30->mDraw = true;
         if (tickTimer()) {
-            fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 20, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 2, 0, 0, 20, 0);
             field_0x27c = 60;
             field_0x23c = 2;
         }
@@ -262,7 +262,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             mAlive = false;
         } else if (field_0x27c == 60) {
-            fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 20, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 2, 0, 0, 20, 0);
         }
         break;
     case 5: {
@@ -289,22 +289,22 @@ void UnknownENDM_804AA0FC::update() {
             s32 dir[2];
             dir[0] = 0;
             dir[1] = -1;
-            getGameView_802D6A9C()->fn_802DCD1C(dir);
+            getGameView_802D6A9C()->stepScreen_802DCD1C(dir);
         } else if (field_0x28d == 1) {
             s32 dir[2];
             dir[0] = 0;
             dir[1] = 1;
-            getGameView_802D6A9C()->fn_802DCD1C(dir);
+            getGameView_802D6A9C()->stepScreen_802DCD1C(dir);
         } else if (field_0x28d == 2) {
             s32 dir[2];
             dir[0] = -1;
             dir[1] = 0;
-            getGameView_802D6A9C()->fn_802DCD1C(dir);
+            getGameView_802D6A9C()->stepScreen_802DCD1C(dir);
         } else if (field_0x28d == 3) {
             s32 dir[2];
             dir[0] = 1;
             dir[1] = 0;
-            getGameView_802D6A9C()->fn_802DCD1C(dir);
+            getGameView_802D6A9C()->stepScreen_802DCD1C(dir);
         }
         s32 prevLevel = field_0x280;
         s32 prevStage = field_0x284;
@@ -378,7 +378,7 @@ void UnknownENDM_804AA0FC::update() {
                 }
             }
             field_0x27c = 60;
-            fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 20, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 2, 0, 0, 20, 0);
             field_0x23c = 8;
         }
         break;

@@ -27,7 +27,7 @@ public:
     /* 0x230 */ s32 field_0x230; // state word, tested by fn_802CEC10
     /* 0x234 */ s32 field_0x234; // state word, tested first by fn_802CEC10
     /* 0x238 */ s32 field_0x238; // state word, tested by fn_802CEC10
-    /* 0x23C */ s32 field_0x23c; // state word handed to ActorBase::fn_801F132C by isBlocked_0x4C
+    /* 0x23C */ s32 field_0x23c; // state word handed to ActorBase::isBlockedCommon_801F132C by isBlocked_0x4C
     /* 0x240 */ s32 field_0x240; // countdown, 30 when init sets up the second branch
     /* 0x244 */ u8 field_0x244; // 0xFF from init
     /* 0x245 */ u8 field_0x245; // 0 from init

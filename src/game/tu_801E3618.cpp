@@ -116,7 +116,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
                     case 0x11:
                     case 0x12:
                     case 0x14:
-                        fn_801D5D84(0xb);
+                        setState_801D5D84(0xb);
                         break;
                     }
                     result = true;
@@ -155,7 +155,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
         JGeometry::TVec2f savedF(mBox.f);
         mBox.i.scale(1.5f);
         mBox.f.scale(1.5f);
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 48.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 48.0f);
         mBox.i = savedI;
         mBox.f = savedF;
         if (serial >= 0 && serial != mSerial) {
@@ -163,7 +163,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
             if (bomb != NULL && bomb->mActorId == 'HBMB' && bomb->field_0x94 == 1) {
                 JGeometry::TVec3f d(mPos);
                 d.sub(bomb->mVel_0x3c);
-                result = fn_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
+                result = takeHit_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
                 if (result) {
                     bomb->field_0x164 = 1;
                     mKnockbackKind_0xf8 = 0;
@@ -176,12 +176,12 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
                     fn_801E4D54();
                     field_0x448.fn_80217A74();
                     JGeometry::TVec2f center;
-                    fn_801F3128(&center);
+                    getBoxCenter_801F3128(&center);
                     JGeometry::TVec2f shake(center.x - bomb->mPos.x, center.y - (bomb->mPos.y - bomb->mPos.z));
                     field_0x52c.fn_801D6D38(&shake);
                     field_0x5cd++;
                     if (field_0x5cd >= field_0x5cc) {
-                        fn_801D5D84(6);
+                        setState_801D5D84(6);
                     }
                 }
             }
@@ -192,7 +192,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
 
 // vtable slot 0x5C. The bomb/player hit test: a player on the boss's layer that is inside its
 // area (and below its head) turns it towards that player; otherwise each player that hit it
-// this frame is run through fn_801F37AC.
+// this frame is run through takeHit_801F37AC.
 // FIXME(shotgun): 99.32 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E3B2C() {
     u8 result = 0;
@@ -221,13 +221,13 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         s32 type;
         if (gGameRoot_8053AAF8->field_0x7e && !isUpperLayer_801CD2F8(mLayer_0x4) && mState != 0xB && !field_0x5d1) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             box.i.x -= 8.0f;
             box.i.y -= 8.0f;
             box.f.x += 8.0f;
             box.f.y += 8.0f;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !fn_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
+                if (fn_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
                     getPlayerLayer_8023DE58(i) == getField_0x4() && fn_80235448(i) &&
                     getPlayerPos_8023E724(i)->z <= 40.0f) {
                     f32 limit = fn_8023E578(i)->z;
@@ -252,8 +252,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         }
         if (isUpperLayer_801CD2F8(mLayer_0x4)) {
             for (s32 i = 0; i < 4; i++) {
-                if (i == fn_801F285C(NULL, &type, true, i)) {
-                    if (fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
+                if (i == findOverlappingPlayer_801F285C(NULL, &type, true, i)) {
+                    if (takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         result = 1;
                         if (fn_80235448(i)) {
                             mFlags |= 0x10000;
@@ -280,8 +280,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
             }
             if (mState != 9) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (i == fn_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
-                        fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
+                    if (i == findOverlappingPlayer_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
+                        takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         mFlags |= 0x10000;
                         mKnockbackKind_0xf8 = 0;
                         mVel_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -292,7 +292,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                         if (mLife <= 0) {
                             mHitTimer_0xd8 = 16;
                             mHitTimerStart_0xdc = 16;
-                            fn_801D5D84(0x18);
+                            setState_801D5D84(0x18);
                             field_0x4c4.fn_801D7638();
                             field_0x4c4.fn_801D76B4();
                         } else {
@@ -304,7 +304,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                                 field_0x4c4.fn_801D76B4();
                             }
                             if (mLife <= lbl_8053F0C0) {
-                                fn_801D5D84(10);
+                                setState_801D5D84(10);
                             } else {
                                 mFlags |= 0x8000;
                             }

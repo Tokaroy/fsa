@@ -125,17 +125,17 @@ void RecoveryHeart_8049F4F0::update() {
         }
         if (player >= 0) {
             s32 owner = getPlayerMaxLife_80237810(player);
-            if (owner == fn_80237774(player)) {
+            if (owner == getPlayerLife_80237774(player)) {
                 fn_80230EB8(player, 9);
             }
-            fn_80236554(player, 4, 0);
+            healPlayerGroup_80236554(player, 4, 0);
             mAlive = false;
         } else if (hitPlayer >= 0) {
             s32 owner = getPlayerMaxLife_80237810(hitPlayer);
-            if (owner == fn_80237774(hitPlayer)) {
+            if (owner == getPlayerLife_80237774(hitPlayer)) {
                 fn_80230EB8(hitPlayer, 9);
             }
-            fn_80236554(hitPlayer, 4, 0);
+            healPlayerGroup_80236554(hitPlayer, 4, 0);
             mAlive = false;
         } else if (findOverlappingActor_801F2718('ZLD2') >= 0) {
             startSound_801F0E34(0x400C9, 0);
@@ -172,7 +172,7 @@ bool RecoveryHeart_8049F4F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     const u32 ignoreIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == true) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds) == true) {
         return true;
     }
     s32 kind = getTileCollisionCode_8022461C(pos, layer);

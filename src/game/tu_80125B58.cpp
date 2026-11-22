@@ -25,12 +25,12 @@ void EscortedWomanArrivalPoint_8049E350::init() {
     mBox2.set(mBox);
     mMapBox_0x80.set(mBox);
     mDir_0x98 = 2;
-    mAnim244.fn_801D2608(lbl_8049E330, 4);
+    mAnim244.setKeyTables_801D2608(lbl_8049E330, 4);
     mAnim244.startAnim_801D22DC(2, 2, false);
-    mAnim244.fn_801D1F14(0.0f);
-    mAnim27c.fn_801D2608(lbl_8049E340, 4);
+    mAnim244.setFrame_801D1F14(0.0f);
+    mAnim27c.setKeyTables_801D2608(lbl_8049E340, 4);
     mAnim27c.startAnim_801D22DC(0, 0, false);
-    mAnim27c.fn_801D1F14(0.0f);
+    mAnim27c.setFrame_801D1F14(0.0f);
     mDrawEnabled = false;
     if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
         return;
@@ -49,7 +49,7 @@ void EscortedWomanArrivalPoint_8049E350::init() {
     case 2: {
         s32 bit = field_0x240;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
         break;
     }
@@ -73,7 +73,7 @@ inline void EscortedWomanArrivalPoint_8049E350::enterState() {
     case 2: {
         s32 bit = field_0x240;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
         break;
     }
@@ -145,7 +145,7 @@ void EscortedWomanArrivalPoint_8049E350::update() {
         mDir_0x98 = anim;
         if (anim != mAnim244.mAnim) {
             mAnim244.startAnim_801D22DC(anim, 2, false);
-            mAnim244.fn_801D1F14(0.0f);
+            mAnim244.setFrame_801D1F14(0.0f);
         }
     }
     if (field_0x231) {
@@ -153,8 +153,8 @@ void EscortedWomanArrivalPoint_8049E350::update() {
     } else {
         mAnim244.mFrameCtrl.setRate(1.0f);
     }
-    mAnim244.fn_801D1C18();
-    mAnim27c.fn_801D1C18();
+    mAnim244.update_801D1C18();
+    mAnim27c.update_801D1C18();
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
@@ -184,7 +184,7 @@ void EscortedWomanArrivalPoint_8049E350::draw() {
         s32 frame = mAnim27c.mCel + 0x2A3;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, NULL, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, NULL, 1.0f, 1.0f);
         }
     }
 }
@@ -211,7 +211,7 @@ void EscortedWomanArrivalPoint_8049E350::fn_80125BF4() {
 bool EscortedWomanArrivalPoint_8049E350::talkTo(s32 player, u16 msg) {
     JGeometry::TVec3f pos(mPos);
     pos.y -= 64.0f;
-    return fn_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28);
+    return openMessage_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28);
 }
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
@@ -226,7 +226,7 @@ void EscortedWomanArrivalPoint_8049E350::startSignAnim() {
         mAnim27c.startAnim_801D22DC(1, 0, false);
         break;
     }
-    mAnim27c.fn_801D1F14(0.0f);
+    mAnim27c.setFrame_801D1F14(0.0f);
 }
 
 EscortedWomanArrivalPoint_8049E350::~EscortedWomanArrivalPoint_8049E350() {}

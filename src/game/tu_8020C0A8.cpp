@@ -31,22 +31,22 @@ void ZolSmallSlime_804A5F40::init() {
     field_0xb0 = 0x31101;
     if (mDir_0x98 == 3) {
         if (fn_801CF144()) {
-            mDir_0x98 = fn_801CF720(3);
+            mDir_0x98 = pickNewDir_801CF720(3);
         }
     }
-    field_0x2ae = fn_801F6874(mDir_0x98);
+    field_0x2ae = dirToAngle_801F6874(mDir_0x98);
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
     field_0x250 = randInt_801CD664(0x3D) + 0x28;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A178, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A178, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     if (mFlags & 0x2000) {
         if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
-            fn_801F3668();
+            markDead_801F3668();
         } else {
             JGeometry::TBox2f* box = layerBox(mLayer_0x4);
             JGeometry::TBox2f bounds(mMapBox_0x80.i.x + mPos.x, mMapBox_0x80.i.y + mPos.y,
@@ -57,7 +57,7 @@ void ZolSmallSlime_804A5F40::init() {
                 inside = true;
             }
             if (!inside) {
-                fn_801F3668();
+                markDead_801F3668();
             }
         }
     }
@@ -81,7 +81,7 @@ void ZolSmallSlime_804A5F40::fn_8020C6E8() {
             if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                 continue;
             }
-            f32 dist = fn_801D0DA0(i, &mPos);
+            f32 dist = getPlayerDistSq_801D0DA0(i, &mPos);
             if (dist < best) {
                 best = dist;
                 nearest = i;
@@ -127,11 +127,11 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
             field_0x2a8 = -1;
             field_0x2ac = 0;
             if (fn_801CF144()) {
-                mDir_0x98 = fn_801CF720(3);
+                mDir_0x98 = pickNewDir_801CF720(3);
             } else {
                 mDir_0x98 = fn_801CF6B8();
             }
-            field_0x2ae = fn_801F6874(mDir_0x98);
+            field_0x2ae = dirToAngle_801F6874(mDir_0x98);
             mStateTimer = 0;
             mState = 1;
         }
@@ -140,12 +140,12 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
         if (mapHit) {
             if (fn_801CF144()) {
                 if (mDir_0x98 == 3) {
-                    mDir_0x98 = fn_801CF720(3);
+                    mDir_0x98 = pickNewDir_801CF720(3);
                 } else {
                     mDir_0x98 = fn_801CF798(3, mDir_0x98);
                 }
             } else {
-                mDir_0x98 = fn_801CF720(mDir_0x98);
+                mDir_0x98 = pickNewDir_801CF720(mDir_0x98);
             }
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
@@ -162,19 +162,19 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
                 field_0x2a8 = -1;
                 field_0x2ac = 0;
                 if (fn_801CF144()) {
-                    mDir_0x98 = fn_801CF720(3);
+                    mDir_0x98 = pickNewDir_801CF720(3);
                 } else {
                     mDir_0x98 = fn_801CF6B8();
                 }
-                field_0x2ae = fn_801F6874(mDir_0x98);
+                field_0x2ae = dirToAngle_801F6874(mDir_0x98);
                 mStateTimer = 0;
                 mState = 1;
             }
         }
-        field_0x2ae = fn_801F6874(mDir_0x98);
+        field_0x2ae = dirToAngle_801F6874(mDir_0x98);
         break;
     case 2:
-        field_0x2ae = fn_801D0280(field_0x2a8) - 0x8000;
+        field_0x2ae = getAngleToPlayer_801D0280(field_0x2a8) - 0x8000;
         if (viewLayerFlag(mLayer_0x4)) {
             if (!(isOnGround_801D0DD4() && fn_801CC9F8(&mPos, mLayer_0x4))) {
                 if (field_0x2ae > 0) {
@@ -223,7 +223,7 @@ bool ZolSmallSlime_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     if (!fn_802265DC(pos, layer, false)) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds)) {
+        if (!boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds)) {
             result = false;
         }
     }

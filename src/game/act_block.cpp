@@ -197,11 +197,11 @@ void Block_804A7A10::update() {
             box2.f.y += mPos.y;
             s32 player = fn_80239040(mSerial);
             for (s32 i = 0; i < 4; i++) {
-                if (player != i && !fn_8022E438(player, i) && fn_8023B190(i, &box2, mLayer_0x4)) {
+                if (player != i && !arePlayersInSameGroup_8022E438(player, i) && fn_8023B190(i, &box2, mLayer_0x4)) {
                     JGeometry::TVec3f pPos = *getPlayerPos_8023E724(i);
                     JGeometry::TVec3f diff = pPos - checkPos;
                     if (JGeometry::TVec2f(diff.x, diff.y).length() < 8.0f) {
-                        fn_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 4);
+                        hitPlayerGroup_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 4);
                         break;
                     }
                 }
@@ -248,24 +248,24 @@ void Block_804A7A10::update() {
             mPos += mVel_0x3c;
             if ((mSpawnParam_0x90 >> 8) & 1) {
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.x > 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.x < 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.y > 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.y < 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, false, 0xFF);
                 }
             }
 
@@ -280,7 +280,7 @@ void Block_804A7A10::update() {
                             JGeometry::TVec3f offset(lbl_804A79E0[dir][0], lbl_804A79E0[dir][1], lbl_804A79E0[dir][2]);
                             JGeometry::TVec3f savedPos = mPos;
                             mPos += offset;
-                            if (fn_801F2618(NULL, false)) {
+                            if (sweepMapBox_801F2618(NULL, false)) {
                                 mPos = savedPos;
                                 return;
                             }
@@ -400,7 +400,7 @@ bool Block_804A7A10::fn_8028C518(u8 dir) {
     mPos += mVel_0x3c;
 
     JGeometry::TVec3f v18(0.0f, 0.0f, 0.0f);
-    if (fn_801F2618(&v18, false)) {
+    if (sweepMapBox_801F2618(&v18, false)) {
         switch (dir) {
         case 0:
             if (v18.x >= 0.0f) {

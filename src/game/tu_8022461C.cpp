@@ -143,7 +143,7 @@ static inline u16 collisionCodeAt(const V* pos, int layer) {
     return code;
 }
 
-// The corner of cell `index` (the inverse of fn_80226AE0); z is cleared.
+// The corner of cell `index` (the inverse of getCellIndexVec3_80226AE0); z is cleared.
 // FIXME(shotgun): 84.33 %, scheduling+regalloc; behaviour clean.
 void cellToPos_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out) {
     JGeometry::TVec3f p = *out;
@@ -159,7 +159,7 @@ void cellToPos_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out) {
 
 // The packed cell index of pos (no lookup; clamped like the queries, no outside test).
 // The y term is written first to match the original's instruction order.
-s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer) {
+s32 getCellIndex_80226BC4(const JGeometry::TVec2f* pos, s32 layer) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TBox2f box;
@@ -171,8 +171,8 @@ s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer) {
     return ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
 }
 
-// The packed cell index of pos (as fn_80226BC4, on a Vec3).
-s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
+// The packed cell index of pos (as getCellIndex_80226BC4, on a Vec3).
+s32 getCellIndexVec3_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TBox2f box;
@@ -186,7 +186,7 @@ s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
 
 // The same as getRawTile_80226850 (only the register allocation differs in the original).
 // FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
-u16 fn_80226998(const JGeometry::TVec3f* pos, s32 layer) {
+u16 getTileAt_80226998(const JGeometry::TVec3f* pos, s32 layer) {
     return rawTileAt(pos, layer);
 }
 

@@ -50,7 +50,7 @@ u8 cls_800FE3EC::fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer) {
     return field_0x3;
 }
 
-void fn_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index) {
+void getRailPointPos_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index) {
     if (index == 0xFF) {
         *out = buffer->field_0x4[buffer->field_0x3]->mPos;
     } else {
@@ -74,7 +74,7 @@ u32 cls_800FE3EC::fn_800FE21C(u8 index) {
 
 // FIXME(shotgun): 88.9 %, missing/extra + reloc-name (the original has one shared tail for the *out copy)
 // 0x800FE090
-// auto_inline off: the original's fn_800FDEA0 (bl at 0x800FDEFC) calls it out of line.
+// auto_inline off: the original's stepAlongRail_800FDEA0 (bl at 0x800FDEFC) calls it out of line.
 #pragma auto_inline off
 // FIXME: 90.29 %, missing/extra; behaviour near.
 s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
@@ -123,7 +123,7 @@ s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* o
 
 // FIXME(shotgun): 87.20 %, missing/extra; behaviour near.
 // 0x800FDEA0
-s32 cls_800FE3EC::fn_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer,
+s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer,
                               u16* outAngle, s32 arg) {
     JGeometry::TVec3f target;
     JGeometry::TVec3f here = *pos;

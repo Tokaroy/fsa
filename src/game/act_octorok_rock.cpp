@@ -56,7 +56,7 @@ void OctorokRock_8049F5D8::init() {
 bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
         return true;
     }
     s32 tile = getTileCollisionCode_8022461C(pos, layer);
@@ -102,7 +102,7 @@ void OctorokRock_8049F5D8::update() {
                 mAlive = false;
                 break;
             }
-            blocked = fn_801F2618(NULL, false);
+            blocked = sweepMapBox_801F2618(NULL, false);
         }
         if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
             facing = -1;
@@ -197,8 +197,8 @@ void OctorokRock_8049F5D8::update() {
         if (target >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(target);
             if (actor != NULL) {
-                mPos.x = field_0x254 * JMASinShort(fn_801F6874(actor->mDir_0x98) - field_0x25c);
-                mPos.y = field_0x254 * JMACosShort(fn_801F6874(actor->mDir_0x98) - field_0x25c);
+                mPos.x = field_0x254 * JMASinShort(dirToAngle_801F6874(actor->mDir_0x98) - field_0x25c);
+                mPos.y = field_0x254 * JMACosShort(dirToAngle_801F6874(actor->mDir_0x98) - field_0x25c);
                 mPos.x += actor->mPos.x;
                 mPos.y += actor->mPos.y;
                 mPos.z = actor->mPos.z;
@@ -296,7 +296,7 @@ void OctorokRock_8049F5D8::draw() {
             s32 frame = field_0x24c + 0x4c;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         }
         break;

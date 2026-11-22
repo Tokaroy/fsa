@@ -124,7 +124,7 @@ void BigMoldorm_8049F6C8::init() {
         lbl_80539F5C = -1;
         lbl_8053AB34 = 0;
         lbl_8053AB38 = mLayer_0x4;
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         lbl_8053AB30 = 0;
         mState = 1;
         lbl_8053AB30 += 1;
@@ -273,10 +273,10 @@ bool BigMoldorm_8049F6C8::fn_80149AEC() {
     mPos.z = field_0x2c0[7].z;
     field_0xb0 = 0x8040000;
     for (i = 0; i < 4; i++) {
-        s32 player = fn_801F285C(NULL, NULL, true, i);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
         if (player >= 0) {
-            if (player == field_0x278 || fn_8022EA0C(player) == field_0x278) {
-                if (fn_801F2FAC() && mLife != 10000) {
+            if (player == field_0x278 || getRepresentativePlayer_8022EA0C(player) == field_0x278) {
+                if (checkPlayerAttacks_801F2FAC() && mLife != 10000) {
                     field_0x270 = 0;
                     hit = 1;
                     mPos.z = 0.0f;
@@ -450,7 +450,7 @@ void BigMoldorm_8049F6C8::update() {
         fn_80149FDC();
         mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
         for (s32 i = 0; i < 4; i++) {
-            s32 player = fn_801F285C(NULL, NULL, false, i);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
             if (player < 0) {
                 continue;
             }
@@ -495,14 +495,14 @@ void BigMoldorm_8049F6C8::update() {
             field_0x284 += 0x1000;
             mDir_0x98 = headingDir(field_0x284);
             field_0x286 = field_0x284;
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     }
     switch (mState) {
     case 0: {
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->fn_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
             if (actor != NULL && actor->mSerial != lbl_80539F58 && actor->mSpawnParam_0x90 == 3) {
@@ -520,7 +520,7 @@ void BigMoldorm_8049F6C8::update() {
         lbl_8053AB34 = 1;
         field_0x26c = 0;
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->fn_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
             if (actor != NULL && actor->mSpawnParam_0x90 == 2) {
@@ -547,7 +547,7 @@ void BigMoldorm_8049F6C8::update() {
         if (field_0x26c > 300) {
             field_0x26c = 0;
             getActorManager_801F856C()->fn_801F6884();
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
             mState = 3;
         }
         field_0x26c++;
@@ -583,7 +583,7 @@ void BigMoldorm_8049F6C8::update() {
         addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0.x, field_0x288, field_0x28c);
         addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a0.y, field_0x288, field_0x28c);
         mPos += mVel_0x3c;
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             field_0x284 += 0x8000;
             mDir_0x98 = headingDir(field_0x284);
             if (field_0x29c == mDir_0x98) {
@@ -605,14 +605,14 @@ void BigMoldorm_8049F6C8::update() {
         } else {
             u16 angle = 0;
             s32 found = -1;
-            fn_801EEC98(mSerial, &angle, &found, NULL, NULL, field_0x280, 2);
+            findTargetPlayer_801EEC98(mSerial, &angle, &found, NULL, NULL, field_0x280, 2);
             if (found >= 0 && field_0x280 >= 0 && field_0x280 < 4 &&
                 !fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(field_0x280), &mMapBox_0x80, NULL, NULL, false)) {
                 field_0x286 = angle;
             } else if (field_0x23c == 0) {
                 if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                     for (s32 i = 0; i < 4; i++) {
-                        if (i != field_0x280 && fn_8023F264(i) && !fn_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                        if (i != field_0x280 && fn_8023F264(i) && !hasPlayerLeader_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
                             !fn_80230188(i) && !fn_8022DCD8(i)) {
                             field_0x280 = i;
                             break;
@@ -839,7 +839,7 @@ void BigMoldorm_8049F6C8::draw() {
     mPos.z = field_0x2c0[7].z;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[7] / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x278 + 8]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[field_0x278 + 8]), &params, -1, 0.0f, 0.0f, 0.0f);
     for (s32 i = 4; i >= 0; i--) {
         params.field_0x1d = 6 - i;
         mPos.x = field_0x2c0[i + 1].x;
@@ -848,12 +848,12 @@ void BigMoldorm_8049F6C8::draw() {
         f32 scale = 1.0f - 0.08f * i;
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[i + 1] / -10430.219f, 0.0f), scale);
         params.mMtx = mtx;
-        drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
     }
     mPos.set(saved);
     params.field_0x1d = 7;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x284 / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    drawSpriteRes_801EFD34(fn_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
 }
 

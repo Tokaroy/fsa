@@ -17,9 +17,9 @@ void MessageCheckNPC_8049D0E8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
-    mAnim.fn_801D2608(lbl_80539EF0, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539EF0, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void MessageCheckNPC_8049D0E8::update() {
@@ -30,7 +30,7 @@ void MessageCheckNPC_8049D0E8::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, mLayer_0x4, mSerial);
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void MessageCheckNPC_8049D0E8::draw() {
@@ -39,7 +39,7 @@ void MessageCheckNPC_8049D0E8::draw() {
     const JGeometry::TVec3f* pos = &mPos;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
     }
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x386, false, 1, -1, 0, 0, 0);
 }

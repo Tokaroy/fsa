@@ -366,7 +366,7 @@ public:
     /* 0x290 */ f32 field_0x290;
     /* 0x294 */ JGeometry::TVec3f field_0x294; // zeroed as a whole by update() (zeroVec_801546BC)
     /* 0x2A0 */ JGeometry::TVec3f field_0x2a0;
-    /* 0x2AC */ JGeometry::TVec3f field_0x2ac; // draw scale; set as a whole by update() (fn_8017EADC)
+    /* 0x2AC */ JGeometry::TVec3f field_0x2ac; // draw scale; set as a whole by update() (setVec3_8017EADC)
     /* 0x2B8 */ u16 field_0x2b8; // angle step (lhz in update())
     /* 0x2BA */ s8 field_0x2ba;
     /* 0x2BB */ u8 field_0x2bb;
@@ -480,7 +480,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x230 */ cls_800FE3EC mRail; // update steps it (fn_800FDEA0) while field_0x2f8 != 0
+    /* 0x230 */ cls_800FE3EC mRail; // update steps it (stepAlongRail_800FDEA0) while field_0x2f8 != 0
     /* 0x2F8 */ s32 field_0x2f8; // state
     /* 0x2FC */ u8 field_0x2fc;
     /* 0x2FD */ u8 field_0x2fd[3]; // not yet known

@@ -465,7 +465,7 @@ void OldMan_804AEED0::update() {
             }
             if (field_0x244 >= 0 && getPlayerPos_8023E724(field_0x244)->z == 0.0f &&
                 fn_802300EC(field_0x244) &&
-                fn_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
+                openMessageById_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
                 field_0x24c = 0;
                 pool_80543048(field_0x244 + 1);
                 field_0x230 = 5;
@@ -532,7 +532,7 @@ void OldMan_804AEED0::update() {
     }
     if (field_0x258 == 18 || field_0x258 == 19 || field_0x258 == 20) {
         f32 dist;
-        fn_801EE558(NULL, &dist, 0);
+        getNearestPlayerDir_801EE558(NULL, &dist, 0);
         if (field_0x230 == 5) {
             field_0x270 += 2;
             if (field_0x270 >= 200) {
@@ -802,7 +802,7 @@ void OldMan_804AEED0::pool_80543048(s32 target) {
     field_0x24c = 20;
     JGeometry::TVec3f dir;
     f32 dist;
-    fn_801EE558(&dir, &dist, target);
+    getNearestPlayerDir_801EE558(&dir, &dist, target);
     if (dist < 100.0f) {
         u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));

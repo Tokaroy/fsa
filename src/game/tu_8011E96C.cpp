@@ -34,7 +34,7 @@ void RandomToggleSwitch_8049DE90::init() {
     }
     if (empty) {
         mState = 2;
-        fn_801F3668();
+        markDead_801F3668();
     }
 }
 
@@ -52,10 +52,10 @@ static inline void showPickedEntry(RandomToggleSwitch_8049DE90* self) {
     if (self->mTable[pick] != 0) {
         for (s32 i = 0; i < 4; i++) {
             if (i != pick && self->mTable[i] != self->mTable[pick]) {
-                getGameView_802D6A9C()->fn_802D8050(self->mTable[i], false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(self->mTable[i], false, 0xFF);
             }
         }
-        getGameView_802D6A9C()->fn_802D8050(self->mTable[pick], true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(self->mTable[pick], true, 0xFF);
     }
 }
 
@@ -73,7 +73,7 @@ void RandomToggleSwitch_8049DE90::update() {
         }
         if (mDuration == 0) {
             mState = 2;
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 1: {

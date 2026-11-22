@@ -15,9 +15,9 @@ public:
     // the EnemyBase and ActorBase destructors.
     /* 0x08 */ virtual ~FrostareChildFrosteye_804A4EE8();
     // 0x801DB2C8 (EnemyBase's player-hit hook): hits every player whose box
-    // overlaps mBox (getPlayersInBox_801F2740(-1)), at the centre of mBox (fn_801F3128)
-    // or, for a player for whom fn_801F329C holds, that centre converted by
-    // fn_801CD0D0, with fn_80238548(player, mParamAtcp_0x114, &pos, 1). Returns
+    // overlaps mBox (getPlayersInBox_801F2740(-1)), at the centre of mBox (getBoxCenter_801F3128)
+    // or, for a player for whom isPlayerOnLowerLayer_801F329C holds, that centre converted by
+    // fn_801CD0D0, with hitPlayerGroup_80238548(player, mParamAtcp_0x114, &pos, 1). Returns
     // the bitmask of the players overlapping mBox (0 when mBox is empty).
     /* 0x68 */ virtual u8 attackPlayers_0x68();
     /* 0x94 */ virtual void updateAnim_0x94();
@@ -33,17 +33,17 @@ public:
 
     // 0x801DB950: the state setter. State 1 starts a search: the frame rate
     // is set, field_0x2ac cleared, fn_801DB9CC runs, then mTargetPlayer =
-    // fn_801D05F8(&mSearchPos, mSearchRange). Every state resets mStateTimer.
+    // findNearestPlayer_801D05F8(&mSearchPos, mSearchRange). Every state resets mStateTimer.
     void fn_801DB950(s32 state);
     // 0x801DB9CC, called by the state setter with only `this`.
     void fn_801DB9CC();
 
-    /* 0x2A8 */ s32 mTargetPlayer;  // fn_801D05F8's result (-1: none)
+    /* 0x2A8 */ s32 mTargetPlayer;  // findNearestPlayer_801D05F8's result (-1: none)
     /* 0x2AC */ u32 field_0x2ac;    // cleared when state 1 starts; an unsigned counter
-    /* 0x2B0 */ f32 mSearchRange;   // the range of fn_801D05F8
+    /* 0x2B0 */ f32 mSearchRange;   // the range of findNearestPlayer_801D05F8
     /* 0x2B4 */ f32 field_0x2b4; // the drift velocity (damped)
     /* 0x2B8 */ f32 field_0x2b8;
-    /* 0x2BC */ JGeometry::TVec3f mSearchPos; // the origin of fn_801D05F8
+    /* 0x2BC */ JGeometry::TVec3f mSearchPos; // the origin of findNearestPlayer_801D05F8
     /* 0x2C8 */ f32 field_0x2c8;
     /* 0x2CC */ f32 field_0x2cc;
     /* 0x2D0 */ f32 field_0x2d0;

@@ -16,7 +16,7 @@ public:
     MgFishingScreen_804B1CC8();
     virtual ~MgFishingScreen_804B1CC8();
 
-    // Draws the screen: gGameRoot2_8053AB10->fn_8013B490(), then mScreen at (0, 0)
+    // Draws the screen: gGameRoot2_8053AB10->setPort_8013B490(), then mScreen at (0, 0)
     // with gGameRoot2_8053AB10's J2DOrthoGraph as the grafcontext.
     void fn_8044A024();
     // Sets the digit pictures to the first 'TIMG' name and hides the panes

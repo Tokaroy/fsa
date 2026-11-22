@@ -182,7 +182,7 @@ void StoneArrghus_8049C718::init() {
     startSound_801F0E34(0x40026, 0);
     mAnimPrev = 9;
     fn_800FA6B0();
-    gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
     u32 low = mSerial & 0xFFFF;
     for (s32 i = 0; i < 0x18; i++) {
         getActorManager_801F856C()->spawnActor_801F9484('WRTC', mLayer_0x4, &mPos, low + (i << 16) + 0x1000000, -1, -1);
@@ -206,7 +206,7 @@ void StoneArrghus_8049C718::fn_800FCCCC() {
     case 0:
         mAnimState = 3;
         mZBase = 0.0f;
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (player >= 0) {
             if (getPlayerPos_8023E724(player)->y - mPos.y < 140.0f) {
                 field_0x254++;
@@ -497,7 +497,7 @@ void StoneArrghus_8049C718::fn_800FBD90() {
     f32 s = mScale;
     mBox.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
     mMapBox_0x80.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
-    if (fn_801F2FAC()) {
+    if (checkPlayerAttacks_801F2FAC()) {
         mHitTimer_0xd8 = 10;
         mHitTimerStart_0xdc = 10;
         mState = 9;
@@ -544,7 +544,7 @@ void StoneArrghus_8049C718::fn_800FBD90() {
         mPos.add(mVel_0x3c);
         startSound_801F0E34(0x4002E, 0);
         JGeometry::TVec3f n;
-        if (fn_801F2618(&n, false)) {
+        if (sweepMapBox_801F2618(&n, false)) {
             f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
             mVel_0x3c.x -= k * n.x;
             mVel_0x3c.y -= k * n.y;
@@ -572,7 +572,7 @@ void StoneArrghus_8049C718::fn_800FBA14() {
     f32 dist = 0.0f;
     s32 dir = 0;
     s32 player = 0;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (mVel_0x3c.z > -0.5f) {
         if (player >= 0) {
             mPos.x += JMath::sincosTable_.sinShort((s16)angle);
@@ -611,7 +611,7 @@ void StoneArrghus_8049C718::fn_800FB6E0(s32 mode) {
     f32 dist = 0.0f;
     s32 dir = 0;
     s32 player = 0;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (player != -1 && dist < 50.0f) {
         field_0x262 = angle;
     } else {
@@ -705,7 +705,7 @@ void StoneArrghus_8049C718::fn_800FB32C() {
         mPos.z = 0.0f;
     }
     JGeometry::TVec3f n;
-    if (fn_801F2618(&n, false)) {
+    if (sweepMapBox_801F2618(&n, false)) {
         f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
         mVel_0x3c.x -= k * n.x;
         mVel_0x3c.y -= k * n.y;
@@ -765,7 +765,7 @@ void StoneArrghus_8049C718::fn_800FB070() {
                 }
             }
             startSound_801F0E34(0x4002B, 0);
-        } else if (fn_801F2FAC()) {
+        } else if (checkPlayerAttacks_801F2FAC()) {
             mHitTimer_0xd8 = 20;
             mHitTimerStart_0xdc = 20;
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -807,7 +807,7 @@ void StoneArrghus_8049C718::update() {
             focusCamera(this);
             if (mSlot >= 0x18) {
                 getActorManager_801F856C()->fn_801F6884();
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
                 mTimer = 0;
                 field_0x254++;
             }
@@ -924,7 +924,7 @@ void StoneArrghus_8049C718::vfunc_0x44() {
         if (mWobble == 0) {
             mWobble = 1;
         }
-        fn_801F37AC(0, &mPos, 3, 0, -1);
+        takeHit_801F37AC(0, &mPos, 3, 0, -1);
         startSound_801F0E34(0x40005, 0);
         mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
     }
@@ -1113,7 +1113,7 @@ void StoneArrghus_8049C718::draw() {
     } else if (mFlags & 4) {
         params.field_0x30 = 0x11;
     }
-    void* res = fn_804032E8('WART', lbl_8049C5D0[mFrame]);
+    void* res = getBossArchiveResource_804032E8('WART', lbl_8049C5D0[mFrame]);
     drawSpriteRes_801EFD34(res, &params, 5, 0.0f, -22.0f * (mScale + b), 0.0f);
 }
 
@@ -1188,9 +1188,9 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
         mFlag249 = 0;
     }
     if (updateHitReaction_801F3D94(1) == 0) {
-        if (fn_801F285C(NULL, NULL, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
-            fn_80238548(0, 0, &xy, 0x10);
+            hitPlayerGroup_80238548(0, 0, &xy, 0x10);
         }
         moveToward(mPos, target, speed);
         damagePlayersInBox_801F2B7C(2, -1, 1);
@@ -1214,7 +1214,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     if (updateHitReaction_801F3D94(1) != 0) {
         return;
     }
-    if (fn_801F305C()) {
+    if (checkHits_801F305C()) {
         return;
     }
     field_0xb0 = 0x80002;
@@ -1275,7 +1275,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mVel_0x3c.y *= 0.99f;
         }
         JGeometry::TVec3f n;
-        if (fn_801F2618(&n, false)) {
+        if (sweepMapBox_801F2618(&n, false)) {
             f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
             mVel_0x3c.x -= k * n.x;
             mVel_0x3c.y -= k * n.y;
@@ -1303,7 +1303,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
         damagePlayersInBox_801F2B7C(2, -1, 1);
     }
     if (JMAAbs(mVel_0x3c.x) < 1.0f && JMAAbs(mVel_0x3c.y) < 1.0f) {
-        s32 player = fn_801F285C(NULL, NULL, true, -1);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             JGeometry::TVec3f d(0.0f, 0.0f, 0.0f);
             d.x = getPlayerPos_8023E724(player)->x - mPos.x;
@@ -1313,7 +1313,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mVel_0x3c.x = 1.5f * d.x;
             mVel_0x3c.y = 1.5f * d.y;
             JGeometry::TVec2f xy(mPos.x, mPos.y);
-            fn_80238548(player, 0, &xy, 0x10);
+            hitPlayerGroup_80238548(player, 0, &xy, 0x10);
         }
     }
 }
@@ -1433,9 +1433,9 @@ void StoneArrghusChildPuff_8049C678::draw() {
         }
         void* res;
         if (mState == 2) {
-            res = fn_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2 + 1]);
+            res = getBossArchiveResource_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2 + 1]);
         } else {
-            res = fn_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2]);
+            res = getBossArchiveResource_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2]);
         }
         drawSpriteRes_801EFD34(res, &params, 0, 0.0f, 0.0f, 0.0f);
     }
@@ -1527,7 +1527,7 @@ void HitRing_800F802C::fn_800F802C() {
         mActive = false;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_8022EA0C(i) == i && !(mHitMask & (1 << i)) &&
+        if (fn_8023F264(i) && getRepresentativePlayer_8022EA0C(i) == i && !(mHitMask & (1 << i)) &&
             getPlayerLayer_8023DE58(i) == 0) {
             // One stack vector: the player's offset (its length is TVec2's
             // TUtilf::sqrt), then the position the hit is reported at.
@@ -1537,7 +1537,7 @@ void HitRing_800F802C::fn_800F802C() {
             if (v.length() < mRadius) {
                 v.x = mPos.x;
                 v.y = mPos.y;
-                fn_80238548(i, 0, &v, 0xB);
+                hitPlayerGroup_80238548(i, 0, &v, 0xB);
                 mHitMask |= 1 << i;
             }
         }

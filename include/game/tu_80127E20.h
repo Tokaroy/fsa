@@ -6,10 +6,10 @@
 
 #include "game/ActorBase.h"
 
-// The guarded static at 0x804BD36C (function-local static of fn_801283E8): the
+// The guarded static at 0x804BD36C (function-local static of getZoraEscortGoalList_801283E8): the
 // serials of the escort's 'FZRA' (ZoraEscortGoal) actors. No vtable; named
 // after its destructor fn_80128460, which is passed to __register_global_object
-// (the constructor is inlined into fn_801283E8). Twin of EscortActorList_80131F6C.
+// (the constructor is inlined into getZoraEscortGoalList_801283E8). Twin of EscortActorList_80131F6C.
 struct ZoraEscortGoalList_80128460 {
     ZoraEscortGoalList_80128460() : mCount(0) {
         for (s32 i = 0; i < 8; i++) {
@@ -25,14 +25,14 @@ struct ZoraEscortGoalList_80128460 {
     // The midpoint (x, y, 0) of the first two actors' positions, or the zero
     // vector with fewer than two. The result is a stack local.
     const JGeometry::TVec3f* fn_80127F90();
-    // Call fn_80126A4C(0x10) / fn_80126A4C(0xA) on every 'FZRA' actor.
+    // Call setState_80126A4C(0x10) / setState_80126A4C(0xA) on every 'FZRA' actor.
     void fn_80128074();
     void fn_801281A4();
     // True when an 'FZRA' actor's state word is 2, 3 or 9.
     bool fn_801280F8();
     // fn_80230534(false); the object is not used.
     void fn_80128228();
-    // fn_8023077C(), then fn_80126A4C(5) on each actor; false when one is
+    // fn_8023077C(), then setState_80126A4C(5) on each actor; false when one is
     // not an 'FZRA' actor.
     bool fn_8012824C();
     // True when there is at least one actor and every one is a live 'FZRA'
@@ -47,6 +47,6 @@ struct ZoraEscortGoalList_80128460 {
     /* 0x04 */ s32 mSerials[8];
 }; // Size: 0x24
 
-ZoraEscortGoalList_80128460* fn_801283E8();
+ZoraEscortGoalList_80128460* getZoraEscortGoalList_801283E8();
 
 #endif

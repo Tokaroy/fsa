@@ -42,7 +42,7 @@ public:
     // 0x80408F38: sets the alpha of the 9 panes of mMapTenScreen_0x14 named by
     // lbl_8048C5D0 to field_0x642[i] * alpha.
     void fn_80408F38(f32 alpha);
-    // 0x80408114 (called by fn_804108B4): in states 0xB-0xD fades the eight
+    // 0x80408114 (called by update_804108B4): in states 0xB-0xD fades the eight
     // Pwarea panes of mMapScreen_0xc: the selected stage's blinks between 150 and
     // 255, the previous one fades out, the others are hidden (alpha 0).
     void fn_80408114();
@@ -99,11 +99,11 @@ public:
     // 0x804108B4: runs the state handlers (lbl_804B10F8[mState_0x350] and
     // lbl_804B1230[mMessageState_0x659] on lbl_8053ADF8), then fades the panes, slides
     // field_0x2b4 (slidePane) and updates the sound objects.
-    void fn_804108B4();
-    // Inline (fn_804108B4 twice, fn_80411230 three times): the states 2-4, 6-9,
+    void update_804108B4();
+    // Inline (update_804108B4 twice, draw_80411230 three times): the states 2-4, 6-9,
     // 15-18 and 20-22, in which the stage cursor is shown.
     bool isCursorState();
-    // 0x8040732C (called by fn_804108B4): fades the Ppoint panes of stage mStage_0x340 and,
+    // 0x8040732C (called by update_804108B4): fades the Ppoint panes of stage mStage_0x340 and,
     // in GameRoot 0x7E mode, colours its three rank panes by lbl_80529DEC.field_0x1fc.
     void fn_8040732C();
     // 0x8040873C: puts the screen in its start position for the selected stage (zoomed
@@ -112,10 +112,10 @@ public:
     void fn_8040873C();
     // 0x804111C4: draws the screen.
     void fn_804111C4();
-    void fn_80411230(); // 0x80411230
+    void draw_80411230(); // 0x80411230
     void pool_80543898(s16 frame, s16 frames);
     // State functions not written yet, lbl_804B10F8[state] (index in the comment;
-    // fn_804108B4 calls lbl_804B10F8[mState_0x350] through lbl_8053ADF8).
+    // update_804108B4 calls lbl_804B10F8[mState_0x350] through lbl_8053ADF8).
     void fn_8040F16C(); // 3
     void fn_8040ED20(); // 4
     void fn_8040E838(); // 5
@@ -152,11 +152,11 @@ public:
     // Dead-stripped (fn_80405D00, moveLevelCursor_80405B10 and fn_8040B388 inline it): resets the
     // mPlanPanes_0x120 panes if field_0x65e is set.
     void inl_80405B10();
-    // 0x80405FC0 (called by fn_80411230): draws the four players (player_sob.bin)
+    // 0x80405FC0 (called by draw_80411230): draws the four players (player_sob.bin)
     // around the cursor mCursorX_0x394 / mCursorY_0x398, the frame picked by the state, and
     // starts the emitters 0xCB / 0xCC of field_0x2cc / field_0x2dc at frame 26 of state 0x14.
     void fn_80405FC0();
-    // 0x80406634 (called by fn_80411230 with mStage_0x340 - 1 / true, and mStage_0x340 /
+    // 0x80406634 (called by draw_80411230 with mStage_0x340 - 1 / true, and mStage_0x340 /
     // false in state 4): draws the cursor sprite (enemy_both2_sob.bin, frames
     // lbl_8048CB68[stage] + 0-5) at the selected sub-stage's point of lbl_8048C95C
     // (50 higher unless `raised`) and keeps the emitters 0x32C / 0x184 of mCursorEmitters_0x308 on it.
@@ -166,7 +166,7 @@ public:
     // for stage 10 / sub-stage 2) that fn_80404074 lets through; at field_0x35c 10
     // the picked one starts the emitters 0x7B-0x7D of field_0x2ec.
     void fn_804069E8();
-    // 0x80406F68 (called by fn_80411230 with field_0x3ac / field_0x3b0): draws three
+    // 0x80406F68 (called by draw_80411230 with field_0x3ac / field_0x3b0): draws three
     // enemy_both2_sob.bin sprites at (x, y) on the 256 x 192 layer: frame 0xC6 bobbing
     // with a sine of field_0x380, and lbl_8048CB58[(field_0x380 % 40) / 10] + 0xC0 /
     // + 0xC3 16 to the left and right of it.
@@ -214,7 +214,7 @@ public:
     /* 0x240 */ PaneCtrl_804AF86C* mMessageWindowPanes_0x240[12]; // panes the state handlers animate together
     /* 0x270 */ PaneCtrl_804AF86C* mMessageTextPanes_0x270[2]; // text panes
     /* 0x278 */ PaneCtrl_804AF86C* field_0x278[15]; // three groups of five panes
-    /* 0x2B4 */ PaneCtrl_804AF86C* field_0x2b4; // the pane fn_804108B4 slides in and out
+    /* 0x2B4 */ PaneCtrl_804AF86C* field_0x2b4; // the pane update_804108B4 slides in and out
     /* 0x2B8 */ PlayerSoundObj_804B20F8* mPlayerSoundObjs_0x2b8[4]; // sound objects (__nw__(0x60))
     /* 0x2C8 */ ActorSoundObj_804578F4* mSoundObj_0x2c8;
     /* 0x2CC */ JPABaseEmitter* field_0x2cc[4];
@@ -229,7 +229,7 @@ public:
     /* 0x348 */ s32 mLevel_0x348; // sub-stage of mStage_0x340 (0-3; fn_80409450)
     /* 0x34C */ s32 field_0x34c; // row of mLevel_0x348 in lbl_8048C88C (moveLevelCursor_80405B10)
     /* 0x350 */ s32 mState_0x350; // state
-    /* 0x354 */ s32 mPrevState_0x354; // the state seen last by fn_804108B4
+    /* 0x354 */ s32 mPrevState_0x354; // the state seen last by update_804108B4
     /* 0x358 */ s32 field_0x358;
     /* 0x35C */ s32 field_0x35c; // frame counter of fn_8040E720
     /* 0x360 */ s32 field_0x360; // facing of the cursor (0, 8, 0x10, 0x18; fn_8040E3A0)
@@ -259,9 +259,9 @@ public:
     // plus lbl_8050DB0C's offsets): x of [dir][pane], then y.
     /* 0x3BC */ f32 mArrowHomeX_0x3bc[4][2];
     /* 0x3DC */ f32 mArrowHomeY_0x3dc[4][2];
-    /* 0x3FC */ f32 field_0x3fc; // pulsing alpha (0.78-1) of 'Phu01' (fn_804108B4, fn_80411230)
+    /* 0x3FC */ f32 field_0x3fc; // pulsing alpha (0.78-1) of 'Phu01' (update_804108B4, draw_80411230)
     /* 0x400 */ f32 field_0x400; // alpha (0-1) of the cursor sprite (fn_80406634)
-    /* 0x404 */ f32 field_0x404; // offset of 'Plvcu' from the stage's level pane (fn_804108B4)
+    /* 0x404 */ f32 field_0x404; // offset of 'Plvcu' from the stage's level pane (update_804108B4)
     /* 0x408 */ f32 field_0x408;
     /* 0x40C */ u8 field_0x40c; // nonzero: fn_80409FDC moves the sub-stage cursor (mLevel_0x348)
     /* 0x40D */ u8 field_0x40d;
@@ -300,11 +300,11 @@ public:
     /* 0x658 */ u8 field_0x658;
     /* 0x659 */ u8 mMessageState_0x659;
     /* 0x65A */ u8 field_0x65a;
-    /* 0x65B */ u8 field_0x65b; // alpha of 'Phu01' (fn_80411230)
-    /* 0x65C */ u8 field_0x65c; // step of field_0x3fc's pulse (fn_804108B4)
+    /* 0x65B */ u8 field_0x65b; // alpha of 'Phu01' (draw_80411230)
+    /* 0x65C */ u8 field_0x65c; // step of field_0x3fc's pulse (update_804108B4)
     /* 0x65D */ u8 field_0x65d;
     /* 0x65E */ u8 field_0x65e; // 1 while the mPlanPanes_0x120 panes are shown (hideSubStagePanes)
-    /* 0x65F */ u8 field_0x65f; // slide of field_0x2b4: 1 in, 2-4 out (fn_804108B4)
+    /* 0x65F */ u8 field_0x65f; // slide of field_0x2b4: 1 in, 2-4 out (update_804108B4)
     /* 0x660 */ u8 field_0x660; // field_0x65f when the last slide out ended
     /* 0x661 */ u8 field_0x661;
     /* 0x662 */ u8 field_0x662;

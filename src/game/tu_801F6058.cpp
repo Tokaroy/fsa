@@ -28,7 +28,7 @@ static JGeometry::TVec3f lbl_804CABD8;
 
 // Whether two boxes overlap (edges touching counts), on a copy of `a`: inlined
 // the same way, with no store back to either box, into fn_801F7F58,
-// findOverlappingActorById_801F8108 and fn_801F82CC.
+// findOverlappingActorById_801F8108 and findOverlappingActor_801F82CC.
 static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
     JGeometry::TBox2f overlap(a);
     return overlap.intersect(b);
@@ -39,10 +39,10 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
 
-// The angle of each direction (fn_801F6874; angleToDir_801F681C is the inverse).
+// The angle of each direction (dirToAngle_801F6874; angleToDir_801F681C is the inverse).
 static const u16 lbl_8053F800[4] = {0x4000, 0xC000, 0x0000, 0x8000};
 
-// The slot fn_801F78F4 found last.
+// The slot findNextActorById_801F78F4 found last.
 static s32 lbl_8053A168 = -1;
 
 // Deletes the actor in `slot` (releasing its sound object first) and, when it
@@ -115,7 +115,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
     mSpawnCount = 0;
     mLastSlot = -1;
     mActorEnd = -1;
-    getActorManager_801F856C()->fn_801F6204(0);
+    getActorManager_801F856C()->setAllDefeated_801F6204(0);
     mListHead = NULL;
     field_0x3041 = 0;
 }
@@ -241,7 +241,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 s32 serial = actor->mSerial;
                 s32 layer = actor->mLayer_0x4;
                 CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-                if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, &actor->mPos, serial, NULL)) {
+                if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, &actor->mPos, serial, NULL)) {
                     mActors[i]->die_0x24();
                 }
             }
@@ -261,7 +261,7 @@ void ActorManager_804A5800::fn_801F871C() {
         }
     }
     if (count == 0) {
-        getActorManager_801F856C()->fn_801F6204(1);
+        getActorManager_801F856C()->setAllDefeated_801F6204(1);
     }
 }
 
@@ -351,11 +351,11 @@ s32 ActorManager_804A5800::fn_801F8448(ActorBase_804A5770* actor) {
     return unlinked;
 }
 
-s32 ActorManager_804A5800::fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz) {
+s32 ActorManager_804A5800::findOverlappingActor_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz) {
     JGeometry::TBox2f otherBox;
     JGeometry::TBox2f box;
     s32 found = -1;
-    actor->fn_801F31C4(&box);
+    actor->getBoxAtPos_801F31C4(&box);
     u8 anyZ = viewLayerFlag(actor->mLayer_0x4);
     for (ActorBase_804A5770* other = mListHead; other != NULL; other = other->mListNext) {
         if (!other->mAlive || other->mLayer_0x4 != actor->mLayer_0x4 || other->field_0xc4) {
@@ -367,7 +367,7 @@ s32 ActorManager_804A5800::fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij
         if (!anyZ && __fabsf(actor->mPos.z - other->mPos.z) > maxDz) {
             continue;
         }
-        other->fn_801F31C4(&otherBox);
+        other->getBoxAtPos_801F31C4(&otherBox);
         if (boxesOverlap(otherBox, box)) {
             found = other->mSerial;
             break;
@@ -402,8 +402,8 @@ s32 ActorManager_804A5800::fn_801F7F58(ActorBase_804A5770* actor, const u32* ids
             if (*id == other->mActorId) {
                 JGeometry::TBox2f actorBox;
                 JGeometry::TBox2f otherBox;
-                actor->fn_801F31C4(&actorBox);
-                other->fn_801F31C4(&otherBox);
+                actor->getBoxAtPos_801F31C4(&actorBox);
+                other->getBoxAtPos_801F31C4(&otherBox);
                 if (boxesOverlap(actorBox, otherBox)) {
                     found = other->mSerial;
                     break;
@@ -553,7 +553,7 @@ s32 ActorManager_804A5800::findSerialByActorId_801F7A08(u32 id) {
     return -1;
 }
 
-s32 ActorManager_804A5800::fn_801F78F4(u32 id, s32 afterSerial) {
+s32 ActorManager_804A5800::findNextActorById_801F78F4(u32 id, s32 afterSerial) {
     s32 start = 0;
     if (afterSerial >= 0) {
         if (lbl_8053A168 >= 0 && mActors[lbl_8053A168] != NULL && mActors[lbl_8053A168]->mAlive &&
@@ -592,7 +592,7 @@ s32 ActorManager_804A5800::fn_801F7884(u32 id, s32 layer) {
 
 // The bound is read once (as fn_801F7274 and fn_801F732C keep it in a register
 // across calls).
-s32 ActorManager_804A5800::fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** out,
+s32 ActorManager_804A5800::collectActorsById_801F7818(u32 id, s32 layer, ActorBase_804A5770** out,
                                        s32 excludeSerial) {
     s32 count = 0;
     s32 end = mActorEnd;
@@ -916,7 +916,7 @@ void ActorManager_804A5800::fn_801F6884() {
     lbl_8053AD70->fn_8037AE30();
 }
 
-u16 fn_801F6874(s32 dir) {
+u16 dirToAngle_801F6874(s32 dir) {
     return lbl_8053F800[dir & 3];
 }
 
@@ -932,7 +932,7 @@ s32 angleToDir_801F681C(u16 angle) {
     return dir;
 }
 
-bool fn_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin) {
+bool isOutsideView_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     if (pos->x <= box->i.x - margin || pos->x >= box->f.x + margin ||
@@ -1060,7 +1060,7 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
-s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
+s32 ActorManager_804A5800::getEnemyParam_801F620C(u32 id, u32 column) {
     u32* key = mParamColumnIds;
     s32 columnNum = mParamColumnNum;
     s32 value = 0;
@@ -1088,7 +1088,7 @@ s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
     return value;
 }
 
-void ActorManager_804A5800::fn_801F6204(u8 value) {
+void ActorManager_804A5800::setAllDefeated_801F6204(u8 value) {
     mAllDefeated_0x305c = value;
 }
 

@@ -65,62 +65,62 @@ static inline JUTTexture* loadTexture(JKRArchive* archive, const char* name, JKR
 GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
     mSolidHeap_0x0 = JKRSolidHeap::create(-1, heap, false);
     mSolidHeap_0x0->becomeCurrentHeap();
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, mSolidHeap_0x0,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, mSolidHeap_0x0,
                 &mYouganModel_0x4, &mYouganBtk_0x8, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "doku_yougan.bmd", "doku_yougan.btk", NULL, NULL, NULL, 0x240000,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "doku_yougan.bmd", "doku_yougan.btk", NULL, NULL, NULL, 0x240000,
                 mSolidHeap_0x0, &mDokuYouganModel_0xc, &mDokuYouganBtk_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yami_yougan.bmd", "yami_yougan.btk", NULL, NULL, NULL, 0x240000,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yami_yougan.bmd", "yami_yougan.btk", NULL, NULL, NULL, 0x240000,
                 mSolidHeap_0x0, &mYamiYouganModel_0x14, &mYamiYouganBtk_0x18, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, mSolidHeap_0x0,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, mSolidHeap_0x0,
                 &mMoyaModel_0x1c, &mMoyaBtk_0x20, NULL, &mMoyaBrk_0x24, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", NULL,
                 0x11240000, mSolidHeap_0x0, &mDarkFilterModel_0x28, &mDarkFilterBtk_0x2c, NULL, &mDarkFilterBrk_0x30, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", NULL,
                 0x11240000, mSolidHeap_0x0, &mFogFilterModel_0x90, &mFogFilterBtk_0x94, NULL, &mFogFilterBrk_0x98, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "cloudShadowFilter00.bmd", "cloudShadowFilter00.btk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "cloudShadowFilter00.bmd", "cloudShadowFilter00.btk", NULL,
                 "cloudShadowFilter00.brk", NULL, 0x11240000, mSolidHeap_0x0, &mCloudShadowFilterModel_0x9c, &mCloudShadowFilterBtk_0xa0, NULL,
                 &mCloudShadowFilterBrk_0xa4, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "poisonSwamp00.bmd", "poisonSwamp00.btk", NULL, "poisonSwamp00.brk",
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "poisonSwamp00.bmd", "poisonSwamp00.btk", NULL, "poisonSwamp00.brk",
                 NULL, 0x11240000, mSolidHeap_0x0, &mPoisonSwampModel_0xa8, &mPoisonSwampBtk_0xac, NULL, &mPoisonSwampBrk_0xb0, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "blackCloudFilter.bmd", "blackCloudFilter.btk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "blackCloudFilter.bmd", "blackCloudFilter.btk", NULL,
                 "blackCloudFilter.brk", NULL, 0x11240000, mSolidHeap_0x0, &mBlackCloudFilterModel_0xb4, &mBlackCloudFilterBtk_0xb8, NULL, &mBlackCloudFilterBrk_0xbc,
                 NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mSolidHeap_0x0,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mSolidHeap_0x0,
                 &mMekakusiModel_0x34, &mMekakusiBtk_0x38, NULL, NULL, NULL);
 
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0, &mYukaModel_0xec,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0, &mYukaModel_0xec,
                 NULL, NULL, NULL, NULL);
     mYukaBtk_0xf0 = NULL;
     if (mYukaModel_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
                     &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
     if (mYukaModel_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
                     &mYukaModel_0xec, &mYukaBtk_0xf0, NULL, NULL, NULL);
     }
     if (mYukaModel_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
                     &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
     if (mYukaModel_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
                     &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
 
     for (int i = 0; i < 6; i++) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, lbl_804A0790[i][0], lbl_804A0790[i][1], NULL, lbl_804A0790[i][2],
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, lbl_804A0790[i][0], lbl_804A0790[i][1], NULL, lbl_804A0790[i][2],
                     NULL, 0x10240000, mSolidHeap_0x0, &mKumoModels_0x3c[i], &mKumoBtks_0x54[i], NULL, &mKumoBrks_0x6c[i], NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk",
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk",
                 NULL, 0x11240000, mSolidHeap_0x0, &mForestFilterModel_0x84, &mForestFilterBtk_0x88, NULL, &mForestFilterBrk_0x8c, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "morningLight00.bmd", "morningLight00.btk", NULL, "morningLight00.brk",
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "morningLight00.bmd", "morningLight00.btk", NULL, "morningLight00.brk",
                 NULL, 0x240000, mSolidHeap_0x0, &mMorningLightModel_0xc0, &mMorningLightBtk_0xc4, NULL, &mMorningLightBrk_0xc8, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "nagarekumo.bmd", "nagarekumo.btk", NULL, NULL, NULL, 0x240000,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "nagarekumo.bmd", "nagarekumo.btk", NULL, NULL, NULL, 0x240000,
                 mSolidHeap_0x0, &mNagarekumoModel_0xcc, &mNagarekumoBtk_0xd0, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", NULL,
                 0x11240000, mSolidHeap_0x0, &mDarkFogModel_0xd4, &mDarkFogBtk_0xd8, NULL, &mDarkFogBrk_0xdc, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", NULL, 0x240000,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", NULL, 0x240000,
                 mSolidHeap_0x0, &mMoyaRedModel_0xe0, &mMoyaRedBtk_0xe4, NULL, &mMoyaRedBrk_0xe8, NULL);
     mSolidHeap_0x0->adjustSize();
     heap->becomeCurrentHeap();
@@ -618,21 +618,21 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
 void GameRootSub24_8016A3AC::fn_8016D33C() {
     if (field_0x1c4) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mYouganModel_0x4, pos, -1, true, true, 0.5f, 10.24f);
+        drawParallaxModel_8016A7DC(mYouganModel_0x4, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016D2E0() {
     if (field_0x1c5) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mDokuYouganModel_0xc, pos, -1, true, true, 0.5f, 10.24f);
+        drawParallaxModel_8016A7DC(mDokuYouganModel_0xc, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016D284() {
     if (field_0x1c6) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mYamiYouganModel_0x14, pos, -1, true, true, 0.5f, 10.24f);
+        drawParallaxModel_8016A7DC(mYamiYouganModel_0x14, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
@@ -921,7 +921,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
 void GameRootSub24_8016A3AC::fn_8016B8AC() {
     if (field_0x1cb[0]) {
         JGeometry::TVec3f pos(256.0f, 256.0f + field_0x1e4, 0.0f);
-        fn_8016A7DC(mMekakusiModel_0x34, pos, 1, true, false, 1.0f, 102.4f);
+        drawParallaxModel_8016A7DC(mMekakusiModel_0x34, pos, 1, true, false, 1.0f, 102.4f);
     }
 }
 
@@ -1061,7 +1061,7 @@ void GameRootSub24_8016A3AC::fn_8016B0B0() {
 void GameRootSub24_8016A3AC::fn_8016B054() {
     if (field_0x1d3) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mPoisonSwampModel_0xa8, pos, -1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mPoisonSwampModel_0xa8, pos, -1, true, true, 1.0f, 10.0f);
     }
 }
 #pragma auto_inline reset
@@ -1108,82 +1108,82 @@ void GameRootSub24_8016A3AC::fn_8016ADE0() {
 void GameRootSub24_8016A3AC::fn_8016AD84() {
     if (field_0x1ed) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mMoyaModel_0x1c, pos, 1, true, true, 1.5f, 10.24f);
+        drawParallaxModel_8016A7DC(mMoyaModel_0x1c, pos, 1, true, true, 1.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AD28() {
     if (field_0x1ef) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mDarkFilterModel_0x28, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mDarkFilterModel_0x28, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016ACCC() {
     if (field_0x1f0) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mForestFilterModel_0x84, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mForestFilterModel_0x84, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AC70() {
     if (field_0x1f1) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mFogFilterModel_0x90, pos, 1, true, true, 1.5f, 10.0f);
+        drawParallaxModel_8016A7DC(mFogFilterModel_0x90, pos, 1, true, true, 1.5f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AC14() {
     if (field_0x1f2) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mCloudShadowFilterModel_0x9c, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mCloudShadowFilterModel_0x9c, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016ABB8() {
     if (field_0x1f3) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mBlackCloudFilterModel_0xb4, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mBlackCloudFilterModel_0xb4, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AB5C() {
     if (field_0x1d8 > 0) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mMorningLightModel_0xc0, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mMorningLightModel_0xc0, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AB00() {
     if (field_0x1f4) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mDarkFogModel_0xd4, pos, 1, true, true, 1.0f, 10.0f);
+        drawParallaxModel_8016A7DC(mDarkFogModel_0xd4, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AAA4() {
     if (field_0x1dc) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mNagarekumoModel_0xcc, pos, 1, true, true, 1.5f, 1.0f);
+        drawParallaxModel_8016A7DC(mNagarekumoModel_0xcc, pos, 1, true, true, 1.5f, 1.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AA48() {
     if (field_0x1f5) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mMoyaRedModel_0xe0, pos, 1, true, true, 1.5f, 10.24f);
+        drawParallaxModel_8016A7DC(mMoyaRedModel_0xe0, pos, 1, true, true, 1.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016A9EC() {
     if (field_0x1dd) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(mYukaModel_0xec, pos, -1, true, true, 0.5f, 10.0f);
+        drawParallaxModel_8016A7DC(mYukaModel_0xec, pos, -1, true, true, 0.5f, 10.0f);
     }
 }
 #pragma auto_inline reset
 
-void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale) {
+void GameRootSub24_8016A3AC::drawParallaxModel_8016A7DC(J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale) {
     if (dir == 1) {
         bool skip = gGameRoot_8053AAF8->field_0x4c == 11 ? true : gGameRoot_8053AAF8->field_0x88 == 2;
         if (skip) {
@@ -1236,7 +1236,7 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
 // a map cell is 8 units). Dead-stripped: fn_8016ADE0, fn_8016B248, fn_8016B4D4,
 // fn_8016B910, fn_8016C2FC and fn_8016CB14 inline it. Its own copy created the
 // unit's first pool literals (0.125, 1, 0.5, 0, then the int-to-float double),
-// which come before fn_8016A7DC's 1.5 in the original .sdata2.
+// which come before drawParallaxModel_8016A7DC's 1.5 in the original .sdata2.
 // R2 pool helper (inlined at 12 call sites); was getMapTexView.
 void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
@@ -1256,7 +1256,7 @@ void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
 // FIXME: 99.79 %, regalloc-only; behaviour clean.
 // regalloc only: the original keeps heap in r29 and btk1Out in r30
 // (ours swaps them).
-void fn_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const char* btk2,
+void loadModelWithAnims_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const char* btk2,
                  const char* brk1, const char* brk2, u32 flags, JKRHeap* heap, J3DModel** model,
                  J3DAnmTextureSRTKey** btk1Out, J3DAnmTextureSRTKey** btk2Out,
                  J3DAnmTevRegKey** brk1Out, J3DAnmTevRegKey** brk2Out) {

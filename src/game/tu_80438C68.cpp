@@ -26,7 +26,7 @@ GameOverScreen_804B17A0::GameOverScreen_804B17A0() {
     field_0x4 = new J2DScreen;
     field_0x4->setPriority("gameover.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     OSInitFastCast();
-    field_0x8 = J2DAnmLoaderDataBase::load(fn_80403084('SCRN', "gameover.bck"));
+    field_0x8 = J2DAnmLoaderDataBase::load(getGame2DArchiveResource_80403084('SCRN', "gameover.bck"));
     field_0x4->search('Ndata01')->setAnimation(static_cast<J2DAnmTransform*>(field_0x8));
     field_0x3c = 0;
     field_0xc[0] = NULL;
@@ -121,7 +121,7 @@ void GameOverScreen_804B17A0::fn_80439AB0() {
 }
 
 void GameOverScreen_804B17A0::fn_804399A0() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x34->setAlpha((u8)field_0x50);
     field_0x34->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
     field_0x8->mCurrentFrame = field_0x3c;
@@ -182,7 +182,7 @@ u8 GameOverScreen_804B17A0::fn_80438E94() {
                 field_0x4->search('Pblk')->setAlpha(alpha);
                 field_0x40 = 1;
                 field_0x56 = 1;
-                gAudioMgr_8053AF80->fn_80458F9C(0x14);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(0x14);
             }
         }
         break;
@@ -353,7 +353,7 @@ void GameOverScreen_804B17A0::fn_80438C68() {
     case 0:
         if (field_0x44 == -1) {
             s32 arg = field_0x48;
-            JGeometry::TVec3f* pos = getPlayerPos_8023E724(fn_8022EA0C(0));
+            JGeometry::TVec3f* pos = getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(0));
             s32 layer = getPlayerLayer_8023DE58(0);
             field_0x44 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TNGL, layer, pos, arg, -1, -1);
             field_0x5f = fn_8022ADB0();
@@ -377,7 +377,7 @@ void GameOverScreen_804B17A0::fn_80438C68() {
             field_0x38++;
             field_0x58 = 3;
             field_0x40 = 5;
-            gAudioMgr_8053AF80->fn_80458F9C(0x14);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x14);
             s32 end = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];

@@ -567,7 +567,7 @@ void AdventureHud_804B13D4::fn_8041FC2C() {
     s32 i;
     for (i = 0; i < 4; i++) {
         fn_8041E3B4(i);
-        lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+        lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
         lbl_80529DEC.field_0xe8[i] = fn_80236100(i);
         lbl_80529DEC.field_0x108[i] = fn_802375B0(i);
         field_0x188[i] = 0x180;
@@ -685,12 +685,12 @@ void AdventureHud_804B13D4::fn_8041F720() {
         f32 sx = scale * ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / zoom);
         f32 sy = scale * ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / zoom);
         for (s32 i = 0; i < 4; i++) {
-            if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
+            if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)) >= 8) {
                 continue;
             }
             Vec screen;
             if (field_0x21a[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
-                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
                 f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
                 f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
                 f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
@@ -699,8 +699,8 @@ void AdventureHud_804B13D4::fn_8041F720() {
                 field_0x4c->setPort();
                 field_0x8[i]->draw(x, y, field_0x4c);
                 field_0x234[i] = 0;
-            } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
-                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
+            } else if (!isPaused() && fn_802366CC(getRepresentativePlayer_8022EA0C(i)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(i)) < 300) {
+                gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
                 f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
                 f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
                 f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
@@ -711,7 +711,7 @@ void AdventureHud_804B13D4::fn_8041F720() {
             }
         }
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
@@ -723,7 +723,7 @@ void AdventureHud_804B13D4::fn_8041F5FC() {
         (mode == 10 && lbl_80529DEC.mLevel_0x11c == 2)) {
         return;
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x18->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x50 != NULL) {
         field_0x50->fn_8044148C();
@@ -744,7 +744,7 @@ void AdventureHud_804B13D4::fn_8041EDB0() {
         if (gGameRoot2_8053AB10->field_0x20->field_0x14c[0] != 0) {
             gGameRoot2_8053AB10->field_0x20->field_0x217[0] = 1;
         }
-        if (gGameRoot_8053AAF8->field_0x4c != 11 && fn_80236B50(0) && fn_80237774(0) == 0) {
+        if (gGameRoot_8053AAF8->field_0x4c != 11 && isPlayerDead_80236B50(0) && getPlayerLife_80237774(0) == 0) {
             if (field_0x292 >= 2) {
                 if (lbl_8053AEC8->field_0x5d == 0) {
                     lbl_8053AEC8->field_0x5d = 1;
@@ -871,9 +871,9 @@ void AdventureHud_804B13D4::fn_8041EDB0() {
 
 void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
     if (lbl_80529DEC.isField0x239(player)) {
-        lbl_80529DEC.field_0xd8[player] = fn_80237774(player);
+        lbl_80529DEC.field_0xd8[player] = getPlayerLife_80237774(player);
         for (s32 i = 0; i < 4; i++) {
-            if (i != player && fn_8022F514(i) && player == fn_8022F3DC(i)) {
+            if (i != player && hasPlayerLeader_8022F514(i) && player == getPlayerLeader_8022F3DC(i)) {
                 lbl_80529DEC.field_0xd8[i] = lbl_80529DEC.field_0xd8[player];
             }
         }
@@ -884,12 +884,12 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
         field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
         field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         lbl_80529DEC.field_0x239 &= ~(u8)(1 << player);
-    } else if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) < getPlayerLife_80237774(player)) {
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
             lbl_80529DEC.field_0xd8[player]++;
             for (s32 i = 0; i < 4; i++) {
-                if (i != player && fn_8022F514(i) && player == fn_8022F3DC(i)) {
+                if (i != player && hasPlayerLeader_8022F514(i) && player == getPlayerLeader_8022F3DC(i)) {
                     lbl_80529DEC.field_0xd8[i] = lbl_80529DEC.field_0xd8[player];
                 }
             }
@@ -903,13 +903,13 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         }
-    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > getPlayerLife_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
             lbl_80529DEC.field_0xd8[player]--;
             for (s32 i = 0; i < 4; i++) {
-                if (i != player && fn_8022F514(i) && player == fn_8022F3DC(i)) {
+                if (i != player && hasPlayerLeader_8022F514(i) && player == getPlayerLeader_8022F3DC(i)) {
                     lbl_80529DEC.field_0xd8[i] = lbl_80529DEC.field_0xd8[player];
                 }
             }
@@ -969,8 +969,8 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
 
 void AdventureHud_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
     s32 target;
-    if (fn_8022F514(id)) {
-        target = fn_8022F3DC(id);
+    if (hasPlayerLeader_8022F514(id)) {
+        target = getPlayerLeader_8022F3DC(id);
     } else {
         target = id;
     }
@@ -1013,9 +1013,9 @@ void AdventureHud_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
 void AdventureHud_804B13D4::fn_8041E58C() {
     for (s32 i = 0; i < 4; i++) {
         if (isMaskBitSet(gGameRoot_8053AAF8->mPlayerMask, i)) {
-            lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+            lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
             for (s32 j = 0; j < 4; j++) {
-                if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
+                if (j != i && hasPlayerLeader_8022F514(j) && i == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0xd8[j] = lbl_80529DEC.field_0xd8[i];
                 }
             }
@@ -1026,7 +1026,7 @@ void AdventureHud_804B13D4::fn_8041E58C() {
             field_0x1a8[i] = 0;
             lbl_80529DEC.field_0x108[i] = fn_802375B0(i);
             for (s32 j = 0; j < 4; j++) {
-                if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
+                if (j != i && hasPlayerLeader_8022F514(j) && i == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0x108[j] = lbl_80529DEC.field_0x108[i];
                 }
             }
@@ -1146,7 +1146,7 @@ void AdventureHud_804B13D4::fn_8041D18C(s32 player) {
     s32 idx = -1;
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         if (!isMaskBitSet(field_0x28d, player) && !fn_80230188(player)) {
-            if (fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
+            if (fn_8023BE0C(getRepresentativePlayer_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
                 field_0x28d |= (u8)(1 << player);
                 field_0x4->search('Php1ni02')->show();
             }
@@ -1181,7 +1181,7 @@ void AdventureHud_804B13D4::fn_8041D18C(s32 player) {
         }
     } else {
         if (!isMaskBitSet(field_0x28d, player) && !fn_80230188(player)) {
-            if (fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
+            if (fn_8023BE0C(getRepresentativePlayer_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
                 field_0x28d |= (u8)(1 << player);
                 field_0x4->search(lbl_8048DCD8[player])->show();
             }
@@ -1859,7 +1859,7 @@ void AdventureHud_804B13D4::fn_80419C38(s32 player, bool arg) {
 
 void AdventureHud_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
-        field_0x1d8[player] = fn_80237774(player);
+        field_0x1d8[player] = getPlayerLife_80237774(player);
         field_0x1f8[player] = getPlayerMaxLife_80237810(player);
         return;
     }
@@ -1931,8 +1931,8 @@ void AdventureHud_804B13D4::fn_80419570(s32 player) {
 }
 
 void AdventureHud_804B13D4::fn_8041918C(s32 player) {
-    if (fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
-        s32 level = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
+    if (fn_802366CC(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(player)) < 300) {
+        s32 level = fn_802366CC(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (level != field_0x294[player]) {
             if (level > 99) {
                 level = 99;
@@ -2039,7 +2039,7 @@ void AdventureHud_804B13D4::fn_80418D08(s32 player, bool force) {
 
 s32 AdventureHud_804B13D4::fn_80418B64() {
     Vec screen;
-    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(0)), false, false, &screen);
+    gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(0)), false, false, &screen);
     if (getPlayerLayer_8023DE58(0) >= 8) {
         field_0x218 = 1;
     } else {

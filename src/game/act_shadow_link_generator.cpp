@@ -57,7 +57,7 @@ void ShadowLinkGenerator_804A4310::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     static const char* lbl_8053AC18 = "jen_8_3.bti";
-    mTexture = fn_804032E8('TIMG', lbl_8053AC18);
+    mTexture = getBossArchiveResource_804032E8('TIMG', lbl_8053AC18);
     if (isScreenFlagSet_0x34()) {
         mState = 0xB;
     } else {
@@ -139,7 +139,7 @@ void ShadowLinkGenerator_804A4310::update() {
         startSound_801F0E34(0x5004C, 0);
         if (mStateTimer >= 0x78) {
             static const char* lbl_8053AC20 = "jen_8_3_tsume.bti";
-            mTexture = fn_804032E8('TIMG', lbl_8053AC20);
+            mTexture = getBossArchiveResource_804032E8('TIMG', lbl_8053AC20);
             JGeometry::TVec3f at(mPos.x, mPos.y + -32.0f, 0.0f);
             mSequence.fn_8021F9AC(&at);
             mStateTimer = 0;
@@ -234,7 +234,7 @@ void ShadowLinkGenerator_804A4310::draw() {
         s32 layer = mLayer_0x4;
         void* res = mTexture;
         if (layer < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
         }
     }
 }

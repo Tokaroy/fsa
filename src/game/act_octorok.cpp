@@ -136,11 +136,11 @@ void Octorok_8049F208::update() {
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
         } else {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     }
-    if (fn_801F305C()) {
+    if (checkHits_801F305C()) {
         if (mSpawnParam_0x90 == 1 && mLife > 0) {
             field_0x248 = 4;
             mVel_0x3c.z = 0.0f;
@@ -148,7 +148,7 @@ void Octorok_8049F208::update() {
             mVel_0x3c.x = 0.0f;
             field_0x260 = 1.3f * field_0x268;
         } else {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     }
@@ -174,7 +174,7 @@ void Octorok_8049F208::update() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
     damagePlayersInBox_801F2B7C(-100, -1, 1);
-    u8 mapHit = fn_801F2618(NULL, false);
+    u8 mapHit = sweepMapBox_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
         if (mapHit || field_0x234 == 0) {
@@ -203,13 +203,13 @@ void Octorok_8049F208::update() {
             }
         }
         if (mSpawnParam_0x90 == 0 || mSpawnParam_0x90 == 3) {
-            fn_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 0);
             if (dir == mDir_0x98) {
                 field_0x238 = 0;
             }
         }
         if (mSpawnParam_0x90 == 2) {
-            fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
             if (dir != -1) {
                 mDir_0x98 = dir;
                 if (dist < 64.0f) {

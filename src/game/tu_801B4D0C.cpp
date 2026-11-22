@@ -123,7 +123,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
         s32 dir;
         f32 dist;
         s32 player;
-        fn_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
         switch (field_0x230) {
         case 0:
             mEmitters294[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x48B, 0, 0, NULL, NULL, true, 1.0f);
@@ -136,13 +136,13 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                 break;
             }
             pos.y -= 64.0f;
-            if (!fn_8038AD24(field_0x244, lbl_804A3848[field_0x254], mSerial, mLayer_0x4, pos, 0x100)) {
+            if (!openMessage_8038AD24(field_0x244, lbl_804A3848[field_0x254], mSerial, mLayer_0x4, pos, 0x100)) {
                 break;
             }
             field_0x230 = 2;
         case 2:
             fn_8022FE80(field_0x244, mLayer_0x4, mSerial, false, false);
-            if (fn_803865B8(field_0x244)) {
+            if (stepMessageWindow_803865B8(field_0x244)) {
                 fn_80384C58(field_0x244, mSerial);
                 switch (fn_8037EFB4(field_0x244)) {
                 case 0:
@@ -180,10 +180,10 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                     field_0x264[i].y = ppos->y;
                     field_0x264[i].z = ppos->z;
                     field_0x264[i].z = 0.0f;
-                    if (fn_8022F3DC(i) < 0) {
+                    if (getPlayerLeader_8022F3DC(i) < 0) {
                         fn_8022CA6C(i, 5, false);
                     }
-                    if (fn_80236B50(i)) {
+                    if (isPlayerDead_80236B50(i)) {
                         fn_8023764C(i, 1);
                     }
                 }
@@ -208,7 +208,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                         done++;
                         fn_80230498(i, &field_0x264[i], 0x3F, 0xFF, -0x80, -0x80, true);
                     } else {
-                        fn_80230BF4(i, angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
+                        setPlayerFacing_80230BF4(i, angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
                         fn_802303FC(i, &field_0x264[i], true);
                     }
                 } else {

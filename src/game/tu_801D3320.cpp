@@ -35,7 +35,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
         f32 bestDist = -1.0f;
         for (s32 i = 0; i < count; i++) {
             if (field_0x358.fn_80214244()->fn_800FD5E8(entries[i])) {
-                fn_800FE294(&tmpA, field_0x358.fn_80214244(), entries[i]);
+                getRailPointPos_800FE294(&tmpA, field_0x358.fn_80214244(), entries[i]);
                 pA.set(tmpA);
                 bool ok = true;
                 s32 layer = mLayer_0x4;
@@ -55,7 +55,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
         if (best < cur->field_0x2) {
             cur->field_0x3 = best;
         }
-        fn_800FE294(&railA, field_0x358.fn_80214244(), 0xFF);
+        getRailPointPos_800FE294(&railA, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(railA);
     } else {
         u8 entries[0x30];
@@ -64,7 +64,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
         u8* out = usable;
         for (s32 i = 0; i < count; i++) {
             s32 layer = mLayer_0x4;
-            fn_800FE294(&pB, field_0x358.fn_80214244(), entries[i]);
+            getRailPointPos_800FE294(&pB, field_0x358.fn_80214244(), entries[i]);
             bool ok = true;
             if (fn_801CCBD0(&pB, layer) || fn_801CCB1C(&pB, layer)) {
                 ok = false;
@@ -79,7 +79,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
         if (sel < cur->field_0x2) {
             cur->field_0x3 = sel;
         }
-        fn_800FE294(&railB, field_0x358.fn_80214244(), 0xFF);
+        getRailPointPos_800FE294(&railB, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(railB);
         if (numUsable == 1) {
             return;
@@ -100,7 +100,7 @@ void ShadowLink2_804A43E8::fn_801D3320() {
             return;
         }
         from = field_0x32c;
-        fn_800FE294(&tmpTo, field_0x358.fn_80214244(), player);
+        getRailPointPos_800FE294(&tmpTo, field_0x358.fn_80214244(), player);
         to = tmpTo;
         // isWayBlocked_801CF888 reads only (x, y) of its first position (8-byte slots).
         if (field_0x358.fn_80214244()->fn_800FD4C0(sel, player) &&

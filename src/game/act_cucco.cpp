@@ -117,7 +117,7 @@ void Cucco_804AB8C0::init() {
     switch (field_0x290) {
     case 1: {
         s32 player;
-        fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, field_0x28c);
+        findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, field_0x28c);
         field_0x240 = 10;
         if (player == -1) {
             GameView_804A9950* view = getGameView_802D6A9C();
@@ -185,7 +185,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
     while (true) {
         // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
-        s32 next = getActorManager_801F856C()->fn_801F78F4(ACTOR_NIWA, serial);
+        s32 next = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_NIWA, serial);
         serial = next;
         if (serial < 0) {
             return;
@@ -200,7 +200,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
         if (other->field_0x16c != field_0x16c) {
             continue;
         }
-        if (fn_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
+        if (isOutsideView_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
             continue;
         }
         mAlive = false;
@@ -211,7 +211,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
 // Not in the binary: fn_80332A60 inlines it.
 inline bool Cucco_804AB8C0::checkActorHit() {
     bool hit = false;
-    s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (serial >= 0 && serial != mSerial) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         bool isFlame = false;
@@ -223,9 +223,9 @@ inline bool Cucco_804AB8C0::checkActorHit() {
         }
         if (isFlame) {
             JGeometry::TVec3f from(0.0f, 0.0f, 0.0f);
-            other->fn_801F3128((JGeometry::TVec2f*)&from);
+            other->getBoxCenter_801F3128((JGeometry::TVec2f*)&from);
             from -= other->mVel_0x3c;
-            hit = fn_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110);
+            hit = takeHit_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110);
         }
         if (hit) {
             other->field_0x164 = 1;
@@ -248,7 +248,7 @@ void Cucco_804AB8C0::fn_80332A60() {
             s32 result = 0;
             if (checkActorHit()) {
                 result = 2;
-            } else if (checkActorHit_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
+            } else if (checkActorHit_801F2DB4('NULL', ACTOR_FLME, NULL) || checkPlayerAttacks_801F2FAC() ||
                        fn_801A4D1C(mSerial, &box, &center) || fn_801A6108(mSerial, &box, &center) ||
                        fn_801A4F5C(mSerial, &box, &center) || fn_801A46FC(mSerial, &box, &center))
             {
@@ -306,7 +306,7 @@ void Cucco_804AB8C0::fn_803324A8() {
     s32 outDir = -1;
     u16 outAngle = 0;
     if (field_0x290 == 6 && field_0x230 == 0 && mPos.z < 8.0f && field_0x284 <= 0) {
-        fn_801EEC98(mSerial, NULL, &outDir, &outDist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &outDir, &outDist, NULL, 0, 0);
         if (outDist < 48.0f && outDir >= 0) {
             if (field_0x2a2 == 1) {
                 field_0x240 = (s32)(200.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0xC8;
@@ -344,7 +344,7 @@ void Cucco_804AB8C0::fn_803324A8() {
             }
         }
         if ((field_0x2a3 == 1 && field_0x280 >= 10) || (field_0x2a3 == 0 && field_0x280 >= 0x2D)) {
-            fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &outDist, NULL, 0, 0);
             if (outDir >= 0 &&
                 ((field_0x2a3 == 0 && outDist < 64.0f) || (field_0x2a3 == 1 && outDist < 96.0f)))
             {
@@ -384,7 +384,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
     out.z = 0.0f;
     out.y = 0.0f;
     out.x = 0.0f;
-    u8 r = fn_801F2618(&out, false);
+    u8 r = sweepMapBox_801F2618(&out, false);
     if (r == 1) {
         fn_801F11B4();
         if (viewLayerFlag(mLayer_0x4) == 1 && out.y < 0.0f) {
@@ -665,10 +665,10 @@ void Cucco_804AB8C0::fn_803319B8() {
 bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL) == 1) {
         return true;
     }
-    if (fn_801F6758(pos, layer, -8.0f)) {
+    if (isOutsideView_801F6758(pos, layer, -8.0f)) {
         return true;
     }
     s32 tile = getRawTile_80226850(pos, layer);
@@ -812,7 +812,7 @@ void Cucco_804AB8C0::update() {
                 if (field_0x258 == 0) {
                     f32 dy = mPos.y - field_0x2d0.y;
                     f32 dx = mPos.x - field_0x2d0.x;
-                    if (fn_80154378(dx * dx + dy * dy) > 48.0f && field_0x290 == 0) {
+                    if (sqrtf_80154378(dx * dx + dy * dy) > 48.0f && field_0x290 == 0) {
                         outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     } else {
                         outAngle = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -864,7 +864,7 @@ void Cucco_804AB8C0::update() {
     case 1:
         if (field_0x240 == 0) {
             if (field_0x268 <= 0 && field_0x290 != 6) {
-                fn_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, field_0x28c);
+                findTargetPlayer_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, field_0x28c);
                 field_0x240 = 10;
                 field_0x2b8.x = -3.0f * JMath::sincosTable_.sinShort(outAngle);
                 field_0x2b8.y = -3.0f * JMath::sincosTable_.cosShort(outAngle);
@@ -887,7 +887,7 @@ void Cucco_804AB8C0::update() {
             if (field_0x238 == 0) {
                 f32 dist = 0.0f;
                 field_0x238 = 2;
-                fn_801EEC98(mSerial, &outAngle, &outDir, &dist, NULL, 0, 0);
+                findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &dist, NULL, 0, 0);
                 if (outDir < 0 || field_0x174 > 0 || dist > 64.0f) {
                     outAngle = (s32)(JMath::atanTable_.atan2_(-(mPos.x - field_0x2d0.x), -(mPos.y - field_0x2d0.y)) * 10430.378f);
                 }
@@ -996,8 +996,8 @@ void Cucco_804AB8C0::update() {
                     mVel_0x3c.y -= mVel_0x3c.z;
                     mVel_0x3c.z = 0.0f;
                 }
-                if (fn_8022F514(field_0x25c) == 1) {
-                    field_0x25c = fn_8022F3DC(field_0x25c);
+                if (hasPlayerLeader_8022F514(field_0x25c) == 1) {
+                    field_0x25c = getPlayerLeader_8022F3DC(field_0x25c);
                 }
                 field_0x230 = 0;
                 break;
@@ -1007,7 +1007,7 @@ void Cucco_804AB8C0::update() {
             case 8:
                 field_0x238 = 0;
                 field_0x240 = 1000;
-                field_0x29c = fn_801F6874((u16)fn_80230CFC(field_0x25c));
+                field_0x29c = dirToAngle_801F6874((u16)getPlayerFacing_80230CFC(field_0x25c));
                 field_0x29e = field_0x29c;
                 if (field_0x290 == 2) {
                     field_0x230 = 4;
@@ -1033,7 +1033,7 @@ void Cucco_804AB8C0::update() {
             if (field_0x2a8 == 0) {
                 field_0x25c = field_0xc8;
             }
-            mDir_0x98 = fn_80230CFC(field_0xc8);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0xc8);
             mPos.set(*fn_8023E7B0(field_0xc8));
             mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             field_0x288 = fn_8023BCD4(field_0xc8);
@@ -1044,9 +1044,9 @@ void Cucco_804AB8C0::update() {
         if (field_0x238 == 0) {
             field_0x94 = 0xFFFF;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && i != field_0x25c && !fn_8022E438(i, field_0x25c) && !fn_8022F514(i) &&
+                if (fn_8023F264(i) && i != field_0x25c && !arePlayersInSameGroup_8022E438(i, field_0x25c) && !hasPlayerLeader_8022F514(i) &&
                     ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) &&
-                    (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !fn_80236B50(i))
+                    (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !isPlayerDead_80236B50(i))
                 {
                     if (gGameRoot_8053AAF8->field_0x7f == 1) {
                         if (r29 < fn_80236228(i)) {
@@ -1054,15 +1054,15 @@ void Cucco_804AB8C0::update() {
                             field_0x94 = i;
                         }
                     } else {
-                        if (r28 < fn_80237774(i)) {
-                            r28 = fn_80237774(i);
+                        if (r28 < getPlayerLife_80237774(i)) {
+                            r28 = getPlayerLife_80237774(i);
                             field_0x94 = i;
                         }
                     }
                 }
             }
             if (field_0x94 <= 3) {
-                if (field_0x25c != fn_8022F3DC(field_0x94)) {
+                if (field_0x25c != getPlayerLeader_8022F3DC(field_0x94)) {
                     fn_8032F148(mSerial, (u16*)&field_0x29e, &outDir, &outDist, &outPlayer, field_0x94);
                 }
                 if (outPlayer != field_0x94) {
@@ -1090,12 +1090,12 @@ void Cucco_804AB8C0::update() {
         // fallthrough
     case 6:
         if (field_0x94 <= 3 && field_0x230 == 6 && field_0x238 == 0) {
-            if (!fn_8022F514(field_0x94) && !fn_8022E438(field_0x94, field_0x25c)) {
+            if (!hasPlayerLeader_8022F514(field_0x94) && !arePlayersInSameGroup_8022E438(field_0x94, field_0x25c)) {
                 fn_8032F148(mSerial, (u16*)&field_0x29e, &outDir, &outDist, &outPlayer, field_0x94);
             }
             field_0x298 = 100;
             if (outPlayer != field_0x94) {
-                if (field_0x25c == fn_8022F3DC(field_0x94) || field_0x8 < 8 ||
+                if (field_0x25c == getPlayerLeader_8022F3DC(field_0x94) || field_0x8 < 8 ||
                     (getPlayerLayer_8023DE58(field_0x94) >= 8 && field_0x8 != getPlayerLayer_8023DE58(field_0x94)))
                 {
                     outDir = -1;
@@ -1106,7 +1106,7 @@ void Cucco_804AB8C0::update() {
                 }
             }
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
             if (field_0x94 <= 3) {
                 if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
                     if (getPlayerLayer_8023DE58(field_0x94) < 8) {
@@ -1151,8 +1151,8 @@ void Cucco_804AB8C0::update() {
                 for (s32 i = 0; i < 4; i++) {
                     if (mask & (1 << i)) {
                         s32 p = i;
-                        if (fn_8022F514(i) == 1) {
-                            p = fn_8022F3DC(i);
+                        if (hasPlayerLeader_8022F514(i) == 1) {
+                            p = getPlayerLeader_8022F3DC(i);
                         }
                         if (field_0x94 == p) {
                             if (field_0x290 == 2 || field_0x290 == 8) {
@@ -1176,7 +1176,7 @@ void Cucco_804AB8C0::update() {
                             field_0x298 = v;
                         }
                     } else {
-                        field_0x298 = fn_80237774(hitPlayer);
+                        field_0x298 = getPlayerLife_80237774(hitPlayer);
                         if (field_0x290 == 2) {
                             if (field_0x298 >= 4) {
                                 field_0x298 = 4;
@@ -1189,9 +1189,9 @@ void Cucco_804AB8C0::update() {
                     }
                     if (gGameRoot_8053AAF8->field_0x7f == 0) {
                         if (field_0x290 == 2) {
-                            fn_80238548(hitPlayer, 4, (const JGeometry::TVec2f*)&mPos, 1);
+                            hitPlayerGroup_80238548(hitPlayer, 4, (const JGeometry::TVec2f*)&mPos, 1);
                         } else {
-                            fn_80238548(hitPlayer, 2, (const JGeometry::TVec2f*)&mPos, 1);
+                            hitPlayerGroup_80238548(hitPlayer, 2, (const JGeometry::TVec2f*)&mPos, 1);
                         }
                     } else {
                         damagePlayersInBox_801F2B7C(0, -1, 1);
@@ -1220,18 +1220,18 @@ void Cucco_804AB8C0::update() {
         if (field_0x290 == 0xFFFF) {
             field_0x2b8.z += 0.1;
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
             mAlive = false;
         }
         break;
     case 9:
         if (field_0x238 == 0) {
             if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && fn_8023F264(field_0x25c) &&
-                !fn_8022DCD8(field_0x25c) && !fn_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
+                !fn_8022DCD8(field_0x25c) && !isPlayerDead_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(field_0x25c)->y;
-                outDist = fn_80154378(dx * dx + dy * dy);
+                outDist = sqrtf_80154378(dx * dx + dy * dy);
                 field_0x29e = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                 outPlayer = field_0x25c;
                 outDir = angleToDir_801F681C((u16)field_0x29e);
@@ -1245,7 +1245,7 @@ void Cucco_804AB8C0::update() {
                 outDist = 10000.0f;
             }
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
             if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0x25c);
                 s32 pLayer = getPlayerLayer_8023DE58(field_0x25c);
@@ -1259,7 +1259,7 @@ void Cucco_804AB8C0::update() {
                 field_0x238 = 1;
                 field_0x29c = 0;
                 field_0x29e = 0;
-            } else if (fn_80236B50(field_0x25c) == 1) {
+            } else if (isPlayerDead_80236B50(field_0x25c) == 1) {
                 mAlive = false;
             }
         }
@@ -1288,7 +1288,7 @@ void Cucco_804AB8C0::update() {
                     lbl_8053AED0->fn_8043D874(fn_8022F340(field_0x25c), v, 0);
                 }
             } else {
-                fn_80236554(field_0x25c, field_0x298, false);
+                healPlayerGroup_80236554(field_0x25c, field_0x298, false);
                 fn_80230EB8(field_0x25c, 9);
             }
             hit = 1;
@@ -1308,7 +1308,7 @@ void Cucco_804AB8C0::update() {
             mPos.y = getPlayerPos_8023E724(field_0x25c)->y - 24.0f;
         }
         if (field_0x248 == 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 11:
@@ -1334,8 +1334,8 @@ void Cucco_804AB8C0::update() {
             emit = true;
         } else {
             s32 p = field_0xc8;
-            if (fn_8022F514(p) == 1) {
-                p = fn_8022F3DC(field_0xc8);
+            if (hasPlayerLeader_8022F514(p) == 1) {
+                p = getPlayerLeader_8022F3DC(field_0xc8);
             }
             if (!fn_8022D75C(p)) {
                 emit = true;
@@ -1468,7 +1468,7 @@ void Cucco_804AB8C0::draw() {
     }
 }
 
-// A one-player version of ActorBase::fn_801EEC98: the angle, direction, distance and
+// A one-player version of ActorBase::findTargetPlayer_801EEC98: the angle, direction, distance and
 // player of actor `serial` seen from `player`.
 void Cucco_804AB8C0::fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1491,7 +1491,7 @@ void Cucco_804AB8C0::fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* ou
         onLayer = 1;
     }
     if (fn_8023F264(player) && !fn_8022DCD8(player) && onLayer != 0 && !fn_8022F478(player) &&
-        !fn_80236B50(player) && !fn_8022D534(player))
+        !isPlayerDead_80236B50(player) && !fn_8022D534(player))
     {
         f32 dx;
         f32 dy;

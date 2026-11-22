@@ -18,12 +18,12 @@ void AttackHitboxWhenPlayerIsThrown_804A7C40::update() {
     box.f.y += mPos.y;
     s32 damage = gGameRoot_8053AAF8->field_0x7f ? 0 : mParamAtcp_0x114;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_80236BEC(i) || fn_8022E438(field_0x110, i) || fn_8022E438(field_0x230, i)) {
+        if (fn_80236BEC(i) || arePlayersInSameGroup_8022E438(field_0x110, i) || arePlayersInSameGroup_8022E438(field_0x230, i)) {
             continue;
         }
         if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
-            // fn_80238548 reads only x and y of the position.
-            fn_80238548(i, damage, (const JGeometry::TVec2f*)&mPos, 4);
+            // hitPlayerGroup_80238548 reads only x and y of the position.
+            hitPlayerGroup_80238548(i, damage, (const JGeometry::TVec2f*)&mPos, 4);
             die_0x24();
             return;
         }

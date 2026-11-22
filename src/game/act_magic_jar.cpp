@@ -84,10 +84,10 @@ void MagicJar_804AF018::update() {
         s32 playerB = fn_8023B8E4(&box, mLayer_0x4, &p, true);
         if (gGameRoot_8053AAF8->field_0x7f) {
             player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
-            if (player >= 0 && fn_80236B50(player)) {
+            if (player >= 0 && isPlayerDead_80236B50(player)) {
                 player = -1;
             }
-            if (playerB >= 0 && fn_80236B50(playerB)) {
+            if (playerB >= 0 && isPlayerDead_80236B50(playerB)) {
                 playerB = -1;
             }
         } else {

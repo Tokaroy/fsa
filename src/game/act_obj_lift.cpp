@@ -192,7 +192,7 @@ void OBJLift_804ACA00::init() {
             if (taken >= 4) {
                 break;
             }
-            serial = getActorManager_801F856C()->fn_801F78F4('OBLF', serial);
+            serial = getActorManager_801F856C()->findNextActorById_801F78F4('OBLF', serial);
             if (serial < 0) {
                 break;
             }
@@ -475,7 +475,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
         if (field_0x283[i] == 1 && getPlayerPos_8023E724(i)->z <= 0.0f && field_0x288 == 0) {
             if (isTiny(push) != TRUE) {
                 if (!fn_8022F478(i) ||
-                    (field_0x283[fn_8022F3DC(i)] == 1 && (fn_8022CAF8(i) == 5 || fn_8022CAF8(i) == 4)) ||
+                    (field_0x283[getPlayerLeader_8022F3DC(i)] == 1 && (fn_8022CAF8(i) == 5 || fn_8022CAF8(i) == 4)) ||
                     fn_80235580(i) == TRUE) {
                     if (field_0x289 == 1 && field_0x258 != 5 && field_0x258 != 0xC &&
                         !(field_0x258 >= 6 && field_0x258 <= 9)) {
@@ -504,7 +504,7 @@ s32 OBJLift_804ACA00::fn_803506E0() {
     s32 prev = field_0x270;
     field_0x270 = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022F514(i) == true && fn_8022CAF8(i) == 5) {
+        if (hasPlayerLeader_8022F514(i) == true && fn_8022CAF8(i) == 5) {
             continue;
         }
         for (d = 0; d < 4; d++) {
@@ -563,7 +563,7 @@ s32 OBJLift_804ACA00::fn_80350530() {
     s32 prev = field_0x270;
     field_0x270 = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022F514(i) == true && fn_8022CAF8(i) == 5) {
+        if (hasPlayerLeader_8022F514(i) == true && fn_8022CAF8(i) == 5) {
             continue;
         }
         f32 cx = mPos.x;
@@ -580,8 +580,8 @@ s32 OBJLift_804ACA00::fn_80350530() {
                 startSound_801F0E34(0x30009, 0);
                 field_0x27c = 0;
                 field_0x274 = i;
-                if (fn_8022F514(i) == true) {
-                    field_0x274 = fn_8022F3DC(i);
+                if (hasPlayerLeader_8022F514(i) == true) {
+                    field_0x274 = getPlayerLeader_8022F3DC(i);
                 }
             }
             field_0x270 = 1;
@@ -612,7 +612,7 @@ u8 OBJLift_804ACA00::fn_803502CC() {
                 mMapBox_0x80.i.y += field_0x290;
                 mMapBox_0x80.f.y += field_0x290;
             }
-            if (fn_801F2618(NULL, false) == 1) {
+            if (sweepMapBox_801F2618(NULL, false) == 1) {
                 mMapBox_0x80.set(saved);
                 return 1;
             }
@@ -626,13 +626,13 @@ u8 OBJLift_804ACA00::fn_803502CC() {
                 mMapBox_0x80.i.y += field_0x290;
                 mMapBox_0x80.f.y += field_0x290;
             }
-            if (fn_801F2618(NULL, false) == 1) {
+            if (sweepMapBox_801F2618(NULL, false) == 1) {
                 mMapBox_0x80.set(saved);
                 return 1;
             }
         }
     } else {
-        return fn_801F2618(NULL, false);
+        return sweepMapBox_801F2618(NULL, false);
     }
     mMapBox_0x80.set(saved);
     return 0;
@@ -690,7 +690,7 @@ void OBJLift_804ACA00::update() {
         if (isScreenFlagSet_0x34() == 1) {
             showBreakEffect(mLayer_0x4);
             startSound_801F0E34(0x30003, 0);
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x25c = 0;
             if (field_0x258 == 0xB) {
                 field_0x230 = 7;

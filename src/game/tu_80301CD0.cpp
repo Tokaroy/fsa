@@ -234,7 +234,7 @@ void fn_80308D0C() {
 // 0x803085A4
 // FIXME: 97.08 %, missing/extra; behaviour near.
 void cls_804AA8B8::fillRecordHeader_803085A4(s32 player) {
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     lbl_80506DE8[player].f.field_0x3_0 = lbl_8053AD08;
     lbl_80506DE8[player].f.mPlayer = layer;
     if (getPlayerLayer_8023DE58(layer) < 8) {
@@ -245,7 +245,7 @@ void cls_804AA8B8::fillRecordHeader_803085A4(s32 player) {
     lbl_80506DE8[player].f.mMode = lbl_80506D48[player];
     if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
         if (gGameRoot_8053AAF8->field_0x4c == 9 || gGameRoot_8053AAF8->field_0x80 != 0
-            || (lbl_8053ACD8[player] && (fn_8037F1E4(player) < 1 || fn_8037F1E4(player) > 5))) {
+            || (lbl_8053ACD8[player] && (getMessageWindowState_8037F1E4(player) < 1 || getMessageWindowState_8037F1E4(player) > 5))) {
             lbl_80506DE8[player].f.field_0x2_5 = 1;
         } else {
             lbl_80506DE8[player].f.field_0x2_5 = 0;
@@ -400,11 +400,11 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     lbl_80506DE8[player].f.mEntries[2].mScroll = 0;
     lbl_80506DE8[player].f.mEntries[2].mScrollBit = 0;
     lbl_80506DE8[player].f.mEntries[3].mScroll = 0;
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
         u8 flag = 0;
-        if (fn_8037F1E4(player) >= 1) {
-            if (fn_8037F1E4(player) <= 5) {
+        if (getMessageWindowState_8037F1E4(player) >= 1) {
+            if (getMessageWindowState_8037F1E4(player) <= 5) {
                 flag = 1;
             }
         }
@@ -493,7 +493,7 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     s32 i;
     for (i = 0; i < count; i++) {
         lbl_805071E8[player][start + i] = fn_8037F0CC(player);
-        if (fn_8037F1E4(player) != 3) {
+        if (getMessageWindowState_8037F1E4(player) != 3) {
             lbl_8053AD24[player] = 1;
             lbl_8053AD1C[player] = 0;
             lbl_80506DE8[player].f.mKind = 12;
@@ -554,7 +554,7 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
     }
     bool result = false;
     for (int p = 0; p < 4; p++) {
-        s32 slot = fn_8022EA0C(p);
+        s32 slot = getRepresentativePlayer_8022EA0C(p);
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p))) {
             continue;
         }
@@ -619,7 +619,7 @@ bool showGbaSprite_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos,
     }
     bool result = false;
     for (int p = 0; p < 4; p++) {
-        s32 slot = fn_8022EA0C(p);
+        s32 slot = getRepresentativePlayer_8022EA0C(p);
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p))) {
             continue;
         }
@@ -717,7 +717,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
         lbl_80506DE8[player].f.mKind = 14;
     }
     fillRecordHeader_803085A4(player);
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     for (s32 i = 0; i < 4; i++) {
         s32 idx = fn_802340A0(i);
         if (!fn_8023F264(i) || !fn_8023188C(i) || getPlayerLayer_8023DE58(layer) < 8 ||
@@ -781,7 +781,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     lbl_80506DE8[player].f.mEntries[2].mScrollBit = (fn_8023CD74(layer) >> 4) & 1;
     lbl_80506DE8[player].f.mEntries[3].mScroll = fn_8023CD74(layer);
     u8 near = 0;
-    if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
+    if (getMessageWindowState_8037F1E4(player) >= 1 && getMessageWindowState_8037F1E4(player) <= 5) {
         near = 1;
     }
     lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
@@ -894,7 +894,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
     GbaSprite_80506F88* dst = lbl_80506DE8[player].f.field_0x18;
     s32 count = 0;
     s32 big = 0;
-    s32 slot = fn_8022EA0C(player);
+    s32 slot = getRepresentativePlayer_8022EA0C(player);
     for (s32 timer = 5; timer >= 0; timer--) {
         cls_803099FC* sprite = lbl_80504A38[player];
         for (s32 i = 0; i < 16; i++) {
@@ -951,7 +951,7 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     if (max == 0) {
         return;
     }
-    s32 slot = fn_8022EA0C(player);
+    s32 slot = getRepresentativePlayer_8022EA0C(player);
     for (int timer = 5; timer > 0; timer--) {
         for (int i = 0; i < 40; i++) {
             cls_803099FC* entry = &lbl_80505438[player][i];
@@ -1024,7 +1024,7 @@ void cls_804AA8B8::fn_80304FB0() {
         lbl_8053AD08 = (lbl_8053AD08 - 1) & 3;
     }
     for (s32 player = 0; player < 4; player++, client++) {
-        s32 layer = fn_8022EA0C(player);
+        s32 layer = getRepresentativePlayer_8022EA0C(player);
         cls_804AA858Sub11C* record = &lbl_80506DE8[player];
         if (lbl_8053AD30->fn_8030A364(getPlayerInputSlot_8030AAF4(player))) {
             if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
@@ -1094,7 +1094,7 @@ void cls_804AA8B8::fn_80304FB0() {
                 } else {
                     do {
                         lbl_805071E8[player][lbl_8053AD0C[player]++] = fn_8037F0CC(player);
-                    } while (fn_8037F1E4(player) == 3);
+                    } while (getMessageWindowState_8037F1E4(player) == 3);
                     lbl_8053AD24[player] = 1;
                     lbl_8053AD1C[player] = 60;
                 }
@@ -1256,7 +1256,7 @@ void cls_804AA8B8::fn_80304FB0() {
                 } else {
                     fn_80307B58(player, false);
                 }
-            } else if (fn_8037F1E4(player) == 3 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+            } else if (getMessageWindowState_8037F1E4(player) == 3 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
                 lbl_8053AD20[player] = 1;
                 lbl_8053AD24[player] = 0;
                 lbl_8053AD28[player] = 0;
@@ -1384,7 +1384,7 @@ void fn_80304D64() {
 
 // Queues the file `name` for the player's GBA at `address`.
 // 0x80304C10
-bool fn_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4) {
+bool queueGbaFile_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4) {
     if (name == NULL) {
         return false;
     }
@@ -1505,21 +1505,21 @@ void fn_80303CE4(s32 player) {
     for (int i = 0; i < 0x2000; i++) {
         lbl_804DBC18[player][i] = 0xCDCDCDCD;
     }
-    fn_80304C10(player, "end_code_scl.bin", 0xAAAAAAAA, 0, 0);
-    fn_80304C10(player, "sound_data.szs", 0x02033000, 1, 0);
-    fn_80304C10(player, "gb_ch_obj_base_sch.szs", 0x06010000, 1, 0);
-    fn_80304C10(player, "gb_cl_obj_base_scl.szs", 0x05000201, 1, 0);
-    fn_80304C10(player, "player_sch.szs", 0x02034000, 1, 0);
-    fn_80304C10(player, "bg_a_spl.szs", 0x0203C000, 1, 0);
-    fn_80304C10(player, "player_sob.szs", 0x02010000, 1, 0);
-    fn_80304C10(player, "enemy_both_sob.szs", 0x02021000, 1, 0);
-    fn_80304C10(player, "enemy_both2_sob.szs", 0x02018E00, 1, 0);
+    queueGbaFile_80304C10(player, "end_code_scl.bin", 0xAAAAAAAA, 0, 0);
+    queueGbaFile_80304C10(player, "sound_data.szs", 0x02033000, 1, 0);
+    queueGbaFile_80304C10(player, "gb_ch_obj_base_sch.szs", 0x06010000, 1, 0);
+    queueGbaFile_80304C10(player, "gb_cl_obj_base_scl.szs", 0x05000201, 1, 0);
+    queueGbaFile_80304C10(player, "player_sch.szs", 0x02034000, 1, 0);
+    queueGbaFile_80304C10(player, "bg_a_spl.szs", 0x0203C000, 1, 0);
+    queueGbaFile_80304C10(player, "player_sob.szs", 0x02010000, 1, 0);
+    queueGbaFile_80304C10(player, "enemy_both_sob.szs", 0x02021000, 1, 0);
+    queueGbaFile_80304C10(player, "enemy_both2_sob.szs", 0x02018E00, 1, 0);
     if (fn_801365A8() == 2) {
-        fn_80304C10(player, "moji_japan_test_sch.szs", 0x02038000, 1, 0);
+        queueGbaFile_80304C10(player, "moji_japan_test_sch.szs", 0x02038000, 1, 0);
     } else if (fn_801365A8() == 0 || fn_801365A8() == 1) {
-        fn_80304C10(player, "moji_english_sch.szs", 0x02038000, 1, 0);
+        queueGbaFile_80304C10(player, "moji_english_sch.szs", 0x02038000, 1, 0);
     }
-    fn_80304C10(player, "end_code_scl.bin", 0xFFFFFFFF, 0, 0);
+    queueGbaFile_80304C10(player, "end_code_scl.bin", 0xFFFFFFFF, 0, 0);
 }
 
 // 0x80303870
@@ -1530,14 +1530,14 @@ void fn_80303870(s32 player) {
     const char* str = getGameView_802D6A9C()->getStageBgName_802D9C4C();
     if (str[0] != 'c') {
         sprintf(name, "bg_%s_sch.szs", str);
-        fn_80304C10(player, name, 0x6000000, 1, 0);
+        queueGbaFile_80304C10(player, name, 0x6000000, 1, 0);
     } else {
-        fn_80304C10(player, "bg_c2_sch.szs", 0x6000000, 1, 0);
+        queueGbaFile_80304C10(player, "bg_c2_sch.szs", 0x6000000, 1, 0);
     }
     sprintf(name2, "bg_%s_gb_scl.szs", str);
-    fn_80304C10(player, name2, 0x5000001, 1, 0);
+    queueGbaFile_80304C10(player, name2, 0x5000001, 1, 0);
     sprintf(name, "gb_ch_obj_tr_sch%s.szs", getGameView_802D6A9C()->fn_802D9C1C());
-    fn_80304C10(player, name, 0x6017000, 1, 0);
+    queueGbaFile_80304C10(player, name, 0x6017000, 1, 0);
     lbl_8053ACE4[player] = 1;
 }
 
@@ -1683,16 +1683,16 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
             id -= 3;
         }
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     } else if (sprite->f.mKind == 2) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     } else {
         if (sprite->f.mKind & 4) {
             params.field_0x0[7] = (sprite->f.mKind & 3) + 12;
         }
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     }
 }
 
@@ -1744,7 +1744,7 @@ void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 ma
         params.field_0x38 = 0;
         params.mMtx = scale;
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     }
 }
 
@@ -1992,7 +1992,7 @@ void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
 
 // Resets the player's link state (or marks it 0xFF while lbl_8053ACF0 is
 // set), then does the same for the player getPlayerHeldPlayer_8023ECF0 names, while there is
-// one that is its own fn_8022EA0C.
+// one that is its own getRepresentativePlayer_8022EA0C.
 void fn_80301D54(s32 player) {
     s32 slot = fn_8022F340(player);
     if (lbl_8053ACF0[slot] == 0) {
@@ -2005,7 +2005,7 @@ void fn_80301D54(s32 player) {
     lbl_8053ACF8[player] = 0;
     if (fn_8023ED8C(player)) {
         s32 other = getPlayerHeldPlayer_8023ECF0(player);
-        if (other == fn_8022EA0C(other)) {
+        if (other == getRepresentativePlayer_8022EA0C(other)) {
             fn_80301D54(other);
         }
     }

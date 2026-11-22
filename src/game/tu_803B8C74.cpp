@@ -28,7 +28,7 @@ static inline BOOL isFileFlagSet(s32 file, s32 stage, s32 sub) {
 cls_804AFB3C::~cls_804AFB3C() {}
 
 // 0x803B950C
-void fn_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body) {
+void initSaveFile_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body) {
     memset(file, 0, sizeof(SaveFile_803B950C));
     memset(body, 0, sizeof(SaveFileBody_803B950C));
     file->setDefaults();
@@ -37,14 +37,14 @@ void fn_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body) {
 // 0x803B94C4
 SaveData_804AFB30::~SaveData_804AFB30() {}
 
-// A fresh file and body (fn_803B950C) copied into slot index. An inline of its own: the two
+// A fresh file and body (initSaveFile_803B950C) copied into slot index. An inline of its own: the two
 // destination pointers get their registers before the caller's values (docs/REGALLOC.md, rule 4).
 static inline void writeDefaults(SaveFile_803B950C *files, s32 index, SaveFileBody_803B950C *bodies) {
     SaveFile_803B950C* dstFile = &files[index];
     SaveFileBody_803B950C* dstBody = &bodies[index];
     SaveFile_803B950C file;
     SaveFileBody_803B950C body;
-    fn_803B950C(&file, &body);
+    initSaveFile_803B950C(&file, &body);
     memcpy(dstFile, &file, sizeof(SaveFile_803B950C));
     memcpy(dstBody, &body, sizeof(SaveFileBody_803B950C));
 }

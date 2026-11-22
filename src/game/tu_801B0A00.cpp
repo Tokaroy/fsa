@@ -69,7 +69,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
     field_0x23c = 0;
     field_0x250 = 0;
     field_0x254 = -1;
-    gAudioMgr_8053AF80->fn_80458F9C(0x3c);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
     mDir_0x98 = 2;
     fn_801B2138(field_0x250);
     field_0x264.x = mPos.x;
@@ -107,7 +107,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
             field_0x230 = 0;
         } else {
             mSpawnParam_0x90 = 2;
-            getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(1, true, 0xFF);
             field_0x230 = 0x14;
         }
         break;
@@ -117,7 +117,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
         break;
     }
     if (mAlive == true && mSpawnParam_0x90 != 2) {
-        fn_80119DD0()->fn_80119998(fade, 0, 0, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(fade, 0, 0, 0, 0, 0, 0);
     }
 }
 
@@ -217,7 +217,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
                     fn_80230498(i, &field_0x288[i], 0x3E, 0xFF, -128, -128, true);
                 } else {
                     addCalc2_801F71A4(&field_0x288[i].y, y, 0.3f, 1.0f);
-                    fn_80230BF4(i, 2);
+                    setPlayerFacing_80230BF4(i, 2);
                     fn_802303FC(i, &field_0x288[i], 0xFF);
                     if (FABS(getPlayerPos_8023E724(i)->y - y) < 1.0f) {
                         field_0x258 = 1;
@@ -258,7 +258,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
                         pos.x = 16.0f * i + 4840.0f;
                         fn_80230498(i, &pos, 0x3E, 0xFF, -128, -128, true);
                         field_0x264.y = getPlayerPos_8023E724(i)->y;
-                        fn_80230BF4(i, 2);
+                        setPlayerFacing_80230BF4(i, 2);
                     }
                 }
             }
@@ -290,7 +290,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             pos.y -= 16.0f;
             startSound_801F0E34(0x400B5, 0);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000F, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000F, false, 0);
             field_0x250 = 3;
         }
         pos.set(mPos);
@@ -322,7 +322,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D6, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2D6, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 4;
         }
         break;
@@ -349,7 +349,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         field_0x244 = 0;
         startSound_801F0E34(0x400B5, 0);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
-        getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(1, true, 0xFF);
         field_0x230 = 6;
     case 6:
         field_0x244++;
@@ -360,7 +360,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             requestSpot();
             break;
         }
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000022, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000022, false, 0);
         field_0x244 = 0;
         field_0x230 = 7;
     case 7:
@@ -382,7 +382,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D7, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2D7, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x244 = 0;
             field_0x230 = 9;
         }
@@ -436,8 +436,8 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (field_0x244 < 120) {
             break;
         }
-        fn_80119DD0()->fn_80119998(100, 0, 1, 0, 0, 101, 0);
-        getGameView_802D6A9C()->fn_802D8050(0x10, true, 0xFF);
+        fn_80119DD0()->startFade_80119998(100, 0, 1, 0, 0, 101, 0);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(0x10, true, 0xFF);
         field_0x244 = 100;
         field_0x230 = 14;
     case 14:
@@ -447,7 +447,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         field_0x244--;
         if (field_0x244 < 0) {
             getGameView_802D6A9C()->fn_802D9FF4(8, 0);
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             mAlive = false;
         }
         break;
@@ -474,7 +474,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         pos.zero();
         pos.y = -10.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2E1, mSerial, mLayer_0x4, pos, 0x4102)) {
+        if (openMessage_8038AD24(0, 0x2E1, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 18;
         }
         break;
@@ -487,7 +487,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (!fn_80388CAC(0, mSerial)) {
             break;
         }
-        fn_80119DD0()->fn_80119998(50, 0, 1, 0, 0, 51, 0);
+        fn_80119DD0()->startFade_80119998(50, 0, 1, 0, 0, 51, 0);
         field_0x234 = 100;
         field_0x230 = 19;
     case 19:
@@ -499,7 +499,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             break;
         }
         getGameView_802D6A9C()->fn_802D9FF4(9, 0);
-        getGameView_802D6A9C()->fn_802DBD60();
+        getGameView_802D6A9C()->restartStage_802DBD60();
         mAlive = false;
         break;
     case 20:
@@ -554,16 +554,16 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (field_0x244 < 700) {
             break;
         }
-        fn_80119DD0()->fn_80119998(100, 0, 1, 0, 0, 101, 0);
+        fn_80119DD0()->startFade_80119998(100, 0, 1, 0, 0, 101, 0);
         field_0x238 = 200;
         field_0x244 = 0;
         field_0x230 = 23;
     case 23:
         if (field_0x238 == 0) {
             getActorManager_801F856C()->fn_801F6884();
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000022, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000022, false, 0);
             getGameView_802D6A9C()->fn_802D9FF4(9, 2);
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             mAlive = false;
         } else {
             setCameraFocus(field_0x264);

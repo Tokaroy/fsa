@@ -38,7 +38,7 @@ void Fish_804AC658::init() {
     field_0x268 = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    fn_801F6758(&mPos, mLayer_0x4, 0.0f);
+    isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f);
     if (mSpawnParam_0x90 != 0) {
         s32 count = mSpawnParam_0x90;
         u16 tiles[0x2C9];
@@ -119,7 +119,7 @@ s32 Fish_804AC658::fn_80346330() {
     field_0x268 = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    fn_801EEC98(mSerial, &field_0x268, &field_0x26c, &field_0x264, &field_0x270, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &field_0x268, &field_0x26c, &field_0x264, &field_0x270, 0, 0);
     if (field_0x26c >= 0 && field_0x264 < 32.0f && field_0x270 >= 0) {
         if (fn_80233E40(field_0x270) == true || fn_8022B7C4(field_0x270) == true) {
             return true;
@@ -161,7 +161,7 @@ void Fish_804AC658::update() {
     mPos += mVel_0x3c;
     JGeometry::TVec3f hitDir;
     hitDir.zero();
-    u8 hit = fn_801F2618(&hitDir, false);
+    u8 hit = sweepMapBox_801F2618(&hitDir, false);
     switch (field_0x230) {
     case 0: {
         field_0x260 = 0.007f;

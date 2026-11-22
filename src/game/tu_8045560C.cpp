@@ -56,7 +56,7 @@ void RupeeDigitSprites_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* po
 }
 
 void RupeeDigitSprites_804B1E1C::fn_804556A4() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     for (int i = 0; i < 128; i++) {
         Sprite& s = mSprites[i];
         if (s.active == 1) {

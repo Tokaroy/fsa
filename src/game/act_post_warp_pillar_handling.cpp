@@ -26,7 +26,7 @@ void PostWarpPillarHandling_804AC1F8::update() {
         pos += mVel_0x3c;
         if (pos.z <= 0.0f) {
             pos.z = 0.0f;
-            fn_80230BF4(i, 2);
+            setPlayerFacing_80230BF4(i, 2);
             done = true;
         } else if (mVel_0x3c.z > 0.0f) {
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x345, 0, 0, NULL, NULL, true, 0.15f);

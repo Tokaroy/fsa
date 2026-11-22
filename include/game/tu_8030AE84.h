@@ -47,7 +47,7 @@ public:
     s32 fn_8030B570(s32* outA, s32* outB);
     // fn_8030B1E8 (this unit): updates the line shifts for `layer` in
     // `mode` (0 / 6 clear them; 4, 5 and others time them by 0x60, 3, 8 frames)
-    // and returns field_0x4 (TileMap_804AA858::fn_802FB69C passes it to fn_802FAC10).
+    // and returns field_0x4 (TileMap_804AA858::drawPlayerPanel_802FB69C passes it to fn_802FAC10).
     s32* fn_8030B1E8(u8 layer, u8 mode, u16 scroll);
 
     // A horizontal shift per screen line (160); fn_8030B1E8 returns it.

@@ -606,10 +606,10 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
     mHeight = 1;
     mDepth = 1;
     if (field_0x270 == 0) {
-        fn_80360914();
+        nextCommand_80360914();
     } else {
         field_0x238 = lbl_80474008[field_0x270 - 1];
-        fn_80360914();
+        nextCommand_80360914();
         if (mSpawnParam_0x90 & 0x100) {
             field_0x2B4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, mHeight, mDepth, NULL, NULL, true, 1.0f);
             field_0x2B8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x171, mHeight, mDepth, NULL, NULL, true, 1.0f);
@@ -683,7 +683,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::drawOther() {
     params.field_0x10.a = 200;
     s32 frame = field_0x23C + 0x25C;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 
@@ -710,7 +710,7 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
         }
         s32 frame = field_0x238 + field_0x23C;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
@@ -723,7 +723,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x279, &params, -1, 1.0f, 1.0f);
     params.field_0x10.a = 200;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
     }
     params.reset();
     params.field_0x1f = 0;
@@ -747,7 +747,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     params.field_0x10.a = 200;
     mPos.y += -10.5f;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
     }
     mPos.y -= -10.5f;
     mPos = savedPos;
@@ -801,7 +801,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
         params.field_0x1d = -1;
         s32 frame = field_0x23C + 0x3E0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
     }
 }
@@ -845,7 +845,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::resetStep(s32 idx) {
 }
 
 
-// The facing (0-3) of the velocity mVel_0x3c (fn_80360914, fn_8036003C).
+// The facing (0-3) of the velocity mVel_0x3c (nextCommand_80360914, fn_8036003C).
 inline void KaeporaGaeboraEnding_804ADAC8::updateFacing() {
     u16 a = (s32)(JMath::atanTable_.atan2_(mVel_0x3c.y, mVel_0x3c.x) * 10430.378f);
     if (a >= 0x2000 && a < 0x6000) {
@@ -859,7 +859,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::updateFacing() {
     }
 }
 
-// Picks the flap step table for the new facing (fn_80360914, fn_8036003C).
+// Picks the flap step table for the new facing (nextCommand_80360914, fn_8036003C).
 inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
     if ((field_0x248 & 1) == 1 || randInt_801CD664(100) < 5 ||
         (field_0x250 == 0 && field_0x27C != 0 && field_0x27C != 1 && field_0x26C < 100.0f)) {
@@ -888,7 +888,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
 // FIXME(shotgun): 0.00 %, missing/extra + reloc-name; behaviour drift.
 // in objdiff (689 vs 687 instrs: our shared tail of commands 0-5 sits after the switch, the original has it right after case 0), missing/extra
 // Reads the next command of the script field_0x284 and starts it.
-void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
+void KaeporaGaeboraEnding_804ADAC8::nextCommand_80360914() {
     field_0x26C = 0.0f;
     field_0x264 = 0;
     field_0x25C = 0.0f;
@@ -1010,19 +1010,19 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
         mPos.x = *field_0x284++;
         mPos.y = *field_0x284++;
         mPos.z = *field_0x284++;
-        fn_80360914();
+        nextCommand_80360914();
         return;
     case 13:
         field_0x294 = 1;
-        fn_80360914();
+        nextCommand_80360914();
         return;
     case 14:
         field_0x2B0 = 0;
-        fn_80360914();
+        nextCommand_80360914();
         return;
     case 15:
         field_0x2B0 = 1;
-        fn_80360914();
+        nextCommand_80360914();
         return;
     default:
         return;
@@ -1040,7 +1040,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
 }
 
 // FIXME(shotgun): 99.77 %, regalloc-only + reloc-name; behaviour clean.
-// update() step 0: flies along the current command (fn_80360914).
+// update() step 0: flies along the current command (nextCommand_80360914).
 void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     s32 facing = field_0x274;
     field_0x248 = field_0x244;
@@ -1081,7 +1081,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         mPos += mVel_0x3c;
         if (fabs(field_0x288.x - mPos.x) < field_0x268 && fabs(field_0x288.y - mPos.y) < field_0x268) {
             mPos = field_0x288;
-            fn_80360914();
+            nextCommand_80360914();
             return;
         }
     } else if (field_0x27C == 1) {
@@ -1089,7 +1089,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         field_0x25C += PSVECMag(&mVel_0x3c);
         if (field_0x25C >= field_0x258) {
             field_0x25C = 0.0f;
-            fn_80360914();
+            nextCommand_80360914();
             return;
         }
     } else if (field_0x27C == 2 || field_0x27C == 4) {
@@ -1116,7 +1116,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
                 mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
                 mPos += mVel_0x3c;
             }
-            fn_80360914();
+            nextCommand_80360914();
             return;
         }
     } else {
@@ -1131,7 +1131,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         mPos += mVel_0x3c;
         field_0x264 += (s16)step;
         if (field_0x264 >= field_0x260) {
-            fn_80360914();
+            nextCommand_80360914();
             return;
         }
     }
@@ -1156,7 +1156,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FF70() {
         }
     }
     if (field_0x280 == 0) {
-        fn_80360914();
+        nextCommand_80360914();
     }
 }
 
@@ -1185,7 +1185,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
 
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FCD8() {
     if (advanceStep() == true) {
-        fn_80360914();
+        nextCommand_80360914();
     }
 }
 
@@ -1211,7 +1211,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FB64() {
     mPos += mVel_0x3c;
     field_0x264 += (s16)step;
     if (field_0x26C >= 16.0f) {
-        fn_80360914();
+        nextCommand_80360914();
         mVel_0x3c.z = 0.0f;
     }
 }

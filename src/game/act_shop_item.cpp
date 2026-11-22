@@ -25,12 +25,12 @@ static const s16* lbl_8049CDA0[8] = {
     lbl_8053C348, lbl_8053C350, lbl_8053C358, lbl_8053C360,
 };
 
-// fn_8038AD24 takes the position by value. The original loads the message
+// openMessage_8038AD24 takes the position by value. The original loads the message
 // arguments before it copies mMsgPos and the flags after, so the copy is made
 // inside this helper.
 static inline bool showMessage(s32 player, u32 msg, s32 serial, s32 layer,
                                const JGeometry::TVec3f& pos) {
-    return fn_8038AD24(player, msg, serial, layer, pos, 0x28);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, 0x28);
 }
 
 ShopItem_8049CDC0::ShopItem_8049CDC0() {
@@ -50,9 +50,9 @@ void ShopItem_8049CDC0::init() {
     mMsgPos.y = mPos.y;
     mMsgPos.z = mPos.z;
     mMsgPos.y -= 32.0f;
-    mAnim.fn_801D2608(lbl_8049CDA0, 8);
+    mAnim.setKeyTables_801D2608(lbl_8049CDA0, 8);
     mAnim.startAnim_801D22DC(mKind, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 // FIXME: 97.63 %. In state 1 the original reloads mPlayer (lwz 0x270) where ours
@@ -78,8 +78,8 @@ void ShopItem_8049CDC0::update() {
             break;
         }
         s32 slot = player;
-        if (fn_8022F514(player)) {
-            slot = fn_8022F3DC(player);
+        if (hasPlayerLeader_8022F514(player)) {
+            slot = getPlayerLeader_8022F3DC(player);
         }
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(slot), 0x120) == 0) {
             break;
@@ -92,7 +92,7 @@ void ShopItem_8049CDC0::update() {
     }
     case 1: {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (!fn_803865B8(mPlayer)) {
+        if (!stepMessageWindow_803865B8(mPlayer)) {
             break;
         }
         switch (fn_8037EFB4(mPlayer)) {
@@ -100,7 +100,7 @@ void ShopItem_8049CDC0::update() {
             bool canAfford = false;
             switch (mKind) {
             case 2:
-                if (fn_80237774(mPlayer) > lbl_80464028[mKind]) {
+                if (getPlayerLife_80237774(mPlayer) > lbl_80464028[mKind]) {
                     canAfford = true;
                 }
                 break;
@@ -146,7 +146,7 @@ void ShopItem_8049CDC0::update() {
                 fn_802362C4(player, -lbl_80464028[1]);
                 break;
             case 2:
-                fn_8023764C(player, fn_80237774(player) - lbl_80464028[2]);
+                fn_8023764C(player, getPlayerLife_80237774(player) - lbl_80464028[2]);
                 break;
             case 3:
                 fn_802362C4(player, -lbl_80464028[3]);
@@ -229,10 +229,10 @@ void ShopItem_8049CDC0::update() {
         break;
     case 6:
         mPlayer = -1;
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void ShopItem_8049CDC0::draw() {

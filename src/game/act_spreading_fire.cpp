@@ -161,7 +161,7 @@ void SpreadingFire_804A8A50::update() {
             startSound_801F0E34(0x3002F, 0);
             gBgRewrite_8053AC98->fn_802A20F0(&mPos, field_0x258, mLayer_0x4, 0x10000, 1);
         } else if (mTile == 0x3EB) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0xF);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0xF);
             startSound_801F0E34(0x30061, 0);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x254, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x255, 0, 0, NULL, NULL, true, 1.0f);
@@ -256,7 +256,7 @@ void SpreadingFire_804A8A50::update() {
     case 5:
         field_0x254--;
         if (field_0x254 == 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3E0);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3E0);
             field_0x240 = 6;
         }
         break;
@@ -265,7 +265,7 @@ void SpreadingFire_804A8A50::update() {
             do {
                 mPos.y += 8.0f;
             } while (mPos.y != field_0x284.y);
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3EB);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3EB);
             s32 layer = mLayer_0x4;
             if (layer >= 8) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &mPos, 0, -1, -1);
@@ -275,7 +275,7 @@ void SpreadingFire_804A8A50::update() {
             if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x3EB) {
                 break;
             }
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3E0);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3E0);
         }
         mPos.y += 16.0f;
         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);

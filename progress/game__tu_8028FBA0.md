@@ -8,7 +8,7 @@ After: 24 / 53 at 100 % in the unit file plus 26 structurally done
 handlers)" for what each state is.
 
 Not written:
-- fn_80290070 (0xCE8): inlines fn_80290D58 and fn_80290E90, both defined
+- startTransition_80290070 (0xCE8): inlines fn_80290D58 and fn_80290E90, both defined
   after it (needs deferred inlining; left unwritten per the rules).
 - fn_80290FC0 (state 0x32 update): needs Player 0x1344 typed as
   `JGeometry::TVec3f field_0x1344;` (now `u8 field_0x1344[0x1350 - 0x1344]`;
@@ -25,6 +25,8 @@ SHARED-EDITS:
   followCamera, requestArrival, spawnEffect15B, life, fallStep,
   riseToTarget: unit-local inlines of tu_8028FBA0; updateCarryWalk_8026152C(bool) of
   tu_8025EB18); fn_80290070 returns bool (was u8; callers test clrlwi.).
+  riseToTarget: unit-local inlines of tu_8028FBA0; fn_8026152C(bool) of
+  tu_8025EB18); startTransition_80290070 returns bool (was u8; callers test clrlwi.).
 - include/game/GameGlobals.h: `bool fn_80301CD0(s32 layer);` (tu_80301CD0,
   already defined there with C++ linkage).
 - config/G4SE01/symbols.txt: updateCarryWalk_8026152C -> updateCarryWalk_8026152C__15Player_804A6F38Fb
@@ -96,7 +98,7 @@ index 18c75968..52fbdc0c 100644
 +            return;
 +        }
 +        if (!fn_80240670()) {
-+            fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
++            hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
 +        }
 +        s32 hp = life();
 +        s32 state = 0;
@@ -104,7 +106,7 @@ index 18c75968..52fbdc0c 100644
 +            state = 0x33;
 +        }
 +        field_0x124d = 0;
-+        if (fn_80251AEC(state)) {
++        if (requestState_80251AEC(state)) {
 +            field_0x3b4 = field_0xce4;
 +            mPos = field_0xcd4;
 +            mPos.z = 0.0f;
@@ -113,9 +115,9 @@ index 18c75968..52fbdc0c 100644
 +    }
 +    if (field_0x3fc >= 58) {
 +        if (field_0x3fb == 0) {
-+            fn_8024F0E8(0x1000A);
++            playSound_8024F0E8(0x1000A);
 +            if (field_0xcf4 == 0xC && fn_802DE9A0()) {
-+                fn_8024F0E8(0x20031);
++                playSound_8024F0E8(0x20031);
 +            }
 +            field_0x3fb = 1;
 +            if (field_0xcf4 == 0xC && fn_802DE9A0() && field_0x135c == NULL) {
@@ -168,9 +170,9 @@ index 18c75968..52fbdc0c 100644
 +        if (field_0x344.z < 0.0f && mPos.z <= 0.0f) {
 +            mPos.z = 0.0f;
 +            if (!fn_80240670() && (field_0xcf4 == 0xC || field_0xcf4 == 0xD || field_0xcf4 == 0x26)) {
-+                fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
++                hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
 +            } else {
-+                fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
++                hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
 +            }
 +            s32 hp = life();
 +        s32 state = 0;
@@ -178,7 +180,7 @@ index 18c75968..52fbdc0c 100644
 +            state = 0x33;
 +        }
 +            field_0x124d = 0;
-+            if (fn_80251AEC(state)) {
++            if (requestState_80251AEC(state)) {
 +                field_0x3b4 = field_0xce4;
 +                mPos = field_0xcd4;
 +                mPos.z = 0.0f;

@@ -132,7 +132,7 @@ void Log_804ACD70::update() {
                     JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                     f32 px = ppos->x;
                     f32 py = ppos->y;
-                    s32 dir = fn_80230CFC(i);
+                    s32 dir = getPlayerFacing_80230CFC(i);
                     px += lbl_804722B0[dir][0];
                     py += lbl_804722B0[dir][1];
                     field_0x264[i] = fn_8022C004(i);
@@ -190,7 +190,7 @@ void Log_804ACD70::update() {
                 }
                 if (field_0x230 == 1) {
                     for (s32 i = 0; i < 4; i++) {
-                        if (fn_8022E438(field_0x254[0], i) == 1 || fn_8022E438(field_0x254[1], i) == 1) {
+                        if (arePlayersInSameGroup_8022E438(field_0x254[0], i) == 1 || arePlayersInSameGroup_8022E438(field_0x254[1], i) == 1) {
                             field_0x268[i].field_0x0 = 0;
                         }
                     }
@@ -234,12 +234,12 @@ void Log_804ACD70::update() {
         } else {
             mVel_0x3c.z += -0.15f;
             mPos.add(mVel_0x3c);
-            if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+            if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
                     if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                     } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
                 field_0x230 = 2;
@@ -249,8 +249,8 @@ void Log_804ACD70::update() {
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {
                         if (field_0x234[i] != field_0x2d0 && (mask & (1 << i)) > 0 &&
-                            !fn_8022E438(field_0x254[0], i) && !fn_8022E438(field_0x254[1], i)) {
-                            fn_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 5);
+                            !arePlayersInSameGroup_8022E438(field_0x254[0], i) && !arePlayersInSameGroup_8022E438(field_0x254[1], i)) {
+                            hitPlayerGroup_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 5);
                             hurt = true;
                         }
                     }
@@ -353,7 +353,7 @@ void Log_804ACD70::die_0x24() {
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, b, 1, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, c, 1, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30003, 0);
-    fn_801F3668();
+    markDead_801F3668();
 }
 
 bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
@@ -381,7 +381,7 @@ bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         }
         return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
     }
-    return fn_801F132C(layer, pos, &field_0x2b8);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x2b8);
 }
 
 static inline s32 getPullDir(const Log_804ACD70* self) {
@@ -436,7 +436,7 @@ void Log_804ACD70::fn_80354FE8() {
             }
             JGeometry::TVec3f saved(mPos);
             mPos += JGeometry::TVec3f(lbl_804722B0[dir][0], lbl_804722B0[dir][1], 0.0f);
-            u8 hit = fn_801F2618(NULL, false);
+            u8 hit = sweepMapBox_801F2618(NULL, false);
             mPos = saved;
             if (hit != true && fn_80354D64(dir)) {
                 if (dirA == -1 && dirB != -1) {
@@ -488,7 +488,7 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
     mVel_0x3c.set(lbl_804722F0[dir][0], lbl_804722F0[dir][1], lbl_804722F0[dir][2]);
     mPos += mVel_0x3c;
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
-    if (fn_801F2618(&out, false)) {
+    if (sweepMapBox_801F2618(&out, false)) {
         switch (dir) {
         case 0:
             if (out.x >= 0.0f) {

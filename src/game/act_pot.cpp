@@ -118,17 +118,17 @@ void Pot_804A9428::update() {
         if (!viewLayerFlag(mLayer_0x4)) {
             mVel_0x3c.z += -0.15f;
             mPos += mVel_0x3c;
-            if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+            if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
                     if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                     } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91 || getRawTile_80226850(&mPos, mLayer_0x4) == 0x22E) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
                 if (field_0x234 == 2) {
                     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-                    s32 count = getActorManager_801F856C()->fn_801F7818('BLZ2', mLayer_0x4, actors, -1);
+                    s32 count = getActorManager_801F856C()->collectActorsById_801F7818('BLZ2', mLayer_0x4, actors, -1);
                     for (s32 i = 0; i < count; i++) {
                         ActorBase_804A5770* actor = actors[i];
                         if (actor != NULL) {
@@ -153,7 +153,7 @@ void Pot_804A9428::update() {
             }
             mVel_0x3c.y += 0.15f;
             mPos += mVel_0x3c;
-            if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || fn_801F2618(NULL, false)) {
+            if (damagePlayersInBox_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || sweepMapBox_801F2618(NULL, false)) {
                 die_0x24();
             }
         }
@@ -274,7 +274,7 @@ void Pot_804A9428::die_0x24() {
                 pos.x = mPos.x + lbl_8046E070_x5[i];
                 pos.y = mPos.y + lbl_8046E070_y5[i];
                 pos.z = 0.0f;
-                s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
+                s32 tileIdx = getCellIndexVec3_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
                 cellToPos_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
@@ -289,7 +289,7 @@ void Pot_804A9428::die_0x24() {
                 pos.x = mPos.x + lbl_8046E070_x13[i];
                 pos.y = mPos.y + lbl_8046E070_y13[i];
                 pos.z = 0.0f;
-                s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
+                s32 tileIdx = getCellIndexVec3_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIdx);
                 cellToPos_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
@@ -311,7 +311,7 @@ void Pot_804A9428::die_0x24() {
 }
 
 bool Pot_804A9428::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x248);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x248);
 }
 
 void Pot_804A9428::vfunc_0x48() {

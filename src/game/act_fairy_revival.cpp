@@ -65,7 +65,7 @@ void RevivalFairy_804AC250::update() {
         if (mEmitter258 != NULL) {
             mEmitter258->becomeInvalidEmitter();
         }
-        fn_801F3668();
+        markDead_801F3668();
     }
     mTimer++;
 }

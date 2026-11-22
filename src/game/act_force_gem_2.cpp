@@ -41,7 +41,7 @@ void ForceGem2_804AB850::init() {
     field_0x238 = 1.0f;
     field_0x23c = 0.0f;
     if (isScreenFlagSet_0x34()) {
-        fn_801F3668();
+        markDead_801F3668();
         return;
     }
     mRadius = 30.0f;
@@ -115,9 +115,9 @@ void ForceGem2_804AB850::update() {
     if (mState == 0 || mState == 3 || mState == 4) {
         s32 idx = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (mState != 0) {
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (field_0x94 != 6 || mPos.z == 0.0f) {
-                moved = fn_801F2618(NULL, false);
+                moved = sweepMapBox_801F2618(NULL, false);
             }
         }
         if (idx >= 0) {
@@ -186,7 +186,7 @@ void ForceGem2_804AB850::update() {
         }
         if (field_0x244 == 0) {
             setScreenFlag_0x30(0xFF, true);
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 3:
@@ -234,7 +234,7 @@ void ForceGem2_804AB850::update() {
             if (mState == 6 && mEmitter284 != NULL) {
                 mEmitter284->becomeInvalidEmitter();
             }
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -280,7 +280,7 @@ void ForceGem2_804AB850::draw() {
         s32 frame = field_0x24c + lbl_804AB810[field_0x264];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         return;
     }
@@ -300,7 +300,7 @@ void ForceGem2_804AB850::draw() {
         s32 frame = field_0x24c + lbl_804AB810[field_0x264];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x24c + lbl_804AB810[field_0x264], false, 2, -1, 0, 0, 0);

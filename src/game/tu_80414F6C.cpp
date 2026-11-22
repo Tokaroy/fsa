@@ -323,7 +323,7 @@ BattleStageSelect_804B1378::~BattleStageSelect_804B1378() {
 void BattleStageSelect_804B1378::fn_804170EC() {
     s32 stage = field_0xc * 5 + field_0x10;
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x109 != 0) {
         u8 alpha;
         if (stage < 10) {
@@ -443,9 +443,9 @@ void BattleStageSelect_804B1378::fn_80416038() {
     field_0x102++;
     if (field_0x102 > 0) {
         for (int i = 0; i < 2; i++) {
-            field_0x28[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+            field_0x28[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
         }
-        done0 = field_0x28[2]->fn_80402940(15, 0, 300.0f, 0.0f);
+        done0 = field_0x28[2]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
         if (field_0x102 < 15) {
             fadeCD50(field_0x102 / 15.0f);
         } else {
@@ -453,7 +453,7 @@ void BattleStageSelect_804B1378::fn_80416038() {
         }
     }
     if (field_0x102 > 0) {
-        done1 = field_0x34->fn_80402940(25, 0, -100.0f, 0.0f);
+        done1 = field_0x34->animateMoveY_80402940(25, 0, -100.0f, 0.0f);
         if (field_0x102 < 25) {
             fadeCE00(field_0x102 / 25.0f);
         } else {
@@ -461,9 +461,9 @@ void BattleStageSelect_804B1378::fn_80416038() {
         }
     }
     if (field_0x102 > 0) {
-        done2 = field_0x38->fn_80402940(15, 0, -200.0f, 0.0f);
+        done2 = field_0x38->animateMoveY_80402940(15, 0, -200.0f, 0.0f);
         for (int i = 0; i < 15; i++) {
-            field_0xa4[i]->fn_80402940(15, 0, -200.0f, 0.0f);
+            field_0xa4[i]->animateMoveY_80402940(15, 0, -200.0f, 0.0f);
         }
         if (field_0x102 < 15) {
             f32 rate = field_0x102 / 15.0f;
@@ -480,11 +480,11 @@ void BattleStageSelect_804B1378::fn_80416038() {
     }
     for (int i = 0; i < 5; i++) {
         if (field_0x102 > i * 2) {
-            field_0x3c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+            field_0x3c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             if (i == 4) {
-                done5 = field_0x6c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+                done5 = field_0x6c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             } else {
-                field_0x6c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+                field_0x6c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             }
             if (field_0x102 - i * 2 < 15) {
                 fadeStage(i, (field_0x102 - i * 2) / 15.0f);
@@ -495,11 +495,11 @@ void BattleStageSelect_804B1378::fn_80416038() {
     }
     for (int i = 5; i < 10; i++) {
         if (field_0x102 > (i - 5) * 2 + 2) {
-            field_0x3c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+            field_0x3c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             if (i == 9) {
-                done6 = field_0x6c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+                done6 = field_0x6c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             } else {
-                field_0x6c[i]->fn_80402940(15, 0, 300.0f, 0.0f);
+                field_0x6c[i]->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
             }
             if (field_0x102 - ((i - 5) * 2 + 2) < 15) {
                 fadeStage(i, (field_0x102 - ((i - 5) * 2 + 2)) / 15.0f);
@@ -509,7 +509,7 @@ void BattleStageSelect_804B1378::fn_80416038() {
         }
     }
     if (field_0x102 > 8) {
-        done3 = field_0x9c->fn_80402940(15, 0, 300.0f, 0.0f);
+        done3 = field_0x9c->animateMoveY_80402940(15, 0, 300.0f, 0.0f);
         if (field_0x102 - 8 < 15) {
             fadeCE48((field_0x102 - 8) / 15.0f);
         } else {
@@ -517,7 +517,7 @@ void BattleStageSelect_804B1378::fn_80416038() {
         }
     }
     if (field_0x102 > 20) {
-        done4 = field_0xa0->fn_80402940(25, 0, -200.0f, 0.0f);
+        done4 = field_0xa0->animateMoveY_80402940(25, 0, -200.0f, 0.0f);
     }
     if (done0 && done1 && done2 && done3 && done4 && done5 && done6) {
         field_0x109 = 1;
@@ -565,7 +565,7 @@ void BattleStageSelect_804B1378::fn_80415028() {
         }
         lbl_80529DEC.field_0x128 = stage / 4;
         lbl_80529DEC.field_0x12c = stage % 4;
-        gAudioMgr_8053AF80->fn_80458F9C(10);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(10);
         gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         field_0xe0 = 7;
         lbl_80529DEC.field_0x242 = 0;
@@ -585,7 +585,7 @@ void BattleStageSelect_804B1378::fn_80415028() {
             if (field_0x106 & (u16)(1 << stage)) {
                 lbl_80529DEC.field_0x128 = stage / 4;
                 lbl_80529DEC.field_0x12c = stage % 4;
-                gAudioMgr_8053AF80->fn_80458F9C(10);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(10);
                 gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
                 field_0xe0 = 7;
                 lbl_80529DEC.field_0x242 = 0;

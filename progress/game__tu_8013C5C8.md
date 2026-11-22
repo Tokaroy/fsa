@@ -17,7 +17,7 @@ Camera_804AA9E4::field_0xe4 and the identity-initialised JPADrawInfo pair), fn_8
 fn_8013DDEC (0x158C).
 
 SHARED-EDITS: include/game/Effect.h (mHeap is JKRSolidHeap*, fn_8013C958 declared, getEffectSystem_8013C824 / CAA4 / CB44
-moved out of extern "C" and CAA4 / CB44 return u8, comments), include/game/RotMatrix.h (fn_8010F668 declaration,
+moved out of extern "C" and CAA4 / CB44 return u8, comments), include/game/RotMatrix.h (makeAxisRotation_8010F668 declaration,
 owner act_princess_zelda_demo). Symbols renamed in symbols.txt (callbacks, vtables, Entry ctor, sinit, the
 three free functions).
 
@@ -49,7 +49,7 @@ fn_8013DA10). Structural +2
   once it is found, setEmitterPos_8013CB44, spawnEmitter_8013CC50 and draw should all reach 100 %. (The draw passes
   convert fbWidth / efbHeight signed: xoris, i.e. through int.)
 - fn_8013D5D4 / D6E4 / DB2C unwritten: each default-constructs a JPADrawInfo (identity x2),
-  calls fn_8013B490, default-constructs a SECOND JPADrawInfo that is never used (sp8/sp38), then
+  calls setPort_8013B490, default-constructs a SECOND JPADrawInfo that is never used (sp8/sp38), then
   PSMTXCopy(field_0x10->0x80 = J2DOrthoGraph posMtx, first.mCamMtx) and
   C_MTXLightOrtho(first.mPrjMtx, 0, efbHeight, 0, fbWidth, 0.5 x4). The unused second object
   points at an inline (a JPADrawInfo or GameRoot2 helper) not identified yet; writing a dead local

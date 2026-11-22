@@ -84,7 +84,7 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
         mPos.x = playerPos->x;
         mPos.y = playerPos->y;
         mPos.z = playerPos->z;
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
             dir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
             dir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
@@ -132,7 +132,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
         f32 y = mPos.y;
         f32 z = mPos.z;
         mPos.set(*getPlayerPos_8023E724(field_0x254));
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
             releaseDir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
             releaseDir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
@@ -178,11 +178,11 @@ void Hinox_8049F9B4::update() {
         dead = false;
     }
     if (updateHitReaction_801F3D94(dead) != 0 && mLife <= 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
-    fn_801EEC98(mSerial, NULL, &playerDir, &playerDist, &field_0x268, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, NULL, &playerDir, &playerDist, &field_0x268, 0, 0);
 
     savedVel.set(mVel_0x3c);
     s32 hitSerial = field_0x9c;
@@ -198,7 +198,7 @@ void Hinox_8049F9B4::update() {
         }
     }
 
-    if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL) || fn_801F2FAC() || hitByActor == true) {
+    if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL) || checkPlayerAttacks_801F2FAC() || hitByActor == true) {
         field_0xbc = 3;
         if (mLife > 0) {
             mVel_0x3c.set(savedVel);
@@ -213,7 +213,7 @@ void Hinox_8049F9B4::update() {
                 mState = 1;
             }
         }
-        fn_801F285C(NULL, NULL, true, -1);
+        findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (mState == 7) {
             s32 serial = field_0x250;
             if (serial >= 0) {
@@ -256,7 +256,7 @@ void Hinox_8049F9B4::update() {
     mPos += mVel_0x3c;
 
     if (field_0x240 == 0 && field_0x268 >= 0 && playerDist < 24.0f &&
-        fn_80237774(field_0x268) > 0 && fn_80236228(field_0x268) > 0 &&
+        getPlayerLife_80237774(field_0x268) > 0 && fn_80236228(field_0x268) > 0 &&
         !fn_80236BEC(field_0x268) && mState == 5 && mState != 9) {
         field_0x254 = field_0x268;
         field_0xbc = 4;
@@ -271,7 +271,7 @@ void Hinox_8049F9B4::update() {
         }
     }
 
-    u8 hitWall = fn_801F2618(NULL, false);
+    u8 hitWall = sweepMapBox_801F2618(NULL, false);
 
     switch (mState) {
     case 0:
@@ -363,7 +363,7 @@ void Hinox_8049F9B4::update() {
         field_0x270 = 0.0f;
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
-        fn_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, NULL, field_0x268, 2);
+        findTargetPlayer_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, NULL, field_0x268, 2);
         if (playerDir == -1) {
             hitWall = 1;
         } else {
@@ -416,7 +416,7 @@ void Hinox_8049F9B4::update() {
         field_0x270 = 0.0f;
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
-        fn_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, &field_0x268, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, &field_0x268, 0, 0);
         mState = 7;
         // fallthrough
     case 7:
@@ -438,7 +438,7 @@ void Hinox_8049F9B4::update() {
             if (field_0x248 == 8) {
                 ActorBase_804A5770* rock = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x250);
                 if (rock != NULL) {
-                    s32 throwAngle = (s16)fn_801F6874(mDir_0x98);
+                    s32 throwAngle = (s16)dirToAngle_801F6874(mDir_0x98);
                     f32 speed = 2.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     throwAngle += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     JGeometry::TVec3f vel(speed * JMath::sincosTable_.sinShort(throwAngle),
@@ -485,7 +485,7 @@ void Hinox_8049F9B4::update() {
         field_0x284 = 0.0f;
         field_0x280 = 0.0f;
         field_0x27c = 0.0f;
-        if (fn_801F6758(&mPos, mLayer_0x4, -130.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, -130.0f)) {
             s32 layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxPtr = (layer < 8) ? &view->mVisibleBox : &view->field_0xdc;
@@ -529,7 +529,7 @@ void Hinox_8049F9B4::update() {
             field_0x24c++;
             field_0x24c &= 1;
             if (field_0x25c < 10 && field_0x254 >= 0 && fn_80236228(field_0x254) > 0) {
-                s32 dropAngle = (s16)fn_801F6874(mDir_0x98) - (s16)(0x1000 - (field_0x24c << 13));
+                s32 dropAngle = (s16)dirToAngle_801F6874(mDir_0x98) - (s16)(0x1000 - (field_0x24c << 13));
                 s32 dropIdx = (s32)(7.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 dropAngle -= (s32)(1280.0f - 4096.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 JGeometry::TVec3f gemVel(1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
@@ -559,9 +559,9 @@ void Hinox_8049F9B4::update() {
             }
         }
         if (field_0x254 >= 0) {
-            if (fn_80236B50(field_0x254) || fn_80230188(field_0x254) ||
+            if (isPlayerDead_80236B50(field_0x254) || fn_80230188(field_0x254) ||
                 fn_8022DCD8(field_0x254) || fn_8022F478(field_0x254) ||
-                fn_80237774(field_0x254) <= 0 || fn_8022D534(field_0x254)) {
+                getPlayerLife_80237774(field_0x254) <= 0 || fn_8022D534(field_0x254)) {
                 if (releasePlayer()) {
                     field_0x254 = -1;
                     field_0x234 = 0;
@@ -592,7 +592,7 @@ void Hinox_8049F9B4::update() {
                     JGeometry::TVec3f savedPos;
                     savedPos.set(mPos);
                     mPos.set(*getPlayerPos_8023E724(field_0x254));
-                    if (fn_801F2618(NULL, false)) {
+                    if (sweepMapBox_801F2618(NULL, false)) {
                         checkDir.zero();
                     }
                     mPos.set(savedPos);

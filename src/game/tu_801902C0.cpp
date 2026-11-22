@@ -27,45 +27,45 @@ GameRootSub20_801902C0::GameRootSub20_801902C0(JKRHeap* parent) {
             sprintf(btk, "suisyo_op.btk");
             sprintf(brk, "suisyo_op.brk");
         }
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, bmd, btk, NULL, brk, NULL, 0x20240000, mHeap,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, bmd, btk, NULL, brk, NULL, 0x20240000, mHeap,
                     &mCrystals[i].mModel, &mCrystals[i].mBtk, NULL, &mCrystals[i].mBrk, NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_a.bmd", "taki_a.btk", NULL, NULL, NULL, 0x20240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_a.bmd", "taki_a.btk", NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[0].field_0xc, &mSmallRequests[0].field_0x14, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "niji_a.bmd", NULL, NULL, NULL, NULL, 0x20240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "niji_a.bmd", NULL, NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[0].field_0x10, NULL, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_b.bmd", "taki_b.btk", NULL, NULL, NULL, 0x20240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_b.bmd", "taki_b.btk", NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[1].field_0xc, &mSmallRequests[1].field_0x14, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mon.bmd", "osiro_mon.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mon.bmd", "osiro_mon.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[0].field_0xc, &mRequests[0].field_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_tobira.bmd", "osiro_tobira.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_tobira.bmd", "osiro_tobira.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[1].field_0xc, &mRequests[1].field_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mado.bmd", "osiro_mado.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mado.bmd", "osiro_mado.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[2].field_0xc, &mRequests[2].field_0x10, NULL, NULL, NULL);
     for (s32 i = 0; i < 10; i++) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "suna.bmd", "suna.btk", NULL, "suna.brk", NULL, 0x240000, mHeap,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "suna.bmd", "suna.btk", NULL, "suna.brk", NULL, 0x240000, mHeap,
                     &mQuicksandEntries[i].mModel, &mQuicksandEntries[i].mBtk, NULL,
                     &mQuicksandEntries[i].mBrk, NULL);
     }
     for (s32 i = 0; i < 8; i++) {
-        fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "ak_magicCircle.bmd", "ak_magicCircle.btk",
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "ak_magicCircle.bmd", "ak_magicCircle.btk",
                     "ak_magicCircleApp.btk", "ak_magicCircle.brk", "ak_magicCircleColor.brk", 0x20240000,
                     mHeap, &mMagicCircles[i].mModel, &mMagicCircles[i].mBtk, &mMagicCircles[i].mBtkApp,
                     &mMagicCircles[i].mBrk, &mMagicCircles[i].mBrkColor);
     }
     for (s32 i = 0; i < 2; i++) {
-        fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mHeap,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mHeap,
                     &mQueuedPos[i].mModel, &mQueuedPos[i].mBtk, NULL, NULL, NULL);
     }
     for (s32 i = 0; i < 16; i++) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "SandFall00.bmd", "SandFall00.btk", NULL, NULL, NULL, 0x240000, mHeap,
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "SandFall00.bmd", "SandFall00.btk", NULL, NULL, NULL, 0x240000, mHeap,
                     &mSandFalls[i].mModel, &mSandFalls[i].mBtk, NULL, NULL, NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanDark00.bmd", "saidanDark00.btk", NULL, "saidanDark00.brk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanDark00.bmd", "saidanDark00.btk", NULL, "saidanDark00.brk", NULL,
                 0x240000, mHeap, &field_0x7ac, &field_0x7b0, NULL, &field_0x7b4, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanFlash00.bmd", NULL, NULL, "saidanFlash00.brk", NULL, 0x10220000,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanFlash00.bmd", NULL, NULL, "saidanFlash00.brk", NULL, 0x10220000,
                 mHeap, &field_0x7c4, NULL, NULL, &field_0x7c8, NULL);
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "snowWall00.bmd", "snowWall00.btk", NULL, "snowWall00.brk", NULL,
+    loadModelWithAnims_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "snowWall00.bmd", "snowWall00.btk", NULL, "snowWall00.brk", NULL,
                 0x10240000, mHeap, &mIceRequest.field_0x10, &mIceRequest.field_0x14, NULL,
                 &mIceRequest.field_0x18, NULL);
     mHeap->adjustSize();
@@ -290,7 +290,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             mtx1[1][3] = y + offset;
             mtx1[2][3] = z + offset;
             scale.x = -scale.x;
-            fn_8013ABCC(c.mModel, scale, mtx1);
+            calcAndEntryModel_8013ABCC(c.mModel, scale, mtx1);
         }
     }
     if (mSmallRequests[0].field_0xc != NULL && mSmallRequests[0].mActive != 0) {
@@ -300,10 +300,10 @@ void GameRootSub20_801902C0::fn_801902D0() {
         scale.scale(10.24f);
         mtx[1][3] += 2048.0f;
         mtx[2][3] += 2048.0f;
-        fn_8013ABCC(mSmallRequests[0].field_0x10, scale, mtx);
+        calcAndEntryModel_8013ABCC(mSmallRequests[0].field_0x10, scale, mtx);
         mtx[1][3] -= 2048.0f;
         mtx[2][3] -= 2048.0f;
-        fn_8013ABCC(mSmallRequests[0].field_0xc, scale, mtx);
+        calcAndEntryModel_8013ABCC(mSmallRequests[0].field_0xc, scale, mtx);
     }
     if (mSmallRequests[1].field_0xc != NULL && mSmallRequests[1].mActive != 0) {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
@@ -315,7 +315,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             mtx[2][3] += 1024.0f;
         }
         scale.scale(10.24f);
-        fn_8013ABCC(mSmallRequests[1].field_0xc, scale, mtx);
+        calcAndEntryModel_8013ABCC(mSmallRequests[1].field_0xc, scale, mtx);
     }
     if (mRequests[0].field_0xc != NULL && mRequests[0].mActive != 0) {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
@@ -324,7 +324,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
         mtx[1][3] -= 256.0f;
         mtx[2][3] -= 256.0f;
         scale.scale(10.24f);
-        fn_8013ABCC(mRequests[0].field_0xc, scale, mtx);
+        calcAndEntryModel_8013ABCC(mRequests[0].field_0xc, scale, mtx);
     }
     if (mRequests[1].field_0xc != NULL && mRequests[1].mActive != 0) {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
@@ -333,7 +333,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
         mtx[1][3] -= 256.0f;
         mtx[2][3] -= 256.0f;
         scale.scale(10.24f);
-        fn_8013ABCC(mRequests[1].field_0xc, scale, mtx);
+        calcAndEntryModel_8013ABCC(mRequests[1].field_0xc, scale, mtx);
     }
     if (mRequests[2].field_0xc != NULL && mRequests[2].mActive != 0) {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
@@ -342,7 +342,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
         mtx[1][3] -= 256.0f;
         mtx[2][3] -= 256.0f;
         scale.scale(10.24f);
-        fn_8013ABCC(mRequests[2].field_0xc, scale, mtx);
+        calcAndEntryModel_8013ABCC(mRequests[2].field_0xc, scale, mtx);
     }
     for (s32 i = 0; i < mQuicksandCount; i++) {
         QuicksandEntry& e = mQuicksandEntries[i];
@@ -354,7 +354,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             f32 s = (16.0f * e.field_0xc) / 10.0f;
             JGeometry::TVec3f scale(s, s, s);
             scale.z = -s;
-            fn_8013ABCC(e.mModel, scale, mtx);
+            calcAndEntryModel_8013ABCC(e.mModel, scale, mtx);
         }
     }
     for (s32 i = 0; i < field_0x5ec; i++) {
@@ -376,7 +376,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             mtx[1][0] = 0.0f;
             mtx[0][1] = 0.0f;
             scale.scale(1.5f);
-            fn_8013ABCC(m.mModel, scale, mtx);
+            calcAndEntryModel_8013ABCC(m.mModel, scale, mtx);
         }
     }
     for (s32 i = 0; i < mQueuedPosCount; i++) {
@@ -389,7 +389,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             mtx[1][3] += 768.0f;
             mtx[2][3] += 1024.0f;
             scale.scale(10.24f);
-            fn_8013ABCC(q.mModel, scale, mtx);
+            calcAndEntryModel_8013ABCC(q.mModel, scale, mtx);
         }
     }
     for (s32 i = 0; i < field_0x79c; i++) {
@@ -414,9 +414,9 @@ void GameRootSub20_801902C0::fn_801902D0() {
             }
             params.field_0x1c = 0xFF;
             params.field_0x1d = 0xFF;
-            fn_8013ABCC(s.mModel, scale, mtx);
+            calcAndEntryModel_8013ABCC(s.mModel, scale, mtx);
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "rock6_smp.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(&pos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(&pos, res, &params);
         }
     }
     if (field_0x7ac != NULL && field_0x7a8 != 0) {
@@ -425,7 +425,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
         PSMTXTrans(mtx, 0.5f * (view->mVisibleBox.i.x + view->mVisibleBox.f.x),
                    0.5f * (view->mVisibleBox.i.y + view->mVisibleBox.f.y) + 1024.0f, 1024.0f);
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
-        fn_8013ABCC(field_0x7ac, scale, mtx);
+        calcAndEntryModel_8013ABCC(field_0x7ac, scale, mtx);
     }
     if (field_0x7c4 != NULL && field_0x7bc > 0 && field_0x7bc < field_0x7c8->mTotalFrameCount) {
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -433,13 +433,13 @@ void GameRootSub20_801902C0::fn_801902D0() {
         PSMTXTrans(mtx, 0.5f * (view->mVisibleBox.i.x + view->mVisibleBox.f.x),
                    0.5f * (view->mVisibleBox.i.y + view->mVisibleBox.f.y) + 1024.0f, 1024.0f);
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
-        fn_8013ABCC(field_0x7c4, scale, mtx);
+        calcAndEntryModel_8013ABCC(field_0x7c4, scale, mtx);
     }
     if (mIceRequest.field_0x10 != NULL && mIceRequest.mActive != 0) {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
         Mtx mtx;
         PSMTXTrans(mtx, mIceRequest.mPos.x, mIceRequest.mPos.y, mIceRequest.mPos.z);
-        fn_8013ABCC(mIceRequest.field_0x10, scale, mtx);
+        calcAndEntryModel_8013ABCC(mIceRequest.field_0x10, scale, mtx);
     }
 }
 

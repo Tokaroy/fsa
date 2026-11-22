@@ -24,7 +24,7 @@ void BanditHerdingNPC_804ACB40::update() {
     field_0x238 = 0;
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_TZOK, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_TZOK, serial);
         if (serial < 0) {
             break;
         }

@@ -18,8 +18,8 @@ public:
     /* 0x20 */ virtual void draw();
     // Stores the state in field_0x268 and runs its block: 1, 2, 3, 4, 6, 7 and
     // 8 do something; 0 and 5 nothing (the jump table's default).
-    void fn_80130FAC(s32 state);
-    // Not in the binary: plain functions that update and fn_80130FAC inline.
+    void setState_80130FAC(s32 state);
+    // Not in the binary: plain functions that update and setState_80130FAC inline.
     s32 findPlayer();
     bool allPlayersIn();
     void movePlayers();
@@ -40,7 +40,7 @@ public:
     /* 0x284 */ f32 field_0x284;
     /* 0x288 */ f32 field_0x288;
     /* 0x28C */ f32 field_0x28c;
-    /* 0x290 */ JGeometry::TVec3f field_0x290; // copied from fn_8023E32C(0), then fn_80230498's position
+    /* 0x290 */ JGeometry::TVec3f field_0x290; // copied from getPlayerLastTvPos_8023E32C(0), then fn_80230498's position
 }; // Size: 0x29C
 
 #endif

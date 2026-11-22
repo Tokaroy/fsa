@@ -21,7 +21,7 @@ public:
     // collision list (fn_8020D8C0).
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
-    // 0x80210630: draws the sprite (fn_802F745C) for direction mDir_0x98.
+    // 0x80210630: draws the sprite (drawTimgImage_802F745C) for direction mDir_0x98.
     // arg0 is tested for non-zero; arg1 and arg2 are stored as bytes
     // (0x60, 0x61) and arg3 as a byte at 0x58 of its parameter block
     // (tu_8020FE50's draw passes (int)field_0x2a8 in the state 2).
@@ -31,7 +31,7 @@ public:
     void fn_80210990(s32 dir, JGeometry::TBox2f* out);
     // 0x80210A30: the same without the direction offset.
     void fn_80210A30(JGeometry::TBox2f* out);
-    // 0x80210A6C: moves field_0x2a8 toward a target (fn_801CD950); returns
+    // 0x80210A6C: moves field_0x2a8 toward a target (moveToward_801CD950); returns
     // whether it has arrived.
     bool fn_80210A6C();
 

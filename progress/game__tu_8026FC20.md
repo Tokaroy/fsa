@@ -1,13 +1,14 @@
 
 ## 2026-11-05 small-function pass (Sonnet 5.5)
 Baseline progress.py: 7622 / 11557. After: 7669 (unit 7 -> 54 of 120).
-Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the fn_8024F0E8 argument setup),
+Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the playSound_8024F0E8 argument setup),
 fn_802729F0 81.51 % (72-entry compare loop: original unrolls 8 trips of 9 with a pointer bump).
 Left unwritten on purpose:
 - fn_80276538, fn_8027A0D4-style literal users (fn_80279FE8): new float literals (7, -15, 15, 6) enter our .sdata2 pool
   before 0.0f (second in the original), which turns every later 0.0f user (fn_8027966C, fn_8027CB24...) into reloc-name.
   Write them when the earlier literal users (fn_8026FD14 ...) exist.
 - fn_80270948, addLife_80270DDC, fn_80270F00: inline fn_80270A8C (defined earlier; the original inlines it) plus more; not tried.
+- fn_80270948, fn_80270DDC, fn_80270F00: inline isDeadState_80270A8C (defined earlier; the original inlines it) plus more; not tried.
 - fn_802771C8, fn_802775C8, fn_8027A178, fn_8027CBB0: stop-emitter sequence on a JPABaseEmitter (+0xF4 |= 1, +0x24 = 1)
   that the TWW JPAEmitter.h layout does not have (see act_force_gem_wooden's FIXME).
 - fn_8027A0D4 passes &field_0x130c as the particle callback argument of spawnEmitter_8013CC50 (type unknown).
@@ -54,7 +55,7 @@ New 100 %: fn_8027439C, fn_802756E4, fn_80276078, fn_80276538 (literal pool), fn
 fn_802775C8, fn_8027A178, fn_802796B8, fn_80279FE8, fn_8027A0D4, fn_8027CBB0, fn_8027A908,
 fn_8027C4FC, fn_8027D320, fn_8027BC90, fn_8027BA2C, setFacingBoxes_80276E5C, fn_80276BB8, fn_80279CFC,
 fn_8027B304, fn_80277220.
-Structural (FIXMEs in source): fn_80273FB8 98.59 missing/extra, fn_80275D9C 98.61 regalloc,
+Structural (FIXMEs in source): fn_80273FB8 98.59 missing/extra, checkAttackInput_80275D9C 98.61 regalloc,
 fn_8027C6C4 99.88 regalloc, fn_8027B648 96.22 missing/extra (materialised lifeFull).
 Data: lbl_8046BCA8 (0xA0 struct), lbl_8046BB48 f32[4][3], lbl_8046BD88 f32[4][2].
 SHARED-EDITS: include/game/Player.h only (0x12A4 / 0x1320 TVec3f from u8 padding, size
@@ -70,7 +71,7 @@ Structural: fn_802791B0 99.98 reloc-name (-2.0f pool slot; needs fn_80277F98 fir
 missing/extra (one dead `beq` after the Tingle null test), fn_80273FB8 98.59 -> 99.62 (now inlines
 fn_802730D8; auto_inline region because fn_80274238 calls it out of line; return is u8 in the original
 but fn_80274238 then converts it).
-Cleanup: the isDown() file inline is gone (deferred inlining: fn_80270A8C is the plain function).
+Cleanup: the isDown() file inline is gone (deferred inlining: isDeadState_80270A8C is the plain function).
 SHARED-EDITS: include/game/Player.h (isDown decl removed, comments), include/game/act/tu_803D9944.h
 (Tingle_804B0478 u8 field_0x251 from field_0x230[0x30], size unchanged; stb 0x251 in tu_803D9944).
 Next: fn_80277F98 (0x33 update, 0x1128; fixes the 24 / -24 / -12 / 1.625 / 0.12 literals before -2),

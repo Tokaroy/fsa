@@ -31,7 +31,7 @@ void Bumper_804A0260::init() {
     field_0xb8 = 2;
     field_0x258 = 0;
     field_0x26c = mPos;
-    field_0x24c = fn_801F6874(mDir_0x98);
+    field_0x24c = dirToAngle_801F6874(mDir_0x98);
     field_0x250 = 100;
     field_0x234 = 0.0f;
     if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
@@ -127,8 +127,8 @@ void Bumper_804A0260::update() {
         }
     }
 
-    s32 touchPlayer = fn_801F285C(NULL, NULL, false, -1);
-    s32 actorHit = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 touchPlayer = findOverlappingPlayer_801F285C(NULL, NULL, false, -1);
+    s32 actorHit = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     field_0xb0 = 0x42304;
 
     bool clear = false;

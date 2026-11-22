@@ -58,7 +58,7 @@ inline void Player_804A6F38::riseToTarget(s32 state) {
             mLastTvPos_0xcb0 = mPos;
         }
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(state)) {
+        if (requestState_80251AEC(state)) {
             fn_80241454(0);
             mLayer_0x3b4 = mDestLayer_0xce4;
             mPos = mDestPos_0xcd4;
@@ -81,16 +81,16 @@ inline void Player_804A6F38::followCamera() {
 // The state after an arrival while carrying (fn_80292820, fn_802935A4): 0x33
 // without life, 0x3E with 0xCF0, 0x12 while holding an actor, else 0.
 inline bool Player_804A6F38::requestArrival() {
-    if (fn_8024189C() <= 0) {
-        return fn_80251AEC(0x33);
+    if (getLife_8024189C() <= 0) {
+        return requestState_80251AEC(0x33);
     }
     if (field_0xcf0 == 1) {
-        return fn_80251AEC(0x3E);
+        return requestState_80251AEC(0x3E);
     }
-    if (fn_8025F684()) {
-        return fn_80251AEC(0x12);
+    if (isLifting_8025F684()) {
+        return requestState_80251AEC(0x12);
     }
-    return fn_80251AEC(0);
+    return requestState_80251AEC(0);
 }
 
 // Effects 0x15B and 0x15C at the player (fn_80291E44, fn_802925E4).
@@ -100,13 +100,13 @@ inline void Player_804A6F38::spawnEffect15B() {
 }
 
 // The life that decides between landing and state 0x33: the leader's
-// (fn_80237774 of getLeader_80240644) when fn_80240808 holds, else the player's own.
+// (getPlayerLife_80237774 of getLeader_80240644) when hasLeader_80240808 holds, else the player's own.
 // fn_80293900 inlines it, and the unwritten fn_80290FC0 twice.
 inline s32 Player_804A6F38::life() {
-    if (fn_80240808()) {
-        return fn_80237774(getLeader_80240644());
+    if (hasLeader_80240808()) {
+        return getPlayerLife_80237774(getLeader_80240644());
     }
-    return fn_8024189C();
+    return getLife_8024189C();
 }
 
 // Gravity for the drops onto the floor below (fn_802953A0, fn_8029513C):
@@ -148,7 +148,7 @@ inline void Player_804A6F38::stepTransitionAnim() {
         } else {
             mWalkFrame_0x3f9 = 2;
         }
-    } else if (fn_8025F684()) {
+    } else if (isLifting_8025F684()) {
         updateCarryWalk_8026152C(false);
     } else {
         fn_8027EE84();
@@ -164,11 +164,11 @@ inline void Player_804A6F38::setHeldPos() {
 
 // Shared by the enters of states 0x25 and 0x23 (fn_80292944, fn_802932BC),
 // which inline the same block: 0x2F4 = mPos raised 16, and while the player
-// holds an actor (fn_8025F684, serial mHeldActorSerial_0xd68) that actor is warped there
+// holds an actor (isLifting_8025F684, serial mHeldActorSerial_0xd68) that actor is warped there
 // on the player's layer. The GameView fetch's result is unused in both.
 inline void Player_804A6F38::raiseHeldActor() {
     setHeldPos();
-    if (fn_8025F684()) {
+    if (isLifting_8025F684()) {
         s32 serial = mHeldActorSerial_0xd68;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -191,7 +191,7 @@ void Player_804A6F38::fn_80295584() {
 void Player_804A6F38::fn_802954DC() {
     if (mStateTimer_0x3fc >= 60) {
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x2D)) {
+        if (requestState_80251AEC(0x2D)) {
             if (mLayer_0x3b4 < 8) {
                 mLastTvPos_0xcb0 = mPos;
             }
@@ -229,10 +229,10 @@ void Player_804A6F38::fn_802953A0() {
         mPos.z = 0.0f;
         mStateLocked_0x124d = 0;
         bool requested;
-        if (fn_8024189C() <= 0) {
-            requested = fn_80251AEC(0x33);
+        if (getLife_8024189C() <= 0) {
+            requested = requestState_80251AEC(0x33);
         } else {
-            requested = fn_80251AEC(0);
+            requested = requestState_80251AEC(0);
         }
         if (requested) {
             fn_803037D4(mPlayerNo_0x4, 0xD);
@@ -260,7 +260,7 @@ void Player_804A6F38::fn_80295268() {
                 mLastTvPos_0xcb0 = mPos;
             }
             mStateLocked_0x124d = 0;
-            if (fn_80251AEC(0x2F)) {
+            if (requestState_80251AEC(0x2F)) {
                 fn_80241454(0);
                 mLayer_0x3b4 = mDestLayer_0xce4;
                 mPos = mDestPos_0xcd4;
@@ -291,10 +291,10 @@ void Player_804A6F38::fn_8029513C() {
     if (mPos.z < 0.0f) {
         mPos.z = 0.0f;
         mStateLocked_0x124d = 0;
-        if (fn_8024189C() <= 0) {
-            fn_80251AEC(0x33);
+        if (getLife_8024189C() <= 0) {
+            requestState_80251AEC(0x33);
         } else {
-            fn_80251AEC(0);
+            requestState_80251AEC(0);
         }
     }
 }
@@ -323,28 +323,28 @@ void Player_804A6F38::fn_80294ADC() {
                 mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -1.25f, 0.0f);
                 mFacing_0x3dc = 3;
                 mMoveDir_0x3e8 = 3;
-                fn_8024F0E8(0x20018);
+                playSound_8024F0E8(0x20018);
             } else {
                 mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 1.25f, 0.0f);
                 mFacing_0x3dc = 2;
                 mMoveDir_0x3e8 = 2;
-                fn_8024F0E8(0x2001A);
+                playSound_8024F0E8(0x2001A);
             }
         } else if (mLayer_0x3b4 < 8) {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -20.0f, 0.0f);
             mFacing_0x3dc = 3;
             mMoveDir_0x3e8 = 3;
-            fn_8024F0E8(0x20018);
+            playSound_8024F0E8(0x20018);
         } else if (mDestLayer_0xce4 < 8) {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 20.0f, 0.0f);
             mFacing_0x3dc = 2;
             mMoveDir_0x3e8 = 2;
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         } else {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -20.0f, 0.0f);
             mFacing_0x3dc = 3;
             mMoveDir_0x3e8 = 3;
-            fn_8024F0E8(0x20018);
+            playSound_8024F0E8(0x20018);
         }
     } else if (mTransitionKind_0xcf4 == 0x23) {
         if (viewLayerFlag(mLayer_0x3b4)) {
@@ -352,56 +352,56 @@ void Player_804A6F38::fn_80294ADC() {
                 mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 1.25f, 0.0f);
                 mFacing_0x3dc = 2;
                 mMoveDir_0x3e8 = 2;
-                fn_8024F0E8(0x2001A);
+                playSound_8024F0E8(0x2001A);
             } else {
                 mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -1.25f, 0.0f);
                 mFacing_0x3dc = 3;
                 mMoveDir_0x3e8 = 3;
-                fn_8024F0E8(0x20018);
+                playSound_8024F0E8(0x20018);
             }
         } else if (mLayer_0x3b4 < 8) {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 20.0f, 0.0f);
             mFacing_0x3dc = 2;
             mMoveDir_0x3e8 = 2;
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         } else if (mDestLayer_0xce4 < 8) {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -20.0f, 0.0f);
             mFacing_0x3dc = 3;
             mMoveDir_0x3e8 = 3;
-            fn_8024F0E8(0x20018);
+            playSound_8024F0E8(0x20018);
         } else {
             mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 20.0f, 0.0f);
             mFacing_0x3dc = 2;
             mMoveDir_0x3e8 = 2;
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         }
     } else if (mTransitionKind_0xcf4 == 0x17) {
         mWalkTarget_0x3a4 += JGeometry::TVec3f(20.0f, 0.0f, 0.0f);
         mFacing_0x3dc = 0;
         mMoveDir_0x3e8 = 0;
         if (field_0xceb == 0) {
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         }
     } else if (mTransitionKind_0xcf4 == 0x18) {
         mWalkTarget_0x3a4 += JGeometry::TVec3f(-20.0f, 0.0f, 0.0f);
         mFacing_0x3dc = 1;
         mMoveDir_0x3e8 = 1;
         if (field_0xceb == 0) {
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         }
     } else if (mTransitionKind_0xcf4 == 1 || mTransitionKind_0xcf4 == 2) {
         mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, 20.0f, 0.0f);
         mFacing_0x3dc = 2;
         mMoveDir_0x3e8 = 2;
         if (field_0xceb == 0) {
-            fn_8024F0E8(0x2001A);
+            playSound_8024F0E8(0x2001A);
         }
     } else {
         mWalkTarget_0x3a4 += JGeometry::TVec3f(0.0f, -20.0f, 0.0f);
         mFacing_0x3dc = 3;
         mMoveDir_0x3e8 = 3;
         if (field_0xceb == 0) {
-            fn_8024F0E8(0x20018);
+            playSound_8024F0E8(0x20018);
         }
     }
     if (mLayer_0x3b4 >= 8 && mDestLayer_0xce4 < 8) {
@@ -418,7 +418,7 @@ void Player_804A6F38::fn_802948C0() {
             mLastTvPos_0xcb0 = mPos;
         }
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x1D)) {
+        if (requestState_80251AEC(0x1D)) {
             fn_80241454(0);
             mLayer_0x3b4 = mDestLayer_0xce4;
             mPos = mDestPos_0xcd4;
@@ -531,18 +531,18 @@ void Player_804A6F38::fn_80293FE4() {
         if (mWalkTarget_0x3a4.y > mWalkStart_0x398.y) {
             if (mLayer_0x3b4 < 8) {
                 if (field_0xceb == 0) {
-                    fn_8024F0E8(0x2001B);
+                    playSound_8024F0E8(0x2001B);
                 }
-                fn_8024F0E8(0x20021);
+                playSound_8024F0E8(0x20021);
             } else {
                 fn_803037D4(mPlayerNo_0x4, 0xD);
             }
         } else {
             if (mLayer_0x3b4 < 8) {
                 if (field_0xceb == 0) {
-                    fn_8024F0E8(0x20019);
+                    playSound_8024F0E8(0x20019);
                 }
-                fn_8024F0E8(0x20021);
+                playSound_8024F0E8(0x20021);
             } else {
                 fn_803037D4(mPlayerNo_0x4, 0xD);
             }
@@ -556,20 +556,20 @@ void Player_804A6F38::fn_80293FE4() {
     fn_8027E5BC(0.5f);
     if ((mWalkTarget_0x3a4 - mPos).isZero() || mStateTimer_0x3fc >= 80) {
         mStateLocked_0x124d = 0;
-        if (fn_8024189C() <= 0) {
-            fn_80251AEC(0x33);
+        if (getLife_8024189C() <= 0) {
+            requestState_80251AEC(0x33);
         } else if (field_0xceb == 1) {
             if (viewLayerFlag(mLayer_0x3b4)) {
-                fn_80251AEC(0x4B);
+                requestState_80251AEC(0x4B);
             } else {
-                fn_80251AEC(0x4A);
+                requestState_80251AEC(0x4A);
             }
         } else if (field_0xcec == 1) {
-            fn_80251AEC(0xB);
-        } else if (fn_8025F684()) {
-            fn_80251AEC(0x12);
+            requestState_80251AEC(0xB);
+        } else if (isLifting_8025F684()) {
+            requestState_80251AEC(0x12);
         } else {
-            fn_80251AEC(0);
+            requestState_80251AEC(0);
         }
     }
     if (!((mTransitionKind_0xcf4 == 0x15 || mTransitionKind_0xcf4 == 0x23) && viewLayerFlag(mLayer_0x3b4))) {
@@ -582,8 +582,8 @@ void Player_804A6F38::fn_80293E8C() {
     mStateLocked_0x124d = 1;
     mPos.z = 0.0f;
     field_0x458 = 0;
-    fn_8024F0E8(0x10003);
-    fn_8024F0E8(0x2002D);
+    playSound_8024F0E8(0x10003);
+    playSound_8024F0E8(0x2002D);
     s32 layer = mLayer_0x3b4;
     if (layer > 8 && mDestLayer_0xce4 > 8 && viewLayerFlag(layer) && viewLayerFlag(mDestLayer_0xce4) &&
         mDestLayer_0xce4 != mLayer_0x3b4)
@@ -596,9 +596,9 @@ void Player_804A6F38::fn_80293E8C() {
     }
     if (fn_802486A0() != 4) {
         if (fn_802486A0() != 5) {
-            fn_80248004(5, true);
+            setGroupMode_80248004(5, true);
         }
-        fn_8024BAEC();
+        resetPosHistory_8024BAEC();
     }
 }
 
@@ -622,9 +622,9 @@ void Player_804A6F38::fn_80293B30() {
                 mLastTvPos_0xcb0 = mPos;
             }
             mStateLocked_0x124d = 0;
-            if (fn_80251AEC(0x1F)) {
+            if (requestState_80251AEC(0x1F)) {
                 if (fn_80241E28(mDestLayer_0xce4, &mDestPos_0xcd4)) {
-                    if (fn_802486A0() == 5 && fn_80240808()) {
+                    if (fn_802486A0() == 5 && hasLeader_80240808()) {
                         mDestPos_0xcd4.set(*getPlayerPos_8023E724(getLeader_80240644()));
                     }
                     u16 tile = getTileCollisionCode_8022461C(&mDestPos_0xcd4, mDestLayer_0xce4);
@@ -640,13 +640,13 @@ void Player_804A6F38::fn_80293B30() {
                 }
                 mLayer_0x3b4 = mDestLayer_0xce4;
                 mPos = mDestPos_0xcd4;
-                // fn_80272160 reads only x and y of the position.
+                // hitOwnGroup_80272160 reads only x and y of the position.
                 if (fn_802DEABC() && mLayer_0x3b4 <= 8 && (mTransitionKind_0xcf4 == 9 || mTransitionKind_0xcf4 == 0x12)) {
                     if (!fn_80240670()) {
-                        fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                        hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
                     }
                 } else if (mLayer_0x3b4 > 8 && (mTransitionKind_0xcf4 == 9 || mTransitionKind_0xcf4 == 0x12) && !fn_80240670()) {
-                    fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                    hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
                 }
                 if (mTransitionKind_0xcf4 == 9) {
                     mPos.z = 0.0f;
@@ -690,7 +690,7 @@ void Player_804A6F38::fn_80293900() {
     }
     if (mStateTimer_0x3fc == 60) {
         if (mLayer_0x3b4 < 8) {
-            fn_8024F0E8(0x20021);
+            playSound_8024F0E8(0x20021);
         } else {
             fn_803037D4(mPlayerNo_0x4, 0xD);
         }
@@ -702,12 +702,12 @@ void Player_804A6F38::fn_80293900() {
         mPos.z = 0.0f;
         mStateLocked_0x124d = 0;
         if (life() <= 0) {
-            fn_80251AEC(0x33);
-        } else if (fn_8025F684()) {
-            if (fn_80251AEC(0x12) && mTransitionKind_0xcf4 == 9) {
+            requestState_80251AEC(0x33);
+        } else if (isLifting_8025F684()) {
+            if (requestState_80251AEC(0x12) && mTransitionKind_0xcf4 == 9) {
                 field_0x464 = 180;
             }
-        } else if (fn_80251AEC(0) && mTransitionKind_0xcf4 == 9) {
+        } else if (requestState_80251AEC(0) && mTransitionKind_0xcf4 == 9) {
             field_0x464 = 180;
         }
     }
@@ -719,7 +719,7 @@ void Player_804A6F38::fn_802938B8() {
     field_0x458 = 0;
     mSubPose_0x3fd = 1;
     if (mTransitionKind_0xcf4 != 0x1D) {
-        fn_8024F0E8(0x2000C);
+        playSound_8024F0E8(0x2000C);
     }
 }
 
@@ -738,7 +738,7 @@ void Player_804A6F38::fn_80293774() {
             mLastTvPos_0xcb0 = mPos;
         }
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x21)) {
+        if (requestState_80251AEC(0x21)) {
             mLayer_0x3b4 = mDestLayer_0xce4;
             mPos = mDestPos_0xcd4;
             mViewBox_0xbec->fn_8030BD3C(mPlayerNo_0x4);
@@ -767,8 +767,8 @@ void Player_804A6F38::fn_802935A4() {
     if (requestArrival()) {
         if (mLayer_0x3b4 < 8) {
             spawnEffect17D();
-            fn_8024F0E8(0x20020);
-            fn_8024F0E8(0x20021);
+            playSound_8024F0E8(0x20020);
+            playSound_8024F0E8(0x20021);
         } else {
             fn_803037D4(mPlayerNo_0x4, 0xD);
         }
@@ -779,7 +779,7 @@ void Player_804A6F38::fn_80293534() {
     mStateLocked_0x124d = 1;
     mPos.z = 0.0f;
     field_0x458 = 0;
-    fn_8024F0E8(0x2002E);
+    playSound_8024F0E8(0x2002E);
     if (mLayer_0x3b4 >= 8 && mDestLayer_0xce4 < 8) {
         fn_8024EFA0(false);
     }
@@ -839,19 +839,19 @@ void Player_804A6F38::fn_80292ECC() {
                         break;
                     }
                     spawnEmitter_8013CC50(mDestLayer_0xce4, &mDestPos_0xcd4, 0x143, 1, 1, NULL, NULL, true, 1.0f);
-                    fn_8024F0E8(0x20020);
+                    playSound_8024F0E8(0x20020);
                 }
-                fn_8024F0E8(0x2002F);
-                fn_8024F0E8(0x20021);
+                playSound_8024F0E8(0x2002F);
+                playSound_8024F0E8(0x20021);
             }
             mStateTimer_0x3fc++;
             if (mStateTimer_0x3fc >= 171) {
                 mPos.z = 0.0f;
                 mStateLocked_0x124d = 0;
-                if (fn_8025F684()) {
-                    fn_80251AEC(0x12);
+                if (isLifting_8025F684()) {
+                    requestState_80251AEC(0x12);
                 } else {
-                    fn_80251AEC(0);
+                    requestState_80251AEC(0);
                 }
                 mFacing_0x3dc = 2;
                 mMoveDir_0x3e8 = 2;
@@ -866,7 +866,7 @@ void Player_804A6F38::fn_80292E90() {
     mStateLocked_0x124d = 1;
     field_0x458 = 0;
     mSubPose_0x3fd = 1;
-    fn_8024F0E8(0x2000C);
+    playSound_8024F0E8(0x2000C);
 }
 
 void Player_804A6F38::fn_802929FC() {
@@ -918,7 +918,7 @@ void Player_804A6F38::fn_802929FC() {
         fn_80241454(0);
     } else if (mStateTimer_0x3fc >= 118) {
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x25)) {
+        if (requestState_80251AEC(0x25)) {
             if (mLayer_0x3b4 < 8) {
                 mLastTvPos_0xcb0 = mPos;
             }
@@ -957,7 +957,7 @@ void Player_804A6F38::fn_802927B0() {
     mStateLocked_0x124d = 1;
     field_0x458 = 0;
     mPose_0x3fb = 0;
-    fn_8024F0E8(0x20060);
+    playSound_8024F0E8(0x20060);
     spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x547, -1, 0, NULL, NULL, true, 1.0f);
 }
 
@@ -987,7 +987,7 @@ void Player_804A6F38::fn_802925E4() {
     } else {
         mWalkFrame_0x3f9 = 11;
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x27)) {
+        if (requestState_80251AEC(0x27)) {
             spawnEffect15B();
             if (mLayer_0x3b4 < 8) {
                 mLastTvPos_0xcb0 = mPos;
@@ -1020,7 +1020,7 @@ void Player_804A6F38::fn_802924AC() {
     }
     if (mStateTimer_0x3fc >= 92) {
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x4B) && mDestLayer_0xce4 >= 8) {
+        if (requestState_80251AEC(0x4B) && mDestLayer_0xce4 >= 8) {
             fn_803037D4(mPlayerNo_0x4, 0xD);
         }
     } else if (mStateTimer_0x3fc < 92) { // the original tests it again (a dead bge)
@@ -1062,7 +1062,7 @@ void Player_804A6F38::fn_802922EC() {
         mPos.y -= 0.5;
     } else {
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(0x29)) {
+        if (requestState_80251AEC(0x29)) {
             fn_80241454(0);
             if (mLayer_0x3b4 < 8) {
                 mLastTvPos_0xcb0 = mPos;
@@ -1100,7 +1100,7 @@ void Player_804A6F38::fn_80292198() {
             field_0x400--;
         } else {
             mStateLocked_0x124d = 0;
-            if (fn_80251AEC(0x4A) && mDestLayer_0xce4 >= 8) {
+            if (requestState_80251AEC(0x4A) && mDestLayer_0xce4 >= 8) {
                 fn_803037D4(mPlayerNo_0x4, 0xD);
             }
         }
@@ -1161,7 +1161,7 @@ void Player_804A6F38::fn_80291F10() {
         mWalkAnimCounter_0x3f8 = 67;
         if (!fn_80301CD0(mPlayerNo_0x4)) {
             mStateLocked_0x124d = 0;
-            if (fn_80251AEC(0x31)) {
+            if (requestState_80251AEC(0x31)) {
                 mLayer_0x3b4 = mDestLayer_0xce4;
                 mPos = mDestPos_0xcd4;
                 mViewBox_0xbec->fn_8030BD3C(mPlayerNo_0x4);
@@ -1178,8 +1178,8 @@ void Player_804A6F38::fn_80291E44() {
     mMoveDir_0x3e8 = 2;
     if (mDestLayer_0xce4 < 8) {
         spawnEffect15B();
-        fn_8024F0E8(0x20041);
-        fn_8024F0E8(0x1000F);
+        playSound_8024F0E8(0x20041);
+        playSound_8024F0E8(0x1000F);
         field_0x430 = 0x5C;
     }
 }
@@ -1205,13 +1205,13 @@ void Player_804A6F38::fn_80291D28() {
         if (field_0x430 == 0) {
             mStateLocked_0x124d = 0;
             field_0x44c = 5;
-            fn_80251AEC(0x4A);
+            requestState_80251AEC(0x4A);
         }
     } else if (mWalkAnimCounter_0x3f8 < 60) {
         mWalkAnimCounter_0x3f8++;
     } else {
         mStateLocked_0x124d = 0;
-        fn_80251AEC(0);
+        requestState_80251AEC(0);
     }
 }
 
@@ -1219,7 +1219,7 @@ void Player_804A6F38::fn_80291CB8() {
     mStateLocked_0x124d = 1;
     mPos.z = 0.0f;
     field_0x458 = 0;
-    fn_8024F0E8(0x2002E);
+    playSound_8024F0E8(0x2002E);
     if (mLayer_0x3b4 >= 8 && mDestLayer_0xce4 < 8) {
         fn_8024EFA0(false);
     }
@@ -1254,10 +1254,10 @@ void Player_804A6F38::fn_80291910() {
     if (mStateTimer_0x3fc == 60) {
         if (mDepartLayer_0xce0 == 8) {
             spawnEffect17D();
-            fn_8024F0E8(0x20020);
+            playSound_8024F0E8(0x20020);
         }
-        fn_8024F0E8(0x2002F);
-        fn_8024F0E8(0x20021);
+        playSound_8024F0E8(0x2002F);
+        playSound_8024F0E8(0x20021);
         fn_80241454(1);
     }
     mPos += mVel_0x344;
@@ -1269,12 +1269,12 @@ void Player_804A6F38::fn_80291910() {
         mPos.z = 0.0f;
         mStateLocked_0x124d = 0;
         bool requested;
-        if (fn_8024189C() <= 0) {
-            requested = fn_80251AEC(0x33);
+        if (getLife_8024189C() <= 0) {
+            requested = requestState_80251AEC(0x33);
         } else if (field_0xcf0 == 1) {
-            requested = fn_80251AEC(0x3E);
+            requested = requestState_80251AEC(0x3E);
         } else {
-            requested = fn_80251AEC(0);
+            requested = requestState_80251AEC(0);
         }
         if (requested == true) {
             mFacing_0x3dc = 2;
@@ -1289,17 +1289,17 @@ void Player_804A6F38::fn_80291910() {
 void Player_804A6F38::fn_8029185C() {
     mStateLocked_0x124d = 1;
     field_0x458 = 0;
-    fn_8024F0E8(0x10003);
+    playSound_8024F0E8(0x10003);
     if (mTransitionKind_0xcf4 == 0xD) {
-        fn_8024F0E8(0x20067);
+        playSound_8024F0E8(0x20067);
         mStateTimer_0x3fc = 40;
     } else if (mTransitionKind_0xcf4 == 0x26) {
         mStateTimer_0x3fc = 58;
     }
     if (fn_802486A0() != 4 && fn_802486A0() != 5) {
-        fn_80248004(5, true);
+        setGroupMode_80248004(5, true);
     }
-    fn_8024BAEC();
+    resetPosHistory_8024BAEC();
 }
 
 // FIXME: 99.62 %. Scheduling only: the original's lwz r4, 0x135c is scheduled at
@@ -1336,7 +1336,7 @@ void Player_804A6F38::fn_80290FC0() {
             return;
         }
         if (!fn_80240670()) {
-            fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+            hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
         }
         s32 hp = life();
         s32 state = 0;
@@ -1344,7 +1344,7 @@ void Player_804A6F38::fn_80290FC0() {
             state = 0x33;
         }
         mStateLocked_0x124d = 0;
-        if (fn_80251AEC(state)) {
+        if (requestState_80251AEC(state)) {
             mLayer_0x3b4 = mDestLayer_0xce4;
             mPos = mDestPos_0xcd4;
             mPos.z = 0.0f;
@@ -1353,9 +1353,9 @@ void Player_804A6F38::fn_80290FC0() {
     }
     if (mStateTimer_0x3fc >= 58) {
         if (mPose_0x3fb == 0) {
-            fn_8024F0E8(0x1000A);
+            playSound_8024F0E8(0x1000A);
             if (mTransitionKind_0xcf4 == 0xC && fn_802DE9A0()) {
-                fn_8024F0E8(0x20031);
+                playSound_8024F0E8(0x20031);
             }
             mPose_0x3fb = 1;
             if (mTransitionKind_0xcf4 == 0xC && fn_802DE9A0() && field_0x135c == NULL) {
@@ -1408,9 +1408,9 @@ void Player_804A6F38::fn_80290FC0() {
         if (mVel_0x344.z < 0.0f && mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             if (!fn_80240670() && (mTransitionKind_0xcf4 == 0xC || mTransitionKind_0xcf4 == 0xD || mTransitionKind_0xcf4 == 0x26)) {
-                fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
             } else {
-                fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
+                hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
             }
             s32 hp = life();
         s32 state = 0;
@@ -1418,7 +1418,7 @@ void Player_804A6F38::fn_80290FC0() {
             state = 0x33;
         }
             mStateLocked_0x124d = 0;
-            if (fn_80251AEC(state)) {
+            if (requestState_80251AEC(state)) {
                 mLayer_0x3b4 = mDestLayer_0xce4;
                 mPos = mDestPos_0xcd4;
                 mPos.z = 0.0f;
@@ -1461,7 +1461,7 @@ void Player_804A6F38::fn_80290F20() {
         field_0x135c->becomeInvalidEmitter();
         field_0x135c = NULL;
     }
-    if (fn_802486A0() != 4 && fn_80240808()) {
+    if (fn_802486A0() != 4 && hasLeader_80240808()) {
         fn_80238244(mPlayerNo_0x4);
     }
 }
@@ -1473,9 +1473,9 @@ void Player_804A6F38::fn_80290E90() {
     field_0x400 = 0;
     if (gGameRoot_8053AAF8->field_0x7e == 0 && !fn_80240670()) {
         if (mDestLayer_0xce4 < 8) {
-            gAudioMgr_8053AF80->fn_8045815C(false);
+            gAudioMgr_8053AF80->setMusicSlow_8045815C(false);
         } else if (mDestLayer_0xce4 == 8) {
-            gAudioMgr_8053AF80->fn_8045815C(true);
+            gAudioMgr_8053AF80->setMusicSlow_8045815C(true);
         }
     }
 }
@@ -1498,10 +1498,10 @@ void Player_804A6F38::fn_80290D58() {
     field_0xced = 0;
     fn_80241454(1);
     field_0x1216 = false;
-    fn_8024BAEC();
+    resetPosHistory_8024BAEC();
     mViewBox_0xbec->fn_8030BD3C(mPlayerNo_0x4);
     if (fn_802486A0() != 4 && fn_802486A0() != 5) {
-        fn_80248004(5, true);
+        setGroupMode_80248004(5, true);
     }
     fn_80248604();
     field_0xceb = 0;
@@ -1520,7 +1520,7 @@ void Player_804A6F38::fn_80290D58() {
 // and tells the GBA links (fn_803020C8) which way the player moves. Kind 0x21
 // from a GBA layer is immediate: back to layer 0 at `to`, arrived at once
 // (fn_80290E90, fn_80290D58); kind 0x22 (same layer) only moves the player.
-bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, const JGeometry::TVec3f* to,
+bool Player_804A6F38::startTransition_80290070(s32 layer, const JGeometry::TVec3f* from, const JGeometry::TVec3f* to,
                                   s32 kind) {
     if (kind == 0xC && (fn_802DE93C() || mLayer_0x3b4 >= 8)) {
         kind = 0x26;
@@ -1555,13 +1555,13 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         fn_80290D58();
         return true;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
-    if (fn_8024189C() <= 0) {
+    if (getLife_8024189C() <= 0) {
         return false;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return false;
     }
     if (fn_8022C8EC(fn_80240628()) && layer >= 8 && fn_80303750(fn_80240628())) {
@@ -1587,13 +1587,13 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         return true;
     }
     if (kind == 4 || kind == 7 || kind == 8 || kind == 9 || kind == 0x20 || kind == 0x24) {
-        if (!fn_80240808() && field_0x1216 == true) {
+        if (!hasLeader_80240808() && field_0x1216 == true) {
             return false;
         }
-        if (fn_80240808() && field_0x1238 > 0) {
+        if (hasLeader_80240808() && field_0x1238 > 0) {
             return false;
         }
-        if (fn_80251AEC(0x1E)) {
+        if (requestState_80251AEC(0x1E)) {
             // `*from - mPos`: libs Vec.h's TVec3::operator- is not const, so its body
             // (copy, subtract, copy out; the original's two stack vectors) is spelled out.
             JGeometry::TVec3f offset = JGeometry::TVec3f(*from) -= mPos;
@@ -1607,19 +1607,19 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
             return false;
         }
     } else if (kind == 0xC || kind == 0xD || kind == 0x26) {
-        if ((!fn_80240808() && field_0x1216 == true) ||
-            (fn_80240808() && !fn_8022D75C(getLeader_80240644()) && field_0x1238 > 0))
+        if ((!hasLeader_80240808() && field_0x1216 == true) ||
+            (hasLeader_80240808() && !fn_8022D75C(getLeader_80240644()) && field_0x1238 > 0))
         {
             return false;
         }
         if (layer != mLayer_0x3b4) {
             return false;
         }
-        if (!fn_80251AEC(0x32)) {
+        if (!requestState_80251AEC(0x32)) {
             return false;
         }
     } else if (kind == 5) {
-        if (fn_80251AEC(0x20)) {
+        if (requestState_80251AEC(0x20)) {
             field_0xcf1 = field_0xcf0;
             u16 tile = getTileCollisionCode_8022461C(&dest, layer);
             if (tile == 0 || tile == 2 || tile == 3 || tile == 0x21) {
@@ -1632,35 +1632,35 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         }
     } else if (kind == 6 || kind == 0xB || kind == 0x14 || kind == 0x1F) {
         if (layer >= 8) {
-            if (fn_80251AEC(0x24)) {
+            if (requestState_80251AEC(0x24)) {
                 mPos = *from;
             } else {
                 return false;
             }
         } else {
-            if (fn_80251AEC(0x22)) {
+            if (requestState_80251AEC(0x22)) {
                 mPos = *from;
             } else {
                 return false;
             }
         }
     } else if (kind == 0xE || kind == 0x25) {
-        if (fn_80251AEC(0x26)) {
+        if (requestState_80251AEC(0x26)) {
             mPos = *from;
         } else {
             return false;
         }
     } else if (kind == 0xF) {
-        if (!fn_80251AEC(0x28)) {
+        if (!requestState_80251AEC(0x28)) {
             return false;
         }
     } else if (kind == 0x27) {
-        if (!fn_80251AEC(0x30)) {
+        if (!requestState_80251AEC(0x30)) {
             return false;
         }
     } else if (kind == 0xA) {
         if (mLayer_0x3b4 == 8) {
-            if (fn_80251AEC(0x2A)) {
+            if (requestState_80251AEC(0x2A)) {
                 field_0xcf1 = field_0xcf0;
                 u16 tile = getTileCollisionCode_8022461C(&dest, layer);
                 if (tile == 0 || tile == 2 || tile == 0x21) {
@@ -1679,30 +1679,30 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
             return false;
         }
     } else if (kind == 0x13 || kind == 0x16) {
-        if (!(mState_0x1240 == 0x4D && mRequestedState_0x1244 == 0x4D) && !fn_80251AEC(0x4D)) {
+        if (!(mState_0x1240 == 0x4D && mRequestedState_0x1244 == 0x4D) && !requestState_80251AEC(0x4D)) {
             return false;
         }
     } else if (kind == 0x17 || kind == 0x18) {
-        if (fn_80251AEC(0x1C)) {
+        if (requestState_80251AEC(0x1C)) {
             JGeometry::TVec3f offset(0.0f, from->y - mPos.y, 0.0f);
             fn_80252BAC(&offset);
         } else {
             return false;
         }
     } else if (kind == 0x1D) {
-        if (fn_80251AEC(0x2C)) {
+        if (requestState_80251AEC(0x2C)) {
             mPos = *from;
         } else {
             return false;
         }
     } else if (kind == 0x1E) {
-        if (fn_80251AEC(0x2E)) {
+        if (requestState_80251AEC(0x2E)) {
             mPos = *from;
         } else {
             return false;
         }
     } else {
-        if (fn_80251AEC(0x1C)) {
+        if (requestState_80251AEC(0x1C)) {
             JGeometry::TVec3f offset(from->x - mPos.x, 0.0f, 0.0f);
             fn_80252BAC(&offset);
         } else {
@@ -1723,17 +1723,17 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
     if (mDestLayer_0xce4 != 8) {
         field_0xcf2 = 0;
     }
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         fn_8022D36C(mPlayerNo_0x4);
     }
-    if (fn_8025F590() && mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(mHeldPlayer_0xd70) < 8) {
+    if (isLiftingPlayer_8025F590() && mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(mHeldPlayer_0xd70) < 8) {
         fn_8023105C(fn_8025F55C());
         fn_8025FF70();
     }
     if (mDestLayer_0xce4 >= 8 && mDestLayer_0xce4 != mLayer_0x3b4) {
         fn_803049F0(mPlayerNo_0x4, mDestLayer_0xce4);
         fn_80304B00(mPlayerNo_0x4, mDestLayer_0xce4);
-        if (fn_8025F590() && !fn_8025FCC8() && !fn_8022F478(mHeldPlayer_0xd70)) {
+        if (isLiftingPlayer_8025F590() && !fn_8025FCC8() && !fn_8022F478(mHeldPlayer_0xd70)) {
             fn_803049F0(mHeldPlayer_0xd70, mDestLayer_0xce4);
             fn_80304B00(mHeldPlayer_0xd70, mDestLayer_0xce4);
         }
@@ -1768,7 +1768,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
     if (mode >= 0) {
         fn_803020C8(mPlayerNo_0x4, mDepartLayer_0xce0, mDestLayer_0xce4, mode);
     }
-    if (fn_8025F590() && !fn_8022F478(mHeldPlayer_0xd70)) {
+    if (isLiftingPlayer_8025F590() && !fn_8022F478(mHeldPlayer_0xd70)) {
         if (!fn_8025FCC8() && mode >= 0) {
             fn_803020C8(mHeldPlayer_0xd70, mDepartLayer_0xce0, mDestLayer_0xce4, mode);
         }
@@ -1783,7 +1783,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         field_0xbc0 = 0;
     }
     if (mTransitionKind_0xcf4 == 0x1F) {
-        fn_80248004(5, true);
+        setGroupMode_80248004(5, true);
     }
     endFormActor_80248FF0();
     return true;
@@ -1791,7 +1791,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
 
 bool Player_804A6F38::fn_8028FC2C() {
     if (field_0xd28 < 8) {
-        return fn_80290070(0, &mPos, &mLastTvPos_0xcb0, 0x27);
+        return startTransition_80290070(0, &mPos, &mLastTvPos_0xcb0, 0x27);
     }
     s32 stage = getGameView_802D6A9C()->mStage_0x4;
     s32 level = getGameView_802D6A9C()->mLevel_0x8;
@@ -1801,54 +1801,54 @@ bool Player_804A6F38::fn_8028FC2C() {
     s32 floor = mLayer_0x3b4 - 7;
     if (stage == 0 && level == 0) {
         JGeometry::TVec3f pos(1960.0f, 1000.0f, 0.0f);
-        return fn_80290070(0, &mPos, &pos, 0x27);
+        return startTransition_80290070(0, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 0 && screen == 3) {
         JGeometry::TVec3f pos(1750.0f, 1080.0f, 0.0f);
-        return fn_80290070(0, &mPos, &pos, 0x27);
+        return startTransition_80290070(0, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 0 && screen == 5 && floor == 5) {
         JGeometry::TVec3f pos(56.0f, 326.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 0 && screen == 5 && floor == 6) {
         JGeometry::TVec3f pos(120.0f, 88.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 0 && screen == 5 && floor == 7) {
         JGeometry::TVec3f pos(40.0f, 284.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 0 && screen == 6) {
         JGeometry::TVec3f pos(184.0f, 214.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 1 && level == 3) {
         JGeometry::TVec3f pos(218.0f, 72.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 2 && level == 0) {
         JGeometry::TVec3f pos(234.0f, 72.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 3 && level == 0) {
         JGeometry::TVec3f pos(202.0f, 88.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 5 && level == 0) {
-        return fn_80290070(0, &mPos, &mLastTvPos_0xcb0, 0x27);
+        return startTransition_80290070(0, &mPos, &mLastTvPos_0xcb0, 0x27);
     }
     if (stage == 6 && level == 0 && screen == 3) {
         JGeometry::TVec3f pos(256.0f, 20.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 6 && level == 0 && screen == 4) {
         JGeometry::TVec3f pos(256.0f, 20.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     if (stage == 6 && level == 0 && screen == 5) {
         JGeometry::TVec3f pos(472.0f, 44.0f, 0.0f);
-        return fn_80290070(field_0xd28, &mPos, &pos, 0x27);
+        return startTransition_80290070(field_0xd28, &mPos, &pos, 0x27);
     }
     return false;
 }
@@ -1861,7 +1861,7 @@ bool Player_804A6F38::fn_8028FBA0() {
     if (field_0xcf2 == 0) {
         pos.y = mLastTvPos_0xcb0.y - 16.0f;
     }
-    if (fn_80290070(0, &mPos, &pos, 5)) {
+    if (startTransition_80290070(0, &mPos, &pos, 5)) {
         field_0xbdc = 0;
         return true;
     }

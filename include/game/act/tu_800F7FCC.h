@@ -10,7 +10,7 @@
 // ShadowLinkBase_804A6A00 (game/tu_80221B44.cpp) at 0x2BC.
 struct HitRing_800F802C {
     // Grows the ring (by mTimer, 40 or 20 frames by mType) and hits the
-    // active players of layer 0 within mRadius (fn_80238548, arg 0xB).
+    // active players of layer 0 within mRadius (hitPlayerGroup_80238548, arg 0xB).
     void fn_800F802C();
     // 0x800F8210 (game/tu_800F7FCC.cpp, not written yet): starts the ring at
     // pos on `layer`; type 0-2 as in fn_800F802C. Called with 2 by

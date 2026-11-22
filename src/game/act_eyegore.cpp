@@ -83,7 +83,7 @@ void Eyegore_804A3548::update() {
     f32 dist;
 
     if (updateHitReaction_801F3D94(1) != 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     if (mLife < 0x3E8) {
@@ -98,7 +98,7 @@ void Eyegore_804A3548::update() {
     mPos += mVel_0x3c;
 
     for (s32 i = 0; i < 4; i++) {
-        s32 player = fn_801F285C(NULL, NULL, false, i);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
         if (player < 0) {
             continue;
         }
@@ -116,8 +116,8 @@ void Eyegore_804A3548::update() {
     }
 
     damagePlayersInBox_801F2B7C(-100, -1, 1);
-    fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
-    u8 hit = fn_801F2618(NULL, false);
+    findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+    u8 hit = sweepMapBox_801F2618(NULL, false);
 
     switch (field_0x230) {
     case 0:
@@ -251,7 +251,7 @@ void Eyegore_804A3548::update() {
                 break;
             }
             mPos += field_0x25c;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mDir_0x98 ^= 1;
             }
             mPos.x = savedX;

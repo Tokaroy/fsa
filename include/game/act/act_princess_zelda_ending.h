@@ -22,9 +22,9 @@ public:
     // 0x8035C15C: the step sequencer. When the step timer (0x244) is 0, reads
     // step 0x24C of table `seq` (lbl_804AD460): returns true at its end
     // marker, else loads the timer and the value (0x248) and advances.
-    bool fn_8035C15C(s32 seq);
+    bool stepSequence_8035C15C(s32 seq);
     // 0x8035C1C4: restarts the sequencer on table `seq` with `arg` in 0x250.
-    void fn_8035C1C4(s32 seq, s32 arg);
+    void startSequence_8035C1C4(s32 seq, s32 arg);
 
     /* 0x230 */ s32 mState;      // index into the derived class's state table
     /* 0x234 */ s32 field_0x234; // countdown, decremented by update()
@@ -34,7 +34,7 @@ public:
     /* 0x244 */ s32 field_0x244; // sequencer step timer, decremented by update()
     /* 0x248 */ s32 field_0x248; // sequencer step value (the frame offset)
     /* 0x24C */ s32 field_0x24c; // sequencer step index
-    /* 0x250 */ s32 field_0x250; // base frame; fn_8035C1C4's `arg`
+    /* 0x250 */ s32 field_0x250; // base frame; startSequence_8035C1C4's `arg`
 }; // Size: 0x254
 
 // The EZLD actor ("Princess Zelda (ending)", docs/names/actors.tsv): the

@@ -27,7 +27,7 @@ static const u8 lbl_8053C108[4] = {12, 2, 0x3C, 0xFE};
 static const s32 lbl_80463B64[4] = {0x6F, 0x77, 0x7F, 0x87};
 static const u8 lbl_8053C10C[4] = {0x19, 0xFE};
 
-void AnimFrameSeq_800FE8C0::fn_800FEB78(int state) {
+void AnimFrameSeq_800FE8C0::setState_800FEB78(int state) {
     mState = state;
     mPrevState = 10;
     mDir = 0;

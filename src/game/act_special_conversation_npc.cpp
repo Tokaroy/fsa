@@ -312,9 +312,9 @@ inline void SpecialConversationNPC_804AAFB8::updateFacing() {
         JGeometry::TVec3f dir;
         f32 dist;
         if (mPlayer < 0 || getPlayerLayer_8023DE58(mPlayer) != getField_0x4()) {
-            fn_801EE558(&dir, &dist, 0);
+            getNearestPlayerDir_801EE558(&dir, &dist, 0);
         } else {
-            fn_801EE558(&dir, &dist, mPlayer + 1);
+            getNearestPlayerDir_801EE558(&dir, &dist, mPlayer + 1);
         }
         if (dist < 80.0f) {
             u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *

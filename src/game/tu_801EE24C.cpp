@@ -56,7 +56,7 @@ static const s32 lbl_80469D78[12][8] = {
     {DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20, DROP_RUPEE_20_20},
 };
 
-// Hurt sound ids indexed by EnemyParam "voic" - 1 (fn_801F37AC, while the
+// Hurt sound ids indexed by EnemyParam "voic" - 1 (takeHit_801F37AC, while the
 // actor has life left).
 static const u32 lbl_80469EF8[16] = {
     0x000400AE, 0x000400A7, 0x000400AC, 0x00040081, 0x00040082, 0x0004008C, 0x0004007A, 0x00040095,
@@ -69,10 +69,10 @@ static const u32 lbl_80469F38[16] = {
     0x00040099, 0x0004009E, 0x0004009B, 0x000400AF, 0x00040072, 0x00040038, 0x000400A1, 0x00040037,
 };
 
-// Tiles without a shadow (fn_801EF830; the last one only unless
+// Tiles without a shadow (drawShadow_801EF830; the last one only unless
 // fn_802DEB58()).
 static const u16 lbl_8053F730[4] = {2, 3, 14, 0};
-// Frame offsets of the animated tile-0x39 shadow (fn_801EF830).
+// Frame offsets of the animated tile-0x39 shadow (drawShadow_801EF830).
 static const u8 lbl_8053F738[4] = {0, 1, 2, 1};
 
 // The box `ofs` (relative to pos) in top-down screen space (x, y - z).
@@ -347,8 +347,8 @@ void ActorBase_804A5770::die_0x24() {
     player = mLastAttacker_0x10c;
     if (player >= 0 && player < 4) {
         getEffectSystem_8013C824()->fn_8013C830(player, emitter);
-        if (fn_8022F514(mLastAttacker_0x10c)) {
-            mLastAttacker_0x10c = fn_8022F3DC(mLastAttacker_0x10c);
+        if (hasPlayerLeader_8022F514(mLastAttacker_0x10c)) {
+            mLastAttacker_0x10c = getPlayerLeader_8022F3DC(mLastAttacker_0x10c);
         }
         if (mHitType_0xfc == 1) {
             fn_802359A4(mLastAttacker_0x10c, fn_802357E0(mLastAttacker_0x10c));
@@ -390,7 +390,7 @@ void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
 // sound; at 0 the final blast, the view's counters, a Force Gem spawner
 // (ACTOR_GOLD) and five Force Gems (ACTOR_RUPY; Stone Arrghus' second form
 // three) thrown out at random, then the boss music ends (or GameRoot's
-// fn_80138B7C for Stone Arrghus' second form and the Helmaroc King).
+// startStageMusic_80138B7C for Stone Arrghus' second form and the Helmaroc King).
 // FIXME: 98.96 %, regalloc-only + reloc-name; behaviour clean.
 // Register allocation only (the inlined random number
 // generator's scratch registers r5-r12); literals are @NNN until .sdata2 is
@@ -461,9 +461,9 @@ bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
             getGameView_802D6A9C()->fn_802D766C(mParamDstr_0x1a8, mLayer_0x4);
         }
         if ((mActorId == ACTOR_BWRT && mSpawnParam_0x90 == 1) || mActorId == ACTOR_GROK) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         } else {
-            gAudioMgr_8053AF80->fn_80458F9C(60);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         }
     }
     return true;
@@ -471,7 +471,7 @@ bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
 
 void ActorBase_804A5770::setScreenFlag_0x30(u8 value, bool set) {
     if (getScreenFlagBit_0x3C()) {
-        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), set, value);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(getScreenFlagBit_0x3C(), set, value);
     }
 }
 
@@ -707,12 +707,12 @@ s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
 // FIXME: 94.40 %, missing/extra; behaviour near.
 // Two differences, both shared with siblings: MWCC keeps the
 // .rodata base in r31 for lbl_8046A00C / lbl_80469F38 / lbl_80469EF8 where
-// the original addresses each table on its own (as fn_801EF830; with the
+// the original addresses each table on its own (as drawShadow_801EF830; with the
 // tables extern the hoist goes away, so they likely belong to another
 // unit's data), and the original narrows the result at the return
-// (clrlwi r3, r4, 24, as fn_801F2618). Literals are @NNN until .sdata2 is
+// (clrlwi r3, r4, 24, as sweepMapBox_801F2618). Literals are @NNN until .sdata2 is
 // in order.
-bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, s32 strength,
+bool ActorBase_804A5770::takeHit_801F37AC(s32 attack, const JGeometry::TVec3f* from, s32 strength,
                                      s32 type, s32 player) {
     s32 depth = 0;
     bool ignored = true;
@@ -876,7 +876,7 @@ u8 ActorBase_804A5770::fn_801F36D4(s32 v) {
 }
 
 // Marks the actor dead, then fn_801F3604's report.
-void ActorBase_804A5770::fn_801F3668() {
+void ActorBase_804A5770::markDead_801F3668() {
     mAlive = false;
     fn_801F3604();
 }
@@ -963,7 +963,7 @@ void ActorBase_804A5770::fn_801F33C4() {
 // while this is on 8.
 void ActorBase_804A5770::fn_801F32F4() {
     for (s32 i = 0; i < 4; i++) {
-        if (fn_801F329C(i)) {
+        if (isPlayerOnLowerLayer_801F329C(i)) {
             JGeometry::TVec3f pos;
             fn_801CD150(getPlayerPos_8023E724(i), &pos);
             mPlayerPos_0x1ac[i].set(pos);
@@ -974,7 +974,7 @@ void ActorBase_804A5770::fn_801F32F4() {
 }
 
 // Whether `player` is on a layer below 8 while this actor is on layer 8.
-bool ActorBase_804A5770::fn_801F329C(s32 player) const {
+bool ActorBase_804A5770::isPlayerOnLowerLayer_801F329C(s32 player) const {
     bool result = false;
     if (getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8) {
         result = true;
@@ -983,19 +983,19 @@ bool ActorBase_804A5770::fn_801F329C(s32 player) const {
 }
 
 // Whether `player` is on this actor's layer (getPlayerLayer_8023DE58), or counts as on
-// it through fn_801F329C.
+// it through isPlayerOnLowerLayer_801F329C.
 bool ActorBase_804A5770::isPlayerOnLayer_801F320C(s32 player) const {
     s32 layer = mLayer_0x4;
     bool result = false;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
-    if (playerLayer == layer || fn_801F329C(player)) {
+    if (playerLayer == layer || isPlayerOnLowerLayer_801F329C(player)) {
         result = true;
     }
     return result;
 }
 
 // mBox in screen space.
-void ActorBase_804A5770::fn_801F31C4(JGeometry::TBox2f* out) const {
+void ActorBase_804A5770::getBoxAtPos_801F31C4(JGeometry::TBox2f* out) const {
     toScreenBox(out, mBox, mPos);
 }
 
@@ -1005,44 +1005,44 @@ void ActorBase_804A5770::fn_801F317C(JGeometry::TBox2f* out) const {
 }
 
 // The centre of mBox in screen space.
-void ActorBase_804A5770::fn_801F3128(JGeometry::TVec2f* out) {
+void ActorBase_804A5770::getBoxCenter_801F3128(JGeometry::TVec2f* out) {
     JGeometry::TBox2f box;
     toScreenBox(&box, mBox, mPos);
     out->x = box.f.x + (box.i.x - box.f.x) * 0.5f;
     out->y = box.f.y + (box.i.y - box.f.y) * 0.5f;
 }
 
-// The players' hits (fn_801F2FAC, inlined), else one from an overlapping
+// The players' hits (checkPlayerAttacks_801F2FAC, inlined), else one from an overlapping
 // actor (checkActorHit_801F2DB4 with no filter).
-u8 ActorBase_804A5770::fn_801F305C() {
+u8 ActorBase_804A5770::checkHits_801F305C() {
     // Assignment in the condition: the narrowing of the inlined
-    // fn_801F2FAC result lands in r3 (clrlwi. r3, r29, 24) only this way.
+    // checkPlayerAttacks_801F2FAC result lands in r3 (clrlwi. r3, r29, 24) only this way.
     u8 hit;
-    if (!(hit = fn_801F2FAC())) {
+    if (!(hit = checkPlayerAttacks_801F2FAC())) {
         hit = checkActorHit_801F2DB4('NULL', 'NULL', NULL);
     }
     return hit;
 }
 
-// Each player that hits this actor (fn_801F285C) attacks it with its
+// Each player that hits this actor (findOverlappingPlayer_801F285C) attacks it with its
 // current attack (fn_8023B6CC) from its position. Returns whether any of
-// the hits landed (fn_801F37AC).
+// the hits landed (takeHit_801F37AC).
 // u8, not bool: the bool local is narrowed at the return (clrlwi r3, r30,
 // 24), and callers keep r3 raw (EnemyBase vfunc_0x5C returns it with mr).
-u8 ActorBase_804A5770::fn_801F2FAC() {
+u8 ActorBase_804A5770::checkPlayerAttacks_801F2FAC() {
     bool hit = false;
     for (s32 i = 0; i < 4; i++) {
         s32 type;
-        if (fn_801F285C(NULL, &type, true, i) == i) {
-            hit |= fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 0, type, i);
+        if (findOverlappingPlayer_801F285C(NULL, &type, true, i) == i) {
+            hit |= takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 0, type, i);
         }
     }
     return hit;
 }
 
-// Takes a hit from an overlapping actor (fn_801F82CC) whose id is includeId
+// Takes a hit from an overlapping actor (findOverlappingActor_801F82CC) whose id is includeId
 // (any for 'NULL'), is not excludeId and is not in the 'NULL'-ended list
-// excludeIds: fn_801F37AC with the attacker's "atcn" (mStage_0x118), its
+// excludeIds: takeHit_801F37AC with the attacker's "atcn" (mStage_0x118), its
 // direction to this actor and its field_0x168 / field_0x110. An actor the
 // filter leaves out still counts as a hit unless excludeId is 'HBMB'; an
 // 'SWBM' one then gets fn_801CB538 at its position, a 'FIRE' one (once per
@@ -1052,7 +1052,7 @@ u8 ActorBase_804A5770::fn_801F2FAC() {
 // vfunc_0x60 return it raw).
 u8 ActorBase_804A5770::checkActorHit_801F2DB4(u32 includeId, u32 excludeId, const u32* excludeIds) {
     bool hit = false;
-    s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (serial >= 0 && serial != mSerial) {
         ActorBase_804A5770* attacker = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         bool accept = false;
@@ -1072,7 +1072,7 @@ u8 ActorBase_804A5770::checkActorHit_801F2DB4(u32 includeId, u32 excludeId, cons
         if (accept) {
             JGeometry::TVec3f from(mPos);
             from.sub(attacker->mVel_0x3c);
-            hit = fn_801F37AC(attacker->mParamAtcn_0x118, &from, 0, attacker->field_0x168,
+            hit = takeHit_801F37AC(attacker->mParamAtcn_0x118, &from, 0, attacker->field_0x168,
                               attacker->field_0x110);
         } else if (excludeId != 'HBMB') {
             hit = true;
@@ -1098,7 +1098,7 @@ u8 ActorBase_804A5770::checkActorHit_801F2DB4(u32 includeId, u32 excludeId, cons
 }
 
 // Hits every player but skipPlayer whose box (fn_8023B190) overlaps mBox
-// on this layer, with fn_80238548 at the box's centre (moved through
+// on this layer, with hitPlayerGroup_80238548 at the box's centre (moved through
 // fn_801CD0D0 for a player below layer 8 while this is on 8); damage -100
 // means mParamAtcp_0x114 ("atcp"). Returns the bits of the players hit.
 // FIXME: 99.12 %, regalloc-only; behaviour clean.
@@ -1114,7 +1114,7 @@ u8 ActorBase_804A5770::damagePlayersInBox_801F2B7C(s32 damage, s32 skipPlayer, s
                 continue;
             }
             JGeometry::TVec2f pos;
-            if (fn_801F329C(i)) {
+            if (isPlayerOnLowerLayer_801F329C(i)) {
                 JGeometry::TVec3f out;
                 JGeometry::TVec3f in(cx, cy, 0.0f);
                 fn_801CD0D0(&in, &out);
@@ -1127,7 +1127,7 @@ u8 ActorBase_804A5770::damagePlayersInBox_801F2B7C(s32 damage, s32 skipPlayer, s
             if (damage == -100) {
                 damage = mParamAtcp_0x114;
             }
-            fn_80238548(i, damage, &pos, arg);
+            hitPlayerGroup_80238548(i, damage, &pos, arg);
         }
     }
     return result;
@@ -1152,7 +1152,7 @@ bool ActorBase_804A5770::fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b) {
         {
             continue;
         }
-        if (!fn_8022E438(i, skipPlayer) && fn_80239B64(i, &box, mLayer_0x4, type, a, b)) {
+        if (!arePlayersInSameGroup_8022E438(i, skipPlayer) && fn_80239B64(i, &box, mLayer_0x4, type, a, b)) {
             return true;
         }
     }
@@ -1167,12 +1167,12 @@ bool ActorBase_804A5770::fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b) {
 // FIXME: 99.82 %, regalloc-only; behaviour clean.
 // Register allocation only: before fn_8023B9CC the target moves
 // arg into r7 before player into r3, ours the other way round.
-// const: the screen box (the inlined fn_801F31C4) loads before the register
+// const: the screen box (the inlined getBoxAtPos_801F31C4) loads before the register
 // saves.
-s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg,
+s32 ActorBase_804A5770::findOverlappingPlayer_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg,
                                      s32 player) const {
     JGeometry::TBox2f box;
-    fn_801F31C4(&box);
+    getBoxAtPos_801F31C4(&box);
     JGeometry::TVec2f xy;
     s32 hit = -1;
     if (player >= 0) {
@@ -1218,7 +1218,7 @@ s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool
 // FIXME: 99.15 %, different; behaviour near.
 // The target ends in clrlwi r3, r30, 24 where ours returns
 // hits with mr (the callers' raw use of r3 shows a u8 return; a bool local
-// gives that narrowing, as in fn_801F2FAC / fn_801F2618, but a bitmask in a
+// gives that narrowing, as in checkPlayerAttacks_801F2FAC / sweepMapBox_801F2618, but a bitmask in a
 // bool is not written here; an s32 local drops the in-loop clrlwi instead).
 // const: the box's first floats load before the register saves.
 // Besides, 32.0f is lbl_8053F748 once .sdata2 is in order.
@@ -1235,7 +1235,7 @@ u8 ActorBase_804A5770::getPlayersInBox_801F2740(s32 skipPlayer) const {
         {
             continue;
         }
-        if (!fn_8022E438(i, skipPlayer) && !fn_8022D75C(i) && fn_8023B190(i, &box, mLayer_0x4)) {
+        if (!arePlayersInSameGroup_8022E438(i, skipPlayer) && !fn_8022D75C(i) && fn_8023B190(i, &box, mLayer_0x4)) {
             hits |= 1 << i;
         }
     }
@@ -1257,7 +1257,7 @@ s32 ActorBase_804A5770::findOverlappingActorOf_801F26CC(const u32* ids) {
 // the result and passes the other vector out. Returns whether it hit.
 // u8 (clrlwi r3, r31, 24 at the return): EnemyBase / Thief vfunc_0x64 and
 // fn_801545C0 return it raw, the update()s keep it in a u8 local.
-u8 ActorBase_804A5770::fn_801F2618(JGeometry::TVec3f* out, bool flag) {
+u8 ActorBase_804A5770::sweepMapBox_801F2618(JGeometry::TVec3f* out, bool flag) {
     bool result = false;
     if (field_0x174 <= 0) {
         JGeometry::TVec3f pos;
@@ -1273,7 +1273,7 @@ u8 ActorBase_804A5770::fn_801F2618(JGeometry::TVec3f* out, bool flag) {
     return result;
 }
 
-// u8, as fn_801F2618 / fn_801F2FAC / checkActorHit_801F2DB4 (clrlwi r3, r30, 24).
+// u8, as sweepMapBox_801F2618 / checkPlayerAttacks_801F2FAC / checkActorHit_801F2DB4 (clrlwi r3, r30, 24).
 u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
                                      const JGeometry::TVec3f* from, const JGeometry::TBox2f* box,
                                      JGeometry::TVec3f* outPos, JGeometry::TVec3f* out2, bool flag) {
@@ -1348,7 +1348,7 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
 // (try.py; 6 instructions fewer than the target's 804). Structurally complete; two differences: MWCC keeps the
 // .rodata base in r31 for the four counter initialisers (the target
 // addresses each with its own lis/addi, lbl_80469F78-lbl_80469F9C; one more
-// saved register and a 0x10-larger frame here, as fn_801EF830), and the
+// saved register and a 0x10-larger frame here, as drawShadow_801EF830), and the
 // counter increment `hits[i != 0]++` is scheduled a few slots earlier.
 u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
                                      const JGeometry::TBox2f* box, JGeometry::TVec3f* out,
@@ -1539,7 +1539,7 @@ bool ActorBase_804A5770::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos)
     if (!fn_802265DC(pos, layer, false)) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+        if (!boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
             blocked = false;
         }
     }
@@ -1553,11 +1553,11 @@ bool ActorBase_804A5770::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos)
 // the 0x10-0x13 / 0x140-0x15F ranges (but not 0x146-0x148 / 0x159-0x15B)
 // starts it at 0x78. Tiles 0x25 / 0x26 block by the view's field_0x171,
 // 0x22 only while its field_0x170 is set.
-bool ActorBase_804A5770::fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer) {
+bool ActorBase_804A5770::isBlockedCommon_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer) {
     if (*timer == 0) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+        if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
             return true;
         }
         s32 code = getTileCollisionCode_8022461C(pos, layer);
@@ -1613,7 +1613,7 @@ bool ActorBase_804A5770::fn_801F11B4() {
     {
         mPos.x = mPrevPos.x;
         mPos.y = mPrevPos.y;
-        s16 angle = fn_801F6874(mDir_0x98);
+        s16 angle = dirToAngle_801F6874(mDir_0x98);
         JGeometry::TVec2f dir(JMath::sincosTable_.sinShort(angle - 0x8000),
                               JMath::sincosTable_.cosShort(angle - 0x8000));
         dir.scale(8.0f);
@@ -1720,7 +1720,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
 // Plays sound effect `id` through the audio object; ids 3 and 0x42 on
 // layers 8 and up go to fn_803037D4 (0xF or 0xE) for the players near the
 // actor instead, and only fall back to the sound when none was.
-void ActorBase_804A5770::fn_801F0D20(u32 id) {
+void ActorBase_804A5770::playSe_801F0D20(u32 id) {
     if (id == 3 || id == 0x42) {
         if (mLayer_0x4 >= 8 && !fn_8022BB48(mLayer_0x4, &mPos)) {
             return;
@@ -1747,7 +1747,7 @@ void ActorBase_804A5770::fn_801F0D20(u32 id) {
 
 // FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
-// Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (fn_801EF830) unless
+// Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (drawShadow_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
 // mHitTimer_0xd8 runs (its last 25 frames, or all of it when shorter) the copy's 0x14 colour is
 // raised by the fade (minus 6 * mPos.z for a thrown actor, kind 2; red and half green for hit
@@ -1760,7 +1760,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, params, flags, name, frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, params, flags, name, frame, NULL);
     }
     SpriteParams_801F5AE0 sp;
     if (mHitTimer_0xd8 > 0) {
@@ -1811,7 +1811,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
     }
     if (mLayer_0x4 < 8) {
         void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, r, frame, &sp, scaleX, scaleY);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, r, frame, &sp, scaleX, scaleY);
     } else if (mLayer_0x4 == 8 && name[6] != 'g') {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TVec3f pos = mPos;
@@ -1884,7 +1884,7 @@ void ActorBase_804A5770::drawSpriteScaled_801F02BC(const char* name, s32 frame, 
 }
 
 // FIXME(shotgun): 58.62 %, missing/extra; behaviour near.
-// drawSprite_801F06F0 for a loaded resource `res` (fn_802F745C) at mPos + (x, y, z), below
+// drawSprite_801F06F0 for a loaded resource `res` (drawTimgImage_802F745C) at mPos + (x, y, z), below
 // layer 8. During the hit flash a fast knock-back (|mVel_0x3c|^2 > 1) sets the copy's 0x30 to 8;
 // otherwise the actor's matrix is used and the death countdown mBossDeathTimer_0x188 tints it (200, 0x41).
 void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX,
@@ -1893,7 +1893,7 @@ void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
+        drawShadow_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
     }
     SpriteParams_801F5AE0 sp;
     if (mHitTimer_0xd8 > 0) {
@@ -1942,11 +1942,11 @@ void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0
     pos.y += scaleY;
     pos.z += arg_f3;
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &sp);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &sp);
     }
 }
 
-// Shadow scale per kind (fn_801EF830).
+// Shadow scale per kind (drawShadow_801EF830).
 static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
 
 // FIXME: 93.44 %, missing/extra + reloc-name; behaviour near.
@@ -1962,7 +1962,7 @@ static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.
 // shadow on the tiles in lbl_8053F730 (the last one only unless
 // fn_802DEB58()). Its alpha fades with height; bit 0x400 multiplies it by
 // params' alpha.
-void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
+void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
                  const char* name, s32 frame, void* res) {
     if (flags != -1 && layer < 8 && !viewLayerFlag(layer)) {
         s32 kind = flags & 0x3FF;
@@ -2010,7 +2010,7 @@ void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0*
             tilePos.set(pos->x, pos->y + 0.1f, pos->z);
             if (layer < 8) {
                 void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&tilePos, r, frame2, &sp, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&tilePos, r, frame2, &sp, 1.0f, 1.0f);
             }
         } else if (kind == 7) {
             flatPos.set(pos->x, pos->y, -5.0f);
@@ -2035,17 +2035,17 @@ void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0*
             if (name != NULL) {
                 if (layer < 8) {
                     void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-                    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&flatPos, r, frame, &sp, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&flatPos, r, frame, &sp, 1.0f, 1.0f);
                 }
             } else if (layer < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F745C(&flatPos, res, &sp);
+                gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&flatPos, res, &sp);
             }
         } else {
             JGeometry::TVec3f p(pos->x, pos->y, 0.0f);
             f32 scale = lbl_80469FA8[kind];
             if (layer < 8) {
                 void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&p, r, kind, &sp, scale, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&p, r, kind, &sp, scale, 1.0f);
             }
         }
     }
@@ -2067,7 +2067,7 @@ extern "C" void drawSobSprite_801EF574(const char* sobName, s32 arg1, const JGeo
     sp.field_0x1d = -2;
     sp.field_0x20 = 0;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', sobName);
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, arg1, &sp, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, arg1, &sp, 1.0f, 1.0f);
 }
 
 // checkActorHit_801F2DB4 over the 17 actor ids below (the list is copied to the stack).
@@ -2080,12 +2080,12 @@ void ActorBase_804A5770::fn_801EF510() {
 // The player picked by `mode` relative to the actor `serial`, looked up
 // through the manager (r3 is never read): modes 0 and 2 the nearest (2 only
 // `player`), 1 and 3 the highest fn_80236228 (3 skipping `player`), 4 and 5
-// the highest fn_80237774 (5 skipping `player`). A player counts on the
+// the highest getPlayerLife_80237774 (5 skipping `player`). A player counts on the
 // actor's layer, or below 8 while the actor is on 8 (then measured in the
 // view box's space). Reports the 16-bit angle from the player to the actor,
 // its direction index (angleToDir_801F681C), the distance and the player; -1 for
 // direction and player when there is no actor or no player.
-void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32* outDist,
+void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32* outDist,
                                      s32* outPlayer, s32 player, s32 mode) {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     f32 bestDist = -1.0f;
@@ -2117,7 +2117,7 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
             onLayer = 1;
         }
         if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && onLayer != 0 &&
-            !fn_8022F478(i) && !fn_80236B50(i) && !fn_8022D534(i))
+            !fn_8022F478(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i))
         {
             f32 dx;
             f32 dy;
@@ -2153,9 +2153,9 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
                 found = i;
             }
             if ((mode == 4 || mode == 5) && (mode != 5 || i != player) &&
-                bestB < fn_80237774(i))
+                bestB < getPlayerLife_80237774(i))
             {
-                bestB = fn_80237774(i);
+                bestB = getPlayerLife_80237774(i);
                 bestDist = std::sqrtf(dx * dx + dy * dy);
                 angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
                         (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -2189,7 +2189,7 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
     }
 }
 
-// fn_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
+// getNearestPlayerDir_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
 // with no player found the direction is zero (and the distance unset).
 void ActorBase_804A5770::getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best;
@@ -2205,7 +2205,7 @@ void ActorBase_804A5770::getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir,
             i = player - 1;
         }
         if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
-            !fn_8022F478(i) && !fn_80236B50(i) &&
+            !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);
@@ -2245,7 +2245,7 @@ void ActorBase_804A5770::getNearestPlayerDir_801EE8F4(JGeometry::TVec3f* outDir,
 // this actor's top-down position (x, y - z) to the player's position in
 // mPlayerPos_0x1ac[] goes normalised to *outDir (z 0), the distance to *outDist.
 // With no player found the direction is (0, 512, 0).
-void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
+void ActorBase_804A5770::getNearestPlayerDir_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best(0.0f, 512.0f, 0.0f);
     JGeometry::TVec3f pos;
     pos.set(mPos);
@@ -2257,7 +2257,7 @@ void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s3
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_8022F478(i) && !fn_80236B50(i) &&
+        if (fn_8023F264(i) && isPlayerOnLayer_801F320C(i) && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);
@@ -2347,7 +2347,7 @@ bool fn_801EE3C0(s32 tile) {
 bool ActorBase_804A5770::fn_801EE24C() {
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('WARP', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('WARP', serial);
         if (serial < 0) {
             break;
         }

@@ -98,7 +98,7 @@ void ArrowPlayer_804A05E0::init() {
 bool ArrowPlayer_804A05E0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_804662E8) == true) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, lbl_804662E8) == true) {
         return true;
     }
     s32 code = getTileCollisionCode_8022461C(pos, layer);
@@ -224,7 +224,7 @@ void ArrowPlayer_804A05E0::update() {
         box.set(mBox);
         box.addPos(mPos.x, mPos.y);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && !fn_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+            if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                 fn_8022E1A0(i, mSerial);
             }
         }
@@ -346,7 +346,7 @@ void ArrowPlayer_804A05E0::update() {
             } else {
                 setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
             }
-            s32 angle = (s16)fn_801F6874(mDir_0x98) + 0x2000;
+            s32 angle = (s16)dirToAngle_801F6874(mDir_0x98) + 0x2000;
             for (s32 n = 0; n < 2; n++) {
                 JGeometry::TVec3f p;
                 p.x = mPos.x;
@@ -364,22 +364,22 @@ void ArrowPlayer_804A05E0::update() {
             box.addPos(mPos.x, mPos.y);
             if (field_0x274 == 0) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && !fn_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+                    if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                         JGeometry::TVec2f c;
                         c.x = 0.5f * (box.i.x - box.f.x) + box.f.x;
                         c.y = 0.5f * (box.i.y - box.f.y) + box.f.y;
                         if (field_0x94 == 0 || field_0x94 == 4) {
                             if (gGameRoot_8053AAF8->field_0x7f) {
-                                fn_80238548(i, 0, &c, 0);
+                                hitPlayerGroup_80238548(i, 0, &c, 0);
                             } else {
-                                fn_80238548(i, 2, &c, 0);
+                                hitPlayerGroup_80238548(i, 2, &c, 0);
                             }
                             fn_8022E1A0(i, mSerial);
                         } else {
                             if (gGameRoot_8053AAF8->field_0x7f) {
-                                fn_80238548(i, 0, &c, 1);
+                                hitPlayerGroup_80238548(i, 0, &c, 1);
                             } else {
-                                fn_80238548(i, 1, &c, 1);
+                                hitPlayerGroup_80238548(i, 1, &c, 1);
                             }
                             mAlive = false;
                         }
@@ -388,7 +388,7 @@ void ArrowPlayer_804A05E0::update() {
                 }
             }
         }
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             if (field_0x94 == 2 || field_0x94 == 4) {
                 getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &mPos, mSpawnParam_0x90 & 3, -1, -1);
             }
@@ -518,7 +518,7 @@ void ArrowPlayer_804A05E0::draw() {
             s32 frame = field_0x268 + 0x4C;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
             s32 base = 0x4C;
             if ((field_0x94 == 0 || field_0x94 == 4) && field_0x230 == 0) {

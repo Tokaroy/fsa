@@ -31,7 +31,7 @@ void AudioResLoader_804B1A38::fn_80442810() {
             }
         }
         if (lbl_8053AEEC == NULL) {
-            lbl_8053AEEC = fn_80401E10("/GC4Sword_usa/AudioRes/Seqs/JaiSeqs.arc", 1, lbl_80529DEC.mSolidHeap_0x4);
+            lbl_8053AEEC = requestMountMemArchive_80401E10("/GC4Sword_usa/AudioRes/Seqs/JaiSeqs.arc", 1, lbl_80529DEC.mSolidHeap_0x4);
             if (lbl_8053AEEC == NULL) {
                 return;
             }

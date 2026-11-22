@@ -143,13 +143,13 @@ static inline s32 groupLeader(const Player_804A6F38* player) {
 
 // The gate in front of every pad query of the player (fn_80246904 and the
 // functions around it): the player flags (fn_802413F0); in group mode 4
-// only the player whose turn it is (fn_80240888 == its place in line); and
+// only the player whose turn it is (getGroupTurn_80240888 == its place in line); and
 // field_0x11ea.
 static inline bool teamCheck(Player_804A6F38* player) {
     if (!playerFlagsGate(player)) {
         return false;
     }
-    if ((player->fn_802486A0() == 4 && player->fn_80240888() != player->getFollowerIndex_80248778()) || !player->field_0x11ea) {
+    if ((player->fn_802486A0() == 4 && player->getGroupTurn_80240888() != player->getFollowerIndex_80248778()) || !player->field_0x11ea) {
         return false;
     }
     return true;
@@ -221,7 +221,7 @@ Player_804A6F38::~Player_804A6F38() {
 // (fn_8023F78C). Picks the slot's part (field_0xcac, the partner mLeader_0xd60,
 // the pad owner mPadPlayer_0x11ec and the start state 0 or 1) from the game mode,
 // places the player and clears nearly every per-player field.
-void Player_804A6F38::fn_80254744() {
+void Player_804A6F38::resetSlot_80254744() {
     if (field_0xd00 >= 2 && isStageFlagSet(getGameView_802D6A9C()->mStage_0x4, getGameView_802D6A9C()->mLevel_0x8)) {
         field_0xd00 = 0;
         field_0xcfe = false;
@@ -666,7 +666,7 @@ void Player_804A6F38::fn_80254744() {
         if (mLeader_0xd60 >= 0) {
             field_0x1215 = true;
             mPos.set(*getPlayerPos_8023E724(mLeader_0xd60));
-            fn_80251AEC(3);
+            requestState_80251AEC(3);
         }
         mGroupTurn_0x1224 = 0;
         field_0x1217 = false;
@@ -712,7 +712,7 @@ void Player_804A6F38::fn_80254744() {
             // Both operands load mPos (0x8) in the original (mPos - field_0x32c reloads 0x32c: 98.0 %).
             const JGeometry::TVec3f& diff = mPos - mPos;
             if (PSVECMag(&diff) >= 0.1f) {
-                fn_8024B2E0();
+                resetTrail_8024B2E0();
             }
             lbl_8053AD70->fn_8037AE00();
         }
@@ -726,7 +726,7 @@ void Player_804A6F38::fn_80254744() {
         // As above: both operands load mPos (mPos - field_0x32c reloads 0x32c).
         const JGeometry::TVec3f& diff = mPos - mPos;
         if (PSVECMag(&diff) >= 0.1f) {
-            fn_8024B2E0();
+            resetTrail_8024B2E0();
         }
         field_0xcfe = false;
         lbl_8053AD70->fn_8037AE00();
@@ -866,10 +866,10 @@ void Player_804A6F38::update_80253E6C() {
             spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x418, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x419, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x41a, 0, 1, NULL, NULL, true, 1.0f);
-            fn_8024F0E8(0x4004e);
+            playSound_8024F0E8(0x4004e);
         } else if (mJoinTimer_0xd38 == 0x83) {
             field_0xc80 = 1;
-            fn_8024F0E8(0x20043);
+            playSound_8024F0E8(0x20043);
         }
         if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
             switch (mPlayerNo_0x4) {
@@ -905,7 +905,7 @@ void Player_804A6F38::update_80253E6C() {
 // (r29 / r30 vs r28 / r29), plus three literal names (@NNN until the unit's
 // literals are in pool order).
 // Update B (fn_8023F390, after every player's update A): a follower walks
-// to its leader's spot (fn_8027FA08), 2 a frame while 0x1218 runs, else 1.5
+// to its leader's spot (getFollowTargetPos_8027FA08), 2 a frame while 0x1218 runs, else 1.5
 // or 6 by the helper's flags, and arrives on it; a player held by another
 // (0xD9C / 0xDAC) moves to 16 beside it; else a carried player keeps its
 // position, and the rest are pushed by the players they touch.
@@ -919,13 +919,13 @@ void Player_804A6F38::fn_80252FC0() {
     if (field_0x454) {
         return;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return;
     }
     if (fn_80241200()) {
         return;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return;
     }
     if (mState_0x1240 == 0xe) {
@@ -945,7 +945,7 @@ void Player_804A6F38::fn_80252FC0() {
             return;
         }
         JGeometry::TVec3f target;
-        fn_8027FA08(&target);
+        getFollowTargetPos_8027FA08(&target);
         JGeometry::TVec3f step = target - mPos;
         if (!field_0x1216) {
             step.z = 0.0f;
@@ -1020,7 +1020,7 @@ void Player_804A6F38::fn_80252FC0() {
         return;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (i != mPlayerNo_0x4 && fn_8022E438(i, mPlayerNo_0x4) && fn_8023EBB8(i)) {
+        if (i != mPlayerNo_0x4 && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4) && fn_8023EBB8(i)) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(i));
             if (actor != NULL && actor->field_0x1a4 != 0) {
                 mPos.x = mLastPos_0x14.x;
@@ -1033,7 +1033,7 @@ void Player_804A6F38::fn_80252FC0() {
     if (fn_802486A0() == 5) {
         return;
     }
-    if (fn_80250D30()) {
+    if (isPushing_80250D30()) {
         return;
     }
     if (viewLayerFlag(mLayer_0x3b4)) {
@@ -1045,7 +1045,7 @@ void Player_804A6F38::fn_80252FC0() {
     f32 pushX = 0.0f;
     f32 pushY = pushX;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_8022E438(i, mPlayerNo_0x4)) {
+        if (fn_8023F264(i) && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4)) {
             if (fn_8022D930(i) || fn_8022D894(i) || fn_8022D9CC(i)) {
                 JGeometry::TVec3f target;
                 fn_8027F854(&target, i);
@@ -1160,11 +1160,11 @@ void Player_804A6F38::fn_80252BAC(const JGeometry::TVec3f* offset) {
 
 // Whether the player may walk off the screen (state 0x1B): within 20 of an
 // edge of the visible box, on a layer below 8, low enough (z <= 16 unless
-// fn_8025F448), moving towards that edge (fn_8022C82C / fn_8022C76C, or in
+// isGrabbing_8025F448), moving towards that edge (fn_8022C82C / fn_8022C76C, or in
 // demo mode, or on a tile fn_80225EF4 lists), with the tile 8 beyond the edge
 // free (not collision code 1, nor 0x22 while GameView field_0x170 is 1).
 // Writes the direction (-1 / 1 in x or y) to *out, else 0, 0.
-bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
+bool Player_804A6F38::checkScreenExit_802527B0(JGeometry::TVec2<s32>* out) {
     out->x = 0;
     out->y = 0;
     if (!canRequestState_80251BFC(0x1b)) {
@@ -1183,7 +1183,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
         return false;
     }
     JGeometry::TVec3f pos = mPos;
-    if (!fn_8025F448() && pos.z > 16.0f) {
+    if (!isGrabbing_8025F448() && pos.z > 16.0f) {
         return false;
     }
     JGeometry::TBox2f box;
@@ -1244,13 +1244,13 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
 }
 
 // Keeps a player below layer 8 16 units inside the visible box (one edge
-// per frame: left, right, top, bottom), unless field_0x454, fn_8025F448,
+// per frame: left, right, top, bottom), unless field_0x454, isGrabbing_8025F448,
 // fn_80240B84 or field_0x3b0 holds.
 void Player_804A6F38::fn_8025250C() {
     if (field_0x454) {
         return;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return;
     }
     if (fn_80240B84()) {
@@ -1276,29 +1276,29 @@ void Player_804A6F38::fn_8025250C() {
 }
 
 // Starts walking off the screen (state 0x1B) in direction *dir (from
-// fn_802527B0), unless fn_8025F448. A player taking part that does not act
+// checkScreenExit_802527B0), unless isGrabbing_8025F448. A player taking part that does not act
 // on its own (fn_80240670) first moves onto the acting player (position,
 // layer, mPrevPos_0x2c); then the group goes to mode 5 and the trail is reset.
 // A player not taking part moves onto its leader. When the request is
-// granted (fn_80251AEC), mWalkStart_0x398 / field_0x3A4 take the position on the
+// granted (requestState_80251AEC), mWalkStart_0x398 / field_0x3A4 take the position on the
 // ground and field_0x3A4 the target 56 inside the opposite edge of the
 // visible box. The player bit is a materialised bool in the original
 // (neg / or / srwi before the branch), hence the local.
 // dir is a plain pointer: dir->x is loaded after the mWalkStart_0x398 / 0x3A4
 // stores (a const pointee would let the load move above them).
 void Player_804A6F38::fn_802520C0(JGeometry::TVec2<s32>* dir) {
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return;
     }
     bool takesPart = isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4);
     if (takesPart) {
         if (fn_80240670()) {
-            mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
-            mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+            mPos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
+            mLayer_0x3b4 = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
             mPrevPos_0x2c.set(mPos);
         }
         field_0x1216 = false;
-        fn_80248004(5, false);
+        setGroupMode_80248004(5, false);
         field_0x1216 = false;
         fn_80248604();
     } else {
@@ -1306,7 +1306,7 @@ void Player_804A6F38::fn_802520C0(JGeometry::TVec2<s32>* dir) {
         mLayer_0x3b4 = getPlayerLayer_8023DE58(mLeader_0xd60);
         mPrevPos_0x2c.set(mPos);
     }
-    if (fn_80251AEC(0x1b)) {
+    if (requestState_80251AEC(0x1b)) {
         mWalkStart_0x398.set(mPos);
         mWalkStart_0x398.z = 0.0f;
         mWalkTarget_0x3a4.set(mPos);
@@ -1439,7 +1439,7 @@ bool Player_804A6F38::canRequestState_80251BFC(s32 state) {
 // not taking part (bit field_0x4 of gGameRoot_8053AAF8->mPlayerMask clear, see
 // game/PlayerBit.h) with no partner asking for state 0 gets
 // state 1 instead; with field_0x434 set, state 0 becomes 2.
-bool Player_804A6F38::fn_80251AEC(s32 state) {
+bool Player_804A6F38::requestState_80251AEC(s32 state) {
     if (!canRequestState_80251BFC(state)) {
         return false;
     }
@@ -1539,12 +1539,12 @@ bool Player_804A6F38::fn_80250FD4() {
     return false;
 }
 
-// Not auto-inlined: fn_80250030 and fn_80252FC0 call fn_80250D30 out of line
+// Not auto-inlined: fn_80250030 and fn_80252FC0 call isPushing_80250D30 out of line
 // in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Whether the player pushes against something: long enough (fn_80250ACC),
 // fn_80250090, state 0xE or fn_80250FD4.
-bool Player_804A6F38::fn_80250D30() {
+bool Player_804A6F38::isPushing_80250D30() {
     if (fn_80250ACC() || fn_80250090() || mState_0x1240 == 0xe || fn_80250FD4()) {
         return true;
     }
@@ -1556,7 +1556,7 @@ bool Player_804A6F38::fn_80250D30() {
 // lasted long enough: 0x12 frames for a follower, 0x14 otherwise; never when
 // it is not this player's turn in group mode 4, nor for a follower in mode 5.
 bool Player_804A6F38::fn_80250ACC() {
-    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
+    if (fn_802486A0() == 4 && getGroupTurn_80240888() != getFollowerIndex_80248778()) {
         return false;
     }
     if (fn_802486A0() == 5 && mLeader_0xd60 >= 0) {
@@ -1637,7 +1637,7 @@ bool Player_804A6F38::fn_80250090() {
 }
 
 bool Player_804A6F38::fn_80250030(s32 arg) {
-    if (fn_80250D30() && fn_802729F0(arg)) {
+    if (isPushing_80250D30() && fn_802729F0(arg)) {
         return true;
     }
     return false;
@@ -1714,7 +1714,7 @@ bool Player_804A6F38::fn_8024FE78() {
 // present player in front (box +-1 at mPos + lbl_8046AE58[facing], the
 // point lbl_8046AE28[facing] free of fn_802265DC / fn_802684A4) facing the
 // same way and held by nobody; from states 0 / 2 / 3 (0x11 unless
-// fn_8025F500 / fn_8025F590) it requests the push 0x1A, else takes that
+// fn_8025F500 / isLiftingPlayer_8025F590) it requests the push 0x1A, else takes that
 // player as 0xDAC with its pushed actor in 0xDA4 for 3 frames (0xDA8).
 // FIXME: 99.95 %, regalloc-only; behaviour clean.
 // Scheduling and registers only (the inlined group loops'
@@ -1765,7 +1765,7 @@ bool Player_804A6F38::fn_8024F63C() {
             continue;
         }
         s32 facing = mFacing_0x3dc;
-        if (facing != fn_80230CFC(i)) {
+        if (facing != getPlayerFacing_80230CFC(i)) {
             continue;
         }
         bool held = false;
@@ -1780,8 +1780,8 @@ bool Player_804A6F38::fn_8024F63C() {
         }
         s32 state = mState_0x1240;
         if (state != 0x1a &&
-            (state == 0 || state == 2 || state == 3 || (state == 0x11 && !fn_8025F500() && !fn_8025F590()))) {
-            if (fn_80251AEC(0x1a)) {
+            (state == 0 || state == 2 || state == 3 || (state == 0x11 && !fn_8025F500() && !isLiftingPlayer_8025F590()))) {
+            if (requestState_80251AEC(0x1a)) {
                 break;
             }
         }
@@ -1803,7 +1803,7 @@ bool Player_804A6F38::fn_8024F630() {
 }
 
 bool Player_804A6F38::fn_8024F5E4() {
-    if (!fn_8025F448() && mState_0x1240 == 0x19) {
+    if (!isGrabbing_8025F448() && mState_0x1240 == 0x19) {
         return true;
     }
     return false;
@@ -1826,7 +1826,7 @@ void Player_804A6F38::fn_8024F54C(s32 arg) {
 // plays it: mSoundObj_0x1254 in game mode 0xC, else mSoundObj_0x1250 below layer 8
 // and mSoundObj_0x1254 from it, with the bytes 0x44 / 0x45 by the layer's view
 // flag 0x800, layer 8, GameView field_0x54 and fn_802D7948.
-void Player_804A6F38::fn_8024F0E8(s32 sound) {
+void Player_804A6F38::playSound_8024F0E8(s32 sound) {
     if ((sound == 0x20024 || sound == 0x2002b) && fn_8022B244()) {
         sound = 0x20046;
     }
@@ -1988,11 +1988,11 @@ void Player_804A6F38::fn_8024EE24() {
                 }
             }
         }
-        if (getPlayerDestLayer_8023E10C(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
+        if (getPlayerDestLayer_8023E10C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) < 8) {
             s32 player = mPlayerNo_0x4;
-            fn_80402FBC(player, *fn_8023E214(fn_8022EA0C(player)));
+            fn_80402FBC(player, *fn_8023E214(getRepresentativePlayer_8022EA0C(player)));
         }
-    } else if (getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
+    } else if (getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) < 8) {
         lbl_8053ACD8[mPlayerNo_0x4] = 1;
     } else {
         lbl_8053ACD8[mPlayerNo_0x4] = 0;
@@ -2082,12 +2082,12 @@ void Player_804A6F38::fn_8024ECCC(s32 value) {
 // rounded down to a gem value (1, 5, 20, 50, 100, 150, 200, 300, 1000, 1500,
 // 2000, 3000) spawned as one gem of that kind (param kind | 0x40000, 0x70000
 // in state 0x51); otherwise the amount itself (| 0x60000 in state 0x51).
-void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
+void Player_804A6F38::dropForceGems_8024E694(s32 value, s32 single) {
     JGeometry::TVec3f pos = mPos;
     s32 layer = mLayer_0x3b4;
-    if (fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
-        pos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
-        layer = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+    if (fn_802486A0() == 4 && getGroupTurn_80240888() != getFollowerIndex_80248778()) {
+        pos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
+        layer = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     bool state51 = false;
     if (mState_0x1240 == 0x51) {
@@ -2128,7 +2128,7 @@ void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
         single = true;
     }
     // The original tests the low byte (clrlwi.): `single` is a bool there,
-    // but the forwarder fn_80236074 (tu_8022AD64, generator-pinned) and the
+    // but the forwarder dropPlayerForceGems_80236074 (tu_8022AD64, generator-pinned) and the
     // symbol (Fll) declare it s32.
     if ((u8)single) {
         s32 kind;
@@ -2220,25 +2220,25 @@ void Player_804A6F38::fn_8024E500() {
 
 void Player_804A6F38::fn_8024E46C() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 5, 0);
+        dropForceGems_8024E694((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 5, 0);
     } else {
-        fn_8024E694(5, 0);
+        dropForceGems_8024E694(5, 0);
     }
 }
 
 void Player_804A6F38::fn_8024E3D8() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x14, 0);
+        dropForceGems_8024E694((s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x14, 0);
     } else {
-        fn_8024E694(0x14, 0);
+        dropForceGems_8024E694(0x14, 0);
     }
 }
 
 void Player_804A6F38::fn_8024E344() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32, 0);
+        dropForceGems_8024E694((s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32, 0);
     } else {
-        fn_8024E694(0x32, 0);
+        dropForceGems_8024E694(0x32, 0);
     }
 }
 
@@ -2246,8 +2246,8 @@ void Player_804A6F38::fn_8024E344() {
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Every 60 frames (field_0x1264), in the game modes of isGameModeSet, for a
-// player acting on its own with a life (fn_8024189C) of 4 or less, not in
-// fn_80270A8C's state and without field_0x454: fn_803037D4(field_0x4, 6)
+// player acting on its own with a life (getLife_8024189C) of 4 or less, not in
+// isDeadState_80270A8C's state and without field_0x454: fn_803037D4(field_0x4, 6)
 // when fn_8030A308 and fn_8030381C allow it, else sound 5. Then the sound
 // objects' position mSoundPos_0x1258 follows the player (fn_8024C378 from layer
 // 8 on) and both run fn_80456154.
@@ -2255,7 +2255,7 @@ void Player_804A6F38::fn_8024E0A0() {
     field_0x1264++;
     if (field_0x1264 >= 0x3c) {
         field_0x1264 = 0;
-        if (isGameModeSet() && !fn_80270A8C() && !field_0x454 && fn_8024189C() <= 4 && mLeader_0xd60 < 0) {
+        if (isGameModeSet() && !isDeadState_80270A8C() && !field_0x454 && getLife_8024189C() <= 4 && mLeader_0xd60 < 0) {
             if (lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec)) && fn_8030381C(mPlayerNo_0x4)) {
                 fn_803037D4(mPlayerNo_0x4, 6);
             } else {
@@ -2315,15 +2315,15 @@ bool Player_804A6F38::fn_8024DCD0() {
         return false;
     }
     if (mState_0x1240 == 0x4f) {
-        fn_80251AEC(0);
+        requestState_80251AEC(0);
     }
     field_0x454 = true;
     field_0x32c = mPos;
     field_0x455 = 0;
     field_0x450 = mCel_0x3c4;
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         field_0x450 = mCel_0x3c4;
-    } else if (fn_8025F448()) {
+    } else if (isGrabbing_8025F448()) {
         field_0x450 = mCel_0x3c4;
     } else if (fn_802412A4()) {
         if (mFacing_0x3dc == 0) {
@@ -2335,7 +2335,7 @@ bool Player_804A6F38::fn_8024DCD0() {
         } else {
             field_0x450 = 0x1f4;
         }
-    } else if (fn_8025F684()) {
+    } else if (isLifting_8025F684()) {
         if (mFacing_0x3dc == 0) {
             field_0x450 = 0x2c0;
         } else if (mFacing_0x3dc == 1) {
@@ -2366,7 +2366,7 @@ bool Player_804A6F38::fn_8024DCD0() {
 }
 
 // Sets the target 0x32C to pos, the frame 0x450 (unless negative) and the
-// bytes 0xCA2-0xCA4; with `check`, fn_8024B2E0 when the player is at
+// bytes 0xCA2-0xCA4; with `check`, resetTrail_8024B2E0 when the player is at
 // least 0.1 away from pos. Frame 0xC3 keeps field_0xcfe.
 bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a, s8 b, s8 c, bool check) {
     field_0x32c = *pos;
@@ -2378,7 +2378,7 @@ bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a,
     field_0xca4 = c;
     if (check == true) {
         if (magnitude(mPos - *pos) >= 0.1f) {
-            fn_8024B2E0();
+            resetTrail_8024B2E0();
         }
     }
     if (frame != 0xc3) {
@@ -2394,7 +2394,7 @@ bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
     if (mState_0x1240 != 0) {
         return false;
     }
-    if (id == 0xe8 && fn_802486A0() == 4 && fn_80240888() != getFollowerIndex_80248778()) {
+    if (id == 0xe8 && fn_802486A0() == 4 && getGroupTurn_80240888() != getFollowerIndex_80248778()) {
         field_0x450 = 0x1c5;
     } else if (id >= 0) {
         field_0x450 = id;
@@ -2405,7 +2405,7 @@ bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
 }
 
 // Sets the target 0x32C to pos and steps the frame counter 0x452 (0-23);
-// 0x450 = 8 * facing + 0x452 / 3, 0xCA2 = flag; then fn_8024B2E0.
+// 0x450 = 8 * facing + 0x452 / 3, 0xCA2 = flag; then resetTrail_8024B2E0.
 bool Player_804A6F38::fn_8024D99C(const JGeometry::TVec3f* pos, bool flag) {
     field_0x32c = *pos;
     field_0x452++;
@@ -2423,7 +2423,7 @@ bool Player_804A6F38::fn_8024D99C(const JGeometry::TVec3f* pos, bool flag) {
     }
     field_0x450 += (u8)(field_0x452 / 3);
     field_0xca2 = flag;
-    fn_8024B2E0();
+    resetTrail_8024B2E0();
     return true;
 }
 
@@ -2505,14 +2505,14 @@ void Player_804A6F38::fn_8024D134() {
 }
 
 // Clears field_0x454: with `reset` the trail is reset to the current
-// position (fn_80248604), else fn_8024B2E0 runs first. Then the timers
+// position (fn_80248604), else resetTrail_8024B2E0 runs first. Then the timers
 // 0xD74 / 0x11F0 = 10 and fn_8024D134.
 bool Player_804A6F38::fn_8024D058(u8 reset) {
     if (reset) {
         field_0x454 = false;
         fn_80248604();
     } else {
-        fn_8024B2E0();
+        resetTrail_8024B2E0();
         field_0x454 = false;
     }
     field_0xd74 = 10;
@@ -2540,7 +2540,7 @@ void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 s
     if (layer != mLayer_0x3b4) {
         return;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return;
     }
     if (field_0xce8) {
@@ -2572,7 +2572,7 @@ void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 s
 // Starts a conversation (act_dummy_conversation through fn_8022FE80): keeps
 // `serial` in field_0xd3c and `a` in field_0xd4e when none is pending, the
 // player waits for this serial or none (field_0xd44), is on `layer`, acts on
-// its own, is not carried (field_0xce8) or fn_8025F448, not in state 0xB
+// its own, is not carried (field_0xce8) or isGrabbing_8025F448, not in state 0xB
 // unless field_0x454, and with `b` faces 3.
 void Player_804A6F38::fn_8024CAC8(s32 layer, s32 serial, bool a, bool b) {
     if (field_0xd50 > 0) {
@@ -2590,7 +2590,7 @@ void Player_804A6F38::fn_8024CAC8(s32 layer, s32 serial, bool a, bool b) {
     if (layer != mLayer_0x3b4) {
         return;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return;
     }
     if (field_0xce8) {
@@ -2777,7 +2777,7 @@ void Player_804A6F38::fn_8024BDBC() {
 
 // Requests state 0x3F (once, for the first match) when another present
 // player (fn_8023A51C) on this layer that this one cannot reach
-// (fn_8022E438) is closer than 50 in x/y (80 with fn_8022B244, else 100 at
+// (arePlayersInSameGroup_8022E438) is closer than 50 in x/y (80 with fn_8022B244, else 100 at
 // its item level 2+, fn_8023725C); not while fn_80270C88 or in state 0x3F /
 // 0xC; skipped with field_0xb9a, field_0xcf0 or state 0x3C current or
 // requested; then clears field_0xb9d.
@@ -2787,7 +2787,7 @@ void Player_804A6F38::fn_8024BBB8() {
     }
     if (!field_0xb9a && !field_0xcf0 && mState_0x1240 != 0x3c && mRequestedState_0x1244 != 0x3c) {
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8022E438(mPlayerNo_0x4, i) && fn_8023A51C(i) && getLayer() == getPlayerLayer_8023DE58(i)) {
+            if (!arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023A51C(i) && getLayer() == getPlayerLayer_8023DE58(i)) {
                 f32 range = 50.0f;
                 if (fn_8022B244()) {
                     range = 80.0f;
@@ -2795,7 +2795,7 @@ void Player_804A6F38::fn_8024BBB8() {
                     range *= 2.0f;
                 }
                 if (planarDistance(*fn_8023A478(i) - mPos) < range) {
-                    fn_80251AEC(0x3f);
+                    requestState_80251AEC(0x3f);
                     break;
                 }
             }
@@ -2821,13 +2821,13 @@ void Player_804A6F38::fn_8024BB88() {
 
 // Resets the position trail (mPosHistory_0x38, 0x31 entries) and its airborne
 // flags (field_0x284) to the current position, unless the player is walking
-// to its spot (field_0x1216); while field_0x454 is set fn_8024B2E0 does it.
-void Player_804A6F38::fn_8024BAEC() {
+// to its spot (field_0x1216); while field_0x454 is set resetTrail_8024B2E0 does it.
+void Player_804A6F38::resetPosHistory_8024BAEC() {
     if (field_0x1216) {
         return;
     }
     if (field_0x454) {
-        fn_8024B2E0();
+        resetTrail_8024B2E0();
         return;
     }
     for (s32 i = 0; i < 0x31; i++) {
@@ -2856,7 +2856,7 @@ void Player_804A6F38::fn_8024B9E8() {
     field_0x284[0] = field_0xbf0->field_0xb4;
 }
 
-// Step j of 12 on the line from `from` to `to` (fn_8024B2E0's trail), returned
+// Step j of 12 on the line from `from` to `to` (resetTrail_8024B2E0's trail), returned
 // by value: the original builds it in one stack TVec3f and copies it out
 // through a second (the return value), as this does.
 static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const JGeometry::TVec3f& to, s32 j) {
@@ -2866,10 +2866,10 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
     return step;
 }
 
-// The trail reset in 0x454 mode (fn_8024BAEC): a follower fills the trail
+// The trail reset in 0x454 mode (resetPosHistory_8024BAEC): a follower fills the trail
 // with field_0x32c, grounded; a player alone with field_0x32c; a leader lays
 // it along its group, 12 entries per follower from its own position to the
-// next group member (fn_8022E438) by linear steps, the rest at the last one;
+// next group member (arePlayersInSameGroup_8022E438) by linear steps, the rest at the last one;
 // then the airborne flags follow each entry's height.
 // The 0x31 loops count with `int`: with s32 (long) MWCC tests the unrolled
 // loop's entry (cmpwi 0x31; bge), which the original does not.
@@ -2877,7 +2877,7 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
 // and stored to `from` at the end); each step comes back by value from
 // trailStep (two stack TVec3fs: the step, then the returned copy, z through
 // frsp) and is stored with set().
-void Player_804A6F38::fn_8024B2E0() {
+void Player_804A6F38::resetTrail_8024B2E0() {
     if (field_0x1216) {
         return;
     }
@@ -2899,7 +2899,7 @@ void Player_804A6F38::fn_8024B2E0() {
     } else {
         JGeometry::TVec3f from = mPos;
         for (s32 n = 1, other = mPlayerNo_0x4 + 1; n < fn_80248970(); n++, other++) {
-            while (!fn_8022E438(mPlayerNo_0x4, other)) {
+            while (!arePlayersInSameGroup_8022E438(mPlayerNo_0x4, other)) {
                 if (other >= 4) {
                     break;
                 }
@@ -2948,12 +2948,12 @@ bool Player_804A6F38::fn_8024B24C() {
 
 // Enters state 0x49 with frames `frames` (field_0x1178): ends the 'FORM'
 // actor (serial field_0x1230) or the held flag 0x121F, makes the group
-// turn-based (fn_80248004(4, false)) and deletes the emitter at 0x1388.
+// turn-based (setGroupMode_80248004(4, false)) and deletes the emitter at 0x1388.
 bool Player_804A6F38::fn_8024B108(s32 frames) {
     if (fn_80270C88()) {
         return false;
     }
-    if (fn_80251AEC(0x49)) {
+    if (requestState_80251AEC(0x49)) {
         field_0x1178 = frames;
         ActorBase_804A5770* form = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x1230);
         if (form != NULL) {
@@ -2965,7 +2965,7 @@ bool Player_804A6F38::fn_8024B108(s32 frames) {
                 mInputLockTimer_0x11f0 = 5;
             }
         }
-        fn_80248004(4, false);
+        setGroupMode_80248004(4, false);
         if (mGroupSpotEmitter_0x1388 != NULL) {
             JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
             manager->forceDeleteEmitter(mGroupSpotEmitter_0x1388);
@@ -2983,7 +2983,7 @@ bool Player_804A6F38::fn_8024AFF8() {
     }
     if (mState_0x1240 == 0x49) {
         mStateLocked_0x124d = 0;
-        return fn_80251AEC(0);
+        return requestState_80251AEC(0);
     }
     return false;
 }
@@ -2993,7 +2993,7 @@ bool Player_804A6F38::fn_8024AFF8() {
 // acting-player copy of field_0x4 is r26 vs r30), plus the literal pool
 // (@NNN vs lbl_80540044) until the unit's literals are in order.
 // The player's input each frame (update A, update_80253E6C): the 'FORM' call
-// of a group leader and the four direction picks (fn_80248004(dir, true))
+// of a group leader and the four direction picks (setGroupMode_80248004(dir, true))
 // on the pad buttons or the C stick.
 void Player_804A6F38::fn_802490A8() {
     if (field_0x1220 > 0) {
@@ -3001,12 +3001,12 @@ void Player_804A6F38::fn_802490A8() {
     }
     s32 player = mPlayerNo_0x4;
     if (fn_802486A0() == 4) {
-        player = fn_8022EA0C(mPlayerNo_0x4);
+        player = getRepresentativePlayer_8022EA0C(mPlayerNo_0x4);
     }
     if (fn_80230188(player)) {
         return;
     }
-    if (fn_80236B50(player)) {
+    if (isPlayerDead_80236B50(player)) {
         return;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -3016,8 +3016,8 @@ void Player_804A6F38::fn_802490A8() {
         return;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i)) {
-            if (fn_8023E98C(i) && !fn_8022E438(i, fn_8023EC54(i))) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
+            if (fn_8023E98C(i) && !arePlayersInSameGroup_8022E438(i, fn_8023EC54(i))) {
                 return;
             }
             if (fn_8022DEAC(i) && fn_802486A0() != 4) {
@@ -3073,39 +3073,39 @@ void Player_804A6F38::fn_802490A8() {
             }
             field_0x1230 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FORM, mLayer_0x3b4, &mPos, mPlayerNo_0x4 & 3, -1, -1);
         } else {
-            fn_80248004(5, true);
+            setGroupMode_80248004(5, true);
         }
         return;
     }
     if (!viewLayerFlag(mLayer_0x3b4) && fn_80246B10(0x40)) {
         if (fn_80246D1C(8)) {
             if (!fn_80246B10(1) && !fn_80246B10(2)) {
-                fn_80248004(2, true);
+                setGroupMode_80248004(2, true);
                 return;
             }
         }
         if (fn_80246D1C(1)) {
             if (!fn_80246B10(8) && !fn_80246B10(4)) {
-                fn_80248004(3, true);
+                setGroupMode_80248004(3, true);
                 return;
             }
         }
         if (fn_80246D1C(4)) {
             if (!fn_80246B10(1) && !fn_80246B10(2)) {
-                fn_80248004(1, true);
+                setGroupMode_80248004(1, true);
                 return;
             }
         }
         if (fn_80246D1C(2)) {
             if (!fn_80246B10(8) && !fn_80246B10(4)) {
-                fn_80248004(0, true);
+                setGroupMode_80248004(0, true);
                 return;
             }
         }
     }
     bool busy = false;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i) && fn_8022DEAC(i)) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8022DEAC(i)) {
             busy = true;
             break;
         }
@@ -3124,13 +3124,13 @@ void Player_804A6F38::fn_802490A8() {
     }
     s32 angle = pad->getSubStickAngle();
     if (angle < -0x7000 || angle >= 0x7000) {
-        fn_80248004(2, true);
+        setGroupMode_80248004(2, true);
     } else if (angle >= -0x5000 && angle < -0x3000) {
-        fn_80248004(3, true);
+        setGroupMode_80248004(3, true);
     } else if (angle >= -0x1000 && angle < 0x1000) {
-        fn_80248004(1, true);
+        setGroupMode_80248004(1, true);
     } else if (angle >= 0x3000 && angle < 0x5000) {
-        fn_80248004(0, true);
+        setGroupMode_80248004(0, true);
     }
 }
 
@@ -3167,20 +3167,20 @@ void Player_804A6F38::endFormActor_80248FF0() {
 
 // Sets field_0x1214 to `flag` (state 3 requested when set, field_0x1215
 // cleared when not), unless field_0x121e, field_0xbac > 0 or, for false,
-// fn_8022AF5C; not while a player this one can reach (fn_8022E438) is in
+// fn_8022AF5C; not while a player this one can reach (arePlayersInSameGroup_8022E438) is in
 // fn_8023EFEC (for true) or fn_8023EA28. The original tests `flag != true`
 // first, which makes the later `flag == true` branch dead; written as is.
 void Player_804A6F38::fn_80248E94(bool flag) {
     if (flag != true && field_0x121e != 1 && field_0xbac <= 0 && (flag || !fn_8022AF5C())) {
         if (flag == true) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023EFEC(i)) {
+                if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023EFEC(i)) {
                     return;
                 }
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023EA28(i)) {
+            if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023EA28(i)) {
                 return;
             }
         }
@@ -3188,7 +3188,7 @@ void Player_804A6F38::fn_80248E94(bool flag) {
         if (!field_0x1214) {
             field_0x1215 = false;
         } else {
-            fn_80251AEC(3);
+            requestState_80251AEC(3);
         }
         field_0x1217 = false;
     }
@@ -3248,7 +3248,7 @@ bool Player_804A6F38::fn_80248B9C() {
             clamped = true;
             break;
         }
-    } while (fn_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
+    } while (getTileAt_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
     pos.y += 24.0f;
     if (fn_8026E5F8(&pos)) {
         field_0x43f = true;
@@ -3261,7 +3261,7 @@ bool Player_804A6F38::fn_80248B9C() {
     return false;
 }
 
-// Steps a probe up (y + 8) from mPos until it is on tile 0x231 (fn_80226998)
+// Steps a probe up (y + 8) from mPos until it is on tile 0x231 (getTileAt_80226998)
 // or leaves the view box (then 24 inside its far edge, and field_0x440 is
 // set too); 24 further on, fn_8026E5F8 there sets field_0x43f.
 bool Player_804A6F38::fn_80248A24() {
@@ -3277,7 +3277,7 @@ bool Player_804A6F38::fn_80248A24() {
             break;
         }
         getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
-    } while (fn_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
+    } while (getTileAt_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
     pos.y += 24.0f;
     if (fn_8026E5F8(&pos)) {
         field_0x43f = true;
@@ -3290,7 +3290,7 @@ bool Player_804A6F38::fn_80248A24() {
 }
 
 // The size of this player's group: itself, its leader (mLeader_0xd60) and
-// every active follower (fn_8022F514) whose leader (fn_8022F3DC) is that
+// every active follower (hasPlayerLeader_8022F514) whose leader (getPlayerLeader_8022F3DC) is that
 // leader, or this player when it leads.
 // `leader` is declared first so that it gets the highest register (r30) as in
 // the original (declared in its branch it takes r28). fn_802487FC (unwritten)
@@ -3304,15 +3304,15 @@ s32 Player_804A6F38::fn_80248970() const {
     for (s32 i = 0; i < 4; i++) {
         if (i == mPlayerNo_0x4) {
             count++;
-        } else if (fn_8022F514(i)) {
+        } else if (hasPlayerLeader_8022F514(i)) {
             leader = groupLeader(this);
             if (leader >= 0) {
-                if (leader == fn_8022F3DC(i)) {
+                if (leader == getPlayerLeader_8022F3DC(i)) {
                     count++;
                 }
             } else {
                 self = selfOf(this);
-                if (self == fn_8022F3DC(i)) {
+                if (self == getPlayerLeader_8022F3DC(i)) {
                     count++;
                 }
             }
@@ -3336,7 +3336,7 @@ s32 Player_804A6F38::fn_802487FC() const {
 }
 
 // The place of this player in its partner's line (1 for the first follower),
-// or 0 without a partner. fn_80254744 inlines it and reloads both fields on
+// or 0 without a partner. resetSlot_80254744 inlines it and reloads both fields on
 // every pass; this const copy keeps them in registers.
 s32 Player_804A6F38::getFollowerIndex_80248778() const {
     if (mLeader_0xd60 < 0) {
@@ -3345,7 +3345,7 @@ s32 Player_804A6F38::getFollowerIndex_80248778() const {
     s32 count = 0;
     for (s32 i = 0; i < mPlayerNo_0x4; i++) {
         s32 partner = groupLeader(this);
-        if (partner == fn_8022F3DC(i)) {
+        if (partner == getPlayerLeader_8022F3DC(i)) {
             count++;
         }
     }
@@ -3364,11 +3364,11 @@ s32 Player_804A6F38::fn_802486A0() const {
     return field_0x120c;
 }
 
-// fn_8024BAEC, inlined: its loop shares one zero register between the index
+// resetPosHistory_8024BAEC, inlined: its loop shares one zero register between the index
 // and the false store (li / mr) as every inlined copy does, while
-// fn_8024BAEC's own body does not (li / li).
+// resetPosHistory_8024BAEC's own body does not (li / li).
 void Player_804A6F38::fn_80248604() {
-    fn_8024BAEC();
+    resetPosHistory_8024BAEC();
 }
 
 // Sets the group's mode (0-3 the directions, 4 turn-based, 5 walk to the
@@ -3377,8 +3377,8 @@ void Player_804A6F38::fn_80248604() {
 // becomes 0. Leaving turn-based mode for this player's turn moves it to the
 // acting player's position and trail. Then the reachable players' actors are
 // reset (fn_8023105C / fn_802310F8), the old mode kept in field_0x1210 and,
-// for a leader, the cue played (fn_8024F0E8 / fn_80230FD0) when `cue`.
-void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
+// for a leader, the cue played (playSound_8024F0E8 / fn_80230FD0) when `cue`.
+void Player_804A6F38::setGroupMode_80248004(s32 mode, bool cue) {
     if (fn_80248970() <= 1) {
         return;
     }
@@ -3391,7 +3391,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     if (gGameRoot_8053AAF8->field_0x7e && field_0xcfe == true) {
         return;
     }
-    if (viewLayerFlag(getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4))) && mode != 4) {
+    if (viewLayerFlag(getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4))) && mode != 4) {
         mode = 5;
     }
     if (gGameRoot_8053AAF8->getPlayerCount_80138A30() == 2 || gGameRoot_8053AAF8->getPlayerCount_80138A30() == 3) {
@@ -3401,37 +3401,37 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
             mode = 0;
         }
     }
-    if (cue == true && fn_8025F448() && !(field_0x120c == 4 && mode == 5)) {
+    if (cue == true && isGrabbing_8025F448() && !(field_0x120c == 4 && mode == 5)) {
         return;
     }
     if (!field_0x1214 && field_0x120c == mode) {
         return;
     }
-    if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && mode != 4 && field_0x120c == 4 && fn_80240888() != 0) {
-        JGeometry::TVec3f* pos = getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4));
-        s32 layer = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+    if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && mode != 4 && field_0x120c == 4 && getGroupTurn_80240888() != 0) {
+        JGeometry::TVec3f* pos = getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
+        s32 layer = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
         if (!mViewBox_0xbec->fn_8030B110(layer, *pos)) {
             s32 oldLayer = mLayer_0x3b4;
-            mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+            mLayer_0x3b4 = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
             mDepartLayer_0xce0 = oldLayer;
             mDestLayer_0xce4 = mLayer_0x3b4;
             if (mLayer_0x3b4 >= 8 && oldLayer < 8) {
-                mLastTvPos_0xcb0.set(*fn_8023E32C(fn_8022EA0C(mPlayerNo_0x4)));
+                mLastTvPos_0xcb0.set(*getPlayerLastTvPos_8023E32C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             }
-            mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
+            mPos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             mPrevPos_0x2c.set(mPos);
             field_0xd1c = mRespawnPos_0xcbc = mPos;
         }
         for (s32 i = 0; i < 0x31; i++) {
-            mPosHistory_0x38[i].set(*fn_8023E4E4(fn_8022EA0C(mPlayerNo_0x4), 0));
-            field_0x284[i] = fn_8023E45C(fn_8022EA0C(mPlayerNo_0x4), 0);
+            mPosHistory_0x38[i].set(*fn_8023E4E4(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4), 0));
+            field_0x284[i] = fn_8023E45C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4), 0);
         }
         if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             field_0x1216 = true;
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023ED8C(i) &&
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023ED8C(i) &&
             (fn_8022F478(i) || (field_0x120c == 4 && mode != 4))) {
             fn_8023105C(getPlayerHeldPlayer_8023ECF0(i));
             fn_802310F8(i);
@@ -3451,7 +3451,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     }
     if (mode == 4) {
         if (cue == true) {
-            fn_8024F0E8(0x10010);
+            playSound_8024F0E8(0x10010);
         }
         field_0x123c = 1;
         return;
@@ -3459,11 +3459,11 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     fn_80248604();
     if (field_0x1210 == 4) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8022E438(mPlayerNo_0x4, i)) {
+            if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
                 if (cue == true) {
                     fn_80230FD0(i, 0x10011);
                 }
-                if (fn_8022F514(i)) {
+                if (hasPlayerLeader_8022F514(i)) {
                     fn_80238244(i);
                 }
             }
@@ -3472,7 +3472,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     }
     if (cue == true) {
         if (mode != 5) {
-            fn_8024F0E8(0x20037);
+            playSound_8024F0E8(0x20037);
         }
         for (s32 i = 0; i < 4; i++) {
             if (mode == 0) {
@@ -3490,13 +3490,13 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
 
 void Player_804A6F38::fn_80247F58() {
     s32 team = mLeader_0xd60;
-    if (team >= 0 && fn_80236B50(team)) {
+    if (team >= 0 && isPlayerDead_80236B50(team)) {
         if (canRequestState_80251BFC(0x33)) {
             // positions are read as TVec2f (x, y) by the callee
-            fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
+            hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
         }
     } else if (fn_80239D38() && !field_0xd34 && canRequestState_80251BFC(0x33)) {
-        fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
+        hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
     }
 }
 
@@ -3517,8 +3517,8 @@ void Player_804A6F38::fn_80247F0C() {
 // else 0x168): with manager flag 0x71 it only sets field_0xbc0 = 0x3C, and
 // any of the flags 0x6C-0x72 refuses; already in state 0xB the timer
 // restarts. Otherwise when canRequestState_80251BFC allows state 0xB: turn-based group
-// mode (4) is left first (fn_80248004(5, true)) and still refuses; a
-// leader requests the state (fn_80251AEC), with fn_8022AD88 when the timer
+// mode (4) is left first (setGroupMode_80248004(5, true)) and still refuses; a
+// leader requests the state (requestState_80251AEC), with fn_8022AD88 when the timer
 // had run out (field_0x490).
 bool Player_804A6F38::fn_80247C0C() {
     if (fn_8022AF5C()) {
@@ -3541,7 +3541,7 @@ bool Player_804A6F38::fn_80247C0C() {
         return false;
     }
     if (fn_802486A0() == 4) {
-        fn_80248004(5, true);
+        setGroupMode_80248004(5, true);
     }
     if (fn_802486A0() == 4) {
         return false;
@@ -3555,7 +3555,7 @@ bool Player_804A6F38::fn_80247C0C() {
         field_0x48c = 0x168;
     }
     if (mLeader_0xd60 < 0) {
-        fn_80251AEC(0xb);
+        requestState_80251AEC(0xb);
         if (field_0x490 == 1) {
             fn_8022AD88();
         }
@@ -3587,7 +3587,7 @@ s32 Player_804A6F38::fn_80247B9C() {
 // fn_8022AD64 once no player's countdown runs.
 void Player_804A6F38::fn_8024762C() {
     if (fn_8022AF5C()) {
-        if (!field_0xce8 && mState_0x1240 != 0xb && fn_80251AEC(0xb)) {
+        if (!field_0xce8 && mState_0x1240 != 0xb && requestState_80251AEC(0xb)) {
             field_0xbd4 = 1;
         }
         if (mLeader_0xd60 < 0 && field_0xbc0 > 0) {
@@ -3604,7 +3604,7 @@ void Player_804A6F38::fn_8024762C() {
     if (field_0xce8) {
         return;
     }
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         if (field_0x48c > 0) {
             field_0x48c--;
             if (field_0x491 == 1) {
@@ -3624,9 +3624,9 @@ void Player_804A6F38::fn_8024762C() {
         field_0xbc0 = fn_80247B9C();
     }
     if (fn_80247BD4() > 0 && mState_0x1240 != 0xb) {
-        fn_80251AEC(0xb);
+        requestState_80251AEC(0xb);
     } else if (fn_80247BD4() == 0 && mState_0x1240 == 0xb) {
-        if (fn_80251AEC(0) && !field_0xbd4) {
+        if (requestState_80251AEC(0) && !field_0xbd4) {
             spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x503, 1, 1, NULL, NULL, true, 1.0f);
         }
     }
@@ -3928,7 +3928,7 @@ s32 Player_804A6F38::fn_8024322C() {
 bool Player_804A6F38::fn_802431B8() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023697C(i) >= 0) {
-            if (fn_8022E438(fn_8023697C(i), mPlayerNo_0x4)) {
+            if (arePlayersInSameGroup_8022E438(fn_8023697C(i), mPlayerNo_0x4)) {
                 return true;
             }
         }
@@ -3937,7 +3937,7 @@ bool Player_804A6F38::fn_802431B8() {
 }
 
 bool Player_804A6F38::fn_80243194(s32 other) {
-    return fn_8022E438(mPlayerNo_0x4, other);
+    return arePlayersInSameGroup_8022E438(mPlayerNo_0x4, other);
 }
 
 // Conveyor tiles: the tile under mPos (getRawTile_80226850) pushes mConveyorVel_0x414 by
@@ -4065,15 +4065,15 @@ void Player_804A6F38::fn_80242940() {
 }
 
 // Requests state 0x4C (keeping `arg` in field_0xd8c, matched by
-// fn_802426E0) for a player acting on its own and not fn_8025F448.
+// fn_802426E0) for a player acting on its own and not isGrabbing_8025F448.
 bool Player_804A6F38::fn_80242704(s32 arg) {
     if (fn_80240670()) {
         return false;
     }
-    if (fn_8025F448()) {
+    if (isGrabbing_8025F448()) {
         return false;
     }
-    if (fn_80251AEC(0x4c)) {
+    if (requestState_80251AEC(0x4c)) {
         field_0xd8c = arg;
         return true;
     }
@@ -4090,7 +4090,7 @@ bool Player_804A6F38::fn_802426E0(s32 serial) {
 
 // Requests state 0x4D with pos as its target (field_0x374).
 bool Player_804A6F38::fn_80242624(JGeometry::TVec3f pos) {
-    if (fn_80251AEC(0x4d)) {
+    if (requestState_80251AEC(0x4d)) {
         field_0x374.set(pos);
         return true;
     }
@@ -4109,7 +4109,7 @@ void Player_804A6F38::fn_80242560() {
     }
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_KEY0, serial);
         if (serial < 0) {
             break;
         }
@@ -4124,7 +4124,7 @@ void Player_804A6F38::fn_80242560() {
 }
 
 // Brings the player back to the acting player (lbl_8053A190): through
-// fn_80270948 when fn_80270A8C holds and fn_8025F448 does not; else, when it
+// fn_80270948 when isDeadState_80270A8C holds and isGrabbing_8025F448 does not; else, when it
 // is on layer 8 or more or outside the visible box, onto that player's x / y
 // on layer 0. Then the saved positions 0x2C4 / 0xCB0 / 0xD1C, 0x344 / 0x368
 // cleared, field_0xd54 = 10, the trail reset (fn_80248604), the held key or
@@ -4132,7 +4132,7 @@ void Player_804A6F38::fn_80242560() {
 // Registers only: the box test's x / y (f2 / f1 in the original, f1 / f2 here).
 // FIXME: 99.82 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_802422D0() {
-    if (fn_80270A8C() && !fn_8025F448()) {
+    if (isDeadState_80270A8C() && !isGrabbing_8025F448()) {
         fn_80270948(getPlayerPos_8023E724(lbl_8053A190));
     } else {
         JGeometry::TBox2f box;
@@ -4211,39 +4211,39 @@ bool Player_804A6F38::fn_80241E28(s32 layer, const JGeometry::TVec3f* pos) {
 
 bool Player_804A6F38::fn_80241DD0(s32 layer, const JGeometry::TVec3f* pos) {
     if (layer < 8) {
-        return gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(pos);
+        return gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(pos);
     }
     return mViewBox_0xbec->fn_8030B084(layer, *pos);
 }
 
 // Whether the corners of `box` are in view: any of them with `overlap`, else
-// all four (the camera's fn_8030C2A8 below layer 8; mViewBox_0xbec's bounds,
+// all four (the camera's isOnScreen_8030C2A8 below layer 8; mViewBox_0xbec's bounds,
 // fn_8030AF10, from layer 8 on). The last corner's result is converted with
 // `!= false` (neg / or / srwi in the original), the others are tested.
 bool Player_804A6F38::fn_80241BA0(s32 layer, const JGeometry::TBox2f* box, bool overlap) {
     if (layer < 8) {
         if (overlap == true) {
-            if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->i.x, box->i.y, 0.0f))) {
+            if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->i.x, box->i.y, 0.0f))) {
                 return true;
             }
-            if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->i.x, box->f.y, 0.0f))) {
+            if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->i.x, box->f.y, 0.0f))) {
                 return true;
             }
-            if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->f.x, box->i.y, 0.0f))) {
+            if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->f.x, box->i.y, 0.0f))) {
                 return true;
             }
-            return gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->f.x, box->f.y, 0.0f)) != false;
+            return gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->f.x, box->f.y, 0.0f)) != false;
         }
-        if (!gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->i.x, box->i.y, 0.0f))) {
+        if (!gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->i.x, box->i.y, 0.0f))) {
             return false;
         }
-        if (!gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->i.x, box->f.y, 0.0f))) {
+        if (!gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->i.x, box->f.y, 0.0f))) {
             return false;
         }
-        if (!gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->f.x, box->i.y, 0.0f))) {
+        if (!gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->f.x, box->i.y, 0.0f))) {
             return false;
         }
-        return gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&JGeometry::TVec3f(box->f.x, box->f.y, 0.0f)) != false;
+        return gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&JGeometry::TVec3f(box->f.x, box->f.y, 0.0f)) != false;
     }
     return mViewBox_0xbec->fn_8030AF10(layer, &JGeometry::TBox2f(*box), overlap);
 }
@@ -4259,7 +4259,7 @@ void Player_804A6F38::fn_80241B44(JGeometry::TBox2f* out) {
 }
 
 // True alone (fn_80248970 <= 1) or in group mode 4; else only when every
-// other player this one can reach (fn_8022E438) has fn_802349EC (byte
+// other player this one can reach (arePlayersInSameGroup_8022E438) has fn_802349EC (byte
 // 0x1215 of that player, set on arriving at its spot).
 // FIXME: 98.96 %, regalloc-only; behaviour clean.
 // Registers and scheduling only: the first group loop's count /
@@ -4273,7 +4273,7 @@ bool Player_804A6F38::fn_80241964() {
         return true;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (i != mPlayerNo_0x4 && fn_8022E438(mPlayerNo_0x4, i) && !fn_802349EC(i)) {
+        if (i != mPlayerNo_0x4 && arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && !fn_802349EC(i)) {
             return false;
         }
     }
@@ -4286,7 +4286,7 @@ s32 Player_804A6F38::fn_80241920() {
         return fn_80236228(team);
     }
     s32 value = field_0xc04;
-    // An if, not `?:`: fn_8024E694's inlined copies branch (cmpwi / blt);
+    // An if, not `?:`: dropForceGems_8024E694's inlined copies branch (cmpwi / blt);
     // this copy is branchless either way.
     if (value >= 0) {
         return value;
@@ -4302,10 +4302,10 @@ s32 Player_804A6F38::fn_802418E8() {
     return field_0xc04;
 }
 
-s32 Player_804A6F38::fn_8024189C() {
+s32 Player_804A6F38::getLife_8024189C() {
     s32 team = mLeader_0xd60;
     if (team >= 0) {
-        return fn_80237774(team);
+        return getPlayerLife_80237774(team);
     }
     if (field_0xc00) {
         return 0;
@@ -4357,7 +4357,7 @@ void Player_804A6F38::fn_802416FC(s32 arg) {
         fn_80237524(team, arg);
         return;
     }
-    if (!gGameRoot_8053AAF8->field_0x7f && (mLife_0xbfc <= 0 || fn_80270A8C())) {
+    if (!gGameRoot_8053AAF8->field_0x7f && (mLife_0xbfc <= 0 || isDeadState_80270A8C())) {
         return;
     }
     field_0xc08 += arg;
@@ -4550,7 +4550,7 @@ bool Player_804A6F38::fn_8024119C() {
 // field_0x4 is hoisted (r28), as in fn_80240670.
 bool Player_804A6F38::fn_80240F28() const {
     if (fn_802486A0() == 5 && fn_80240670()) {
-        return fn_8023513C(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_8023513C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     return mState_0x1240 == 0x39;
 }
@@ -4590,11 +4590,11 @@ bool Player_804A6F38::fn_80240D50() {
     return mState_0x1240 == 0x4f;
 }
 
-// Whether the player is busy: through its leader (fn_8022EA0C's
+// Whether the player is busy: through its leader (getRepresentativePlayer_8022EA0C's
 // fn_80233EDC) when it follows, else when it is in state 0x1B. Const like
 // fn_80240670: the inlined group loops hoist field_0x4.
 bool Player_804A6F38::fn_80240B84() const {
-    return fn_80240670() ? fn_80233EDC(fn_8022EA0C(mPlayerNo_0x4)) : inState1B(this);
+    return fn_80240670() ? fn_80233EDC(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) : inState1B(this);
 }
 
 bool Player_804A6F38::fn_80240B70() {
@@ -4638,8 +4638,8 @@ bool Player_804A6F38::fn_80240AD4() {
 // The trail loop counts with `int`: with s32 (long) MWCC tests the
 // unrolled loop's entry (cmpwi r5, 0x31; bge), which the original does not.
 void Player_804A6F38::fn_802408C8(s32 layer, const JGeometry::TVec3f* pos) {
-    if (mLeader_0xd60 < 0 && mViewBox_0xbec->fn_8030B110(layer, *pos) && !fn_80270A8C() && !field_0xce8) {
-        fn_80248004(5, false);
+    if (mLeader_0xd60 < 0 && mViewBox_0xbec->fn_8030B110(layer, *pos) && !isDeadState_80270A8C() && !field_0xce8) {
+        setGroupMode_80248004(5, false);
         if (fn_802486A0() == 5) {
             for (int i = 0; i < 0x31; i++) {
                 mPosHistory_0x38[i].set(*pos);
@@ -4657,7 +4657,7 @@ bool Player_804A6F38::fn_802408C0() {
 
 // Whose turn it is in the group: the leader's (fn_80234004) or, leading,
 // mGroupTurn_0x1224.
-s32 Player_804A6F38::fn_80240888() const {
+s32 Player_804A6F38::getGroupTurn_80240888() const {
     s32 team = mLeader_0xd60;
     if (team >= 0) {
         return fn_80234004(team);
@@ -4693,7 +4693,7 @@ bool Player_804A6F38::fn_80240818() const {
     return mState_0x1240 == 0x49 || mRequestedState_0x1244 == 0x49;
 }
 
-bool Player_804A6F38::fn_80240808() const {
+bool Player_804A6F38::hasLeader_80240808() const {
     return mLeader_0xd60 >= 0;
 }
 
@@ -4705,13 +4705,13 @@ bool Player_804A6F38::fn_80240670() const {
         return true;
     }
     if (fn_802486A0() == 4) {
-        return fn_80240888() != getFollowerIndex_80248778();
+        return getGroupTurn_80240888() != getFollowerIndex_80248778();
     }
     return mLeader_0xd60 >= 0;
 }
 
 s32 Player_804A6F38::fn_8024064C() const {
-    return fn_8022EA0C(mPlayerNo_0x4);
+    return getRepresentativePlayer_8022EA0C(mPlayerNo_0x4);
 }
 
 s32 Player_804A6F38::getLeader_80240644() {
@@ -4736,7 +4736,7 @@ void Player_804A6F38::fn_8024051C() {
 
 s32 Player_804A6F38::fn_80240354() {
     if (fn_80240670()) {
-        return fn_80236768(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_80236768(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0xbdc) {
         return field_0xbd8;
@@ -4746,7 +4746,7 @@ s32 Player_804A6F38::fn_80240354() {
 
 s32 Player_804A6F38::fn_8024018C() {
     if (fn_80240670()) {
-        return fn_802366CC(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_802366CC(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0x42c) {
         return field_0xbe0;
@@ -4756,7 +4756,7 @@ s32 Player_804A6F38::fn_8024018C() {
 
 s32 Player_804A6F38::fn_8023FFC4() {
     if (fn_80240670()) {
-        return fn_80236630(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_80236630(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0xbe8) {
         return field_0xbe4;

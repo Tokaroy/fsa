@@ -304,7 +304,7 @@ void FireRodFire_804A89F0::update() {
             if (field_0x293 == 1) {
                 field_0x28c -= 0.03f;
                 if (field_0x28c < 0.05f) {
-                    fn_801F3668();
+                    markDead_801F3668();
                     return;
                 }
                 mEmitter230->mGlobalPScl.set(field_0x28c, field_0x28c);
@@ -340,12 +340,12 @@ void FireRodFire_804A89F0::update() {
                             field_0x270 = 0;
                         }
                     } else {
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             vfunc_0x58();
                         }
                     }
                 } else {
-                    if (fn_801F2618(NULL, false)) {
+                    if (sweepMapBox_801F2618(NULL, false)) {
                         vfunc_0x58();
                     }
                     if (mAlive && field_0x264 == 0 && field_0x268 == 2 && field_0x290 == 0) {
@@ -362,7 +362,7 @@ void FireRodFire_804A89F0::update() {
                             mPos.x += 16.0f;
                             break;
                         }
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             vfunc_0x58();
                         }
                         if (field_0x254 == 0) {
@@ -385,7 +385,7 @@ void FireRodFire_804A89F0::update() {
             } else if (field_0x264 != 5 && field_0x293 == 0) {
                 damagePlayersInBox_801F2B7C(-100, -1, true);
             }
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 if (field_0x264 == 3 || field_0x264 == 4) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, field_0x28c);
                     startSound_801F0E34(0x3002E, 0);
@@ -416,7 +416,7 @@ void FireRodFire_804A89F0::update() {
         if (field_0x264 == 5 && mAlive) {
             field_0x270 = 0;
             if (field_0x280 == 0) {
-                if (fn_801F2618(NULL, false)) {
+                if (sweepMapBox_801F2618(NULL, false)) {
                     vfunc_0x58();
                 }
                 die_0x24();
@@ -606,7 +606,7 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
 
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('ICEB', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('ICEB', serial);
         if (serial < 0) {
             return false;
         }
@@ -717,13 +717,13 @@ bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     }
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds) == 1) {
         return true;
     }
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x254 == 0) {
             JGeometry::TVec3f tmp;
-            const s32 cell = fn_80226AE0(pos, mLayer_0x4);
+            const s32 cell = getCellIndexVec3_80226AE0(pos, mLayer_0x4);
             field_0x288 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, cell);
             if (fn_801EE3C0(field_0x288) == 1) {
                 cellToPos_80226CA8(cell, mLayer_0x4, &tmp);

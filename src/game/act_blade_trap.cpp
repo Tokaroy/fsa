@@ -86,7 +86,7 @@ void BladeTrap_804A04D8::update() {
     JGeometry::TVec3f prevPos(mPos);
     mLife = 1000;
     for (s32 i = 0; i < 4; i++) {
-        s32 player = fn_801F285C(NULL, NULL, false, i);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
         if (player < 0) {
             continue;
         }
@@ -115,10 +115,10 @@ void BladeTrap_804A04D8::update() {
         field_0x238 = 10;
     }
 
-    u8 hit = fn_801F2618(NULL, false);
+    u8 hit = sweepMapBox_801F2618(NULL, false);
     s32 player = -1;
     s32 dir;
-    fn_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 0);
 
     s32 state = field_0x230;
     if (state != 2 && state != 3 && state != 0 && (field_0x9c >= 0 || (state == 1 && hit))) {
@@ -218,7 +218,7 @@ void BladeTrap_804A04D8::draw() {
     if (field_0x258 == 0) {
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
         }
         drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x154, &params, 0, mode, false, 1.0f, 1.0f);
     } else {
@@ -229,7 +229,7 @@ void BladeTrap_804A04D8::draw() {
 bool BladeTrap_804A04D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_804662A8) == true) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, lbl_804662A8) == true) {
         return true;
     }
     if (field_0x24c == 0) {

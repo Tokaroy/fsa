@@ -96,7 +96,7 @@ void TingleFirstAppearance_804AADD8::update() {
             field_0x230 = 1;
         }
         if (field_0x270 == 0) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000025, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000025, false, 0);
             field_0x270 = 1;
         }
         break;
@@ -105,10 +105,10 @@ void TingleFirstAppearance_804AADD8::update() {
         if (getActorManager_801F856C()->fn_801F68E0() != 0) {
             for (int i = 0; i < 4; i++) {
                 if (getPlayerLayer_8023DE58(i) == getField_0x4() && !fn_80233E40(i) &&
-                    !fn_8023EA28(i) && !fn_80236B50(i)) {
+                    !fn_8023EA28(i) && !isPlayerDead_80236B50(i)) {
                     s32 dir = (getPlayerPos_8023E724(i)->x > mPos.x) ? 1 : 0;
                     fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3C, 0xFF, -0x80, -0x80, true);
-                    fn_80230BF4(i, dir);
+                    setPlayerFacing_80230BF4(i, dir);
                 }
             }
             selectNearestPlayer();
@@ -138,7 +138,7 @@ void TingleFirstAppearance_804AADD8::update() {
 
     case 6:
         fn_8022FE80(field_0x234, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x234)) {
+        if (stepMessageWindow_803865B8(field_0x234)) {
             field_0x230 = 7;
         }
         break;
@@ -197,7 +197,7 @@ void TingleFirstAppearance_804AADD8::update() {
         mVel_0x3c.z = 0.3f;
         field_0x230 = 12;
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         break;
 
     case 12:
@@ -283,7 +283,7 @@ void TingleFirstAppearance_804AADD8::selectNearestPlayer() {
     s32 bestPlayer = 0;
     f32 bestDist = 65536.0f;
     for (s32 i = 0; i < count; i++) {
-        s32 player = fn_8022EA0C(i);
+        s32 player = getRepresentativePlayer_8022EA0C(i);
         if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
             const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(player);
             f32 dx = mPos.x - pPos->x;

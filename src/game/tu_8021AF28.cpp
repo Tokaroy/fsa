@@ -16,7 +16,7 @@ static inline void drawSecond(KaeporaGaebora_804A6550* self, SpriteParams_801F5A
     params.field_0x10.a = 200;
     params.field_0x1d = 0;
     if (self->mSpriteParams.mMtx == NULL) {
-        fn_801EF830(self->mLayer_0x4, &self->mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        drawShadow_801EF830(self->mLayer_0x4, &self->mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 
@@ -94,7 +94,7 @@ void KaeporaGaebora_804A6550::fn_8021B1AC() {
     params.field_0x1d = 0;
     mPos.y += -10.5f;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
     }
     mPos.y -= -10.5f;
 }

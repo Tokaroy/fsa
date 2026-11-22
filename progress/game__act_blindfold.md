@@ -9,7 +9,7 @@ Resistant: draw 94.2 % (scheduling+regalloc). Same instructions; the original fo
 SHARED-EDITS
 - include/game/ActorBase.h: SpriteParams_801F5AE0::field_0x1c u8 -> s8 (fn_8023CA88 returns s8; the
   original stores a shared -1 register). Re-tried the 11 units using SpriteParams: unchanged.
-- include/game/Player.h: s32 fn_8022EA0C(s32 player) (extern "C", owner tu_8022AD64; r3 in/out, asm).
+- include/game/Player.h: s32 getRepresentativePlayer_8022EA0C(s32 player) (extern "C", owner tu_8022AD64; r3 in/out, asm).
 - config/G4SE01/gen_game.tsv: act_blindfold rows removed; include/game/act/act_blindfold.h fields added.
 
 Next: draw allocation; update's else branch duplicates the loop body as in the original.

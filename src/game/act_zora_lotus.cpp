@@ -221,7 +221,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
         resetBoxes(this);
         vfunc_0xA8();
         if (mStateTimer >= field_0x250) {
-            if (fn_801D05F8(&mPos, 300.0f) >= 0) {
+            if (findNearestPlayer_801D05F8(&mPos, 300.0f) >= 0) {
                 setState_801BACE8(1);
             }
         }
@@ -231,7 +231,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
         resetBoxes(this);
         vfunc_0xA8();
         if (field_0x54.x != 1.5f) {
-            fn_801CD950(&field_0x54.x, 1.5f, 0.05f);
+            moveToward_801CD950(&field_0x54.x, 1.5f, 0.05f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
         } else if (mStateTimer >= field_0x250 && mAnim.isLoopEnd_801D217C()) {
@@ -240,7 +240,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801BACE8(3);
         }
         break;
@@ -256,7 +256,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
                 outlineInBox(this, i);
             }
         }
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801BACE8(0);
         }
         break;

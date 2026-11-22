@@ -174,8 +174,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         return;
     }
     if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-        fn_80236768(fn_8022EA0C(player)) > 0 && fn_80236768(fn_8022EA0C(player)) < 900) {
-        s32 val = fn_80236768(fn_8022EA0C(player)) / 60 + 1;
+        fn_80236768(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_80236768(getRepresentativePlayer_8022EA0C(player)) < 900) {
+        s32 val = fn_80236768(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;
@@ -207,8 +207,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         field_0x98 = val;
         field_0xac = 1;
     } else if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-               fn_80236630(fn_8022EA0C(player)) > 0 && fn_80236630(fn_8022EA0C(player)) < 1200) {
-        s32 val = fn_80236630(fn_8022EA0C(player)) / 60 + 1;
+               fn_80236630(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_80236630(getRepresentativePlayer_8022EA0C(player)) < 1200) {
+        s32 val = fn_80236630(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;
@@ -240,8 +240,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         field_0x98 = val;
         field_0xac = 1;
     } else if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-               fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
-        s32 val = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
+               fn_802366CC(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(player)) < 300) {
+        s32 val = fn_802366CC(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;
@@ -277,7 +277,7 @@ void GbaWindow_804B1668::fn_80432AF8() {
 
 // FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void GbaWindow_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0xa4 == 0) {
         f32 scaleX = w / field_0x18[2]->field_0x18;
         f32 scaleY = h / field_0x18[2]->field_0x1c;
@@ -339,7 +339,7 @@ void GbaWindow_804B1668::fn_80432638() {
         f32 left = field_0x18[0]->field_0x8;
         f32 y = field_0x18[0]->mPane->getBounds()->i.y;
         f32 top = field_0x18[0]->field_0xc;
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         f32 dx = x - left;
         f32 dy = y - top;
         field_0x3c->moveFromCentre_80402E08(dx + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],

@@ -87,11 +87,11 @@ void Bee_804AC600::update() {
                         from -= actor->mVel_0x3c;
                         handled = true;
                         field_0x274 = 1;
-                        fn_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
+                        takeHit_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
                     }
                 }
                 if (!handled) {
-                    s32 serial2 = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+                    s32 serial2 = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
                     if (serial2 >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial2);
                         if (actor != NULL && actor->field_0x168 == 5) {
@@ -99,12 +99,12 @@ void Bee_804AC600::update() {
                             from -= actor->mVel_0x3c;
                             handled = true;
                             field_0x274 = 2;
-                            fn_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
+                            takeHit_801F37AC(actor->mParamAtcn_0x118, &from, 3, actor->field_0x168, actor->field_0x110);
                         }
                     }
                 }
                 if (!handled) {
-                    s32 player = fn_801F285C(NULL, NULL, true, -1);
+                    s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
                     if (player >= 0) {
                         field_0x24c = player;
                         field_0x238 = 10;
@@ -244,9 +244,9 @@ void Bee_804AC600::update() {
                 }
             } else {
                 if (field_0x230 == 2) {
-                    fn_801EEC98(mSerial, NULL, NULL, NULL, &field_0x244, 0, 0);
+                    findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &field_0x244, 0, 0);
                 } else {
-                    fn_801EEC98(mSerial, NULL, NULL, NULL, &field_0x244, field_0x24c, 2);
+                    findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &field_0x244, field_0x24c, 2);
                 }
                 if (field_0x244 >= 0) {
                     diff.x = getPlayerPos_8023E724(field_0x244)->x - mPos.x;
@@ -304,10 +304,10 @@ void Bee_804AC600::update() {
         steerPieces(this);
         break;
     case 6:
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             bool gone = true;
             for (s32 i = 1; i < 7; i++) {
-                if (!fn_801F6758(&field_0x2a4[i], mLayer_0x4, 16.0f)) {
+                if (!isOutsideView_801F6758(&field_0x2a4[i], mLayer_0x4, 16.0f)) {
                     gone = false;
                     break;
                 }

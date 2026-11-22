@@ -21,13 +21,13 @@ static inline void stepToward(f32& v, f32 target, f32 d) {
 
 static inline void fn_802162B8_loop(cls_80216238Sub* sub, s32 id, s32 key) {
     s32 player = id;
-    if (fn_8022F514(player)) {
-        player = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        player = getPlayerLeader_8022F3DC(player);
     }
     u16 effect = fn_8023CBC0(player);
     f32 yTarget = 16.0f * (17.5f + key);
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(i, id)) {
+        if (arePlayersInSameGroup_8022E438(i, id)) {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(id);
             if (key < 0) {
                 fn_80230498(i, &pos, effect, 0xFF, -0x80, -0x80, true);

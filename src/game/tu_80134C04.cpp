@@ -78,7 +78,7 @@ static u8 lbl_8049EF10[0x10] = {
 };
 
 // The stage music (sequence IDs) by GameView_804A9950::field_0x34
-// (fn_80138B7C).
+// (startStageMusic_80138B7C).
 static const u32 lbl_804652F0[39] = {
     0x01000000, 0x01000003, 0x0100000B, 0x0100000E, 0x01000010, 0x01000014,
     0x0100000A, 0x01000009, 0x01000008, 0x01000012, 0x01000011, 0x01000015,
@@ -106,7 +106,7 @@ u8 fn_8013997C(s32 index) {
 }
 #pragma auto_inline reset
 
-// Not auto-inlined: GameRoot_8049EF20::fn_80135020 calls fn_80139958 out of line in the original
+// Not auto-inlined: GameRoot_8049EF20::createModeScreen_80135020 calls fn_80139958 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void fn_80139958() {
@@ -185,7 +185,7 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
 }
 
 // Stops the rumble, deletes the screens and objects the constructor and
-// fn_80135020 made, unmounts the archives and destroys both heaps.
+// createModeScreen_80135020 made, unmounts the archives and destroys both heaps.
 GameRoot_8049EF20::~GameRoot_8049EF20() {
     JUTGamePad* pad = JUTGamePad::getGamePad(0);
     field_0x10c = 0;
@@ -261,7 +261,7 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
 
 // Called once by main after the constructor: resets the per-game state and
 // picks the first game mode (the title after power-on, see SaveRegion 0x4/0x5).
-void GameRoot_8049EF20::fn_80138C9C() {
+void GameRoot_8049EF20::resetGameState_80138C9C() {
     field_0xa0->field_0x5 = 4;
     gGameRoot2_8053AB10->fn_8013BE04();
     field_0x10->fn_802ACB58();
@@ -305,7 +305,7 @@ void GameRoot_8049EF20::fn_80138C9C() {
 }
 
 // Starts the music of the current stage (GameView_804A9950::field_0x34).
-void GameRoot_8049EF20::fn_80138B7C() {
+void GameRoot_8049EF20::startStageMusic_80138B7C() {
     s32 count = getGameView_802D6A9C()->field_0x1328c;
     s32 id = getGameView_802D6A9C()->field_0x34;
     if (id == 0x11) {
@@ -315,18 +315,18 @@ void GameRoot_8049EF20::fn_80138B7C() {
         if (id == 0x14 || id == 0x1E) {
             field_0xa0->fn_80458F04(lbl_804652F0[id]);
         } else {
-            field_0xa0->fn_80458FF0(lbl_804652F0[id], false, count);
+            field_0xa0->startBgm_80458FF0(lbl_804652F0[id], false, count);
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x1328c = count + 1;
         }
     } else if (id != 0x19) {
         if (field_0x86 == 0) {
-            field_0xa0->fn_80458FF0(0x1000004, false, false);
+            field_0xa0->startBgm_80458FF0(0x1000004, false, false);
         } else {
-            field_0xa0->fn_80458FF0(0x100000D, false, false);
+            field_0xa0->startBgm_80458FF0(0x100000D, false, false);
         }
     } else {
-        field_0xa0->fn_80458FF0(0x1000019, false, false);
+        field_0xa0->startBgm_80458FF0(0x1000019, false, false);
     }
 }
 
@@ -354,7 +354,7 @@ s32 GameRoot_8049EF20::getPlayerCount_80138A30() {
     return count;
 }
 
-// The per-frame update (the counterpart of fn_80136828): polls the pads, then runs the screen of the current
+// The per-frame update (the counterpart of draw_80136828): polls the pads, then runs the screen of the current
 // mode (field_0x4c) and, once it asks for another one (field_0x50), the fade and load sequence of field_0x58.
 //
 // FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
@@ -362,7 +362,7 @@ s32 GameRoot_8049EF20::getPlayerCount_80138A30() {
 // the target loads field_0x4 into r3 before each fn_80139D70 call).
 void GameRoot_8049EF20::fn_80137300() {
     field_0x5c++;
-    field_0x8->fn_8030A43C();
+    field_0x8->pollInputs_8030A43C();
     gGameRoot_8053AAF8->field_0x85 = 0;
     JUTGamePad* pad = JUTGamePad::getGamePad(0);
     if (field_0x108 != 0) {
@@ -615,7 +615,7 @@ void GameRoot_8049EF20::fn_80137300() {
                     field_0x90 -= 10.0f;
                     if (field_0x90 < 1.0f) {
                         field_0x90 = 1.0f;
-                        fn_80138B7C();
+                        startStageMusic_80138B7C();
                     }
                 }
             case 3:
@@ -713,7 +713,7 @@ void GameRoot_8049EF20::fn_80137300() {
                 field_0x4->fn_80139D9C();
                 lbl_8053AEC8->fn_80438E10(0);
                 if (lbl_80529DEC.field_0x1ac != 0) {
-                    field_0xa0->fn_80458FF0(lbl_80529DEC.field_0x1ac, false, 0);
+                    field_0xa0->startBgm_80458FF0(lbl_80529DEC.field_0x1ac, false, 0);
                 }
                 lbl_80529DEC.field_0x253 = 0;
                 field_0x4c = 7;
@@ -739,7 +739,7 @@ void GameRoot_8049EF20::fn_80137300() {
                     lbl_8053ACA0->fn_802AC8AC(0);
                     field_0x84 = 0;
                     gGameRoot2_8053AB10->fn_8013B4C0();
-                    field_0xa0->fn_80458F9C(0xA);
+                    field_0xa0->stopBgm_80458F9C(0xA);
                 }
             } else if (fn_8037A120() == 8 || fn_8037A120() == 9) {
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
@@ -768,20 +768,20 @@ void GameRoot_8049EF20::fn_80137300() {
                 lbl_8053ACA0->fn_802AC8AC(0);
                 field_0x84 = 0;
                 gGameRoot2_8053AB10->fn_8013B4C0();
-                field_0xa0->fn_80458F9C(0xA);
+                field_0xa0->stopBgm_80458F9C(0xA);
             }
             break;
         case 13:
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
             field_0x84 = 0;
             break;
         case 14:
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             field_0xa0->playSystemSound_80458880(0x38, -1);
-            fn_80138B7C();
+            startStageMusic_80138B7C();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
@@ -795,7 +795,7 @@ void GameRoot_8049EF20::fn_80137300() {
             field_0x84 = 0;
             break;
         case 16:
-            getGameView_802D6A9C()->fn_802DA8DC();
+            getGameView_802D6A9C()->resetStage_802DA8DC();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
@@ -853,7 +853,7 @@ void GameRoot_8049EF20::fn_80137300() {
             fn_80135A04(field_0x50);
             field_0xfd = 2;
         }
-        fn_80135494(field_0x50);
+        applyRequestedMode_80135494(field_0x50);
     } else if (lbl_8053ACA0->fn_802AC8B4()) {
         s32 state = field_0x58;
         if (state == 1) {
@@ -866,15 +866,15 @@ void GameRoot_8049EF20::fn_80137300() {
             }
             fn_80135A04(field_0x50);
             field_0x58 = 8;
-            fn_80135494(field_0x50);
+            applyRequestedMode_80135494(field_0x50);
         } else if (state == 8) {
-            fn_80135494(field_0x50);
+            applyRequestedMode_80135494(field_0x50);
         } else if (state == 2) {
             field_0x58 = 4;
         } else if (state == 4) {
             field_0x58 = 0;
         } else if (state == 5) {
-            field_0xa0->fn_80458F9C(0xA);
+            field_0xa0->stopBgm_80458F9C(0xA);
             if (lbl_8053ACA8->fn_802B1DB0()) {
                 field_0xa0->fn_804595E4(false);
             } else {
@@ -938,7 +938,7 @@ void GameRoot_8049EF20::fn_80137300() {
 
 // main calls it each frame between beginRender and endRender: draws the screen
 // of the current mode (field_0x4c), then the fade objects.
-void GameRoot_8049EF20::fn_80136828() {
+void GameRoot_8049EF20::draw_80136828() {
     j3dSys.drawInit();
     if (field_0x58 != 8 && field_0xfd != 2) {
         switch (field_0x4c) {
@@ -1016,7 +1016,7 @@ void GameRoot_8049EF20::fn_80136828() {
                             strcpy(field_0xc0->getStringPtr(), field_0xc8);
                             field_0xc4->setAlpha(field_0x68);
                             field_0xc0->setAlpha(field_0x68);
-                            gGameRoot2_8053AB10->fn_8013B490();
+                            gGameRoot2_8053AB10->setPort_8013B490();
                             field_0xc4->draw(-29997.0f, 3.0f + y,
                                              60000.0f + (s32)JUTVideo::getManager()->getFbWidth(),
                                              J2DHBIND_Center);
@@ -1263,7 +1263,7 @@ void GameRoot_8049EF20::fn_80136500() {
     if (gGameRoot_8053AAF8->field_0x96 != 0) {
         stopped = true;
     }
-    if (gGameRoot_8053AAF8->field_0x7e == 0 && fn_8037F1E4(0)) {
+    if (gGameRoot_8053AAF8->field_0x7e == 0 && getMessageWindowState_8037F1E4(0)) {
         stopped = true;
     }
     if (field_0xfe == 1 && !stopped) {
@@ -1326,7 +1326,7 @@ bool GameRoot_8049EF20::fn_80136320() {
 }
 
 // Switches to game mode `mode`: deletes the other modes' screens, reports the
-// heap and starts loading the mode's archives (fn_80401E10) or screen.
+// heap and starts loading the mode's archives (requestMountMemArchive_80401E10) or screen.
 void GameRoot_8049EF20::fn_80135A04(s32 mode) {
     if (field_0x84 != 0) {
         deleteModeScreen_801352F4(field_0x4c);
@@ -1351,16 +1351,16 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
                     strcpy(path, "/GC4Sword_usa/Boss/");
                 }
                 strcat(path, lbl_8049ED88[lbl_80529DEC.mStage_0x118][lbl_80529DEC.mLevel_0x11c]);
-                field_0xac = fn_80401E10(path, 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10(path, 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 2) {
-                field_0xac = fn_80401E10("/GC4Sword/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-                field_0xac = fn_80401E10("/GC4Sword_usa/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
             }
             if (fn_80021840() == 2) {
-                field_0xb0 = fn_80401E10("/GC4Sword/game2D.arc", 0, lbl_80529DEC.mHeap);
+                field_0xb0 = requestMountMemArchive_80401E10("/GC4Sword/game2D.arc", 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-                field_0xb0 = fn_80401E10("/GC4Sword_usa/game2D.arc", 0, lbl_80529DEC.mHeap);
+                field_0xb0 = requestMountMemArchive_80401E10("/GC4Sword_usa/game2D.arc", 0, lbl_80529DEC.mHeap);
             }
         }
         break;
@@ -1374,7 +1374,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         deleteModeScreen_801352F4(7);
         OSReport("Result　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
-        fn_80135020(12);
+        createModeScreen_80135020(12);
         break;
     case 1:
         deleteModeScreen_801352F4(7);
@@ -1385,7 +1385,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         deleteModeScreen_801352F4(12);
         OSReport("Title　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
-        fn_80135020(1);
+        createModeScreen_80135020(1);
         break;
     case 2:
     case 5:
@@ -1401,9 +1401,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("ModeSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/gamemode.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/gamemode.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/gamemode.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/gamemode.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1417,9 +1417,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("FileSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/file.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/file.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/file.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/file.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1433,9 +1433,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("Menu　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/entry.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/entry.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/entry.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/entry.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1450,15 +1450,15 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                field_0xac = fn_80401E10("/GC4Sword/map1.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/map1.arc", 0, lbl_80529DEC.mHeap);
             } else {
-                field_0xac = fn_80401E10("/GC4Sword/map2.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/map2.arc", 0, lbl_80529DEC.mHeap);
             }
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                field_0xac = fn_80401E10("/GC4Sword_usa/map1.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/map1.arc", 0, lbl_80529DEC.mHeap);
             } else {
-                field_0xac = fn_80401E10("/GC4Sword_usa/map2.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/map2.arc", 0, lbl_80529DEC.mHeap);
             }
         }
         field_0xb0 = NULL;
@@ -1477,22 +1477,22 @@ static inline void playStageMusic(GameRoot_8049EF20* self) {
         if (sound == 0x14 || sound == 0x1E) {
             self->field_0xa0->fn_80458F04(lbl_804652F0[sound]);
         } else {
-            self->field_0xa0->fn_80458FF0(lbl_804652F0[sound], false, count);
+            self->field_0xa0->startBgm_80458FF0(lbl_804652F0[sound], false, count);
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x1328c = count + 1;
         }
     } else if (sound != 0x19) {
         if (self->field_0x86 == 0) {
-            self->field_0xa0->fn_80458FF0(0x1000004, false, 0);
+            self->field_0xa0->startBgm_80458FF0(0x1000004, false, 0);
         } else {
-            self->field_0xa0->fn_80458FF0(0x100000D, false, 0);
+            self->field_0xa0->startBgm_80458FF0(0x100000D, false, 0);
         }
     } else {
-        self->field_0xa0->fn_80458FF0(0x1000019, false, 0);
+        self->field_0xa0->startBgm_80458FF0(0x1000019, false, 0);
     }
 }
 
-void GameRoot_8049EF20::fn_80135494(s32 mode) {
+void GameRoot_8049EF20::applyRequestedMode_80135494(s32 mode) {
     bool changed = false;
     if ((mode == 2 && field_0x4c != 2 && field_0x4c != 5) || (mode == 5 && field_0x4c != 2 && field_0x4c != 5) ||
         mode == 3 || mode == 4 || mode == 6 || (mode == 7 && field_0x4 == 0)) {
@@ -1506,26 +1506,26 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
         case 7:
             lbl_80529DEC.mBossArchive_0x10 = field_0xac->field_0x14;
             lbl_80529DEC.mGame2DArchive_0x4c = field_0xb0->field_0x14;
-            fn_80135020(7);
+            createModeScreen_80135020(7);
             break;
         case 2:
         case 5:
             if (field_0x4c != 2 && field_0x4c != 5) {
                 lbl_80529DEC.mGameModeArchive_0x2c = field_0xac->field_0x14;
-                fn_80135020(2);
+                createModeScreen_80135020(2);
             }
             break;
         case 3:
             lbl_80529DEC.mFileArchive_0x30 = field_0xac->field_0x14;
-            fn_80135020(3);
+            createModeScreen_80135020(3);
             break;
         case 4:
             lbl_80529DEC.mEntryArchive_0x28 = field_0xac->field_0x14;
-            fn_80135020(4);
+            createModeScreen_80135020(4);
             break;
         case 6:
             lbl_80529DEC.mMapArchive_0x34 = field_0xac->field_0x14;
-            fn_80135020(6);
+            createModeScreen_80135020(6);
             lbl_8053AD80->fn_80390088();
             break;
         }
@@ -1579,7 +1579,7 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
     }
 }
 
-// Deletes the screen object of game mode `mode` (see fn_80135020).
+// Deletes the screen object of game mode `mode` (see createModeScreen_80135020).
 void GameRoot_8049EF20::deleteModeScreen_801352F4(s32 mode) {
     switch (mode) {
     case 7:
@@ -1631,7 +1631,7 @@ void GameRoot_8049EF20::deleteModeScreen_801352F4(s32 mode) {
 
 // Creates the screen object of game mode `mode` unless it exists; the menu
 // screens are made in field_0x98 under heap group ID 1.
-void GameRoot_8049EF20::fn_80135020(s32 mode) {
+void GameRoot_8049EF20::createModeScreen_80135020(s32 mode) {
     switch (mode) {
     case 7:
         if (field_0x4 == NULL) {

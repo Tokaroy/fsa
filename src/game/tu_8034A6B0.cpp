@@ -12,7 +12,7 @@ void UnknownHTMK_804AC868::update() {
         field_0x234++;
         field_0x230 = 2;
     } else if (field_0x230 <= 0 && field_0x234 == 1) {
-        fn_801F3668();
+        markDead_801F3668();
         return;
     }
     field_0x230--;

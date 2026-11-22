@@ -33,7 +33,7 @@ cls_804AF878::cls_804AF878() {
     field_0x4 = new AdvEntryScreen_804B0B00();
     field_0x8 = new ConnectScreen_804B0F10();
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001A) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001A, false, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001A, false, false);
         gAudioMgr_8053AF80->fn_80458408(0x100001A, true);
         lbl_80529DEC.field_0x248 = 1;
     } else if (lbl_80529DEC.field_0x248 != 1) {

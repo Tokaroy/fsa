@@ -35,7 +35,7 @@ static inline void followEmitter(Leever_804A1718* self) {
 // The actor was hit (or is held): the emitter follows it and the rest of update() is skipped.
 static inline void followHeld(Leever_804A1718* self) {
     followEmitter(self);
-    self->fn_801F2618(NULL, false);
+    self->sweepMapBox_801F2618(NULL, false);
 }
 
 // Returns the colour of the ShadowCircle_804A0160 at gGameRoot2_8053AB10->0x2C.
@@ -103,7 +103,7 @@ void Leever_804A1718::update() {
         followHeld(this);
         return;
     }
-    if (field_0x258 != 0 && fn_801F305C()) {
+    if (field_0x258 != 0 && checkHits_801F305C()) {
         followHeld(this);
         return;
     }
@@ -112,11 +112,11 @@ void Leever_804A1718::update() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
     fn_80212AC0()->fn_80212AF0(&mPos);
-    fn_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
     if (field_0x258 != 0) {
         damagePlayersInBox_801F2B7C(-100, -1, 1);
     }
-    fn_801F2618(NULL, false);
+    sweepMapBox_801F2618(NULL, false);
 
     switch (field_0x230) {
     case 0:

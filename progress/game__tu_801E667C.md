@@ -8,4 +8,6 @@ Resistant: none in code. Data: .rodata 96.77 %, .sdata 85.71 %, .sdata2 85.71 % 
 
 SHARED-EDITS: GameGlobals.h (GameRoot::getPlayerCount_80138A30, AudioMgr_8045A080::fn_80458F04/fn_80458F9C); symbols.txt renames of
 getPlayerCount_80138A30, fn_80458F04, fn_80458F9C to mangled members; new include/game/act/act_vaati_boss.h; gen_game.tsv row removed.
+SHARED-EDITS: GameGlobals.h (GameRoot::fn_80138A30, AudioMgr_8045A080::fn_80458F04/stopBgm_80458F9C); symbols.txt renames of
+fn_80138A30, fn_80458F04, stopBgm_80458F9C to mangled members; new include/game/act/act_vaati_boss.h; gen_game.tsv row removed.
 Next: set Matching after the trial link; lbl_8053A160 (s32 = -1) is defined here, read by act_horse_race_man / tu_80441318.

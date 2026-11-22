@@ -213,7 +213,7 @@ void MagicCircle_804A7960::update() {
     if (field_0x234 != 0 || field_0x238 > 0) {
         if (field_0x240 < 1.0f) {
             if (field_0x263 == 1) {
-                fn_801F0D20(0x2E);
+                playSe_801F0D20(0x2E);
                 field_0x263 = 0;
             }
             field_0x240 += 0.02f;
@@ -221,7 +221,7 @@ void MagicCircle_804A7960::update() {
                 field_0x240 = 1.0f;
                 field_0x248 = 10;
                 if (((mSpawnParam_0x90 >> 3) & 1) == 1) {
-                    fn_801F0D20(3);
+                    playSe_801F0D20(3);
                 }
             }
         }
@@ -287,7 +287,7 @@ void MagicCircle_804A7960::update() {
             addCircle(this, colorIdx);
         } else {
             if (field_0x264 == 1) {
-                fn_801F0D20(0x2F);
+                playSe_801F0D20(0x2F);
                 field_0x264 = 0;
             }
             field_0x240 -= 0.02f;
@@ -307,7 +307,7 @@ void MagicCircle_804A7960::update() {
             field_0x244 = 0;
         }
         if (field_0x25c == 5 && field_0x24c == 0 && field_0x240 <= 0.0f && field_0x244 <= 0 && field_0x23c > 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         return;
     }
@@ -344,7 +344,7 @@ void MagicCircle_804A7960::update() {
             if (field_0x25c == 5) {
                 warpType = 20;
             }
-            if (fn_802317F0(i, getTargetLayer(mSpawnParam_0x90), &mPos, &field_0x268, warpType)) {
+            if (startPlayerTransition_802317F0(i, getTargetLayer(mSpawnParam_0x90), &mPos, &field_0x268, warpType)) {
                 field_0x238 = 180;
                 if ((field_0x24c >= 6 && field_0x24c <= 9) || (field_0x25c == 5 && field_0x24c == 0)) {
                     field_0x23c++;

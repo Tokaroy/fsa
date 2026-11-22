@@ -60,7 +60,7 @@ void RankDisplay_804A8F74::init() {
         field_0x254[i] = 0;
         field_0x274[i] = 0xFF;
         if (gGameRoot_8053AAF8->mPlayerMask & playerBit) {
-            field_0x264[i] = fn_80237774(i);
+            field_0x264[i] = getPlayerLife_80237774(i);
         } else {
             field_0x264[i] = 0;
         }
@@ -104,7 +104,7 @@ void RankDisplay_804A8F74::update() {
             s32 pl[4];
             for (s32 i = 0; i < 4; i++) {
                 if (playerTakesPart(i) == true) {
-                    pl[i] = fn_80237774(i);
+                    pl[i] = getPlayerLife_80237774(i);
                 } else {
                     pl[i] = 0;
                 }
@@ -221,12 +221,12 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = getMain2DResource_804030C4('TIMG', lbl_804A8F50[field_0x244[i]]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
                 }
             }
             break;
@@ -251,12 +251,12 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = getMain2DResource_804030C4('TIMG', "kk_noItem_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
                 }
             }
             break;
@@ -281,12 +281,12 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = getMain2DResource_804030C4('TIMG', "kk_noMagic_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
                 }
             }
             break;
@@ -315,12 +315,12 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.5f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = getMain2DResource_804030C4('TIMG', lbl_804A8F60[field_0x28c[i] - 4]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
                 if (mLayer_0x4 < 8) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+                    gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
                 }
             }
             break;

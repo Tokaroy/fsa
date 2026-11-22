@@ -4,4 +4,4 @@ Matched: dtor, init, __sinit (3/5); .data/.rodata/.sdata2 100 %.
 Resistant:
 - draw now matches (early return form).
 - update 99.32 % (missing/extra): `mr. r30, r3` vs original `cmplwi r3,0; mr r30,r3` after findActorBySerial_801F666C.
-SHARED-EDITS: include/game/Map.h (TileMap_804AA858::fn_802F745C), symbols.txt rename fn_802F745C, gen_game.tsv rows removed.
+SHARED-EDITS: include/game/Map.h (TileMap_804AA858::drawTimgImage_802F745C), symbols.txt rename drawTimgImage_802F745C, gen_game.tsv rows removed.

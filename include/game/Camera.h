@@ -68,7 +68,7 @@ public:
     // shrunk by 0xE on each side; returns 0 or 1. pos goes straight on to
     // worldToScreen_8030C5F0, so const Vec* would compile too: TVec3f (callers pass
     // &mPos, act_door 0x802C73AC) is a guess.
-    bool fn_8030C2A8(const JGeometry::TVec3f* pos);
+    bool isOnScreen_8030C2A8(const JGeometry::TVec3f* pos);
     // 1 unit (act_tingle_time_up_manager 0x80352934). Writes two world
     // positions derived from mViewBox_0x164 and JUTVideo's frame size to out[0]
     // and out[1].
@@ -91,10 +91,10 @@ public:
     // map's bytes 0x2360-0x2363 whose byte 0x235C-0x235F is set, clears the
     // view (fn_802DCDF4) and copies mNextVisibleBox_0x190 to mVisibleBox_0x154.
     void fn_8030C85C();
-    // 1 unit (GameView fn_802DCD1C passes &mVisibleBox). Stores box in
+    // 1 unit (GameView stepScreen_802DCD1C passes &mVisibleBox). Stores box in
     // mNextVisibleBox_0x190 and updates the map object's scroll state (its 0x2360 and
     // 0x2368 / 0x2374, see Map.h).
-    void fn_8030C928(const JGeometry::TBox2f* box);
+    void setNextVisibleBox_8030C928(const JGeometry::TBox2f* box);
     // 1 unit (GameView fn_802DD3D4 passes &mVisibleBox). Starts a screen
     // change towards box: mInTransition_0x1e8 = 1, 0x1EC = 30, mShowWholeArea_0x7f5 = 0
     // (0x8030CA14-0x8030CA2C).
@@ -117,8 +117,8 @@ public:
     // 0x8030DFE8 (game/tu_8030C058.cpp, not written yet). Loads the
     // projection, position matrix 0x74 and viewport / scissor from mScreenRect_0x144;
     // `copy` first copies the matrices from 0x4 / 0x34 into 0x74 / 0xA4.
-    void fn_8030DFE8(bool copy);
-    // Not in the binary: a plain function that fn_8030DFE8 inlines.
+    void loadGXState_8030DFE8(bool copy);
+    // Not in the binary: a plain function that loadGXState_8030DFE8 inlines.
     void setScreenRectViewport();
     void fn_8030E150(); // empty
     void fn_8030E154();
@@ -138,7 +138,7 @@ public:
     // (0x8013D718-0x8013D7CC) and passes it to JPAEmitterManager::draw.
     /* 0x0E4 */ JPADrawInfo mDrawInfo_0xe4;
     // The screen rectangle (x0, y0, x1, y1) as unsigned ints: written by tu_802F5040
-    // (0x802FF438), read by fn_8030C2A8.
+    // (0x802FF438), read by isOnScreen_8030C2A8.
     /* 0x144 */ JGeometry::TBox2<u32> mScreenRect_0x144;
     // The visible area: addFocusPoint_8030C210 / fn_8030C058 test against it,
     // tu_802D39B8 writes it (0x802D9F64), fn_8030C85C resets it from
@@ -160,7 +160,7 @@ public:
     /* 0x17D */ u8 mSkipUpdate_0x17d;
     /* 0x17E */ u8 mUseRequestedBox_0x17e; // set by requestBox_8030C7C4
     /* 0x180 */ JGeometry::TBox2f mRequestedBox_0x180; // requestBox_8030C7C4
-    /* 0x190 */ JGeometry::TBox2f mNextVisibleBox_0x190; // fn_8030C928; fn_8030C85C
+    /* 0x190 */ JGeometry::TBox2f mNextVisibleBox_0x190; // setNextVisibleBox_8030C928; fn_8030C85C
     /* 0x1A0 */ JGeometry::TBox2f mTransitionEndBox_0x1a0; // the box the transition leaves (fn_8030E154 blends from it)
     /* 0x1B0 */ f32 mTransitionEndDepth_0x1b0;     // and its depth
     // fn_8030C85C sets all four floats to one constant.

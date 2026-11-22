@@ -146,7 +146,7 @@ void Bombchu_804AB464::vfunc_0x54() {
     if (hit > 0) {
         for (int i = 0; i < 4; i++) {
             if ((hit >> i) & 1) {
-                fn_80236074(i, 100, 0);
+                dropPlayerForceGems_80236074(i, 100, 0);
             }
         }
     }
@@ -228,7 +228,7 @@ void Bombchu_804AB464::update() {
                 if (hit > 0) {
                     for (i = 0; i < 4; i++) {
                         if ((hit >> i) & 1) {
-                            fn_80236074(i, 100, 0);
+                            dropPlayerForceGems_80236074(i, 100, 0);
                         }
                     }
                 }
@@ -251,7 +251,7 @@ void Bombchu_804AB464::update() {
                 if (hit > 0) {
                     for (i = 0; i < 4; i++) {
                         if ((hit >> i) & 1) {
-                            fn_80236074(i, 100, 0);
+                            dropPlayerForceGems_80236074(i, 100, 0);
                         }
                     }
                 }
@@ -268,7 +268,7 @@ void Bombchu_804AB464::update() {
         if (hit > 0) {
             for (i = 0; i < 4; i++) {
                 if ((hit >> i) & 1) {
-                    fn_80236074(i, 100, 0);
+                    dropPlayerForceGems_80236074(i, 100, 0);
                 }
             }
         }
@@ -287,7 +287,7 @@ void Bombchu_804AB464::update() {
         if (fn_801A4F5C(mSerial, &box, &pos) != 0) {
             explode = 1;
         }
-        if (field_0x248 <= 0 && fn_801F305C()) {
+        if (field_0x248 <= 0 && checkHits_801F305C()) {
             explode = 2;
         }
         if (explode || mLife == 0) {
@@ -376,7 +376,7 @@ void Bombchu_804AB464::draw() {
 bool Bombchu_804AB464::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
         return true;
     }
     s32 code = getTileCollisionCode_8022461C(pos, layer);
@@ -412,7 +412,7 @@ void Bombchu_804AB464::fn_8032506C() {
     if (!viewLayerFlag(mLayer_0x4)) {
         JGeometry::TVec3f wall;
         mPos += mVel_0x3c;
-        if (fn_801F2618(&wall, false) == 1) {
+        if (sweepMapBox_801F2618(&wall, false) == 1) {
             if (wall.x != 0.0f) {
                 if (field_0x275) {
                     mVel_0x3c.x *= -0.7;
@@ -436,7 +436,7 @@ void Bombchu_804AB464::fn_8032506C() {
             return;
         }
         mPos += JGeometry::TVec3f(mVel_0x3c.x, 0.0f, 0.0f);
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             if (field_0x234 > 0.0f) {
                 if (mVel_0x3c.x > 0.0f) {
                     mVel_0x3c.x = -mVel_0x3c.x;
@@ -456,7 +456,7 @@ void Bombchu_804AB464::fn_8032506C() {
         if (field_0x276 == 1) {
             mVel_0x3c.y += field_0x234;
             mPos += JGeometry::TVec3f(0.0f, mVel_0x3c.y, 0.0f);
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mVel_0x3c.y = 0.0f;
                 field_0x277 = 0;
                 return;
@@ -491,7 +491,7 @@ void Bombchu_804AB464::fn_8032506C() {
             return;
         }
         mPos += JGeometry::TVec3f(0.0f, mVel_0x3c.x, 0.0f);
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             if (field_0x234 > 0.0f) {
                 if (mVel_0x3c.x > 0.0f) {
                     mVel_0x3c.x = -mVel_0x3c.x;
@@ -511,7 +511,7 @@ void Bombchu_804AB464::fn_8032506C() {
         if (field_0x276 == 0) {
             mVel_0x3c.y += field_0x234;
             mPos += JGeometry::TVec3f(mVel_0x3c.y, 0.0f, 0.0f);
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mVel_0x3c.y = 0.0f;
                 return;
             }

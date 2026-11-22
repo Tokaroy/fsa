@@ -17,7 +17,7 @@ void PointCheckNPC_804A81C8::init() {
     }
 }
 
-// FIXME: 98.3%. Regalloc / scheduling: same length, 8 opcodes differ (tile compare regalloc, PRNG drops regalloc, and fn_802F9974 call site independent load scheduling).
+// FIXME: 98.3%. Regalloc / scheduling: same length, 8 opcodes differ (tile compare regalloc, PRNG drops regalloc, and setTile_802F9974 call site independent load scheduling).
 void PointCheckNPC_804A81C8::update() {
     JGeometry::TVec2<f32> p(mPos.x + 4.0f, mPos.y + 4.0f);
     JGeometry::TBox2f box(mBox);
@@ -129,7 +129,7 @@ void PointCheckNPC_804A81C8::update() {
         case 1:
             field_0x238--;
             if (field_0x238 == 0) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, field_0x23c, field_0x240);
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, field_0x23c, field_0x240);
                 field_0x230 = 1;
             }
             break;
@@ -155,9 +155,9 @@ void PointCheckNPC_804A81C8::update() {
                         spawnEmitter_8013CC50(layer, &pos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                     }
                     if (field_0x234 == 4) {
-                        gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0x4F);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x4F);
                     } else {
-                        gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0x4E);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x4E);
                     }
                     field_0x230 = 1;
                 } else {
@@ -175,7 +175,7 @@ void PointCheckNPC_804A81C8::update() {
         case 2:
             field_0x238--;
             if (field_0x238 == 0) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, field_0x23c, field_0x240);
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, field_0x23c, field_0x240);
                 field_0x230 = 1;
             }
             break;

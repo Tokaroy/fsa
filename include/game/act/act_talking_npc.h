@@ -17,14 +17,14 @@ public:
     /* 0x14 */ virtual void update(); // fn_80394198
     /* 0x20 */ virtual void draw();   // fn_80394194, empty
 
-    // fn_8038AD24 takes the position by value; the serial is read inside so it
+    // openMessage_8038AD24 takes the position by value; the serial is read inside so it
     // is loaded after the position copy (RULES_CARD, by-value message calls).
     bool talk(u32 player, u32 msg, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038AD24(player, msg, field_0x234, layer, pos, flags);
+        return openMessage_8038AD24(player, msg, field_0x234, layer, pos, flags);
     }
 
     /* 0x230 */ s32 mState; // 0: open the message, 1: wait for it to end
-    /* 0x234 */ s32 field_0x234; // mSerial, as fn_8038AD24's serial
+    /* 0x234 */ s32 field_0x234; // mSerial, as openMessage_8038AD24's serial
     /* 0x238 */ s16 field_0x238; // 0x78-frame timeout of state 1
 }; // Size: 0x23C
 

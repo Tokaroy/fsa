@@ -22,7 +22,7 @@ public:
     // Not in the binary: a plain function that init and update inline.
     void pool_80542558();
     bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038AD24(player, msg, serial, layer, pos, flags);
+        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
     }
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ s32 field_0x234;

@@ -30,7 +30,7 @@ void ColourBlock1Player_804AE620::init() {
         u32 mask = 0;
         s32 serial = -1;
         while (true) {
-            serial = getActorManager_801F856C()->fn_801F78F4('BCK2', serial);
+            serial = getActorManager_801F856C()->findNextActorById_801F78F4('BCK2', serial);
             if (serial < 0) {
                 break;
             }
@@ -127,7 +127,7 @@ void ColourBlock1Player_804AE620::update() {
 
     JGeometry::TVec3f probe;
     if (PSVECDistance(&mPos, &field_0x230) >= 15.9f) {
-        if (!fn_801F2618(NULL, false)) {
+        if (!sweepMapBox_801F2618(NULL, false)) {
             probe = mVel_0x3c;
             probe.normalize();
             probe.scale(16.0f);
@@ -191,7 +191,7 @@ void ColourBlock1Player_804AE620::update() {
                             getGameView_802D6A9C()->fn_802D7584(field_0x16c, dir + 1);
                         }
                         mPos += offset;
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             mPos = savedPos;
                             return;
                         }
@@ -231,7 +231,7 @@ bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
     mVel_0x3c.z = lbl_804750F0[dir].z;
     mPos += mVel_0x3c;
     JGeometry::TVec3f probe(0.0f, 0.0f, 0.0f);
-    if (fn_801F2618(&probe, false)) {
+    if (sweepMapBox_801F2618(&probe, false)) {
         switch (dir) {
         case 0:
             if (probe.x >= 0.0f) {

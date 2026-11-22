@@ -55,7 +55,7 @@ static inline void beginShow(Goal_804A7EB0* self, s32 d0, s32 d1, s32 d2) {
     self->field_0x230 = 4;
     lbl_8053AED0->field_0xdc |= 0x10;
     getGameView_802D6A9C()->fn_802D7970(30);
-    gAudioMgr_8053AF80->fn_80458FF0(0x1000001, true, 0);
+    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000001, true, 0);
     gGameRoot_8053AAF8->fn_801365C8(0);
     pos.z = self->mPos.z;
     for (s32 i = 0; i < 4; i++) {
@@ -207,7 +207,7 @@ void Goal_804A7EB0::update() {
                     }
                 }
             }
-            getGameView_802D6A9C()->fn_802D8050(field_0x240, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x240, true, 0xFF);
             field_0x230 = 2;
             field_0x31c = 0xE6;
             field_0x244 = 300;
@@ -238,9 +238,9 @@ void Goal_804A7EB0::update() {
                 box.f.x = mBox.f.x + dx;
                 box.f.y = mBox.f.y + dy;
                 for (s32 p = 0; p < n; p++) {
-                    if (fn_8023B0F4(fn_8022EA0C(p), &box, mLayer_0x4, false, 0.0f)) {
-                        field_0x254[i] = fn_8022EA0C(p);
-                        found[fn_8022EA0C(p)] = 1;
+                    if (fn_8023B0F4(getRepresentativePlayer_8022EA0C(p), &box, mLayer_0x4, false, 0.0f)) {
+                        field_0x254[i] = getRepresentativePlayer_8022EA0C(p);
+                        found[getRepresentativePlayer_8022EA0C(p)] = 1;
                         count++;
                         field_0x264[i].x = mPos.x + (f32)lbl_8046C658[field_0x234][i];
                         field_0x264[i].y = mPos.y + (f32)lbl_8046C6C8.y[field_0x234][i];
@@ -282,7 +282,7 @@ void Goal_804A7EB0::update() {
                 box.f.x = mBox.f.x + dx;
                 box.f.y = mBox.f.y + dy;
                 field_0x254[i] = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
-                if (field_0x254[i] == fn_8022EA0C(0)) {
+                if (field_0x254[i] == getRepresentativePlayer_8022EA0C(0)) {
                     u8 slot = i;
                     field_0x264[i].x = mPos.x + (f32)lbl_8046C658[field_0x234][i];
                     field_0x264[i].y = mPos.y + (f32)lbl_8046C6C8.y[field_0x234][i];
@@ -503,7 +503,7 @@ void Goal_804A7EB0::draw() {
             pos.z = mPos.z;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
         }
         for (s32 i = 0; i < 4; i++) {
@@ -516,7 +516,7 @@ void Goal_804A7EB0::draw() {
                 pos.z = field_0x264[i].z;
                 if (mLayer_0x4 < 8) {
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
                 }
             }
         }

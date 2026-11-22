@@ -77,7 +77,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     s32 serial = -1;
     s32 count = 0;
     for (;;) {
-        s32 found = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        s32 found = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', serial);
         serial = found;
         if (found < 0) {
             break;
@@ -124,7 +124,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         bool any;
         s32 cucco = -1;
         for (;;) {
-            cucco = getActorManager_801F856C()->fn_801F78F4('NIWA', cucco);
+            cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
             if (cucco < 0) {
                 any = false;
                 break;
@@ -151,7 +151,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
     }
     case 1:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x240)) {
+        if (stepMessageWindow_803865B8(field_0x240)) {
             switch (fn_8037EFB4(field_0x240)) {
             case 0:
                 switch (field_0x244) {
@@ -199,8 +199,8 @@ void CuccoHerdingNPC_804AC8C0::update() {
             switch (field_0x230) {
             case 3:
             case 5:
-                fn_801F0D20(0x3a);
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+                playSe_801F0D20(0x3a);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
                 fn_8022ADE4();
                 field_0x230 = 6;
                 break;
@@ -243,9 +243,9 @@ void CuccoHerdingNPC_804AC8C0::update() {
         break;
     case 6:
         if (found >= field_0x24c) {
-            fn_801F0D20(0x3b);
+            playSe_801F0D20(0x3b);
             gAudioMgr_8053AF80->fn_80458508(0);
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             JGeometry::TBox2f area;
             area = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
             for (s32 i = 0; i < 4; i++) {
@@ -257,7 +257,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             area.f.y += mPos.y;
             s32 cucco = -1;
             for (;;) {
-                cucco = getActorManager_801F856C()->fn_801F78F4('NIWA', cucco);
+                cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
                 if (cucco < 0) {
                     break;
                 }
@@ -331,7 +331,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             field_0x248++;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(field_0x240)) {
+        if (stepMessageWindow_803865B8(field_0x240)) {
             switch (field_0x230) {
             case 7:
                 fn_8038938C(field_0x240, field_0x24c - field_0x270);
@@ -402,7 +402,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             flag = false;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, flag, false);
-        if (fn_803865B8(field_0x240)) {
+        if (stepMessageWindow_803865B8(field_0x240)) {
             switch (field_0x244) {
             case 0:
                 if (field_0x258 < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
@@ -436,7 +436,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(field_0x254),
                                     (field_0x254 << 26) | (field_0x254 << 24) | 0x1000A, -1, -1);
-                            } else if (!fn_80236B50(i) && fn_8022F514(i) == 1 && field_0x254 == fn_8022F3DC(i)) {
+                            } else if (!isPlayerDead_80236B50(i) && hasPlayerLeader_8022F514(i) == 1 && field_0x254 == getPlayerLeader_8022F3DC(i)) {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(i),
                                     (field_0x254 << 26) | 0x10000000 | (i << 24) | 0x1000A, -1, -1);
@@ -508,7 +508,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
 void CuccoHerdingNPC_804AC8C0::pool_80542558() {
     JGeometry::TVec3f dir;
     f32 dist;
-    fn_801EE558(&dir, &dist, 0);
+    getNearestPlayerDir_801EE558(&dir, &dist, 0);
     if (dist < 100.0f) {
         u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -613,7 +613,7 @@ s32 CuccoHerdingNPC_804AC8C0::fn_8034AAA0() {
     field_0x274[2] = 0;
     field_0x274[3] = 0;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', serial);
         if (serial < 0) {
             break;
         }

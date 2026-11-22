@@ -2,7 +2,7 @@
 
 Baseline: 7964 / 11557. After: 7975 (14/21 in the unit, +11).
 
-Matched: die_0x24 (fn_8017C01C), fn_8017EAB4 (JPABaseEmitter::becomeInvalidEmitter copy), EACC (setGlobalEnvColor copy),
+Matched: die_0x24 (fn_8017C01C), invalidateEmitter_8017EAB4 (JPABaseEmitter::becomeInvalidEmitter copy), EACC (setGlobalEnvColor copy),
 EADC/EB0C/EC38/EC5C/ECE8/ECF4 (JGeometry/TColor out-of-line copies), EB1C.
 
 Resistant (FIXMEs in source): fn_8017EB44 83.75 % (constant 1 / zero register sharing), fn_8017EC70 93.55 %

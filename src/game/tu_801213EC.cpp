@@ -25,7 +25,7 @@ f32 pool_8053C9B0();
 // Passes the position on by value (the original loads the other arguments before its copy);
 // layer before serial, as fn_8022FEB8 takes them.
 static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 // The ids vfunc_0x80 asks findOverlappingActorOf_801F26CC about (0xAC bytes of 'PEAC', 'OKTA', 'AMOS', ... ids).
@@ -68,7 +68,7 @@ EscortBase_8049E0C8::~EscortBase_8049E0C8() {
 
 // The escort's answer to a screen change (see the header).
 s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
-    s32 count = fn_80131F0C()->mCount;
+    s32 count = getEscortActorList_80131F0C()->mCount;
     if (count == 0) {
         s32 serial = lbl_80539F30;
         if (serial < 0) {
@@ -83,7 +83,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     }
     u8 flag = 0;
     for (s32 i = 0; i < count; i++) {
-        EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(fn_80131F0C()->fn_80131E30(i));
+        EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(getEscortActorList_80131F0C()->fn_80131E30(i));
         if (escort != NULL && escort->mActorId == ACTOR_FAZR) {
             escort->field_0x334 = 1;
             switch (escort->vfunc_0x5C(&dir->x)) {
@@ -164,7 +164,7 @@ void EscortBase_8049E0C8::update() {
     }
     JGeometry::TVec3f out;
     if (field_0x331) {
-        fn_801F2618(&out, false);
+        sweepMapBox_801F2618(&out, false);
     }
     JGeometry::TVec3f dir;
     dir.set(0.0f, 0.0f, 0.0f);
@@ -172,7 +172,7 @@ void EscortBase_8049E0C8::update() {
         mPos.add(dir);
     }
     mAnim.mFrameCtrl.setRate(field_0x37c);
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
     fn_801217EC(mLife == 0);
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     vfunc_0x90();
@@ -292,7 +292,7 @@ void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
     s32 dir;
     s32 who;
     f32 dist;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &who, a, b);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &who, a, b);
     if (dir >= 0 && !(dist > limit)) {
         fn_80122730(dir, true, true);
     }
@@ -357,9 +357,9 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         arg6 = 2.0f * arg6;
     }
     if (dist >= arg6) {
-        fn_801CD950(&field_0x380, arg4, arg2);
+        moveToward_801CD950(&field_0x380, arg4, arg2);
     } else {
-        fn_801CD950(&field_0x380, 0.0f, arg3);
+        moveToward_801CD950(&field_0x380, 0.0f, arg3);
     }
     mVel_0x3c.x = field_0x380 * JMath::sincosTable_.sinShort(angle);
     mVel_0x3c.y = field_0x380 * JMath::sincosTable_.cosShort(angle);
@@ -415,7 +415,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
                 mDir_0x98 = dir;
                 if (dir + 5 != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir + 5, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -429,7 +429,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
             mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.fn_801D1F14(0.0f);
+                mAnim.setFrame_801D1F14(0.0f);
             }
         }
     }
@@ -438,7 +438,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
 // FIXME(shotgun): 98.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
-        fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
+        findTargetPlayer_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
         field_0x334 = 0;
     } else {
         s32 who = player;
@@ -479,7 +479,7 @@ void EscortBase_8049E0C8::fn_80122F6C(f32* x, f32* y, s32* player) {
         v = 16.0f;
     }
     f32 off = 0.5f * (getPlayerGroupSize_8022E970(*player) - 1) - 0.5f;
-    switch (fn_80230CFC(*player)) {
+    switch (getPlayerFacing_80230CFC(*player)) {
     case 0:
         *x = 16.0f * off + v;
         *y = 16.0f;
@@ -505,7 +505,7 @@ void EscortBase_8049E0C8::vfunc_0xA8(f32* x, f32* y, s32* player) {
         v = 16.0f;
     }
     f32 offset = 0.5f * (getPlayerGroupSize_8022E970(*player) - 1) - 0.5f;
-    switch (fn_80230CFC(*player)) {
+    switch (getPlayerFacing_80230CFC(*player)) {
     case 0:
         *x = -16.0f;
         *y = 16.0f * offset + v;
@@ -530,7 +530,7 @@ void EscortBase_8049E0C8::vfunc_0xAC(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    switch (fn_80230CFC(*player)) {
+    switch (getPlayerFacing_80230CFC(*player)) {
     case 0:
         *x = -16.0f - v;
         *y = 8.0f;
@@ -555,7 +555,7 @@ void EscortBase_8049E0C8::vfunc_0xB0(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    *player = fn_8022EA0C(*player);
+    *player = getRepresentativePlayer_8022EA0C(*player);
     *x = v;
     *y = 16.0f + v;
 }
@@ -567,7 +567,7 @@ static inline s32 findGroupMember(s32 target) {
     s32 i;
     s32 result = target;
     for (i = 0; i < 4; i++) {
-        if (fn_8022E438(i, target)) {
+        if (arePlayersInSameGroup_8022E438(i, target)) {
             result = i;
         }
     }
@@ -583,7 +583,7 @@ void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    switch (fn_80230CFC(*player)) {
+    switch (getPlayerFacing_80230CFC(*player)) {
     case 0:
         *x = -v;
         break;
@@ -604,7 +604,7 @@ void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    switch (fn_80230CFC(*player)) {
+    switch (getPlayerFacing_80230CFC(*player)) {
     case 0:
         *x = -16.0f - v;
         *y = 0.0f;
@@ -670,7 +670,7 @@ s32 EscortBase_8049E0C8::fn_8012285C() const {
     if (field_0x344 < 0 || field_0x344 >= 4) {
         return -1;
     }
-    return fn_8022EA0C(field_0x344);
+    return getRepresentativePlayer_8022EA0C(field_0x344);
 }
 
 bool EscortBase_8049E0C8::fn_80122834() {
@@ -716,7 +716,7 @@ void EscortBase_8049E0C8::fn_80122730(s32 anim, bool shifted, bool throttled) {
         }
         if (anim != mAnim.mAnim) {
             mAnim.startAnim_801D22DC(anim, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
     }
 }
@@ -725,7 +725,7 @@ void EscortBase_8049E0C8::fn_80122548() {
     if (fn_8012285C() >= 0) {
         field_0x331 = 0;
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(fn_8012285C());
-        mDir_0x98 = fn_80230CFC(fn_8012285C());
+        mDir_0x98 = getPlayerFacing_80230CFC(fn_8012285C());
         switch (mDir_0x98) {
         case 0:
             pos.x -= 16.0f;
@@ -741,9 +741,9 @@ void EscortBase_8049E0C8::fn_80122548() {
             break;
         }
         field_0x37c = 0.5f;
-        fn_801CD950(&mPos.x, pos.x, 2.0f);
-        fn_801CD950(&mPos.y, pos.y, 2.0f);
-        s32 dir = fn_80230CFC(fn_8012285C());
+        moveToward_801CD950(&mPos.x, pos.x, 2.0f);
+        moveToward_801CD950(&mPos.y, pos.y, 2.0f);
+        s32 dir = getPlayerFacing_80230CFC(fn_8012285C());
         if (dir >= 0) {
             field_0x364[4]++;
             if (field_0x364[4] >= 10) {
@@ -754,7 +754,7 @@ void EscortBase_8049E0C8::fn_80122548() {
                 mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -799,7 +799,7 @@ void EscortBase_8049E0C8::fn_80122148() {
         if (found >= 0 && found != fn_8012285C()) {
             pos.z = getPlayerPos_8023E724(found)->z;
         }
-        mDir_0x98 = fn_80230CFC(fn_8012285C());
+        mDir_0x98 = getPlayerFacing_80230CFC(fn_8012285C());
         switch (mDir_0x98) {
         case 0:
             pos.x -= 16.0f;
@@ -822,10 +822,10 @@ void EscortBase_8049E0C8::fn_80122148() {
             mPos.y = pos.y;
             mPos.z = pos.z;
         } else {
-            fn_801CD950(&mPos.x, pos.x, 5.0f);
-            fn_801CD950(&mPos.y, pos.y, 5.0f);
+            moveToward_801CD950(&mPos.x, pos.x, 5.0f);
+            moveToward_801CD950(&mPos.y, pos.y, 5.0f);
         }
-        s32 dir = fn_80230CFC(fn_8012285C());
+        s32 dir = getPlayerFacing_80230CFC(fn_8012285C());
         if (dir >= 0) {
             field_0x364[4]++;
             if (field_0x364[4] >= 10) {
@@ -836,7 +836,7 @@ void EscortBase_8049E0C8::fn_80122148() {
                 mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -895,16 +895,16 @@ void EscortBase_8049E0C8::fn_80121F34() {
 bool EscortBase_8049E0C8::fn_80121E40() {
     switch (mDir_0x98) {
     case 0:
-        fn_801CD950(&mVel_0x3c.x, 0.0f, 0.1f);
+        moveToward_801CD950(&mVel_0x3c.x, 0.0f, 0.1f);
         break;
     case 1:
-        fn_801CD950(&mVel_0x3c.x, 0.0f, -0.1f);
+        moveToward_801CD950(&mVel_0x3c.x, 0.0f, -0.1f);
         break;
     case 2:
-        fn_801CD950(&mVel_0x3c.y, 0.0f, 0.1f);
+        moveToward_801CD950(&mVel_0x3c.y, 0.0f, 0.1f);
         break;
     case 3:
-        fn_801CD950(&mVel_0x3c.y, 0.0f, -0.1f);
+        moveToward_801CD950(&mVel_0x3c.y, 0.0f, -0.1f);
         break;
     }
     mVel_0x3c.z -= 0.2f;
@@ -943,7 +943,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     tmp.x += vec.x;
     tmp.y += vec.y;
     JGeometry::TVec3f pos(tmp);
-    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
+    s32 result = mRail.stepAlongRail_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
     mVel_0x3c.x = step.x;
     mVel_0x3c.y = step.y;
     mVel_0x3c.z = step.z;
@@ -959,7 +959,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
             mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.fn_801D1F14(0.0f);
+                mAnim.setFrame_801D1F14(0.0f);
             }
         }
     }
@@ -1142,8 +1142,8 @@ bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
     }
     JGeometry::TBox2f box;
     JGeometry::TBox2f circleBox;
-    fn_801F31C4(&box);
-    circle->fn_801F31C4(&circleBox);
+    getBoxAtPos_801F31C4(&box);
+    circle->getBoxAtPos_801F31C4(&circleBox);
     circleBox.i.x += -16.0f;
     circleBox.i.y += -16.0f;
     circleBox.f.x += 16.0f;

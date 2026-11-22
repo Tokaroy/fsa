@@ -23,7 +23,7 @@ void Thwomp_804AB5D8::init() {
 // FIXME: 98.55 %. Scheduling and register allocation only: the li of `hit`
 // is placed two instructions earlier than in the original, which shifts the
 // r28-r30 assignment. hitMap is an s32 because the original keeps
-// fn_801F2618's result zero-extended at the call (clrlwi r30, r3, 24) and
+// sweepMapBox_801F2618's result zero-extended at the call (clrlwi r30, r3, 24) and
 // tests it with cmpwi; a bool gives mr + clrlwi.
 void Thwomp_804AB5D8::update() {
     bool hit = false;
@@ -34,7 +34,7 @@ void Thwomp_804AB5D8::update() {
         field_0x238[i] = 0;
     }
     mPos += mVel_0x3c;
-    s32 hitMap = fn_801F2618(NULL, false);
+    s32 hitMap = sweepMapBox_801F2618(NULL, false);
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8023EA28(i)) {
             if (getPlayerPos_8023E724(i)->y > mPos.y && mPos.x - 15.0f < getPlayerPos_8023E724(i)->x &&
@@ -42,7 +42,7 @@ void Thwomp_804AB5D8::update() {
                 if (fn_8023B190(i, &box, mLayer_0x4)) {
                     JGeometry::TVec2f p(box.f.x + 0.5f * (box.i.x - box.f.x),
                                         box.f.y + 0.5f * (box.i.y - box.f.y));
-                    fn_80238548(i, mParamAtcp_0x114, &p, 20);
+                    hitPlayerGroup_80238548(i, mParamAtcp_0x114, &p, 20);
                     if (!hit) {
                         hit = true;
                     }
@@ -95,7 +95,7 @@ void Thwomp_804AB5D8::update() {
 void Thwomp_804AB5D8::draw() {
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x17A, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0x17A, NULL, 1.0f, 1.0f);
     }
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, 0x17A, false, 2, -1, 0, 0, 0);
 }

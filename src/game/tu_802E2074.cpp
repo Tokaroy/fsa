@@ -35,7 +35,7 @@ void EnemyGenerator2_804A9BC8::init() {
     u32 type = 'B   ';
     sprintf(buf, "d_enemy_map%s_%d%d.bin", name, tile / 10, tile % 10);
     type += ((name[0] - ' ') << 16) + ((name[1] - ' ') << 8) + (name[2] - ' ');
-    field_0x244 = (u8*)fn_804032E8(type, buf);
+    field_0x244 = (u8*)getBossArchiveResource_804032E8(type, buf);
     field_0x248 = 0;
     field_0x23c = (mSpawnParam_0x90 >> 16) & 7;
     field_0x24c = 0;
@@ -67,7 +67,7 @@ void EnemyGenerator2_804A9BC8::update() {
                     lbl_8053ACB0--;
                     if (lbl_8053ACB0 == 0) {
                         ActorBase_804A5770* list[ACTOR_MANAGER_MAX_ACTORS];
-                        s32 count = getActorManager_801F856C()->fn_801F7818('GEN2', mLayer_0x4, list, -1);
+                        s32 count = getActorManager_801F856C()->collectActorsById_801F7818('GEN2', mLayer_0x4, list, -1);
                         for (s32 k = 0; k < count; k++) {
                             if (list[k] != NULL) {
                                 static_cast<EnemyGenerator2_804A9BC8*>(list[k])->field_0x230 = 1;
@@ -98,7 +98,7 @@ void EnemyGenerator2_804A9BC8::update() {
                 }
                 done = true;
                 if (field_0x24c == 0x40) {
-                    fn_801F3668();
+                    markDead_801F3668();
                 } else {
                     field_0x24e += 8;
                 }
@@ -145,7 +145,7 @@ void EnemyGenerator2_804A9BC8::update() {
                 if (lbl_804D4768[lbl_8053ACB0] >= 0) {
                     lbl_8053ACB0++;
                     if (lbl_8053ACB0 >= 0x50) {
-                        fn_801F3668();
+                        markDead_801F3668();
                         break;
                     }
                 }

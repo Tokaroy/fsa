@@ -13,11 +13,11 @@ static const s32 lbl_804713C0[8][3] = {
     {0, 1, 2}, {0, 1, 3}, {0, 2, 3}, {1, 2, 3}, {0, 1, 3}, {0, 1, 4}, {0, 3, 4}, {1, 3, 4},
 };
 
-// fn_8038AD24 / fn_8038BD08 take the position by value; the original copies
+// openMessage_8038AD24 / fn_8038BD08 take the position by value; the original copies
 // mPos after loading the serial and layer, and loads the flags after the copy.
 static inline bool talkAt(s32 player, u32 msg, s32 serial, s32 layer,
                           const JGeometry::TVec3f& pos) {
-    return fn_8038AD24(player, msg, serial, layer, pos, 0x28);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, 0x28);
 }
 
 static inline bool talkAtFlags21(s32 player, u32 msg, s32 layer, const JGeometry::TVec3f& pos) {
@@ -146,15 +146,15 @@ void GamblingShop_804AAA70::update() {
             field_0x23c = 0x14;
             s32 player = field_0x248;
             if (player >= 0) {
-                player = fn_8022EA0C(player);
+                player = getRepresentativePlayer_8022EA0C(player);
             }
             JGeometry::TVec3f dir;
             f32 dist;
             // The layer is on the left: that compare order is what the original emits.
             if (player < 0 || getPlayerLayer_8023DE58(player) != getField_0x4()) {
-                fn_801EE558(&dir, &dist, 0);
+                getNearestPlayerDir_801EE558(&dir, &dist, 0);
             } else {
-                fn_801EE558(&dir, &dist, player + 1);
+                getNearestPlayerDir_801EE558(&dir, &dist, player + 1);
             }
             if (dist >= 80.0f) {
                 field_0x238 = 2;
@@ -216,7 +216,7 @@ void GamblingShop_804AAA70::update() {
     }
     case 1: {
         fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
-        if (!fn_803865B8(field_0x248)) {
+        if (!stepMessageWindow_803865B8(field_0x248)) {
             break;
         }
         if (fn_8037EFB4(field_0x248) == 0) {
@@ -286,7 +286,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 4: {
-        s32 player = fn_8022EA0C(field_0x248);
+        s32 player = getRepresentativePlayer_8022EA0C(field_0x248);
         if (getPlayerLayer_8023DE58(player) != getField_0x4()) {
             for (s32 k = 0; k < field_0x24c; k++) {
                 s32 actorSlot = field_0x250[k];
@@ -362,7 +362,7 @@ void GamblingShop_804AAA70::update() {
                 break;
             }
         }
-        s32 player = fn_8022EA0C(field_0x248);
+        s32 player = getRepresentativePlayer_8022EA0C(field_0x248);
         if (talkAtFlags21(player, msg, mLayer_0x4, mPos)) {
             for (s32 k = 0; k < field_0x24c; k++) {
                 s32 actorSlot = field_0x250[k];

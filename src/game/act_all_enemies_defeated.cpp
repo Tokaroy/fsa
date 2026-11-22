@@ -115,7 +115,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
             f32 scale2 = actor->getEffectScale_801EE4F0();
             spawnEmitter_8013CC50(layer, &actor->mPos, 0x173, 1, 1, NULL, NULL, true, scale2);
             actor->fn_801F4694();
-            actor->fn_801F3668();
+            actor->markDead_801F3668();
             break;
         }
         case 1: {
@@ -188,7 +188,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D958() {
             startSound_801F0E34(0x3005C, 0);
             fn_8019DC5C();
         } else {
-            fn_801F0D20(0x4F);
+            playSe_801F0D20(0x4F);
             if (mField_0x24c >= 260) {
                 mAlive = false;
                 gGameRoot_8053AAF8->fn_80134FC4(0);
@@ -277,7 +277,7 @@ void AllEnemiesDefeated_804A2AB0::fn_8019D2AC() {
                                     lbl_804C5E30[i] = 0;
                                     mField_0x258++;
                                     actor->fn_801F4694();
-                                    actor->fn_801F3668();
+                                    actor->markDead_801F3668();
                                     break;
                                 }
                             }
@@ -348,7 +348,7 @@ void AllEnemiesDefeated_804A2AB0::update() {
         switch (mField_0x230) {
         case 0:
             if (isScreenFlagSet_0x34()) {
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
                 fn_8019DC5C();
                 mAlive = false;
             }

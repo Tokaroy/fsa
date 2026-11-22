@@ -48,7 +48,7 @@ void ZoraEscort_8049DF78::init() {
     fn_80124448();
     if ((mSpawnParam_0x90 >> 2) & 1) {
         field_0x344 = (mSpawnParam_0x90 >> 3) & 0xF;
-        fn_80131F0C()->fn_80131EC0(this);
+        getEscortActorList_80131F0C()->fn_80131EC0(this);
         vfunc_0x6C(7);
     }
 }
@@ -126,8 +126,8 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             }
             if (fn_802308E0(nearPlayer)) {
                 field_0x3cc = nearPlayer;
-                if (fn_8022F514(nearPlayer)) {
-                    fn_8022F3DC(nearPlayer);
+                if (hasPlayerLeader_8022F514(nearPlayer)) {
+                    getPlayerLeader_8022F3DC(nearPlayer);
                 }
                 field_0x344 = nearPlayer;
                 vfunc_0x6C(2);
@@ -135,13 +135,13 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             }
         }
         u16 msg = 0x2B7;
-        if (fn_80131F0C()->mCount == 1) {
+        if (getEscortActorList_80131F0C()->mCount == 1) {
             msg = 0x2B4;
         }
         s32 player = fn_80122898(msg);
         if (player >= 0) {
-            if (fn_8022F514(player)) {
-                player = fn_8022F3DC(player);
+            if (hasPlayerLeader_8022F514(player)) {
+                player = getPlayerLeader_8022F3DC(player);
             }
             field_0x344 = player;
             vfunc_0x6C(1);
@@ -159,12 +159,12 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
     case 2:
         field_0x3c8++;
         if (field_0x3c8 >= 60) {
-            if (fn_80131F0C()->mCount == 1) {
+            if (getEscortActorList_80131F0C()->mCount == 1) {
                 vfunc_0x6C(4);
             } else {
                 fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
                 if (field_0x3cc == fn_8022FD8C(mSerial)) {
-                    if (fn_8038AD24(field_0x3cc, 0x2B3, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                    if (openMessage_8038AD24(field_0x3cc, 0x2B3, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                         vfunc_0x6C(3);
                         field_0x3c8 = 0;
                     }
@@ -187,10 +187,10 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
             if (field_0x3cc == fn_8022FD8C(mSerial)) {
                 u16 msg = 0x2B7;
-                if (fn_80131F0C()->mCount == 1) {
+                if (getEscortActorList_80131F0C()->mCount == 1) {
                     msg = 0x2B4;
                 }
-                if (fn_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                if (openMessage_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     vfunc_0x6C(5);
                 }
             }
@@ -219,8 +219,8 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             seq->field_0x2 = 1;
             fn_8011921C()->fn_80118454();
             lbl_8053AD70->fn_8037AE00();
-            for (s32 i = 0; i < fn_80131F0C()->mCount; i++) {
-                EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(fn_80131F0C()->fn_80131E30(i));
+            for (s32 i = 0; i < getEscortActorList_80131F0C()->mCount; i++) {
+                EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(getEscortActorList_80131F0C()->fn_80131E30(i));
                 if (escort != NULL) {
                     escort->vfunc_0x6C(13);
                 }
@@ -293,7 +293,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 bool ZoraEscort_8049DF78::hasNearbyBari() {
-    if (fn_80131F0C()->mCount <= 1) {
+    if (getEscortActorList_80131F0C()->mCount <= 1) {
         return false;
     }
     f32 distSq = 300.0f;
@@ -323,7 +323,7 @@ s32 ZoraEscort_8049DF78::findNearbyPlayer() {
     s32 dir = 0;
     s32 player = 0;
     f32 dist = 0.0f;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (player < 0 || player >= 4) {
         return -1;
     }
@@ -365,7 +365,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         field_0x11e = 1;
         break;
     case 8: {
-        fn_801F3668();
+        markDead_801F3668();
         u32 arg = mSpawnParam_0x90;
         arg |= 4;
         arg |= fn_8012285C() << 3;
@@ -380,17 +380,17 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         mAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 11:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 12:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 13: {
         JGeometry::TVec3f pos2;
         JGeometry::TVec3f pos1(mPos);
         pos2 = mPos;
         for (s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08(ACTOR_RAIL); serial != -1;
-             serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_RAIL, serial)) {
+             serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_RAIL, serial)) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (!actor) {
                 break;
@@ -406,16 +406,16 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         f32 dist2 = JGeometry::TUtilf::sqrt(square(mPos.x - pos2.x) + square(mPos.y - pos2.y));
         if (dist1 > dist2) {
             if (field_0x3c4) {
-                fn_801283E8()->fn_80127ED8(&pos2);
+                getZoraEscortGoalList_801283E8()->fn_80127ED8(&pos2);
             } else {
-                fn_801283E8()->fn_80127E20(&pos2);
+                getZoraEscortGoalList_801283E8()->fn_80127E20(&pos2);
             }
             field_0x35c = field_0x3d0;
         } else {
             if (field_0x3c4) {
-                fn_801283E8()->fn_80127ED8(&pos1);
+                getZoraEscortGoalList_801283E8()->fn_80127ED8(&pos1);
             } else {
-                fn_801283E8()->fn_80127E20(&pos1);
+                getZoraEscortGoalList_801283E8()->fn_80127E20(&pos1);
             }
         }
         fn_80121D68();
@@ -426,15 +426,15 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         field_0x3c8 = 0;
         break;
     case 15:
-        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
         field_0x11e = 0;
         mDrawEnabled = false;
         mAlive = false;
         lbl_80539F30 = -1;
-        fn_80131F0C()->fn_80131EE4();
+        getEscortActorList_80131F0C()->fn_80131EE4();
         break;
     }
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     return EscortBase_8049E0C8::vfunc_0x6C(state);
 }
 
@@ -453,11 +453,11 @@ bool ZoraEscort_8049DF78::stepToPlayer() {
     f32 stepX = 0.7f * JMath::sincosTable_.sinShort(angle);
     f32 stepY = 0.7f * JMath::sincosTable_.cosShort(angle);
     bool arrived = true;
-    if (fn_801CD950(&mPos.x, targetPos.x, stepX) != 0 && stepX != 0.0f) {
+    if (moveToward_801CD950(&mPos.x, targetPos.x, stepX) != 0 && stepX != 0.0f) {
         arrived = false;
     }
     if (!viewLayerFlag(mLayer_0x4)) {
-        if (fn_801CD950(&mPos.y, targetPos.y, stepY) != 0 && stepY != 0.0f) {
+        if (moveToward_801CD950(&mPos.y, targetPos.y, stepY) != 0 && stepY != 0.0f) {
             arrived = false;
         }
     }
@@ -465,9 +465,9 @@ bool ZoraEscort_8049DF78::stepToPlayer() {
 }
 
 void ZoraEscort_8049DF78::vfunc_0x70() {
-    mAnim.fn_801D2608(lbl_8049DF40, 14);
+    mAnim.setKeyTables_801D2608(lbl_8049DF40, 14);
     mAnim.startAnim_801D22DC(7, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void ZoraEscort_8049DF78::vfunc_0x74() {
@@ -495,10 +495,10 @@ s32 ZoraEscort_8049DF78::vfunc_0xC0() {
 }
 
 bool ZoraEscort_8049DF78::vfunc_0xC4() {
-    if (fn_80131F0C()->mCount < 2) {
+    if (getEscortActorList_80131F0C()->mCount < 2) {
         return false;
     }
-    ActorBase_804A5770* other = fn_80131F0C()->fn_80131E30(1);
+    ActorBase_804A5770* other = getEscortActorList_80131F0C()->fn_80131E30(1);
     if (other == NULL) {
         return false;
     }

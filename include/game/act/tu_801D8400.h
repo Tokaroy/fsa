@@ -20,8 +20,8 @@ struct Sequencer_801DAA24 {
     void fn_801DA7C0();
     bool fn_801DA894();
     s32 fn_801DA96C();
-    void fn_801DA9E8(s32 a, s32 b);
-    // 0x801DA994 (tu_801DA7C0.cpp, not written yet): like fn_801DA9E8 with a second mode.
+    void start_801DA9E8(s32 a, s32 b);
+    // 0x801DA994 (tu_801DA7C0.cpp, not written yet): like start_801DA9E8 with a second mode.
     bool fn_801DA994(s32 a, s32 b);
 
     /* 0x00 */ s32 field_0x0;
@@ -51,7 +51,7 @@ public:
     /* 0x20 */ virtual void draw();
     // 0x801D84E0: empty, no arguments read (vtable slot 0x24 of 0x804A4C58).
     /* 0x24 */ virtual void die_0x24();
-    // 0x801DA0FC: gAudioMgr_8053AF80->fn_80458F9C(60).
+    // 0x801DA0FC: gAudioMgr_8053AF80->stopBgm_80458F9C(60).
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     // 0x801D8980: a mPos.y above field_0x2d0 is clamped to it (and
     // mVel_0x3c.y zeroed), then EnemyBase's floor check runs.
@@ -86,7 +86,7 @@ public:
     void fn_801D9960();
     // 0x801DE12C (game/tu_801DD1AC.cpp): sets the hit box (mBox, copied to mBox2) from the state and the sequencer.
     void fn_801DE12C();
-    // 0x801DDBE4 (game/tu_801DD1AC.cpp): the contact check against the actor fn_801F82CC finds in the
+    // 0x801DDBE4 (game/tu_801DD1AC.cpp): the contact check against the actor findOverlappingActor_801F82CC finds in the
     // box; true when a hit landed.
     bool fn_801DDBE4();
     // 0x801DD410 (game/tu_801DD1AC.cpp): the player contact check; true when a hit landed.

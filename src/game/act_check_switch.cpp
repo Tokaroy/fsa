@@ -19,9 +19,9 @@ void CheckSwitch_804A8BD0::update() {
     case 0:
         if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
             s32 bit = (mSpawnParam_0x90 >> lbl_8046D460[randInt_801CD664(100) & 3]) & 0x1F;
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             if (mMode == 0) {
-                fn_801F3668();
+                markDead_801F3668();
             } else if (mMode == 1) {
                 mState = 1;
             } else if (mMode == 2) {

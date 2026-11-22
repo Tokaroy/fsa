@@ -30,7 +30,7 @@ void TalkingSign_804AF428::init() {
 }
 
 // FIXME: 91.56 %, missing/extra; behaviour clean.
-// Both fn_8038C678 calls: the original loads mSerial and mLayer_0x4 into r29/r28
+// Both openMessageById_8038C678 calls: the original loads mSerial and mLayer_0x4 into r29/r28
 // before the getPlayerPos_8023E724 call (callee-saved across it); ours reloads them into r5/r6 after it.
 // The view helper's layer then lands in r30/r29 instead of r28/r30. Also the area box's
 // f.x store (0x28) is scheduled after the mPos.y load in the original.
@@ -59,14 +59,14 @@ void TalkingSign_804AF428::update() {
             }
             if (viewLayerFlag(mLayer_0x4)) {
                 if (mPlayer >= 0) {
-                    if (fn_8038C678(mPlayer, (mSpawnParam_0x90 & 0xFFFF) + 0x12B, mSerial, mLayer_0x4,
+                    if (openMessageById_8038C678(mPlayer, (mSpawnParam_0x90 & 0xFFFF) + 0x12B, mSerial, mLayer_0x4,
                                     *getPlayerPos_8023E724(mPlayer), flags)) {
                         mState = 1;
                     }
                 }
             } else if (mPlayer >= 0) {
-                if (fn_80230CFC(mPlayer) == 3 && mPos.y <= getPlayerPos_8023E724(mPlayer)->y) {
-                    if (fn_8038C678(mPlayer, (mSpawnParam_0x90 & 0xFFFF) + 0x12B, mSerial, mLayer_0x4,
+                if (getPlayerFacing_80230CFC(mPlayer) == 3 && mPos.y <= getPlayerPos_8023E724(mPlayer)->y) {
+                    if (openMessageById_8038C678(mPlayer, (mSpawnParam_0x90 & 0xFFFF) + 0x12B, mSerial, mLayer_0x4,
                                     *getPlayerPos_8023E724(mPlayer), flags)) {
                         mState = 1;
                     }

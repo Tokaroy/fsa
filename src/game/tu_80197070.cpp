@@ -64,7 +64,7 @@ void fn_8019CEE8(u8 v) {
 }
 
 // Out-of-line copy of TVec3<f32>::set(const TVec3&).
-void fn_8019CECC(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
+void copyVec3_8019CECC(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
@@ -165,7 +165,7 @@ void PrincessZeldaGanonBattle_804A2944::init() {
         lbl_8053ABA0 = 0;
         lbl_8053ABA4 = 0;
         getGameView_802D6A9C()->fn_802D7440(false);
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         field_0x260 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
         s32 serial = field_0x260;
         if (serial >= 0) {
@@ -322,15 +322,15 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         }
         if (mEmitters[0] != NULL) {
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x30058, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
         }
     }
     if (mState == 3 || (mState >= 6 && mState <= 0x12) || mState == 0x13) {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &origin0);
+        copyVec3_8019CECC(&focusPos, &origin0);
         focusPos.y += 32.0f;
         fn_8017EB44(&focusPos);
         fn_8017EB1C(0.05f);
@@ -343,10 +343,10 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     if (mState == 0x2E || mState == 0x2F || (mState >= 0x33 && mState <= 0x3F) || mState == 0x40) {
         JGeometry::TVec3f savedPos;
-        fn_8019CECC(&savedPos, &mPos);
-        fn_8019CECC(&mPos, &origin0);
+        copyVec3_8019CECC(&savedPos, &mPos);
+        copyVec3_8019CECC(&mPos, &origin0);
         startSound_801F0E34(0x5000A, 0);
-        fn_8019CECC(&mPos, &savedPos);
+        copyVec3_8019CECC(&mPos, &savedPos);
     }
 
     switch (mState) {
@@ -360,13 +360,13 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
                 if (i == 0) {
-                    fn_8019CECC(&field_0x2a4[i], getPlayerPos_8023E724(i));
+                    copyVec3_8019CECC(&field_0x2a4[i], getPlayerPos_8023E724(i));
                     field_0x2a4[i].x = mPos.x - 24.0f;
                 } else {
-                    fn_8019CECC(&field_0x2a4[i], &field_0x2a4[0]);
+                    copyVec3_8019CECC(&field_0x2a4[i], &field_0x2a4[0]);
                     field_0x2a4[i].x += 16.0f * (f32)i;
                 }
-                fn_8019CECC(&field_0x2d4[i], &field_0x2a4[i]);
+                copyVec3_8019CECC(&field_0x2d4[i], &field_0x2a4[i]);
                 fn_80230498(i, &field_0x2a4[i], 0xC3, 0xFF, -0x80, -0x80, true);
             }
         }
@@ -424,7 +424,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             if (field_0x248 >= 50) {
                 field_0x248 = 0;
                 JGeometry::TVec3f pos;
-                fn_8019CECC(&pos, &mPos);
+                copyVec3_8019CECC(&pos, &mPos);
                 pos.y -= 16.0f;
                 startSound_801F0E34(0x400B5, 0);
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
@@ -447,14 +447,14 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         field_0x248++;
         if (field_0x248 < 200) {
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &origin0);
+            copyVec3_8019CECC(&pos, &origin0);
             fn_8017EB44(&pos);
             fn_8017EB1C(0.05f);
             break;
         }
         field_0x248 = 200;
         JGeometry::TVec3f pos;
-        fn_8019CECC(&pos, &origin0);
+        copyVec3_8019CECC(&pos, &origin0);
         pos.y += 32.0f;
         fn_8017EB44(&pos);
         fn_8017EB1C(0.05f);
@@ -474,8 +474,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             field_0x244 = 0;
             field_0x254 = (mDir_0x98 << 3) + field_0x244;
             JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2D8, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2D8, mSerial, mLayer_0x4, msgPos, 0x4102)) {
                 for (s32 i = 0; i < 4; i++) {
                     if (fn_8023F264(i)) {
                         fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0xFF, -0x80, -0x80, true);
@@ -487,8 +487,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         break;
     }
     case 6:
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             mDir_0x98 = 0;
             field_0x244 = 0;
             field_0x254 = (mDir_0x98 << 3) + field_0x244;
@@ -516,7 +516,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             mTimers[0] = lbl_804A2700[7 + field_0x244];
             if (field_0x244 == 3) {
                 JGeometry::TVec3f pos;
-                fn_8019CECC(&pos, &mPos);
+                copyVec3_8019CECC(&pos, &mPos);
                 pos.y -= 48.0f;
                 field_0x264 = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &pos, 1, -1, -1);
             }
@@ -556,8 +556,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             }
         }
         JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_8038AD24(fn_8022EA0C(0), 0x2D9, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2D9, mSerial, mLayer_0x4, msgPos, 0x4102)) {
             mState = 11;
         }
         break;
@@ -571,8 +571,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 field_0x244 = 0;
             }
         }
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             field_0x248 = 0;
             field_0x24c = 0;
             mState = 12;
@@ -590,8 +590,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         field_0x248++;
         if (field_0x248 >= 180) {
             JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2DA, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DA, mSerial, mLayer_0x4, msgPos, 0x4102)) {
                 field_0x248 = 0;
                 mState = 13;
             }
@@ -606,8 +606,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 field_0x244 = 0;
             }
         }
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             field_0x244 = 0;
             if (field_0x264 >= 0) {
                 PrincessZeldaGanonBattle_804A2944* actor = static_cast<PrincessZeldaGanonBattle_804A2944*>(
@@ -633,7 +633,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (field_0x248 >= 100) {
             field_0x248 = 0;
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &mPos);
+            copyVec3_8019CECC(&pos, &mPos);
             pos.y -= 16.0f;
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x29A, 0, 0, NULL, NULL, true, 1.0f);
@@ -727,21 +727,21 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             mEmitters[12] = spawnEmitter_8013CC50(mLayer_0x4, &origin0, 0x1C3, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &origin0, 0x1C4, 0, 0, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x400B8, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
             mState = 0x14;
         }
         break;
     case 0x14: {
         JGeometry::TVec3f savedPos;
-        fn_8019CECC(&savedPos, &mPos);
-        fn_8019CECC(&mPos, &origin0);
+        copyVec3_8019CECC(&savedPos, &mPos);
+        copyVec3_8019CECC(&mPos, &origin0);
         startSound_801F0E34(0x30059, 0);
-        fn_8019CECC(&mPos, &savedPos);
+        copyVec3_8019CECC(&mPos, &savedPos);
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &origin0);
+        copyVec3_8019CECC(&focusPos, &origin0);
         focusPos.y -= 40.0f;
         fn_8017EB44(&focusPos);
         fn_8017EB1C(0.05f);
@@ -749,7 +749,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (field_0x24c < 0) {
             field_0x248 = 0;
             field_0x24c = 0;
-            fn_80119DD0()->fn_80119998(100, 0, 0, 0, 0, 0, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 0, 0, 0, 0, 0);
             if (mEmitters[11] != NULL) {
                 getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitters[11]);
                 mEmitters[11] = NULL;
@@ -783,7 +783,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             if (ganon != NULL) {
                 if (ganon->fn_8018A590() == 1) {
                     s32 dir;
-                    fn_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 0);
+                    findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 0);
                     if (dir >= 0) {
                         mDir_0x98 = dir;
                     }
@@ -817,8 +817,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         mEmitters[10] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A5, 0, 0, NULL, NULL, true, 1.0f);
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                fn_8019CECC(&field_0x2d4[i], getPlayerPos_8023E724(i));
-                if (fn_80236B50(i)) {
+                copyVec3_8019CECC(&field_0x2d4[i], getPlayerPos_8023E724(i));
+                if (isPlayerDead_80236B50(i)) {
                     fn_8023764C(i, 1);
                 }
             }
@@ -828,7 +828,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         // fall through
     case 0x17: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         focusPos.y -= focusPos.z;
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
@@ -846,7 +846,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x30: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         focusPos.y -= focusPos.z;
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
@@ -869,7 +869,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x31: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         focusPos.y -= focusPos.z;
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
@@ -901,14 +901,14 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x32: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         focusPos.y -= focusPos.z;
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
         if (mTimers[0] == 0) {
             JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2DB, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DB, mSerial, mLayer_0x4, msgPos, 0x4102)) {
                 field_0x248 = 0;
                 mState = 0x18;
             }
@@ -917,11 +917,11 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x18: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             field_0x244 = 0;
             field_0x248 = 0;
             mTimers[0] = 0;
@@ -931,7 +931,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x19: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
         if (mTimers[0] == 0) {
@@ -945,7 +945,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         }
         if (field_0x244 == 3 && mTimers[0] == 40 && field_0x264 < 0) {
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &mPos);
+            copyVec3_8019CECC(&pos, &mPos);
             pos.y -= 48.0f;
             field_0x264 = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &pos, 1, -1, -1);
         }
@@ -959,8 +959,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 }
             }
             JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2DC, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DC, mSerial, mLayer_0x4, msgPos, 0x4102)) {
                 field_0x248 = 0;
                 mState = 0x1A;
             }
@@ -969,7 +969,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x1A: {
         JGeometry::TVec3f focusPos;
-        fn_8019CECC(&focusPos, &mPos);
+        copyVec3_8019CECC(&focusPos, &mPos);
         fn_8017EC70(&focusPos, 1.0f);
         fn_8017EB1C(0.05f);
         if (mTimers[0] == 0) {
@@ -980,7 +980,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 field_0x244 = 0;
             }
         }
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             ActorBase_804A5770* ganon = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x25c);
             if (ganon != NULL) {
                 static_cast<Ganon_804A25F0*>(ganon)->fn_8019CEBC(0xB);
@@ -1002,7 +1002,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (ganon != NULL) {
             if (ganon->fn_8018A590() == 4) {
                 JGeometry::TVec3f focusPos;
-                fn_8019CECC(&focusPos, &mPos);
+                copyVec3_8019CECC(&focusPos, &mPos);
                 fn_8017EC70(&focusPos, 1.0f);
                 fn_8017EB1C(0.05f);
             }
@@ -1037,7 +1037,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (actor != NULL) {
                 JGeometry::TVec3f pos;
-                fn_8019CECC(&pos, &mPos);
+                copyVec3_8019CECC(&pos, &mPos);
                 pos.y -= 40.0f;
                 actor->field_0x25c = field_0x25c;
                 actor->fn_80182660(pos);
@@ -1070,7 +1070,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         mTimers[1] = 0;
         if (field_0x264 < 0) {
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &mPos);
+            copyVec3_8019CECC(&pos, &mPos);
             pos.y -= 48.0f;
             field_0x264 = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &pos, 1, -1, -1);
         }
@@ -1089,7 +1089,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (actor != NULL) {
                 JGeometry::TVec3f pos;
-                fn_8019CECC(&pos, &mPos);
+                copyVec3_8019CECC(&pos, &mPos);
                 pos.y -= 40.0f;
                 actor->field_0x25c = field_0x25c;
                 actor->fn_80182660(pos);
@@ -1146,7 +1146,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         u16 ang;
         s32 dir;
         f32 dist;
-        fn_801EEC98(mSerial, &ang, &dir, &dist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &ang, &dir, &dist, NULL, 0, 0);
         if (dir >= 0 && dist > 32.0f) {
             mDir_0x98 = dir;
             field_0x254 = lbl_804A2700[64 + (mDir_0x98 << 3)];
@@ -1156,7 +1156,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
     case 0x22: {
         JGeometry::TVec3f pos;
-        fn_8019CECC(&pos, &mPos);
+        copyVec3_8019CECC(&pos, &mPos);
         pos.y -= 16.0f;
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
         field_0x274 = 0.0f;
@@ -1336,7 +1336,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     case 0x2E:
         field_0x258 = 5;
         field_0x268 = 0;
-        fn_8019CECC(&mPos, &origin0);
+        copyVec3_8019CECC(&mPos, &origin0);
         mPos.y += 130.0f;
         mDir_0x98 = 2;
         field_0x280[0].y -= 32.0f;
@@ -1377,11 +1377,11 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         }
         if (field_0x268 == 1 && mTimers[1] == 0) {
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &field_0x2a4[0]);
+            copyVec3_8019CECC(&pos, &field_0x2a4[0]);
             pos.y -= 16.0f;
             s32 idx = field_0x248 & 3;
             if (field_0x2a4[idx].x != 0.0f || field_0x2a4[idx].y != 0.0f) {
-                fn_8019CECC(&pos, &field_0x2a4[idx]);
+                copyVec3_8019CECC(&pos, &field_0x2a4[idx]);
             }
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &pos,
                                                                          (field_0x248 << 4) | 2, -1, -1);
@@ -1441,10 +1441,10 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 field_0x248 = 0;
                 lbl_8053ABA4 = 2;
                 JGeometry::TVec3f savedPos;
-                fn_8019CECC(&savedPos, &mPos);
-                fn_8019CECC(&mPos, &origin0);
+                copyVec3_8019CECC(&savedPos, &mPos);
+                copyVec3_8019CECC(&mPos, &origin0);
                 startSound_801F0E34(0x5000C, 0);
-                fn_8019CECC(&mPos, &savedPos);
+                copyVec3_8019CECC(&mPos, &savedPos);
                 mTimers[0] = 0;
                 mState = 0x37;
             }
@@ -1468,9 +1468,9 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     case 0x38: {
         fn_8017EC70(&mPos, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
         JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-        if (fn_8038AD24(fn_8022EA0C(0), 0x2DE, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+        if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DE, mSerial, mLayer_0x4, msgPos, 0x4102)) {
             mState = 0x39;
         } else {
             break;
@@ -1480,8 +1480,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     case 0x39:
         fn_8017EC70(&mPos, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             field_0x244 = 0;
             mTimers[0] = 20;
             mState = 0x3A;
@@ -1508,7 +1508,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                     mDir_0x98 = 2;
                     mTimers[1] = 30;
                     for (s32 i = 0; i < 4; i++) {
-                        fn_8019CECC(&field_0x2d4[i], &field_0x2a4[i]);
+                        copyVec3_8019CECC(&field_0x2d4[i], &field_0x2a4[i]);
                     }
                     mState = 0x3B;
                 }
@@ -1518,7 +1518,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         break;
     case 0x3B: {
         JGeometry::TVec3f targetPos;
-        fn_8019CECC(&targetPos, &field_0x2a4[0]);
+        copyVec3_8019CECC(&targetPos, &field_0x2a4[0]);
         targetPos.x = field_0x280[0].x - 5.0f;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
@@ -1533,16 +1533,16 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                     fn_80230498(i, getPlayerPos_8023E724(i), 0x122, 0xFF, -0x80, -0x80, true);
                 }
             }
-            fn_8019CECC(&field_0x2d4[0], getPlayerPos_8023E724(0));
+            copyVec3_8019CECC(&field_0x2d4[0], getPlayerPos_8023E724(0));
             field_0x280[2].y = field_0x2d4[0].y - 32.0f;
             mState = 0x3C;
         }
         break;
     }
     case 0x3C: {
-        fn_8019CECC(&savedPos, &mPos);
+        copyVec3_8019CECC(&savedPos, &mPos);
         addCalc2_801F71A4(&field_0x2d4[0].y, field_0x280[2].y, 0.3f, 1.0f);
-        fn_80230BF4(0, 3);
+        setPlayerFacing_80230BF4(0, 3);
         fn_802303FC(0, &field_0x2d4[0], true);
         if (std::fabsf(field_0x280[2].y - field_0x2d4[0].y) <= 1.0f) {
             mTimers[1] = 8;
@@ -1569,7 +1569,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 mTimers[1] = 0;
                 field_0x248 = 0;
                 fn_80230FD0(0, 0x2000E);
-                fn_8019CECC(&mPos, &savedPos);
+                copyVec3_8019CECC(&mPos, &savedPos);
                 mState = 0x3E;
             }
         }
@@ -1594,9 +1594,9 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (mTimers[1] == 0) {
             fn_8017EC70(&origin0, 1.0f);
             fn_8017EB1C(0.05f);
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
             JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2DF, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DF, mSerial, mLayer_0x4, msgPos, 0x4102)) {
                 mState = 0x40;
             }
         }
@@ -1604,17 +1604,17 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     case 0x40:
         fn_8017EC70(&origin0, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             if (mEmitters[1] != NULL) {
                 mEmitters[1]->becomeInvalidEmitter();
                 mEmitters[1] = NULL;
             }
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x50061, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
             spawnEmitter_8013CC50(mLayer_0x4, &origin0, 0x3F4, 0, 6, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &origin0, 0x3F5, 0, 6, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &origin0, 0x3F6, 0, 6, NULL, NULL, true, 1.0f);
@@ -1639,10 +1639,10 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         field_0x248++;
         if (field_0x248 < 600) {
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x5000A, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
         }
         if (field_0x248 == 600) {
             if (mEmitters[0] != NULL) {
@@ -1650,10 +1650,10 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 mEmitters[0] = NULL;
             }
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x5000E, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
         }
         if (field_0x248 == 670) {
             fn_80196D30(0x14A, 0);
@@ -1665,13 +1665,13 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         }
         if (field_0x248 == 1000) {
             JGeometry::TVec3f savedPos;
-            fn_8019CECC(&savedPos, &mPos);
-            fn_8019CECC(&mPos, &origin0);
+            copyVec3_8019CECC(&savedPos, &mPos);
+            copyVec3_8019CECC(&mPos, &origin0);
             startSound_801F0E34(0x50060, 0);
-            fn_8019CECC(&mPos, &savedPos);
+            copyVec3_8019CECC(&mPos, &savedPos);
         }
         if (field_0x248 >= 1440) {
-            fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 100, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 2, 0, 0, 100, 0);
             fn_80230498(0, getPlayerPos_8023E724(0), 0x3F, 0xFF, -0x80, -0x80, true);
             mTimers[1] = 200;
             field_0x248 = 0;
@@ -1682,17 +1682,17 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (mTimers[1] == 50) {
             lbl_8053ABA4 = 5;
             JGeometry::TVec3f pos;
-            fn_8019CECC(&pos, &origin0);
+            copyVec3_8019CECC(&pos, &origin0);
             pos.y += 16.0f;
-            fn_8019CECC(&mPos, &pos);
+            copyVec3_8019CECC(&mPos, &pos);
             fn_8019C500(0);
         }
         if (mTimers[1] != 0) {
             if (mTimers[1] < 50) {
                 JGeometry::TVec3f pos;
-                fn_8019CECC(&pos, &origin0);
+                copyVec3_8019CECC(&pos, &origin0);
                 pos.y += 16.0f;
-                fn_8019CECC(&mPos, &pos);
+                copyVec3_8019CECC(&mPos, &pos);
                 fn_8017EC70(&pos, 1.0f);
                 fn_8017EB1C(0.05f);
             }
@@ -1702,28 +1702,28 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         // fall through
     case 0x43: {
         JGeometry::TVec3f pos;
-        fn_8019CECC(&pos, &origin0);
+        copyVec3_8019CECC(&pos, &origin0);
         pos.y += 16.0f;
-        fn_8019CECC(&mPos, &pos);
+        copyVec3_8019CECC(&mPos, &pos);
         fn_8017EC70(&pos, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
         JGeometry::TVec3f msgPos(0.0f, -10.0f, 0.0f);
-        if (fn_8038AD24(fn_8022EA0C(0), 0x2E0, mSerial, mLayer_0x4, msgPos, 0x4102)) {
+        if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2E0, mSerial, mLayer_0x4, msgPos, 0x4102)) {
             mState = 0x44;
         }
         break;
     }
     case 0x44: {
         JGeometry::TVec3f pos;
-        fn_8019CECC(&pos, &origin0);
+        copyVec3_8019CECC(&pos, &origin0);
         pos.y += 16.0f;
-        fn_8019CECC(&mPos, &pos);
+        copyVec3_8019CECC(&mPos, &pos);
         fn_8017EC70(&pos, 1.0f);
         fn_8017EB1C(0.05f);
         fn_8019C500(0);
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             fn_8019CDE4(7, 3);
             fn_8019CD9C(12);
             fn_8019CEE8(1);
@@ -1758,8 +1758,8 @@ static inline void takeToken(PrincessZeldaGanonBattle_804A2944* self, ActorBase_
     if (self->field_0x250 < 0) {
         self->field_0x250 = 0;
     }
-    if (fn_8022F514(self->field_0x250)) {
-        lbl_80529DEC.field_0x1a4 = fn_8022F3DC(self->field_0x250);
+    if (hasPlayerLeader_8022F514(self->field_0x250)) {
+        lbl_80529DEC.field_0x1a4 = getPlayerLeader_8022F3DC(self->field_0x250);
     } else {
         lbl_80529DEC.field_0x1a4 = self->field_0x250;
     }
@@ -1784,7 +1784,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
             mEmitters[2]->becomeInvalidEmitter();
             mEmitters[2] = NULL;
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             field_0x258 = 0;
             break;
         }
@@ -2117,7 +2117,7 @@ void PrincessZeldaGanonBattle_804A2944::draw() {
             params.field_0x10.a = (u8)field_0x270;
             s32 frame = field_0x254 + lbl_80468428[field_0x94];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+                drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
         break;
@@ -2130,7 +2130,7 @@ void PrincessZeldaGanonBattle_804A2944::draw() {
         params.field_0x10.a = (u8)field_0x270;
         s32 frame = field_0x254 + lbl_80468440[field_0x94];
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
         break;
     }

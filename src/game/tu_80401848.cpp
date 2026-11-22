@@ -153,7 +153,7 @@ DvdCommand_804B0FD0::~DvdCommand_804B0FD0() {}
 
 DvdMountMemArchiveCommand_804B0FC0::~DvdMountMemArchiveCommand_804B0FC0() {}
 
-DvdMountMemArchiveCommand_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap) {
+DvdMountMemArchiveCommand_804B0FC0* requestMountMemArchive_80401E10(const char* path, u8 direction, JKRHeap* heap) {
     s32 entryNum = DVDConvertPathToEntrynum(path);
     DvdMountMemArchiveCommand_804B0FC0* cmd;
     if (entryNum == -1) {

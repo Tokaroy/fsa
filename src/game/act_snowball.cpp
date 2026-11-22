@@ -90,9 +90,9 @@ void Snowball_8049D020::init() {
     mParamAtcp_0x114 = 2;
     field_0x240 = mDir_0x98;
     field_0xb0 = 0x0A040304;
-    mSprite.fn_801D2608(lbl_80539EE8, 2);
+    mSprite.setKeyTables_801D2608(lbl_80539EE8, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     if (field_0x258 > 0) {
         fn_8010C294(3);
     }
@@ -120,7 +120,7 @@ void Snowball_8049D020::update() {
         s32 dir;
         s32 player;
         f32 dist;
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (player >= 0 && dist < 64.0f) {
             field_0x23c = player;
             fn_8010C294(1);
@@ -145,7 +145,7 @@ void Snowball_8049D020::update() {
         }
         {
             JGeometry::TVec3f unkVec;
-            if (fn_801F2618(&unkVec, false)) {
+            if (sweepMapBox_801F2618(&unkVec, false)) {
                 fn_8010C294(5);
             }
         }
@@ -183,11 +183,11 @@ void Snowball_8049D020::update() {
             field_0x248 = 60;
         }
         JGeometry::TVec3f unkVec;
-        if (fn_801F2618(&unkVec, false)) {
+        if (sweepMapBox_801F2618(&unkVec, false)) {
             fn_8010C294(5);
             break;
         }
-        if (fn_801CD950(&field_0x264, 0.1f, 0.015f) == 0) {
+        if (moveToward_801CD950(&field_0x264, 0.1f, 0.015f) == 0) {
             fn_8010C294(2);
         }
         pool_8053C490();
@@ -208,7 +208,7 @@ void Snowball_8049D020::update() {
         break;
     case 9: {
         JGeometry::TVec3f unkVec;
-        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
+        if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || sweepMapBox_801F2618(&unkVec, false)) {
             fn_8010C294(10);
             break;
         }
@@ -219,7 +219,7 @@ void Snowball_8049D020::update() {
     }
     case 10: {
         fn_80239914(&box, mLayer_0x4, mSerial);
-        if (mSprite.fn_801D21F0()) {
+        if (mSprite.isStopped_801D21F0()) {
             if (pool_8053C4AC()) {
                 fn_8010C294(11);
             }
@@ -242,14 +242,14 @@ void Snowball_8049D020::update() {
     }
     field_0x54.set(field_0x260, field_0x260, field_0x260);
     mSprite.mFrameCtrl.setRate(field_0x26c);
-    mSprite.fn_801D1C18();
+    mSprite.update_801D1C18();
 }
 
 static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, const char* name,
                               s32 frame, SpriteParams_801F5AE0* params) {
     if (layer < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
     }
 }
 
@@ -270,7 +270,7 @@ void Snowball_8049D020::draw() {
         params.mMtx = mtx2;
     }
     params.field_0x10.a = 0x80;
-    fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
+    drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
     drawSprite(mLayer_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
 }
 
@@ -300,7 +300,7 @@ bool Snowball_8049D020::fn_8010C294(s32 state) {
         outDir = 0;
         outPlayer = 0;
         outDist = 0.0f;
-        fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, field_0x23c, 2);
+        findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, field_0x23c, 2);
         field_0x230 = outAngle;
         break;
     }
@@ -363,7 +363,7 @@ bool Snowball_8049D020::fn_8010C294(s32 state) {
         mPos.z = 0.0f;
         switch (field_0x234) {
         case 1:
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             getActorManager_801F856C()->spawnActor_801F9484('KEY0', mLayer_0x4, &mPos, 0x60000000, -1, -1);
             break;
         case 0:
@@ -372,11 +372,11 @@ bool Snowball_8049D020::fn_8010C294(s32 state) {
             break;
         }
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
     field_0x238 = state;
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     return true;
 }
 
@@ -390,7 +390,7 @@ void Snowball_8049D020::chase(s32 target) {
     s32 dir = 0;
     s32 player = 0;
     f32 dist = 0.0f;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, target, 2);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, target, 2);
     s32 step;
     if (JMath::sincosTable_.cosShort((s16)(field_0x230 - angle)) >= 0.0f) {
         step = (s16)((s32)fabs(300.0f * JMath::sincosTable_.sinShort((s16)(field_0x230 - angle))) + 100);
@@ -399,9 +399,9 @@ void Snowball_8049D020::chase(s32 target) {
     }
     stepAngle_801CD930(&field_0x230, (s16)angle, step);
     if (dist >= 64.0f) {
-        fn_801CD950(&field_0x264, 1.6f, 0.08f);
+        moveToward_801CD950(&field_0x264, 1.6f, 0.08f);
     } else {
-        fn_801CD950(&field_0x264, 1.2f, 0.03f);
+        moveToward_801CD950(&field_0x264, 1.2f, 0.03f);
     }
     pool_8053C490();
     field_0x26c = PSVECMag(&mVel_0x3c) / 1.6f;
@@ -419,7 +419,7 @@ void Snowball_8049D020::followRail() {
     JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
     s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
-    mRail.fn_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
+    mRail.stepAlongRail_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
     mVel_0x3c.x = outStep.x;
     mVel_0x3c.y = outStep.y;
     mVel_0x3c.z = outStep.z;
@@ -453,7 +453,7 @@ void Snowball_8049D020::grow() {
 // Applies gravity to the velocity and moves; true once landed.
 // R2 pool helper (inlined at 3 call sites); was fallStep.
 bool Snowball_8049D020::pool_8053C4AC() {
-    fn_801CD950(&mVel_0x3c.z, -10.0f, -0.15f);
+    moveToward_801CD950(&mVel_0x3c.z, -10.0f, -0.15f);
     mPos += mVel_0x3c;
     bool atGround;
     if (mPos.z <= 0.0f) {

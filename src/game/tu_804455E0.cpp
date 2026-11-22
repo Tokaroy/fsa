@@ -124,7 +124,7 @@ void MgHorseRaceScreen_804B1BB0::fn_80445D24() {
 }
 
 void MgHorseRaceScreen_804B1BB0::fn_80445CDC() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 

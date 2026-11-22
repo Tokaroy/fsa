@@ -59,7 +59,7 @@ public:
     void fn_802C1DFC();
     // 0x802C2300 (act_small_key's range): takes a player bitmask (bits 1-3
     // pick players 1-3, else 0). Stores the player's index in 0x2A4 and the
-    // index of the player it is paired with (fn_8022F3DC, if fn_8022F514
+    // index of the player it is paired with (getPlayerLeader_8022F3DC, if hasPlayerLeader_8022F514
     // holds) in 0x2A0. Returns false when the early checks or the view's
     // bit 0x168 (testOrSetBit_802D46D8) refuse; otherwise returns true, calling
     // fn_8022FE80 when the conversation test (fn_802308E0 or fn_8023077C) holds.

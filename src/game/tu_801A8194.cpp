@@ -92,7 +92,7 @@ void KeeseSwarm_804A2EC0::update() {
     } else {
         field_0x25c = 1;
     }
-    fn_801EEC98(mSerial, NULL, NULL, NULL, &player, 0, 1);
+    findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &player, 0, 1);
     if (field_0x230 == 1 && field_0x238 == 0) {
         field_0x294[0] = mPos;
         for (s32 i = 39; i > 0; i--) {
@@ -141,12 +141,12 @@ void KeeseSwarm_804A2EC0::update() {
     }
     if (field_0x264 > 0) {
         for (s32 p = 0; p < 4; p++) {
-            s32 hitter = fn_801F285C(NULL, NULL, true, p);
+            s32 hitter = findOverlappingPlayer_801F285C(NULL, NULL, true, p);
             if (hitter < 0) {
                 continue;
             }
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 || fn_8022CAF8(hitter) == 1 || fn_8022CAF8(hitter) == 0) {
-                if (fn_801F2FAC()) {
+                if (checkPlayerAttacks_801F2FAC()) {
                     field_0x264 -= 10000 - mLife;
                     if (field_0x264 <= 0) {
                         startSound_801F0E34(0x40003, 0);
@@ -174,7 +174,7 @@ void KeeseSwarm_804A2EC0::update() {
             startSound_801F0E34(0x4000F, 0);
             startSound_801F0E34(0x400A9, 0);
             if (player >= 0) {
-                fn_801EEC98(mSerial, &field_0x268, NULL, NULL, NULL, 0, 2);
+                findTargetPlayer_801EEC98(mSerial, &field_0x268, NULL, NULL, NULL, 0, 2);
                 field_0x268 += 0x8000;
             }
             field_0x230 = 1;

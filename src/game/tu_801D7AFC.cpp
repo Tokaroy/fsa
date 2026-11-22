@@ -41,7 +41,7 @@ void UnknownBGBL_804A4BB0::init() {
     mParamAtcp_0x114 = 2;
     field_0x194 = 1;
     if (isUpperLayer_801CD2F8(mLayer_0x4)) {
-        mAnim.fn_801D2608(lbl_8053A140, 1);
+        mAnim.setKeyTables_801D2608(lbl_8053A140, 1);
         mAnim.startAnim_801D22DC(0, 2, false);
     } else {
         mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x226, 1, 2, NULL, NULL, true, 1.0f);
@@ -88,7 +88,7 @@ void UnknownBGBL_804A4BB0::update() {
                     if (hits & (1 << i)) {
                         JGeometry::TVec2f p(getPlayerPos_8023E724(i)->x - mVel_0x3c.x,
                                             getPlayerPos_8023E724(i)->y - getPlayerPos_8023E724(i)->z - mVel_0x3c.y);
-                        fn_80238548(i, mParamAtcp_0x114, &p, mode);
+                        hitPlayerGroup_80238548(i, mParamAtcp_0x114, &p, mode);
                     }
                 }
             }
@@ -96,7 +96,7 @@ void UnknownBGBL_804A4BB0::update() {
                 mAlive = false;
             } else {
                 if (isUpperLayer_801CD2F8(mLayer_0x4)) {
-                    mAnim.fn_801D1C18();
+                    mAnim.update_801D1C18();
                 }
                 mPos += mVel_0x3c;
             }

@@ -68,10 +68,10 @@ void FrostareChildFrosteye_804A4EE8::init() {
     }
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A148, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A148, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.mFrameCtrl.setRate(0.25f);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     field_0x2e4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x258, 1, 0, NULL, NULL, true, 1.0f);
     if (field_0x16c == -1) {
         fn_801DAC6C()->fn_801DAF14(mSerial);
@@ -158,7 +158,7 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB950(s32 state) {
         mAnim.mFrameCtrl.setRate(1.0f);
         field_0x2ac = 0;
         fn_801DB9CC();
-        mTargetPlayer = fn_801D05F8(&mSearchPos, mSearchRange);
+        mTargetPlayer = findNearestPlayer_801D05F8(&mSearchPos, mSearchRange);
         break;
     }
     mStateTimer = 0;
@@ -225,8 +225,8 @@ void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 1: {
-        fn_801CD950(&mRadius, mTargetRadius, 1.0f);
-        fn_801CD950(&field_0x2e0, 0.4f, 0.01f);
+        moveToward_801CD950(&mRadius, mTargetRadius, 1.0f);
+        moveToward_801CD950(&field_0x2e0, 0.4f, 0.01f);
         if (mAngleSpeed != 0x200) {
             s32 step = 0x20;
             if (mAngleSpeed > 0x200) {
@@ -234,7 +234,7 @@ void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
             }
             stepAngle_801CD930(&mAngleSpeed, 0x200, step);
         }
-        s32 target = fn_801D05F8(&mSearchPos, mSearchRange);
+        s32 target = findNearestPlayer_801D05F8(&mSearchPos, mSearchRange);
         if (target == -1) {
             mTargetPlayer = -1;
             field_0x2ac = 0;
@@ -305,10 +305,10 @@ u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
             JGeometry::TVec3f center3;
             JGeometry::TVec2f center;
             JGeometry::TVec2f pos;
-            fn_801F3128(&center);
+            getBoxCenter_801F3128(&center);
             for (s32 player = 0; player < 4; player++) {
                 if (hitPlayers & (1 << player)) {
-                    if (fn_801F329C(player)) {
+                    if (isPlayerOnLowerLayer_801F329C(player)) {
                         center3.x = center.x;
                         center3.y = center.y;
                         center3.z = 0.0f;
@@ -318,7 +318,7 @@ u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
                     } else {
                         pos = center;
                     }
-                    fn_80238548(player, mParamAtcp_0x114, &pos, 1);
+                    hitPlayerGroup_80238548(player, mParamAtcp_0x114, &pos, 1);
                 }
             }
         }

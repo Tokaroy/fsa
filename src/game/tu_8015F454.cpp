@@ -232,7 +232,7 @@ void fn_8015F454(JUTTexture* tex, const f32* pos, const f32* uv, GXColor color, 
     f32 v0 = uv[1];
     f32 u1 = uv[2];
     f32 v1 = uv[3];
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     gGameRoot2_8053AB10->fn_8013B1E8();
     tex->load(GX_TEXMAP0);
     if (mask != NULL) {

@@ -143,7 +143,7 @@ void Flame_804A0330::fn_8015EA2C() {
     case 0:
         if (isScreenFlagSet_0x34()) {
             if (field_0x240 != 0 && (field_0x94 == 4 || field_0x94 == 5)) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
             }
             field_0x240 = 0;
             if (field_0x94 == 6) {
@@ -166,7 +166,7 @@ void Flame_804A0330::fn_8015EA2C() {
             mState = 4;
         } else {
             s32 dir;
-            fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
             if (field_0x240 == 0) {
                 if (dir >= 0 && dist <= 80.0f) {
                     field_0x240 = 1;
@@ -265,7 +265,7 @@ void Flame_804A0330::fn_8015DF7C() {
         s32 player = fn_8023B004(&box, mLayer_0x4);
         if (player >= 0) {
             if (field_0x244 == 0) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 fn_80230FD0(player, 0x30009);
                 field_0x244 = 1;
             }
@@ -416,8 +416,8 @@ void Flame_804A0330::fn_8015DF7C() {
             for (s32 i = 0; i < count; i++) {
                 JGeometry::TVec3f spark;
                 spark.set(mPos);
-                spark.x += 16.0f * (f32)i * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
-                spark.y += 16.0f * (f32)i * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                spark.x += 16.0f * (f32)i * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                spark.y += 16.0f * (f32)i * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
                 spawnEmitter_8013CC50(mLayer_0x4, &spark, 0x54D, 1, 1, NULL, NULL, true, 1.0f);
             }
             field_0x24c = 0;

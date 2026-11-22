@@ -25,9 +25,9 @@ public:
     bool fn_80126EF8() const;
     // 0x80126A4C, not written yet (act_zora_escort_goal's state change; tu_80127E20 calls it with
     // 0x10, 0xA and 5).
-    void fn_80126A4C(s32 arg);
+    void setState_80126A4C(s32 arg);
 
-    // Not in the binary: plain functions that update and fn_80126A4C inline.
+    // Not in the binary: plain functions that update and setState_80126A4C inline.
     s32 pool_8053CAB4(u32 msg);
     void pool_8053CAA8();
     bool walkRail();

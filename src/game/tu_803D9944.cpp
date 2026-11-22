@@ -34,7 +34,7 @@ void Tingle_804B0478::init() {
     field_0x251 = 0;
     mUpdateWhilePaused_0x11f = 1;
     if ((s32)mSpawnParam_0x90 == 0) {
-        s32 player = fn_8022EA0C(0);
+        s32 player = getRepresentativePlayer_8022EA0C(0);
         if (player >= 0) {
             const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
             mPos.x = p->x;
@@ -156,8 +156,8 @@ void Tingle_804B0478::update() {
             field_0x23c = 0x5a;
             for (s32 i = 0; i < 4; i++) {
                 if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1) {
-                    if (fn_80237774(i) < getPlayerMaxLife_80237810(i) - 4) {
-                        fn_80236554(i, getPlayerMaxLife_80237810(i) - fn_80237774(i) - 4, true);
+                    if (getPlayerLife_80237774(i) < getPlayerMaxLife_80237810(i) - 4) {
+                        healPlayerGroup_80236554(i, getPlayerMaxLife_80237810(i) - getPlayerLife_80237774(i) - 4, true);
                     }
                 }
             }

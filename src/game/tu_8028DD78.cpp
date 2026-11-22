@@ -125,7 +125,7 @@ void SpiralStaircase_804A7A68::update() {
                 if (fn_80230188(i)) {
                     return;
                 }
-                if (fn_80236B50(i)) {
+                if (isPlayerDead_80236B50(i)) {
                     return;
                 }
                 if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
@@ -163,7 +163,7 @@ void SpiralStaircase_804A7A68::update() {
                 case 0:
                 case 1:
                 case 4:
-                    fn_80230BF4(order[i], 3);
+                    setPlayerFacing_80230BF4(order[i], 3);
                     fn_80230FD0(i, 0x20018);
                     p.set(mPos);
                     p.x += 16.0f * i - 24.0f;
@@ -171,7 +171,7 @@ void SpiralStaircase_804A7A68::update() {
                     field_0x238[order[i]].set(p);
                     break;
                 case 5:
-                    fn_80230BF4(order[i], 2);
+                    setPlayerFacing_80230BF4(order[i], 2);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos);
                     p.x += 16.0f * i - 24.0f;
@@ -179,7 +179,7 @@ void SpiralStaircase_804A7A68::update() {
                     field_0x238[order[i]].set(p);
                     break;
                 case 6:
-                    fn_80230BF4(order[i], 0);
+                    setPlayerFacing_80230BF4(order[i], 0);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos);
                     p.y += 16.0f * i - 24.0f;
@@ -187,7 +187,7 @@ void SpiralStaircase_804A7A68::update() {
                     field_0x238[order[i]].set(p);
                     break;
                 case 7:
-                    fn_80230BF4(order[i], 1);
+                    setPlayerFacing_80230BF4(order[i], 1);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos);
                     p.y += 16.0f * i - 24.0f;
@@ -263,7 +263,7 @@ void SpiralStaircase_804A7A68::update() {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
                     p.y -= 384.0f;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
-                    fn_80230BF4(i, 2);
+                    setPlayerFacing_80230BF4(i, 2);
                 }
             }
             scrollTo(JGeometry::TVec2f(field_0x238[0].x, field_0x238[0].y - 384.0f));
@@ -274,7 +274,7 @@ void SpiralStaircase_804A7A68::update() {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
                     p.y += 384.0f;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
-                    fn_80230BF4(i, 2);
+                    setPlayerFacing_80230BF4(i, 2);
                 }
             }
             scrollTo(JGeometry::TVec2f(field_0x238[0].x, 384.0f + field_0x238[0].y));
@@ -286,7 +286,7 @@ void SpiralStaircase_804A7A68::update() {
                     p.x = 16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x;
                     p.y = 16.0f + (16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y);
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
-                    fn_80230BF4(i, 3);
+                    setPlayerFacing_80230BF4(i, 3);
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
@@ -299,7 +299,7 @@ void SpiralStaircase_804A7A68::update() {
                     p.x = 16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x;
                     p.y = (16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y) - 16.0f;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
-                    fn_80230BF4(i, 2);
+                    setPlayerFacing_80230BF4(i, 2);
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
@@ -312,7 +312,7 @@ void SpiralStaircase_804A7A68::update() {
                     p.x = (16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x) - 16.0f;
                     p.y = 16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
-                    fn_80230BF4(i, 0);
+                    setPlayerFacing_80230BF4(i, 0);
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
@@ -325,7 +325,7 @@ void SpiralStaircase_804A7A68::update() {
                     p.x = 16.0f + (16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x);
                     p.y = 16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
-                    fn_80230BF4(i, 1);
+                    setPlayerFacing_80230BF4(i, 1);
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
@@ -446,7 +446,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[0] = 0;
             if (getPlayerGroupSize_8022E970(0) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 0) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 0) {
                         out[n++] = i;
                     }
                 }
@@ -454,7 +454,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[n++] = 1;
             if (getPlayerGroupSize_8022E970(1) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 1) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 1) {
                         out[n++] = i;
                     }
                 }
@@ -463,7 +463,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[0] = 1;
             if (getPlayerGroupSize_8022E970(1) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 1) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 1) {
                         out[n++] = i;
                     }
                 }
@@ -471,7 +471,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[n++] = 0;
             if (getPlayerGroupSize_8022E970(0) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 0) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 0) {
                         out[n++] = i;
                     }
                 }
@@ -493,7 +493,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
                 i = -1;
             }
         }
-        s32 leader = fn_8022F3DC(3);
+        s32 leader = getPlayerLeader_8022F3DC(3);
         for (s32 i = 0; i < 3; i++) {
             if (leader == out[i]) {
                 if (i == 2) {

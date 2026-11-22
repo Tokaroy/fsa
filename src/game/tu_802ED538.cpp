@@ -62,7 +62,7 @@ void GiantGeneratorEffect_804AA350::init() {
         field_0x2cc = NULL;
         field_0x24c = 16;
     } else {
-        field_0x2cc = fn_804032E8('TIMG', lbl_804AA330[field_0x254]);
+        field_0x2cc = getBossArchiveResource_804032E8('TIMG', lbl_804AA330[field_0x254]);
         mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E, 0, 0, NULL, NULL, true, 1.0f);
     }
     for (s32 i = 0; i < 4; i++) {
@@ -172,7 +172,7 @@ void GiantGeneratorEffect_804AA350::update() {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 field_0x250 = 20;
                 field_0x24c++;
-                gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
                 fn_8022ADE4();
             }
         }
@@ -190,7 +190,7 @@ void GiantGeneratorEffect_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(mSpawnParam_0x90 & 0x1F, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(mSpawnParam_0x90 & 0x1F, true, 0xFF);
             field_0x250 = 180;
             field_0x24c++;
         }
@@ -237,7 +237,7 @@ void GiantGeneratorEffect_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(field_0x25c, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x25c, true, 0xFF);
             getActorManager_801F856C()->fn_801F6884();
             for (s32 p = 0; p < 4; p++) {
                 fn_8022CA6C(p, 5, false);
@@ -251,7 +251,7 @@ void GiantGeneratorEffect_804AA350::update() {
     case 7:
         if (field_0x279) {
             if (field_0x276) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x25c, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x25c, false, 0xFF);
                 field_0x250 = 0x7C;
                 field_0x24c++;
                 startSound_801F0E34(0x5005C, 0);
@@ -259,7 +259,7 @@ void GiantGeneratorEffect_804AA350::update() {
         } else if (fn_802ED538()) {
             stopEmitter(mEmitter23c);
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
-                gAudioMgr_8053AF80->fn_8045815C(true);
+                gAudioMgr_8053AF80->setMusicSlow_8045815C(true);
                 field_0x279 = 1;
             } else {
                 startSound_801F0E34(0x5005B, 0);
@@ -297,7 +297,7 @@ void GiantGeneratorEffect_804AA350::update() {
             s32 base = field_0x254 * 3;
             mEmitter240 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x268, lbl_8046F55C[base], 0, 0, NULL, NULL, true, 1.0f);
             mEmitter244 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x268, lbl_8046F55C[base + 1], 0, 0, NULL, NULL, true, 1.0f);
-            field_0x2cc = fn_804032E8('TIMG', lbl_804AA340[field_0x254]);
+            field_0x2cc = getBossArchiveResource_804032E8('TIMG', lbl_804AA340[field_0x254]);
             mVel_0x3c.z = 0.3f;
             field_0x24c++;
         }
@@ -334,7 +334,7 @@ void GiantGeneratorEffect_804AA350::update() {
     case 13:
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(mSpawnParam_0x90 >> 27, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(mSpawnParam_0x90 >> 27, true, 0xFF);
             field_0x2cc = NULL;
             field_0x24c++;
         }
@@ -369,7 +369,7 @@ void GiantGeneratorEffect_804AA350::update() {
 
 static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (layer < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(pos, res, params);
     }
 }
 
@@ -408,7 +408,7 @@ bool GiantGeneratorEffect_804AA350::fn_802ED538() {
     bool result = true;
     for (s32 p = 0; p < 4; p++) {
         if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == mLayer_0x4) {
-            if (!fn_80236B50(p) && !fn_8023EA28(p) && !fn_80230188(p) && !fn_8022D534(p) &&
+            if (!isPlayerDead_80236B50(p) && !fn_8023EA28(p) && !fn_80230188(p) && !fn_8022D534(p) &&
                 !field_0x27c[p].mActive && fn_802300EC(p)) {
                 JGeometry::TVec3f* pos = getPlayerPos_8023E724(p);
                 if (pos->z == 0.0f) {

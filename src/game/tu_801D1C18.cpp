@@ -72,7 +72,7 @@ SpriteAnim_801D267C::SpriteAnim_801D267C()
     : mTables(NULL), mTableCount(0), mAnim(-1), mLength(0), mCel(0), mMinCel(0x7FFFFFFF),
       mMaxCel(0x80000000), mKey(0), mHold(0) {}
 
-void SpriteAnim_801D267C::fn_801D2608(const s16** tables, s32 count) {
+void SpriteAnim_801D267C::setKeyTables_801D2608(const s16** tables, s32 count) {
     mTables = tables;
     mTableCount = count;
     for (s32 i = 0; i < mTableCount; i++) {
@@ -128,7 +128,7 @@ bool SpriteAnim_801D267C::fn_801D2264(s32 anim, s32 mode) {
 // Only the order of the first instructions differs: the
 // target loads mState (lbz 0x29) and sets result = 0 before the stack frame
 // is made; ours does it after. Splitting the || into two ifs was worse.
-bool SpriteAnim_801D267C::fn_801D21F0() {
+bool SpriteAnim_801D267C::isStopped_801D21F0() {
     return isStopped();
 }
 
@@ -141,7 +141,7 @@ bool SpriteAnim_801D267C::isLoopEnd_801D217C() {
 // bool (cntlzw; extrwi.) and compares it again inside the inlined
 // isStopped with cmplwi; ours compares with cmplwi first and clrlwi. inside.
 // `!getAttribute()` gave the same code.
-bool SpriteAnim_801D267C::fn_801D208C() {
+bool SpriteAnim_801D267C::isAnimEnd_801D208C() {
     bool result = false;
     if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_NONE) {
         result = isStopped();
@@ -151,15 +151,15 @@ bool SpriteAnim_801D267C::fn_801D208C() {
     return result;
 }
 
-void SpriteAnim_801D267C::fn_801D1F14(f32 frame) {
+void SpriteAnim_801D267C::setFrame_801D1F14(f32 frame) {
     setFrameInline(frame);
 }
 
-void SpriteAnim_801D267C::fn_801D1D60() {
+void SpriteAnim_801D267C::setRandomFrame_801D1D60() {
     setFrameInline(randInt_801CD664(mLength + 1));
 }
 
-void SpriteAnim_801D267C::fn_801D1C18() {
+void SpriteAnim_801D267C::update_801D1C18() {
     if (mAnim >= 0 && mAnim < mTableCount) {
         if (mHold) {
             mHold = 0;

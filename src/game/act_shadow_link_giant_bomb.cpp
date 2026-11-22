@@ -29,7 +29,7 @@ ShadowLinkGiantBomb_804AC4D0::~ShadowLinkGiantBomb_804AC4D0() {
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         s32 mode = gGameRoot_8053AAF8->field_0x4c;
         if (mode != 9 && mode != 0xB) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
     }
 }
@@ -110,11 +110,11 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             }
             s32 bit = field_0x248;
             if (bit > 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
         }
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
         }
         mState = 2;
         mStateTimer = 60;
@@ -192,7 +192,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         if (getActorManager_801F856C()->findActorBySerial_801F666C(field_0x244) == NULL) {
             if (field_0x254 == 0 && field_0x240 <= 0) {
                 if (gGameRoot_8053AAF8->field_0x7f == 1) {
-                    gGameRoot_8053AAF8->fn_80138B7C();
+                    gGameRoot_8053AAF8->startStageMusic_80138B7C();
                 }
                 mAlive = false;
                 break;
@@ -205,7 +205,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             mState = 10;
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
                 if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
-                    gGameRoot_8053AAF8->fn_80138B7C();
+                    gGameRoot_8053AAF8->startStageMusic_80138B7C();
                 }
             }
         }
@@ -215,7 +215,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             if (getScreenFlagBit_0x3C() == 0 || (getScreenFlagBit_0x3C() != 0 && isScreenFlagSet_0x34() == 1)) {
                 if (gGameRoot_8053AAF8->field_0x7f == 1) {
                     if (gAudioMgr_8053AF80->field_0x58 != 0x100000D) {
-                        gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+                        gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
                     }
                 }
                 field_0x250 = 0.0f;

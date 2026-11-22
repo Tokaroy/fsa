@@ -21,7 +21,7 @@ static inline void setCameraScript(const JGeometry::TVec3f& pos) {
 }
 
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 // Turns the keeper towards the player that started the talk (field_0x23c)
@@ -73,7 +73,7 @@ void DiggingGameKeeper_8049C970::init() {
 // (one more instruction than the original, 616 vs 615). The box
 // setup at the top keeps the mPos.y sum in a different register and stores
 // box.i.y one instruction later; the stack slots of the by-value position
-// temporaries for fn_8038AD24 / getNearestPlayerDir_801EE8F4 and the loop counters and
+// temporaries for openMessage_8038AD24 / getNearestPlayerDir_801EE8F4 and the loop counters and
 // pointers of cases 1 and 6 sit in other registers; case 5 schedules the
 // state store and the 0x3b argument in another order.
 void DiggingGameKeeper_8049C970::update() {
@@ -124,7 +124,7 @@ void DiggingGameKeeper_8049C970::update() {
     case 1: {
         setCameraScript(camPos);
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-        if (!fn_803865B8(field_0x23c)) {
+        if (!stepMessageWindow_803865B8(field_0x23c)) {
             break;
         }
         switch (fn_8037EFB4(field_0x23c)) {
@@ -148,7 +148,7 @@ void DiggingGameKeeper_8049C970::update() {
                 fn_802372F8(i, 9, 2);
             }
             for (s32 j = 0; j < 4; j++) {
-                if (!fn_8022F514(j)) {
+                if (!hasPlayerLeader_8022F514(j)) {
                     fn_8023619C(j, -100);
                     field_0x274[j] = fn_80236100(j);
                 }
@@ -180,25 +180,25 @@ void DiggingGameKeeper_8049C970::update() {
             field_0x240 = 3600;
             fn_80230534(false);
             fn_8022B148();
-            fn_801F0D20(0x3a);
+            playSe_801F0D20(0x3a);
             field_0x248 = gAudioMgr_8053AF80->field_0x58;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
-            getGameView_802D6A9C()->fn_802D8050(field_0x24c, true, 0xff);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x24c, true, 0xff);
         }
         break;
     case 4: {
         field_0x240--;
         if (field_0x240 / 60 <= 10 && (field_0x240 % 60) == 59) {
-            fn_801F0D20(0x3f);
+            playSe_801F0D20(0x3f);
             gAudioMgr_8053AF80->fn_80458508(1);
         }
         if (field_0x240 == 0) {
             field_0x250 = fn_8023077C();
             field_0x230 = 5;
             field_0x244 = 0;
-            fn_801F0D20(0x3b);
+            playSe_801F0D20(0x3b);
             field_0x235 = 2;
-            getGameView_802D6A9C()->fn_802D8050(field_0x24c, false, 0xff);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x24c, false, 0xff);
             gAudioMgr_8053AF80->fn_80458508(0);
         }
         break;
@@ -222,7 +222,7 @@ void DiggingGameKeeper_8049C970::update() {
     case 6: {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
-        if (!fn_803865B8(0) || !fn_80384C58(0, mSerial)) {
+        if (!stepMessageWindow_803865B8(0) || !fn_80384C58(0, mSerial)) {
             break;
         }
         setScreenFlag_0x30(0xff, true);
@@ -234,7 +234,7 @@ void DiggingGameKeeper_8049C970::update() {
         s32 maxDiff = -10000;
         for (s32 i = 0; i < 4; i++) {
             score[i] = 0;
-            if (!fn_8022F514(i)) {
+            if (!hasPlayerLeader_8022F514(i)) {
                 score[i] = fn_80236100(i) - field_0x274[i];
                 if (score[i] > maxDiff) {
                     maxDiff = score[i];
@@ -242,13 +242,13 @@ void DiggingGameKeeper_8049C970::update() {
             }
         }
         for (s32 j = 0; j < 4; j++) {
-            if (!fn_8022F514(j)) {
+            if (!hasPlayerLeader_8022F514(j)) {
                 if (maxDiff != score[j]) {
                     fn_802372F8(j, field_0x254[j], field_0x264[j]);
                 }
             }
         }
-        gAudioMgr_8053AF80->fn_80458FF0(field_0x248, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(field_0x248, true, 0);
         break;
     }
     case 7: {

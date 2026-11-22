@@ -20,7 +20,7 @@ static const char* lbl_804A5760[] = {"e_gufu_1.bti", "e_gufu_2.bti", "e_gufu_3.b
 // follows the fsel.
 // FIXME: 48.94 %, missing/extra + reloc-name; behaviour near.
 void VaatiBoss_804A4958::fn_801EDD0C() {
-    void* res = fn_804032E8('TIMG', lbl_804A5760[mAnim.mCel]);
+    void* res = getBossArchiveResource_804032E8('TIMG', lbl_804A5760[mAnim.mCel]);
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1c = 1;
@@ -49,7 +49,7 @@ void VaatiBoss_804A4958::fn_801EDD0C() {
     params.mMtx = mtx;
     if (mState == 5) {
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, flags, NULL, 0, res);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, flags, NULL, 0, res);
         }
         f32 k = 1.0f / fn_802F5FF4(lbl_8053F0B8);
         k = fn_802F5FF4(mPos.z) * k;

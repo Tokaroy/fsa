@@ -37,9 +37,9 @@ void WarpCannon_8049EAE0::init() {
     mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
-    mAnim.fn_801D2608(lbl_80539F48, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539F48, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     field_0x284 = mPos.x;
     field_0x288 = mPos.y;
     field_0x28c = mPos.z;
@@ -53,10 +53,10 @@ void WarpCannon_8049EAE0::update() {
         s32 p = findPlayer();
         if (p >= 0) {
             field_0x26c = p;
-            fn_80130FAC(1);
+            setState_80130FAC(1);
         }
         if (allPlayersIn()) {
-            fn_80130FAC(2);
+            setState_80130FAC(2);
         }
         break;
     }
@@ -64,48 +64,48 @@ void WarpCannon_8049EAE0::update() {
         fn_802308E0(field_0x26c);
         if (recoil()) {
             field_0x26c = -1;
-            fn_80130FAC(0);
+            setState_80130FAC(0);
         }
         break;
     }
     case 2: {
         movePlayers();
         if (fireRecoil()) {
-            fn_80130FAC(3);
+            setState_80130FAC(3);
         }
         break;
     }
     case 3:
         field_0x278++;
         if (field_0x278 >= 0x3C) {
-            fn_80130FAC(4);
+            setState_80130FAC(4);
         }
         break;
     case 4:
         pool_8053CCD0();
         if (getPlayerPos_8023E724(0)->z >= 90.0f) {
-            fn_80130FAC(6);
+            setState_80130FAC(6);
         }
         break;
     case 5:
         pool_8053CCD0();
         if (fn_80119DD0()->field_0x14 >= 250.0f) {
-            fn_80130FAC(6);
+            setState_80130FAC(6);
         }
         break;
     case 6:
-        fn_80130FAC(7);
+        setState_80130FAC(7);
         break;
     case 7: {
         if (landPlayers()) {
-            fn_80130FAC(8);
+            setState_80130FAC(8);
         }
         break;
     }
     case 8:
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void WarpCannon_8049EAE0::draw() {
@@ -131,7 +131,7 @@ void WarpCannon_8049EAE0::draw() {
 
 // FIXME: 99.48 %, regalloc-only + reloc-name; behaviour drift.
 // FIXME: regalloc-only + reloc-name; the switch's jump table is @NNN where the original names jumptable_8049EB34.
-void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
+void WarpCannon_8049EAE0::setState_80130FAC(s32 state) {
     field_0x268 = state;
     switch (field_0x268) {
     case 1:
@@ -144,7 +144,7 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
         lbl_8053AD70->fn_8037AE00();
         break;
     case 3: {
-        field_0x290 = *fn_8023E32C(0);
+        field_0x290 = *getPlayerLastTvPos_8023E32C(0);
         resetIfAllPlayersReady();
         for (s32 i = 0; i < 4; i++) {
             fn_80230498(i, &field_0x290, 0xB0, 0, -0x80, -0x80, true);
@@ -183,11 +183,11 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     }
 }
 
-// From here down: plain functions that update and fn_80130FAC inline and whose own copies the
-// linker dropped. The original's .sdata2 has their literals ahead of fn_80130FAC's, in the order
+// From here down: plain functions that update and setState_80130FAC inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals ahead of setState_80130FAC's, in the order
 // of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py). One more is still missing: the original creates a 16.0f after flyPlayers'
-// literals and before fn_80130FAC's 13.0f, which leaves init's literals one slot off.
+// literals and before setState_80130FAC's 13.0f, which leaves init's literals one slot off.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 s32 WarpCannon_8049EAE0::findPlayer() {
     JGeometry::TBox2f probe = mBox;
@@ -217,7 +217,7 @@ bool WarpCannon_8049EAE0::allPlayersIn() {
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void WarpCannon_8049EAE0::movePlayers() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
         pos.y -= field_0x27c;
@@ -228,10 +228,10 @@ void WarpCannon_8049EAE0::movePlayers() {
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
 // R2 pool helper (inlined at 2 call sites); was flyPlayers.
 void WarpCannon_8049EAE0::pool_8053CCD0() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.002f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.002f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        fn_801CD950(&pos.y, 1000.0f, field_0x27c);
+        moveToward_801CD950(&pos.y, 1000.0f, field_0x27c);
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
     }
 }
@@ -261,10 +261,10 @@ void WarpCannon_8049EAE0::liftPlayers() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::landPlayers() {
     bool all = false;
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
+        if (moveToward_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
             all = true;
         }
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);

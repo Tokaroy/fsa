@@ -15,10 +15,10 @@ extern s32 lbl_804A39A0[]; // per-mode (field_0x258) item argument of fn_802372F
 extern u8 lbl_8053AB98;
 extern u8 lbl_8053ABE8;
 
-// The scripted-camera request many actors make: take the camera for the player fn_8022EA0C(0)
+// The scripted-camera request many actors make: take the camera for the player getRepresentativePlayer_8022EA0C(0)
 // names unless a move is already running.
 static inline void takeCamera() {
-    s32 player = fn_8022EA0C(0);
+    s32 player = getRepresentativePlayer_8022EA0C(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->mShowWholeArea_0x7f5 == 0) {
         camera->mFocusOverride_0x7f4 = 1;
@@ -121,16 +121,16 @@ void GoalWarp_804A39DC::update() {
             JGeometry::TVec3f pos;
             pos.set(0.0f, 0.0f, 0.0f);
             pos.y = -10.0f;
-            fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x240, mSerial, mLayer_0x4, pos, 0x4102)) {
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x240, mSerial, mLayer_0x4, pos, 0x4102)) {
                 field_0x230 = 2;
             }
         }
         break;
     case 2:
         takeCamera();
-        fn_8022FE80(fn_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_803865B8(fn_8022EA0C(0))) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
+        if (stepMessageWindow_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             for (s32 i = 0; i < 4; i++) {
                 deleteEmitter(&mEmitters[i]);
             }
@@ -167,7 +167,7 @@ void GoalWarp_804A39DC::update() {
                 field_0x230 = 3;
                 break;
             }
-            fn_80384C58(fn_8022EA0C(0), mSerial);
+            fn_80384C58(getRepresentativePlayer_8022EA0C(0), mSerial);
         }
         break;
     case 3:

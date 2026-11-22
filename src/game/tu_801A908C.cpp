@@ -119,7 +119,7 @@ void Manhandla_804A2FB0::init() {
         if (field_0x258 == 0 || lbl_8053ABD0 != 0) {
             field_0x230 = 1;
         } else if (lbl_8053ABD0 == 0) {
-            gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
             field_0x230 = 0;
             lbl_8053ABD0++;
         }
@@ -129,7 +129,7 @@ void Manhandla_804A2FB0::init() {
 Manhandla_804A2FB0::~Manhandla_804A2FB0() {
     releaseEmitter_801EE434(field_0x2b8);
     if (field_0x258 == 0 && gGameRoot_8053AAF8->field_0x4c != 9) {
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
     }
     if (field_0x258 == 5) {
         lbl_8053ABD0--;
@@ -146,12 +146,12 @@ void Manhandla_804A2FB0::fn_801A9CF4() {
             Manhandla_804A2FB0* parent = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
             if (parent != 0 && parent->field_0x250 > 0) {
                 mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
-                s32 hit = fn_801F285C(0, 0, true, -1);
+                s32 hit = findOverlappingPlayer_801F285C(0, 0, true, -1);
                 s32 type = field_0x264;
                 s32 idx = type << 1;
                 if (hit >= 0) {
                     if (hit == type) {
-                        fn_801F37AC(0, &mPos, 3, 0, -1);
+                        takeHit_801F37AC(0, &mPos, 3, 0, -1);
                         mBox.set(1.0f, -1.0f, 1.0f, -1.0f);
                         startSound_801F0E34(0x5002D, 0);
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A2F18[idx], 0, 0, 0, 0, true, 2.0f);
@@ -336,9 +336,9 @@ void Manhandla_804A2FB0::fn_801A96B4() {
     }
     if (field_0x254 == 1 && gGameRoot_8053AAF8->field_0x7f == 1) {
         if (field_0x258 != 5 && lbl_8053ABD0 == 0) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
         } else {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
         }
     } else {
         field_0x254++;
@@ -356,7 +356,7 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         field_0x230 = 2;
         // fallthrough
     case 2:
-        if (fn_801F2618(0, false)) {
+        if (sweepMapBox_801F2618(0, false)) {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;

@@ -324,7 +324,7 @@ void GameMode_804B0688::fn_803DF9E8() {
 
 void GameMode_804B0688::fn_803DF810() {
     if (field_0x94 == 0 && mState != 7) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001A, false, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001A, false, false);
         gAudioMgr_8053AF80->fn_80458408(0x100001A, false);
         lbl_80529DEC.field_0x248 = 0;
     }
@@ -363,12 +363,12 @@ void GameMode_804B0688::fn_803DF810() {
 
 void GameMode_804B0688::fn_803DF624() {
     (lbl_8053ADD0->*lbl_804B0628[mState])();
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mMovieScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (mMovieState == 2) {
         mMovie->draw_80427D2C(50, 159, -356, -283);
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->draw_80440EE8();
     if (mState == 5) {
@@ -416,8 +416,8 @@ void GameMode_804B0688::fn_803DF2B4() {
     field_0x9c++;
     for (s32 i = 0; i < 2; i++) {
         if (field_0x9c > i * 3) {
-            slid = field_0x34[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
-            field_0x44[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            slid = field_0x34[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x44[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
             s32 t = field_0x9c - i * 3;
             if (t > 20) {
                 t = 20;
@@ -427,7 +427,7 @@ void GameMode_804B0688::fn_803DF2B4() {
         }
     }
     if (field_0x9c > 15) {
-        titleSlid = field_0x30->fn_80402940(15, 0, 150.0f, 0.0f);
+        titleSlid = field_0x30->animateMoveY_80402940(15, 0, 150.0f, 0.0f);
         s32 t = field_0x9c - 15;
         if (t > 15) {
             t = 15;
@@ -438,7 +438,7 @@ void GameMode_804B0688::fn_803DF2B4() {
         }
     }
     if (field_0x9c > 20) {
-        windowSlid = field_0x5c->fn_80402940(25, 0, -200.0f, 0.0f);
+        windowSlid = field_0x5c->animateMoveY_80402940(25, 0, -200.0f, 0.0f);
         s32 t = field_0x9c - 20;
         if (t > 25) {
             t = 25;
@@ -593,8 +593,8 @@ void GameMode_804B0688::fn_803DE58C() {
     }
     for (s32 i = 0; i < 1; i++) {
         if (field_0x9c > i) {
-            field_0x34[others[i]]->fn_80402B10(8, 0, 0.0f, 600.0f);
-            field_0x44[others[i]]->fn_80402B10(8, 0, 0.0f, 600.0f);
+            field_0x34[others[i]]->slideX_80402B10(8, 0, 0.0f, 600.0f);
+            field_0x44[others[i]]->slideX_80402B10(8, 0, 0.0f, 600.0f);
             s32 t = field_0x9c - i;
             if (t > 8) {
                 t = 8;
@@ -615,11 +615,11 @@ void GameMode_804B0688::fn_803DE58C() {
         }
     }
     if (field_0x9c > 0) {
-        field_0x34[field_0x9e]->fn_80402940(20, 0, 0.0f, 27.0f - field_0x6c[field_0x9e]);
-        field_0x44[field_0x9e]->fn_80402940(20, 0, 0.0f, 27.0f - field_0x6c[field_0x9e]);
+        field_0x34[field_0x9e]->animateMoveY_80402940(20, 0, 0.0f, 27.0f - field_0x6c[field_0x9e]);
+        field_0x44[field_0x9e]->animateMoveY_80402940(20, 0, 0.0f, 27.0f - field_0x6c[field_0x9e]);
     }
     if (field_0x9c > 0) {
-        field_0x30->fn_80402940(15, 0, 0.0f, 150.0f);
+        field_0x30->animateMoveY_80402940(15, 0, 0.0f, 150.0f);
         s32 t = field_0x9c;
         if (t > 15) {
             t = 15;
@@ -630,9 +630,9 @@ void GameMode_804B0688::fn_803DE58C() {
         }
     }
     if (field_0x9c > 0) {
-        slid = field_0x14[0]->fn_80402B10(20, 0, 600.0f, 0.0f);
+        slid = field_0x14[0]->slideX_80402B10(20, 0, 600.0f, 0.0f);
         for (s32 i = 1; i < 7; i++) {
-            field_0x14[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x14[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
         }
         s32 t = field_0x9c;
         if (t > 20) {
@@ -649,7 +649,7 @@ void GameMode_804B0688::fn_803DE58C() {
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0x9c > i * 5) {
-            menuSlid = field_0x50[i]->fn_80402940(20, 0, 150.0f, 0.0f);
+            menuSlid = field_0x50[i]->animateMoveY_80402940(20, 0, 150.0f, 0.0f);
             s32 t = field_0x9c - i * 5;
             if (t > 20) {
                 t = 20;
@@ -704,7 +704,7 @@ void GameMode_804B0688::fn_803DE05C() {
             } else if (field_0x9e == 2) {
                 field_0x7c = 0.0f;
                 mState = 7;
-                gAudioMgr_8053AF80->fn_80458F9C(60);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(60);
             }
             lbl_80529DEC.field_0x23a[0] = field_0x9e;
             gAudioMgr_8053AF80->playSystemSound_80458880(11, -1);
@@ -813,9 +813,9 @@ void GameMode_804B0688::fn_803DD970() {
         }
     }
     if (field_0x9c > 0) {
-        slid = field_0x14[0]->fn_80402B10(20, 0, 0.0f, 600.0f);
+        slid = field_0x14[0]->slideX_80402B10(20, 0, 0.0f, 600.0f);
         for (s32 i = 1; i < 7; i++) {
-            field_0x14[i]->fn_80402B10(20, 0, 0.0f, 600.0f);
+            field_0x14[i]->slideX_80402B10(20, 0, 0.0f, 600.0f);
         }
         s32 t = field_0x9c;
         if (t > 20) {
@@ -832,7 +832,7 @@ void GameMode_804B0688::fn_803DD970() {
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0x9c > i * 5 + 10) {
-            field_0x50[i]->fn_80402940(20, 0, 0.0f, 150.0f);
+            field_0x50[i]->animateMoveY_80402940(20, 0, 0.0f, 150.0f);
             s32 t = field_0x9c - (i * 5 + 10);
             if (t > 20) {
                 t = 20;
@@ -850,13 +850,13 @@ void GameMode_804B0688::fn_803DD970() {
         }
     }
     if (field_0x9c > 0) {
-        field_0x34[field_0x9e]->fn_80402940(20, 0, 27.0f - field_0x6c[field_0x9e], 0.0f);
-        field_0x44[field_0x9e]->fn_80402940(20, 0, 27.0f - field_0x6c[field_0x9e], 0.0f);
+        field_0x34[field_0x9e]->animateMoveY_80402940(20, 0, 27.0f - field_0x6c[field_0x9e], 0.0f);
+        field_0x44[field_0x9e]->animateMoveY_80402940(20, 0, 27.0f - field_0x6c[field_0x9e], 0.0f);
     }
     for (s32 i = 0; i < 1; i++) {
         if (field_0x9c > i + 5) {
-            slid = field_0x34[others[i]]->fn_80402B10(20, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            slid = field_0x34[others[i]]->slideX_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x44[others[i]]->slideX_80402B10(20, 0, 600.0f, 0.0f);
             s32 t = field_0x9c - (i + 5);
             if (t > 20) {
                 t = 20;
@@ -877,7 +877,7 @@ void GameMode_804B0688::fn_803DD970() {
         }
     }
     if (field_0x9c > 15) {
-        titleSlid = field_0x30->fn_80402940(15, 0, 150.0f, 0.0f);
+        titleSlid = field_0x30->animateMoveY_80402940(15, 0, 150.0f, 0.0f);
         s32 t = field_0x9c - 15;
         if (t > 15) {
             t = 15;

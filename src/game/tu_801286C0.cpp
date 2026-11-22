@@ -59,23 +59,23 @@ void OpeningNarration_8049E500::update() {
     switch (field_0x230) {
     case 0:
         if (fn_8011921C()->field_0x0 == 0) {
-            gAudioMgr_8053AF80->fn_80458F9C(60);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(60);
             fn_8011921C()->fn_801186B0(12);
         }
         break;
     case 1:
-        fn_801CD950(&field_0x238, 300.0f, 0.4f);
+        moveToward_801CD950(&field_0x238, 300.0f, 0.4f);
         if (fn_80119DD0()->field_0x0 == 0) {
             fn_80128728(2);
         }
         break;
     case 2:
-        if (fn_801CD950(&field_0x238, 1340.0f, 0.4f) == 0) {
+        if (moveToward_801CD950(&field_0x238, 1340.0f, 0.4f) == 0) {
             fn_80128728(3);
         }
         break;
     case 3:
-        fn_801CD950(&field_0x238, 1640.0f, 0.4f);
+        moveToward_801CD950(&field_0x238, 1640.0f, 0.4f);
         if (fn_80119DD0()->field_0x4 >= 0xB3) {
             fn_8011921C()->fn_801183BC();
             fn_80119DD0()->field_0x1 = 1;
@@ -88,17 +88,17 @@ void OpeningNarration_8049E500::update() {
         break;
     case 5:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
         break;
     case 6:
-        fn_801CD950(&field_0x234, 255.0f, -2.125f);
+        moveToward_801CD950(&field_0x234, 255.0f, -2.125f);
         break;
     case 7:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -156,20 +156,20 @@ s32 OpeningNarration_8049E500::vfunc_0x5C() {
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
-        fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 0, 0, 0);
         fn_80119DD0()->field_0x1 = 1;
         break;
     case 1:
-        gAudioMgr_8053AF80->fn_80458FF0(0x100002C, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100002C, false, 0);
         fn_8011921C()->fn_80118454();
         fn_80119DD0()->field_0x1 = 0;
         break;
     case 3:
-        fn_80119DD0()->fn_80119998(0xB4, 0, 1, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 1, 0, 0, 0, 0);
         fn_80119DD0()->field_0x1 = 0;
         break;
     case 4: {
-        gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
         fn_80119DD0()->field_0x1 = 0;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f box = view->mVisibleBox;
@@ -197,19 +197,19 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         break;
     }
     case 6:
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001D, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001D, false, 0);
         getActorManager_801F856C()->spawnActor_801F9484('SEV2', mLayer_0x4, &mPos, 0x2000, -1, -1);
         break;
     case 8:
-        fn_80119DD0()->fn_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
-        gAudioMgr_8053AF80->fn_80458F9C(0x96);
+        fn_80119DD0()->startFade_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x96);
         break;
     case 9: {
         s32 serial = getActorManager_801F856C()->findSerialByActorId_801F7A08('SEV2');
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->fn_801F3668();
+                actor->markDead_801F3668();
             }
         }
         break;
@@ -217,7 +217,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
     case 10:
         fn_8011921C()->fn_801184F0(false);
         getGameView_802D6A9C()->fn_802D9FF4(2, 4);
-        getGameView_802D6A9C()->fn_802DA8DC();
+        getGameView_802D6A9C()->resetStage_802DA8DC();
         break;
     }
     field_0x230 = state;

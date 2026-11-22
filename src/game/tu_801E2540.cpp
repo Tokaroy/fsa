@@ -153,7 +153,7 @@ bool cls_804A51E4::vfunc_0x58() {
             }
         }
         if (mFlags & 0x10000) {
-            hit = fn_801F37AC(0, &from, 0, type, player);
+            hit = takeHit_801F37AC(0, &from, 0, type, player);
         }
     }
     return hit;
@@ -161,7 +161,7 @@ bool cls_804A51E4::vfunc_0x58() {
 
 u8 cls_804A51E4::checkHitByActor_0x60() {
     u8 hit = 0;
-    s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    s32 other = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     if (other >= 0 && other != mSerial) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
         if (actor != NULL) {
@@ -173,7 +173,7 @@ u8 cls_804A51E4::checkHitByActor_0x60() {
             } else {
                 JGeometry::TVec3f dir = mPos;
                 dir.sub(actor->mVel_0x3c);
-                landed = fn_801F37AC(actor->mParamAtcn_0x118, &dir, 0, actor->field_0x168, -1);
+                landed = takeHit_801F37AC(actor->mParamAtcn_0x118, &dir, 0, actor->field_0x168, -1);
                 if (landed) {
                     hit = 1;
                 }
@@ -189,7 +189,7 @@ u8 cls_804A51E4::checkHitByActor_0x60() {
 
 u8 cls_804A51E4::checkHitByPlayer_0x5C() {
     u8 hit = 0;
-    s32 player = fn_801F285C(NULL, NULL, true, -1);
+    s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
     if (player >= 0) {
         if (fn_801E1CF8() && (fn_80235448(player) || fn_80235310(player))) {
             fn_801CB688(mLayer_0x4, &mPos, 0, 0);
@@ -197,7 +197,7 @@ u8 cls_804A51E4::checkHitByPlayer_0x5C() {
             hit = 1;
         } else if (fn_801E1D7C()) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_801F285C(NULL, NULL, true, i) == i) {
+                if (findOverlappingPlayer_801F285C(NULL, NULL, true, i) == i) {
                     fn_8023B6CC(i);
                     fn_802379E4(i, &mPos);
                 }

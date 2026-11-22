@@ -13,7 +13,7 @@ static const u32 lbl_8046C838[5] = { 'AMOS', 'BRBL', 'BLCK', 'BCK2', 'SMRI' };
 
 // Looks up the tile under the switch (inlined four times in update and vfunc_0x10).
 inline void Switch_804A7F38::readTileId() {
-    field_0x244 = fn_80226AE0(&mPos, mLayer_0x4);
+    field_0x244 = getCellIndexVec3_80226AE0(&mPos, mLayer_0x4);
     field_0x258 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, field_0x244) & 0x3FF;
 }
 
@@ -105,7 +105,7 @@ void Switch_804A7F38::vfunc_0x10() {
                                                 field_0x258 = 0x51;
                                             }
                                             setScreenFlag_0x30(0xFF, false);
-                                            gBgRewrite_8053AC98->fn_802A3884(&mPos, -1, mLayer_0x4, field_0x258);
+                                            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, -1, mLayer_0x4, field_0x258);
                                         }
                                     }
                                     break;
@@ -322,16 +322,16 @@ void Switch_804A7F38::update() {
                 }
                 if (field_0x234 == 0 || field_0x234 == 5) {
                     setScreenFlag_0x30(0xFF, false);
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
+                    gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 } else {
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
+                    gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 }
             } else {
                 if (field_0x234 == 2 || field_0x234 == 6) {
                     setScreenFlag_0x30(0xFF, false);
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
+                    gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 } else {
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
+                    gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 }
             }
             mState = 2;
@@ -351,7 +351,7 @@ void Switch_804A7F38::update() {
     case 5:
         if (field_0x24c == 0) {
             setScreenFlag_0x30(0xFF, false);
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, field_0x258);
             mState = 2;
         } else {
             field_0x24c--;
@@ -374,15 +374,15 @@ void Switch_804A7F38::update() {
         if (field_0x234 == 0 || field_0x234 == 1 || field_0x234 == 5 || field_0x234 == 8) {
             if (field_0x234 == 0 || field_0x234 == 5) {
                 setScreenFlag_0x30(0xFF, false);
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
             } else {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
             }
         } else {
             if (field_0x234 == 2 || field_0x234 == 6) {
                 setScreenFlag_0x30(0xFF, false);
             }
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
         }
         mState = 2;
         break;

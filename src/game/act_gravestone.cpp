@@ -35,11 +35,11 @@ void Gravestone_804A99C0::update() {
     switch (field_0x230) {
     case 0: {
         s32 player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
-        if (hit >= 0 && fn_80230CFC(hit) == 3) {
+        if (hit >= 0 && getPlayerFacing_80230CFC(hit) == 3) {
             field_0x230 = 1;
             field_0x238 = hit;
             field_0x23c = 0.0f;
-        } else if (player >= 0 && fn_8023513C(player) && fn_80230CFC(player) == 3) {
+        } else if (player >= 0 && fn_8023513C(player) && getPlayerFacing_80230CFC(player) == 3) {
             field_0x238 = player;
             field_0x23c = 0.0f;
             field_0x230 = 2;
@@ -54,7 +54,7 @@ void Gravestone_804A99C0::update() {
         break;
     }
     case 1:
-        if (hit >= 0 && field_0x238 == hit && fn_80230CFC(hit) == 3) {
+        if (hit >= 0 && field_0x238 == hit && getPlayerFacing_80230CFC(hit) == 3) {
             field_0x23c += 1.0f;
             if (field_0x23c >= 25.0f) {
                 field_0x230 = 2;
@@ -95,7 +95,7 @@ void Gravestone_804A99C0::update() {
         break;
     case 4:
         if (field_0x234 == 1) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
         }
         mAlive = false;
         break;

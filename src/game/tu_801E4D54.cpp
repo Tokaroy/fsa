@@ -45,9 +45,9 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
                 field_0x308[i].field_0x5 = 1;
                 return;
             } else {
-                s32 player = fn_801D05F8(&mPos, 160.0f);
+                s32 player = findNearestPlayer_801D05F8(&mPos, 160.0f);
                 if (player >= 0 && field_0x2a8[player].field_0x0 == 0) {
-                    s32 angle = fn_801D0280(player);
+                    s32 angle = getAngleToPlayer_801D0280(player);
                     v.x = JMath::sincosTable_.mTable[static_cast<u16>(angle) >> 5].first;
                     v.y = JMath::sincosTable_.mTable[static_cast<u16>(angle) >> 5].second;
                 } else {
@@ -74,7 +74,7 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
 void VaatiBoss_804A4958::fn_801E5754() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x2a8[i].field_0x0 != 0) {
-            if (fn_8023F264(i) && !fn_80236B50(i) && !fn_8022D75C(i)) {
+            if (fn_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_8022D75C(i)) {
                 if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                     continue;
                 }
@@ -114,7 +114,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
             if (mFlags & 0x4000) {
                 field_0x2a8[i].field_0x8++;
                 if (field_0x2a8[i].field_0x8 % 40 == 0) {
-                    fn_80236074(i, 10, 0);
+                    dropPlayerForceGems_80236074(i, 10, 0);
                 }
             }
         }
@@ -124,7 +124,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 fn_80230C6C(i);
                 fn_80230AD4(i);
                 field_0x2a8[i].field_0x0 = 1;
-                field_0x2a8[i].field_0xc.fn_8021BD18(fn_80230CFC(i));
+                field_0x2a8[i].field_0xc.fn_8021BD18(getPlayerFacing_80230CFC(i));
             }
             if (!fn_80230188(i)) {
                 if (mFlags & 0x4000) {
@@ -151,10 +151,10 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 bool hit = false;
                 if (!(mFlags & 0x4000)) {
                     started = true;
-                    hit = fn_80238548(i, 0, &v, 0x19);
+                    hit = hitPlayerGroup_80238548(i, 0, &v, 0x19);
                 } else if (sum.z > field_0x464.field_0xc.field_0x8) {
                     queued = true;
-                    hit = fn_80238548(i, mParamAtcp_0x114, &v, 0x17);
+                    hit = hitPlayerGroup_80238548(i, mParamAtcp_0x114, &v, 0x17);
                 }
                 if (started || queued) {
                     fn_80230224(i, false);
@@ -183,7 +183,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
 // FIXME(shotgun): written from asm
 void VaatiBoss_804A4958::fn_801E4D88() {
     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-    s32 count = getActorManager_801F856C()->fn_801F7818('HBMB', mLayer_0x4, actors, -1);
+    s32 count = getActorManager_801F856C()->collectActorsById_801F7818('HBMB', mLayer_0x4, actors, -1);
 
     for (s32 i = 0; i < 0x10; i++) {
         cls_801D6A58* e = &field_0x308[i];

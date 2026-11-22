@@ -152,14 +152,14 @@ void VaatiBoss_804A4958::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
 
-    mAnim.fn_801D2608(lbl_8053A138, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A138, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 
     getGameView_802D6A9C()->fn_802D7440(0);
 
     for (s32 i = 0; i < 4; i++) {
-        fn_80304C10(i, "gb_ch_obj_tr_sch5.szs", 0x6017000, 1, 0);
+        queueGbaFile_80304C10(i, "gb_ch_obj_tr_sch5.szs", 0x6017000, 1, 0);
     }
 
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_sch5.szs");
@@ -167,7 +167,7 @@ void VaatiBoss_804A4958::init() {
 }
 
 void VaatiBoss_804A4958::onFirstUpdate_0x54() {
-    gAudioMgr_8053AF80->fn_80458F9C(60);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(60);
 }
 
 // FIXME: 97.99 %, regalloc-only; behaviour clean.
@@ -189,7 +189,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
 }
 
 // FIXME(shotgun): 99.73 %, regalloc-only; behaviour drift.
-void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
+void VaatiBoss_804A4958::setState_801D5D84(s32 state) {
     switch (state) {
     case 1:
     case 2:
@@ -358,7 +358,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         break;
     case 26:
         field_0x568.fn_801E6A84(0);
-        fn_801F3668();
+        markDead_801F3668();
         mAlive = true;
         break;
     }
@@ -368,7 +368,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
 
 inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
     bool found = false;
-    s32 player = fn_801D05F8(&mPos, 160.0f);
+    s32 player = findNearestPlayer_801D05F8(&mPos, 160.0f);
     if (player >= 0) {
         const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
         JGeometry::TVec2f target;
@@ -398,24 +398,24 @@ void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
         if (isUpperLayer_801CD2F8(mLayer_0x4)) {
             if (field_0x5d0 == 0) {
-                fn_801D5D84(0x15);
+                setState_801D5D84(0x15);
             } else {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
                     if (calcTargetFar_801D5B70(&field_0x5c4)) {
-                        fn_801D5D84(0x11);
+                        setState_801D5D84(0x11);
                         return;
                     }
                 }
-                fn_801D5D84(0xF);
+                setState_801D5D84(0xF);
             }
         } else if (field_0x5d0 == 0) {
             if (mLife <= 12) {
-                fn_801D5D84(0xC);
+                setState_801D5D84(0xC);
             } else {
-                fn_801D5D84(0x17);
+                setState_801D5D84(0x17);
             }
         } else {
-            fn_801D5D84(0xC);
+            setState_801D5D84(0xC);
         }
     }
 }
@@ -444,66 +444,66 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (fn_801CD228(mLayer_0x4) && getActorManager_801F856C()->fn_801F68E0() != 0) {
-            fn_801D5D84(1);
+            setState_801D5D84(1);
         }
         break;
     case 1:
         if (mPos.z <= 90.0f) {
             mPos.z = 90.0f;
-            fn_801D5D84(2);
+            setState_801D5D84(2);
         }
         break;
     case 2:
         if (mStateTimer >= 180) {
-            fn_801D5D84(3);
+            setState_801D5D84(3);
         }
         break;
     case 3:
         if (mStateTimer >= 60) {
             getActorManager_801F856C()->fn_801F6884();
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, true, 0);
-            fn_801D5D84(4);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, true, 0);
+            setState_801D5D84(4);
         }
         break;
     case 4:
         if (mStateTimer >= field_0x250) {
             field_0x5b0 = pickTarget(this);
-            fn_801D5D84(5);
+            setState_801D5D84(5);
         }
         break;
     case 5:
         if (field_0x5b0 == -1 || field_0x2a8[field_0x5b0].field_0x0 != 0 || !canTargetPlayer_801D0B44(field_0x5b0)) {
             field_0x5b0 = pickTarget(this);
-            fn_801D5D84(5);
+            setState_801D5D84(5);
         } else if (mStateTimer >= field_0x250) {
             s32 chosen = pickTarget(this);
             if (field_0x5b0 == -1 && chosen == -1) {
                 break;
             }
             field_0x5b0 = chosen;
-            fn_801D5D84(5);
+            setState_801D5D84(5);
         }
         break;
     case 6:
         if (mPos.z >= 500.0f) {
             mPos.z = 500.0f;
-            fn_801D5D84(7);
+            setState_801D5D84(7);
         }
         break;
     case 7:
         if (!(mFlags & 1) && mStateTimer >= 30) {
-            fn_801D5D84(8);
+            setState_801D5D84(8);
         }
         break;
     case 8:
         if (mPos.z <= 31.9f) {
             mPos.z = 31.9f;
-            fn_801D5D84(9);
+            setState_801D5D84(9);
         }
         break;
     case 9:
         if (mStateTimer >= 120) {
-            fn_801D5D84(10);
+            setState_801D5D84(10);
         }
         break;
     case 10:
@@ -512,16 +512,16 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     case 11:
         if (mStateTimer >= 180) {
             if (isUpperLayer_801CD2F8(mLayer_0x4)) {
-                fn_801D5D84(15);
+                setState_801D5D84(15);
             } else {
                 field_0x448.fn_80217CD8();
-                fn_801D5D84(12);
+                setState_801D5D84(12);
             }
         }
         break;
     case 12:
         if (mStateTimer >= field_0x250) {
-            fn_801D5D84(13);
+            setState_801D5D84(13);
         }
         break;
     case 13:
@@ -530,7 +530,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
             if (field_0x5cf == 0) {
                 field_0x4c4.fn_801D72C0(&mPos);
                 startSound_801F0E34(0x40060, 0);
-                fn_801D5D84(14);
+                setState_801D5D84(14);
             }
         } else if (mVel_0x3c.x < 0.001f && mVel_0x3c.y < 0.001f) {
             field_0x5cf = 10;
@@ -541,16 +541,16 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
             if (field_0x5d0 != 0 && (mFlags & 0x10000)) {
                 field_0x5d0--;
             }
-            fn_801D5D84(10);
+            setState_801D5D84(10);
         }
         break;
     case 15:
         if (field_0x5cf != 0) {
             field_0x5cf--;
             if (field_0x5cf == 0) {
-                field_0x4c4.fn_801D70BC(&mPos, fn_801D05F8(&mPos, 0.0f));
+                field_0x4c4.fn_801D70BC(&mPos, findNearestPlayer_801D05F8(&mPos, 0.0f));
                 startSound_801F0E34(0x40069, 0);
-                fn_801D5D84(16);
+                setState_801D5D84(16);
             }
         } else if (mVel_0x3c.x < 0.001f && mVel_0x3c.y < 0.001f) {
             field_0x5cf = 10;
@@ -561,37 +561,37 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
             if (field_0x5d0 != 0 && (mFlags & 0x10000)) {
                 field_0x5d0--;
             }
-            fn_801D5D84(10);
+            setState_801D5D84(10);
         }
         break;
     case 17:
         if (mStateTimer >= 15) {
-            fn_801D5D84(18);
+            setState_801D5D84(18);
         }
         break;
     case 18:
         if (mStateTimer >= 15) {
-            fn_801D5D84(19);
+            setState_801D5D84(19);
         }
         break;
     case 19:
         if (mStateTimer >= 50) {
-            fn_801D5D84(20);
+            setState_801D5D84(20);
         }
         break;
     case 20:
         if (mStateTimer >= 15) {
-            fn_801D5D84(10);
+            setState_801D5D84(10);
         }
         break;
     case 21:
         if (__fabsf(mPos.x - field_0x5ec.x) < 0.1f && __fabsf(mPos.y - field_0x5ec.y) < 0.1f) {
-            fn_801D5D84(22);
+            setState_801D5D84(22);
         }
         break;
     case 22:
         if (__fabsf(mPos.x - field_0x5f4.x) < 0.1f && __fabsf(mPos.y - field_0x5f4.y) < 0.1f) {
-            fn_801D5D84(23);
+            setState_801D5D84(23);
         }
         break;
     case 23:
@@ -613,7 +613,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
                 field_0x448.fn_80217DE8();
                 field_0x448.fn_80217CD8();
             }
-            fn_801D5D84(10);
+            setState_801D5D84(10);
         } else if (isUpperLayer_801CD2F8(field_0x5fc)) {
             field_0x448.fn_80217874((f32)(50 - mStateTimer));
         } else {
@@ -623,12 +623,12 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     case 24:
         if (getActorManager_801F856C()->fn_801F68E0() != 0) {
             gGameRoot_8053AAF8->startRumble_80134DE4(3, 0);
-            fn_801D5D84(25);
+            setState_801D5D84(25);
         }
         break;
     case 25:
         if (mStateTimer >= 450) {
-            fn_801D5D84(26);
+            setState_801D5D84(26);
         } else if (mStateTimer == 200) {
             mDrawEnabled = false;
         }
@@ -650,7 +650,7 @@ void VaatiBoss_804A4958::updateAnim_0x94() {
     case 0x1A:
         break;
     default:
-        mAnim.fn_801D1C18();
+        mAnim.update_801D1C18();
         break;
     }
 }
@@ -818,15 +818,15 @@ void VaatiBoss_804A4958::fn_801D4C70() {
         return;
     case 0x15: {
         JGeometry::TVec2f out;
-        // fn_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot.
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x5ec, &out, 1.5f);
+        // calcVelocityToward_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot.
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x5ec, &out, 1.5f);
         mVel_0x3c.x = out.x;
         mVel_0x3c.y = out.y;
         return;
     }
     case 0x16: {
         JGeometry::TVec2f out;
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x5f4, &out, 0.5f);
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x5f4, &out, 0.5f);
         mVel_0x3c.x = out.x;
         mVel_0x3c.y = out.y;
         return;
@@ -913,16 +913,16 @@ void VaatiBoss_804A4958::onHitReactionEnd_0x74() {
     if (checkFlag(0x8000)) {
         mFlags &= ~0x8000;
         if (isUpperLayer_801CD2F8(mLayer_0x4)) {
-            fn_801D5D84(0x15);
+            setState_801D5D84(0x15);
         } else {
-            fn_801D5D84(0x17);
+            setState_801D5D84(0x17);
         }
     } else if (mState == 11) {
         if (isUpperLayer_801CD2F8(mLayer_0x4)) {
-            fn_801D5D84(0xF);
+            setState_801D5D84(0xF);
         } else {
             field_0x448.fn_80217CD8();
-            fn_801D5D84(0xC);
+            setState_801D5D84(0xC);
         }
     } else if (isUpperLayer_801CD2F8(mLayer_0x4)) {
         switch (mState) {
@@ -931,7 +931,7 @@ void VaatiBoss_804A4958::onHitReactionEnd_0x74() {
         case 18:
         case 19:
         case 20:
-            fn_801D5D84(10);
+            setState_801D5D84(10);
             break;
         }
     } else if (mLife > 0 && mState != 23) {

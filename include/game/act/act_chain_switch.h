@@ -21,7 +21,7 @@ public:
     /* 0x23C */ u8 mCallWhenDone; // bit 17: run die_0x24() when the timer ends
     /* 0x23D */ u8 mSwitchMode;  // bits 18-19: 0 sets the switch bit, 1 clears it
     /* 0x23E */ u8 mSoundMode;   // bits 20-21: 1 calls setScreenFlag_0x30(0xFF, true), 2 (0xFF, false)
-    /* 0x240 */ u16 mSwitchBit;  // bits 22-26: bit passed to fn_802D8050
+    /* 0x240 */ u16 mSwitchBit;  // bits 22-26: bit passed to setSwitchBit_802D8050
     /* 0x242 */ u16 field_0x242; // bits 27-31 (getScreenFlagBit_0x3C())
 }; // Size: 0x244
 

@@ -218,7 +218,7 @@ void TotalScreen_804B03D8::fn_803D87C0() {
         field_0x24[i]->field_0x22 = 0;
     }
     lbl_80529DEC.field_0x243[0] = 0;
-    gAudioMgr_8053AF80->fn_80458FF0(0x1000005, true, 0);
+    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000005, true, 0);
 }
 
 void TotalScreen_804B03D8::fn_803D8718() {
@@ -247,7 +247,7 @@ void TotalScreen_804B03D8::fn_803D8718() {
 }
 
 void TotalScreen_804B03D8::fn_803D8670() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0x1c->setAlpha(field_0x77);
@@ -307,7 +307,7 @@ void TotalScreen_804B03D8::fn_803D8364() {
 }
 
 void TotalScreen_804B03D8::fn_803D82EC() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x1c->setAlpha(field_0x77);
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
@@ -512,14 +512,14 @@ void TotalScreen_804B03D8::fn_803D7098() {
     u8 d = false;
     field_0x60++;
     if (field_0x60 > 4) {
-        a = field_0x30->fn_80402940(0x16, 0, -200.0f, 0.0f);
+        a = field_0x30->animateMoveY_80402940(0x16, 0, -200.0f, 0.0f);
     }
     if (field_0x60 > 0x10) {
-        b = field_0x48->fn_80402940(0x18, 0, -200.0f, 0.0f);
+        b = field_0x48->animateMoveY_80402940(0x18, 0, -200.0f, 0.0f);
     }
     if (field_0x60 > 0) {
         for (s32 i = 0; i < 4; i++) {
-            c = field_0x34[i]->fn_80402940(0x16, 0, 500.0f, 0.0f);
+            c = field_0x34[i]->animateMoveY_80402940(0x16, 0, 500.0f, 0.0f);
         }
     }
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
@@ -527,7 +527,7 @@ void TotalScreen_804B03D8::fn_803D7098() {
     } else {
         for (s32 i = 0; i < 2; i++) {
             if (field_0x60 > i * 5) {
-                d = field_0x24[i]->fn_80402940(0x10, 0, 200.0f, 0.0f);
+                d = field_0x24[i]->animateMoveY_80402940(0x10, 0, 200.0f, 0.0f);
             }
         }
     }

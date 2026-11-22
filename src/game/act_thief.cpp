@@ -155,15 +155,15 @@ void Thief_804A5A30::init() {
     field_0x32c.x = mPos.x;
     field_0x32c.y = mPos.y;
     field_0x32c.z = mPos.z;
-    field_0x33c = fn_801F6874(mDir_0x98);
+    field_0x33c = dirToAngle_801F6874(mDir_0x98);
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A59B0 + mType * 8, 8);
+    mAnim.setKeyTables_801D2608(lbl_804A59B0 + mType * 8, 8);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     fn_80204638()->fn_80204A20(this);
     if (fn_802064E0()) {
         mBox.i.x = 1.0f;
@@ -330,7 +330,7 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
         field_0x348 = 30;
         mTargetSpeed = lbl_8046A238[mType].field_0x0;
         mPathCount = 0;
-        field_0x33c = fn_801D0280(field_0x338) - 0x8000;
+        field_0x33c = getAngleToPlayer_801D0280(field_0x338) - 0x8000;
         break;
     case 7:
         field_0x340 = -1;
@@ -425,7 +425,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         case 6:
             break;
         default:
-            field_0x338 = fn_801D05F8(&mPos, (f32)field_0x34b * 16.0f);
+            field_0x338 = findNearestPlayer_801D05F8(&mPos, (f32)field_0x34b * 16.0f);
             break;
         }
     }
@@ -539,7 +539,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         } else if (mapHit) {
             fn_801D11FC();
         } else {
-            stepAngle_801CD930(&field_0x33c, (s16)(fn_801D0280(field_0x338) - 0x8000), 0x200);
+            stepAngle_801CD930(&field_0x33c, (s16)(getAngleToPlayer_801D0280(field_0x338) - 0x8000), 0x200);
         }
         break;
     case 7:
@@ -654,7 +654,7 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
     default:
         if (fn_80204638()->field_0x0 == 0 && !fn_802064E0()) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             for (s32 i = 0; i < 4; i++) {
                 if (fn_801CCFE4(i)) {
                     if (getPlayerLayer_8023DE58(i) == getField_0x4() &&
@@ -701,7 +701,7 @@ void Thief_804A5A30::calcVelocity_0x88() {
             mVel_0x3c.y = dir.y * mSpeed;
             break;
         default:
-            fn_801D01A0(&field_0x32c, &dir, mSpeed);
+            calcVelocityToward_801D01A0(&field_0x32c, &dir, mSpeed);
             mVel_0x3c.x = dir.x;
             mVel_0x3c.y = dir.y;
             break;
@@ -718,7 +718,7 @@ void Thief_804A5A30::onMoved_0x8C() {
         case 8:
             if (fn_80204638()->fn_802046FC(&mVel_0x3c, &mPos)) {
                 if (mFlags & ENEMY_FLAG_NO_MAP_HIT) {
-                    fn_801F2618(&mMapHitDir, lbl_8053EFC0);
+                    sweepMapBox_801F2618(&mMapHitDir, lbl_8053EFC0);
                 }
             }
             break;
@@ -729,8 +729,8 @@ void Thief_804A5A30::onMoved_0x8C() {
 void Thief_804A5A30::move_0x98() {
     if (mState == 3) {
         if (field_0xc4 != 0) {
-            mDir_0x98 = fn_80230CFC(field_0xc8);
-            field_0x33c = fn_801F6874(mDir_0x98);
+            mDir_0x98 = getPlayerFacing_80230CFC(field_0xc8);
+            field_0x33c = dirToAngle_801F6874(mDir_0x98);
             JGeometry::TVec3f* pos = fn_8023E7B0(field_0xc8);
             mPos.x = pos->x;
             mPos.y = pos->y;
@@ -742,8 +742,8 @@ void Thief_804A5A30::move_0x98() {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
                 mPathCount = 0;
                 s32 player = field_0xc8;
-                if (fn_8022F514(player)) {
-                    player = fn_8022F3DC(player);
+                if (hasPlayerLeader_8022F514(player)) {
+                    player = getPlayerLeader_8022F3DC(player);
                 }
                 JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(player);
                 field_0x32c.x = playerPos->x;

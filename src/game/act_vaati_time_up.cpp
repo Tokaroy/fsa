@@ -141,12 +141,12 @@ void VaatiTimeUp_804ACCC0::update() {
         gGameRoot_8053AAF8->fn_80134FC4(0);
         lbl_8053AD70->fn_8037AE30();
         for (s32 i = 0; i < 4; i++) {
-            fn_80238548(i, 40, (const JGeometry::TVec2f*)&mPos, 18);
+            hitPlayerGroup_80238548(i, 40, (const JGeometry::TVec2f*)&mPos, 18);
         }
         field_0x230.field_0x5c = 1;
         field_0x230.field_0x58 = 0.0f;
         gGameRoot_8053AAF8->fn_80134FBC(0);
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
 

@@ -134,7 +134,7 @@ bool UnknownLNBM_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     if (!fn_802265DC(pos, layer, false)) {
         s32 serial = mSpawnParam_0x90;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+        if (!boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
             blocked = false;
         }
     }

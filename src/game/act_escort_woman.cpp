@@ -10,7 +10,7 @@
 
 // Passes the position on by value (the original loads the other arguments before its copy).
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 // The escort's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
@@ -88,7 +88,7 @@ s32 EscortWoman_8049E1D0::vfunc_0x5C(const s32* dir) {
         case 3:
             break;
         default:
-            fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (talk(player, 0x442, mSerial, mLayer_0x4, mPos, 0x28)) {
@@ -172,8 +172,8 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             camera->mMargin_0x1d4 = -1.0f;
             camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
-        fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(fn_8012285C()), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(fn_8012285C()), mSerial)) {
             vfunc_0x6C(field_0x3d0);
         }
         break;
@@ -242,7 +242,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 9:
-        if (fn_80121E40() && mAnim.fn_801D208C()) {
+        if (fn_80121E40() && mAnim.isAnimEnd_801D208C()) {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
@@ -255,13 +255,13 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 10:
-        if (getActorManager_801F856C()->fn_801F68E0() && mAnim.fn_801D208C() && fn_801227D4()) {
+        if (getActorManager_801F856C()->fn_801F68E0() && mAnim.isAnimEnd_801D208C() && fn_801227D4()) {
             vfunc_0x6C(11);
         }
         break;
 
     case 11:
-        mAnim.fn_801D1C18();
+        mAnim.update_801D1C18();
         if (lbl_8053AAA0) {
             vfunc_0x6C(12);
         }
@@ -295,7 +295,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
 
     case 16:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x6C(13);
         }
@@ -343,12 +343,12 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
         mAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 7:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         field_0x333 = 0;
         field_0x354 = 0;
         break;
     case 8:
-        mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
+        mAnim.startAnim_801D22DC(getPlayerFacing_80230CFC(fn_8012285C()), 2, false);
         break;
     case 9:
         mAnim.startAnim_801D22DC(mDir_0x98 + 10, 0, false);
@@ -379,7 +379,7 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
         field_0x331 = 0;
         break;
     case 17:
-        getGameView_802D6A9C()->fn_802D8050(field_0x3cc, 1, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x3cc, 1, 0xFF);
         mAlive = false;
         break;
     }
@@ -387,9 +387,9 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
 }
 
 void EscortWoman_8049E1D0::vfunc_0x70() {
-    mAnim.fn_801D2608(lbl_8049E198, 14);
+    mAnim.setKeyTables_801D2608(lbl_8049E198, 14);
     mAnim.startAnim_801D22DC(7, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void EscortWoman_8049E1D0::vfunc_0x74() {

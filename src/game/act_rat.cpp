@@ -34,8 +34,8 @@ void Rat_8049C400::init() {
 // FIXME(shotgun): 98.26 %, different + reloc-name (one instruction-order change around the chase flag)
 
 void Rat_8049C400::update() {
-    if (updateHitReaction_801F3D94(true) || fn_801F305C()) {
-        fn_801F2618(NULL, false);
+    if (updateHitReaction_801F3D94(true) || checkHits_801F305C()) {
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     field_0x238++;
@@ -52,7 +52,7 @@ void Rat_8049C400::update() {
     } else {
         bumped = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1) != 0;
     }
-    u8 hit = fn_801F2618(NULL, false);
+    u8 hit = sweepMapBox_801F2618(NULL, false);
     if (hit) {
         if (ActorBase_804A5770::isBlocked_0x4C(mLayer_0x4, &mPos) == 1) {
             die_0x24();
@@ -73,7 +73,7 @@ void Rat_8049C400::update() {
             f32 dist = 0.0f;
             s32 dir = 0;
             s32 player = 0;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (player != -1 && dist < 120.0f) {
                 field_0x230 = 2;
                 field_0x23c = 0;
@@ -119,7 +119,7 @@ void Rat_8049C400::update() {
             f32 dist = 0.0f;
             s32 dir = 0;
             s32 player = 0;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (player != -1 && dist < 120.0f) {
                 for (u8 i = 0; i < 4; i++) {
                     if (dir == lbl_80539E68[i]) {

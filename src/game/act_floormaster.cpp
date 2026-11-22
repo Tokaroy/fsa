@@ -10,7 +10,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 
-bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
+bool approachValue_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
 bool fn_801CD1D0(s32 player);
 bool fn_802316C8(s32 player, s32 layer, const JGeometry::TVec3f* pos);
 
@@ -55,7 +55,7 @@ inline void Floormaster_804A6004::setEmitterColor() {
 }
 
 inline void Floormaster_804A6004::onHit() {
-    // The flag form matches; calling fn_8020ED5C(4) straight from the cases drops the callers to 92-97 %.
+    // The flag form matches; calling setState_8020ED5C(4) straight from the cases drops the callers to 92-97 %.
     bool change = false;
     switch (mState) {
     case 3:
@@ -66,7 +66,7 @@ inline void Floormaster_804A6004::onHit() {
         break;
     }
     if (change) {
-        fn_8020ED5C(4);
+        setState_8020ED5C(4);
     }
 }
 
@@ -94,7 +94,7 @@ void Floormaster_804A6004::init() {
         field_0x2ac = y;
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-    // Field-wise copy throughout: `mBox2 = mBox` drops init/fn_8020ED5C/updateAnim_0x94 to 72-93 %.
+    // Field-wise copy throughout: `mBox2 = mBox` drops init/setState_8020ED5C/updateAnim_0x94 to 72-93 %.
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
@@ -111,14 +111,14 @@ void Floormaster_804A6004::init() {
     field_0x250 = randInt_801CD664(61) + 60;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A5FE8, 7);
+    mAnim.setKeyTables_801D2608(lbl_804A5FE8, 7);
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
 // Case 1: the three env-colour conversions use other stack slots and f-registers than the original
 // (0x18/0x20/0x10 for r/g/b), and the player-x check swaps f2/f3.
 // FIXME: 99.18 %, scheduling+regalloc; behaviour drift.
-void Floormaster_804A6004::fn_8020ED5C(s32 state) {
+void Floormaster_804A6004::setState_8020ED5C(s32 state) {
     switch (state) {
     case 0:
         field_0x2b4 = 0.0f;
@@ -281,9 +281,9 @@ inline void Floormaster_804A6004::updateGrabbedPlayer_8020EB08() {
     } else {
         dest.set(mPos.x, mPos.y, 0.0f);
     }
-    fn_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
-    fn_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
-    fn_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
 
     if (mState == 5) {
         fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
@@ -304,7 +304,7 @@ void Floormaster_804A6004::fn_8020EB08() {
         if (field_0x2b8 >= 0) {
             field_0x2bc++;
         }
-        s32 player = fn_801D05F8(&mPos, 0.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
         if (player != field_0x2b8) {
             if (field_0x2b8 < 0) {
                 field_0x2b8 = player;
@@ -352,9 +352,9 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     case 0:
         if (!(mFlags & 0x4000) && mStateTimer >= field_0x250) {
             field_0x2bc = 0;
-            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
-                fn_8020ED5C(1);
+                setState_8020ED5C(1);
             }
         }
         break;
@@ -362,9 +362,9 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     case 1:
         if (mStateTimer >= 60) {
             if (field_0x2b8 >= 0) {
-                fn_8020ED5C(2);
+                setState_8020ED5C(2);
             } else {
-                fn_8020ED5C(10);
+                setState_8020ED5C(10);
             }
         } else {
             approachLinear(&field_0x2b4, 1.0f, 60 - mStateTimer);
@@ -376,17 +376,17 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
         break;
 
     case 2:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             if (field_0x2b8 >= 0) {
-                fn_8020ED5C(3);
+                setState_8020ED5C(3);
             } else {
-                fn_8020ED5C(8);
+                setState_8020ED5C(8);
             }
         }
         break;
 
     case 3:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             startSound_801F0E34(0x50088, 0);
             if (field_0x2b8 >= 0) {
                 bool flag = false;
@@ -405,48 +405,48 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
                 }
                 if (flag) {
                     if (fn_80230AD4(field_0x2b8)) {
-                        fn_8020ED5C(5);
+                        setState_8020ED5C(5);
                     } else {
-                        fn_8020ED5C(8);
+                        setState_8020ED5C(8);
                     }
                     break;
                 }
             }
-            fn_8020ED5C(8);
+            setState_8020ED5C(8);
         }
         break;
 
     case 4:
         if (mStateTimer >= 120) {
             field_0x2bc = 0;
-            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
-                fn_8020ED5C(3);
+                setState_8020ED5C(3);
             } else {
-                fn_8020ED5C(9);
+                setState_8020ED5C(9);
             }
         }
         break;
 
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             fn_80230224(field_0x2b8, 0);
             if (fn_8022DE10(field_0x2b8, 2)) {
-                fn_8020ED5C(6);
+                setState_8020ED5C(6);
             } else {
-                fn_8020ED5C(9);
+                setState_8020ED5C(9);
             }
         }
         break;
 
     case 6:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020ED5C(7);
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
+            setState_8020ED5C(7);
         }
         break;
 
     case 7:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             JGeometry::TVec3f pos;
             if (!(mFlags & 0x2000)) {
                 fn_801CD150(&mPos, &pos);
@@ -466,26 +466,26 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
             }
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1B0, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x548, 0, -1, NULL, NULL, true, 1.0f);
-            fn_8020ED5C(10);
+            setState_8020ED5C(10);
         }
         break;
 
     case 8:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020ED5C(9);
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
+            setState_8020ED5C(9);
         }
         break;
 
     case 9:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-            fn_8020ED5C(10);
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
+            setState_8020ED5C(10);
         }
         break;
 
     case 10:
         if (mStateTimer >= 60) {
             deleteEmitter(&mEmitter2b0);
-            fn_8020ED5C(0);
+            setState_8020ED5C(0);
         } else {
             approachLinear(&field_0x2b4, 0.0f, 60 - mStateTimer);
             if (mEmitter2b0 != NULL) {
@@ -581,7 +581,7 @@ bool Floormaster_804A6004::vfunc_0x58() {
         if (b1) {
             hitOccurred = true;
         } else if (b2) {
-            if (field_0x1dc.fn_801EAC20(hit)) {
+            if (field_0x1dc.startTimer_801EAC20(hit)) {
                 hitOccurred = true;
             }
         } else if ((hit = actorSerial) >= 0) {
@@ -621,9 +621,9 @@ u8 Floormaster_804A6004::checkHitByPlayer_0x5C() {
         for (int i = 0; i < 4; i++) {
             s32 flag;
             JGeometry::TVec2f pos;
-            if (i == fn_801F285C(&pos, &flag, true, i)) {
+            if (i == findOverlappingPlayer_801F285C(&pos, &flag, true, i)) {
                 fn_8023B6CC(i);
-                if (field_0x1dc.fn_801EAC20(i)) {
+                if (field_0x1dc.startTimer_801EAC20(i)) {
                     JGeometry::TVec3f effectPos(pos.x, pos.y, 0.0f);
                     result = 1;
                     fn_801CB538(mLayer_0x4, &effectPos, 0, 0);
@@ -678,7 +678,7 @@ void Floormaster_804A6004::draw() {
         s32 frame = mAnim.mCel + 0x321;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         }
         break;
     }

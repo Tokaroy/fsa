@@ -344,7 +344,7 @@ void Goal2_804A9C20::update() {
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x7B, 0, 0, NULL, NULL, true, 1.0f);
                         JGeometry::TVec2f hit;
                         hit.set(mPos.x, mPos.y);
-                        fn_80238548(player, 0, &hit, 10);
+                        hitPlayerGroup_80238548(player, 0, &hit, 10);
                         startSound_801F0E34(0x3008B, 0);
                         field_0x230 = 2;
                         field_0x2c4 = 0x2D;
@@ -537,7 +537,7 @@ void Goal2_804A9C20::update() {
                 field_0x230 = 5;
             }
         } else if (field_0x234 == 0x3C) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
         }
         break;
     case 3:
@@ -587,7 +587,7 @@ void Goal2_804A9C20::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "shikimono.bti");
         JGeometry::TVec3f pos(mPos.x + 80.0f, mPos.y + 48.0f, mPos.z);
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
         }
     }
 }

@@ -27,7 +27,7 @@ void ChainChomp_804A18E0::init() {
     field_0x244 = 0;
     field_0x248 = 0;
     mDir_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    field_0x272 = fn_801F6874(mDir_0x98);
+    field_0x272 = dirToAngle_801F6874(mDir_0x98);
     field_0x264 = mDir_0x98 * 2 + field_0x24c;
     field_0x288[2] = 0.0f;
     field_0x288[1] = 0.0f;
@@ -78,7 +78,7 @@ void ChainChomp_804A18E0::update() {
             JGeometry::TVec3f p;
             p.x = field_0x384[0];
             p.y = field_0x384[1];
-            field_0x270 = fn_80226998(&p, mLayer_0x4);
+            field_0x270 = getTileAt_80226998(&p, mLayer_0x4);
         }
         return;
     }
@@ -89,7 +89,7 @@ void ChainChomp_804A18E0::update() {
     fn_801EF510();
 
     for (int i = 0; i < 4; i++) {
-        s32 hitPlayer = fn_801F285C(NULL, NULL, false, i);
+        s32 hitPlayer = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
         if (hitPlayer >= 0 && field_0x260 != hitPlayer) {
             f32 y0 = mBox.i.y + mPos.y;
             f32 y1 = mBox.f.y + mPos.y;
@@ -118,7 +118,7 @@ void ChainChomp_804A18E0::update() {
     }
 
     if (field_0x230 == 7 || field_0x230 == 8) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
     }
 
     if (field_0x260 < 0) {
@@ -133,7 +133,7 @@ void ChainChomp_804A18E0::update() {
             JGeometry::TVec3f p;
             p.x = field_0x384[0];
             p.y = field_0x384[1];
-            if (field_0x270 == fn_80226998(&p, mLayer_0x4)) {
+            if (field_0x270 == getTileAt_80226998(&p, mLayer_0x4)) {
                 field_0x260 = -1;
             } else {
                 field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
@@ -210,7 +210,7 @@ void ChainChomp_804A18E0::update() {
                 if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
                     if (diff.squared() < 4096.0f) {
-                        fn_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
+                        findTargetPlayer_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
                         field_0x230 = 2;
                         break;
                     }
@@ -349,7 +349,7 @@ void ChainChomp_804A18E0::update() {
                 }
             }
             if (found == 0) {
-                field_0x272 = fn_801F6874(mDir_0x98);
+                field_0x272 = dirToAngle_801F6874(mDir_0x98);
                 field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
                 field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
                 field_0x258 = 0;
@@ -359,7 +359,7 @@ void ChainChomp_804A18E0::update() {
         }
         field_0x25c++;
         field_0x25c &= 0x1F;
-        fn_801EEC98(mSerial, &field_0x272, &outDir, &outDist, NULL, field_0x260, 2);
+        findTargetPlayer_801EEC98(mSerial, &field_0x272, &outDir, &outDist, NULL, field_0x260, 2);
         if (outDist > 48.0f) {
             field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
             field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
@@ -387,7 +387,7 @@ void ChainChomp_804A18E0::update() {
         if (field_0x238 == 0) {
             outDir = -1;
             if (field_0x258 == 0) {
-                fn_801EEC98(mSerial, &field_0x272, &outDir, &outDist, NULL, field_0x254, 2);
+                findTargetPlayer_801EEC98(mSerial, &field_0x272, &outDir, &outDist, NULL, field_0x254, 2);
             } else {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x254);
                 if (target != NULL && target->mLife > 0) {
@@ -430,7 +430,7 @@ void ChainChomp_804A18E0::update() {
         JGeometry::TVec3f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;
@@ -450,7 +450,7 @@ void ChainChomp_804A18E0::update() {
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
             }
-            fn_801EEC98(mSerial, NULL, &outDir, NULL, NULL, field_0x260, 2);
+            findTargetPlayer_801EEC98(mSerial, NULL, &outDir, NULL, NULL, field_0x260, 2);
             if (outDir >= 0) {
                 mDir_0x98 = outDir;
             }
@@ -463,7 +463,7 @@ void ChainChomp_804A18E0::update() {
                 }
             }
         }
-        if (field_0x258 == 2 && fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (field_0x258 == 2 && isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             mAlive = false;
         }
         break;

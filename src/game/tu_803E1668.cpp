@@ -428,8 +428,8 @@ AdvEntryScreen_804B0B00::AdvEntryScreen_804B0B00() {
         field_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     }
     OSInitFastCast();
-    void* arrowAnm = fn_804031C4('SCRN', "entry_arrow_anim.bck");
-    void* connectAnm = fn_804031C4('SCRN', "entry_connect_anim.bck");
+    void* arrowAnm = getEntryArchiveResource_804031C4('SCRN', "entry_arrow_anim.bck");
+    void* connectAnm = getEntryArchiveResource_804031C4('SCRN', "entry_connect_anim.bck");
     for (int i = 0; i < 4; i++) {
         field_0x38[i] = static_cast<J2DAnmTransform*>(J2DAnmLoaderDataBase::load(arrowAnm));
         field_0x48[i] = static_cast<J2DAnmTransform*>(J2DAnmLoaderDataBase::load(connectAnm));
@@ -746,7 +746,7 @@ void AdvEntryScreen_804B0B00::fn_803EDBF0(u8 mode) {
 // (field_0x60). When the fade-out into state 9 ends, the decide / back
 // button textures of lbl_8053AED8 are set.
 void AdvEntryScreen_804B0B00::fn_803EDA2C() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x14->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x1d4 != 15) {
         (this->*lbl_804B0A24[field_0x1d4])();
@@ -1815,14 +1815,14 @@ void AdvEntryScreen_804B0B00::fn_803E8210() {
     u8 done2 = false;
     field_0x260++;
     if (field_0x260 > 0) {
-        done0 = field_0x64->fn_80402940(22, 0, -200.0f, 0.0f);
+        done0 = field_0x64->animateMoveY_80402940(22, 0, -200.0f, 0.0f);
     }
     if (field_0x260 > 16) {
-        done1 = field_0x78->fn_80402940(24, 0, -200.0f, 0.0f);
+        done1 = field_0x78->animateMoveY_80402940(24, 0, -200.0f, 0.0f);
     }
     for (s32 i = 0; i < 4; i++) {
         if (i <= field_0x1bc && field_0x260 > i * 5 + 4) {
-            done2 = field_0x68[i]->fn_80402940(18, 0, 150.0f, 0.0f);
+            done2 = field_0x68[i]->animateMoveY_80402940(18, 0, 150.0f, 0.0f);
         }
     }
     if (done0 && done1 && done2) {
@@ -2245,26 +2245,26 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
                 params.field_0x10.a = 255.0f * scale;
             }
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         } else {
             params.field_0x10.a = 255.0f * scale;
             if (field_0x220[i] <= 10) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
             } else if (field_0x220[i] <= 36) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, (field_0x220[i] - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (field_0x220[i] - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
             } else if (field_0x220[i] < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             } else {
                 s32 frame = lbl_804779B0[field_0x220[i] - 100] + 0x10;
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
         }
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x1d4 == 8) {
         lbl_8053AEC0->fn_804316EC();
     }
@@ -2458,15 +2458,15 @@ void AdvEntryScreen_804B0B00::fn_803E4308() {
 // animation lengths in field_0x230 / field_0x240) or hidden ('Ppln' at 128).
 void AdvEntryScreen_804B0B00::fn_803E3CB0() {
     if (field_0x1bc == 1) {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP2_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP2_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     } else if (field_0x1bc == 2) {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP3_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP3_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     } else {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP4_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP4_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     }
@@ -2564,7 +2564,7 @@ void AdvEntryScreen_804B0B00::fn_803E3564() {
         getMessageText_803832BC(sta, 0x11B, 0, NULL, NULL);
         getMessageText_803832BC(han, 0x11B, 0, NULL, NULL);
         getMessageText_803832BC(rule, 0xF7, 0, NULL, NULL);
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP1_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP1_01.bti");
         static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         field_0xc->search('Pstab04')->hide();
@@ -2575,15 +2575,15 @@ void AdvEntryScreen_804B0B00::fn_803E3564() {
         field_0xc->search('Pgba02')->hide();
         field_0xc->search('Pcon02')->show();
         if (field_0x1bc == 1) {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP2_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP2_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         } else if (field_0x1bc == 2) {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP3_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP3_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         } else {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP4_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP4_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         }
@@ -2783,7 +2783,7 @@ void AdvEntryScreen_804B0B00::drawFade() {
             }
             break;
         }
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         field_0x60->setAlpha(field_0x26d);
         field_0x60->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
     }
@@ -2842,7 +2842,7 @@ void AdvEntryScreen_804B0B00::fn_803E1668() {
                 params.field_0x0[7] = i + 12;
                 s32 frame = lbl_804779B0[field_0x220[0] % 30] + 0x10;
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
         }
     } else if (field_0x220[0] < 112) {
@@ -2879,7 +2879,7 @@ void AdvEntryScreen_804B0B00::fn_803E1668() {
             pos.z = 0.0f;
             params.field_0x0[7] = i + 12;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         }
     } else if (field_0x220[0] < 212) {
         for (s32 i = 0; i < 4; i++) {
@@ -2900,7 +2900,7 @@ void AdvEntryScreen_804B0B00::fn_803E1668() {
             }
             s32 frame = lbl_804779B0[field_0x220[0] % 30] + 0x10;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         }
     } else {
         // Slide back to the field_0x1bc + 1 player panes.
@@ -2936,7 +2936,7 @@ void AdvEntryScreen_804B0B00::fn_803E1668() {
             pos.z = 0.0f;
             params.field_0x0[7] = i + 12;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         }
     }
 }

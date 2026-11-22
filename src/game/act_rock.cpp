@@ -32,12 +32,12 @@ void Rock_804A9480::update() {
     } else {
         mVel_0x3c.z += -0.15f;
         mPos += mVel_0x3c;
-        if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+        if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
             if (mPos.z < 0.0f) {
                 if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x90) {
-                    gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                    gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                 } else if (getRawTile_80226850(&mPos, mLayer_0x4) == 0x91) {
-                    gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                    gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                 }
             }
             die_0x24();
@@ -82,7 +82,7 @@ void Rock_804A9480::die_0x24() {
 }
 
 bool Rock_804A9480::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x234);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x234);
 }
 
 Rock_804A9480::~Rock_804A9480() {}

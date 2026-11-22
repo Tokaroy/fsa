@@ -59,7 +59,7 @@ void Vulture_804A4230::init() {
     field_0x250 = randInt_801CD664(55) + 6;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A128, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A128, 2);
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
@@ -85,14 +85,14 @@ void Vulture_804A4230::fn_801C0634() {
         targetY = mSpawnPos.y;
     }
 
-    fn_801CD8E4(&field_0x2c0.x, targetX, 1.0f, 0.0f);
-    fn_801CD8E4(&field_0x2c0.y, targetY, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c0.x, targetX, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c0.y, targetY, 1.0f, 0.0f);
 
     JGeometry::TVec2f target = field_0x2c0;
     target.x += diff.x;
     target.y += diff.y;
-    fn_801CD8E4(&field_0x2b8.x, target.x, 0.05f, 0.0f);
-    fn_801CD8E4(&field_0x2b8.y, target.y, 0.05f, 0.0f);
+    approachValue_801CD8E4(&field_0x2b8.x, target.x, 0.05f, 0.0f);
+    approachValue_801CD8E4(&field_0x2b8.y, target.y, 0.05f, 0.0f);
 
     JGeometry::TVec2f diff2 = field_0x2b8;
     diff2.x -= field_0x2c0.x;
@@ -100,7 +100,7 @@ void Vulture_804A4230::fn_801C0634() {
 
     f32 dist;
     if (field_0x2a8 >= 0) {
-        dist = JMAFastSqrt(fn_801D0DA0(field_0x2a8, &mPos));
+        dist = JMAFastSqrt(getPlayerDistSq_801D0DA0(field_0x2a8, &mPos));
     } else {
         dist = JMAFastSqrt(square(mSpawnPos.x - mPos.x) + square(mSpawnPos.y - mPos.y));
     }
@@ -135,7 +135,7 @@ void Vulture_804A4230::fn_801C0634() {
     field_0x2b8 = res;
 }
 
-void Vulture_804A4230::fn_801C0438(s32 state) {
+void Vulture_804A4230::setState_801C0438(s32 state) {
     switch (state) {
     case 0:
         field_0x250 = randInt_801CD664(55) + 6;
@@ -174,7 +174,7 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
     case 4:
         mAnim.startAnimIfChanged_801D22A0(1, 2);
         mTargetSpeed = 4.5f;
-        field_0x2b2 = fn_801D0280(field_0x2a8);
+        field_0x2b2 = getAngleToPlayer_801D0280(field_0x2a8);
         break;
     case 5:
         mAnim.startAnimIfChanged_801D22A0(1, 2);
@@ -203,9 +203,9 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
-            field_0x2a8 = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+            field_0x2a8 = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (field_0x2a8 >= 0) {
-                fn_801C0438(1);
+                setState_801C0438(1);
             }
         }
         break;
@@ -220,37 +220,37 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
             } else {
                 mFlags |= 0x2000;
             }
-            fn_801C0438(2);
+            setState_801C0438(2);
         }
         break;
 
     case 2:
         if (field_0x2a8 >= 0) {
             if (!fn_80230188(field_0x2a8) && !canTargetPlayer_801D0B44(field_0x2a8)) {
-                s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
-                if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
+                s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+                if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
                 break;
             }
 
             if (mStateTimer >= field_0x250) {
                 if (!fn_80230188(field_0x2a8)) {
-                    f32 dist = fn_801D0DA0(field_0x2a8, &mPos);
+                    f32 dist = getPlayerDistSq_801D0DA0(field_0x2a8, &mPos);
                     if (dist <= square(16.0f + field_0x2ac)) {
-                        fn_801C0438(3);
+                        setState_801C0438(3);
                         break;
                     }
                 }
             }
             fn_801C0634();
         } else {
-            field_0x2a8 = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+            field_0x2a8 = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (field_0x2a8 >= 0) {
-                fn_801C0438(2);
+                setState_801C0438(2);
             } else {
                 fn_801C0634();
             }
@@ -260,15 +260,15 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
     case 3:
         if (mStateTimer >= 15) {
             if (!canTargetPlayer_801D0B44(field_0x2a8)) {
-                s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
-                if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
+                s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+                if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
             } else {
-                fn_801C0438(4);
+                setState_801C0438(4);
             }
         }
         break;
@@ -276,32 +276,32 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
     case 4:
         if (mStateTimer >= 50) {
             if (!canTargetPlayer_801D0B44(field_0x2a8)) {
-                s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
-                if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
+                s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+                if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
             } else {
-                fn_801C0438(5);
+                setState_801C0438(5);
             }
         }
         break;
 
     case 5:
         if (!canTargetPlayer_801D0B44(field_0x2a8)) {
-            s32 player = fn_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
-            if (player >= 0 && player != field_0x2a8 && fn_8022E438(player, field_0x2a8)) {
+            s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
+            if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                 field_0x2a8 = player;
-                fn_801C0438(2);
+                setState_801C0438(2);
             } else {
-                fn_801C0438(6);
+                setState_801C0438(6);
             }
         } else {
             fn_801C0634();
             if (mStateTimer >= 20) {
-                fn_801C0438(2);
+                setState_801C0438(2);
             }
         }
         break;
@@ -314,16 +314,16 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 JGeometry::TVec2f point;
                 point.x = mPos.x;
                 point.y = 8.0f + (mPos.y - mPos.z);
-                // getTileCollisionCodeAlt_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
+                // getTileCollisionCodeAlt_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, isPathBlocked_801CFA70).
                 if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&point, mLayer_0x4) == 2) {
                     hit = true;
                 }
             }
             if (hit) {
                 field_0x2a8 = -1;
-                fn_801C0438(1);
+                setState_801C0438(1);
             } else {
-                fn_801C0438(0);
+                setState_801C0438(0);
             }
         }
         break;
@@ -337,8 +337,8 @@ void Vulture_804A4230::calcVelocity_0x88() {
     switch (mState) {
     case 2:
     case 5:
-        // fn_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
-        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b8, &vel, FLT_MAX);
+        // calcVelocityToward_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot (EnemyBase.h, isPathBlocked_801CFA70).
+        calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2b8, &vel, FLT_MAX);
         mVel_0x3c.x = vel.x;
         mVel_0x3c.y = vel.y;
         if (mState == 5) {
@@ -433,7 +433,7 @@ bool Vulture_804A4230::vfunc_0x58() {
         if (actorC) {
             from.set(vel54.x, vel54.y, vel54.z);
         }
-        hit = fn_801F37AC(4, &from, 0, 0, player);
+        hit = takeHit_801F37AC(4, &from, 0, 0, player);
     }
     return hit;
 }
@@ -457,7 +457,7 @@ u8 Vulture_804A4230::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (!(mFlags & 0x4000)) {
         if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-            hit = fn_801F2FAC();
+            hit = checkPlayerAttacks_801F2FAC();
         }
     }
     return hit;

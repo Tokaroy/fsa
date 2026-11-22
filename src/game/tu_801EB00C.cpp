@@ -119,7 +119,7 @@ void cls_801EB8CC::fn_801EB418(const JGeometry::TVec3f* pos) {
         if (field_0x54 > field_0x58) {
             step = 5.0f;
         }
-        fn_801CD950(&field_0x54, field_0x58, step);
+        moveToward_801CD950(&field_0x54, field_0x58, step);
     }
     u8 done = false;
     if (field_0x5c != 0 && 0.0f == field_0x54) {
@@ -146,7 +146,7 @@ void cls_801EB8CC::fn_801EB418(const JGeometry::TVec3f* pos) {
 // fn_801EB1F4: inside field_0xc.field_0x10 of field_0x0 (in x / y, and not
 // above field_0xc.field_0x8), the step in *out that turns *pos by
 // -field_0xc.field_0x24 about field_0x0 and eases its distance towards
-// field_0xc.field_0x10 (fn_801CD950, step field_0xc.field_0x1c); z is set to
+// field_0xc.field_0x10 (moveToward_801CD950, step field_0xc.field_0x1c); z is set to
 // field_0xc.field_0x20. Else *out is zero.
 // FIXME: 98.21 %, regalloc-only; behaviour clean.
 // regalloc-only (f3/f4, f1/f3, f5/f6, f4/f7 swapped).
@@ -164,7 +164,7 @@ void cls_801EB8CC::fn_801EB1F4(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
                 v.set(0.0f, 0.1f);
             } else {
                 f32 dist = v.length();
-                fn_801CD950(&dist, field_0xc.field_0x10, field_0xc.field_0x1c);
+                moveToward_801CD950(&dist, field_0xc.field_0x10, field_0xc.field_0x1c);
                 v.normalize();
                 v.scale(dist);
             }

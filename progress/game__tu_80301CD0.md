@@ -4,7 +4,7 @@ Baseline (rebased on matching): total 8297 / 11557 functions. After: 8308 (+11 n
 unit, fn_803099FC moved here from tu_803099FC as __ct__12cls_803099FCFv).
 
 Matched (100 %): fn_80301CD0, fn_80301D30, fn_8030361C, fn_803037D4, fn_8030381C,
-fn_803049F0, fn_80304B00, fn_80304C10, fn_803074A4, fn_80308D0C, ~cls_804AA8B8 (0x80309014),
+fn_803049F0, fn_80304B00, queueGbaFile_80304C10, fn_803074A4, fn_80308D0C, ~cls_804AA8B8 (0x80309014),
 __ct__12cls_803099FCFv (0x803099FC).
 
 Structurally done / close (FIXME in source):

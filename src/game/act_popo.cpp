@@ -61,15 +61,15 @@ void Popo_804A0868::update() {
         field_0xb0 = 0x11101;
         mSpawnParam_0x90 = 0;
     }
-    if (updateHitReaction_801F3D94(1) != 0 || fn_801F305C()) {
-        fn_801F2618(NULL, false);
+    if (updateHitReaction_801F3D94(1) != 0 || checkHits_801F305C()) {
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x250, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x254, 0.3f, 1.0f);
     mPos += mVel_0x3c;
     damagePlayersInBox_801F2B7C(-100, -1, 1);
-    fn_801F2618(NULL, false);
+    sweepMapBox_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
         if (mTimers[1] == 0) {

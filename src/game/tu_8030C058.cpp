@@ -170,7 +170,7 @@ void Camera_804AA9E4::fn_8030E150() {}
 
 // Loads the projection / view into the GX state (taking the pending matrices first when copy is
 // set) and sets the viewport and scissor to the screen rect.
-void Camera_804AA9E4::fn_8030DFE8(bool copy) {
+void Camera_804AA9E4::loadGXState_8030DFE8(bool copy) {
     if (copy) {
         JMath::gekko_ps_copy12(mLoadedViewMtx_0x74, mViewMtx_0x4);
         JMath::gekko_ps_copy16(mLoadedProjMtx_0xa4, mProjMtx_0x34);
@@ -183,7 +183,7 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
 }
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
-// size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
+// size, and (when light is set) the light matrices; then the GX state of loadGXState_8030DFE8.
 // FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
 // (the target re-reads i.y, f.x and f.y of the box after the copy; ours keeps all four)
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
@@ -213,7 +213,7 @@ void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
         PSMTXCopy(mLoadedViewMtx_0x74, mDrawInfo_0xe4.mCamMtx);
         C_MTXLightOrtho(mDrawInfo_0xe4.mPrjMtx, halfH, -halfH, -halfW, halfW, 0.5f, 0.5f, 0.5f, 0.5f);
     }
-    fn_8030DFE8(false);
+    loadGXState_8030DFE8(false);
 }
 
 void Camera_804AA9E4::fn_8030DD68() {
@@ -317,7 +317,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
             if (entry->field_0x20 != 0 &&
                 !(fn_8022CAF8(0) == 4 && mInTransition_0x1e8 == 0 && !fn_80234134(0))) {
                 if (i != 0 || (fn_8022CAF8(0) == 4 && !fn_80234134(0))) {
-                    if (mInTransition_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != fn_8022EA0C(0)) {
+                    if (mInTransition_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != getRepresentativePlayer_8022EA0C(0)) {
                         continue;
                     }
                 }
@@ -326,7 +326,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                     px = pos->x;
                     py = pos->y;
                 } else {
-                    const JGeometry::TVec3f* pos = fn_8023E32C(i);
+                    const JGeometry::TVec3f* pos = getPlayerLastTvPos_8023E32C(i);
                     px = pos->x;
                     py = pos->y;
                 }
@@ -339,7 +339,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                     if (i != 0 && gGameRoot_8053AAF8->field_0x7e == 0) {
                         continue;
                     }
-                    const JGeometry::TVec3f* pos = fn_8023E32C(i);
+                    const JGeometry::TVec3f* pos = getPlayerLastTvPos_8023E32C(i);
                     px = pos->x;
                     py = pos->y;
                 }
@@ -799,9 +799,9 @@ void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f32 depth) {
 
 // Starts the focus transition to the new box: arms the camera, clears the damping, builds the
 // focus state from the table entry for mEntryIndex_0x174 (fn_8030CD18), then the same bookkeeping as
-// fn_8030C928.
+// setNextVisibleBox_8030C928.
 // FIXME(shotgun): 93.47 %, missing/extra; behaviour near.
-// (box copy order in inlined fn_8030C928)
+// (box copy order in inlined setNextVisibleBox_8030C928)
 void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     mInTransition_0x1e8 = 1;
     mTransitionTimer_0x1ec = 30;
@@ -809,12 +809,12 @@ void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     mMargin_0x1d4 = -1.0f;
     mMinHalfWidth_0x1d8 = -1.0f;
     fn_8030CD18(box, &lbl_804AA8E8[mEntryIndex_0x174], NULL, &mTransitionEndBox_0x1a0, &mTransitionEndDepth_0x1b0);
-    fn_8030C928(box);
+    setNextVisibleBox_8030C928(box);
 }
 
 // FIXME(shotgun): 93.70 %, missing/extra; behaviour near.
 // (box copy order)
-void Camera_804AA9E4::fn_8030C928(const JGeometry::TBox2f* box) {
+void Camera_804AA9E4::setNextVisibleBox_8030C928(const JGeometry::TBox2f* box) {
     mNextVisibleBox_0x190.set(box->i.x, box->i.y, box->f.x, box->f.y);
     for (s32 i = 0; i < 4; i++) {
         gGameRoot2_8053AB10->field_0x20->mLayer2Visible_0x2360[i] = gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[i];
@@ -853,7 +853,7 @@ static inline f32 projectRow(const f32* row, f32 x, f32 y, f32 z, f32 w) {
     return x * row[0] + y * row[1] + z * row[2] + w * row[3];
 }
 
-// Not inlined into its caller fn_8030C2A8 in the original (bl worldToScreen_8030C5F0).
+// Not inlined into its caller isOnScreen_8030C2A8 in the original (bl worldToScreen_8030C5F0).
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
@@ -899,8 +899,8 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
     fn_8030C4A0(&bottomRight, false, &out[1]);
 }
 
-// A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
-// .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
+// A plain function that loadGXState_8030DFE8 inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 1.0f between isOnScreen_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
@@ -913,7 +913,7 @@ void Camera_804AA9E4::setScreenRectViewport() {
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
-bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
+bool Camera_804AA9E4::isOnScreen_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     worldToScreen_8030C5F0(pos, true, false, &screen);
     return screen.x >= (f32)(mScreenRect_0x144.i.x + 14) && screen.x < (f32)(mScreenRect_0x144.f.x - 14) &&

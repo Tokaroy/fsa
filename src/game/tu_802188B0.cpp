@@ -16,7 +16,7 @@ BombDropTimer_80218A8C::BombDropTimer_80218A8C() {
 bool BombDropTimer_80218A8C::fn_802189AC() {
     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
     bool found = false;
-    s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_HBMB, mOwner->mLayer_0x4, actors, -1);
+    s32 count = getActorManager_801F856C()->collectActorsById_801F7818(ACTOR_HBMB, mOwner->mLayer_0x4, actors, -1);
     for (s32 i = 0; i < count; i++) {
         Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(actors[i]);
         if (bomb != NULL && bomb->mAlive && bomb->field_0x94 != 1 && bomb->field_0x238 < 5) {

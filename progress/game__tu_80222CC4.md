@@ -58,6 +58,10 @@ the measurements below rule out every layout tried and point at a compiler-mode 
   out of line). Deferred inlines both directions: tu_801CDC8C reversed under `auto,deferred` inlines isStepBlocked_801CFCF0 and
   fn_801CF720 into fn_801CF6B8; `#pragma inline_bottom_up on` changes nothing; `inline_depth(1)` still inlines
   isStepBlocked_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
+  .text (act_stop_npc's dtor inlines fn_802ED140; tu_801CDC8C fn_801CF6B8 calls the later fn_801CFCF0 and pickNewDir_801CF720
+  out of line). Deferred inlines both directions: tu_801CDC8C reversed under `auto,deferred` inlines fn_801CFCF0 and
+  pickNewDir_801CF720 into fn_801CF6B8; `#pragma inline_bottom_up on` changes nothing; `inline_depth(1)` still inlines
+  fn_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
   (deferred WITHOUT auto): tu_801CDC8C/tu_801EDBA4 no longer over-inline, tu_80222CC4 and act_shadow_link_bow
   updateState_0x90 go 100 %, but auto-inlined callees are lost (act_stop_npc, tu_80131D98, tu_8021F4B0 dtors,
   tu_801D7AFC init, tu_8012F3E4 fn_8012F554, 4 in tu_80427D2C): game functions 1745 -> 1738. Not adopted.

@@ -24,7 +24,7 @@ void ZeldaScrollLock_804AC708::update() {
         fn_8022ADE4();
         if (isScreenFlagSet_0x34() == true) {
             fn_8022ADCC();
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }

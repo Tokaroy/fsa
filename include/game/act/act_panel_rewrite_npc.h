@@ -11,7 +11,7 @@ public:
     PanelRewriteNPC_804A8E40() {}
     /* 0x08 */ virtual ~PanelRewriteNPC_804A8E40();
     /* 0x0C */ virtual void init();
-    // 0x10: the tile-grid write for this panel's cell (getTile_802F9908 / fn_802F9974,
+    // 0x10: the tile-grid write for this panel's cell (getTile_802F9908 / setTile_802F9974,
     // the BgRewrite tile calls) and its state machine; ends in update() or mAlive.
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();
@@ -34,7 +34,7 @@ public:
     /* 0x244 */ s32 field_0x244; // (mSpawnParam_0x90 >> 12) & 0xF (init); indexes the effect tables
     /* 0x248 */ s32 field_0x248; // (mSpawnParam_0x90 >> 10) & 3 (init); gates by the game flag
     /* 0x24C */ bool field_0x24c; // mSpawnParam_0x90 bit 26 (vfunc_0x10); gates vfunc_0x54
-    /* 0x250 */ s32 field_0x250; // map cell index (fn_80226BC4), passed as u16
+    /* 0x250 */ s32 field_0x250; // map cell index (getCellIndex_80226BC4), passed as u16
     /* 0x254 */ u16 field_0x254; // tile code of the cell (getTile_802F9908)
     /* 0x256 */ u8 field_0x256;  // layer offset for the tile writes: 0, 1 or 8
 }; // Size: at least 0x257

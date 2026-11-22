@@ -11,15 +11,15 @@ struct GbaPacket_80300A8C {
     /* 0x01 */ u8 mPort;       // the client's mPort
     /* 0x02 */ u8 field_0x2;   // the client's mPacket.field_0x2
     /* 0x03 */ u8 field_0x3;
-    /* 0x04 */ OSTick field_0x4; // lbl_8053ACC8 (OSGetTick at fn_803007D0)
+    /* 0x04 */ OSTick field_0x4; // lbl_8053ACC8 (OSGetTick at startGbaClients_803007D0)
     /* 0x08 */ OSTick field_0x8; // the client's field_0x48 (OSGetTick)
     /* 0x0C */ u32 field_0xc;
     /* 0x10 */ u8 field_0x10[0x20 - 0x10];
 }; // Size: 0x20
 
-// One GBA client per port (lbl_804DB798[4], set up by fn_803007D0: memset 0xE0,
+// One GBA client per port (lbl_804DB798[4], set up by startGbaClients_803007D0: memset 0xE0,
 // the queue with its one message slot, the callback fn_80300A8C, the program
-// and its length). Named after fn_803007D0, the first function that fills one.
+// and its length). Named after startGbaClients_803007D0, the first function that fills one.
 // fn_80304FB0 (tu_80301CD0) and fn_8030A258 (tu_803099FC) read the array by name.
 struct GbaClient_803007D0 {
     /* 0x00 */ OSMessageQueue mQueue;
@@ -29,12 +29,12 @@ struct GbaClient_803007D0 {
     /* 0x48 */ OSTick field_0x48;
     /* 0x4C */ u8* mProgram;  // lbl_8053ACBC, passed to GBAJoyBoot
     /* 0x50 */ s32 mLength;   // lbl_8053ACC0, passed to GBAJoyBoot
-    /* 0x54 */ u32 mState;   // tested against 0x40000 (GBA linked) / 0 by cls_804AA8C8::fn_8030A43C
+    /* 0x54 */ u32 mState;   // tested against 0x40000 (GBA linked) / 0 by cls_804AA8C8::pollInputs_8030A43C
     /* 0x58 */ u32 field_0x58;
     /* 0x5C */ s32 field_0x5c;
-    /* 0x60 */ u32 mKeys;     // the packed key word fn_8030A43C decodes
+    /* 0x60 */ u32 mKeys;     // the packed key word pollInputs_8030A43C decodes
     /* 0x64 */ u32 field_0x64;
-    /* 0x68 */ u8 mTransfer[0xD0 - 0x68]; // fn_8030A43C copies lbl_80506DE8[port] in
+    /* 0x68 */ u8 mTransfer[0xD0 - 0x68]; // pollInputs_8030A43C copies lbl_80506DE8[port] in
     /* 0xD0 */ s8 mPort;      // the GBA channel of every GBA call
     /* 0xD1 */ u8 field_0xd1;
     /* 0xD2 */ u8 field_0xd2;
@@ -45,7 +45,7 @@ struct GbaClient_803007D0 {
     /* 0xD7 */ u8 field_0xd7;
     /* 0xD8 */ u8 field_0xd8;
     /* 0xD9 */ u8 field_0xd9;
-    /* 0xDA */ u8 field_0xda; // 0x1A from fn_803007D0
+    /* 0xDA */ u8 field_0xda; // 0x1A from startGbaClients_803007D0
     /* 0xDB */ u8 field_0xdb;
     /* 0xDC */ u8 field_0xdc; // tested by cls_804AA8C8::fn_8030A258 (game/tu_803099FC.cpp)
     /* 0xDD */ u8 field_0xdd;
@@ -55,10 +55,10 @@ struct GbaClient_803007D0 {
 
 extern GbaClient_803007D0 lbl_804DB798[4];
 // The unit's .sdata2 table (0x80541618): transfer lengths in words, indexed by lbl_8053AD08;
-// cls_804AA8C8::fn_8030A43C copies that many words into each client's mTransfer.
+// cls_804AA8C8::pollInputs_8030A43C copies that many words into each client's mTransfer.
 extern const u8 lbl_80541618[4];
 // 0x803006E8 (not written yet): an 8-bit CRC (polynomial 0xCD) over the two low bytes of its
-// argument, low byte first; cls_804AA8C8::fn_8030A43C checks a GBA key word's low byte against it.
+// argument, low byte first; cls_804AA8C8::pollInputs_8030A43C checks a GBA key word's low byte against it.
 u8 fn_803006E8(u32 keys);
 
 #endif

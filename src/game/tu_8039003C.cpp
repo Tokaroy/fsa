@@ -40,7 +40,7 @@ cls_804AF480::cls_804AF480() {
         field_0x8 = new BattleStageSelect_804B1378;
     }
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001A) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001A, true, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001A, true, false);
         gAudioMgr_8053AF80->fn_80458408(0x100001A, true);
         lbl_80529DEC.field_0x248 = 1;
     } else if (lbl_80529DEC.field_0x248 != 1) {
@@ -72,7 +72,7 @@ cls_804AF480::~cls_804AF480() {
 
 void cls_804AF480::fn_8039013C() {
     if (gGameRoot_8053AAF8->field_0x7f) {
-        lbl_8053ADF8->fn_80411230();
+        lbl_8053ADF8->draw_80411230();
     } else {
         lbl_8053AE00->fn_804170EC();
     }
@@ -86,7 +86,7 @@ void cls_804AF480::fn_80390108() {
 
 void cls_804AF480::fn_803900C8() {
     if (gGameRoot_8053AAF8->field_0x7f) {
-        lbl_8053ADF8->fn_804108B4();
+        lbl_8053ADF8->update_804108B4();
     } else {
         lbl_8053AE00->fn_804170B0();
     }

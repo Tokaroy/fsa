@@ -127,23 +127,23 @@ Figures:
 | act_ice_wall | hitByFire | `{ JGeometry::TBox2f box; JGeometry::TVec2f hitPos; box.set(mBox); box.` | 14 | 1 | 0 | 3 | pool only | - | - | - |  |
 | act_ice_wall | hitByWeapon | `{ JGeometry::TBox2f box; JGeometry::TVec3f stack40; JGeometry::TVec2f ` | 30 | 1 | 0 | 3 | pool only | - | - | - |  |
 | act_icicle | fall | `{ field_0x23c += 0.1f; mPos.y = mSpawnPos.y + 0.5f * (9.8f * square(fi` | 4 | 1 | 5 | 5 | pool only | - | - | - |  |
-| act_maiden_demo | moveToGoal | `{ field_0x248 += 0.04f; fn_801CD950(&field_0x24c, 2.0f, 0.05f); s16 an` | 15 | 1 | 2 | 4 | pool only | - | - | - |  |
-| act_maiden_demo | shrinkCrystal | `{ fn_801CD950(&field_0x250, 0.0f, -0.02f); }` | 3 | 1 | 4 | 4 | one statement | - | y | - |  |
+| act_maiden_demo | moveToGoal | `{ field_0x248 += 0.04f; moveToward_801CD950(&field_0x24c, 2.0f, 0.05f); s16 an` | 15 | 1 | 2 | 4 | pool only | - | - | - |  |
+| act_maiden_demo | shrinkCrystal | `{ moveToward_801CD950(&field_0x250, 0.0f, -0.02f); }` | 3 | 1 | 4 | 4 | one statement | - | y | - |  |
 | act_old_man | updateFacing | `{ if (field_0x24c != 0) { field_0x24c--; return; } field_0x24c = 20; J` | 25 | 3 | 3 | 3 | 3 call sites; same name in tu_8034AA40, act_special_conversation_npc | y | y | y |  |
-| act_princess_zelda | stepSpeed | `{ if (dist >= 32.0f) { fn_801CD950(&field_0x334, 1.1f, 0.02f); } else ` | 7 | 1 | 3 | 5 | pool only | - | - | - |  |
+| act_princess_zelda | stepSpeed | `{ if (dist >= 32.0f) { moveToward_801CD950(&field_0x334, 1.1f, 0.02f); } else ` | 7 | 1 | 3 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | approachPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 19 | 1 | 4 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | followPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 25 | 1 | 4 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | spawnEffect33A | `{ JGeometry::TVec3f pos = mPos; pos.y += -24.0f; spawnEmitter_8013CC50` | 5 | 2 | 4 | 5 | 2 call sites | y | y | y |  |
-| act_princess_zelda | resetAnimFrame | `{ mSpriteAnim.fn_801D1F14(0.0f); }` | 3 | 5 | 5 | 5 | 5 call sites; one statement | y | y | y |  |
+| act_princess_zelda | resetAnimFrame | `{ mSpriteAnim.setFrame_801D1F14(0.0f); }` | 3 | 5 | 5 | 5 | 5 call sites; one statement | y | y | y |  |
 | act_princess_zelda_demo | faceDir | `{ if (dir >= 0) { field_0x98 = dir; if (dir + 6 != mAnim0.mAnim) { mAn` | 9 | 2 | 0 | 5 | 2 call sites | y | y | y |  |
 | act_princess_zelda_demo | flashAtFeet | `{ JGeometry::TVec3f pos = mPos; pos.y += -16.0f; spawnEmitter_8013CC50` | 6 | 2 | 3 | 5 | 2 call sites | y | y | y | rejected |
 | act_princess_zelda_demo | setCenter | `{ pos.x = box.f.x + 0.5f * (box.i.x - box.f.x); pos.y = box.f.y + 0.5f` | 5 | 1 | 3 | 5 | same body in act_four_sword_demo, act_blizzard_battle | - | - | y |  |
 | act_princess_zelda_demo | standBelow | `{ JGeometry::TVec3f pos = target; pos.y -= 16.0f; mPos.set(pos); }` | 5 | 1 | 3 | 5 | pool only | - | - | - | rejected |
-| act_princess_zelda_demo | flyToGoal | `{ field_0x268 += 0.04f; fn_801CD950(&field_0x26c, 2.0f, 0.05f); s16 an` | 24 | 1 | 4 | 5 | pool only | - | - | - | rejected |
-| act_princess_zelda_demo | shrinkAway | `{ fn_801CD950(&field_0x270, 0.0f, -0.02f); }` | 3 | 1 | 4 | 5 | one statement | - | y | - | rejected |
+| act_princess_zelda_demo | flyToGoal | `{ field_0x268 += 0.04f; moveToward_801CD950(&field_0x26c, 2.0f, 0.05f); s16 an` | 24 | 1 | 4 | 5 | pool only | - | - | - | rejected |
+| act_princess_zelda_demo | shrinkAway | `{ moveToward_801CD950(&field_0x270, 0.0f, -0.02f); }` | 3 | 1 | 4 | 5 | one statement | - | y | - | rejected |
 | act_princess_zelda_demo | showSceneMessage | `{ fn_8038BD08(0, lbl_8053C548[field_0x234], field_0x4, JGeometry::TVec` | 3 | 1 | 2 | 5 | one statement | - | y | - | rejected |
 | act_princess_zelda_demo | lowerPlayers | `{ f32 dz = 2.0f - 0.2f * (fn_8011921C()->field_0x8 - lbl_80464550[33])` | 13 | 1 | 5 | 5 | pool only | - | - | - | rejected |
-| act_princess_zelda_demo | sinkToPlayer | `{ mAnim0.mFrameCtrl.setRate(1.0f); if (fn_801CD950(&mPos.y, getPlayerP` | 8 | 1 | 6 | 5 | pool only | - | - | - | rejected |
+| act_princess_zelda_demo | sinkToPlayer | `{ mAnim0.mFrameCtrl.setRate(1.0f); if (moveToward_801CD950(&mPos.y, getPlayerP` | 8 | 1 | 6 | 5 | pool only | - | - | - | rejected |
 | act_rainbow_bridge | checkActivate | `{ if (isScreenFlagSet_0x34()) { field_0x238 = 1; // The original stores the stat` | 35 | 2 | 0 | 1 | 2 call sites | y | y | y | accepted |
 | act_rainbow_bridge | isPlayerOn | `{ if (player < 0) { return false; } if (field_0x4 != getPlayerLayer_80` | 26 | 1 | 1 | 1 | same name in act_extending_lift | - | - | y | accepted |
 | act_room_transfer_lift | isInside | `{ s32 layer = field_0x4; s32 playerLayer = getPlayerLayer_8023DE58(pla` | 14 | 1 | 1 | 1 | pool only | - | - | - | accepted |
@@ -165,7 +165,7 @@ Figures:
 | act_snowball | chase | `{ u16 angle = 0; s32 dir = 0; s32 player = 0; f32 dist = 0.0f; fn_801E` | 26 | 1 | 2 | 3 | pool only | - | - | - |  |
 | act_snowball | followRail | `{ u16 angle = 0; JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f); s32 laye` | 13 | 1 | 0 | 3 | pool only | - | - | - |  |
 | act_snowball | grow | `{ field_0x260 += (0.002f * field_0x264) / 1.6f; if (field_0x260 >= 2.0` | 19 | 1 | 3 | 3 | pool only | - | - | - |  |
-| act_snowball | fallStep | `{ fn_801CD950(&field_0x3c.z, -10.0f, -0.15f); mPos += field_0x3c; bool` | 13 | 3 | 3 | 3 | 3 call sites; same name in tu_8028FBA0 | y | y | y |  |
+| act_snowball | fallStep | `{ moveToward_801CD950(&field_0x3c.z, -10.0f, -0.15f); mPos += field_0x3c; bool` | 13 | 3 | 3 | 3 | 3 call sites; same name in tu_8028FBA0 | y | y | y |  |
 | act_snowball | dropRupee | `{ s32 kind = 0; if (field_0x270 >= 2.0f) { kind = 2; } else if (field_` | 15 | 1 | 3 | 3 | pool only | - | - | - |  |
 | act_snowball | spawnBurst | `{ JGeometry::TVec3f pos = mPos; pos.y -= 16.0f * field_0x260; spawnEmi` | 7 | 1 | 3 | 3 | same name in tu_801BEDBC | - | - | y |  |
 | act_snowball | updateTrailEmitter | `{ if (field_0x4 == 0) { if (field_0x374 == NULL) { field_0x374 = spawn` | 16 | 3 | 2 | 3 | 3 call sites | y | y | y |  |
@@ -178,20 +178,20 @@ Figures:
 | act_thwomp_launch_npc_2 | addRandomDelay | `{ field_0x234 += (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1` | 3 | 1 | 1 | 1 | one statement | - | y | - |  |
 | act_tingle_first | selectNearestPlayer | `{ s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30(); s32 bestPlayer = 0; f` | 23 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_vaati_demo | updateBobbing | `{ static s16 lbl_8053AA88 = 0; mPos.z = 4.0f * JMath::sincosTable_.sin` | 11 | 2 | 1 | 1 | 2 call sites | y | y | y |  |
-| act_vaati_demo | updateDescent | `{ if (mSpawnPos.y - mPos.y <= 24.0f) { fn_801CD950(&field_0x3c.y, 0.4f` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
+| act_vaati_demo | updateDescent | `{ if (mSpawnPos.y - mPos.y <= 24.0f) { moveToward_801CD950(&field_0x3c.y, 0.4f` | 10 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_vaati_time_up | steer | `{ if (field_0x2c4 <= 0 \|\| (field_0x2c0 <= 0 && mPos.x >= field_0x290` | 12 | 1 | 1 | 1 | same name in tu_80334318 | - | - | y |  |
 | act_vaati_time_up | pickTarget | `{ if (field_0x2c0 <= 0) { field_0x290 = mViewBox.i.x - 192.0f; field_0` | 10 | 1 | 1 | 1 | same name in act_vaati_boss | - | - | y |  |
 | act_warp | updateSandHole | `{ for (s32 i = 0; i < 4; i++) { if (fn_802373EC(i) == 1 && fn_8023A51C` | 18 | 1 | 1 | 1 | pool only | - | - | - |  |
 | act_warp_cannon | findPlayer | `{ JGeometry::TBox2f probe = mBox; f32 dy = mPos.y - mPos.z; probe.i.x ` | 15 | 1 | 0 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | allPlayersIn | `{ for (s32 p = 0; p < 4; p++) { if (!fn_80230188(p)) { return false; }` | 8 | 1 | 0 | 2 | pool only | - | - | - |  |
-| act_warp_cannon | movePlayers | `{ fn_801CD950(&field_0x27c, -10.0f, -0.2f); for (s32 p = 0; p < 4; p++` | 8 | 1 | 0 | 2 | pool only | - | - | - |  |
-| act_warp_cannon | flyPlayers | `{ fn_801CD950(&field_0x27c, -10.0f, -0.002f); for (s32 p = 0; p < 4; p` | 8 | 2 | 0 | 2 | 2 call sites | y | y | y |  |
+| act_warp_cannon | movePlayers | `{ moveToward_801CD950(&field_0x27c, -10.0f, -0.2f); for (s32 p = 0; p < 4; p++` | 8 | 1 | 0 | 2 | pool only | - | - | - |  |
+| act_warp_cannon | flyPlayers | `{ moveToward_801CD950(&field_0x27c, -10.0f, -0.002f); for (s32 p = 0; p < 4; p` | 8 | 2 | 0 | 2 | 2 call sites | y | y | y |  |
 | act_warp_cannon | resetIfAllPlayersReady | `{ for (s32 i = 0; i < 4; i++) { if (!fn_80230360(i)) { return; } } fie` | 8 | 1 | 0 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | liftPlayers | `{ for (s32 i = 0; i < 4; i++) { JGeometry::TVec3f pos = *getPlayerPos_` | 7 | 1 | 0 | 2 | pool only | - | - | - |  |
-| act_warp_cannon | landPlayers | `{ bool all = false; fn_801CD950(&field_0x27c, -10.0f, -0.2f); for (s32` | 12 | 1 | 0 | 2 | pool only | - | - | - |  |
+| act_warp_cannon | landPlayers | `{ bool all = false; moveToward_801CD950(&field_0x27c, -10.0f, -0.2f); for (s32` | 12 | 1 | 0 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | recoil | `{ field_0x280 += 0.05f; JGeometry::TVec3f step(0.0f, 2.0f * (0.5f - fi` | 13 | 1 | 1 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | fireRecoil | `{ static s32 counter = 0; static f32 phase = 0.0f; phase += 0.1f; if (` | 26 | 1 | 2 | 2 | pool only | - | - | - |  |
-| act_zora_escort | hasNearbyBari | `{ if (fn_80131F0C()->mCount <= 1) { return false; } f32 distSq = 300.0` | 21 | 1 | 0 | 0 | pool only | - | - | - |  |
+| act_zora_escort | hasNearbyBari | `{ if (getEscortActorList_80131F0C()->mCount <= 1) { return false; } f32 distSq = 300.0` | 21 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort | findNearbyPlayer | `{ if (field_0x33c != 0) { return -1; } u16 angle = 0; s32 dir = 0; s32` | 17 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort | stepToPlayer | `{ JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(field_0x3cc); t` | 24 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort_goal | startTalk | `{ JGeometry::TBox2f box(mBox); box.i.x += mPos.x; box.i.y += mPos.y; b` | 21 | 2 | 2 | 4 | 2 call sites; same name in act_princess_zelda_demo | y | y | y |  |
@@ -216,7 +216,7 @@ Figures:
 | tu_801213EC | respawnLifeMeters | `{ if (field_0x332) { for (s32 i = 0; i < field_0x360; i++) { if (field` | 9 | 1 | 0 | 20 | pool only | - | - | - |  |
 | tu_801213EC | spawnLifeMeter | `{ if (field_0x332 && index < field_0x360 && index >= 0) { JGeometry::T` | 14 | 1 | 0 | 20 | pool only | - | - | - |  |
 | tu_801213EC | lifeMeterSpacing | `{ return 8.0f; }` | 3 | 1 | 19 | 20 | one statement | - | y | - | accepted |
-| tu_80125B58 | talkTo | `{ JGeometry::TVec3f pos(mPos); pos.y -= 64.0f; return fn_8038AD24(play` | 5 | 1 | 2 | 4 | same name in act_great_fairy_spfr | - | - | y |  |
+| tu_80125B58 | talkTo | `{ JGeometry::TVec3f pos(mPos); pos.y -= 64.0f; return openMessage_8038AD24(play` | 5 | 1 | 2 | 4 | same name in act_great_fairy_spfr | - | - | y |  |
 | tu_80125B58 | startSignAnim | `{ switch (field_0x238) { case 1: mAnim27c.startAnim_801D22DC(0, 0, fal` | 12 | 1 | 4 | 4 | pool only | - | - | - |  |
 | tu_8013394C | spawnEmitters | `{ if (mEmitters[0] == NULL) { mEmitters[0] = spawnEmitter_8013CC50(fie` | 8 | 1 | 1 | 1 | same name in act_zora_escort_goal, tu_8012A5EC | - | - | y |  |
 | tu_8013C5C8 | addTrackedEmitter | `{ static cls_8049F15C callback; JPABaseEmitter*& emitter = mEmitters[m` | 10 | 25 | 1 | 6 | 25 call sites | y | y | y |  |
@@ -226,11 +226,11 @@ Figures:
 | tu_8018A8D8 | angleOf | `{ return JMath::atanTable_.atan2_(x, y) * 10430.378f; }` | 3 | 1 | 1 | 1 | one statement; same name in tu_801213EC | - | y | y |  |
 | tu_8018EB94 | setHeading | `{ s16 angle = (s32)(4000.0f * (f32)field_0x98); field_0x27c.x = field_` | 13 | 1 | 0 | 0 | pool only | - | - | - |  |
 | tu_801CB270 | tileCenter | `{ return 8.0f + (u32)((s32)v & ~0xF); }` | 3 | 4 | 5 | 5 | 4 call sites; one statement; same name in tu_80285E58 | y | y | y |  |
-| tu_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { fn_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
+| tu_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { moveByStick_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
 | tu_802E9428 | updateCamera | `{ JGeometry::TVec2f pos(field_0x250.x, field_0x250.y); JGeometry::TVec` | 20 | 4 | 0 | 1 | 4 call sites | y | y | y |  |
 | tu_802E9428 | stepZoom | `{ if (field_0x270 != field_0x274) { field_0x270 += field_0x278; if (fi` | 12 | 1 | 1 | 1 | pool only | - | - | - |  |
 | tu_8030C058 | setScreenRectViewport | `{ u32 w = field_0x144.f.x - field_0x144.i.x; u32 h = field_0x144.f.y -` | 7 | 1 | 5 | 5 | pool only | - | - | - |  |
-| tu_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; fn_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
+| tu_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; getNearestPlayerDir_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
 | tu_8034AA40 | markRandomCucco | `{ f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1(); Cucco_804AB8C` | 8 | 1 | 3 | 3 | pool only | - | - | - |  |
 | tu_80362634 | faceOwl | `{ if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) { field_0x23c = 0; } ` | 17 | 2 | 5 | 12 | 2 call sites | y | y | y |  |
 | tu_80362634 | chaseOwl | `{ if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) { field_0x24c = i; ` | 25 | 2 | 7 | 12 | 2 call sites | y | y | y |  |

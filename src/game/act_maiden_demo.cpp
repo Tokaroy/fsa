@@ -74,9 +74,9 @@ MaidenCutscene_8049D740::~MaidenCutscene_8049D740() {
 void MaidenCutscene_8049D740::init() {
     DemoActorBase_8049D140::init();
     mMode = mSpawnParam_0x90 & 0x1F;
-    mAnim.fn_801D2608(lbl_8049D710, 12);
+    mAnim.setKeyTables_801D2608(lbl_8049D710, 12);
     mAnim.startAnim_801D22DC(5, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void MaidenCutscene_8049D740::vfunc_0x10() {
@@ -108,7 +108,7 @@ void MaidenCutscene_8049D740::update() {
         if (player >= 0 && player < 4 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
             JGeometry::TVec3f pos = mPos;
             pos.y += -32.0f;
-            if (fn_8038AD24(player, 0x23E, mSerial, mLayer_0x4, pos, 0x20)) {
+            if (openMessage_8038AD24(player, 0x23E, mSerial, mLayer_0x4, pos, 0x20)) {
                 field_0x240 = player;
                 fn_80112654(1);
             }
@@ -123,15 +123,15 @@ void MaidenCutscene_8049D740::update() {
         }
         break;
     case 3:
-        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+        if (mAnim.isAnimEnd_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
         break;
     case 4:
-        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+        if (mAnim.isAnimEnd_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
         break;
     case 12:
@@ -146,7 +146,7 @@ void MaidenCutscene_8049D740::update() {
         mDrawEnabled = false;
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
     if (field_0x230 != 0) {
         fn_80112AE8();
     }
@@ -213,13 +213,13 @@ void MaidenCutscene_8049D740::fn_80112AE8() {
     Mtx mtx1;
     PSMTXTrans(mtx1, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axis1(1.0f, 0.0f, 0.0f);
-    fn_8010F668(mtx1, &axis1, 0.08726646f);
+    makeAxisRotation_8010F668(mtx1, &axis1, 0.08726646f);
 
     Mtx mtx2;
     mtx2[0][0] = mtx2[1][0] = mtx2[2][0] = mtx2[0][1] = mtx2[1][1] = mtx2[2][1] = mtx2[0][2] = mtx2[1][2] =
         mtx2[2][2] = mtx2[0][3] = mtx2[1][3] = mtx2[2][3] = 0.0f;
     JGeometry::TVec3f axis2(0.0f, 0.0f, 1.0f);
-    fn_8010F668(mtx2, &axis2, field_0x248);
+    makeAxisRotation_8010F668(mtx2, &axis2, field_0x248);
 
     PSMTXConcat(mtx1, mtx2, mtx1);
 
@@ -254,7 +254,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
         mEmitter298 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(0, mMode), 0, 0, NULL, NULL, true, 1.0f);
         mEmitter29c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(1, mMode), 0, 0, NULL, NULL, true, 1.0f);
         mAnim.startAnim_801D22DC(0xA, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 4:
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(2, mMode), 0, 0, NULL, NULL, true, 1.0f);
@@ -264,7 +264,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
         break;
     case 5:
         mAnim.startAnim_801D22DC(8, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 6:
         if (mEmitter298 != NULL) {
@@ -280,7 +280,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
             mEmitter2a0 = NULL;
         }
         mAnim.startAnim_801D22DC(0xB, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 7: {
         JGeometry::TVec3f pos = mPos;
@@ -309,15 +309,15 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
             mAnim.startAnim_801D22DC(2, 2, false);
             break;
         }
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 9:
         mAnim.startAnim_801D22DC(3, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 10:
         mAnim.startAnim_801D22DC(6, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC1, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
@@ -408,14 +408,14 @@ u16 fn_801123C8(s32 kind, s32 mode) {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 bool MaidenCutscene_8049D740::moveToGoal() {
     field_0x248 += 0.04f;
-    fn_801CD950(&field_0x24c, 2.0f, 0.05f);
+    moveToward_801CD950(&field_0x24c, 2.0f, 0.05f);
     s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
                       10430.378f);
     mVel_0x3c.x = field_0x24c * JMath::sincosTable_.sinShort(angle);
     mVel_0x3c.y = field_0x24c * JMath::sincosTable_.cosShort(angle);
-    s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, mVel_0x3c.x);
-    s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, mVel_0x3c.y);
-    fn_801CD950(&field_0x250, 0.05f, -0.005f);
+    s32 doneX = moveToward_801CD950(&mPos.x, mGoalPos.x, mVel_0x3c.x);
+    s32 doneY = moveToward_801CD950(&mPos.y, mGoalPos.y, mVel_0x3c.y);
+    moveToward_801CD950(&field_0x250, 0.05f, -0.005f);
     if (doneX == 0 && doneY == 0) {
         return true;
     }
@@ -424,5 +424,5 @@ bool MaidenCutscene_8049D740::moveToGoal() {
 
 // R2 pool helper (one-statement body); was shrinkCrystal.
 void MaidenCutscene_8049D740::pool_8053C628() {
-    fn_801CD950(&field_0x250, 0.0f, -0.02f);
+    moveToward_801CD950(&field_0x250, 0.0f, -0.02f);
 }

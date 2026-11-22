@@ -112,7 +112,7 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
         JGeometry::TVec3f railPos;
-        fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+        getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.x = railPos.x;
         field_0x32c.y = railPos.y;
         field_0x32c.z = railPos.z;
@@ -120,7 +120,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
                 !field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
                 JGeometry::TVec3f pos2;
-                fn_800FE294(&pos2, field_0x358.fn_80214244(), 0xFF);
+                getRailPointPos_800FE294(&pos2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f p = pos2;
                 if (fn_801CC9F8(&mPos, mLayer_0x4) && getTileCollisionCode_8022461C(&p, mLayer_0x4) == 0) {
                     field_0x32c.x = p.x;
@@ -182,7 +182,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
                 mPathCount = 0;
                 mFlags &= ~(0x1000 | 0x20000);
                 mFlags |= 0x400000;
-                fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+                getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
                 field_0x32c.x = railPos.x;
                 field_0x32c.y = railPos.y;
                 field_0x32c.z = railPos.z;
@@ -250,7 +250,7 @@ void ShadowLink2_804A43E8::fn_801C8B50() {
 // FIXME(shotgun): 98.65 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C887C() {
     JGeometry::TVec3f railPos;
-    fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+    getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
     if (fn_801CCB1C(&railPos, mLayer_0x4)) {
         u8 prev, cur, next;
         getRailNeighbours(&next, &cur, &prev);
@@ -260,7 +260,7 @@ void ShadowLink2_804A43E8::fn_801C887C() {
             field_0x358.fn_80214244()->setIndex(prev);
         } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             JGeometry::TVec3f p2;
-            fn_800FE294(&p2, field_0x358.fn_80214244(), prev);
+            getRailPointPos_800FE294(&p2, field_0x358.fn_80214244(), prev);
             if (fn_801CCB1C(&p2, mLayer_0x4)) {
                 field_0x358.fn_80214244()->setIndex(next);
             } else {
@@ -268,7 +268,7 @@ void ShadowLink2_804A43E8::fn_801C887C() {
             }
         } else {
             JGeometry::TVec3f p0;
-            fn_800FE294(&p0, field_0x358.fn_80214244(), next);
+            getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), next);
             if (fn_801CCB1C(&p0, mLayer_0x4)) {
                 field_0x358.fn_80214244()->setIndex(prev);
             } else {
@@ -306,7 +306,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(prev)) {
                 JGeometry::TVec3f p1;
-                fn_800FE294(&p1, field_0x358.fn_80214244(), prev);
+                getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), prev);
                 JGeometry::TVec3f copy1 = p1;
                 if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(prev);
@@ -315,7 +315,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
         } else {
             if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(next)) {
                 JGeometry::TVec3f p0;
-                fn_800FE294(&p0, field_0x358.fn_80214244(), next);
+                getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), next);
                 JGeometry::TVec3f copy0 = p0;
                 if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(next);
@@ -354,10 +354,10 @@ void ShadowLink2_804A43E8::fn_801C7F98() {
         JGeometry::TVec3f copy0;
         JGeometry::TVec3f copy1;
         JGeometry::TVec3f p0;
-        fn_800FE294(&p0, field_0x358.fn_80214244(), next);
+        getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), next);
         copy0 = p0;
         JGeometry::TVec3f p1;
-        fn_800FE294(&p1, field_0x358.fn_80214244(), prev);
+        getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), prev);
         copy1 = p1;
         f32 dx0 = copy0.x - field_0x32c.x;
         f32 dy0 = copy0.y - field_0x32c.y;
@@ -427,7 +427,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
         if (viewLayerFlag(mLayer_0x4)) {
             radius = 0.001f + lbl_8053EDF0;
             JGeometry::TVec3f p1;
-            fn_800FE294(&p1, field_0x358.fn_80214244(), 0xFF);
+            getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), 0xFF);
             JGeometry::TVec3f copy1 = p1;
             if (!fn_801CCB1C(&copy1, mLayer_0x4)) {
                 gx = copy1.x;
@@ -438,7 +438,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
             if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
                 !field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
                 JGeometry::TVec3f p2;
-                fn_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
+                getRailPointPos_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
                 JGeometry::TVec3f copy2 = p2;
                 if (fn_801CC9F8(&mPos, mLayer_0x4) && getTileCollisionCode_8022461C(&copy2, mLayer_0x4) == 0) {
                     field_0x32c.x = copy2.x;
@@ -477,7 +477,7 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     JGeometry::TVec3f railPos;
 
     mFlags &= ~0x02000000;
-    fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+    getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
     // Copies through set() where the original copies field by field;
     // operator= (the psq pairs) gives other code.
     field_0x32c.set(railPos);
@@ -510,9 +510,9 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
         } else {
             field_0x58c = 0;
         }
-        fn_801C3B7C(0x18);
+        setState_801C3B7C(0x18);
     } else {
-        fn_801C3B7C(0x17);
+        setState_801C3B7C(0x17);
     }
 }
 
@@ -521,12 +521,12 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     if (!(mFlags & 0x2000000)) {
         if (fn_801C5340()) {
             mFlags |= 0x2000000;
-            fn_801C3B7C(0x1E);
+            setState_801C3B7C(0x1E);
             return;
         }
         if (mFlags & 0x400000) {
             mFlags &= ~0x400000;
-            fn_801C3B7C(0x12);
+            setState_801C3B7C(0x12);
             return;
         }
         if (field_0x55c[0] >= 30 && field_0x55c[1] == 1) {
@@ -537,14 +537,14 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     bool nearFlag = fn_801C53C4();
     if (!(mFlags & 0x2000000) && !nearFlag && field_0x55c[1] == 0) {
-        if (fn_801D05F8(&mPos, field_0x5a8) < 0) {
-            fn_801C3B7C(0xF);
+        if (findNearestPlayer_801D05F8(&mPos, field_0x5a8) < 0) {
+            setState_801C3B7C(0xF);
             return;
         }
     }
     if (!(mFlags & 0x2000000) && !nearFlag && field_0x598 == 0) {
-        if (fn_801D05F8(&mPos, 60.0f) >= 0) {
-            fn_801C3B7C(0x1B);
+        if (findNearestPlayer_801D05F8(&mPos, 60.0f) >= 0) {
+            setState_801C3B7C(0x1B);
             return;
         }
     }
@@ -564,11 +564,11 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             field_0x55c[1]--;
         }
         if (field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
-            fn_801C3B7C(0x12);
+            setState_801C3B7C(0x12);
             return;
         }
         JGeometry::TVec3f railPos;
-        fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+        getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
         if (fn_801CCB1C(&railPos, mLayer_0x4)) {
             fn_801C8B50();
             if (!isOnGround_801D0DD4()) {
@@ -599,7 +599,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             if (field_0x358.fn_80214244()->field_0x1 != 0) {
                 if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
                     JGeometry::TVec3f p0;
-                    fn_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
+                    getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
                     if (mPos.x < p0.x) {
                         field_0x33c = 0x4000;
                     } else {
@@ -613,7 +613,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             } else {
                 if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[1])) {
                     JGeometry::TVec3f p1;
-                    fn_800FE294(&p1, field_0x358.fn_80214244(), opt[1]);
+                    getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), opt[1]);
                     if (mPos.x < p1.x) {
                         field_0x33c = 0x4000;
                     } else {
@@ -625,7 +625,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
                     field_0x33c = -0x4000;
                 }
             }
-            fn_801C3B7C(0x1C);
+            setState_801C3B7C(0x1C);
             return;
         }
     } else if (flag != 0) {
@@ -639,9 +639,9 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     if (mStateTimer % 30 == 0 && !nearFlag) {
         bool doReset = false;
-        s32 player = fn_801D05F8(&mPos, 100.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 100.0f);
         if (player >= 0) {
-            s16 pAngle = fn_801D0280(player);
+            s16 pAngle = getAngleToPlayer_801D0280(player);
             f32 diff = __fabsf((f32)(s16)(field_0x33c - pAngle));
             if (0.000030517578f * diff <= 0.3f) {
                 doReset = true;
@@ -668,7 +668,7 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
             mPathCount = 0;
             mFlags &= ~(0x1000 | 0x20000);
             mFlags |= 0x400000;
-            fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
+            getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
             field_0x32c.x = railPos.x;
             field_0x32c.y = railPos.y;
             field_0x32c.z = railPos.z;
@@ -681,6 +681,6 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
     fn_801C8B50();
     field_0x33c += spread(0x4000);
     if (!(field_0x524.field_0x0 & 0x40)) {
-        fn_801C3B7C(0x1C);
+        setState_801C3B7C(0x1C);
     }
 }

@@ -74,7 +74,7 @@ public:
     /* 0x308 */ JGeometry::TVec3f field_0x308; // mPos, copied by init()
     /* 0x314 */ JPABaseEmitter* field_0x314;
     /* 0x318 */ JPABaseEmitter* field_0x318;
-    /* 0x31C */ void* field_0x31c[4]; // fn_804032E8('TIMG', lbl_8049D930[i])
+    /* 0x31C */ void* field_0x31c[4]; // getBossArchiveResource_804032E8('TIMG', lbl_8049D930[i])
     /* 0x32C */ void* field_0x32c;    // getResource('????', "kk_black.bti")
 }; // Size: 0x330
 

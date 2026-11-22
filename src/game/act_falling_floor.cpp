@@ -69,12 +69,12 @@ void FallingFloor_804A9078::update() {
     case 0:
         if (standing >= 0) {
             if (field_0x238 == 3) {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3F);
+                gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3F);
                 startSound_801F0E34(0x30015, 0);
                 field_0x23c = 60;
                 field_0x230 = 4;
             } else {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                 field_0x230 = 1;
                 {
                     JGeometry::TVec3f e(mPos.x, mPos.y, mPos.z);
@@ -128,7 +128,7 @@ void FallingFloor_804A9078::update() {
         break;
     case 2:
         if (field_0x23c == 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
             {
                 JGeometry::TVec3f e(mPos.x, mPos.y, mPos.z);
                 spawnEmitter_8013CC50(mLayer_0x4, &e, 0x28B, 0, 0, NULL, NULL, true, 0.3f);
@@ -145,7 +145,7 @@ void FallingFloor_804A9078::update() {
         break;
     case 3:
         if (field_0x23c == 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3F);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3F);
             startSound_801F0E34(0x30015, 0);
             field_0x230 = 4;
             field_0x23c = 60;
@@ -155,7 +155,7 @@ void FallingFloor_804A9078::update() {
         break;
     case 4:
         if (field_0x23c == 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x3E);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3E);
             startSound_801F0E34(0x30016, 0);
             field_0x230 = 0;
         } else {
@@ -185,7 +185,7 @@ void FallingFloor_804A9078::update() {
         break;
     case 6:
         if (field_0x23c == 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
             {
                 JGeometry::TVec3f e(mPos.x, mPos.y, mPos.z);
                 spawnEmitter_8013CC50(mLayer_0x4, &e, 0x28B, 0, 0, NULL, NULL, true, 0.5f);
@@ -202,7 +202,7 @@ void FallingFloor_804A9078::update() {
         break;
     case 7:
         if (standing < 0) {
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
             {
                 JGeometry::TVec3f e(mPos.x, mPos.y, mPos.z);
                 spawnEmitter_8013CC50(mLayer_0x4, &e, 0x28B, 0, 0, NULL, NULL, true, 0.5f);
@@ -220,7 +220,7 @@ void FallingFloor_804A9078::update() {
             JGeometry::TVec3f p;
             p.x = mPos.x;
             p.y = mPos.y;
-            if (fn_80226998(&p, mLayer_0x4) == 1) {
+            if (getTileAt_80226998(&p, mLayer_0x4) == 1) {
                 gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);
                 startSound_801F0E34(0x50045, 0);
                 if (mLayer_0x4 >= 8) {

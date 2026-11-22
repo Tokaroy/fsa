@@ -120,7 +120,7 @@ public:
 EffectSystem_8049F178* getEffectSystem_8013C824(void);
 
 // 7 calls in 2 units (act_hyrule_castle_barrier, ...). For a non-NULL
-// emitter, builds a rotation of `angle` plus a constant (fn_8010F668), scales
+// emitter, builds a rotation of `angle` plus a constant (makeAxisRotation_8010F668), scales
 // it and sets it as the emitter's matrix at 0x68 (JPASetRMtxfromMtx);
 // returns 0 or 1.
 u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle);
@@ -128,7 +128,7 @@ u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle);
 // 66 units / 197 calls. Moves a non-NULL emitter to pos, lifted by
 // height * 1024 + depth * 128 in y and z (with `adjust`, a positive pos.z
 // raises height below 1 by one and lowers depth by one) and with z taken
-// from the ground under pos (TileMap_804AA858::fn_802F5E9C, game/Map.h, on gGameRoot2_8053AB10->0x20); stores
+// from the ground under pos (TileMap_804AA858::getHeightAt_802F5E9C, game/Map.h, on gGameRoot2_8053AB10->0x20); stores
 // the result in the emitter's translation (0xA4-0xAC). Returns 0 or 1.
 u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos, s32 height, s32 depth,
                  bool adjust);

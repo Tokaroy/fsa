@@ -66,7 +66,7 @@ static inline void findStandingPlayer(BattleRoyaleEndCheck_804B0380* self) {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = 1 << i;
         if (gGameRoot_8053AAF8->mPlayerMask & bit) {
-            if (!fn_80236B50(i)) {
+            if (!isPlayerDead_80236B50(i)) {
                 self->mWinner = i;
             }
         }
@@ -101,7 +101,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6AE8() {
     s32 matched = 0;
     for (s32 i = 0; i < 4; i++) {
         mPlayerFlag[i] = 0;
-        if (!fn_80236B50(i)) {
+        if (!isPlayerDead_80236B50(i)) {
             count++;
             if (fn_802300EC(i) == true) {
                 mPlayerFlag[i] = 1;
@@ -127,20 +127,20 @@ void BattleRoyaleEndCheck_804B0380::fn_803D69AC() {
     if (mTimer <= 0) {
         if (mWinner == -1) {
             mState = 4;
-            gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
             gGameRoot_8053AAF8->fn_801365C8(0);
             mTimer = 1;
             return;
         }
         for (s32 i = 0; i < 4; i++) {
             if (mPlayerFlag[i] != 0) {
-                if (i == mWinner || fn_8022F3DC(i) == mWinner) {
+                if (i == mWinner || getPlayerLeader_8022F3DC(i) == mWinner) {
                     fn_80230498(i, getPlayerPos_8023E724(i), 0x3E, 0xFF, -0x80, -0x80, true);
                 }
             }
         }
         mState = 3;
-        gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
         gGameRoot_8053AAF8->fn_801365C8(0);
         mTimer = 1;
     }
@@ -157,7 +157,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6730() {
         mTimer = 2;
         for (s32 i = 0; i < 4; i++) {
             if (mPlayerFlag[i] != 0) {
-                if (i == mWinner || fn_8022F3DC(i) == mWinner) {
+                if (i == mWinner || getPlayerLeader_8022F3DC(i) == mWinner) {
                     fn_80230498(i, getPlayerPos_8023E724(i), field_0x238 + 0xDB, 0xFF, -0x80, -0x80, true);
                     if (field_0x238 == 1) {
                         fn_80230FD0(mWinner, 0x10001);
@@ -190,7 +190,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6730() {
                 break;
             }
             gAudioMgr_8053AF80->playSystemSound_80458880(0x2A, -1);
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000027, true, false);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000027, true, false);
         }
     }
 }

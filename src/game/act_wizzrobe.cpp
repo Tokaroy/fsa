@@ -201,7 +201,7 @@ void Wizzrobe_804A0EDC::update() {
 
     if (updateHitReaction_801F3D94(1) != 0) {
         field_0xb0 = 0;
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
@@ -217,12 +217,12 @@ void Wizzrobe_804A0EDC::update() {
                 mHitTimerStart_0xdc = 0;
             }
         }
-        if (hit == true || fn_801F2FAC()) {
+        if (hit == true || checkPlayerAttacks_801F2FAC()) {
             field_0x238 = 0;
             field_0x2e4 = 0;
             field_0x244 = 0;
             field_0x230 = 8;
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             s32 serial = field_0x268;
             if (serial >= 0) {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -248,7 +248,7 @@ void Wizzrobe_804A0EDC::update() {
             }
             s32 bit = field_0x2c8;
             if (bit != 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
             if (field_0x94 != 3) {
                 return;
@@ -291,7 +291,7 @@ void Wizzrobe_804A0EDC::update() {
     }
 
     if (field_0x94 == 3) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
     }
 
     if (field_0x238 > 0) {
@@ -333,8 +333,8 @@ void Wizzrobe_804A0EDC::update() {
         // fallthrough
     case 1:
         if (field_0x23c == 30) {
-            fn_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 1);
-            fn_80154590(&mMapBox_0x80, -2.0f, -2.0f, 2.0f, 2.0f);
+            findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 1);
+            setBox_80154590(&mMapBox_0x80, -2.0f, -2.0f, 2.0f, 2.0f);
             JGeometry::TVec3f savedPos;
             fn_80178F10(&savedPos, &mPos);
             bool found = false;
@@ -347,20 +347,20 @@ void Wizzrobe_804A0EDC::update() {
                     mPos.y += (64.0f * randFloat_80154744() + 64.0f) * cosVal;
                     mPos.z = 0.0f;
                     field_0x250 = (field_0x250 + (s32)(2.99f * randFloat_80154744()) + 1) & 3;
-                    if (!fn_801F2618(NULL, false)) {
-                        fn_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 1);
+                    if (!sweepMapBox_801F2618(NULL, false)) {
+                        findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 1);
                         if (dir != -1) {
                             mDir_0x98 = dir;
                         }
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50A, 0, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x50B, 0, 1, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x40077, 0);
-                        fn_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
+                        setBox_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
                         return;
                     }
                 }
             }
-            fn_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
+            setBox_80154590(&mMapBox_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
             field_0x23c = 31;
             fn_80178F10(&mPos, &savedPos);
         }
@@ -383,10 +383,10 @@ void Wizzrobe_804A0EDC::update() {
         field_0x230 = 7;
         // fallthrough
     case 7:
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         if (field_0x94 == 1 || field_0x94 == 2 || field_0x94 == 3) {
             if (field_0x24c <= 3) {
-                fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, field_0x94 != 3 ? 1 : 0);
+                findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, field_0x94 != 3 ? 1 : 0);
                 if (field_0x94 != 3) {
                     for (s32 i = 0; i < 20; i++) {
                         s32 s = field_0x270[i];
@@ -499,8 +499,8 @@ void Wizzrobe_804A0EDC::update() {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         startSound_801F0E34(0x30035, 0);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
                             a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                             a->mDir_0x98 = mDir_0x98;
                         }
@@ -517,8 +517,8 @@ void Wizzrobe_804A0EDC::update() {
                     if (s >= 0) {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(fn_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(fn_801F6874(mDir_0x98));
+                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
                             a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                             a->mDir_0x98 = mDir_0x98;
                         }
@@ -687,8 +687,8 @@ void Wizzrobe_804A0EDC::update() {
             }
         }
         {
-            u8 hitWall = fn_801F2618(NULL, false);
-            if (field_0x240 == 0 || (field_0x23c == 0 && fn_801F6758(&mPos, mLayer_0x4, 0.0f)) || hitWall) {
+            u8 hitWall = sweepMapBox_801F2618(NULL, false);
+            if (field_0x240 == 0 || (field_0x23c == 0 && isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) || hitWall) {
                 mAlive = false;
                 if (field_0x94 == 11) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
@@ -713,7 +713,7 @@ void Wizzrobe_804A0EDC::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x509, 0, 1, NULL, NULL, true, field_0x2dc);
             mAlive = false;
         } else if (field_0x238 == 0) {
-            fn_801EEC98(mSerial, &angle, &dir, NULL, &player, 0, 1);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, NULL, &player, 0, 1);
             if (player >= 0) {
                 field_0x2e8.x = 2.0f * JMath::sincosTable_.sinShort(angle);
                 field_0x2e8.y = 2.0f * JMath::sincosTable_.cosShort(angle);
@@ -732,7 +732,7 @@ void Wizzrobe_804A0EDC::update() {
         }
         break;
     case 14:
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x24c, 2);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x24c, 2);
         if (mEmitters[0] != NULL) {
             fn_80178EB8(mEmitters[0], &mPos);
         }
@@ -815,7 +815,7 @@ void Wizzrobe_804A0EDC::update() {
             JGeometry::TVec3f p;
             fn_80178F10(&p, &mPos);
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_801F2618(NULL, false) && !fn_801F6758(&p, mLayer_0x4, 0.0f)) {
+                if (!sweepMapBox_801F2618(NULL, false) && !isOutsideView_801F6758(&p, mLayer_0x4, 0.0f)) {
                     u32 spawnId = ACTOR_POPO;
                     s32 spawnArg = 1;
                     if (field_0x94 == 22) {
@@ -881,17 +881,17 @@ void Wizzrobe_804A0EDC::update() {
                 dist = -1.0f;
                 dir = -1;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
+                    if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                         f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                         f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
-                        if (-1.0f == dist || dist > fn_80154378(dx * dx + dy * dy)) {
-                            dist = fn_80154378(dx * dx + dy * dy);
+                        if (-1.0f == dist || dist > sqrtf_80154378(dx * dx + dy * dy)) {
+                            dist = sqrtf_80154378(dx * dx + dy * dy);
                             angleToDir_801F681C(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                             bestPlayer = i;
-                            if (fn_8022F3DC(i) < 0) {
+                            if (getPlayerLeader_8022F3DC(i) < 0) {
                                 player = i;
                             } else {
-                                player = fn_8022F3DC(i);
+                                player = getPlayerLeader_8022F3DC(i);
                             }
                         }
                     }

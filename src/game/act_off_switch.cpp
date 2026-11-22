@@ -21,24 +21,24 @@ void OFFSwitch_804A9B70::update() {
         switch (field_0x234) {
         case 0:
             if (isScreenFlagSet_0x34()) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, false, 0xFF);
                 field_0x230 = 1;
             }
             break;
         case 1:
             if (isScreenFlagSet_0x34()) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, false, 0xFF);
             } else {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, field_0x23c, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, field_0x23c, 0xFF);
             }
             break;
         case 2:
             if (isScreenFlagSet_0x34()) {
                 if (field_0x23c) {
-                    getGameView_802D6A9C()->fn_802D8050(field_0x238, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, false, 0xFF);
                     field_0x23c = false;
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050(field_0x238, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, true, 0xFF);
                     field_0x23c = true;
                 }
                 field_0x230 = 1;
@@ -46,14 +46,14 @@ void OFFSwitch_804A9B70::update() {
             break;
         case 3:
             if (isScreenFlagSet_0x34()) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, false, 0xFF);
             } else {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, true, 0xFF);
             }
             break;
         case 4:
             if (isScreenFlagSet_0x34()) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x238, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x238, false, 0xFF);
             }
             break;
         }

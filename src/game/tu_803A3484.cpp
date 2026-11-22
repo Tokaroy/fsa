@@ -81,7 +81,7 @@ inline void Title_804AF820::stopMovie() {
     field_0x60 = 0;
     field_0x64 = 0;
     if (field_0x6e != 3 && gAudioMgr_8053AF80->field_0x58 != 0x1000006) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000006, false, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000006, false, false);
     }
 }
 
@@ -131,15 +131,15 @@ Title_804AF820::Title_804AF820() {
     const ResTIMG* tex = (const ResTIMG*)fn_80403204('TIMG', "kk_titleCon_01.bti");
     field_0x8 = new J2DPicture(tex);
     mMovie = new THPMovie_804B15D0;
-    tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_choice.bti");
+    tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_choice.bti");
     field_0xc = new J2DPicture(tex);
-    tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_inter.bti");
+    tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_inter.bti");
     field_0x10 = new J2DPicture(tex);
-    tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_pro.bti");
+    tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_pro.bti");
     field_0x14 = new J2DPicture(tex);
-    tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_yes.bti");
+    tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_yes.bti");
     field_0x18 = new J2DPicture(tex);
-    tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_no.bti");
+    tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "progressive_no.bti");
     field_0x1c = new J2DPicture(tex);
     tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
     field_0x20 = new J2DPicture(tex);
@@ -154,7 +154,7 @@ Title_804AF820::Title_804AF820() {
     mHeap = JKRSolidHeap::create(0x80000, parent, false);
     mHeap->becomeCurrentHeap();
     for (int i = 0; i < 6; i++) {
-        fn_8016A3BC(lbl_80529DEC.mTitleArchive_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mTitleArchive_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
                     NULL, 0x10240000, mHeap, &field_0x104[i], &field_0x11c[i], NULL, &field_0x134[i], NULL);
         if (field_0x11c[i] != NULL) {
             field_0x11c[i]->setFrame(0.0f);
@@ -300,7 +300,7 @@ void Title_804AF820::fn_803A5380() {
     field_0x90.fn_8016ED88();
     if (lbl_80529DEC.field_0x249[0] != 0) {
         if (gAudioMgr_8053AF80->field_0x58 != 0x1000006) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000006, false, false);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000006, false, false);
         }
         field_0x82 = 60;
     }
@@ -327,7 +327,7 @@ void Title_804AF820::fn_803A44D8() {
                 field_0x82 == 0) {
                 calcBlink(blink);
             }
-            gGameRoot2_8053AB10->fn_8013B490();
+            gGameRoot2_8053AB10->setPort_8013B490();
             mScreen->search('Pntd')->setAlpha(field_0x4c);
             mScreen->search('Ptlogo01')->setAlpha(0);
             mScreen->search('Ptlogo02')->setAlpha(0);
@@ -336,7 +336,7 @@ void Title_804AF820::fn_803A44D8() {
             mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
         }
     } else {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         if (lbl_80529DEC.field_0x238 == 0xFF && lbl_80529DEC.field_0x249[0] != 0) {
             if (field_0x154 == 1) {
                 // The six cloud models and the title's effects.
@@ -363,14 +363,14 @@ void Title_804AF820::fn_803A44D8() {
                     mtx[2][1] = 1.0f;
                     mtx[2][2] = 0.0f;
                     mtx[2][3] = -513.0f - 96.0f * i;
-                    fn_8013ABCC(field_0x104[i], scale, mtx);
+                    calcAndEntryModel_8013ABCC(field_0x104[i], scale, mtx);
                 }
                 fn_8013AB2C();
                 manager->calc(0);
                 manager->draw(&info, 0);
             }
             if (field_0x150 == 1) {
-                gGameRoot2_8053AB10->fn_8013B490();
+                gGameRoot2_8053AB10->setPort_8013B490();
                 field_0x20->setAlpha(field_0x68);
                 field_0x20->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
             }
@@ -453,7 +453,7 @@ void Title_804AF820::fn_803A34A0() {
             }
             if (frame >= 150 && mMovie->mGetTotalFrame() > frame) {
                 if (gAudioMgr_8053AF80->field_0x58 != 0x1000006) {
-                    gAudioMgr_8053AF80->fn_80458FF0(0x1000006, false, false);
+                    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000006, false, false);
                     field_0x80++;
                 }
                 if (lbl_80529DEC.field_0x250 == 1) {
@@ -554,7 +554,7 @@ void Title_804AF820::fn_803A34A0() {
                     field_0x82 <= 0 && lbl_8053AD30->fn_80309C4C(0x1100, 1) != 0) {
                     gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
                     field_0x154 = 2;
-                    gAudioMgr_8053AF80->fn_80458F9C(60);
+                    gAudioMgr_8053AF80->stopBgm_80458F9C(60);
                     lbl_80529DEC.field_0x1a0 = 60;
                     field_0x6e = 3;
                 } else {
@@ -562,7 +562,7 @@ void Title_804AF820::fn_803A34A0() {
                     // lbl_8050DB0C's halfword 0x236: the attract movie's delay.
                     s16 delay = lbl_8050DB0C.field_0x4c[(0x236 - 0x4C) / 2];
                     if (field_0x60 == delay + 7440) {
-                        gAudioMgr_8053AF80->fn_80458F9C(60);
+                        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
                     } else if (field_0x60 >= delay + 7500) {
                         if (mMovie->start_80427DB4(field_0x58)) {
                             mMovieState = 1;

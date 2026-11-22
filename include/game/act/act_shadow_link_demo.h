@@ -21,8 +21,8 @@ public:
     /* 0x5C */ virtual s32 vfunc_0x5C(); // 1 or 0, as DemoActorBase_8049D140::vfunc_0x5C
 
     // 0x8011B878; called by vfunc_0x54 with the index of the matched entry.
-    void fn_8011B878(s32 index);
-    // Not in the binary: plain functions that update and fn_8011B878 inline.
+    void setState_8011B878(s32 index);
+    // Not in the binary: plain functions that update and setState_8011B878 inline.
     void hopDown();
     void spawnFlash();
 
@@ -40,7 +40,7 @@ public:
     /* 0x254 */ f32 field_0x254; // cleared by the constructor
     /* 0x258 */ f32 field_0x258; // cleared by the constructor
     /* 0x25C */ f32 field_0x25c; // cleared by the constructor
-    /* 0x260 */ JGeometry::TVec3f field_0x260; // mSpawnPos, saved by fn_8011B878 state 11
+    /* 0x260 */ JGeometry::TVec3f field_0x260; // mSpawnPos, saved by setState_8011B878 state 11
     /* 0x26C */ JGeometry::TVec3f field_0x26c; // (mSpawnPos - player 0's position) / 60, state 11
     /* 0x278 */ AnimFrameSeq_800FE8C0 mSequencer; // 0x18 bytes (the size of the spawner's __nw__ ends here)
 }; // Size: 0x290

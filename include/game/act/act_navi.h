@@ -56,7 +56,7 @@ public:
     }
 
     // 0x8021DFAC: state transition helper.
-    void fn_8021DFAC(s32 newState);
+    void setState_8021DFAC(s32 newState);
     // 0x8021E4F8.
     void fn_8021E4F8();
 

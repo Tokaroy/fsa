@@ -25,7 +25,7 @@ public:
     // unless the state is 4; true when it is 4 (the map screen's fn_8040B93C waits on it).
     bool fn_804446A4();
     // 0x80444650: unless the state (field_0x4d) is 4, draws its J2DScreen (0x4)
-    // (the map screen's fn_80411230 calls it in state 0x10).
+    // (the map screen's draw_80411230 calls it in state 0x10).
     void fn_80444650();
     void fn_804445E0();
     void fn_80444590();

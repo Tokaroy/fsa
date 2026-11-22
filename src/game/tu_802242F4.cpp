@@ -13,7 +13,7 @@ bool fn_802242F4(ActorBase_804A5770* actor) {
     bool result = false;
     if (actor->mParamDstr_0x1a8 && !actor->field_0x196) {
         JGeometry::TBox2f box;
-        actor->fn_801F31C4(&box);
+        actor->getBoxAtPos_801F31C4(&box);
         if (box.f.x - box.i.x > 0.0f && box.f.y - box.i.y > 0.0f) {
             JGeometry::TVec2f out;
             s32 player = fn_8023A7BC(&box, actor->mLayer_0x4, &out);

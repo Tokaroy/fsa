@@ -20,7 +20,7 @@ public:
     /* 0x0C */ virtual void init();
     // 0x801DC2D4: sprite mAnim.mCel + 0xE3 of "enemy_both_sob.bin".
     /* 0x20 */ virtual void draw();
-    // 0x801DC3C4: the players hitting the tail (fn_801F285C, fn_801F37AC);
+    // 0x801DC3C4: the players hitting the tail (findOverlappingPlayer_801F285C, takeHit_801F37AC);
     // each one spawns a 'RUPY' thrown up and away.
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
     // 0x801DC364: actor hits (checkActorHit_801F2DB4) are processed but never reported.

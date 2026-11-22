@@ -16,11 +16,11 @@ void PlaySpecifiedSe_804A9F00::init() {
 }
 
 // Counts field_0x238 down, then (unless field_0x230 is set) calls
-// fn_801F0D20 with the selected id once and removes the actor.
+// playSe_801F0D20 with the selected id once and removes the actor.
 void PlaySpecifiedSe_804A9F00::update() {
     if (field_0x238 == 0) {
         if (field_0x230 == 0) {
-            fn_801F0D20(lbl_80541250[field_0x234]);
+            playSe_801F0D20(lbl_80541250[field_0x234]);
         }
         mAlive = false;
     } else {

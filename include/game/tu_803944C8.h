@@ -44,8 +44,8 @@ public:
     void fn_803A2F74();
     // 0x803A2E48 / 0x803A2CB0: called by fn_8039FE78 to count a number's
     // characters and the noun after it into field_0x50.
-    void fn_803A2E48(s32 value);
-    void fn_803A2CB0(u8 noun, s32 count);
+    void addNumberLength_803A2E48(s32 value);
+    void addCountedNounLength_803A2CB0(u8 noun, s32 count);
 
     /* 0x4C */ s32 field_0x4c;
     /* 0x50 */ s32 field_0x50;
@@ -75,7 +75,7 @@ public:
     virtual bool do_tag(u32, const void*, u32);
 
     // 0x80398700: adds the width of the counted noun after a number (the
-    // same nouns as MessageSequenceProcessor_804AF774::fn_803A2CB0; singular when count is 1) to
+    // same nouns as MessageSequenceProcessor_804AF774::addCountedNounLength_803A2CB0; singular when count is 1) to
     // the current line, like do_character. Called by the do_tag (0x803997B8).
     void fn_80398700(u8 noun, s32 count);
     // 0x80398A34: adds the width of a number's characters to the current line (like do_character).
@@ -206,11 +206,11 @@ public:
     void fn_8039CDF8(u8 value);
     // 0x8039C9A0: writes a number's digits (with a leading '-', and a colour-code offset first).
     void fn_8039C9A0(s32 number);
-    // 0x8039C630: appends a counted noun (the nouns of fn_803A2CB0), singular when count is 1.
-    void fn_8039C630(u8 noun, s32 count);
+    // 0x8039C630: appends a counted noun (the nouns of addCountedNounLength_803A2CB0), singular when count is 1.
+    void appendCountedNoun_8039C630(u8 noun, s32 count);
     // 0x8039C258: the same number as fn_8039C9A0, as glyph codes in the first line buffer.
     void fn_8039C258(s32 number);
-    // 0x8039B3EC: the nouns of fn_8039C630 as glyph codes.
+    // 0x8039B3EC: the nouns of appendCountedNoun_8039C630 as glyph codes.
     void fn_8039B3EC(u8 noun, s32 count);
     // Inlined: appends a glyph code (two bytes) to the first line buffer.
     void appendGlyph(u16 glyph) {

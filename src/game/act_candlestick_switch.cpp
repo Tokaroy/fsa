@@ -57,7 +57,7 @@ void CandlestickSwitch_804A8B78::update() {
         if (field_0x94 == 0 && fn_8023AB94(&box, mLayer_0x4, &p) < 0 && findOverlappingActor_801F2718(ACTOR_FIRE) < 0) {
             break;
         }
-        if (fn_80226998(&mPos, mLayer_0x4) == 0x3D || fn_80226998(&mPos, mLayer_0x4) == 0x1DE) {
+        if (getTileAt_80226998(&mPos, mLayer_0x4) == 0x3D || getTileAt_80226998(&mPos, mLayer_0x4) == 0x1DE) {
             mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
             mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
             setScreenFlag_0x30(0xFF, true);

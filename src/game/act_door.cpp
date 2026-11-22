@@ -141,13 +141,13 @@ void Door_804A8D88::init() {
     field_0x26c.f.y += field_0x264.y;
     if (field_0x23c == 0 || (field_0x23c == 2 && field_0x234 == 0)) {
         JGeometry::TVec2f v(field_0x258.x, field_0x258.y);
-        field_0x244 = fn_80226BC4(&v, mLayer_0x4);
+        field_0x244 = getCellIndex_80226BC4(&v, mLayer_0x4);
     } else if (field_0x238 < 2) {
         JGeometry::TVec2f v(field_0x258.x + 16.0f, field_0x258.y);
-        field_0x244 = fn_80226BC4(&v, mLayer_0x4);
+        field_0x244 = getCellIndex_80226BC4(&v, mLayer_0x4);
     } else {
         JGeometry::TVec2f v(field_0x258.x, field_0x258.y + 16.0f);
-        field_0x244 = fn_80226BC4(&v, mLayer_0x4);
+        field_0x244 = getCellIndex_80226BC4(&v, mLayer_0x4);
     }
     if ((field_0x234 >= 1 && field_0x234 <= 4) || field_0x234 == 8) {
         s32 layer = mLayer_0x4;
@@ -206,7 +206,7 @@ extern const DoorTiles_8046D598 lbl_8046D598;
 void Door_804A8D88::update() {
     const DoorTiles_8046D598& tiles = lbl_8046D598;
     JGeometry::TVec2f pos(field_0x258.x, field_0x258.y);
-    s32 cell = fn_80226BC4(&pos, mLayer_0x4);
+    s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
     switch (field_0x230) {
     case 0:
     case 3: {
@@ -244,7 +244,7 @@ void Door_804A8D88::update() {
         if (field_0x230 == 3) {
             s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
             if (bit != -1) {
-                getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, true);
+                getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
             }
         }
         u8 upper = 8;
@@ -254,7 +254,7 @@ void Door_804A8D88::update() {
         switch (field_0x23c) {
         case 0: {
             const u16* t = tiles.mWidth1[field_0x234][field_0x238];
-            gBgRewrite_8053AC98->fn_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
+            gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
             if (field_0x234 == 0 && field_0x230 == 3) {
                 if (field_0x238 == 0) {
                     spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x443, 0, 0, NULL, NULL, true, 1.0f);
@@ -268,19 +268,19 @@ void Door_804A8D88::update() {
             }
             if (field_0x234 == 2 || field_0x234 == 4) {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                s32 cell2 = fn_80226BC4(&pos2, mLayer_0x4);
+                s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
                 if (field_0x234 == 2) {
                     const u16* t2 = tiles.mLayer2Type2[field_0x238];
-                    gBgRewrite_8053AC98->fn_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
+                    gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
                 } else {
                     const u16* t2 = tiles.mLayer2Type4[field_0x238];
-                    gBgRewrite_8053AC98->fn_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
+                    gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
                 }
             }
             break;
         }
         case 1: {
-            gBgRewrite_8053AC98->fn_8029DD50(
+            gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                 mLayer_0x4, cell, (field_0x238 >> 1) & 1,
                 tiles.mWidth2[field_0x234][field_0x238][0],
                 tiles.mWidth2[field_0x234][field_0x238][1],
@@ -299,8 +299,8 @@ void Door_804A8D88::update() {
             }
             if (field_0x234 == 2) {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                s32 cell2 = fn_80226BC4(&pos2, mLayer_0x4);
-                gBgRewrite_8053AC98->fn_8029DD50(
+                s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
+                gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                     mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1,
                     tiles.mLayer2Width2[field_0x238][0],
                     tiles.mLayer2Width2[field_0x238][1],
@@ -325,7 +325,7 @@ void Door_804A8D88::update() {
             }
             if (field_0x234 == 2) {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                cell = fn_80226BC4(&pos2, mLayer_0x4);
+                cell = getCellIndex_80226BC4(&pos2, mLayer_0x4);
                 const u16* t2 = tiles.mLayer2Width3[field_0x238];
                 gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
                 t2 = tiles.mLayer2Width3[field_0x238];
@@ -345,7 +345,7 @@ void Door_804A8D88::update() {
                 getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &JGeometry::TVec3f(8.0f + p.x, 10.0f + p.y, 0.0f), 0, -1, -1);
             }
         } else if (field_0x234 == 8) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
         }
         if (field_0x230 == 3 && field_0x234 == 0 && field_0x240 == 0) {
             getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x2800, -1, -1);
@@ -403,7 +403,7 @@ void Door_804A8D88::update() {
                 break;
             }
             for (s32 i = 0; i < 4; i++) {
-                if (i == field_0x248 || (fn_8022F514(i) == true && field_0x248 == fn_8022F3DC(i))) {
+                if (i == field_0x248 || (hasPlayerLeader_8022F514(i) == true && field_0x248 == getPlayerLeader_8022F3DC(i))) {
                     if (getPlayerHeldActorId_8023EEB4(i) != 'KEY0') {
                         continue;
                     }
@@ -511,12 +511,12 @@ void Door_804A8D88::update() {
         }
         s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
         if (bit != -1) {
-            getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, false);
+            getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, false);
         }
         switch (field_0x23c) {
         case 0: {
             const u16* t = tiles.mOpenWidth1[field_0x238];
-            gBgRewrite_8053AC98->fn_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
+            gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
             if (field_0x234 != 0) {
                 break;
             }
@@ -532,7 +532,7 @@ void Door_804A8D88::update() {
             break;
         }
         case 1: {
-            gBgRewrite_8053AC98->fn_8029DD50(
+            gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                 mLayer_0x4, cell, (field_0x238 >> 1) & 1,
                 tiles.mOpenWidth2[field_0x238][0],
                 tiles.mOpenWidth2[field_0x238][1],
@@ -595,8 +595,8 @@ void Door_804A8D88::update() {
             break;
         }
         s32 leader = field_0x248;
-        if (fn_8022F514(field_0x248)) {
-            leader = fn_8022F3DC(field_0x248);
+        if (hasPlayerLeader_8022F514(field_0x248)) {
+            leader = getPlayerLeader_8022F3DC(field_0x248);
         }
         for (s32 i = 0; i < 4; i++) {
             JGeometry::TVec3f player = *getPlayerPos_8023E724(i);
@@ -604,7 +604,7 @@ void Door_804A8D88::update() {
             p.x = 1.0f + player.x;
             p.y = player.y - 12.0f;
             p.z = player.z;
-            if (fn_8022F514(i) == true && leader == fn_8022F3DC(i)) {
+            if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
                 if (i == field_0x248) {
                     getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
                 }
@@ -617,7 +617,7 @@ void Door_804A8D88::update() {
     }
     case 8:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-        if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == true) {
+        if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&mPos) == true) {
             field_0x230 = 3;
         }
         break;

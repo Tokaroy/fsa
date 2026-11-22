@@ -52,13 +52,13 @@ void EnvironmentSwitchControl_804A8638::init() {
     field_0x244 = 0;
     switch (field_0x260) {
     case 1:
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         break;
     case 2:
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
         break;
     case 3:
-        gAudioMgr_8053AF80->fn_80458F9C(0x78);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x78);
         break;
     }
     if (field_0x264 != 0) {
@@ -302,7 +302,7 @@ EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
 void EnvironmentSwitchControl_804A8638::update() {
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 &&
-         (fn_80236B50(0) && fn_80236B50(1) && fn_80236B50(2) && fn_80236B50(3) ||
+         (isPlayerDead_80236B50(0) && isPlayerDead_80236B50(1) && isPlayerDead_80236B50(2) && isPlayerDead_80236B50(3) ||
           (gGameRoot_8053AAF8->field_0x4c == 0xB || gGameRoot_8053AAF8->field_0x88 == 2))) ||
         lbl_80529DEC.field_0x240 != 0) {
         paused = true;
@@ -418,7 +418,7 @@ void EnvironmentSwitchControl_804A8638::update() {
     case 2:
         switch (field_0x240) {
         case 0:
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             field_0x240 = 0xC;
             break;
         case 0xC:
@@ -498,7 +498,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         case 6:
             vfunc_0x58();
             field_0x240 = 3;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
             break;
         case 3:
             vfunc_0x58();
@@ -859,7 +859,7 @@ void EnvironmentSwitchControl_804A8638::update() {
                     field_0x238->becomeInvalidEmitter();
                     field_0x238 = NULL;
                 }
-                gGameRoot_8053AAF8->fn_80138B7C();
+                gGameRoot_8053AAF8->startStageMusic_80138B7C();
             }
             u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
@@ -1022,7 +1022,7 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x60() {
         u32 id = current - 0x1000000;
         if (id != 0x21 && id != 9 && id - 0x18 > 1 && id != 1 && id != 0xD && id != 7 && id != 0x2E && id != 0x29 &&
             id != 0x24 && id != 0xE) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000E, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000E, false, 0);
         }
     }
 }

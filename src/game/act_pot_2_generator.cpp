@@ -23,7 +23,7 @@ void Pot2Generator_804AA6F8::init() {
                     cellToPos_80226CA8(field_0x230, 0, &pos);
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TBO2, 0, &pos, code, id, -1);
                 } else {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(0, field_0x230, 0x12);
+                    gGameRoot2_8053AB10->field_0x20->setTile_802F9974(0, field_0x230, 0x12);
                 }
                 id++;
             }
@@ -42,7 +42,7 @@ void Pot2Generator_804AA6F8::init() {
                         cellToPos_80226CA8(field_0x230, layer, &pos);
                         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TBO2, layer, &pos, code, id, -1);
                     } else {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, field_0x230, 0x12);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, field_0x230, 0x12);
                     }
                     id++;
                 }

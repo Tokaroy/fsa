@@ -119,7 +119,7 @@ public:
     /* 0x1A8 */ s32 field_0x1a8[4];
     /* 0x1B8 */ s32 field_0x1b8[4];
     /* 0x1C8 */ s32 field_0x1c8[4];
-    /* 0x1D8 */ s32 field_0x1d8[4]; // fn_80419570: the life shown (fn_80237774), in quarter hearts
+    /* 0x1D8 */ s32 field_0x1d8[4]; // fn_80419570: the life shown (getPlayerLife_80237774), in quarter hearts
     /* 0x1E8 */ s32 field_0x1e8[4]; // fn_8041E8B4: the previous field_0x1d8
     /* 0x1F8 */ s32 field_0x1f8[4]; // fn_80419570: the maximum shown (getPlayerMaxLife_80237810)
     /* 0x208 */ s32 field_0x208[4];

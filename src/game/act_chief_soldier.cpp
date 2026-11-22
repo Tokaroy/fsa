@@ -229,7 +229,7 @@ void ChiefSoldier_804A0B90::init() {
     field_0x238 = -1;
     if (getType() != 7 && getType() != 8 && getType() != 6) {
         if (getType() != 2 && getType() != 3 && field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
         }
         mLife = lbl_804A0AF8[mSpawnParam_0x90 & 0xFF] * 2;
         if (fn_802DE814() == 1) {
@@ -431,7 +431,7 @@ ChiefSoldier_804A0B90::~ChiefSoldier_804A0B90() {
     if (getType() != 7 && getType() != 8) {
         if (getType() != 6 && gGameRoot_8053AAF8->field_0x4c != 9 &&
             gGameRoot_8053AAF8->field_0x4c != 0xB && mLife != 0) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
         }
         s32 serial = field_0x238;
         if (serial >= 0) {
@@ -450,7 +450,7 @@ void ChiefSoldier_804A0B90::vfunc_0x44() {
         field_0x264 = 0;
         field_0x250 = 0x14;
         if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, false);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, false);
         }
         field_0x288 = 2;
         if (field_0x2a5 == 1) {
@@ -504,7 +504,7 @@ void ChiefSoldier_804A0B90::fn_80174220() {
         mLife = 10000;
         fn_801EF510();
         for (s32 i = 0; i < 4; i++) {
-            s32 player = fn_801F285C(NULL, NULL, true, i);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (player < 0) {
                 continue;
             }
@@ -557,7 +557,7 @@ void ChiefSoldier_804A0B90::update() {
     }
     fn_80175024();
     if (updateHitReaction_801F3D94(1) != 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         if (field_0x23c == 0) {
             field_0x250 = 20;
             return;
@@ -567,7 +567,7 @@ void ChiefSoldier_804A0B90::update() {
     }
     if (field_0x230 != 8 && field_0x230 != 9 && mHitTimer_0xd8 == 0) {
         for (s32 i = 0; i < 4; i++) {
-            s32 player = fn_801F285C(NULL, NULL, true, i);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (field_0x94 != 0) {
                 player = field_0x94 - 1;
             }
@@ -601,7 +601,7 @@ void ChiefSoldier_804A0B90::update() {
                         }
                         if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
                             if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
-                                gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
                             }
                             mSpawnParam_0x90 += 2;
                             field_0x240 = 0;
@@ -638,7 +638,7 @@ void ChiefSoldier_804A0B90::update() {
         field_0x94 = 0;
         s32 life = mLife;
         if (mHitTimer_0xd8 == 0) {
-            if ((field_0x254 == 0 && fn_801F2FAC()) || checkActorHit_801F2DB4('NULL', 'NULL', NULL)) {
+            if ((field_0x254 == 0 && checkPlayerAttacks_801F2FAC()) || checkActorHit_801F2DB4('NULL', 'NULL', NULL)) {
                 if (life != mLife) {
                     if (getType() != 6 && mLayer_0x4 >= 8 && field_0x23c == 1) {
                         field_0x284 -= 10000 - mLife;
@@ -696,7 +696,7 @@ void ChiefSoldier_804A0B90::update() {
                 }
                 if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
                     if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
-                        gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
                     }
                     mSpawnParam_0x90 += 2;
                     field_0x240 = 0;
@@ -709,7 +709,7 @@ void ChiefSoldier_804A0B90::update() {
                     field_0x230 = 2;
                 }
                 field_0x26c = 150;
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 if (field_0x23c == 0) {
                     return;
                 }
@@ -717,7 +717,7 @@ void ChiefSoldier_804A0B90::update() {
             addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a8, 0.3f, 1.0f);
             addCalc2_801F71A4(&mVel_0x3c.y, field_0x2ac, 0.3f, 1.0f);
             mPos += mVel_0x3c;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
             if (field_0x29c != 2 || field_0x264 < 4) {
                 damagePlayersInBox_801F2B7C(-100, -1, 1);
             } else if (getType() == 6) {
@@ -725,7 +725,7 @@ void ChiefSoldier_804A0B90::update() {
             }
         }
     }
-    u8 hit = fn_801F2618(NULL, false);
+    u8 hit = sweepMapBox_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
         if (field_0x278 > 0) {
@@ -740,7 +740,7 @@ void ChiefSoldier_804A0B90::update() {
                 startSound_801F0E34(0x5001F, 0);
             }
             if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
             }
             mSpawnParam_0x90 = 4;
             field_0x230 = 2;
@@ -831,7 +831,7 @@ void ChiefSoldier_804A0B90::update() {
         }
         if (field_0x244 == 0) {
             field_0x244 = 40;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 1, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, NULL, 1, 0);
             if (dir >= 0) {
                 mDir_0x98 = dir;
                 if (field_0x258 == 0) {
@@ -1054,7 +1054,7 @@ void ChiefSoldier_804A0B90::fn_80172BC8() {
         s32 frame = field_0x280 + 0x3FD;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }

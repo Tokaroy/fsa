@@ -78,12 +78,12 @@ void Armos_8049F260::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (updateHitReaction_801F3D94(true) != 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     if (field_0x2f8 == 2 || field_0x2f8 == 5) {
         if (field_0x94 != 3 && field_0x94 != 5) {
-            if (fn_801F305C()) {
+            if (checkHits_801F305C()) {
                 if (field_0x2f8 != 2) {
                     field_0x318 = 0;
                     field_0x2f8 = 2;
@@ -91,12 +91,12 @@ void Armos_8049F260::update() {
                 if (mLife <= 0) {
                     startSound_801F0E34(0x400A1, 0);
                 }
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 return;
             }
         } else {
             for (s32 i = 0; i < 4; i++) {
-                s32 player = fn_801F285C(NULL, NULL, false, i);
+                s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
                 if (player < 0) {
                     continue;
                 }
@@ -188,11 +188,11 @@ void Armos_8049F260::update() {
             if (field_0x94 == 3 || field_0x94 == 4) {
                 s32 outDir = -1;
                 s32 outPlayer = -1;
-                fn_801EEC98(mSerial, NULL, &outDir, NULL, &outPlayer, 0, 0);
+                findTargetPlayer_801EEC98(mSerial, NULL, &outDir, NULL, &outPlayer, 0, 0);
                 bool away = false;
                 if (outPlayer < 0) {
                     away = true;
-                } else if (outDir != fn_80230CFC(outPlayer)) {
+                } else if (outDir != getPlayerFacing_80230CFC(outPlayer)) {
                     away = true;
                 }
                 if (away) {
@@ -206,7 +206,7 @@ void Armos_8049F260::update() {
                     fn_80239914(&box, mLayer_0x4, mSerial);
                     fn_801EF510();
                     damagePlayersInBox_801F2B7C(-100, -1, 1);
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
             }
@@ -217,7 +217,7 @@ void Armos_8049F260::update() {
             mVel_0x3c.z = 2.0f;
         }
         damagePlayersInBox_801F2B7C(-100, -1, 1);
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         break;
     case 3: {
         fn_8020D58C()->addBox(mSerial);
@@ -246,7 +246,7 @@ void Armos_8049F260::update() {
             field_0x300 = 8;
             return;
         }
-        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && fn_801F2618(NULL, false)) {
+        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && sweepMapBox_801F2618(NULL, false)) {
             mPos.x = (f32)((((s32)mPos.x + 4) / 8) * 8);
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
@@ -278,7 +278,7 @@ void Armos_8049F260::update() {
                 mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             } else if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 ActorBase_804A5770* actors[1024];
-                s32 count = getActorManager_801F856C()->fn_801F7818('AMOS', mLayer_0x4, actors, -1);
+                s32 count = getActorManager_801F856C()->collectActorsById_801F7818('AMOS', mLayer_0x4, actors, -1);
                 for (s32 i = 0; i < count; i++) {
                     ActorBase_804A5770* actor = actors[i];
                     if (actor != NULL && actor->mSerial != mSerial) {
@@ -319,13 +319,13 @@ void Armos_8049F260::update() {
         s32 dir = -1;
         field_0x310 = fn_80239558(&moved, mLayer_0x4, mSerial);
         if (field_0x310 >= 0) {
-            dir = fn_80230CFC(field_0x310);
+            dir = getPlayerFacing_80230CFC(field_0x310);
             field_0x314 = -1;
         } else {
             field_0x314 = fn_80239470(&moved, mLayer_0x4, mSerial);
             if (field_0x314 >= 0) {
                 field_0x310 = -1;
-                dir = fn_80230CFC(field_0x314);
+                dir = getPlayerFacing_80230CFC(field_0x314);
                 if (dir == 0) {
                     dir = 1;
                 } else if (dir == 1) {
@@ -377,13 +377,13 @@ void Armos_8049F260::update() {
             s32 layer = mLayer_0x4;
             u16 angle;
             JGeometry::TVec3f pos = mPos;
-            field_0x230.fn_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
+            field_0x230.stepAlongRail_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
             mVel_0x3c.x = step.x;
             mVel_0x3c.y = step.y;
             mVel_0x3c.z = 2.0f;
         }
         damagePlayersInBox_801F2B7C(-100, -1, 1);
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         s32 serial = findOverlappingActorById_801F8108(this, 'LNBM', -1, 32.0f);
         if (serial != 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);

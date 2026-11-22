@@ -24,7 +24,7 @@ public:
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     void fn_801EC7B8();
-    void fn_801ECB08(s32 state);
+    void setState_801ECB08(s32 state);
 
     /* 0x2A8 */ s32 field_0x2a8;   // getPlayerCount_80138A30(): the number of players taking part
     /* 0x2AC */ s32 field_0x2ac;   // zeroed by the constructor

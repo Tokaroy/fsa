@@ -48,7 +48,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
         JGeometry::TVec3f other;
         JGeometry::TVec3f playerPos;
         fn_8022E114(player, &playerPos);
-        if (fn_801F329C(player)) {
+        if (isPlayerOnLowerLayer_801F329C(player)) {
             fn_801CD150(&playerPos, &other);
             pos.set(other.x, other.y, other.z);
         } else {
@@ -80,7 +80,7 @@ bool cls_804A46F4::fn_801D12CC() {
         JGeometry::TVec3f other;
         JGeometry::TVec3f playerPos;
         fn_8022E114(player, &playerPos);
-        if (fn_801F329C(player)) {
+        if (isPlayerOnLowerLayer_801F329C(player)) {
             fn_801CD150(&playerPos, &other);
             pos.set(other.x, other.y, other.z);
         } else {
