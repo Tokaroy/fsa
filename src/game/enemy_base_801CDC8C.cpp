@@ -618,8 +618,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
 }
 
 // FIXME: 99.41 %, missing/extra; behaviour clean.
-// Registers (the bools of canTargetPlayer swap) and one extra
-// mr r4, r5 in the target before isStepBlocked_801CFCF0.
+// Float registers of the second directionTo differ.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
 // one when there is none): on the dominant axis, or the other one with
 // probability `margin`. With `turn`, a direction equal to mDir_0x98 is
@@ -639,7 +638,7 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
         dir = directionTo(&mPos, player, otherAxis);
         if (turn) {
             if (dir == mDir_0x98) {
-                dir = pickNewDir_801CF720(dir);
+                dir = pickNewDir_801CF720(mDir_0x98);
                 if (dir == oppositeDir_801CD354(directionTo(&mPos, player, false))) {
                     dir = fn_801CF798(dir, mDir_0x98);
                 }
