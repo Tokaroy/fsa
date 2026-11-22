@@ -31,7 +31,7 @@ Cucco_804AB8C0::~Cucco_804AB8C0() {
     releaseEmitter_801EE434(mEmitter300);
 }
 
-// FIXME(shotgun): 91.10 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.60 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::init() {
     u16 angle = 0;
     mBox.i.x = -7.0f;
@@ -413,7 +413,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.74 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.08 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80331E6C() {
     if (field_0x2a4[0] == 1) {
     s32 count;
@@ -708,7 +708,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// FIXME(shotgun): 98.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.34 %, missing/extra + reloc-name; behaviour drift.
 void Cucco_804AB8C0::update() {
     if (field_0x230 == 2) {
         if (fn_8022F9E4(field_0x25c, mSerial, false, false) == 1) {
