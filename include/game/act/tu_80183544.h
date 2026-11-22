@@ -7,10 +7,10 @@
 #include "JSystem/JUtility/TColor.h"
 
 // Named after its vtable, 0x804A1790.
-class cls_804A1790 : public ActorBase_804A5770 {
+class Geldman_804A1790 : public ActorBase_804A5770 {
 public:
-    cls_804A1790() : field_0x234(-1) {}
-    /* 0x08 */ virtual ~cls_804A1790();
+    Geldman_804A1790() : field_0x234(-1) {}
+    /* 0x08 */ virtual ~Geldman_804A1790();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x18 */ virtual void checkPlayerContact_0x18();

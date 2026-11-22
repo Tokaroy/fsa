@@ -7,7 +7,7 @@
 #include "JSystem/JMath/JMath.h"
 
 // Moves mPos 1.2 along x toward mTarget (forward) or mStart; returns whether it arrived.
-static inline bool stepLine(cls_804A5C88::Path* path, bool forward) {
+static inline bool stepLine(BirdManager_804A5C88::Path* path, bool forward) {
     bool done = false;
     if (forward) {
         path->mPos.x += 1.2f;
@@ -27,7 +27,7 @@ static inline bool stepLine(cls_804A5C88::Path* path, bool forward) {
 
 // Advances mAngle by mAngleStep and places mPos on the radius-125 arc around mTarget
 // (atTarget) or mStart; returns whether the angle reached the end of the arc.
-static inline bool stepArc(cls_804A5C88::Path* path, bool atTarget) {
+static inline bool stepArc(BirdManager_804A5C88::Path* path, bool atTarget) {
     bool done = false;
     path->mAngle += path->mAngleStep;
     if (atTarget) {
@@ -71,7 +71,7 @@ static inline bool stepArc(cls_804A5C88::Path* path, bool atTarget) {
 // != 0), hence `? true : false` (RULES_CARD byte-test shape); a plain compare folds into
 // cmpwi. The old position is a TVec2f copy: two f32 locals let MWCC reuse mPos.x where the
 // original reloads it.
-void cls_804A5C88::Path::fn_80209640(JGeometry::TVec2f* delta) {
+void BirdManager_804A5C88::Path::fn_80209640(JGeometry::TVec2f* delta) {
     JGeometry::TVec2f old(mPos);
 
     switch (mState) {
@@ -111,7 +111,7 @@ void cls_804A5C88::Path::fn_80209640(JGeometry::TVec2f* delta) {
     }
 }
 
-cls_804A5C88::cls_804A5C88() {
+BirdManager_804A5C88::BirdManager_804A5C88() {
     field_0x340 = 0;
     field_0x344 = 0;
     field_0x348 = 0;
@@ -129,7 +129,7 @@ cls_804A5C88::cls_804A5C88() {
 
 // FIXME: 99.47 %, regalloc-only; behaviour clean.
 // (regalloc-only). Minor register differences: dir in r30 vs r29, centerX/centerY in f3/f2 vs f2/f4, and loop counters r28/r29 swapped.
-void cls_804A5C88::init() {
+void BirdManager_804A5C88::init() {
     EnemyBase_804A4808::init();
     field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
@@ -216,13 +216,13 @@ void cls_804A5C88::init() {
     }
 }
 
-void cls_804A5C88::onFirstUpdate_0x54() {
+void BirdManager_804A5C88::onFirstUpdate_0x54() {
     mPos.x = mSpawnPos.x;
     mPos.y = mSpawnPos.y;
     mPos.z = mSpawnPos.z;
 }
 
-void cls_804A5C88::vfunc_0xA4() {
+void BirdManager_804A5C88::vfunc_0xA4() {
     if (mState != 2) {
         mStateTimer = 0;
         mState = 2;
@@ -230,12 +230,12 @@ void cls_804A5C88::vfunc_0xA4() {
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
-            static_cast<cls_804A5E98*>(actor)->fn_8020B434();
+            static_cast<BirdFormation_804A5E98*>(actor)->fn_8020B434();
         }
     }
 }
 
-void cls_804A5C88::vfunc_0xA8() {
+void BirdManager_804A5C88::vfunc_0xA8() {
     if (mState != 3) {
         mStateTimer = 0;
         mState = 3;
@@ -243,7 +243,7 @@ void cls_804A5C88::vfunc_0xA8() {
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
-            static_cast<cls_804A5E98*>(actor)->fn_8020B3E4(
+            static_cast<BirdFormation_804A5E98*>(actor)->fn_8020B3E4(
                 mSlots[i].mPlayer, mSlots[i].field_0xc, &mSlots[i].mTarget, mSlots[i].field_0x1c);
         }
     }
@@ -252,14 +252,14 @@ void cls_804A5C88::vfunc_0xA8() {
 // State 0 starts the four slot actors, state 1 removes them all once the manager is 96 units outside
 // the visible box. An inline of its own: only then do the loops' registers come out as in the
 // original (docs/REGALLOC.md, rule 4).
-static inline void updateByState(cls_804A5C88* self) {
+static inline void updateByState(BirdManager_804A5C88* self) {
     switch (self->mState) {
     case 0:
         if ((self->field_0x348 == 0 && self->mStateTimer >= self->field_0x250) || self->isScreenFlagSet_0x34()) {
             for (s32 i = 0; i < 4; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
                 if (actor != NULL) {
-                    static_cast<cls_804A5E98*>(actor)->fn_8020B500();
+                    static_cast<BirdFormation_804A5E98*>(actor)->fn_8020B500();
                 }
             }
             self->mStateTimer = 0;
@@ -292,14 +292,14 @@ static inline void updateByState(cls_804A5C88* self) {
     }
 }
 
-void cls_804A5C88::updateState_0x90(u8 mapHit) {
+void BirdManager_804A5C88::updateState_0x90(u8 mapHit) {
     fn_80207A60();
     updateByState(this);
 }
 
 // mVel_0x3c handed on to the four slot actors. An inline of its own: its loop registers are
 // handed out before calcVelocity_0x88's (docs/REGALLOC.md, rule 4).
-static inline void copyField3cToSlotActors(cls_804A5C88* self) {
+static inline void copyField3cToSlotActors(BirdManager_804A5C88* self) {
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
         if (actor != NULL) {
@@ -308,7 +308,7 @@ static inline void copyField3cToSlotActors(cls_804A5C88* self) {
     }
 }
 
-void cls_804A5C88::calcVelocity_0x88() {
+void BirdManager_804A5C88::calcVelocity_0x88() {
     switch (mState) {
     case 0:
     case 2:
@@ -332,4 +332,4 @@ void cls_804A5C88::calcVelocity_0x88() {
     }
 }
 
-cls_804A5C88::~cls_804A5C88() {}
+BirdManager_804A5C88::~BirdManager_804A5C88() {}

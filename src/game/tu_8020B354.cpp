@@ -13,11 +13,11 @@
 static const s16 lbl_8046A368[14] = {0, 3, 1, 3, 2, 3, 3, 3, 4, 3, 5, 3, -1, -1};
 static const s16* lbl_8053A170[2] = {lbl_8046A368, NULL};
 
-cls_804A5E98::cls_804A5E98() {
+BirdFormation_804A5E98::BirdFormation_804A5E98() {
     mTargetSerial = -1;
 }
 
-void cls_804A5E98::init() {
+void BirdFormation_804A5E98::init() {
     EnemyBase_804A4808::init();
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
@@ -40,13 +40,13 @@ void cls_804A5E98::init() {
     mPos.set(0.5f * (box->i.x + box->f.x), 0.5f * (box->i.y + box->f.y), 0.0f);
 }
 
-void cls_804A5E98::onFirstUpdate_0x54() {
+void BirdFormation_804A5E98::onFirstUpdate_0x54() {
     mPos.x = mSpawnPos.x;
     mPos.y = mSpawnPos.y;
     mPos.z = mSpawnPos.z;
 }
 
-void cls_804A5E98::updateState_0x90(u8 mapHit) {
+void BirdFormation_804A5E98::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 1: // state 1 does nothing here
         break;
@@ -63,9 +63,9 @@ void cls_804A5E98::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5E98::calcVelocity_0x88() {}
+void BirdFormation_804A5E98::calcVelocity_0x88() {}
 
-bool cls_804A5E98::vfunc_0x58() {
+bool BirdFormation_804A5E98::vfunc_0x58() {
     if (mBox2.getWidth() <= 0.0f || mBox2.getHeight() <= 0.0f) {
         return false;
     }
@@ -114,7 +114,7 @@ bool cls_804A5E98::vfunc_0x58() {
     return hit;
 }
 
-u8 cls_804A5E98::checkHitByActor_0x60() {
+u8 BirdFormation_804A5E98::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (other >= 0 && other != mSerial) {
@@ -134,7 +134,7 @@ u8 cls_804A5E98::checkHitByActor_0x60() {
     return 0;
 }
 
-u8 cls_804A5E98::checkHitByPlayer_0x5C() {
+u8 BirdFormation_804A5E98::checkHitByPlayer_0x5C() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         s32 flag;
         s32 player = fn_801F285C(NULL, &flag, true, -1);
@@ -149,7 +149,7 @@ u8 cls_804A5E98::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-void cls_804A5E98::onHitReactionEnd_0x74() {
+void BirdFormation_804A5E98::onHitReactionEnd_0x74() {
     mFlags |= ENEMY_FLAG_NO_HURT;
 }
 
@@ -157,7 +157,7 @@ void cls_804A5E98::onHitReactionEnd_0x74() {
 // Same work as EnemyBase::fn_801CE010 but with 0.001f; the target computes the box
 // pointer into r5 and the stack position's address into r4 before loading mPos (as if a member
 // taking the out pointer were inlined), ours loads the camera pointer last and has 3 more moves.
-void cls_804A5E98::vfunc_0xA0() {
+void BirdFormation_804A5E98::vfunc_0xA0() {
     if (mState != 0) {
         s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -169,7 +169,7 @@ void cls_804A5E98::vfunc_0xA0() {
     }
 }
 
-void cls_804A5E98::die_0x24() {
+void BirdFormation_804A5E98::die_0x24() {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
     if (actor != NULL) {
         static_cast<cls_804A5B28*>(actor)->fn_802075D8(field_0x94);
@@ -177,7 +177,7 @@ void cls_804A5E98::die_0x24() {
     ActorBase_804A5770::die_0x24();
 }
 
-void cls_804A5E98::draw() {
+void BirdFormation_804A5E98::draw() {
     if (mState == 0) {
         return;
     }
@@ -198,7 +198,7 @@ void cls_804A5E98::draw() {
     }
 }
 
-void cls_804A5E98::fn_8020B500() {
+void BirdFormation_804A5E98::fn_8020B500() {
     if (mState == 0) {
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox2.set(mBox);
@@ -210,7 +210,7 @@ void cls_804A5E98::fn_8020B500() {
 // FIXME: 98.14 %, regalloc-only; behaviour clean.
 // Regalloc only: the -1.0f and 2.4f literals and the two products are in other
 // float registers (f2, f1 and f3, f1 in the target).
-void cls_804A5E98::fn_8020B434() {
+void BirdFormation_804A5E98::fn_8020B434() {
     if (mState == 1) {
         startSound_801F0E34(0x400D8, 0);
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -223,10 +223,10 @@ void cls_804A5E98::fn_8020B434() {
     }
 }
 
-void cls_804A5E98::fn_8020B3E4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
+void BirdFormation_804A5E98::fn_8020B3E4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
     if (fn_801F37AC(attack, from, 0, type, player)) {
         mFlags &= ~ENEMY_FLAG_NO_HURT;
     }
 }
 
-cls_804A5E98::~cls_804A5E98() {}
+BirdFormation_804A5E98::~BirdFormation_804A5E98() {}

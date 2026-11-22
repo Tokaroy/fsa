@@ -6,10 +6,10 @@
 #include "game/EnemyBase.h"
 
 // Named after its vtable, 0x804A5D60.
-class cls_804A5D60 : public EnemyBase_804A4808 {
+class SlimeFormation_804A5D60 : public EnemyBase_804A4808 {
 public:
-    cls_804A5D60();
-    /* 0x08 */ virtual ~cls_804A5D60();
+    SlimeFormation_804A5D60();
+    /* 0x08 */ virtual ~SlimeFormation_804A5D60();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24();

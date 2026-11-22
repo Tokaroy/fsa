@@ -13,7 +13,7 @@ static inline s32 spawnActorInline(u32 id, s32 layer, const JGeometry::TVec3f* p
     return getActorManager_801F856C()->spawnActor_801F9484(id, layer, pos, arg, a, b);
 }
 
-inline void cls_804A5BD8::spawnSlimes() {
+inline void SlimeManager_804A5BD8::spawnSlimes() {
     fn_801F3604();
     JGeometry::TVec3f pos(mPos);
     JGeometry::TVec2f step;
@@ -43,7 +43,7 @@ inline void cls_804A5BD8::spawnSlimes() {
     }
 }
 
-inline bool cls_804A5BD8::checkTrigger() {
+inline bool SlimeManager_804A5BD8::checkTrigger() {
     f32 range = 16.0f * field_0x344;
     bool trigger = false;
     switch (field_0x340) {
@@ -81,7 +81,7 @@ inline bool cls_804A5BD8::checkTrigger() {
     return trigger;
 }
 
-inline void cls_804A5BD8::calcCenter(f32* outX, f32* outY) {
+inline void SlimeManager_804A5BD8::calcCenter(f32* outX, f32* outY) {
     s32 serial;
     JGeometry::TVec2f sum;
     sum.x = 0.0f;
@@ -110,7 +110,7 @@ inline void cls_804A5BD8::calcCenter(f32* outX, f32* outY) {
     }
 }
 
-inline s32 cls_804A5BD8::chooseDir() {
+inline s32 SlimeManager_804A5BD8::chooseDir() {
     JGeometry::TVec3f center;
     calcCenter(&center.x, &center.y);
     s32 player = fn_801D05F8(&center, 0.0f);
@@ -124,7 +124,7 @@ inline s32 cls_804A5BD8::chooseDir() {
     return fn_801D0020(&center, player, turn);
 }
 
-cls_804A5BD8::cls_804A5BD8() {
+SlimeManager_804A5BD8::SlimeManager_804A5BD8() {
     field_0x340 = 0;
     field_0x344 = 0;
     field_0x345 = 0;
@@ -133,7 +133,7 @@ cls_804A5BD8::cls_804A5BD8() {
     field_0x34a = 0;
 }
 
-void cls_804A5BD8::init() {
+void SlimeManager_804A5BD8::init() {
     EnemyBase_804A4808::init();
     field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
@@ -170,31 +170,31 @@ void cls_804A5BD8::init() {
     mTargetSpeed = 0.0f;
 }
 
-void cls_804A5BD8::onFirstUpdate_0x54() {
+void SlimeManager_804A5BD8::onFirstUpdate_0x54() {
     field_0x346 = fn_8022461C(&mPos, mLayer_0x4);
     field_0x348 = fn_80226850(&mPos, mLayer_0x4);
 }
 
-void cls_804A5BD8::vfunc_0xA4() {
+void SlimeManager_804A5BD8::vfunc_0xA4() {
     if (mState != 5) {
         fn_80208244(5);
     }
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
-            static_cast<cls_804A5D60*>(actor)->fn_80209D44();
+            static_cast<SlimeFormation_804A5D60*>(actor)->fn_80209D44();
         }
     }
 }
 
-void cls_804A5BD8::vfunc_0xA8() {
+void SlimeManager_804A5BD8::vfunc_0xA8() {
     if (mState != 7) {
         fn_80208244(7);
     }
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
-            static_cast<cls_804A5D60*>(actor)->fn_80209CA4(
+            static_cast<SlimeFormation_804A5D60*>(actor)->fn_80209CA4(
                 mSlots[i].mPlayer, mSlots[i].field_0xc, &mSlots[i].mTarget, mSlots[i].field_0x1c);
         }
     }
@@ -202,7 +202,7 @@ void cls_804A5BD8::vfunc_0xA8() {
 
 // FIXME: 98.86 %, regalloc-only; behaviour clean.
 // (regalloc-only). r25-r28 shifted by 1 in calcCenter loops and f2/f3/f4 vs f30/f31 in offset addition.
-void cls_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* outStep) {
+void SlimeManager_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* outStep) {
     if (field_0x2ac == 0) {
         outStep->x = 0.0f;
         outStep->y = 16.0f;
@@ -240,7 +240,7 @@ void cls_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* out
 
 // FIXME: 99.09 %, operands; behaviour clean.
 // FIXME: r26/r27 regalloc swap in loops and stack frame offset swap (0xc vs 0x1c) between chooseDir and case 4.
-void cls_804A5BD8::fn_80208244(int state) {
+void SlimeManager_804A5BD8::fn_80208244(int state) {
     switch (state) {
     case 1:
         break;
@@ -255,7 +255,7 @@ void cls_804A5BD8::fn_80208244(int state) {
             if (!mSlots[i].mUsed && !mSlots[i].mDone) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
                 if (actor != NULL) {
-                    static_cast<cls_804A5D60*>(actor)->fn_80209D20(dir, steps);
+                    static_cast<SlimeFormation_804A5D60*>(actor)->fn_80209D20(dir, steps);
                 }
             }
         }
@@ -269,7 +269,7 @@ void cls_804A5BD8::fn_80208244(int state) {
             if (!mSlots[i].mUsed && !mSlots[i].mDone) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
                 if (actor != NULL) {
-                    static_cast<cls_804A5D60*>(actor)->fn_80209CF4(&pos);
+                    static_cast<SlimeFormation_804A5D60*>(actor)->fn_80209CF4(&pos);
                 }
             }
             pos.x += step.x;
@@ -289,7 +289,7 @@ void cls_804A5BD8::fn_80208244(int state) {
 
 // FIXME: 99.80 %, regalloc-only; behaviour clean.
 // (regalloc-only). r29 vs r27 for loop counter i in checkTrigger case 2.
-void cls_804A5BD8::updateState_0x90(u8 mapHit) {
+void SlimeManager_804A5BD8::updateState_0x90(u8 mapHit) {
     fn_80207A60();
     switch (mState) {
     case 0:
@@ -317,13 +317,13 @@ void cls_804A5BD8::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5BD8::calcVelocity_0x88() {
+void SlimeManager_804A5BD8::calcVelocity_0x88() {
     mVel_0x3c.x = 0.0f;
     mVel_0x3c.y = 0.0f;
     mVel_0x3c.z = 0.0f;
 }
 
-void cls_804A5BD8::fn_80207ECC() {
+void SlimeManager_804A5BD8::fn_80207ECC() {
     switch (mState) {
     case 1:
         fn_80208244(3);
@@ -331,7 +331,7 @@ void cls_804A5BD8::fn_80207ECC() {
     }
 }
 
-bool cls_804A5BD8::fn_80207E58() {
+bool SlimeManager_804A5BD8::fn_80207E58() {
     bool result = false;
     switch (mState) {
     case 3:
@@ -349,7 +349,7 @@ bool cls_804A5BD8::fn_80207E58() {
     return result;
 }
 
-void cls_804A5BD8::fn_80207E24() {
+void SlimeManager_804A5BD8::fn_80207E24() {
     switch (mState) {
     case 4:
         fn_80208244(2);
@@ -357,4 +357,4 @@ void cls_804A5BD8::fn_80207E24() {
     }
 }
 
-cls_804A5BD8::~cls_804A5BD8() {}
+SlimeManager_804A5BD8::~SlimeManager_804A5BD8() {}

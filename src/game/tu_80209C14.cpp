@@ -10,7 +10,7 @@
 #include "game/act/tu_80207548.h"
 #include "game/act/tu_80209C14.h"
 
-cls_804A5D60::cls_804A5D60() : mTargetSerial(-1), field_0x2ac(0), field_0x2b0(1), field_0x2b1(0) {
+SlimeFormation_804A5D60::SlimeFormation_804A5D60() : mTargetSerial(-1), field_0x2ac(0), field_0x2b0(1), field_0x2b1(0) {
     mVel.x = 0.0f;
     mVel.y = 0.0f;
     mVel.z = 0.0f;
@@ -37,7 +37,7 @@ static const s16* lbl_804A5D38[10] = {
 };
 
 // FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
-void cls_804A5D60::init() {
+void SlimeFormation_804A5D60::init() {
     EnemyBase_804A4808::init();
     mBox.i.set(1.0f, 1.0f);
     mBox.f.set(-1.0f, -1.0f);
@@ -49,7 +49,7 @@ void cls_804A5D60::init() {
     mFlags |= ENEMY_FLAG_NO_HURT;
     field_0x194 = 1;
     mTargetSerial = mSpawnParam_0x90;
-    cls_804A5BD8* manager = static_cast<cls_804A5BD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial));
+    SlimeManager_804A5BD8* manager = static_cast<SlimeManager_804A5BD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial));
     mAnim.fn_801D2608(lbl_804A5D38, 10);
     switch (manager->field_0x340) {
     case 0:
@@ -87,7 +87,7 @@ void cls_804A5D60::init() {
     mTargetSpeed = 0.0f;
 }
 
-void cls_804A5D60::onFirstUpdate_0x54() {
+void SlimeFormation_804A5D60::onFirstUpdate_0x54() {
     JGeometry::TVec2f offset(mSpawnPos.x - mPos.x, mSpawnPos.y - mPos.y);
     field_0x2c0 = offset;
 }
@@ -95,7 +95,7 @@ void cls_804A5D60::onFirstUpdate_0x54() {
 // FIXME(shotgun): 99.83 %, regalloc-only; behaviour drift.
 // 0x8020AA78: enters `state`, starting its animation and
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
-void cls_804A5D60::fn_8020AA78(s32 state) {
+void SlimeFormation_804A5D60::fn_8020AA78(s32 state) {
     if (mFlags & 0x2000) {
         switch (state) {
         case 8:
@@ -196,7 +196,7 @@ void cls_804A5D60::fn_8020AA78(s32 state) {
 
 // The animation steps of the box-shrinking state machine; updateState_0x90 is its per-frame step.
 // FIXME(shotgun): 99.42 %, missing/extra; behaviour drift.
-void cls_804A5D60::updateState_0x90(u8 mapHit) {
+void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         switch (mState) {
         case 8:
@@ -243,7 +243,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
             ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (manager != NULL) {
-                static_cast<cls_804A5BD8*>(manager)->fn_80207ECC();
+                static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207ECC();
             }
             fn_8020AA78(7);
         }
@@ -273,7 +273,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
                 mBox2.set(mBox);
                 ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
                 if (manager != NULL) {
-                    static_cast<cls_804A5BD8*>(manager)->fn_80207ECC();
+                    static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207ECC();
                 }
                 fn_8020AA78(7);
                 break;
@@ -308,7 +308,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
                 if (field_0x2b1 == 0) {
                     ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
                     if (manager != NULL) {
-                        if (static_cast<cls_804A5BD8*>(manager)->fn_80207E58()) {
+                        if (static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207E58()) {
                             fn_8020AA78(11);
                         } else {
                             fn_8020AA78(6);
@@ -367,7 +367,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
             ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (manager != NULL) {
-                static_cast<cls_804A5BD8*>(manager)->fn_80207E24();
+                static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207E24();
             }
             fn_8020AA78(6);
         }
@@ -398,7 +398,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5D60::calcVelocity_0x88() {
+void SlimeFormation_804A5D60::calcVelocity_0x88() {
     switch (mState) {
     case 3:
         mVel_0x3c.z += 0.3f * lbl_8053EFB8;
@@ -429,7 +429,7 @@ void cls_804A5D60::calcVelocity_0x88() {
     }
 }
 
-bool cls_804A5D60::vfunc_0x58() {
+bool SlimeFormation_804A5D60::vfunc_0x58() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f) {
         return false;
     }
@@ -476,12 +476,12 @@ bool cls_804A5D60::vfunc_0x58() {
     return hit;
 }
 
-u8 cls_804A5D60::checkHitByActor_0x60() {
+u8 SlimeFormation_804A5D60::checkHitByActor_0x60() {
     fn_801F2DB4(mActorId, 'NULL', NULL);
     return 0;
 }
 
-u8 cls_804A5D60::checkHitByPlayer_0x5C() {
+u8 SlimeFormation_804A5D60::checkHitByPlayer_0x5C() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 flag;
         s32 player = fn_801F285C(NULL, &flag, true, -1);
@@ -495,11 +495,11 @@ u8 cls_804A5D60::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-void cls_804A5D60::onHitReactionEnd_0x74() {
+void SlimeFormation_804A5D60::onHitReactionEnd_0x74() {
     mFlags |= ENEMY_FLAG_NO_HURT;
 }
 
-void cls_804A5D60::die_0x24() {
+void SlimeFormation_804A5D60::die_0x24() {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
     if (actor != NULL) {
         static_cast<cls_804A5B28*>(actor)->fn_802075D8(field_0x94);
@@ -508,7 +508,7 @@ void cls_804A5D60::die_0x24() {
 }
 
 // FIXME: 95.97 %, missing/extra; behaviour near.
-void cls_804A5D60::draw() {
+void SlimeFormation_804A5D60::draw() {
     if (field_0x54.isZero()) {
         return;
     }
@@ -546,11 +546,11 @@ void cls_804A5D60::draw() {
     }
 }
 
-void cls_804A5D60::fn_80209D44() {
+void SlimeFormation_804A5D60::fn_80209D44() {
     mFlags |= 0x2000;
 }
 
-void cls_804A5D60::fn_80209D20(s32 dir, u8 steps) {
+void SlimeFormation_804A5D60::fn_80209D20(s32 dir, u8 steps) {
     if (!checkFlag(0x2000)) {
         mFlags |= 0x4000;
         field_0x2ac = dir;
@@ -558,17 +558,17 @@ void cls_804A5D60::fn_80209D20(s32 dir, u8 steps) {
     }
 }
 
-void cls_804A5D60::fn_80209CF4(const JGeometry::TVec2f* target) {
+void SlimeFormation_804A5D60::fn_80209CF4(const JGeometry::TVec2f* target) {
     if (!checkFlag(0x2000)) {
         mFlags |= 0x8000;
         field_0x2c8 = *target;
     }
 }
 
-void cls_804A5D60::fn_80209CA4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
+void SlimeFormation_804A5D60::fn_80209CA4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
     if (fn_801F37AC(attack, from, 0, type, player)) {
         mFlags &= ~ENEMY_FLAG_NO_HURT;
     }
 }
 
-cls_804A5D60::~cls_804A5D60() {}
+SlimeFormation_804A5D60::~SlimeFormation_804A5D60() {}

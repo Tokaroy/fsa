@@ -1,4 +1,4 @@
-# game/tu_8017C01C (cls_804A1318, 'FGAN')
+# game/tu_8017C01C (PhantomGanon_804A1318, 'FGAN')
 
 Baseline: 7964 / 11557. After: 7975 (14/21 in the unit, +11).
 
@@ -12,5 +12,5 @@ needed TVec3f corner2 declared first, camera before result).
 
 Unwritten: fn_8017C078 draw (0x394), fn_8017C40C update (0x2234), fn_8017E640 dtor (0x130), fn_8017E770 init (0x344).
 
-SHARED-EDITS: include/game/act/tu_801F9484.h cls_804A1318: virtual die_0x24, field_0x2ba (s8, lbz+extsb, passed to startBossDeath_0x28).
+SHARED-EDITS: include/game/act/tu_801F9484.h PhantomGanon_804A1318: virtual die_0x24, field_0x2ba (s8, lbz+extsb, passed to startBossDeath_0x28).
 Symbol renames in symbols.txt for the 14 matched fns.

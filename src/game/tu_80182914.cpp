@@ -16,14 +16,14 @@
 #pragma auto_inline off
 
 // The emitter's colour comes from field_0x238 while view layer 0x13 is flagged.
-static inline void setEmitterColour(cls_804A1718* self, JPABaseEmitter* emitter) {
+static inline void setEmitterColour(Leever_804A1718* self, JPABaseEmitter* emitter) {
     if (viewLayerFlag(0x13) == 1) {
         emitter->setGlobalPrmColor(self->field_0x238[0], self->field_0x238[1], self->field_0x238[2]);
     }
 }
 
 // Moves mEmitter274 (if any) to the actor and gives it the colour.
-static inline void followEmitter(cls_804A1718* self) {
+static inline void followEmitter(Leever_804A1718* self) {
     if (self->mEmitter274 != NULL) {
         self->mEmitter274->setGlobalTranslation(self->mPos);
         if (viewLayerFlag(0x13) == 1) {
@@ -33,7 +33,7 @@ static inline void followEmitter(cls_804A1718* self) {
 }
 
 // The actor was hit (or is held): the emitter follows it and the rest of update() is skipped.
-static inline void followHeld(cls_804A1718* self) {
+static inline void followHeld(Leever_804A1718* self) {
     followEmitter(self);
     self->fn_801F2618(NULL, false);
 }
@@ -43,7 +43,7 @@ JUtility::TColor fn_8018330C() {
     return gGameRoot2_8053AB10->field_0x2c->field_0x4;
 }
 
-void cls_804A1718::init() {
+void Leever_804A1718::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x248 = 0;
@@ -73,7 +73,7 @@ void cls_804A1718::init() {
     field_0x230 = 0;
 }
 
-void cls_804A1718::vfunc_0x44() {
+void Leever_804A1718::vfunc_0x44() {
     if (field_0x258 != 0) {
         return;
     }
@@ -85,16 +85,16 @@ void cls_804A1718::vfunc_0x44() {
     field_0x230 = 4;
 }
 
-void cls_804A1718::checkPlayerContact_0x18() {
+void Leever_804A1718::checkPlayerContact_0x18() {
     fn_80212AC0()->fn_80212AF0(&mPos);
     ActorBase_804A5770::checkPlayerContact_0x18();
 }
 
-cls_804A1718::~cls_804A1718() {
+Leever_804A1718::~Leever_804A1718() {
     releaseEmitter_801EE434(mEmitter274);
 }
 
-void cls_804A1718::update() {
+void Leever_804A1718::update() {
     u16 angle = 0;
     f32 dist = 0.0f;
     s32 player = -1;
@@ -243,7 +243,7 @@ void cls_804A1718::update() {
     }
 }
 
-void cls_804A1718::draw() {
+void Leever_804A1718::draw() {
     s32 flags = -1;
     s32 state = field_0x230;
     s32 frame = field_0x254;

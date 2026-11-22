@@ -11,17 +11,17 @@ static inline bool isTiny(const JGeometry::TVec3f& v) {
     return v.squared() <= 32.0f * FLT_EPSILON;
 }
 
-cls_804A6100::cls_804A6100() {
+UnknownIBBM_804A6100::UnknownIBBM_804A6100() {
     field_0x2ac = 0;
     field_0x2b0 = 0;
     mEmitter = NULL;
 }
 
-cls_804A6100::~cls_804A6100() {
+UnknownIBBM_804A6100::~UnknownIBBM_804A6100() {
     releaseEmitter_801EE434(mEmitter);
 }
 
-void cls_804A6100::init() {
+void UnknownIBBM_804A6100::init() {
     cls_804A61C8::init();
     mDir_0x98 = mSpawnParam_0x90 & 3;
     field_0x2ac = (mSpawnParam_0x90 >> 2) & 0x1F;
@@ -44,7 +44,7 @@ void cls_804A6100::init() {
     mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x260, 0, 2, NULL, NULL, true, 1.0f);
 }
 
-void cls_804A6100::updateState_0x90(u8 mapHit) {
+void UnknownIBBM_804A6100::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= 60) {
@@ -84,7 +84,7 @@ void cls_804A6100::updateState_0x90(u8 mapHit) {
     }
 }
 
-u8 cls_804A6100::checkHitByActor_0x60() {
+u8 UnknownIBBM_804A6100::checkHitByActor_0x60() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
@@ -100,7 +100,7 @@ u8 cls_804A6100::checkHitByActor_0x60() {
     return 0;
 }
 
-void cls_804A6100::vfunc_0xA0() {
+void UnknownIBBM_804A6100::vfunc_0xA0() {
     JGeometry::TBox2f box;
     fn_80210A30(&box);
     box.i.x += mPos.x;
@@ -110,7 +110,7 @@ void cls_804A6100::vfunc_0xA0() {
     gGameRoot2_8053AB10->field_0x24->fn_8030C058(&box);
 }
 
-void cls_804A6100::draw() {
+void UnknownIBBM_804A6100::draw() {
     if (isTiny(field_0x54) == false) {
         s32 arg = 0;
         if (mState == 2) {

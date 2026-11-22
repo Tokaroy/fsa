@@ -10,7 +10,7 @@
 #include "game/act/tu_801F9484.h"
 #include "std/math.h"
 
-// The 'ZLD4' actor, cls_804A3698.
+// The 'ZLD4' actor, PrincessZeldaSpawnerEscape_804A3698.
 
 // FIXME(shotgun): table not written out (gate.py literal tripwire); extern-declared, size
 // from symbols.txt (0x38). update indexes it.
@@ -22,14 +22,14 @@ struct Tables_804A3660 {
 extern Tables_804A3660 lbl_804A3660;
 
 // 0x801B3CD0.
-cls_804A3698::~cls_804A3698() {
+PrincessZeldaSpawnerEscape_804A3698::~PrincessZeldaSpawnerEscape_804A3698() {
     lbl_8053ABE8 = 0;
     lbl_8053ABF0 = 0;
 }
 
 // 0x801B3B7C.
 // FIXME(shotgun): 97.48 %, different; behaviour near.
-void cls_804A3698::init() {
+void PrincessZeldaSpawnerEscape_804A3698::init() {
     lbl_8053ABF0 = 0;
     mMapBox_0x80.set(-4.0f, -8.0f, 4.0f, 8.0f);
     field_0x30c = 0;
@@ -71,7 +71,7 @@ void cls_804A3698::init() {
 
 // 0x801B29EC.
 // FIXME(shotgun): 92.69 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A3698::update() {
+void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* src;
@@ -548,7 +548,7 @@ void cls_804A3698::update() {
 }
 
 // 0x801B2998.
-void cls_804A3698::draw() {
+void PrincessZeldaSpawnerEscape_804A3698::draw() {
     if (field_0x308 == 0 || (field_0x308 & 2)) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x320 + 0x9B, NULL, 7, 1.0f, 1.0f);
     }
@@ -556,7 +556,7 @@ void cls_804A3698::draw() {
 
 // 0x801B27DC.
 // FIXME(shotgun): 94.59 %, scheduling+regalloc; behaviour clean.
-bool cls_804A3698::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool PrincessZeldaSpawnerEscape_804A3698::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     s32 tile = fn_80226850(pos, layer);
     if (tile == 0x230 || tile == 0x231 || tile == 0x234) {

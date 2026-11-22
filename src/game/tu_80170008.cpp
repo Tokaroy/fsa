@@ -15,7 +15,7 @@
 
 // 0x80171AF8.
 // FIXME(shotgun): 90.23 %, missing/extra + reloc-name; behaviour near.
-void cls_804A0810::init() {
+void BallAndChainSoldier_804A0810::init() {
     field_0x94 = mSpawnParam_0x90 & 0xFF;
     field_0x270 = (mSpawnParam_0x90 >> 8) & 1;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -114,7 +114,7 @@ void cls_804A0810::init() {
 }
 
 // 0x80171A28.
-cls_804A0810::~cls_804A0810() {
+BallAndChainSoldier_804A0810::~BallAndChainSoldier_804A0810() {
     if (field_0x94 != 5) {
         if (gGameRoot_8053AAF8->field_0x4c != 9 && gGameRoot_8053AAF8->field_0x4c != 0xB && mLife != 0) {
             gGameRoot_8053AAF8->fn_80138B7C();
@@ -131,7 +131,7 @@ cls_804A0810::~cls_804A0810() {
 }
 
 // 0x801719C0.
-void cls_804A0810::vfunc_0x44() {
+void BallAndChainSoldier_804A0810::vfunc_0x44() {
     if (mLife <= 0) {
         s32 serial = field_0x26c;
         if (serial != 0) {
@@ -146,7 +146,7 @@ void cls_804A0810::vfunc_0x44() {
 
 // 0x801704A0.
 // FIXME: 99.27 %, missing/extra + reloc-name; behaviour near.
-void cls_804A0810::update() {
+void BallAndChainSoldier_804A0810::update() {
     static s32 lbl_804A07D8[4] = {0, 1, 2, 1};
     static s32 lbl_804A07E8[4] = {10, 2, 10, 10};
     static f32 lbl_804A07F8[3][2] = {{-8.0f, 1.0f}, {-9.0f, 2.0f}, {-9.0f, 4.0f}};
@@ -568,7 +568,7 @@ void cls_804A0810::update() {
 // positions) and, rotated by field_0x278 and scaled by field_0x27c, the shell (frame 0x82 or 0x11).
 // FIXME(shotgun): 97.92 %, different; behaviour drift.
 // the sin/cos zero arguments fold to lfd doubles; regalloc
-void cls_804A0810::draw() {
+void BallAndChainSoldier_804A0810::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;

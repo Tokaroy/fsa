@@ -15,7 +15,7 @@
 #include "game/act/tu_801F9484.h"
 #include "std/math.h"
 
-// The 'TLWP' actor, cls_804A38D4.
+// The 'TLWP' actor, TinglesTowerWarp_804A38D4.
 
 static u16 lbl_804A37E0[20] = {
     0x051F, 0x0520, 0x0521, 0x0522, 0x0523, 0x0524, 0x0525, 0x0526, 0x0527, 0x0528,
@@ -32,7 +32,7 @@ extern u8 lbl_8053ABF8;
 s32 lbl_8053A118 = 3;
 
 // 0x801B6170.
-void cls_804A38D4::init() {
+void TinglesTowerWarp_804A38D4::init() {
     mBox.set(-12.0f, -12.0f, 12.0f, 12.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
@@ -83,7 +83,7 @@ void cls_804A38D4::init() {
 }
 
 // 0x801B609C.
-cls_804A38D4::~cls_804A38D4() {
+TinglesTowerWarp_804A38D4::~TinglesTowerWarp_804A38D4() {
     for (s32 i = 0; i < 3; i++) {
         if (mEmitters294[i] != NULL) {
             JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
@@ -102,7 +102,7 @@ cls_804A38D4::~cls_804A38D4() {
 
 // 0x801B56A0.
 // FIXME(shotgun): 86.71 %, missing/extra; behaviour drift.
-void cls_804A38D4::fn_801B56A0() {
+void TinglesTowerWarp_804A38D4::fn_801B56A0() {
     JGeometry::TVec3f target;
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec3f pos = mPos;
@@ -267,7 +267,7 @@ void cls_804A38D4::fn_801B56A0() {
 
 // 0x801B5228.
 // FIXME(shotgun): 99.44 %, regalloc-only; behaviour clean.
-void cls_804A38D4::fn_801B5228() {
+void TinglesTowerWarp_804A38D4::fn_801B5228() {
     addCalc2_801F71A4(&mPos.z, field_0x258, 0.3f, field_0x25c);
     switch (field_0x230) {
     case 8:
@@ -346,7 +346,7 @@ void cls_804A38D4::fn_801B5228() {
 }
 
 // 0x801B5198.
-void cls_804A38D4::update() {
+void TinglesTowerWarp_804A38D4::update() {
     switch (field_0x250) {
     case 0:
         fn_801B56A0();
@@ -366,7 +366,7 @@ void cls_804A38D4::update() {
 
 // 0x801B4EC8.
 // FIXME(shotgun): 96.97 %, scheduling+regalloc; behaviour clean.
-void cls_804A38D4::fn_801B4EC8() {
+void TinglesTowerWarp_804A38D4::fn_801B4EC8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     switch (field_0x250) {
@@ -389,7 +389,7 @@ void cls_804A38D4::fn_801B4EC8() {
 }
 
 // 0x801B4D0C.
-void cls_804A38D4::draw() {
+void TinglesTowerWarp_804A38D4::draw() {
     switch (field_0x250) {
     case 0:
         if (lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x254)) {

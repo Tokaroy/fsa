@@ -6,7 +6,7 @@ After: total: 6430 / 11557 functions, 1285380 / 4442032 bytes of code (28.94 %)
 Status: not Matching. 6/8 functions (2/8 before).
 
 ## Matched
-fn_801BEDBC (now cls_804A4188::fn_801BEDBC), onFirstUpdate_0x54, init, dtor, ctor (fn_801BF5A8 -> __ct__), __sinit.
+fn_801BEDBC (now UnknownLNBM_804A4188::fn_801BEDBC), onFirstUpdate_0x54, init, dtor, ctor (fn_801BF5A8 -> __ct__), __sinit.
 
 ## Resistant
 - isBlocked_0x4C 91.0 % scheduling+regalloc: same body as ActorBase::isBlocked_0x4C (tu_801EE24C, also a FIXME): saved registers differ (target this r31, result r30, layer r29, pos r28).
@@ -18,7 +18,7 @@ fn_801BEDBC (now cls_804A4188::fn_801BEDBC), onFirstUpdate_0x54, init, dtor, cto
 - config/G4SE01/gen_game.tsv: both tu_801BEDBC rows deleted.
 - include/game/GameGlobals.h: declared fn_801CCC78 (defined in tu_801CB270.cpp).
 - include/game/BgRewrite.h: member fn_802A20F0(pos, player, layer, bool, bool); symbols.txt renamed to the mangled name (last two args are li 0/1: guess bool).
-- symbols.txt: fn_801BEDBC -> fn_801BEDBC__12cls_804A4188Fv (callers act_armos, act_on_off_switch pass an actor found by serial), fn_801BF5A8 -> __ct__12cls_804A4188Fv.
+- symbols.txt: fn_801BEDBC -> fn_801BEDBC__20UnknownLNBM_804A4188Fv (callers act_armos, act_on_off_switch pass an actor found by serial), fn_801BF5A8 -> __ct__20UnknownLNBM_804A4188Fv.
 
 ## Next
 Try other shapes for the mFlags reload and the layer register in update.

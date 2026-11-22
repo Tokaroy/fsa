@@ -10,7 +10,7 @@ static const s16 lbl_80469A98[] = { 7, 5, 8, 5, -1, -1 };
 static const s16* lbl_8053A148[] = { lbl_80469A98, NULL };
 extern const char lbl_80469AA4[]; // "enemy_both_sob.bin"
 
-cls_804A4EE8::cls_804A4EE8() {
+FrostareChildFrosteye_804A4EE8::FrostareChildFrosteye_804A4EE8() {
     mTargetPlayer = -1;
     field_0x2ac = 0;
     mSearchRange = 0.0f;
@@ -30,7 +30,7 @@ cls_804A4EE8::cls_804A4EE8() {
     field_0x2e4 = NULL;
 }
 
-cls_804A4EE8::~cls_804A4EE8() {
+FrostareChildFrosteye_804A4EE8::~FrostareChildFrosteye_804A4EE8() {
     releaseEmitter_801EE434(field_0x2e4);
     field_0x2e4 = NULL;
     if (field_0x16c == -1) {
@@ -38,7 +38,7 @@ cls_804A4EE8::~cls_804A4EE8() {
     }
 }
 
-void cls_804A4EE8::init() {
+void FrostareChildFrosteye_804A4EE8::init() {
     EnemyBase_804A4808::init();
     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -79,7 +79,7 @@ void cls_804A4EE8::init() {
 }
 
 // FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
-void cls_804A4EE8::fn_801DB9CC() {
+void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
     if (fn_801CD664(2) == 0) {
         mFlags &= ~0x2000;
     } else {
@@ -150,7 +150,7 @@ void cls_804A4EE8::fn_801DB9CC() {
 
 // Not auto-inlined: updateState_0x90 calls fn_801DB950 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void cls_804A4EE8::fn_801DB950(s32 state) {
+void FrostareChildFrosteye_804A4EE8::fn_801DB950(s32 state) {
     // A one-case switch: MWCC's cmpwi/beq/b shape for state 1 is what matches.
     switch (state) {
     case 1:
@@ -167,7 +167,7 @@ void cls_804A4EE8::fn_801DB950(s32 state) {
 #pragma auto_inline reset
 
 // FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
-void cls_804A4EE8::fn_801DB6C8() {
+void FrostareChildFrosteye_804A4EE8::fn_801DB6C8() {
     if (field_0x16c == -1) {
         JGeometry::TVec3f p;
         if (fn_801DAC6C()->fn_801DACAC(&p)) {
@@ -217,7 +217,7 @@ void cls_804A4EE8::fn_801DB6C8() {
     }
 }
 
-void cls_804A4EE8::updateState_0x90(u8 mapHit) {
+void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
@@ -251,7 +251,7 @@ void cls_804A4EE8::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A4EE8::updateAnim_0x94() {
+void FrostareChildFrosteye_804A4EE8::updateAnim_0x94() {
     s32 cel = mAnim.mCel;
     EnemyBase_804A4808::updateAnim_0x94();
     if (cel == 8 && mAnim.mCel == 7) {
@@ -259,14 +259,14 @@ void cls_804A4EE8::updateAnim_0x94() {
     }
 }
 
-void cls_804A4EE8::updateBehavior_0x9C(u8 mapHit) {
+void FrostareChildFrosteye_804A4EE8::updateBehavior_0x9C(u8 mapHit) {
     EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     setEmitterPos_8013CB44(field_0x2e4, &mPos, 1, 0, true);
 }
 
 // FIXME: 99.07 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): remaining diff is instruction scheduling and registers only.
-void cls_804A4EE8::calcVelocity_0x88() {
+void FrostareChildFrosteye_804A4EE8::calcVelocity_0x88() {
     if (field_0x2b4 != 0.0f) {
         if (mState == 0) {
             field_0x2b4 *= 0.95f;
@@ -296,7 +296,7 @@ void cls_804A4EE8::calcVelocity_0x88() {
     mVel_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
 }
 
-u8 cls_804A4EE8::attackPlayers_0x68() {
+u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
     u8 hitPlayers = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         hitPlayers = fn_801F2740(-1);
@@ -326,7 +326,7 @@ u8 cls_804A4EE8::attackPlayers_0x68() {
     return hitPlayers;
 }
 
-void cls_804A4EE8::draw() {
+void FrostareChildFrosteye_804A4EE8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 1;
     params.field_0x1d = 0;

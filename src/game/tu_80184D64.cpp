@@ -11,7 +11,7 @@
 
 // 0x80186D24.
 // FIXME(shotgun): 95.31 %, missing/extra
-void cls_804A18E0::init() {
+void ChainChomp_804A18E0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
@@ -62,7 +62,7 @@ void cls_804A18E0::init() {
 
 // 0x80184FC0.
 // FIXME(shotgun): 95.20 %, missing/extra
-void cls_804A18E0::update() {
+void ChainChomp_804A18E0::update() {
     f32 box80_ix = mMapBox_0x80.i.x;
     f32 box80_iy = mMapBox_0x80.i.y;
     f32 box80_fx = mMapBox_0x80.f.x;
@@ -576,7 +576,7 @@ void cls_804A18E0::update() {
 }
 
 // 0x80184DC4.
-void cls_804A18E0::draw() {
+void ChainChomp_804A18E0::draw() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
     s32 i = 0;
@@ -600,4 +600,4 @@ void cls_804A18E0::draw() {
 }
 
 // Destructor at 0x80184D64.
-cls_804A18E0::~cls_804A18E0() {}
+ChainChomp_804A18E0::~ChainChomp_804A18E0() {}

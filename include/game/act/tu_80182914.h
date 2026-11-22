@@ -7,10 +7,10 @@
 #include "JSystem/JUtility/TColor.h"
 
 // Named after its vtable, 0x804A1718.
-class cls_804A1718 : public ActorBase_804A5770 {
+class Leever_804A1718 : public ActorBase_804A5770 {
 public:
-    cls_804A1718() {}
-    /* 0x08 */ virtual ~cls_804A1718();
+    Leever_804A1718() {}
+    /* 0x08 */ virtual ~Leever_804A1718();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x18 */ virtual void checkPlayerContact_0x18();

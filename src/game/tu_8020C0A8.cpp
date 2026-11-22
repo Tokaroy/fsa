@@ -17,13 +17,13 @@ static const s16* lbl_8053A178[2] = { lbl_8046A398, NULL };
 // The actor ids isBlocked_0x4C ignores, ended by 'NULL'.
 static const u32 lbl_8053F9E0[2] = { 'TOMI', 'NULL' };
 
-cls_804A5F40::cls_804A5F40() {
+ZolSmallSlime_804A5F40::ZolSmallSlime_804A5F40() {
     field_0x2a8 = -1;
     field_0x2ac = 0;
     field_0x2ae = 0;
 }
 
-void cls_804A5F40::init() {
+void ZolSmallSlime_804A5F40::init() {
     EnemyBase_804A4808::init();
     if (mSpawnParam_0x90 & 1) {
         mFlags |= 0x2000;
@@ -64,7 +64,7 @@ void cls_804A5F40::init() {
 }
 
 // FIXME: 99.40 %, regalloc-only; behaviour clean.
-void cls_804A5F40::fn_8020C6E8() {
+void ZolSmallSlime_804A5F40::fn_8020C6E8() {
     s32 nearest = -1;
     if (mFlags & 0x2000) {
         f32 best = FLT_MAX;
@@ -117,7 +117,7 @@ void cls_804A5F40::fn_8020C6E8() {
     }
 }
 
-void cls_804A5F40::updateState_0x90(u8 mapHit) {
+void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
     fn_8020C6E8();
     switch (mState) {
     case 0:
@@ -195,7 +195,7 @@ void cls_804A5F40::updateState_0x90(u8 mapHit) {
 
 // FIXME: 98.04 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): register allocation differs (f0/f1/f2 assignment).
-void cls_804A5F40::calcVelocity_0x88() {
+void ZolSmallSlime_804A5F40::calcVelocity_0x88() {
     f32 sinV = JMath::sincosTable_.sinShort(field_0x2ae);
     f32 cosV = JMath::sincosTable_.cosShort(field_0x2ae);
     f32 x = sinV * mSpeed;
@@ -205,7 +205,7 @@ void cls_804A5F40::calcVelocity_0x88() {
     applyGravity_0x84();
 }
 
-void cls_804A5F40::move_0x98() {
+void ZolSmallSlime_804A5F40::move_0x98() {
     if (!(mFlags & 7)) {
         fn_801CE32C();
     } else if (viewLayerFlag(mLayer_0x4)) {
@@ -214,7 +214,7 @@ void cls_804A5F40::move_0x98() {
 }
 
 // FIXME(shotgun): 98.75 %, regalloc-only; behaviour clean.
-bool cls_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ZolSmallSlime_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     const u32* ignoreIds = NULL;
     if (mFlags & 7) {
         ignoreIds = lbl_8053F9E0;
@@ -230,10 +230,10 @@ bool cls_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return result;
 }
 
-void cls_804A5F40::draw() {
+void ZolSmallSlime_804A5F40::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x0[2] = 4;
     drawSprite_801F06F0("enemy_gc_sob.bin", mAnim.mCel + 0x2C9, &params, 0, 1.0f, 1.0f);
 }
 
-cls_804A5F40::~cls_804A5F40() {}
+ZolSmallSlime_804A5F40::~ZolSmallSlime_804A5F40() {}

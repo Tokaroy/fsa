@@ -84,7 +84,7 @@ void WallmasterParam::fn_801BCD70(s32 arg) {
     field_0x24 = 0;
 }
 
-cls_804A3E44::cls_804A3E44() {
+Wallmaster_804A3E44::Wallmaster_804A3E44() {
     field_0x2a8 = 0;
     field_0x2ac = 0;
     field_0x2b0.set(0.0f, 0.0f);
@@ -98,7 +98,7 @@ cls_804A3E44::cls_804A3E44() {
     mParam.field_0x24 = 0;
 }
 
-cls_804A3E44::~cls_804A3E44() {
+Wallmaster_804A3E44::~Wallmaster_804A3E44() {
     if (mFlags & 0x8000) {
         if (field_0x2c4 >= 0) {
             fn_8022DD74(field_0x2c4);
@@ -107,7 +107,7 @@ cls_804A3E44::~cls_804A3E44() {
 }
 
 // FIXME: 99.87 %, regalloc-only; behaviour clean.
-void cls_804A3E44::init() {
+void Wallmaster_804A3E44::init() {
     EnemyBase_804A4808::init();
     u32 p = mSpawnParam_0x90 & 0x1F;
     if (p >= 2) {
@@ -171,7 +171,7 @@ void cls_804A3E44::init() {
 
 // FIXME: 99.62 %, missing/extra; behaviour drift.
 // (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
-void cls_804A3E44::fn_801BC554(s32 state) {
+void Wallmaster_804A3E44::fn_801BC554(s32 state) {
     switch (state) {
     case 0:
         mFlags &= ~0x2000;
@@ -285,7 +285,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
     }
 }
 
-inline u8 cls_804A3E44::computeShadowAlpha() {
+inline u8 Wallmaster_804A3E44::computeShadowAlpha() {
     u8 val;
     switch (mState) {
     case 0:
@@ -311,7 +311,7 @@ inline u8 cls_804A3E44::computeShadowAlpha() {
     return val;
 }
 
-inline bool cls_804A3E44::checkPlayerHit() {
+inline bool Wallmaster_804A3E44::checkPlayerHit() {
     bool hitFlag = false;
     if (mState == 10 || (mState == 3 && mAnim.mCel == 1)) {
         if (field_0x2b8 >= 0 && !fn_8022DCD8(field_0x2b8)) {
@@ -329,7 +329,7 @@ inline bool cls_804A3E44::checkPlayerHit() {
     return hitFlag;
 }
 
-void cls_804A3E44::fn_801BC244() {
+void Wallmaster_804A3E44::fn_801BC244() {
     switch (mState) {
     case 1:
     case 2: {
@@ -410,7 +410,7 @@ void cls_804A3E44::fn_801BC244() {
 
 // FIXME: 99.53 %, missing/extra; behaviour drift.
 // (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
-void cls_804A3E44::updateState_0x90(u8 mapHit) {
+void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
     fn_801BC244();
     switch (mState) {
     case 0:
@@ -575,7 +575,7 @@ void cls_804A3E44::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A3E44::calcVelocity_0x88() {
+void Wallmaster_804A3E44::calcVelocity_0x88() {
     mVel_0x3c.x = 0.0f;
     mVel_0x3c.y = 0.0f;
     mVel_0x3c.z = 0.0f;
@@ -618,7 +618,7 @@ void cls_804A3E44::calcVelocity_0x88() {
 // calcVelocity_0x88 left unwritten: state 6 passes field_0x2b0 (a TVec2f slot) to
 // fn_801D01A0, whose target parameter is typed TVec3f* in EnemyBase.
 
-void cls_804A3E44::onDeath_0x78() {
+void Wallmaster_804A3E44::onDeath_0x78() {
     if (field_0x2b8 >= 0 && fn_8022DCD8(field_0x2b8)) {
         if (!fn_8022DD74(field_0x2b8)) {
             mFlags |= 0x8000;
@@ -629,7 +629,7 @@ void cls_804A3E44::onDeath_0x78() {
 }
 
 // FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
-u8 cls_804A3E44::checkHitByActor_0x60() {
+u8 Wallmaster_804A3E44::checkHitByActor_0x60() {
     if (!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f) {
         return fn_801CEA60();
     }
@@ -640,7 +640,7 @@ u8 cls_804A3E44::checkHitByActor_0x60() {
 // as the u8 of the EnemyBase slot, but fn_801CEA60 returns bool (100 %, mr r3),
 // so every form we can write adds a clrlwi (96.43 %).
 
-void cls_804A3E44::vfunc_0xA0() {
+void Wallmaster_804A3E44::vfunc_0xA0() {
     switch (mState) {
     case 2:
     case 3:
@@ -653,7 +653,7 @@ void cls_804A3E44::vfunc_0xA0() {
     }
 }
 
-void cls_804A3E44::draw() {
+void Wallmaster_804A3E44::draw() {
     switch (mState) {
     case 0:
     case 9:

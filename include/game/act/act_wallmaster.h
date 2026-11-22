@@ -18,10 +18,10 @@ struct WallmasterParam {
 
 // The FALL actor ("Wallmaster", docs/names/actors.tsv, high confidence):
 // spawned by spawnActor_801F9484 (ctor 0x801BCCF0, vtable 0x804A3E44).
-class cls_804A3E44 : public EnemyBase_804A4808 {
+class Wallmaster_804A3E44 : public EnemyBase_804A4808 {
 public:
-    cls_804A3E44();
-    /* 0x08 */ virtual ~cls_804A3E44();
+    Wallmaster_804A3E44();
+    /* 0x08 */ virtual ~Wallmaster_804A3E44();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x60 */ virtual u8 checkHitByActor_0x60();

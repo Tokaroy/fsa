@@ -510,7 +510,7 @@ cls_80119E5C* fn_80119DD0();
 // connected (cls_804AA8C8::fn_8030A308).
 bool fn_80138AB0();
 
-// fn_80212ECC is cls_804A6340::fn_80212ECC (game/act/tu_80212E3C.h) and
+// fn_80212ECC is Antlion_804A6340::fn_80212ECC (game/act/tu_80212E3C.h) and
 // fn_802AC09C is ItemPedestal_804A82A8::fn_802AC09C (game/act/act_item_pedestal.h).
 
 // AudioMgr_8045A080, the audio manager gAudioMgr_8053AF80 points to, is declared in
@@ -1455,7 +1455,7 @@ extern "C" cls_80204638* fn_80204638();
 
 
 // Sequencer_801DAA24::fn_801DA938 / fn_801DA904 are in game/act/tu_801D8400.h;
-// cls_804A4F90::fn_801DC264 (BOIT) and cls_804A6708::fn_8021D734 / fn_8021D764 /
+// FrostareTail_804A4F90::fn_801DC264 (BOIT) and cls_804A6708::fn_8021D734 / fn_8021D764 /
 // fn_8021D794 (NAVI) in game/act/tu_801F9484.h.
 
 // A shared .sdata2 constant (1.0f), owned by game/act_shadow_link_generator's

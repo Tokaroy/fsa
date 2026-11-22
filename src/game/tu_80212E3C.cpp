@@ -13,7 +13,7 @@ extern const s16* lbl_804A6330[];
 
 // The dust puff both the mode-3 setup and the last frames of mState 6 start: scaled like the
 // actor and tinted like the shadow circle.
-static inline void spawnDust(cls_804A6340* self) {
+static inline void spawnDust(Antlion_804A6340* self) {
     JPABaseEmitter* emitter = spawnEmitter_8013CC50(self->mLayer_0x4, &self->mPos, 0x1DA, 0, 0, NULL, NULL, true, 1.0f);
     if (emitter != NULL) {
         emitter->setGlobalScale(self->field_0x54);
@@ -22,9 +22,9 @@ static inline void spawnDust(cls_804A6340* self) {
     }
 }
 
-cls_804A6340::cls_804A6340() {}
+Antlion_804A6340::Antlion_804A6340() {}
 
-void cls_804A6340::init() {
+void Antlion_804A6340::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
     mBox.i.y = 1.0f;
@@ -55,7 +55,7 @@ void cls_804A6340::init() {
 }
 
 // FIXME(shotgun): 98.54 %, regalloc-only; behaviour clean.
-void cls_804A6340::fn_80213774(int mode) {
+void Antlion_804A6340::fn_80213774(int mode) {
     switch (mode) {
     case 0:
     case 1:
@@ -141,7 +141,7 @@ void cls_804A6340::fn_80213774(int mode) {
 }
 
 // FIXME: 99.92 %, reloc-name; behaviour drift.
-void cls_804A6340::updateState_0x90(u8 mapHit) {
+void Antlion_804A6340::updateState_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
     }
@@ -208,7 +208,7 @@ void cls_804A6340::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6340::updateAnim_0x94() {
+void Antlion_804A6340::updateAnim_0x94() {
     if (mState == 4 && mAnim.mAnim == 1 && mAnim.fn_801D217C()) {
         startSound_801F0E34(0x50035, 0);
     }
@@ -242,7 +242,7 @@ void cls_804A6340::updateAnim_0x94() {
 }
 
 // FIXME(shotgun): 95.81 %, missing/extra + reloc-name; behaviour near.
-void cls_804A6340::draw() {
+void Antlion_804A6340::draw() {
     if (field_0x54.isZero()) {
         return;
     }
@@ -281,23 +281,23 @@ void cls_804A6340::draw() {
     }
 }
 
-void cls_804A6340::vfunc_0x44() {
+void Antlion_804A6340::vfunc_0x44() {
     if (field_0xd4 == 1 && mState != 0 && !(mFlags & 0x4000)) {
         fn_80213774(4);
     }
 }
 
-void cls_804A6340::die_0x24() {
+void Antlion_804A6340::die_0x24() {
     if ((s32)mSpawnParam_0x90 >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C((s32)mSpawnParam_0x90);
         if (actor != NULL) {
-            static_cast<cls_804A6270*>(actor)->fn_80210D90();
+            static_cast<Quicksand_804A6270*>(actor)->fn_80210D90();
         }
     }
     ActorBase_804A5770::die_0x24();
 }
 
-void cls_804A6340::fn_80212F5C() {
+void Antlion_804A6340::fn_80212F5C() {
     mPos.y -= 1.0f;
     mSpawnPos.x = mPos.x;
     mSpawnPos.y = mPos.y;
@@ -314,7 +314,7 @@ void cls_804A6340::fn_80212F5C() {
     mBox2.f.y *= field_0x54.y;
 }
 
-void cls_804A6340::fn_80212F14() {
+void Antlion_804A6340::fn_80212F14() {
     if (mFlags & 0x4000) {
         fn_80213774(0);
     } else if (mState != 1) {
@@ -322,7 +322,7 @@ void cls_804A6340::fn_80212F14() {
     }
 }
 
-void cls_804A6340::fn_80212ECC() {
+void Antlion_804A6340::fn_80212ECC() {
     if (mFlags & 0x4000) {
         fn_80213774(0);
     } else if (mState != 2) {
@@ -330,4 +330,4 @@ void cls_804A6340::fn_80212ECC() {
     }
 }
 
-cls_804A6340::~cls_804A6340() {}
+Antlion_804A6340::~Antlion_804A6340() {}

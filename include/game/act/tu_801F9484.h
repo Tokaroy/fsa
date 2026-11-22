@@ -292,10 +292,10 @@ public:
 }; // Size: 0x300
 
 // Spawned for 'SLR3'. Code: game/tu_80170008.cpp.
-class cls_804A0810 : public ActorBase_804A5770 {
+class BallAndChainSoldier_804A0810 : public ActorBase_804A5770 {
 public:
-    cls_804A0810() {}
-    /* 0x08 */ virtual ~cls_804A0810();
+    BallAndChainSoldier_804A0810() {}
+    /* 0x08 */ virtual ~BallAndChainSoldier_804A0810();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -330,10 +330,10 @@ public:
 
 
 // Spawned for 'FGAN'.
-class cls_804A1318 : public ActorBase_804A5770 {
+class PhantomGanon_804A1318 : public ActorBase_804A5770 {
 public:
-    cls_804A1318() {}
-    /* 0x08 */ virtual ~cls_804A1318();
+    PhantomGanon_804A1318() {}
+    /* 0x08 */ virtual ~PhantomGanon_804A1318();
     /* 0x0C */ virtual void init();   // fn_8017E770
     /* 0x14 */ virtual void update(); // fn_8017C40C
     /* 0x20 */ virtual void draw();   // fn_8017C078
@@ -376,20 +376,20 @@ public:
 }; // Size: 0x2E0
 
 // Spawned for 'BPH2'.
-class cls_804A1E50 : public ActorBase_804A5770 {
+class BigPoe2_804A1E50 : public ActorBase_804A5770 {
 public:
-    cls_804A1E50() {}
-    /* 0x08 */ virtual ~cls_804A1E50();
+    BigPoe2_804A1E50() {}
+    /* 0x08 */ virtual ~BigPoe2_804A1E50();
     /* 0x230 */ u8 field_0x230[0xC8];
     /* 0x2F8 */ JGeometry::TVec3f field_0x2f8[4];
     /* 0x328 */ u8 field_0x328[0xC];
 }; // Size: 0x334
 
 // Spawned for 'ZLD2'.
-class cls_804A2944 : public ActorBase_804A5770 {
+class PrincessZeldaGanonBattle_804A2944 : public ActorBase_804A5770 {
 public:
-    cls_804A2944() {}
-    /* 0x08 */ virtual ~cls_804A2944();
+    PrincessZeldaGanonBattle_804A2944() {}
+    /* 0x08 */ virtual ~PrincessZeldaGanonBattle_804A2944();
     // 0x8019C500 (game/tu_80197070.cpp): for each present player on this actor's
     // layer, draws a marker (fn_80230498) at its stored position field_0x2a4[i];
     // the y is this actor's y plus a constant unless `keepY`.
@@ -423,7 +423,7 @@ public:
     /* 0x274 */ f32 field_0x274;
     /* 0x278 */ f32 field_0x278;
     /* 0x27C */ f32 field_0x27c;
-    // Plain SDK Vec, not TVec3f: the spawner's inline constructor (cls_804A2944() {}) emits no
+    // Plain SDK Vec, not TVec3f: the spawner's inline constructor (PrincessZeldaGanonBattle_804A2944() {}) emits no
     // __construct_array for this range, and every use is a component-wise x/y/z copy.
     /* 0x280 */ Vec field_0x280[3];
     /* 0x2A4 */ JGeometry::TVec3f field_0x2a4[4];
@@ -439,10 +439,10 @@ public:
 #include "game/act/tu_801A0710.h"
 
 // Spawned for 'ZLD3'. Code: game/tu_801B0A00.cpp.
-class cls_804A35AC : public ActorBase_804A5770 {
+class PrincessZeldaSpawner_804A35AC : public ActorBase_804A5770 {
 public:
-    cls_804A35AC() {}
-    /* 0x08 */ virtual ~cls_804A35AC();
+    PrincessZeldaSpawner_804A35AC() {}
+    /* 0x08 */ virtual ~PrincessZeldaSpawner_804A35AC();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -472,10 +472,10 @@ public:
 }; // Size: 0x2C0
 
 // Spawned for 'ZLD4'.
-class cls_804A3698 : public ActorBase_804A5770 {
+class PrincessZeldaSpawnerEscape_804A3698 : public ActorBase_804A5770 {
 public:
-    cls_804A3698() {}
-    /* 0x08 */ virtual ~cls_804A3698();
+    PrincessZeldaSpawnerEscape_804A3698() {}
+    /* 0x08 */ virtual ~PrincessZeldaSpawnerEscape_804A3698();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -506,10 +506,10 @@ public:
 }; // Size: 0x344
 
 // Spawned for 'TLWP'.
-class cls_804A38D4 : public ActorBase_804A5770 {
+class TinglesTowerWarp_804A38D4 : public ActorBase_804A5770 {
 public:
-    cls_804A38D4() {}
-    /* 0x08 */ virtual ~cls_804A38D4();
+    TinglesTowerWarp_804A38D4() {}
+    /* 0x08 */ virtual ~TinglesTowerWarp_804A38D4();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -942,7 +942,7 @@ public:
 }; // Size: 0x27C
 
 // ZOSH and ARSH ("ZOSH"/"ARSH", unwritten units): sub-classes of cls_804A48B0 that only add a
-// destructor (the base destructors are inlined into it, as in cls_804A5418). Named after their
+// destructor (the base destructors are inlined into it, as in IronPot_804A5418). Named after their
 // vtables, 0x804A5810 and 0x804A58B4.
 class cls_804A5810 : public cls_804A48B0 {
 public:
@@ -951,10 +951,10 @@ public:
     virtual ~cls_804A5810() {}
 }; // Size: 0x2AC
 
-class cls_804A58B4 : public cls_804A48B0 {
+class UnknownARSH_804A58B4 : public cls_804A48B0 {
 public:
-    cls_804A58B4() { cls_804A48B0(); }
-    virtual ~cls_804A58B4() {}
+    UnknownARSH_804A58B4() { cls_804A48B0(); }
+    virtual ~UnknownARSH_804A58B4() {}
 }; // Size: 0x2AC
 
 #endif

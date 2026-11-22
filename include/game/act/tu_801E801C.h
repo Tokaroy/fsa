@@ -6,10 +6,10 @@
 #include "game/EnemyBase.h"
 
 // Named after its vtable, 0x804A5568.
-class cls_804A5568 : public EnemyBase_804A4808 {
+class UnknownFSOB_804A5568 : public EnemyBase_804A4808 {
 public:
-    cls_804A5568();
-    /* 0x08 */ virtual ~cls_804A5568();
+    UnknownFSOB_804A5568();
+    /* 0x08 */ virtual ~UnknownFSOB_804A5568();
     /* 0x0C */ virtual void init();
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
     /* 0x60 */ virtual u8 checkHitByActor_0x60();

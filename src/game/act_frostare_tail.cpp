@@ -12,17 +12,17 @@ static const s16 lbl_80469AB8[] = {0, 6, 1, 6, 2, 6, 3, 6, -1, -1};
 static const s16 lbl_80469ACC[] = {0, 4, 4, 4, 5, 4, 6, 3, 4, 4, -1, -1};
 static const s16* lbl_8053A150[] = {lbl_80469AB8, lbl_80469ACC};
 
-cls_804A4F90::cls_804A4F90() {
+FrostareTail_804A4F90::FrostareTail_804A4F90() {
     mHitCount = 0;
 }
 
-cls_804A4F90::~cls_804A4F90() {
+FrostareTail_804A4F90::~FrostareTail_804A4F90() {
     // The singleton in a local: the original sets r0 to -1 after the call.
     Singleton_801DAC6C* frostare = fn_801DAC6C();
     frostare->mSerial4 = -1;
 }
 
-void cls_804A4F90::init() {
+void FrostareTail_804A4F90::init() {
     EnemyBase_804A4808::init();
     mBox.set(-12.0f, -16.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -44,7 +44,7 @@ void cls_804A4F90::init() {
     fn_801DAC6C()->fn_801DAF3C(mSerial);
 }
 
-void cls_804A4F90::updateState_0x90(u8 mapHit) {
+void FrostareTail_804A4F90::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         break;
@@ -67,7 +67,7 @@ void cls_804A4F90::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A4F90::updateBehavior_0x9C(u8 mapHit) {
+void FrostareTail_804A4F90::updateBehavior_0x9C(u8 mapHit) {
     if ((mFlags & (ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR)) == 0) {
         fn_801CE2BC(mapHit);
     } else {
@@ -78,7 +78,7 @@ void cls_804A4F90::updateBehavior_0x9C(u8 mapHit) {
 // FIXME: 97.86 %, regalloc-only; behaviour clean.
 // Register swap only: the original loads lbl_8053EFB8 into f1 and
 // mVel_0x3c.y into f0 (fadds f0, f0, f1); ours uses f0 / f1.
-void cls_804A4F90::calcVelocity_0x88() {
+void FrostareTail_804A4F90::calcVelocity_0x88() {
     mVel_0x3c.x = 0.0f;
     mVel_0x3c.z = 0.0f;
     if (mState == 2) {
@@ -88,7 +88,7 @@ void cls_804A4F90::calcVelocity_0x88() {
     }
 }
 
-void cls_804A4F90::onHitReactionEnd_0x74() {
+void FrostareTail_804A4F90::onHitReactionEnd_0x74() {
     mAnim.fn_801D22A0(0, 2);
     if (mHitCount >= 10) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -105,7 +105,7 @@ void cls_804A4F90::onHitReactionEnd_0x74() {
 // the rupee serial in r28 (loading 'RUPY' into r28 before getActorManager_801F856C)
 // and puts the upper-layer velocity temporary at sp+0x20, the other at sp+0x2C;
 // ours swaps both pairs, and the random terms' scratch registers follow.
-u8 cls_804A4F90::checkHitByPlayer_0x5C() {
+u8 FrostareTail_804A4F90::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         for (s32 i = 0; i < 4; i++) {
@@ -150,14 +150,14 @@ u8 cls_804A4F90::checkHitByPlayer_0x5C() {
     return hit;
 }
 
-u8 cls_804A4F90::checkHitByActor_0x60() {
+u8 FrostareTail_804A4F90::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         fn_801F2DB4(mActorId, 'NULL', NULL);
     }
     return 0;
 }
 
-void cls_804A4F90::draw() {
+void FrostareTail_804A4F90::draw() {
     if (fn_801CD2F8(mLayer_0x4)) {
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0xE3, 0, 0, -1);
     } else {
@@ -165,7 +165,7 @@ void cls_804A4F90::draw() {
     }
 }
 
-u8 cls_804A4F90::fn_801DC264() {
+u8 FrostareTail_804A4F90::fn_801DC264() {
     s32 length;
     u8 alpha = 0;
     if (mAnim.mAnim == 1) {

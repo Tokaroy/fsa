@@ -68,7 +68,7 @@ leaving 100 %.
 
 | Lead | Form tested | Units | Result |
 |---|---|---:|---|
-| member lookups `findActorBySerial_801F666C(<member>)`, grouped by (class, member), 2+ sites | inline taking the object, named local and `return expr;`; also as a real member (cls_804A5E98::targetActor) | 18 (22 groups) | **-3, 0 gained** (tu_8020B354 x2, tu_80209C14 checkHitByPlayer_0x5C); everything else unchanged. Member and free-function forms give identical code. |
+| member lookups `findActorBySerial_801F666C(<member>)`, grouped by (class, member), 2+ sites | inline taking the object, named local and `return expr;`; also as a real member (BirdFormation_804A5E98::targetActor) | 18 (22 groups) | **-3, 0 gained** (tu_8020B354 x2, tu_80209C14 checkHitByPlayer_0x5C); everything else unchanged. Member and free-function forms give identical code. |
 | same with an index (`mSerials[i]`, `field_0x240[i]`, `mSlots[i].mSerial`, ...) | inline (self, s32 i) | 14 (17 groups) | 0 / 0 (two units slightly worse) |
 | `getActorManager_801F856C()->spawnActor_801F9484(...)` | file-local inline with the same six parameters, named local / `return expr;` | 145 | named local +1 / -0, `return` form **+3 / -0**: the arguments are evaluated before getActorManager_801F856C is called. **Kept** (cc24e25cf) in tu_8013C5C8 (9 sites, cls_8049F140::execute) and tu_802684A4 (3 sites, fn_8026EC88); tu_801CDC8C gains too but has one site. |
 | `getActorManager_801F856C()->mActors[i]` | `getActor(i)` (existing accessor), file inline named local, file inline `return` | 37 | 0 / 0 for all three |

@@ -161,7 +161,7 @@ void OnOffSwitch_804A8FC8::update() {
             if (lnbmSerial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial);
                 if (actor != NULL && actor->mActorId == ACTOR_LNBM) {
-                    static_cast<cls_804A4188*>(getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial))->fn_801BEDBC();
+                    static_cast<UnknownLNBM_804A4188*>(getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial))->fn_801BEDBC();
                 }
             } else if (hbmbSerial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(hbmbSerial);
@@ -217,7 +217,7 @@ void OnOffSwitch_804A8FC8::update() {
                 if (lnbmSerial >= 0) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial);
                     if (actor != NULL && actor->mActorId == ACTOR_LNBM) {
-                        static_cast<cls_804A4188*>(getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial))->fn_801BEDBC();
+                        static_cast<UnknownLNBM_804A4188*>(getActorManager_801F856C()->findActorBySerial_801F666C(lnbmSerial))->fn_801BEDBC();
                     }
                 } else if (hbmbSerial >= 0) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(hbmbSerial);

@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Spawned for 'GLWP'; moved here from game/act/tu_801F9484.h.
-class cls_804A39DC : public ActorBase_804A5770 {
+class GoalWarp_804A39DC : public ActorBase_804A5770 {
 public:
-    cls_804A39DC() {}
-    /* 0x08 */ virtual ~cls_804A39DC();
+    GoalWarp_804A39DC() {}
+    /* 0x08 */ virtual ~GoalWarp_804A39DC();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

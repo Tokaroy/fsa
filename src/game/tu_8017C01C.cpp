@@ -182,7 +182,7 @@ void fn_8017EAB4(JPABaseEmitter* emitter) {
 
 // FIXME(shotgun): 63.32 %, missing/extra + reloc-name; behaviour near.
 // The original hoists the float constants and the stmw prologue differently.
-void cls_804A1318::init() {
+void PhantomGanon_804A1318::init() {
     field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
     mSpawnParam_0x90 &= 0xF;
     field_0x24c = 0;
@@ -296,7 +296,7 @@ void cls_804A1318::init() {
     }
 }
 
-cls_804A1318::~cls_804A1318() {
+PhantomGanon_804A1318::~PhantomGanon_804A1318() {
     s32 serial;
     for (int i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters2bc[i]);
@@ -311,7 +311,7 @@ cls_804A1318::~cls_804A1318() {
     if (mSpawnParam_0x90 == 10) {
         serial = field_0x274;
         if (serial >= 0) {
-            cls_804A1318* other = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            PhantomGanon_804A1318* other = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (other != NULL && other->mAlive == true) {
                 other->field_0x28c = 3.0f;
                 other->field_0x278 = 0;
@@ -323,7 +323,7 @@ cls_804A1318::~cls_804A1318() {
 
 // The 'FGAN' actor's update (vtable slot 0x14).
 // FIXME: 93.65 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A1318::update() {
+void PhantomGanon_804A1318::update() {
     JGeometry::TBox2f box;
     fn_801546F4(&box, &mBox);
     JGeometry::TVec2f offset;
@@ -699,7 +699,7 @@ void cls_804A1318::update() {
             break;
         }
         field_0x238 = 40;
-        cls_804A1318* child = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
+        PhantomGanon_804A1318* child = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
         if (child == NULL) {
             break;
         }
@@ -718,7 +718,7 @@ void cls_804A1318::update() {
         field_0x234 = lbl_804A1210.frames1248[field_0x268];
         s32 serial = field_0x274;
         if (serial >= 0) {
-            cls_804A1318* child = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            PhantomGanon_804A1318* child = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             field_0x27c = 1;
             startSound_801F0E34(0x40043, 0);
             if (child != NULL) {
@@ -951,7 +951,7 @@ void cls_804A1318::update() {
             }
             s32 serial = field_0x274;
             if (serial >= 0) {
-                cls_804A1318* parent = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                PhantomGanon_804A1318* parent = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (parent != NULL) {
                     parent->field_0x28c = 3.0f;
                     parent->field_0x278 = 0;
@@ -965,7 +965,7 @@ void cls_804A1318::update() {
         fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, field_0x24c, 2);
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0 && (field_0x24c == player || field_0x24c == fn_8022F3DC(player))) {
-            cls_804A1318* parent = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
+            PhantomGanon_804A1318* parent = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
             if (parent != NULL) {
                 field_0x24c++;
                 field_0x250++;
@@ -1026,7 +1026,7 @@ void cls_804A1318::update() {
         }
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
-        cls_804A1318* parent = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
+        PhantomGanon_804A1318* parent = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
         if (parent != NULL && parent->mAlive == true) {
             parent->field_0x28c = 3.0f;
             field_0x274 = -1;
@@ -1113,7 +1113,7 @@ void cls_804A1318::update() {
         if (serial < 0) {
             return;
         }
-        cls_804A1318* other = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+        PhantomGanon_804A1318* other = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (other == NULL) {
             return;
         }
@@ -1145,7 +1145,7 @@ void cls_804A1318::update() {
 }
 
 // FIXME(shotgun): 83.90 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A1318::draw() {
+void PhantomGanon_804A1318::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos = mPos;
@@ -1211,8 +1211,8 @@ void cls_804A1318::draw() {
     }
 }
 
-// The 'FGAN' actor's (cls_804A1318, vtable 0x804A1318) die_0x24.
-void cls_804A1318::die_0x24() {
+// The 'FGAN' actor's (PhantomGanon_804A1318, vtable 0x804A1318) die_0x24.
+void PhantomGanon_804A1318::die_0x24() {
     startSound_801F0E34(0x40047, 0);
     startBossDeath_0x28(field_0x2ba, 8.0f, -16.0f);
 }

@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x804A2EC0.
-class cls_804A2EC0 : public ActorBase_804A5770 {
+class KeeseSwarm_804A2EC0 : public ActorBase_804A5770 {
 public:
-    cls_804A2EC0() {}
-    /* 0x08 */ virtual ~cls_804A2EC0();
+    KeeseSwarm_804A2EC0() {}
+    /* 0x08 */ virtual ~KeeseSwarm_804A2EC0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

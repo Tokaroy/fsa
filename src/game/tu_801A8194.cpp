@@ -9,7 +9,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-void cls_804A2EC0::init() {
+void KeeseSwarm_804A2EC0::init() {
     mBox.i.x = -10.0f;
     mBox.i.y = -10.0f;
     mBox.f.x = 10.0f;
@@ -76,7 +76,7 @@ void cls_804A2EC0::init() {
 
 // FIXME(shotgun): 99.39 %, different; behaviour near.
 // sqrtf expansion and trail-collision loop
-void cls_804A2EC0::update() {
+void KeeseSwarm_804A2EC0::update() {
     s32 player = -1;
     if (field_0x258 == 0 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
@@ -220,7 +220,7 @@ void cls_804A2EC0::update() {
 
 // FIXME: 98.52 %, missing/extra; behaviour clean.
 // FIXME(shotgun): missing/extra: the original keeps the saved position in f28-f30 and reloads it after the trail loop's stores; the instruction schedule differs
-void cls_804A2EC0::draw() {
+void KeeseSwarm_804A2EC0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;
@@ -285,4 +285,4 @@ void cls_804A2EC0::draw() {
     mPos.z = savedZ;
 }
 
-cls_804A2EC0::~cls_804A2EC0() {}
+KeeseSwarm_804A2EC0::~KeeseSwarm_804A2EC0() {}

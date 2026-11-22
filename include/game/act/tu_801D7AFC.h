@@ -12,10 +12,10 @@
 
 class JPABaseEmitter;
 
-class cls_804A4BB0 : public EnemyBase_804A4808 {
+class UnknownBGBL_804A4BB0 : public EnemyBase_804A4808 {
 public:
-    cls_804A4BB0();
-    virtual ~cls_804A4BB0();
+    UnknownBGBL_804A4BB0();
+    virtual ~UnknownBGBL_804A4BB0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

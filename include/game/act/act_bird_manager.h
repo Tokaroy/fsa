@@ -3,7 +3,7 @@
 
 #include "game/act/tu_80207548.h"
 
-class cls_804A5C88 : public cls_804A5B28 {
+class BirdManager_804A5C88 : public cls_804A5B28 {
 public:
     struct Path {
         void fn_80209640(JGeometry::TVec2f* delta);
@@ -22,8 +22,8 @@ public:
         /* 0x1C */ JGeometry::TVec2f mTarget;
     }; // Size: 0x24
 
-    cls_804A5C88();
-    /* 0x08 */ virtual ~cls_804A5C88();
+    BirdManager_804A5C88();
+    /* 0x08 */ virtual ~BirdManager_804A5C88();
     /* 0x0C */ virtual void init();
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x88 */ virtual void calcVelocity_0x88();

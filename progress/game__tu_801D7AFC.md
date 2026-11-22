@@ -4,7 +4,7 @@ Baseline (progress.py): total 6340 / 11557 functions, 1270548 bytes. After: 6345
 Unit before: 1/7 functions; after: 6/7 (draw, fn_801D7DB4, init, dtor, ctor, __sinit).
 
 ## Matched
-cls_804A4BB0 (vtable 0x804A4BB0): draw, fn_801D7DB4(f32) (out-of-line scale setter, inlined twice in init), init, dtor, ctor.
+UnknownBGBL_804A4BB0 (vtable 0x804A4BB0): draw, fn_801D7DB4(f32) (out-of-line scale setter, inlined twice in init), init, dtor, ctor.
 `32.0f * FLT_EPSILON` as a file-local bool inline `isTiny` (tu_8020FE50 precedent). Emitter scale: `setGlobalScale(field_0x54)`.
 
 ## Resistant
@@ -16,4 +16,4 @@ cls_804A4BB0 (vtable 0x804A4BB0): draw, fn_801D7DB4(f32) (out-of-line scale sett
 
 ## SHARED-EDITS
 - config/G4SE01/gen_game.tsv: row of tu_801D7AFC deleted (its sinit comes from the GameAudio.h include).
-- config/G4SE01/symbols.txt: placeholder renames of this unit's functions to cls_804A4BB0 members, lbl_804A4BB0 -> __vt__12cls_804A4BB0 (size 0xA8 -> 0xA4, as __vt__12cls_804A5038; the last word is padding). tu_801D6CEC calls fn_801D7DB4 at 0x801D7090 (asm regenerates, no source caller yet).
+- config/G4SE01/symbols.txt: placeholder renames of this unit's functions to UnknownBGBL_804A4BB0 members, lbl_804A4BB0 -> __vt__20UnknownBGBL_804A4BB0 (size 0xA8 -> 0xA4, as __vt__12cls_804A5038; the last word is padding). tu_801D6CEC calls fn_801D7DB4 at 0x801D7090 (asm regenerates, no source caller yet).

@@ -6,10 +6,10 @@
 #include "game/EnemyBase.h"
 
 // Named after its vtable, 0x804A6340.
-class cls_804A6340 : public EnemyBase_804A4808 {
+class Antlion_804A6340 : public EnemyBase_804A4808 {
 public:
-    cls_804A6340();
-    /* 0x08 */ virtual ~cls_804A6340();
+    Antlion_804A6340();
+    /* 0x08 */ virtual ~Antlion_804A6340();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24();

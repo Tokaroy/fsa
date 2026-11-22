@@ -9,13 +9,13 @@
 
 #include "game/act/tu_80210630.h"
 
-class cls_804A5418 : public cls_804A61C8 {
+class IronPot_804A5418 : public cls_804A61C8 {
 public:
     // 0x801E78F0
-    cls_804A5418();
+    IronPot_804A5418();
     // 0x801E6D48: the destructor; the vtable stores and base destructors are
     // all inline (cls_804A61C8, EnemyBase), then ActorBase's runs.
-    /* 0x08 */ virtual ~cls_804A5418();
+    /* 0x08 */ virtual ~IronPot_804A5418();
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x60 */ virtual u8 checkHitByActor_0x60();

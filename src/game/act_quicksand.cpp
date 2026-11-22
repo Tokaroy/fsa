@@ -9,14 +9,14 @@
 
 // Releases the held view and partner on leaving a state: state 1 hands the
 // actor to fn_80212ECC and turns the view bit on, state 6 turns it off.
-static inline void releaseView(cls_804A6270* sand) {
+static inline void releaseView(Quicksand_804A6270* sand) {
     switch (sand->mState) {
     case 1: {
         s32 serial = sand->field_0x388;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                static_cast<cls_804A6340*>(actor)->fn_80212ECC();
+                static_cast<Antlion_804A6340*>(actor)->fn_80212ECC();
             }
         }
         s32 viewSerial = sand->field_0x2b8;
@@ -37,7 +37,7 @@ static inline void releaseView(cls_804A6270* sand) {
 
 // Ends the active state: releaseView, then the actor gets mFlags 0x4000 and
 // the state becomes 6.
-static inline void leaveSand(cls_804A6270* sand) {
+static inline void leaveSand(Quicksand_804A6270* sand) {
     releaseView(sand);
     s32 serial = sand->field_0x388;
     if (serial >= 0) {
@@ -60,7 +60,7 @@ static inline void approach(f32& x, f32 target, s32 remaining) {
     }
 }
 
-cls_804A6270::cls_804A6270() {
+Quicksand_804A6270::Quicksand_804A6270() {
     field_0x2a8 = 0;
     field_0x2ac = 0;
     field_0x2b0 = 0;
@@ -81,11 +81,11 @@ cls_804A6270::cls_804A6270() {
     field_0x2c0.clear();
 }
 
-cls_804A6270::~cls_804A6270() {
+Quicksand_804A6270::~Quicksand_804A6270() {
     fn_80212AC0()->fn_80212BA0(mSerial);
 }
 
-void cls_804A6270::init() {
+void Quicksand_804A6270::init() {
     EnemyBase_804A4808::init();
     s32 kind = mSpawnParam_0x90 & 7;
     if (kind > 2) {
@@ -192,13 +192,13 @@ void cls_804A6270::init() {
                 if (serial >= 0) {
                     ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (a != NULL) {
-                        static_cast<cls_804A6340*>(a)->fn_80212ECC();
+                        static_cast<Antlion_804A6340*>(a)->fn_80212ECC();
                     }
                 }
                 break;
             }
             case 3:
-                static_cast<cls_804A6340*>(actor)->fn_80212F5C();
+                static_cast<Antlion_804A6340*>(actor)->fn_80212F5C();
                 break;
             }
         }
@@ -228,7 +228,7 @@ void cls_804A6270::init() {
     }
 }
 
-void cls_804A6270::fn_802121C8() {
+void Quicksand_804A6270::fn_802121C8() {
     if (!(mFlags & 0x2000)) {
         field_0x38c = getActorManager_801F856C()->fn_801F76F0('WARP', mLayer_0x4, &mPos, -1);
         s32 serial = field_0x38c;
@@ -247,7 +247,7 @@ void cls_804A6270::fn_802121C8() {
     }
 }
 
-void cls_804A6270::onFirstUpdate_0x54() {
+void Quicksand_804A6270::onFirstUpdate_0x54() {
     if (mFlags & 0x8000 && field_0x2bc != 0) {
         field_0x2c0.fn_800FE3EC(field_0x2bc, mPos, mLayer_0x4);
     }
@@ -257,7 +257,7 @@ void cls_804A6270::onFirstUpdate_0x54() {
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME(shotgun): 97.78 %, missing/extra; behaviour near.
-void cls_804A6270::fn_80211EB0() {
+void Quicksand_804A6270::fn_80211EB0() {
     if (mState != 0) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_801D0B44(i)) {
@@ -275,7 +275,7 @@ void cls_804A6270::fn_80211EB0() {
     }
 }
 
-void cls_804A6270::fn_80211C94() {
+void Quicksand_804A6270::fn_80211C94() {
     // Only in states 2 to 5 (a switch: `mState >= 2 && mState < 6` orders the
     // branches differently).
     switch (mState) {
@@ -301,7 +301,7 @@ void cls_804A6270::fn_80211C94() {
 
 // FIXME: 99.30 %, regalloc-only; behaviour drift.
 // FIXME: regalloc-only (r29/r30 swapped in inlined releaseView).
-void cls_804A6270::updateState_0x90(u8 mapHit) {
+void Quicksand_804A6270::updateState_0x90(u8 mapHit) {
     fn_80211EB0();
     fn_80211C94();
     switch (mState) {
@@ -336,7 +336,7 @@ void cls_804A6270::updateState_0x90(u8 mapHit) {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    static_cast<cls_804A6340*>(actor)->fn_80212F14();
+                    static_cast<Antlion_804A6340*>(actor)->fn_80212F14();
                 }
             }
             mStateTimer = 0;
@@ -416,7 +416,7 @@ void cls_804A6270::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6270::updateBehavior_0x9C(u8 mapHit) {
+void Quicksand_804A6270::updateBehavior_0x9C(u8 mapHit) {
     EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     bool active = false;
     if (mState != 0 && field_0x54.x != 0.0f && field_0x398 != 0.0f) {
@@ -435,7 +435,7 @@ void cls_804A6270::updateBehavior_0x9C(u8 mapHit) {
 }
 
 // FIXME(shotgun): 98.45 %, missing/extra; behaviour near.
-void cls_804A6270::fn_802110A8() {
+void Quicksand_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
             JGeometry::TVec3f pos(mPos);
@@ -486,14 +486,14 @@ void cls_804A6270::fn_802110A8() {
     }
 }
 
-void cls_804A6270::calcVelocity_0x88() {
+void Quicksand_804A6270::calcVelocity_0x88() {
     mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     fn_802110A8();
 }
 
 // Whether a position at or below the ground lies inside the quicksand's area:
 // within 0.9 * (16 * field_0x54.x) of mPos in x and y, once it is active.
-bool cls_804A6270::fn_80211000(const JGeometry::TVec3f* pos) const {
+bool Quicksand_804A6270::fn_80211000(const JGeometry::TVec3f* pos) const {
     bool inside = false;
     if (pos->z <= 0.0f && mState != 0) {
         f32 radius = 0.9f * (16.0f * field_0x54.x);
@@ -512,7 +512,7 @@ bool cls_804A6270::fn_80211000(const JGeometry::TVec3f* pos) const {
 // JMAFastSqrt, normalize (isZero, TUtilf::inv_sqrt) and
 // scale match. Ours adds one frsp after the fsel.
 // FIXME: 98.64 %, missing/extra; behaviour near.
-void cls_804A6270::fn_80210E90(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) const {
+void Quicksand_804A6270::fn_80210E90(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) const {
     out->set(0.0f, 0.0f, 0.0f);
     if (pos->z <= 0.0f && mState != 0) {
         f32 radius = 0.9f * (16.0f * field_0x54.x);
@@ -530,7 +530,7 @@ void cls_804A6270::fn_80210E90(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
     }
 }
 
-void cls_804A6270::fn_80210D90() {
+void Quicksand_804A6270::fn_80210D90() {
     mFlags |= 0x20000;
     fn_801F3604();
     leaveSand(this);

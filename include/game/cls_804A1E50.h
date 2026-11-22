@@ -10,10 +10,10 @@
 // four TVec3f at 0x2F8). Named after its vtable, 0x804A1E50; its unit's
 // resources are boss_p_rantan.bti and enemy_both2_sob.bin. Only what the
 // functions written so far touch is declared.
-class cls_804A1E50 : public ActorBase_804A5770 {
+class BigPoe2_804A1E50 : public ActorBase_804A5770 {
 public:
-    cls_804A1E50() {}
-    /* 0x08 */ virtual ~cls_804A1E50();
+    BigPoe2_804A1E50() {}
+    /* 0x08 */ virtual ~BigPoe2_804A1E50();
     /* 0x0C */ virtual void init();   // fn_8018E5E4, not written yet
     /* 0x14 */ virtual void update(); // fn_8018AFFC, not written yet
     /* 0x20 */ virtual void draw();   // fn_8018A930

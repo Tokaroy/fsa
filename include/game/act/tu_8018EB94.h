@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Spawned for 'DGT2'; moved here from game/act/tu_801F9484.h.
-class cls_804A1FA0 : public ActorBase_804A5770 {
+class BigMoldormTail_804A1FA0 : public ActorBase_804A5770 {
 public:
-    cls_804A1FA0() {}
-    /* 0x08 */ virtual ~cls_804A1FA0();
+    BigMoldormTail_804A1FA0() {}
+    /* 0x08 */ virtual ~BigMoldormTail_804A1FA0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

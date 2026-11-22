@@ -37,7 +37,7 @@ inline void cls_801E9B54::drawSprites() {
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                ((cls_804A5418*)actor)->fn_801E6DE8();
+                ((IronPot_804A5418*)actor)->fn_801E6DE8();
             }
         }
     }
@@ -75,7 +75,7 @@ void cls_801E9B54::fn_801EA75C(u8 id, u8 flag, u8 index, s32 layer, const JGeome
         JGeometry::TVec3f spawnPos(pos->x, pos->y, 0.0f);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FSOB, layer, &spawnPos, id, -1, -1);
         if (serial >= 0) {
-            field_0x0[field_0x60].actor = (cls_804A5568*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            field_0x0[field_0x60].actor = (UnknownFSOB_804A5568*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (field_0x0[field_0x60].actor != NULL) {
                 if (flag != 0) {
                     field_0x0[i].actor->field_0x94 = flag;

@@ -95,7 +95,7 @@ u8 Singleton_801DAC6C::fn_801DAD2C() const {
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            result = static_cast<cls_804A4F90*>(actor)->fn_801DC264();
+            result = static_cast<FrostareTail_804A4F90*>(actor)->fn_801DC264();
         }
     }
     return result;

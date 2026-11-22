@@ -10,10 +10,10 @@
 // are the destructor, init, draw, calcVelocity_0x88 and updateState_0x90. It adds no
 // fields.
 // Size: 0x2A8
-class cls_804A6400 : public EnemyBase_804A4808 {
+class UnknownSLEF_804A6400 : public EnemyBase_804A4808 {
 public:
-    cls_804A6400();
-    virtual ~cls_804A6400();
+    UnknownSLEF_804A6400();
+    virtual ~UnknownSLEF_804A6400();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     // Zeroes mVel_0x3c (the base turns mSpeed into a velocity here).

@@ -388,7 +388,7 @@ void Armos_8049F260::update() {
         if (serial != 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                ((cls_804A4188*)actor)->fn_801BEDBC();
+                ((UnknownLNBM_804A4188*)actor)->fn_801BEDBC();
             }
         }
         break;

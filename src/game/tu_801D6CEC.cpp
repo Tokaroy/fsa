@@ -230,7 +230,7 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
                     JGeometry::TVec3f p(field_0x48.x + (r.x * c - r.y * s), field_0x48.y + (r.x * s + r.y * c), field_0x48.z);
                     a->mPos = p;
                     if (field_0x44 == 2) {
-                        ((cls_804A4BB0*)a)->fn_801D7DB4(field_0x60);
+                        ((UnknownBGBL_804A4BB0*)a)->fn_801D7DB4(field_0x60);
                     }
                 }
             }

@@ -58,7 +58,7 @@ static inline void requestSpot() {
 }
 
 // 0x801B2394.
-void cls_804A35AC::init() {
+void PrincessZeldaSpawner_804A35AC::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
@@ -122,7 +122,7 @@ void cls_804A35AC::init() {
 }
 
 // Destructor at 0x801B22F4.
-cls_804A35AC::~cls_804A35AC() {
+PrincessZeldaSpawner_804A35AC::~PrincessZeldaSpawner_804A35AC() {
     for (s32 i = 0; i < 2; i++) {
         releaseEmitter_801EE434(mEmitters[i]);
     }
@@ -131,7 +131,7 @@ cls_804A35AC::~cls_804A35AC() {
 
 // 0x801B2138.
 // FIXME(shotgun): 96.26 %, missing/extra + reloc-name; behaviour clean.
-void cls_804A35AC::fn_801B2138(s32 arg) {
+void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
     if (field_0x254 != arg) {
         field_0x254 = arg;
         field_0x259 = 0;
@@ -201,7 +201,7 @@ void cls_804A35AC::fn_801B2138(s32 arg) {
 // 0x801B2000.
 // FIXME: 84.40 %, missing/extra; behaviour near.
 // FIXME: operands differ: fn_802303FC's original call passes 0xFF for its bool flag (we pass true); loop pointer and layer registers differ.
-void cls_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
+void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
     f32 y = mPos.y - yOffset;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
@@ -231,7 +231,7 @@ void cls_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
 
 // 0x801B0A90.
 // FIXME: 98.70 %, scheduling+regalloc + reloc-name; behaviour near.
-void cls_804A35AC::update() {
+void PrincessZeldaSpawner_804A35AC::update() {
     JGeometry::TBox2f box;
     JGeometry::TVec3f pos;
     box = *layerBox(mLayer_0x4);
@@ -586,7 +586,7 @@ void cls_804A35AC::update() {
 // 0x801B0A00.
 // FIXME(shotgun): 97.31 %, different + reloc-name; behaviour drift.
 // mSpawnParam_0x90 compare is cmplwi (u32), original cmpwi
-void cls_804A35AC::draw() {
+void PrincessZeldaSpawner_804A35AC::draw() {
     s32 frame = 0x9B;
     if (mSpawnParam_0x90 == 0) {
         if (field_0x250 == 2 || field_0x250 == 3) {

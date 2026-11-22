@@ -13,7 +13,7 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
 }
 
 // The two burst effects (0x1E, 0x1F) and their sound.
-inline void cls_804A4188::spawnBurst() {
+inline void UnknownLNBM_804A4188::spawnBurst() {
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1E, 0, -1, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1F, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30061, 0);
@@ -21,7 +21,7 @@ inline void cls_804A4188::spawnBurst() {
 }
 
 // The effect follows the actor; its angle is the direction of mVel_0x3c.
-inline void cls_804A4188::moveEmitter() {
+inline void UnknownLNBM_804A4188::moveEmitter() {
     if (mEmitter2a8 != NULL) {
         s32 depth = 1;
         if (mStateTimer < 2) {
@@ -35,13 +35,13 @@ inline void cls_804A4188::moveEmitter() {
 }
 
 // Whether the point (dx, dy) from the actor is blocked.
-inline bool cls_804A4188::blockedAt(f32 dx, f32 dy) {
+inline bool UnknownLNBM_804A4188::blockedAt(f32 dx, f32 dy) {
     JGeometry::TVec3f p(mPos.x + dx, mPos.y + dy, mPos.z);
     return isBlocked_0x4C(mLayer_0x4, &p);
 }
 
 // Burns the tiles under the box (a 2x2 grid of points over it).
-inline void cls_804A4188::burnTiles() {
+inline void UnknownLNBM_804A4188::burnTiles() {
     JGeometry::TVec3f p(mPos);
     p.x = mPos.x + mMapBox_0x80.i.x;
     for (s32 i = 0; i < 2; i++) {
@@ -56,13 +56,13 @@ inline void cls_804A4188::burnTiles() {
     }
 }
 
-cls_804A4188::cls_804A4188() : mEmitter2a8(NULL) {}
+UnknownLNBM_804A4188::UnknownLNBM_804A4188() : mEmitter2a8(NULL) {}
 
-cls_804A4188::~cls_804A4188() {
+UnknownLNBM_804A4188::~UnknownLNBM_804A4188() {
     releaseEmitter_801EE434(mEmitter2a8);
 }
 
-void cls_804A4188::init() {
+void UnknownLNBM_804A4188::init() {
     EnemyBase_804A4808::init();
     mBox.set(-2.0f, -2.0f, 2.0f, 2.0f);
     mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -77,7 +77,7 @@ void cls_804A4188::init() {
     mStateTimer = 0;
 }
 
-void cls_804A4188::onFirstUpdate_0x54() {
+void UnknownLNBM_804A4188::onFirstUpdate_0x54() {
     mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1B, 0, field_0x94, NULL, NULL, true, 1.0f);
     moveEmitter();
 }
@@ -85,7 +85,7 @@ void cls_804A4188::onFirstUpdate_0x54() {
 // FIXME: 98.3 %. Scheduling only: the target loads mFlags again for the ENEMY_FLAG_STARTED test
 // (lwz r0; this code reuses the first load in r3), keeps layer in r29 (this code r30), mPos.x of
 // the view test in f2 (f3 here) and loads the probe operands in the order y, dy, x, dx.
-void cls_804A4188::update() {
+void UnknownLNBM_804A4188::update() {
     if (mFlags & FLAG_BURST) {
         releaseEmitter_801EE434(mEmitter2a8);
         mEmitter2a8 = NULL;
@@ -123,7 +123,7 @@ void cls_804A4188::update() {
 // registers differ: the target keeps this in r31, the result in r30, layer in r29 and pos in r28
 // (this code: result r31, this r30, pos r29, layer r28), so the prologue stores and the argument
 // moves are ordered differently.
-bool cls_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool UnknownLNBM_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     switch (fn_8022461C(pos, layer)) {
     case 3:
     case 0xD:
@@ -141,7 +141,7 @@ bool cls_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-void cls_804A4188::fn_801BEDBC() {
+void UnknownLNBM_804A4188::fn_801BEDBC() {
     if (mAlive && !(mFlags & FLAG_BURST)) {
         spawnBurst();
     }

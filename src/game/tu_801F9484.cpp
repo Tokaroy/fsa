@@ -535,7 +535,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) PlayerEffect_804A6E20;
             break;
         case 'SLR3':
-            mActors[i] = new (mHeap, 0) cls_804A0810;
+            mActors[i] = new (mHeap, 0) BallAndChainSoldier_804A0810;
             break;
         case ACTOR_WOOD:
             mActors[i] = new (mHeap, 0) LiftableWood_804A87A8;
@@ -658,7 +658,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) RailData_8049C770;
             break;
         case ACTOR_FALL:
-            mActors[i] = new (mHeap, 0) cls_804A3E44;
+            mActors[i] = new (mHeap, 0) Wallmaster_804A3E44;
             break;
         case ACTOR_PNPC:
             mActors[i] = new (mHeap, 0) PanelRewriteNPC_804A8E40;
@@ -727,13 +727,13 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Bombchu_804AB464;
             break;
         case ACTOR_RUSA:
-            mActors[i] = new (mHeap, 0) cls_804A6270;
+            mActors[i] = new (mHeap, 0) Quicksand_804A6270;
             break;
         case ACTOR_ARIJ:
-            mActors[i] = new (mHeap, 0) cls_804A6340;
+            mActors[i] = new (mHeap, 0) Antlion_804A6340;
             break;
         case ACTOR_ARSH:
-            mActors[i] = new (mHeap, 0) cls_804A58B4;
+            mActors[i] = new (mHeap, 0) UnknownARSH_804A58B4;
             break;
         case ACTOR_INFR:
             mActors[i] = new (mHeap, 0) InvincibilityFairy_804AB4C0;
@@ -754,7 +754,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Beamos_804A40E0;
             break;
         case ACTOR_LNBM:
-            mActors[i] = new (mHeap, 0) cls_804A4188;
+            mActors[i] = new (mHeap, 0) UnknownLNBM_804A4188;
             break;
         case ACTOR_WLFT:
             mActors[i] = new (mHeap, 0) RoomTransferLift_8049CC40;
@@ -763,7 +763,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) PullSwitch_804A7908;
             break;
         case 'FGAN':
-            mActors[i] = new (mHeap, 0) cls_804A1318;
+            mActors[i] = new (mHeap, 0) PhantomGanon_804A1318;
             break;
         case ACTOR_SLK2:
             mActors[i] = new (mHeap, 0) ShadowLink2_804A43E8;
@@ -790,16 +790,16 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Cactus_804AB580;
             break;
         case ACTOR_GROK:
-            mActors[i] = new (mHeap, 0) cls_804A1630;
+            mActors[i] = new (mHeap, 0) HelmarocKing_804A1630;
             break;
         case ACTOR_DSIN:
             mActors[i] = new (mHeap, 0) Thwomp_804AB5D8;
             break;
         case ACTOR_RIVR:
-            mActors[i] = new (mHeap, 0) cls_804A1718;
+            mActors[i] = new (mHeap, 0) Leever_804A1718;
             break;
         case ACTOR_GDMN:
-            mActors[i] = new (mHeap, 0) cls_804A1790;
+            mActors[i] = new (mHeap, 0) Geldman_804A1790;
             break;
         case ACTOR_FAGN:
             mActors[i] = new (mHeap, 0) Pengator_804A1888;
@@ -844,7 +844,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) UraColour_804A9A70;
             break;
         case ACTOR_WNWN:
-            mActors[i] = new (mHeap, 0) cls_804A18E0;
+            mActors[i] = new (mHeap, 0) ChainChomp_804A18E0;
             break;
         case ACTOR_SLGE:
             mActors[i] = new (mHeap, 0) ShadowLinkGenerator_804A4310;
@@ -880,7 +880,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) FourSwordCutscene_8049DA0C;
             break;
         case ACTOR_BPH2:
-            mActors[i] = new (mHeap, 0) cls_804A1E50;
+            mActors[i] = new (mHeap, 0) BigPoe2_804A1E50;
             break;
         case 'DMCT':
             mActors[i] = new (mHeap, 0) StoryDemoControlNPC_8049DAD8;
@@ -895,7 +895,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) RevivalFairy_804AC250;
             break;
         case ACTOR_DGT2:
-            mActors[i] = new (mHeap, 0) cls_804A1FA0;
+            mActors[i] = new (mHeap, 0) BigMoldormTail_804A1FA0;
             break;
         case ACTOR_DMGL:
             mActors[i] = new (mHeap, 0) GoalOpening_8049DB30;
@@ -904,7 +904,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) ShadowLinkCutscene_8049DB90;
             break;
         case ACTOR_BGBL:
-            mActors[i] = new (mHeap, 0) cls_804A4BB0;
+            mActors[i] = new (mHeap, 0) UnknownBGBL_804A4BB0;
             break;
         case ACTOR_DMGA:
             mActors[i] = new (mHeap, 0) AfterGoalOpening_8049DD68;
@@ -916,7 +916,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Lotus_804AC330;
             break;
         case ACTOR_ICHL:
-            mActors[i] = new (mHeap, 0) cls_804A4EE8;
+            mActors[i] = new (mHeap, 0) FrostareChildFrosteye_804A4EE8;
             break;
         case ACTOR_ICWL:
             mActors[i] = new (mHeap, 0) IceWall_8049DE18;
@@ -925,7 +925,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) cls_804AC388;
             break;
         case ACTOR_BOIT:
-            mActors[i] = new (mHeap, 0) cls_804A4F90;
+            mActors[i] = new (mHeap, 0) FrostareTail_804A4F90;
             break;
         case ACTOR_LTZR:
             mActors[i] = new (mHeap, 0) cls_804AC3E0;
@@ -952,7 +952,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Ganon_804A25F0;
             break;
         case 'ZLD2':
-            mActors[i] = new (mHeap, 0) cls_804A2944;
+            mActors[i] = new (mHeap, 0) PrincessZeldaGanonBattle_804A2944;
             break;
         case ACTOR_HOUS:
             mActors[i] = new (mHeap, 0) cls_804A7AE0;
@@ -979,13 +979,13 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) BurningBlockWoodenCrate_804A7B90;
             break;
         case ACTOR_IPOT:
-            mActors[i] = new (mHeap, 0) cls_804A5418;
+            mActors[i] = new (mHeap, 0) IronPot_804A5418;
             break;
         case ACTOR_FSPO:
             mActors[i] = new (mHeap, 0) FusePoint_804A54C0;
             break;
         case ACTOR_FSOB:
-            mActors[i] = new (mHeap, 0) cls_804A5568;
+            mActors[i] = new (mHeap, 0) UnknownFSOB_804A5568;
             break;
         case ACTOR_HAYA:
             mActors[i] = new (mHeap, 0) HammerShopMinigame_8049C858;
@@ -1084,16 +1084,16 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) BeeManager_804AC810;
             break;
         case ACTOR_FOSL:
-            mActors[i] = new (mHeap, 0) cls_804A5D60;
+            mActors[i] = new (mHeap, 0) SlimeFormation_804A5D60;
             break;
         case ACTOR_SLMN:
-            mActors[i] = new (mHeap, 0) cls_804A5BD8;
+            mActors[i] = new (mHeap, 0) SlimeManager_804A5BD8;
             break;
         case ACTOR_FOBR:
-            mActors[i] = new (mHeap, 0) cls_804A5E98;
+            mActors[i] = new (mHeap, 0) BirdFormation_804A5E98;
             break;
         case ACTOR_BRMN:
-            mActors[i] = new (mHeap, 0) cls_804A5C88;
+            mActors[i] = new (mHeap, 0) BirdManager_804A5C88;
             break;
         case ACTOR_SSLF:
             mActors[i] = new (mHeap, 0) SeesawLift_804AD348;
@@ -1117,7 +1117,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) cls_804AC8C0;
             break;
         case ACTOR_HBB2:
-            mActors[i] = new (mHeap, 0) cls_804A2EC0;
+            mActors[i] = new (mHeap, 0) KeeseSwarm_804A2EC0;
             break;
         case ACTOR_ENPC:
             mActors[i] = new (mHeap, 0) EnemyForEndingControl_804AD48C;
@@ -1144,7 +1144,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Gohma_804A307C;
             break;
         case ACTOR_TTAT:
-            mActors[i] = new (mHeap, 0) cls_804A2FB0;
+            mActors[i] = new (mHeap, 0) Manhandla_804A2FB0;
             break;
         case ACTOR_OKAM:
             mActors[i] = new (mHeap, 0) OkameSan_804A3448;
@@ -1162,7 +1162,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) CaneOfSomariaBlock_804AA9F0;
             break;
         case ACTOR_ZASL:
-            mActors[i] = new (mHeap, 0) cls_804A5F40;
+            mActors[i] = new (mHeap, 0) ZolSmallSlime_804A5F40;
             break;
         case ACTOR_DMTW:
             mActors[i] = new (mHeap, 0) TowerAppearanceDemo_8049E770;
@@ -1201,16 +1201,16 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) OBJLift_804ACA00;
             break;
         case ACTOR_ZLD3:
-            mActors[i] = new (mHeap, 0) cls_804A35AC;
+            mActors[i] = new (mHeap, 0) PrincessZeldaSpawner_804A35AC;
             break;
         case 'ZLD4':
-            mActors[i] = new (mHeap, 0) cls_804A3698;
+            mActors[i] = new (mHeap, 0) PrincessZeldaSpawnerEscape_804A3698;
             break;
         case ACTOR_ZDCO:
             mActors[i] = new (mHeap, 0) PrincessZeldaMotionObjectSpawner_804A375C;
             break;
         case ACTOR_IBBM:
-            mActors[i] = new (mHeap, 0) cls_804A6100;
+            mActors[i] = new (mHeap, 0) UnknownIBBM_804A6100;
             break;
         case ACTOR_ZOMO:
             mActors[i] = new (mHeap, 0) ZoomOutNPC_804AA228;
@@ -1234,7 +1234,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Sandstorm_804AA280;
             break;
         case ACTOR_SLEF:
-            mActors[i] = new (mHeap, 0) cls_804A6400;
+            mActors[i] = new (mHeap, 0) UnknownSLEF_804A6400;
             break;
         case ACTOR_MEDM:
             mActors[i] = new (mHeap, 0) EyeballSwitch_804AE678;
@@ -1258,7 +1258,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) KnightOfHyrule_804AABA8;
             break;
         case ACTOR_TLWP:
-            mActors[i] = new (mHeap, 0) cls_804A38D4;
+            mActors[i] = new (mHeap, 0) TinglesTowerWarp_804A38D4;
             break;
         case ACTOR_CHSW:
             mActors[i] = new (mHeap, 0) ChainSwitch_804AA3E8;
@@ -1366,7 +1366,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) SpecialConversationNPC_804AAFB8;
             break;
         case ACTOR_GLWP:
-            mActors[i] = new (mHeap, 0) cls_804A39DC;
+            mActors[i] = new (mHeap, 0) GoalWarp_804A39DC;
             break;
         case ACTOR_SPFR:
             mActors[i] = new (mHeap, 0) GreatFairy_8049EB8C;

@@ -9,13 +9,13 @@
 #include "game/act/tu_801E6D48.h"
 #include "game/tu_801E9AFC.h"
 
-cls_804A5418::cls_804A5418() {
+IronPot_804A5418::IronPot_804A5418() {
     field_0x2ac = -1;
     field_0x2b0 = 0;
     field_0x2b4 = 0;
 }
 
-void cls_804A5418::init() {
+void IronPot_804A5418::init() {
     EnemyBase_804A4808::init();
     mDir_0x98 = mSpawnParam_0x90 & 3;
     field_0x2b4 = (mSpawnParam_0x90 >> 2) & 0x1F;
@@ -46,7 +46,7 @@ void cls_804A5418::init() {
     mTargetSpeed = 0.0f;
 }
 
-void cls_804A5418::vfunc_0x10() {
+void IronPot_804A5418::vfunc_0x10() {
     u32 flags = mSpawnParam_0x90 >> 24;
     s32 serial = mSerial;
     cls_801E9AFC* slots = fn_801E9AFC();
@@ -56,7 +56,7 @@ void cls_804A5418::vfunc_0x10() {
 extern const s32 lbl_80469C40[4][2];
 
 // FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
-void cls_804A5418::fn_801E728C(int state) {
+void IronPot_804A5418::fn_801E728C(int state) {
     if (state == 1) {
         if ((mFlags & 0x4000) && !(mFlags & 0x10000)) {
             getActorManager_801F856C()->spawnActor_801F9484('IBBM', mLayer_0x4, &mPos, mSpawnParam_0x90, field_0x16c, -1);
@@ -132,7 +132,7 @@ void cls_804A5418::fn_801E728C(int state) {
 }
 
 // FIXME(shotgun): 95.83 %, missing/extra; behaviour near.
-void cls_804A5418::updateState_0x90(u8 mapHit) {
+void IronPot_804A5418::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
         if (fn_80210A6C()) {
@@ -144,7 +144,7 @@ void cls_804A5418::updateState_0x90(u8 mapHit) {
 }
 
 // FIXME(shotgun): 96.47 %, missing/extra; behaviour drift.
-u8 cls_804A5418::checkHitByActor_0x60() {
+u8 IronPot_804A5418::checkHitByActor_0x60() {
     s32 skip = -1;
     if (mState == 0 && field_0x2ac == -1) {
         f32 savedIx = mBox.i.x;
@@ -195,13 +195,13 @@ u8 cls_804A5418::checkHitByActor_0x60() {
     return 0;
 }
 
-void cls_804A5418::update() {
+void IronPot_804A5418::update() {
     if ((mFlags & 0x8000) == 0) {
         EnemyBase_804A4808::update();
     }
 }
 
-void cls_804A5418::draw() {
+void IronPot_804A5418::draw() {
     if ((mFlags & 0x8000) == 0) {
         s32 arg = 0;
         if (mState == 2) {
@@ -211,7 +211,7 @@ void cls_804A5418::draw() {
     }
 }
 
-void cls_804A5418::fn_801E6EAC() {
+void IronPot_804A5418::fn_801E6EAC() {
     if (mFlags & 0x8000) {
         s32 bit = field_0x2b4;
         if (bit != 0) {
@@ -223,7 +223,7 @@ void cls_804A5418::fn_801E6EAC() {
     }
 }
 
-void cls_804A5418::fn_801E6DE8() {
+void IronPot_804A5418::fn_801E6DE8() {
     if (mFlags & 0x8000) {
         return;
     }
@@ -240,5 +240,5 @@ void cls_804A5418::fn_801E6DE8() {
     }
 }
 
-cls_804A5418::~cls_804A5418() {}
+IronPot_804A5418::~IronPot_804A5418() {}
 

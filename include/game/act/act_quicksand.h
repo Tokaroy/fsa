@@ -6,16 +6,16 @@
 #include "game/EnemyBase.h"
 #include "game/RailBase.h"
 
-// Named after its vtable, 0x804A6270 (__vt__12cls_804A6270).
+// Named after its vtable, 0x804A6270 (__vt__18Quicksand_804A6270).
 // Only the fields fn_80210E90 and onFirstUpdate_0x54 read are known.
-class cls_804A6270 : public EnemyBase_804A4808 {
+class Quicksand_804A6270 : public EnemyBase_804A4808 {
 public:
-    // 0x80212800 (__ct__12cls_804A6270Fv). Runs after EnemyBase's constructor.
-    cls_804A6270();
-    // 0x80212760 (__dt__12cls_804A6270Fv, vtable slot 0x08, over ActorBase's
+    // 0x80212800 (__ct__18Quicksand_804A6270Fv). Runs after EnemyBase's constructor.
+    Quicksand_804A6270();
+    // 0x80212760 (__dt__18Quicksand_804A6270Fv, vtable slot 0x08, over ActorBase's
     // destructor): the body removes mSerial from the list fn_80212AC0 returns;
     // EnemyBase's inline destructor follows, then ActorBase's.
-    /* 0x08 */ virtual ~cls_804A6270();
+    /* 0x08 */ virtual ~Quicksand_804A6270();
     // 0x80212170 (vtable slot 0x54, over EnemyBase's empty onFirstUpdate_0x54): if
     // mFlags has bit 0x8000 and field_0x2bc is set, the rail at field_0x2c0
     // is called with field_0x2bc, mPos and mLayer_0x4.

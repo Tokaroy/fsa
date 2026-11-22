@@ -33,14 +33,14 @@ void cls_80212AC0::fn_80212AF0(JGeometry::TVec3f* pos) const {
     ActorBase_804A5770* found = NULL;
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
-        if (actor != NULL && static_cast<cls_804A6270*>(actor)->fn_80211000(pos)) {
+        if (actor != NULL && static_cast<Quicksand_804A6270*>(actor)->fn_80211000(pos)) {
             found = actor;
             break;
         }
     }
     if (found != NULL) {
         JGeometry::TVec3f push;
-        static_cast<cls_804A6270*>(found)->fn_80210E90(pos, &push);
+        static_cast<Quicksand_804A6270*>(found)->fn_80210E90(pos, &push);
         *pos += push;
     }
 }

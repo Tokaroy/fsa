@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x804A18E0.
-class cls_804A18E0 : public ActorBase_804A5770 {
+class ChainChomp_804A18E0 : public ActorBase_804A5770 {
 public:
-    cls_804A18E0() {}
-    /* 0x08 */ virtual ~cls_804A18E0();
+    ChainChomp_804A18E0() {}
+    /* 0x08 */ virtual ~ChainChomp_804A18E0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

@@ -6,10 +6,10 @@
 #include "game/EnemyBase.h"
 
 // Named after its vtable, 0x804A5E98.
-class cls_804A5E98 : public EnemyBase_804A4808 {
+class BirdFormation_804A5E98 : public EnemyBase_804A4808 {
 public:
-    cls_804A5E98();
-    /* 0x08 */ virtual ~cls_804A5E98();
+    BirdFormation_804A5E98();
+    /* 0x08 */ virtual ~BirdFormation_804A5E98();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24();
@@ -22,7 +22,7 @@ public:
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
-    // 0x8020B3E4: like cls_804A5D60::fn_80209CA4 (a hit that landed clears ENEMY_FLAG_NO_HURT).
+    // 0x8020B3E4: like SlimeFormation_804A5D60::fn_80209CA4 (a hit that landed clears ENEMY_FLAG_NO_HURT).
     void fn_8020B3E4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type);
     // 0x8020B434: in state 1, makes the hitbox empty and sets the velocity along field_0x94; state 2.
     void fn_8020B434();

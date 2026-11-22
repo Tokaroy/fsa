@@ -16,7 +16,7 @@ s32 lbl_80539FE0[2] = {3, 5};
 // FIXME(shotgun): 96.78 %, missing/extra; behaviour drift.
 // the original addresses the 0x2d0 array off the this pointer (mr r5, r3) and has no
 // inner compare; the random/sin part allocates f-registers differently.
-void cls_804A1FA0::init() {
+void BigMoldormTail_804A1FA0::init() {
     mMapBox_0x80.i.x = -6.0f;
     mMapBox_0x80.i.y = -6.0f;
     mMapBox_0x80.f.x = 6.0f;
@@ -85,14 +85,14 @@ void cls_804A1FA0::init() {
 }
 
 // Destructor at 0x8018FB24.
-cls_804A1FA0::~cls_804A1FA0() {
+BigMoldormTail_804A1FA0::~BigMoldormTail_804A1FA0() {
     for (int i = 0; i < 3; i++) {
         releaseEmitter_801EE434(mEmitters[i]);
     }
 }
 
 // 0x8018FAB4.
-void cls_804A1FA0::vfunc_0x44() {
+void BigMoldormTail_804A1FA0::vfunc_0x44() {
     for (int i = 0; i < 3; i++) {
         if (mEmitters[i] != NULL) {
             mEmitters[i]->becomeInvalidEmitter();
@@ -104,7 +104,7 @@ void cls_804A1FA0::vfunc_0x44() {
 // FIXME(shotgun): 96.39 %, different; behaviour drift.
 // the body of `if (field_0x230 == 0)` is laid out
 // with beq/b in the original, ours skips it with bne; register and literal differences in the rest.
-void cls_804A1FA0::update() {
+void BigMoldormTail_804A1FA0::update() {
     JGeometry::TVec3f savedPos = mPos;
     f32 z0 = mPos.z;
     JGeometry::TVec3f savedVel = mVel_0x3c;
@@ -200,7 +200,7 @@ void cls_804A1FA0::update() {
 }
 
 // FIXME(shotgun): 97.92 %, missing/extra; behaviour near.
-void cls_804A1FA0::draw() {
+void BigMoldormTail_804A1FA0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     f32 z0 = mPos.z;
@@ -254,7 +254,7 @@ void cls_804A1FA0::draw() {
 // The velocity along heading mDir_0x98 (sixteenths of a turn) and the two points 6 away, two
 // steps to either side of it.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
-void cls_804A1FA0::setHeading() {
+void BigMoldormTail_804A1FA0::setHeading() {
     s16 angle = (s32)(4000.0f * (f32)mDir_0x98);
     field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
     field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));

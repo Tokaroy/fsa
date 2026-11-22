@@ -3,18 +3,18 @@
 
 // Code: game/act_slime_manager.cpp. Named after its vtable, 0x804A5BD8
 // (docs/names/actors.tsv has SLMN, the slime manager, which the vtable is
-// not yet proven to be). Its constructor, __ct__12cls_804A5BD8Fv (0x80208BE0),
+// not yet proven to be). Its constructor, __ct__21SlimeManager_804A5BD8Fv (0x80208BE0),
 // calls __ct__12cls_804A5B28Fv, so the base is cls_804A5B28 (0x340 bytes).
 
 #include "game/act/tu_80207548.h"
 
-class cls_804A5BD8 : public cls_804A5B28 {
+class SlimeManager_804A5BD8 : public cls_804A5B28 {
 public:
     // 0x80208BE0: the base constructor, then this vtable and zeroed fields.
-    cls_804A5BD8();
+    SlimeManager_804A5BD8();
     // 0x80207D84: the vtables of the base classes and the members' destructors
     // inline, then ActorBase's destructor; deletes this when the flag is > 0.
-    /* 0x08 */ virtual ~cls_804A5BD8();
+    /* 0x08 */ virtual ~SlimeManager_804A5BD8();
     /* 0x0C */ virtual void init();
     // 0x80208924: the tile codes under mPos on this layer, from
     // fn_8022461C and fn_80226850.

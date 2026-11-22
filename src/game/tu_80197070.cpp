@@ -21,7 +21,7 @@
 #include "std/math.h"
 
 
-// .sbss flags of the ZLD2 actor (cls_804A2944).
+// .sbss flags of the ZLD2 actor (PrincessZeldaGanonBattle_804A2944).
 u8 lbl_8053AB98;
 s32 lbl_8053AB9C;
 s32 lbl_8053ABA0;
@@ -112,7 +112,7 @@ void fn_8019CD9C(s32 v) {
     gGameRoot_8053AAF8->fn_8013670C(v);
 }
 
-void cls_804A2944::init() {
+void PrincessZeldaGanonBattle_804A2944::init() {
     lbl_8053ABA8 = 0;
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -220,7 +220,7 @@ void cls_804A2944::init() {
     }
 }
 
-cls_804A2944::~cls_804A2944() {
+PrincessZeldaGanonBattle_804A2944::~PrincessZeldaGanonBattle_804A2944() {
     for (s32 i = 0; i < 13; i++) {
         releaseEmitter_801EE434(mEmitters[i]);
     }
@@ -233,7 +233,7 @@ cls_804A2944::~cls_804A2944() {
     }
 }
 
-void cls_804A2944::vfunc_0x44() {
+void PrincessZeldaGanonBattle_804A2944::vfunc_0x44() {
     // mSpawnParam_0x90 is u32, but the original tests it with a signed cmpwi.
     if ((s32)mSpawnParam_0x90 == 1 && mState != 0x49) {
         if (getActorManager_801F856C()->findActorBySerial_801F666C(field_0x25c) != NULL) {
@@ -274,7 +274,7 @@ void cls_804A2944::vfunc_0x44() {
     }
 }
 
-void cls_804A2944::fn_8019C500(s32 keepY) {
+void PrincessZeldaGanonBattle_804A2944::fn_8019C500(s32 keepY) {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
             if (getField_0x4() == getPlayerLayer_8023DE58(i)) {
@@ -297,7 +297,7 @@ void fn_8019C4F4(JGeometry::TVec2f* v, f32 x, f32 y) {
 }
 
 // FIXME(shotgun): 80.13 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A2944::fn_80198828() {
+void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     JGeometry::TVec3f savedPos;
     fn_801F3D94(1);
     if (mTimers[2] == 0 && (mState == 0x1F || mState == 0x21)) {
@@ -610,7 +610,7 @@ void cls_804A2944::fn_80198828() {
         if (fn_80388CAC(fn_8022EA0C(0), mSerial)) {
             field_0x244 = 0;
             if (field_0x264 >= 0) {
-                cls_804A2944* actor = static_cast<cls_804A2944*>(
+                PrincessZeldaGanonBattle_804A2944* actor = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                     getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
                 if (actor != NULL) {
                     actor->field_0x258 = 0;
@@ -1033,7 +1033,7 @@ void cls_804A2944::fn_80198828() {
         // fall through
     case 0x1D:
         if (field_0x264 >= 0) {
-            cls_804A2944* actor = static_cast<cls_804A2944*>(
+            PrincessZeldaGanonBattle_804A2944* actor = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (actor != NULL) {
                 JGeometry::TVec3f pos;
@@ -1085,7 +1085,7 @@ void cls_804A2944::fn_80198828() {
             field_0x244 = (field_0x244 + 1) & 7;
         }
         if (field_0x264 >= 0) {
-            cls_804A2944* actor = static_cast<cls_804A2944*>(
+            PrincessZeldaGanonBattle_804A2944* actor = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (actor != NULL) {
                 JGeometry::TVec3f pos;
@@ -1175,7 +1175,7 @@ void cls_804A2944::fn_80198828() {
         mDir_0x98 = 3;
         field_0x254 = mDir_0x98 << 3;
         if (field_0x264 >= 0) {
-            cls_804A2944* zld = static_cast<cls_804A2944*>(
+            PrincessZeldaGanonBattle_804A2944* zld = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (zld != NULL) {
                 JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
@@ -1232,7 +1232,7 @@ void cls_804A2944::fn_80198828() {
         break;
     case 0x26:
         if (field_0x264 >= 0) {
-            cls_804A2944* zld = static_cast<cls_804A2944*>(
+            PrincessZeldaGanonBattle_804A2944* zld = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                 getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264));
             if (zld != NULL) {
                 zld->field_0x258 = 0;
@@ -1386,7 +1386,7 @@ void cls_804A2944::fn_80198828() {
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &pos,
                                                                          (field_0x248 << 4) | 2, -1, -1);
             if (serial >= 0) {
-                cls_804A2944* zld = static_cast<cls_804A2944*>(
+                PrincessZeldaGanonBattle_804A2944* zld = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                     getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (zld != NULL) {
                     zld->field_0x280[0].x = field_0x280[0].x;
@@ -1752,7 +1752,7 @@ void cls_804A2944::fn_80198828() {
 
 // The actor `actor` has been reached: the ZLD2 actor gives up one of its field_0x250 tokens
 // (inlined twice in fn_80197EB0).
-static inline void takeToken(cls_804A2944* self, ActorBase_804A5770* actor) {
+static inline void takeToken(PrincessZeldaGanonBattle_804A2944* self, ActorBase_804A5770* actor) {
     actor->field_0x94 = 5;
     self->field_0x250 -= 1;
     if (self->field_0x250 < 0) {
@@ -1770,7 +1770,7 @@ static inline void takeToken(cls_804A2944* self, ActorBase_804A5770* actor) {
 }
 
 // FIXME(shotgun): 95.65 %, missing/extra + reloc-name; behaviour near.
-void cls_804A2944::fn_80197EB0() {
+void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
     switch (mState) {
     case 0x46:
         mState = 0x47;
@@ -1905,7 +1905,7 @@ void cls_804A2944::fn_80197EB0() {
 }
 
 // FIXME(shotgun): 98.74 %, scheduling+regalloc; behaviour clean.
-void cls_804A2944::fn_801979C4() {
+void PrincessZeldaGanonBattle_804A2944::fn_801979C4() {
     for (int i = 0; i < 13; i++) {
         setEmitterPos_8013CB44(mEmitters[i], &mPos, 0, 4, true);
     }
@@ -1971,7 +1971,7 @@ void cls_804A2944::fn_801979C4() {
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('ZLD2', mLayer_0x4, &mPos,
                                                                          (field_0x94 << 4) | 3, -1, -1);
             if (serial >= 0) {
-                cls_804A2944* actor = static_cast<cls_804A2944*>(
+                PrincessZeldaGanonBattle_804A2944* actor = static_cast<PrincessZeldaGanonBattle_804A2944*>(
                     getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (actor != NULL) {
                     actor->field_0x280[0].x = field_0x280[0].x;
@@ -1985,7 +1985,7 @@ void cls_804A2944::fn_801979C4() {
     }
 }
 
-void cls_804A2944::fn_801976E8() {
+void PrincessZeldaGanonBattle_804A2944::fn_801976E8() {
     u32 base = field_0x94 * 6;
     s32 i;
     addCalc2_801F71A4(&field_0x270, 255.0f, 0.3f, 10.0f);
@@ -2055,7 +2055,7 @@ void cls_804A2944::fn_801976E8() {
     }
 }
 
-void cls_804A2944::update() {
+void PrincessZeldaGanonBattle_804A2944::update() {
     JGeometry::TVec3f pos = mPos;
     mLife = 10000;
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x274, 0.3f, 1.0f);
@@ -2089,7 +2089,7 @@ void cls_804A2944::update() {
 }
 
 // FIXME: 99.86 %, same-text; behaviour clean.
-void cls_804A2944::draw() {
+void PrincessZeldaGanonBattle_804A2944::draw() {
     switch (mSpawnParam_0x90) {
     case 0: {
         SpriteParams_801F5AE0 params;

@@ -10,12 +10,12 @@
 // Frostare singleton (Singleton_801DAC6C::fn_801DAF3C in init, cleared by the
 // destructor). Each player hit (checkHitByPlayer_0x5C) drops a rupee and counts in
 // mHitCount; the tenth hit's reaction (onHitReactionEnd_0x74) switches to state 1.
-class cls_804A4F90 : public EnemyBase_804A4808 {
+class FrostareTail_804A4F90 : public EnemyBase_804A4808 {
 public:
     // 0x801DCA30.
-    cls_804A4F90();
+    FrostareTail_804A4F90();
     // 0x801DC990: clears the singleton's mSerial4.
-    /* 0x08 */ virtual ~cls_804A4F90();
+    /* 0x08 */ virtual ~FrostareTail_804A4F90();
     // 0x801DC89C.
     /* 0x0C */ virtual void init();
     // 0x801DC2D4: sprite mAnim.mCel + 0xE3 of "enemy_both_sob.bin".

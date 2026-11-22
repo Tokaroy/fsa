@@ -8,12 +8,12 @@
 // 0x804A4EE8 (config/G4SE01/tu_map.tsv: enemy_both_sob.bin unit).
 // Its updateBehavior_0x9C runs EnemyBase's, then moves the emitter at 0x2E4 to mPos
 // with setEmitterPos_8013CB44 (height 1, depth 0, adjusted).
-class cls_804A4EE8 : public EnemyBase_804A4808 {
+class FrostareChildFrosteye_804A4EE8 : public EnemyBase_804A4808 {
 public:
     // 0x801DBEF4, the deleting destructor (vtable slot 0x08): releases the
     // emitter at 0x2E4 and the serial at 0x198 (the singleton list), then
     // the EnemyBase and ActorBase destructors.
-    /* 0x08 */ virtual ~cls_804A4EE8();
+    /* 0x08 */ virtual ~FrostareChildFrosteye_804A4EE8();
     // 0x801DB2C8 (EnemyBase's player-hit hook): hits every player whose box
     // overlaps mBox (fn_801F2740(-1)), at the centre of mBox (fn_801F3128)
     // or, for a player for whom fn_801F329C holds, that centre converted by
@@ -24,7 +24,7 @@ public:
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // Shotgun pass: the constructor and overrides below are written from the asm only.
-    cls_804A4EE8();
+    FrostareChildFrosteye_804A4EE8();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x88 */ virtual void calcVelocity_0x88();

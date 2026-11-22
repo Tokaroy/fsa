@@ -18,7 +18,7 @@ extern const f32 lbl_8053F650;
 // (0x0), the byte it is looked up by (0x4) and the word fn_801EA6D8 stores
 // (0x8, -1 when free).
 struct Slot_801E9B54 {
-    /* 0x0 */ cls_804A5568* actor;
+    /* 0x0 */ UnknownFSOB_804A5568* actor;
     /* 0x4 */ u8 id;
     /* 0x8 */ s32 value;
 }; // Size: 0xC
@@ -48,7 +48,7 @@ struct cls_801E9B54 {
     // Draws the outlines (fn_801E8080) of the slots' actors.
     inline void drawOutlines();
     // Draws the slots' sprites (fn_801E801C) and then those of the actors the
-    // serials name (a cls_804A5418's fn_801E6DE8).
+    // serials name (a IronPot_804A5418's fn_801E6DE8).
     inline void drawSprites();
     // 0x801EA594: drops the slots whose value is -1 (releasing their actor's
     // bytes 0x11C / 0x11D), sorts the rest with fn_801EA8C0 and hands each

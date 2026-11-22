@@ -6,10 +6,10 @@
 #include "game/EnemyBase.h"
 
 // Named after its vtable, 0x804A5F40.
-class cls_804A5F40 : public EnemyBase_804A4808 {
+class ZolSmallSlime_804A5F40 : public EnemyBase_804A4808 {
 public:
-    cls_804A5F40();
-    /* 0x08 */ virtual ~cls_804A5F40();
+    ZolSmallSlime_804A5F40();
+    /* 0x08 */ virtual ~ZolSmallSlime_804A5F40();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);

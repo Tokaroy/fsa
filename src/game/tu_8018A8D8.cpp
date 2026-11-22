@@ -171,11 +171,11 @@ s32 fn_8018E89C() {
 }
 
 // Sets field_0x234.
-void cls_804A1E50::fn_8018E894(s32 value) {
+void BigPoe2_804A1E50::fn_8018E894(s32 value) {
     field_0x234 = value;
 }
 
-void cls_804A1E50::init() {
+void BigPoe2_804A1E50::init() {
     mMapBox_0x80.i.x = -8.0f;
     mMapBox_0x80.i.y = -8.0f;
     mMapBox_0x80.f.x = 8.0f;
@@ -252,7 +252,7 @@ void cls_804A1E50::init() {
     }
 }
 
-void cls_804A1E50::fn_8018E30C(s32 anim) {
+void BigPoe2_804A1E50::fn_8018E30C(s32 anim) {
     JGeometry::TVec3f pos;
     pos.set(mPos);
     pos.x -= 4.0f;
@@ -331,7 +331,7 @@ void cls_804A1E50::fn_8018E30C(s32 anim) {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-void cls_804A1E50::fn_8018DFCC() {
+void BigPoe2_804A1E50::fn_8018DFCC() {
     f32 x = mPos.x;
     f32 y = mPos.y;
     f32 z = mPos.z;
@@ -439,7 +439,7 @@ void cls_804A1E50::fn_8018DFCC() {
 }
 
 // FIXME(shotgun): 98.79 %, scheduling+regalloc + reloc-name; behaviour clean.
-void cls_804A1E50::fn_8018DC70(s32 mode) {
+void BigPoe2_804A1E50::fn_8018DC70(s32 mode) {
     if (field_0x26c == 1) {
         return;
     }
@@ -520,7 +520,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
     }
 }
 
-bool cls_804A1E50::fn_8018DA6C() {
+bool BigPoe2_804A1E50::fn_8018DA6C() {
     if (field_0x27b == 1) {
         return false;
     }
@@ -563,7 +563,7 @@ u16 pool_8053E1B0(f32 x, f32 y) {
     return JMath::atanTable_.atan2_(x, y) * 10430.378f;
 }
 
-cls_804A1E50::~cls_804A1E50() {
+BigPoe2_804A1E50::~BigPoe2_804A1E50() {
     releaseEmitter_801EE434(field_0x328);
     releaseEmitter_801EE434(field_0x32c);
     releaseEmitter_801EE434(field_0x330);
@@ -574,7 +574,7 @@ cls_804A1E50::~cls_804A1E50() {
 }
 
 // FIXME(shotgun): 97.41 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A1E50::update() {
+void BigPoe2_804A1E50::update() {
     JGeometry::TBox2f box50;
     fn_8017EC5C(&box50, -30.0f, -30.0f, 30.0f, 30.0f);
     JGeometry::TVec2f vec14;
@@ -1304,7 +1304,7 @@ void cls_804A1E50::update() {
                 for (s32 i = 0; i < count; i++) {
                     ActorBase_804A5770* pooh = poohs[i];
                     if (pooh != NULL) {
-                        static_cast<cls_804A1E50*>(pooh)->fn_8018E894(1);
+                        static_cast<BigPoe2_804A1E50*>(pooh)->fn_8018E894(1);
                     }
                 }
             }
@@ -1568,7 +1568,7 @@ void cls_804A1E50::update() {
 
 
 // FIXME(shotgun): 87.08 %, missing/extra + reloc-name; behaviour near.
-void cls_804A1E50::draw() {
+void BigPoe2_804A1E50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;
@@ -1643,7 +1643,7 @@ void cls_804A1E50::draw() {
     }
 }
 
-void cls_804A1E50::die_0x24() {
+void BigPoe2_804A1E50::die_0x24() {
     startSound_801F0E34(0x40015, 0);
     startBossDeath_0x28(2, 0.0f, 16.0f);
 }

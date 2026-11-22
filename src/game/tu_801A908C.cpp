@@ -13,7 +13,7 @@ s32 lbl_8053ABD0;
 extern const u16 lbl_804A2F18[10];
 extern const u16 lbl_8053A108[4];
 
-void cls_804A2FB0::fn_801AA8F4() {
+void Manhandla_804A2FB0::fn_801AA8F4() {
     if (field_0x234[0] == 0) {
         field_0x24c = field_0x25c + field_0x240;
         switch (field_0x260) {
@@ -62,7 +62,7 @@ void cls_804A2FB0::fn_801AA8F4() {
 }
 
 // FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour clean.
-void cls_804A2FB0::init() {
+void Manhandla_804A2FB0::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
@@ -107,7 +107,7 @@ void cls_804A2FB0::init() {
             field_0x270[i] = getActorManager_801F856C()->spawnActor_801F9484('TTAT', mLayer_0x4, &field_0x280[i], i + 1, -1, -1);
             s32 serial = field_0x270[i];
             if (serial >= 0) {
-                cls_804A2FB0* child = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != 0) {
                     child->field_0x268 = mSerial;
                 }
@@ -126,7 +126,7 @@ void cls_804A2FB0::init() {
     }
 }
 
-cls_804A2FB0::~cls_804A2FB0() {
+Manhandla_804A2FB0::~Manhandla_804A2FB0() {
     releaseEmitter_801EE434(field_0x2b8);
     if (field_0x258 == 0 && gGameRoot_8053AAF8->field_0x4c != 9) {
         gGameRoot_8053AAF8->fn_80138B7C();
@@ -137,13 +137,13 @@ cls_804A2FB0::~cls_804A2FB0() {
 }
 
 // FIXME(shotgun): 99.85 %, regalloc-only + reloc-name; behaviour drift.
-void cls_804A2FB0::fn_801A9CF4() {
+void Manhandla_804A2FB0::fn_801A9CF4() {
     mLife = 10000;
     fn_801F3D94(0);
     if (field_0x250 > 0 && field_0x26c == 0) {
         s32 parentSerial = field_0x268;
         if (parentSerial >= 0) {
-            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
+            Manhandla_804A2FB0* parent = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
             if (parent != 0 && parent->field_0x250 > 0) {
                 mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
                 s32 hit = fn_801F285C(0, 0, true, -1);
@@ -182,7 +182,7 @@ void cls_804A2FB0::fn_801A9CF4() {
     case 6:
         s32 parentSerial = field_0x268;
         if (parentSerial >= 0) {
-            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
+            Manhandla_804A2FB0* parent = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
             if (parent != 0 && parent->field_0x250 <= 0) {
                 break;
             }
@@ -201,7 +201,7 @@ void cls_804A2FB0::fn_801A9CF4() {
         if (field_0x250 == 0) {
             s32 parentSerial = field_0x268;
             if (parentSerial >= 0) {
-                cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
+                Manhandla_804A2FB0* parent = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
                 if (parent != 0) {
                     parent->field_0x250++;
                 }
@@ -252,7 +252,7 @@ void cls_804A2FB0::fn_801A9CF4() {
 }
 
 // FIXME(shotgun): 94.62 %, different; behaviour near.
-void cls_804A2FB0::fn_801A96B4() {
+void Manhandla_804A2FB0::fn_801A96B4() {
     f32 speed = 0.0f;
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     mMapBox_0x80.set(-40.0f, -40.0f, 40.0f, 40.0f);
@@ -294,7 +294,7 @@ void cls_804A2FB0::fn_801A96B4() {
         s32 stepAngle = 0;
         for (int i = 0; i < 4; i++) {
             if (field_0x270[i] != 0) {
-                cls_804A2FB0* child = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[i]));
+                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[i]));
                 if (child != 0) {
                     if (field_0x26c == 1) {
                         child->field_0x26c = 1;
@@ -401,7 +401,7 @@ void cls_804A2FB0::fn_801A96B4() {
     }
 }
 
-void cls_804A2FB0::update() {
+void Manhandla_804A2FB0::update() {
     switch (field_0x258) {
     case 0:
     case 5:
@@ -422,7 +422,7 @@ void cls_804A2FB0::update() {
 }
 
 // FIXME(shotgun): 99.00 %, regalloc-only; behaviour clean.
-void cls_804A2FB0::fn_801A9374() {
+void Manhandla_804A2FB0::fn_801A9374() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;
@@ -440,7 +440,7 @@ void cls_804A2FB0::fn_801A9374() {
 // regalloc-only: the original keeps the angle (and then
 // cos y) in f30 and cos x in f31, ours the other way round, and sin x / sin z
 // get f29 / f27 there, f27 / f29 here.
-void cls_804A2FB0::fn_801A90D4() {
+void Manhandla_804A2FB0::fn_801A90D4() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;
@@ -454,7 +454,7 @@ void cls_804A2FB0::fn_801A90D4() {
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 }
 
-void cls_804A2FB0::draw() {
+void Manhandla_804A2FB0::draw() {
     switch (field_0x258) {
     case 0:
     case 5:
