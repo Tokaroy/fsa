@@ -82,7 +82,7 @@ void cls_804A4F90::vfunc_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.z = 0.0f;
     if (mState == 2) {
-        field_0x3c.y += __fabsf(lbl_8053EFB8);
+        field_0x3c.y += JMAAbs(lbl_8053EFB8);
     } else {
         field_0x3c.y = 0.0f;
     }
