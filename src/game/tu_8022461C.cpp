@@ -123,7 +123,7 @@ static inline bool screenValueIs(s32 value) {
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
 template <class V>
-static inline u16 collisionCodeAt(const V* pos, int layer) {
+static inline int collisionCodeAt(const V* pos, int layer) {
     u16 code = lbl_8046CB88[rawTileAt(pos, layer)];
     if (viewLayerFlag(layer) != 0) {
         if (code == 0) {
@@ -222,9 +222,9 @@ bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag) {
 
 // Whether the tile at pos blocks, from its collision code (and the position inside the cell for
 // the half-cell codes); `flag` selects further cases.
-// FIXME(shotgun): 98.41 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.56 %, scheduling+regalloc; behaviour clean.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
-    s32 code = collisionCodeAt(pos, layer);
+    s32 code = (u16)collisionCodeAt(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
         return false;
     }
@@ -241,10 +241,10 @@ bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
         return false;
     }
     if (code == 0x25) {
-        return getGameView_802D6A9C()->field_0x171 == 0;
+        return (u8)!getGameView_802D6A9C()->field_0x171;
     }
     if (code == 0x26) {
-        return getGameView_802D6A9C()->field_0x171 == 1;
+        return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
     }
     // Half and quarter cells: which 8-unit part of the 16-unit cell is solid.
     if (code == 4 && ((s32)pos->y & 0xF) >= 8) {
@@ -280,18 +280,18 @@ bool fn_80225EF4(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // Whether the collision code at pos is one of the first nine of lbl_8046AAC8.
-// FIXME(shotgun): 96.35 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.62 %, scheduling+regalloc; behaviour clean.
 bool fn_80225BE4(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AAC8, 9);
 }
 
-// FIXME(shotgun): 96.35 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.62 %, scheduling+regalloc; behaviour clean.
 bool fn_802258D4(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AAC8, 9);
 }
 
 // Whether the collision code at pos is one of the first five of lbl_8046AADC.
-// FIXME(shotgun): 95.94 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.47 %, scheduling+regalloc; behaviour clean.
 bool fn_80225614(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AADC, 5);
 }
@@ -392,23 +392,7 @@ bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer) {
 // The tile's collision code: the raw tile code (as getRawTile_80226850) through lbl_8046CB88, adjusted
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
-// FIXME(shotgun): 95.98 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.30 %, missing/extra; behaviour near.
 u16 getTileCollisionCode_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
-    u16 raw = rawTileAt(pos, layer);
-    u16 code = lbl_8046CB88[raw];
-    if (viewLayerFlag(layer) != 0) {
-        if (code == 0) {
-            return 2;
-        } else if (code == 0x61) {
-            return 0;
-        }
-    } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) ||
-            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3 &&
-             screenValueIs(0x10) &&
-             pos->y > 2470.0f)) {
-            return 0x51;
-        }
-    }
-    return code;
+    return collisionCodeAt(pos, layer);
 }
