@@ -41,11 +41,11 @@ static inline void facePlayer(ShootingGallery_804A2B18* self, s32 player) {
 
 static inline void setCameraScriptBox(const JGeometry::TBox2f& box) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 5;
-        camera->field_0x808.set(box);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 5;
+        camera->mFocusBox_0x808.set(box);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 

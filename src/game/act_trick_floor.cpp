@@ -381,8 +381,8 @@ void TrickFloor_804A83A0::update() {
             field_0x230 = 7;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f4 == 0) {
-            camera->field_0x7f5 = 1;
+        if (camera->mFocusOverride_0x7f4 == 0) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
         break;
     }
@@ -416,8 +416,8 @@ void TrickFloor_804A83A0::update() {
             field_0x244--;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f4 == 0) {
-            camera->field_0x7f5 = 1;
+        if (camera->mFocusOverride_0x7f4 == 0) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
         break;
     }

@@ -162,12 +162,12 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
         pos.y -= 8.0f;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.set(pos.x, pos.y, pos.x, pos.y);
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
+        if (cam->mBlendBoxOn_0x840 == 0) {
+            cam->mBlendBoxOn_0x840 = 1;
+            cam->mBlendBox_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            cam->mBlendWeight_0x854 = 1.0f;
+            cam->mMargin_0x1d4 = -1.0f;
+            cam->mMinHalfWidth_0x1d8 = -1.0f;
         }
         cls_804A03A8* spot = gGameRoot2_8053AB10->field_0x30;
         if (spot->field_0x284 == 0) {
@@ -193,12 +193,12 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
         pos.y -= 8.0f;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.set(pos.x, pos.y, pos.x, pos.y);
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
+        if (cam->mBlendBoxOn_0x840 == 0) {
+            cam->mBlendBoxOn_0x840 = 1;
+            cam->mBlendBox_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            cam->mBlendWeight_0x854 = 1.0f;
+            cam->mMargin_0x1d4 = -1.0f;
+            cam->mMinHalfWidth_0x1d8 = -1.0f;
         }
         cls_804A03A8* spot = gGameRoot2_8053AB10->field_0x30;
         if (spot->field_0x284 == 0) {
@@ -241,11 +241,11 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         break;
     case 9: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 4;
-            cam->field_0x7fc.set(mPos.x, mPos.y, mPos.z);
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 4;
+            cam->mFocusPos_0x7fc.set(mPos.x, mPos.y, mPos.z);
+            cam->mOverrideBlend_0x7f6 = 0;
         }
         cls_804A03A8* spot = gGameRoot2_8053AB10->field_0x30;
         if (spot->field_0x284 == 0) {

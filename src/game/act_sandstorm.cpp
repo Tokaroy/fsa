@@ -14,8 +14,8 @@ void Sandstorm_804AA280::init() {
     mKind = mSpawnParam_0x90 & 0xF;
     field_0x254 = (mSpawnParam_0x90 >> 4) & 0xF;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    mPos244.x = -camera->field_0x4[0][3];
-    mPos244.y = -camera->field_0x4[1][3];
+    mPos244.x = -camera->mViewMtx_0x4[0][3];
+    mPos244.y = -camera->mViewMtx_0x4[1][3];
     mPos244.z = 0.0f;
     if ((mKind & 1) != 0) {
         mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &mPos244, 0x3E6, 1, 1, NULL, NULL, true, 1.0f);
@@ -42,8 +42,8 @@ Sandstorm_804AA280::~Sandstorm_804AA280() {
 
 void Sandstorm_804AA280::update() {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    mPos244.x = -camera->field_0x4[0][3];
-    mPos244.y = -camera->field_0x4[1][3];
+    mPos244.x = -camera->mViewMtx_0x4[0][3];
+    mPos244.y = -camera->mViewMtx_0x4[1][3];
     mPos244.z = 0.0f;
     setEmitterPos_8013CB44(mEmitter, &mPos244, 1, 1, true);
     if (mTimer != 0) {

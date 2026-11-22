@@ -707,11 +707,11 @@ void cls_804AE088::fn_8036A65C() {
 static inline void setCameraBox(const JGeometry::TBox2f& box) {
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 5;
-        camera->field_0x808.set(box);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 5;
+        camera->mFocusBox_0x808.set(box);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -769,11 +769,11 @@ void cls_804AE088::fn_80369DDC() {
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (camera->field_0x7f5 == 0) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = 4;
-                camera->field_0x7fc.set(pos);
-                camera->field_0x7f6 = 0;
+            if (camera->mShowWholeArea_0x7f5 == 0) {
+                camera->mFocusOverride_0x7f4 = 1;
+                camera->mFocusMode_0x7f8 = 4;
+                camera->mFocusPos_0x7fc.set(pos);
+                camera->mOverrideBlend_0x7f6 = 0;
             }
         }
     }
@@ -827,8 +827,8 @@ void cls_804AE088::fn_80369DDC() {
     case 6: {
         field_0x24c = 0xE1;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        camPos.x = -camera->field_0x4[0][3];
-        camPos.y = -camera->field_0x4[1][3];
+        camPos.x = -camera->mViewMtx_0x4[0][3];
+        camPos.y = -camera->mViewMtx_0x4[1][3];
         camPos.z = 0.0f;
         if (PSVECDistance(&pos, &camPos) < 0.1f) {
             vfunc_0x60(7);
@@ -846,8 +846,8 @@ void cls_804AE088::fn_80369DDC() {
     case 8: {
         field_0x24c = 0xE1;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        camPos.x = -camera->field_0x4[0][3];
-        camPos.y = -camera->field_0x4[1][3];
+        camPos.x = -camera->mViewMtx_0x4[0][3];
+        camPos.y = -camera->mViewMtx_0x4[1][3];
         camPos.z = 0.0f;
         if (PSVECDistance(&pos, &camPos) < 0.1f) {
             vfunc_0x60(9);
@@ -861,8 +861,8 @@ void cls_804AE088::fn_80369DDC() {
     case 10: {
         field_0x24c = 0xE1;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        camPos.x = -camera->field_0x4[0][3];
-        camPos.y = -camera->field_0x4[1][3];
+        camPos.x = -camera->mViewMtx_0x4[0][3];
+        camPos.y = -camera->mViewMtx_0x4[1][3];
         camPos.z = 0.0f;
         if (PSVECDistance(&pos, &camPos) >= 0.1f) {
             break;
@@ -979,11 +979,11 @@ void cls_804AE088::fn_80368CD8() {
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (camera->field_0x7f5 == 0) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = 4;
-                camera->field_0x7fc.set(pos);
-                camera->field_0x7f6 = 0;
+            if (camera->mShowWholeArea_0x7f5 == 0) {
+                camera->mFocusOverride_0x7f4 = 1;
+                camera->mFocusMode_0x7f8 = 4;
+                camera->mFocusPos_0x7fc.set(pos);
+                camera->mOverrideBlend_0x7f6 = 0;
             }
         }
     }

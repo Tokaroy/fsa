@@ -548,7 +548,7 @@ static inline bool isPaused() {
 }
 
 void cls_804B146C::fn_80425F6C() {
-    f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
+    f32 zoom = gGameRoot2_8053AB10->field_0x24->mZoom_0x858;
     f32 scale = lbl_8050DB0C.field_0x30[4];
     f32 sx = scale * (JFWDisplay::getManager()->getEfbWidth() / zoom);
     f32 sy = scale * (JFWDisplay::getManager()->getEfbHeight() / zoom);

@@ -399,12 +399,12 @@ void KnightOfHyrule_804AABA8::update() {
     if (mState >= 3) {
         if (mState < 13 || (mState == 13 && field_0x27c == 0)) {
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-            if (cam->field_0x840 == 0) {
-                cam->field_0x840 = 1;
-                cam->field_0x844.i.x = cam->field_0x844.f.x = field_0x268.x;
-                cam->field_0x844.i.y = cam->field_0x844.f.y = field_0x268.y;
-                cam->field_0x854 = 1.0f;
-                cam->field_0x1d8 = cam->field_0x1d4 = -1.0f;
+            if (cam->mBlendBoxOn_0x840 == 0) {
+                cam->mBlendBoxOn_0x840 = 1;
+                cam->mBlendBox_0x844.i.x = cam->mBlendBox_0x844.f.x = field_0x268.x;
+                cam->mBlendBox_0x844.i.y = cam->mBlendBox_0x844.f.y = field_0x268.y;
+                cam->mBlendWeight_0x854 = 1.0f;
+                cam->mMinHalfWidth_0x1d8 = cam->mMargin_0x1d4 = -1.0f;
             }
         } else {
             JGeometry::TBox2f box;
@@ -418,11 +418,11 @@ void KnightOfHyrule_804AABA8::update() {
             box.i.y += field_0x268.y;
             box.f.y += field_0x268.y;
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-            if (cam->field_0x7f5 == 0) {
-                cam->field_0x7f4 = 1;
-                cam->field_0x7f8 = 5;
-                cam->field_0x808.set(box);
-                cam->field_0x7f6 = 0;
+            if (cam->mShowWholeArea_0x7f5 == 0) {
+                cam->mFocusOverride_0x7f4 = 1;
+                cam->mFocusMode_0x7f8 = 5;
+                cam->mFocusBox_0x808.set(box);
+                cam->mOverrideBlend_0x7f6 = 0;
             }
         }
         cls_804A03A8* unk30 = gGameRoot2_8053AB10->field_0x30;

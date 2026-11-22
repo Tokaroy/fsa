@@ -557,7 +557,7 @@ void cls_804A6550::vfunc_0xA0() {
         switch (mState) {
         case 0:
         case 1:
-            gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+            gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
             break;
         }
         return;
@@ -583,13 +583,13 @@ void cls_804A6550::vfunc_0xA0() {
             if (containsPoint(*box, pos)) {
                 if (field_0x2b4 == 0 && (mState == 4 || mState == 5)) {
                     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-                    if (camera->field_0x7f5 == 0) {
-                        camera->field_0x7f4 = 1;
-                        camera->field_0x7f8 = 4;
-                        camera->field_0x7fc.x = pos.x;
-                        camera->field_0x7fc.y = pos.y;
-                        camera->field_0x7fc.z = pos.z;
-                        camera->field_0x7f6 = 0;
+                    if (camera->mShowWholeArea_0x7f5 == 0) {
+                        camera->mFocusOverride_0x7f4 = 1;
+                        camera->mFocusMode_0x7f8 = 4;
+                        camera->mFocusPos_0x7fc.x = pos.x;
+                        camera->mFocusPos_0x7fc.y = pos.y;
+                        camera->mFocusPos_0x7fc.z = pos.z;
+                        camera->mOverrideBlend_0x7f6 = 0;
                     }
                 } else {
                     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);

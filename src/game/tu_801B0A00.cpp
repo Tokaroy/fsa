@@ -18,34 +18,34 @@ static const s32 lbl_804A35A0[3] = {2, 1, 0};
 // The scripted camera move towards pos (mode 4).
 static inline void setCameraTarget(const JGeometry::TVec3f& pos) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 4;
-        camera->field_0x7fc.set(pos);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 4;
+        camera->mFocusPos_0x7fc.set(pos);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 
 // The scripted camera move to box (mode 5).
 static inline void setCameraBox(const JGeometry::TBox2f& box) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = 5;
-        camera->field_0x808.set(box);
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = 5;
+        camera->mFocusBox_0x808.set(box);
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 
 static inline void setCameraFocus(const JGeometry::TVec3f& pos) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
-        camera->field_0x844.i.x = camera->field_0x844.f.x = pos.x;
-        camera->field_0x844.i.y = camera->field_0x844.f.y = pos.y;
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos.x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos.y;
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 

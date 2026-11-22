@@ -159,18 +159,18 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         camera->addFocusPoint_8030C210(&mPos);
         camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
+        if (camera->mBlendBoxOn_0x840 == 0) {
+            camera->mBlendBoxOn_0x840 = 1;
             // The original reads mPos.x and mPos.y once for both corners; direct reads reload them.
             f32 posX = mPos.x;
-            camera->field_0x844.f.x = posX;
-            camera->field_0x844.i.x = posX;
+            camera->mBlendBox_0x844.f.x = posX;
+            camera->mBlendBox_0x844.i.x = posX;
             f32 posY = mPos.y;
-            camera->field_0x844.f.y = posY;
-            camera->field_0x844.i.y = posY;
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
+            camera->mBlendBox_0x844.f.y = posY;
+            camera->mBlendBox_0x844.i.y = posY;
+            camera->mBlendWeight_0x854 = 1.0f;
+            camera->mMargin_0x1d4 = -1.0f;
+            camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
         fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(fn_8022EA0C(fn_8012285C()), mSerial)) {
@@ -303,13 +303,13 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
 
     case 13: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = mPos.x;
-            camera->field_0x7fc.y = mPos.y;
-            camera->field_0x7fc.z = mPos.z;
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 4;
+            camera->mFocusPos_0x7fc.x = mPos.x;
+            camera->mFocusPos_0x7fc.y = mPos.y;
+            camera->mFocusPos_0x7fc.z = mPos.z;
+            camera->mOverrideBlend_0x7f6 = 0;
         }
         field_0x380 = 0.7f;
         if (vfunc_0xC8(JGeometry::TVec3f(0.0f, 8.0f, 0.0f), field_0x380)) {

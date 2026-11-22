@@ -6,12 +6,12 @@
 
 static const u32 lbl_8046F260[4] = {0x3E, 0x3E, 0x3E, 0x3E};
 
-// Takes the scripted-camera slot (Camera_804AA9E4::field_0x7f4/0x7f5) when it is free.
+// Takes the scripted-camera slot (Camera_804AA9E4::mFocusOverride_0x7f4/0x7f5) when it is free.
 static inline bool takeCamera(Camera_804AA9E4* cam) {
     bool got = false;
-    if (cam->field_0x7f4 == 0) {
+    if (cam->mFocusOverride_0x7f4 == 0) {
         got = true;
-        cam->field_0x7f5 = 1;
+        cam->mShowWholeArea_0x7f5 = 1;
     }
     return got;
 }

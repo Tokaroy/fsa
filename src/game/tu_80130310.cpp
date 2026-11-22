@@ -80,11 +80,11 @@ void cls_8049EA88::update() {
     if (field_0x230 >= 2 && field_0x230 <= 4) {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 5;
-            camera->field_0x808.set(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
-            camera->field_0x7f6 = 0;
+        if (camera->mShowWholeArea_0x7f5 == 0) {
+            camera->mFocusOverride_0x7f4 = 1;
+            camera->mFocusMode_0x7f8 = 5;
+            camera->mFocusBox_0x808.set(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
+            camera->mOverrideBlend_0x7f6 = 0;
         }
     }
     switch (field_0x230) {

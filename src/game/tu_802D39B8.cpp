@@ -521,7 +521,7 @@ void GameView_804A9950::vfunc_0xC() {
     getActorManager_801F856C()->spawnActor_801F9484('RANK', 0, &rankPos, 0, -1, -1);
     JGeometry::TVec3f gbaoPos(0.0f, 0.0f, 0.0f);
     getActorManager_801F856C()->spawnActor_801F9484('GBAO', 0, &gbaoPos, 0, -1, -1);
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         field_0xc4 = 36000;
@@ -566,7 +566,7 @@ void GameView_804A9950::vfunc_0x10() {
         y = -y;
         x = -x;
     }
-    gGameRoot2_8053AB10->field_0x24->field_0x1dc.set(x, y, 0.0f);
+    gGameRoot2_8053AB10->field_0x24->mOffset_0x1dc.set(x, y, 0.0f);
 
     for (int i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
@@ -730,7 +730,7 @@ u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
 }
 
 u8 GameView_804A9950::fn_802DCD0C() {
-    return gGameRoot2_8053AB10->field_0x24->field_0x1e8;
+    return gGameRoot2_8053AB10->field_0x24->mInTransition_0x1e8;
 }
 
 // FIXME: 98.81 %, missing/extra; behaviour clean.
@@ -800,7 +800,7 @@ void GameView_804A9950::fn_802DBD60() {
         pos.z = 0.0f;
         getActorManager_801F856C()->spawnActor_801F9484('GLWP', 0, &pos, 0x100, -1, -1);
     }
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         field_0xc4 = 36000;
@@ -822,14 +822,14 @@ void GameView_804A9950::fn_802DBD60() {
     }
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
         // Chained so the corners are stored f.x, i.x, f.y, i.y, as the target does.
-        camera->field_0x844.i.x = camera->field_0x844.f.x = pos->x;
-        camera->field_0x844.i.y = camera->field_0x844.f.y = pos->y;
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -857,7 +857,7 @@ void GameView_804A9950::fn_802DB6F0() {
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
     for (int i = 0; i < 4; i++) {
@@ -865,14 +865,14 @@ void GameView_804A9950::fn_802DB6F0() {
     }
     JGeometry::TVec3f* pos = fn_8023E604(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
         // Chained so the corners are stored f.x, i.x, f.y, i.y, as the target does.
-        camera->field_0x844.i.x = camera->field_0x844.f.x = pos->x;
-        camera->field_0x844.i.y = camera->field_0x844.f.y = pos->y;
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -914,19 +914,19 @@ void GameView_804A9950::fn_802DA8DC() {
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
     fn_8023F78C();
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
-        camera->field_0x844.i.x = camera->field_0x844.f.x = pos->x;
-        camera->field_0x844.i.y = camera->field_0x844.f.y = pos->y;
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
@@ -1000,24 +1000,24 @@ void GameView_804A9950::fn_802DA010() {
     fn_8022BD70();
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    if (camera->field_0x840 == 0) {
-        camera->field_0x840 = 1;
+    if (camera->mBlendBoxOn_0x840 == 0) {
+        camera->mBlendBoxOn_0x840 = 1;
         // Chained so the corners are stored f.x, i.x, f.y, i.y, as the target does.
-        camera->field_0x844.i.x = camera->field_0x844.f.x = pos->x;
-        camera->field_0x844.i.y = camera->field_0x844.f.y = pos->y;
-        camera->field_0x854 = 1.0f;
-        camera->field_0x1d4 = -1.0f;
-        camera->field_0x1d8 = -1.0f;
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
+        camera->mBlendWeight_0x854 = 1.0f;
+        camera->mMargin_0x1d4 = -1.0f;
+        camera->mMinHalfWidth_0x1d8 = -1.0f;
     }
     fn_802D9FBC();
 }
 
 u8 GameView_804A9950::fn_802DA000() {
-    return gGameRoot2_8053AB10->field_0x24->field_0x1e8;
+    return gGameRoot2_8053AB10->field_0x24->mInTransition_0x1e8;
 }
 
 void GameView_804A9950::fn_802D9FF4(s32 a, s32 b) {
@@ -1062,7 +1062,7 @@ void GameView_804A9950::fn_802D9CD8() {
     fn_802D92F0();
     fn_802D8D50(false);
     fn_802D8328(true, false);
-    gGameRoot2_8053AB10->field_0x24->field_0x154.set(mVisibleBox);
+    gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
 }
 
@@ -2794,8 +2794,8 @@ void GameView_804A9950::fn_802D3A18() {
         } else if (field_0xc4 == 0) {
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
             JGeometry::TVec3f pos;
-            pos.x = -camera->field_0x4[0][3];
-            pos.y = -camera->field_0x4[1][3];
+            pos.x = -camera->mViewMtx_0x4[0][3];
+            pos.y = -camera->mViewMtx_0x4[1][3];
             pos.z = 0.0f;
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TUTM, 0, &pos, 0, -1, -1);

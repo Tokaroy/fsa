@@ -90,11 +90,11 @@ extern const s32 lbl_8049C8D8[]; // frames before the next mole, by player count
 // Points the scripted camera at `pos` unless a move is already running.
 static inline void focusCamera(const JGeometry::TVec3f& pos) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x7f5 == 0) {
-        cam->field_0x7f4 = 1;
-        cam->field_0x7f8 = 4;
-        cam->field_0x7fc.set(pos);
-        cam->field_0x7f6 = 0;
+    if (cam->mShowWholeArea_0x7f5 == 0) {
+        cam->mFocusOverride_0x7f4 = 1;
+        cam->mFocusMode_0x7f8 = 4;
+        cam->mFocusPos_0x7fc.set(pos);
+        cam->mOverrideBlend_0x7f6 = 0;
     }
 }
 

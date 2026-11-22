@@ -1038,16 +1038,16 @@ void Player_804A6F38::fn_802870C8() {
         fn_80246B10(0x40)) {
         if (fn_80246B10(0x100)) {
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (!camera->field_0x7f4) {
-                camera->field_0x7f5 = 1;
+            if (!camera->mFocusOverride_0x7f4) {
+                camera->mShowWholeArea_0x7f5 = 1;
             }
         } else if (fn_80246B10(0x200)) {
             s32 player = getIndex();
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            if (!camera->field_0x7f5) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = player;
-                camera->field_0x7f6 = 1;
+            if (!camera->mShowWholeArea_0x7f5) {
+                camera->mFocusOverride_0x7f4 = 1;
+                camera->mFocusMode_0x7f8 = player;
+                camera->mOverrideBlend_0x7f6 = 1;
             }
         }
     }

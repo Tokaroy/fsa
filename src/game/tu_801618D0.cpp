@@ -150,15 +150,15 @@ void cls_804A0440::update() {
     y1 += py;
     if (updateBossDeath_0x2C(0.0f, 0.0f, 50.0f)) {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.f.x = mPos.x;
-            cam->field_0x844.i.x = mPos.x;
-            cam->field_0x844.f.y = mPos.y;
-            cam->field_0x844.i.y = mPos.y;
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
+        if (cam->mBlendBoxOn_0x840 == 0) {
+            cam->mBlendBoxOn_0x840 = 1;
+            cam->mBlendBox_0x844.f.x = mPos.x;
+            cam->mBlendBox_0x844.i.x = mPos.x;
+            cam->mBlendBox_0x844.f.y = mPos.y;
+            cam->mBlendBox_0x844.i.y = mPos.y;
+            cam->mBlendWeight_0x854 = 1.0f;
+            cam->mMargin_0x1d4 = -1.0f;
+            cam->mMinHalfWidth_0x1d8 = -1.0f;
         }
         cls_804A03A8* spot = gGameRoot2_8053AB10->field_0x30;
         if (spot->field_0x284 == 0) {
@@ -262,11 +262,11 @@ void cls_804A0440::update() {
         break;
     case 1: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x7f5 == 0) {
-            cam->field_0x7f4 = 1;
-            cam->field_0x7f8 = 4;
-            cam->field_0x7fc = mPos;
-            cam->field_0x7f6 = 0;
+        if (cam->mShowWholeArea_0x7f5 == 0) {
+            cam->mFocusOverride_0x7f4 = 1;
+            cam->mFocusMode_0x7f8 = 4;
+            cam->mFocusPos_0x7fc = mPos;
+            cam->mOverrideBlend_0x7f6 = 0;
         }
         if (field_0x258 == 1 && field_0x234 == 1) {
             getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 7) & 0x1F, false, 0xFF);

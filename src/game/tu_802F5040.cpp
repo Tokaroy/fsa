@@ -354,12 +354,12 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
 // FIXME: 98.90 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
     if (field_0x248 && field_0x24c.f.x != 0) {
-        gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
+        gGameRoot2_8053AB10->field_0x24->mScreenRect_0x144 = field_0x24c;
     } else {
         JGeometry::TBox2<u32> rect;
         rect.i.set(0, 0);
         rect.f.set(JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight());
-        gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
+        gGameRoot2_8053AB10->field_0x24->mScreenRect_0x144 = rect;
     }
     fn_802FC80C();
     drawQueuedSprites_802FF3F0(this);
@@ -903,8 +903,8 @@ void TileMap_804AA858::fn_802FCE74() {
             frame = field_0xfc->field_0x9e;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (!camera->field_0x7f4) {
-            camera->field_0x7f5 = 1;
+        if (!camera->mFocusOverride_0x7f4) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
         const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
         f32 x = dx + pos40.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];

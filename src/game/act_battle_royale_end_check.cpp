@@ -26,10 +26,10 @@ static void (BattleRoyaleEndCheck_804B0380::*lbl_804B032C[7])() = {
 
 // The scripted camera move (Camera.h): the target goes in 0x7F8 while 0x7F5 is clear.
 static inline void startCameraMove(Camera_804AA9E4* camera, s32 target) {
-    if (camera->field_0x7f5 == 0) {
-        camera->field_0x7f4 = 1;
-        camera->field_0x7f8 = target;
-        camera->field_0x7f6 = 0;
+    if (camera->mShowWholeArea_0x7f5 == 0) {
+        camera->mFocusOverride_0x7f4 = 1;
+        camera->mFocusMode_0x7f8 = target;
+        camera->mOverrideBlend_0x7f6 = 0;
     }
 }
 

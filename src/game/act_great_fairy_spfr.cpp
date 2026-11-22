@@ -417,22 +417,22 @@ void cls_8049EB8C::fn_80132454(s32 index) {
 
 static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x840 == 0) {
-        cam->field_0x840 = 1;
-        cam->field_0x844.set(x0, y0, x1, y1);
-        cam->field_0x854 = 1.0f;
-        cam->field_0x1d4 = -1.0f;
-        cam->field_0x1d8 = -1.0f;
+    if (cam->mBlendBoxOn_0x840 == 0) {
+        cam->mBlendBoxOn_0x840 = 1;
+        cam->mBlendBox_0x844.set(x0, y0, x1, y1);
+        cam->mBlendWeight_0x854 = 1.0f;
+        cam->mMargin_0x1d4 = -1.0f;
+        cam->mMinHalfWidth_0x1d8 = -1.0f;
     }
 }
 
 static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    if (cam->field_0x7f5 == 0) {
-        cam->field_0x7f4 = 1;
-        cam->field_0x7f8 = 5;
-        cam->field_0x808.set(x0, y0, x1, y1);
-        cam->field_0x7f6 = 0;
+    if (cam->mShowWholeArea_0x7f5 == 0) {
+        cam->mFocusOverride_0x7f4 = 1;
+        cam->mFocusMode_0x7f8 = 5;
+        cam->mFocusBox_0x808.set(x0, y0, x1, y1);
+        cam->mOverrideBlend_0x7f6 = 0;
     }
 }
 
@@ -454,7 +454,7 @@ void cls_8049EB8C::fn_801321E4() {
     case 7:
     case 22:
         if (field_0x238 == 0) {
-            gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+            gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         } else {
             gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
             camBox(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
@@ -481,14 +481,14 @@ void cls_8049EB8C::fn_801321E4() {
         break;
     case 11: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f4 == 0) {
-            camera->field_0x7f5 = 1;
+        if (camera->mFocusOverride_0x7f4 == 0) {
+            camera->mShowWholeArea_0x7f5 = 1;
         }
         break;
     }
     case 12:
     case 13:
-        gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
+        gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
         break;
     case 14:
     case 15:
