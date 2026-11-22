@@ -102,6 +102,7 @@ void cls_8049E350::update() {
         case 1:
             msg = 0x4C0;
             break;
+        case 0:
         default:
             msg = 0x4BF;
             break;
@@ -114,10 +115,9 @@ void cls_8049E350::update() {
             player = -1;
         } else if (!fn_802300EC(player)) {
             player = -1;
+        } else if (talkTo(player, msg)) {
         } else {
-            if (!talkTo(player, msg)) {
-                player = -1;
-            }
+            player = -1;
         }
         if (player >= 0) {
             field_0x23c = player;
@@ -158,14 +158,20 @@ void cls_8049E350::update() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
-// FIXME: 82.62 %, missing/extra; behaviour near.
 void cls_8049E350::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
-    // FIXME: 82.62 %. The original puts the name's lis/addi and li 0x2E6
-    // between the stores of params (0xB4-0xC4 of the diff), so its
-    // registers differ from ours from the first reset store on.
-    fn_801F02BC("enemy_gc_sob.bin", mAnim244.mCel + (field_0x238 == 1 ? 0x2D2 : 0x2E6),
+    s32 baseFrame;
+    switch (field_0x238) {
+    case 1:
+        baseFrame = 0x2D2;
+        break;
+    case 0:
+    default:
+        baseFrame = 0x2E6;
+        break;
+    }
+    fn_801F02BC("enemy_gc_sob.bin", baseFrame + mAnim244.mCel,
                 &params, 0x407, 0, false, 1.0f, 1.0f);
     if (field_0x231) {
         JGeometry::TVec3f pos(mPos);
@@ -175,14 +181,14 @@ void cls_8049E350::draw() {
         } else {
             pos.x += -10.0f;
         }
+        s32 frame = mAnim27c.mCel + 0x2A3;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, mAnim27c.mCel + 0x2A3, NULL, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, NULL, 1.0f, 1.0f);
         }
     }
 }
 
-// FIXME: 96.97 %, missing/extra; behaviour near.
 void cls_8049E350::fn_80125C58(bool flag) {
     field_0x231 = flag;
     if (field_0x231) {
@@ -208,13 +214,12 @@ bool cls_8049E350::talkTo(s32 player, u16 msg) {
 }
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
-// The original (inlined in fn_80125C58) compares field_0x238 with 1 as beq / bge / b (an extra
-// bge and b to the default block); ours has only beq and b.
 void cls_8049E350::startSignAnim() {
     switch (field_0x238) {
     case 1:
         mAnim27c.startAnim_801D22DC(0, 0, false);
         break;
+    case 0:
     default:
         mAnim27c.startAnim_801D22DC(1, 0, false);
         break;
