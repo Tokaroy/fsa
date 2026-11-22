@@ -633,6 +633,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 
 // 0x802C2C30.
 // FIXME(shotgun): 97.73 %, missing/extra; behaviour clean.
+// Still differs: each of the 3 packed-value blocks has an extra mr; one shared inline for the block removes it but leaves the 0x280 load one slot early.
 void SmallKey_804A8CD8::fn_802C2C30() {
     JGeometry::TVec3f wall;
     fn_802C24A8();
@@ -647,7 +648,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             } else if (mVel_0x3c.y <= -3.0f) {
                 mVel_0x3c.y = -3.0f;
             }
-            if (field_0x280 == 6 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
+            if (field_0x280 == 6 && (mVel_0x3c.x || mVel_0x3c.y)) {
                 mVel_0x3c.x = 0.4f * mVel_0x3c.x;
                 mVel_0x3c.y = 0.4f * mVel_0x3c.y;
             }
@@ -678,7 +679,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                     return;
                 }
             }
-            if (wall.y != 0.0f) {
+            if (wall.y) {
                 if (field_0x280 == 6 && mVel_0x3c.y > 0.8f) {
                     mVel_0x3c.x /= 3.0f;
                     mVel_0x3c.y = -(mVel_0x3c.y / 3.0f);
@@ -720,7 +721,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
                 return;
             }
-            if (wall.x != 0.0f) {
+            if (wall.x) {
                 mVel_0x3c.x *= -0.5f;
                 if ((wall.x > 0.0f && mPos.x <= field_0x248.x) ||
                     (wall.x < 0.0f && mPos.x >= field_0x248.x)) {
@@ -729,7 +730,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             }
             return;
         }
-        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && field_0x280 != 2) {
+        if ((mVel_0x3c.x || mVel_0x3c.y || mVel_0x3c.z) && field_0x280 != 2) {
             fn_801F2B20(0);
         }
         return;
@@ -749,7 +750,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         JGeometry::TVec2f pos(mPos.x, mPos.y);
         getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
         field_0x2af = 0;
-        if (field_0x280 == 6 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
+        if (field_0x280 == 6 && (mVel_0x3c.x || mVel_0x3c.y)) {
             mVel_0x3c.x = 0.4f * mVel_0x3c.x;
             mVel_0x3c.y = 0.4f * mVel_0x3c.y;
             mVel_0x3c.z = 0.3f;
@@ -832,7 +833,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         if ((u16)(tile - 0xD) <= 1 || tile == 0x3B) {
             return;
         }
-        if (wall.x != 0.0f) {
+        if (wall.x) {
             mVel_0x3c.x *= -0.5f;
             if (mVel_0x3c.x < -0.5f) {
                 mVel_0x3c.x = -0.5f;
@@ -840,7 +841,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 mVel_0x3c.x = 0.5f;
             }
         }
-        if (wall.y != 0.0f) {
+        if (wall.y) {
             mVel_0x3c.y *= -0.5f;
             if (mVel_0x3c.y < -0.5f) {
                 mVel_0x3c.y = -0.5f;
@@ -848,7 +849,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 mVel_0x3c.y = 0.5f;
             }
         }
-    } else if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && field_0x280 != 2) {
+    } else if ((mVel_0x3c.x || mVel_0x3c.y || mVel_0x3c.z) && field_0x280 != 2) {
         fn_801F2B20(0);
     }
 }
