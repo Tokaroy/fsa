@@ -13,7 +13,7 @@ s32 lbl_80539FD8[2] = {8, 14};
 s32 lbl_80539FE0[2] = {3, 5};
 
 
-// FIXME(shotgun): 96.78 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.04 %, scheduling+regalloc; behaviour clean.
 // mVel_0x3c stores in the other order; the sin/cos part allocates f-registers differently.
 void BigMoldormTail_804A1FA0::init() {
     mMapBox_0x80.i.x = -6.0f;
@@ -195,7 +195,7 @@ void BigMoldormTail_804A1FA0::update() {
     }
 }
 
-// FIXME(shotgun): 97.92 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.14 %, regalloc-only; behaviour clean.
 void BigMoldormTail_804A1FA0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
