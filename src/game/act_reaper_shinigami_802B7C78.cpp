@@ -275,10 +275,9 @@ void ReaperShinigami_804A886C::fn_802B8078() {
 }
 
 // FIXME: 94.89 %, missing/extra; behaviour near.
-// Its frame is 0x40 with the playerPos copy at 0x10 (ours
-// 0x30, playerPos at 0x8). The direction temp's dead stack stores are not
-// reproduced, and the idx table walk takes other registers (r28 / r29). (The
-// layer is read through getField_0x4(), before the call, as the original does.)
+// The original keeps four dead stack stores of the direction temp (frame 0x40,
+// ours 0x30), and reads field_0x260[idx] through this + idx * 4 both times
+// where ours keeps the element's address.
 void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
     JGeometry::TVec3f playerPos(*getPlayerPos_8023E724(field_0x298));
     s32 dist = (s32)FABS(mPos.x - playerPos.x);
@@ -309,10 +308,11 @@ void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
         s32 damage = mParamAtcp_0x114;
         s32 arg3 = 0x12;
         if (gGameRoot_8053AAF8->field_0x7f == 0) {
-            s32 n = getPlayerLife_80237774(field_0x298);
-            damage = 0;
-            if (n > 1) {
-                damage = n - 1;
+            damage = getPlayerLife_80237774(field_0x298);
+            if (damage > 1) {
+                damage--;
+            } else {
+                damage = 0;
             }
             arg3 = 4;
         }
