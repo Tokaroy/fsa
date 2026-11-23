@@ -106,6 +106,11 @@ public:
     /* 0x58 */ JAISoundID field_0x58; // constructor: 0x3006D
 }; // Size: 0x5C (every __nw__ of it)
 
+// 0x80455CA4 (game/actor_sound_obj_80455CA4.cpp): pans and sets the volume of a started
+// sound from a screen position (x, y in 0..1). startSound_80456334 builds a 12-byte
+// vector copy and a JAISoundID copy on its stack and passes their addresses: both by value.
+void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec3f pos, JAISoundID id);
+
 #define ACTOR_MANAGER_MAX_ACTORS 0x400
 
 class ActorManager_804A5800 {

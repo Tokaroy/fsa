@@ -128,6 +128,14 @@ struct AudioMgr_8045A080 {
     void playSystemSound_80458880(u32 id, s8 player);
     // The pan of a player's system sounds (game/audio_mgr_80457DFC.cpp, inline there).
     inline f32 getPlayerPan(s8 player);
+    // Steps the 0x400D9..0x400DE sound cycle (ActorSoundObj_804578F4::startSound_80456334
+    // keeps the manager in one register across the store: a member, not the global).
+    void incField_0x70() {
+        field_0x70++;
+        if (field_0x70 > 5) {
+            field_0x70 = 0;
+        }
+    }
     // game/audio_mgr_80457DFC.cpp (0x804593D4, not written yet). Sets 0x8e and pauses
     // the sound categories of the object at 0x34 (called by fn_80134D20).
     void fn_804593D4();
