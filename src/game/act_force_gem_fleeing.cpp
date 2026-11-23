@@ -108,34 +108,18 @@ bool FleeingForceGem_804AB170::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f
         }
         return false;
     }
-    if (tile == 0 || tile == 0x27 || tile == 2) {
-        return false;
+    if (!(tile == 0 || tile == 0x27 || tile == 2 ||
+        (tile == 0x28 && (s32)mPos.y % 16 > 8) ||
+        (tile == 0x29 && (s32)mPos.y % 16 < 8) ||
+        (tile == 0x2C && (s32)mPos.y % 16 > 8) ||
+        (tile == 0x2D && (s32)mPos.y % 16 < 8) ||
+        (tile == 0x2A && (s32)mPos.x % 16 > 8) ||
+        (tile == 0x2B && (s32)mPos.x % 16 < 8) ||
+        (tile == 0x2E && (s32)mPos.x % 16 > 8) ||
+        (tile == 0x2F && (s32)mPos.x % 16 < 8))) {
+        return true;
     }
-    if (tile == 0x28 && (s32)mPos.y % 16 > 8) {
-        return false;
-    }
-    if (tile == 0x29 && (s32)mPos.y % 16 < 8) {
-        return false;
-    }
-    if (tile == 0x2C && (s32)mPos.y % 16 > 8) {
-        return false;
-    }
-    if (tile == 0x2D && (s32)mPos.y % 16 < 8) {
-        return false;
-    }
-    if (tile == 0x2A && (s32)mPos.x % 16 > 8) {
-        return false;
-    }
-    if (tile == 0x2B && (s32)mPos.x % 16 < 8) {
-        return false;
-    }
-    if (tile == 0x2E && (s32)mPos.x % 16 > 8) {
-        return false;
-    }
-    if (tile == 0x2F && (s32)mPos.x % 16 < 8) {
-        return false;
-    }
-    return true;
+    return false;
 }
 
 // The bob of states 3 and 4: field_0x26c advances by a random step and field_0x294.z
