@@ -807,6 +807,8 @@ void Ganon_804A25F0::update() {
         fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getLayer_8015461C(), getSerial_801545E8(), false, false);
         zeroVec_801546BC(&posA);
         posA.y = -10.0f;
+        // The original passes posA by value; its copy ctor is fn_801546D0 (and fn_80196D60 / fn_80196D24 are the
+        // TVec3(x, y, z) / TVec2(x, y) ctors), so these locals keep the call names at the cost of a ctor call each.
         JGeometry::TVec3f msgPos;
         fn_801546D0(&msgPos, &posA);
         if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x34E, getSerial_801545E8(), getLayer_8015461C(), msgPos, 0x4102)) {
@@ -1096,8 +1098,7 @@ void Ganon_804A25F0::update() {
                 getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
                 mEmitters[0] = NULL;
             }
-            fn_80196DF0();
-            fn_803B8C74(0);
+            fn_803B8C74(fn_80196DF0());
             mState = 15;
         }
         break;
@@ -1118,12 +1119,13 @@ void Ganon_804A25F0::update() {
         f32 stepY = field_0x2a8 * fabsf_8015436C((field_0x2dc.y - 80.0f) - mPos.y);
         addCalc2_801F71A4(&mPos.x, field_0x2dc.x, 1.0f, stepX);
         addCalc2_801F71A4(&mPos.y, field_0x2dc.y - 80.0f, 1.0f, stepY);
-        if (field_0x2a8 >= 0.9f) {
-            zeroVec_801546BC(&field_0x2b8);
-            zeroVec_801546BC(&mVel_0x3c);
-            field_0x28c = 1;
-            mState = 17;
+        if (field_0x2a8 < 0.9f) {
+            break;
         }
+        zeroVec_801546BC(&field_0x2b8);
+        zeroVec_801546BC(&mVel_0x3c);
+        field_0x28c = 1;
+        mState = 17;
         break;
     }
     case 17: {
@@ -1226,7 +1228,7 @@ void Ganon_804A25F0::update() {
                         if (subSer >= 0) {
                             Ganon_804A25F0* sub = static_cast<Ganon_804A25F0*>(findActorBySerial_8015445C(subSer));
                             if (sub != NULL) {
-                                sub->field_0x2b6 = (s16)ang;
+                                sub->field_0x2b6 = ang;
                             }
                         }
                     }
@@ -1557,8 +1559,10 @@ void Ganon_804A25F0::update() {
             field_0x234[0] = 200;
             startSound_801F0E34(0x5001E, 0);
             mState = 37;
+        } else {
+            break;
         }
-        break;
+        // fall through
     case 37:
         if (field_0x234[0] == 0 || lbl_8053AB90 == 1) {
             zeroVec_801546BC(&field_0x2b8);
@@ -1652,7 +1656,7 @@ void Ganon_804A25F0::update() {
         break;
     case 40:
         if (!fn_8022F478(field_0x25c) && getLayer_8015461C() == getPlayerLayer_8023DE58(field_0x25c) &&
-            !fn_8022D75C(field_0x25c)) {
+            fn_8022D75C(field_0x25c) != 1) {
             field_0x260 = 0;
             field_0x264 = 0;
             field_0x234[1] = 0;
@@ -1702,7 +1706,7 @@ void Ganon_804A25F0::update() {
                     if (findActorBySerial_8015445C(field_0x318[i]) == NULL) {
                         field_0x318[i] = -1;
                         field_0x264++;
-                        if (field_0x264 < 4) {
+                        if (field_0x264 >= 4) {
                             field_0x260 = 3;
                         }
                     }
