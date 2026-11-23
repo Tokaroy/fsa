@@ -21,11 +21,11 @@ void OctorokRock_8049F5D8::init() {
     mMapBox_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
     field_0x240 = 0;
     field_0x244 = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
     field_0x250 = 0;
-    field_0x234 = 300;
+    field_0x234[0] = 300;
     mDir_0x98 = 0;
     field_0x24c = 0;
     field_0x248 = 0xFF;
@@ -36,14 +36,14 @@ void OctorokRock_8049F5D8::init() {
     }
     switch (mSpawnParam_0x90) {
     case 5:
-        field_0x234 = 10000;
-        field_0x23c = 300;
+        field_0x234[0] = 10000;
+        field_0x234[2] = 300;
         // fall through
     case 1:
         field_0xb0 = 6;
         break;
     case 2:
-        field_0x238 = 3;
+        field_0x234[1] = 3;
         mPos.z = 8.0f;
         field_0xb0 = 7;
         break;
@@ -86,19 +86,16 @@ bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     return false;
 }
 
-// FIXME: 97.96 %, missing/extra; behaviour drift.
+// FIXME: 99.92 %, regalloc-only; behaviour clean.
 void OctorokRock_8049F5D8::update() {
     s32 facing;
     u8 blocked = 0;
     mPos += mVel_0x3c;
     facing = mDir_0x98;
-    // FIXME: The original compares mSpawnParam_0x90 signed (cmpwi) in the
-    // state 0 tests and the final switch, unsigned elsewhere; the tail's `li 0`
-    // and the sprite target's register (r29 here, r30) differ too.
     switch (field_0x230) {
     case 0:
-        if (field_0x23c == 0) {
-            if (mSpawnParam_0x90 == 5) {
+        if (field_0x234[2] == 0) {
+            if (getField_0x90() == 5) {
                 mAlive = false;
                 break;
             }
@@ -114,7 +111,7 @@ void OctorokRock_8049F5D8::update() {
         if (!blocked && !damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, true)) {
             break;
         }
-        if ((mSpawnParam_0x90 != 1 && mSpawnParam_0x90 != 5) || !blocked) {
+        if ((getField_0x90() != 1 && getField_0x90() != 5) || !blocked) {
             if (!blocked) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
@@ -128,14 +125,14 @@ void OctorokRock_8049F5D8::update() {
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.z = 0.0f;
             field_0x240 = 0;
-            field_0x234 = 0;
+            field_0x234[0] = 0;
             field_0x230 = 3;
         }
         break;
     case 1:
         startSound_801F0E34(0x400D1, 0);
         if (mSpawnParam_0x90 == 1) {
-            field_0x238 = 100;
+            field_0x234[1] = 100;
             switch (mDir_0x98) {
             case 0:
                 field_0x240 = 3;
@@ -164,7 +161,7 @@ void OctorokRock_8049F5D8::update() {
         field_0x230 = 2;
         break;
     case 2:
-        if (mSpawnParam_0x90 == 1 && (field_0x238 & 1) == 0) {
+        if (mSpawnParam_0x90 == 1 && (field_0x234[1] & 1) == 0) {
             field_0x240++;
             field_0x240 &= 3;
             mDir_0x98 = lbl_8049F548[field_0x240];
@@ -179,11 +176,11 @@ void OctorokRock_8049F5D8::update() {
         }
         break;
     case 3:
-        if (field_0x234 == 0) {
-            field_0x234 = 1;
+        if (field_0x234[0] == 0) {
+            field_0x234[0] = 1;
             field_0x240 = field_0x240 + 1;
             if (field_0x240 == 6) {
-                field_0x234 = 30;
+                field_0x234[0] = 30;
             } else if (field_0x240 >= 7) {
                 mAlive = false;
             }
@@ -226,29 +223,19 @@ void OctorokRock_8049F5D8::update() {
         break;
     }
     }
-    if (field_0x234 > 0) {
-        field_0x234--;
-        if (field_0x230 == 0 && field_0x234 == 0) {
-            mAlive = false;
-        }
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-        if (field_0x230 == 0 && field_0x234 == 0) {
-            mAlive = false;
-        }
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
-        if (field_0x230 == 0 && field_0x234 == 0) {
-            mAlive = false;
+    for (s32 i = 0; i < 3; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+            if (field_0x230 == 0 && field_0x234[0] == 0) {
+                mAlive = false;
+            }
         }
     }
     switch (mSpawnParam_0x90) {
     case 2:
     case 4:
-        if (field_0x238 == 0) {
-            field_0x238 = 3;
+        if (field_0x234[1] == 0) {
+            field_0x234[1] = 3;
             field_0x24c++;
             field_0x24c &= 3;
         }

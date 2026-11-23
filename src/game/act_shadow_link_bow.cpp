@@ -61,7 +61,7 @@ void ShadowLinkBowMinor_804A6B70::fn_80222730() {
                 vel.z = 0.0f;
                 rock->mVel_0x3c = vel;
                 rock->field_0x194 = 1;
-                rock->field_0x23c = (s32)(reach * (1.0f / rock->mVel_0x3c.y));
+                rock->field_0x234[2] = (s32)(reach * (1.0f / rock->mVel_0x3c.y));
             }
         }
         x += 16.0f;
