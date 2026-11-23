@@ -153,7 +153,7 @@ TotalScreen_804B03D8::~TotalScreen_804B03D8() {
 
 // Resets the screen for a new round: shows the rows of the players that take part and slides the
 // remaining panes out of view.
-// FIXME(shotgun): 97.86 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.71 %, regalloc-only; behaviour clean.
 void TotalScreen_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
@@ -170,7 +170,7 @@ void TotalScreen_804B03D8::fn_803D87C0() {
     for (s32 k = 0; k < 4; k++) {
         u8 mask = 1 << k;
         s32 count = lbl_80529DEC.field_0x140[k];
-        if ((lbl_80529DEC.field_0x243[0] & mask) != 0) {
+        if (lbl_80529DEC.isField0x243(mask)) {
             field_0x68 = k;
             field_0x4->search(lbl_804773E8[k])->show();
             field_0x4->search(lbl_80477380[k])->show();
@@ -312,7 +312,7 @@ void TotalScreen_804B03D8::fn_803D82EC() {
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
-// FIXME(shotgun): 99.72 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void TotalScreen_804B03D8::fn_803D75B0() {
     if (field_0x80 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x78);
@@ -424,7 +424,7 @@ void TotalScreen_804B03D8::fn_803D75B0() {
                     }
                 }
                 if (field_0x6a >= 0) {
-                    field_0x8->search('P0kak00')->setAlpha((s32)((f32)field_0x7c * t));
+                    field_0x8->search('P0kak00')->setAlpha(((f32)field_0x7c * t));
                 }
             } else {
                 field_0x7e = 1;
@@ -438,21 +438,18 @@ void TotalScreen_804B03D8::fn_803D75B0() {
                      field_0x8->search('P0ka00')->getBounds()->i.y) +
                     field_0x8->search('P0ka00')->getHeight() * 0.5f;
             if (field_0x64 == 0x50 && field_0x4c[2] == NULL) {
-                JGeometry::TVec3f pos(x, y, 0.0f);
-                field_0x4c[2] = spawnEmitter_8013CC50(0, &pos, 0x4D0, 0, 0, NULL, NULL, true, 1.0f);
+                field_0x4c[2] = spawnEmitter_8013CC50(0, &JGeometry::TVec3f(x, y, 0.0f), 0x4D0, 0, 0, NULL, NULL, true, 1.0f);
                 field_0x4c[2]->setStatus(0x40);
             }
             field_0x10->setFrame(field_0x64);
             field_0x8->search('P0kak00')->animationTransform();
             if (field_0x64 > 1 && field_0x64 < 0x14) {
                 if (field_0x4c[0] == NULL) {
-                    JGeometry::TVec3f pos(x, y, 0.0f);
-                    field_0x4c[0] = spawnEmitter_8013CC50(0, &pos, 0x4CF, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x4c[0] = spawnEmitter_8013CC50(0, &JGeometry::TVec3f(x, y, 0.0f), 0x4CF, 0, 0, NULL, NULL, true, 1.0f);
                 }
                 field_0x4c[0]->setGlobalTranslation(x, y, 0.0f);
                 if (field_0x64 == 0x13 && field_0x4c[1] == NULL) {
-                    JGeometry::TVec3f pos(x, y, 0.0f);
-                    field_0x4c[1] = spawnEmitter_8013CC50(0, &pos, 0x4D1, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x4c[1] = spawnEmitter_8013CC50(0, &JGeometry::TVec3f(x, y, 0.0f), 0x4D1, 0, 0, NULL, NULL, true, 1.0f);
                     field_0x4c[1]->setStatus(0x40);
                 }
             } else if (field_0x4c[0] != NULL) {
