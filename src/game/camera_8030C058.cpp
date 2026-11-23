@@ -236,10 +236,11 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
     s32 focusCount = 0;
     f32 aspect = (f32)(s32)JUTVideo::sManager->getEfbHeight() / (f32)(s32)JUTVideo::sManager->getFbWidth();
 
-    if (mMargin_0x1d4 < 0.0f) {
+    f32 curMargin = mMargin_0x1d4;
+    if (curMargin < 0.0f) {
         mMargin_0x1d4 = entry->field_0x0;
     } else {
-        f32 d = 0.1f * (entry->field_0x0 - mMargin_0x1d4);
+        f32 d = 0.1f * (entry->field_0x0 - curMargin);
         if (d < 0.0f) {
             if (d < -3.0f) {
                 d = -3.0f;
@@ -249,13 +250,14 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                 d = 3.0f;
             }
         }
-        mMargin_0x1d4 += d;
+        mMargin_0x1d4 = curMargin + d;
     }
 
-    if (mMinHalfWidth_0x1d8 < 0.0f) {
+    f32 curHalfWidth = mMinHalfWidth_0x1d8;
+    if (curHalfWidth < 0.0f) {
         mMinHalfWidth_0x1d8 = entry->field_0x4;
     } else {
-        f32 d = 0.1f * (entry->field_0x4 - mMinHalfWidth_0x1d8);
+        f32 d = 0.1f * (entry->field_0x4 - curHalfWidth);
         if (d < 0.0f) {
             if (d < -3.0f) {
                 d = -3.0f;
@@ -265,7 +267,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                 d = 3.0f;
             }
         }
-        mMinHalfWidth_0x1d8 += d;
+        mMinHalfWidth_0x1d8 = curHalfWidth + d;
     }
 
     f32 xMin, xMax, yMin, yMax, yMinOrig, yMaxOrig;
@@ -345,11 +347,10 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                 }
             }
         } else {
-            const JGeometry::TVec3f& pt = mFocusPoints_0x1f0[i - 4];
             if (entry->field_0x20 != 0 && !first) {
                 f32 margin = mMargin_0x1d4 - entry->field_0x8;
-                px = pt.x;
-                py = pt.y;
+                px = mFocusPoints_0x1f0[i - 4].x;
+                py = mFocusPoints_0x1f0[i - 4].y;
                 if (margin != 0.0f) {
                     if (px < xMin) {
                         if (px < xMin - margin) {
@@ -379,8 +380,8 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                     }
                 }
             } else {
-                px = pt.x;
-                py = pt.y;
+                px = mFocusPoints_0x1f0[i - 4].x;
+                py = mFocusPoints_0x1f0[i - 4].y;
             }
         }
 
@@ -471,7 +472,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
         if (mShowWholeArea_0x7f5 != 0) {
             if (mWholeAreaTimer_0x838 < 0) {
                 mWholeAreaTimer_0x838 = 70;
-                mWholeAreaFromBox_0x818 = *prevBox;
+                mWholeAreaFromBox_0x818.set(*prevBox);
             }
             if (mWholeAreaTimer_0x838 > 0) {
                 f32 a0 = (f32)mWholeAreaTimer_0x838 * 180.0f * (1.0f / 70.0f);
@@ -490,7 +491,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
         if (!blended && mFocusOverride_0x7f4 != 0 && mOverrideBlend_0x7f6 != 0) {
             if (mOverrideTimer_0x83c < 0) {
                 mOverrideTimer_0x83c = 40;
-                mOverrideFromBox_0x828 = *prevBox;
+                mOverrideFromBox_0x828.set(*prevBox);
             }
             if (mOverrideTimer_0x83c > 0) {
                 f32 a0 = (f32)mOverrideTimer_0x83c * 180.0f * 0.025f;
@@ -514,16 +515,14 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
             diff[3] = yMax - prevBox->f.y;
 
             f32 maxPos = 0.0f;
-            if (diff[0] > maxPos) maxPos = diff[0];
-            if (diff[1] > maxPos) maxPos = diff[1];
-            if (diff[2] > maxPos) maxPos = diff[2];
-            if (diff[3] > maxPos) maxPos = diff[3];
+            for (s32 i = 0; i < 4; i++) {
+                if (diff[i] > maxPos) maxPos = diff[i];
+            }
 
             f32 minNeg = 0.0f;
-            if (diff[0] < minNeg) minNeg = diff[0];
-            if (diff[1] < minNeg) minNeg = diff[1];
-            if (diff[2] < minNeg) minNeg = diff[2];
-            if (diff[3] < minNeg) minNeg = diff[3];
+            for (s32 i = 0; i < 4; i++) {
+                if (diff[i] < minNeg) minNeg = diff[i];
+            }
 
             f32 posLim[4];
             for (s32 i = 0; i < 4; i++) {
