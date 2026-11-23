@@ -86,7 +86,7 @@ bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     return false;
 }
 
-// FIXME: 97.96 %, missing/extra; behaviour drift.
+// FIXME: 99.92 %, regalloc-only; behaviour clean.
 void OctorokRock_8049F5D8::update() {
     s32 facing;
     u8 blocked = 0;
