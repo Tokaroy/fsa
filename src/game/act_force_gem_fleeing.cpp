@@ -35,9 +35,7 @@ void FleeingForceGem_804AB170::init() {
     mLife = 10000;
     field_0x264 = -1;
     mDir_0x98 = 0;
-    field_0x288.x = mPos.x;
-    field_0x288.y = mPos.y;
-    field_0x288.z = mPos.z;
+    field_0x288.set(mPos);
     field_0x260 = 100;
     field_0x238 = 1.0f;
     field_0x23c = 0.0f;
@@ -167,10 +165,9 @@ void FleeingForceGem_804AB170::update() {
     f32 dist = 0.0f;
     bool near = false;
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
-    field_0x288.x = mPos.x;
-    field_0x288.y = mPos.y;
-    field_0x288.z = mPos.z;
+    field_0x288.set(mPos);
     JGeometry::TBox2f box = mBox;
+    JGeometry::TBox2f rect;
     box.addPos(pos2);
     if (field_0x94 != 1 && field_0x240[4] == 0) {
         addCalc2_801F71A4(&mVel_0x3c.x, field_0x27c.x, 0.1f, 1.0f);
@@ -184,7 +181,7 @@ void FleeingForceGem_804AB170::update() {
     }
     if (field_0x230 == 0 || field_0x230 == 3 || field_0x230 == 4 || field_0x230 == 10) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023A51C(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* playerPos = fn_8023A478(i);
                 f32 dx = playerPos->x - mPos.x;
                 f32 dy = playerPos->y - mPos.y;
@@ -352,7 +349,6 @@ void FleeingForceGem_804AB170::update() {
                         } else {
                             boxPtr = &view->field_0xdc;
                         }
-                        JGeometry::TBox2f rect;
                         rect = *boxPtr;
                         if (mPos.x < rect.i.x + 23.0f || mPos.x > rect.f.x - 23.0f) {
                             mPos += JGeometry::TVec3f(field_0x27c.x, 0.0f, 0.0f);
@@ -443,14 +439,14 @@ void FleeingForceGem_804AB170::update() {
                     u16 effect1;
                     u16 effect2;
                     if (fn_802DEB58()) {
-                        startSound_801F0E34(0x5003F, 0);
                         effect1 = 0x45E;
                         effect2 = 0x45F;
+                        startSound_801F0E34(0x5003F, 0);
                         splash = true;
                     } else if (fn_802DE9A0() == 1) {
-                        startSound_801F0E34(0x50040, 0);
                         effect1 = 0x2A9;
                         effect2 = 0x2AA;
+                        startSound_801F0E34(0x50040, 0);
                         splash = true;
                     } else {
                         field_0x23c += 0.1f;
@@ -510,8 +506,7 @@ void FleeingForceGem_804AB170::update() {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x345, 0, 0, NULL, NULL, true, 0.15f);
     }
     if (field_0x230 != 8 && field_0x230 != 9 && mLayer_0x4 < 8) {
-        JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&JGeometry::TVec3f(mPos.x, mPos.y - mPos.z, 0.0f));
     }
     field_0x240[0]++;
     if (field_0x230 == 4 || field_0x230 == 7 || field_0x230 == 6) {
