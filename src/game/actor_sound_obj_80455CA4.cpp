@@ -485,19 +485,20 @@ void ActorSoundObj_804578F4::fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c) {
         f32 pan;
         f32 vol;
         switch (a) {
-        case 3:
-            pan = 0.0f;
+        case 0:
+        case 1:
+            pan = 0.5f;
             vol = 0.4f;
             break;
         case 2:
             pan = 1.0f;
             vol = 0.4f;
             break;
-        case 0:
-        case 1:
-            pan = 0.5f;
+        case 3:
+            pan = 0.0f;
             vol = 0.4f;
             break;
+        case 4:
         default:
             pan = 0.5f;
             vol = 0.0f;
