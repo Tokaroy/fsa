@@ -623,39 +623,35 @@ void ActorSoundObj_804578F4::fn_80455F40(JAISoundHandle* handle) {
 // (pos x, y in 0..1).
 // FIXME(shotgun): 96.26 %, missing/extra; behaviour clean.
 void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id) {
-    f32 x = pos->x;
-    if (x < 0.0f) {
+    if (pos->x < 0.0f) {
         handle->sound_->getAuxiliary().movePan(0.0f, 0);
         handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-    } else if (x > 1.0f) {
+    } else if (pos->x > 1.0f) {
         handle->sound_->getAuxiliary().movePan(1.0f, 0);
         handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
     } else {
-        f32 y = pos->y;
-        if (y < 0.0f) {
-            handle->sound_->getAuxiliary().movePan(x, 0);
+        if (pos->y < 0.0f) {
+            handle->sound_->getAuxiliary().movePan(pos->x, 0);
             handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-        } else if (y > 1.0f) {
-            handle->sound_->getAuxiliary().movePan(x, 0);
+        } else if (pos->y > 1.0f) {
+            handle->sound_->getAuxiliary().movePan(pos->x, 0);
             handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-        } else if (x < 0.1f || y < 0.1f) {
-            f32 m = x <= y ? x : y;
-            f32 vol = 10.0f * m + 0.4f;
+        } else if (pos->x < 0.1f || pos->y < 0.1f) {
+            f32 vol = 10.0f * (pos->x <= pos->y ? pos->x : pos->y) + 0.4f;
             if (vol > 1.0f) {
                 vol = 1.0f;
             }
             handle->sound_->getAuxiliary().moveVolume(vol, 0);
             handle->sound_->getAuxiliary().movePan(pos->x, 0);
-        } else if (x > 0.9f || y > 0.9f) {
-            f32 m = x >= y ? x : y;
-            f32 vol = 10.0f * (1.0f - m) + 0.4f;
+        } else if (pos->x > 0.9f || pos->y > 0.9f) {
+            f32 vol = 10.0f * (1.0f - (pos->x >= pos->y ? pos->x : pos->y)) + 0.4f;
             if (vol > 1.0f) {
                 vol = 1.0f;
             }
             handle->sound_->getAuxiliary().moveVolume(vol, 0);
             handle->sound_->getAuxiliary().movePan(pos->x, 0);
         } else {
-            handle->sound_->getAuxiliary().movePan(x, 0);
+            handle->sound_->getAuxiliary().movePan(pos->x, 0);
             if (id->mId.mBytes.mGroupId != 0) {
                 u32 v = *id;
                 if (v - 0x30000 != 9 && v - 0x30000 != 0x51 && v - 0x30000 != 0x4B && v - 0x50000 != 0x6D) {
