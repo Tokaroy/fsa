@@ -181,7 +181,7 @@ u16 ActorBase_804A5770::fn_8018A590() const {
     return field_0x94;
 }
 
-// FIXME(shotgun): 92.02 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.10 %, missing/extra + reloc-name; behaviour near.
 // Constants and the stmw prologue are scheduled differently; the tables are extern.
 void PhantomGanon2_804A1A98::init() {
     field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
@@ -385,7 +385,7 @@ s32 PhantomGanon2_804A1A98::fn_80189DEC() {
     return field_0x94;
 }
 
-// FIXME(shotgun): 96.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.38 %, missing/extra + reloc-name; behaviour near.
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
