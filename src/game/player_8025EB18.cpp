@@ -827,8 +827,8 @@ void Player_804A6F38::fn_80262188() {
 }
 
 // FIXME: 99.65 %, missing/extra; behaviour near.
-// One extra lwz: the original passes the mHeldPlayer_0xd70 the inlined
-// fn_8025F418 loaded straight to fn_8023EFEC; ours reloads it.
+// heldPlayer: the original passes the mHeldPlayer_0xd70 loaded at the function's entry
+// to fn_8023EFEC without reloading it (every later use reloads the field). Registers differ.
 // Update of state 0x19. Grabbing a player: follow it (its position moved to this
 // layer's view corner, raised 2; effect 0x28F once at height 10), let go when it
 // stops lifting; grabbing an actor: stay at field_0x300. Otherwise the player flies
@@ -836,9 +836,10 @@ void Player_804A6F38::fn_80262188() {
 // lands (state 0 / 1) or fn_802466B4 (state 7), bouncing off walls at half speed.
 // The pose cycles over 36 frames.
 void Player_804A6F38::fn_80261750() {
+    s32 heldPlayer = mHeldPlayer_0xd70;
     if (isGrabbing_8025F448()) {
         if (fn_8025F418()) {
-            if (!fn_8023EFEC(mHeldPlayer_0xd70)) {
+            if (!fn_8023EFEC(heldPlayer)) {
                 if (mPos.z <= 4.0f) {
                     field_0xd78.set(0.0f, 0.0f, 0.0f);
                 } else {
