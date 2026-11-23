@@ -18,6 +18,13 @@
 struct cls_801D6A88 {
     cls_801D6A88();
     void fn_801D789C();
+    // Counts field_0x4 down to 0 (the caller tests it again: fn_801E5754).
+    bool isField_0x4Positive() const { return field_0x4 > 0; }
+    void decField_0x4() {
+        if (field_0x4 > 0) {
+            field_0x4--;
+        }
+    }
 
     /* 0x00 */ u8 field_0x0; // cleared by fn_801D789C
     /* 0x01 */ u8 field_0x1[0x4 - 0x1]; // not yet known

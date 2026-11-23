@@ -66,11 +66,7 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
 }
 
 // FIXME(shotgun): 98.83 %, missing/extra; behaviour near.
-// The loop counter and element pointer take other registers (the
-// original: counter r30, element r28; the layer is read through getField_0x4(),
-// before getPlayerLayer_8023DE58, as the original), and the original tests the countdown twice (a second ble
-// to the loop end before its decrement), which no natural form here produces; dx and dy also take each other's
-// FPRs (the original computes dy first).
+// Registers only: the first loop's counter and element pointer and the dx/dy FPRs take other registers.
 void VaatiBoss_804A4958::fn_801E5754() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x2a8[i].field_0x0 != 0) {
@@ -89,8 +85,8 @@ void VaatiBoss_804A4958::fn_801E5754() {
     }
 
     for (s32 i = 0; i < 4; i++) {
-        if (field_0x2a8[i].field_0x4 > 0) {
-            field_0x2a8[i].field_0x4 = field_0x2a8[i].field_0x4 - 1;
+        if (field_0x2a8[i].isField_0x4Positive()) {
+            field_0x2a8[i].decField_0x4();
             continue;
         }
         if (field_0x2a8[i].field_0x0 == 0 && !fn_801D08B4(i, &mPos, field_0x464.field_0xc.field_0xc)) {
@@ -101,8 +97,8 @@ void VaatiBoss_804A4958::fn_801E5754() {
         JGeometry::TVec3f sum;
         JGeometry::TVec3f out;
         JGeometry::TVec2f v;
-        f32 dx = mPos.x - mPrevPos.x;
         f32 dy = mPos.y - mPrevPos.y;
+        f32 dx = mPos.x - mPrevPos.x;
         // Copied field by field, as the original loads three scalars.
         JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
         playerPos.x = pos->x;
