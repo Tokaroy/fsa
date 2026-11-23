@@ -56,7 +56,7 @@ static inline bool playerInGame(s32 player) {
     return (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player)) != 0;
 }
 
-// FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.31 %, missing/extra; behaviour drift.
 void ReaperShinigami_804A886C::update() {
     if (gGameRoot_8053AAF8->field_0xfe == 0) {
         die_0x24();
@@ -221,7 +221,7 @@ void ReaperShinigami_804A886C::die_0x24() {
 }
 
 // 0x802B8078 is a plain `fn_802B8078` symbol in the original; ours is the mangled member.
-// FIXME(shotgun): 87.75 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void ReaperShinigami_804A886C::fn_802B8078() {
     field_0x29c = getPlayerLayer_8023DE58(field_0x298);
     if (field_0x29c < 8) {
@@ -291,7 +291,7 @@ void ReaperShinigami_804A886C::fn_802B8078() {
     }
 }
 
-// FIXME: 94.89 %, missing/extra; behaviour near.
+// FIXME: 96.20 %, missing/extra; behaviour near.
 // The original keeps four dead stack stores of the direction temp (frame 0x40,
 // ours 0x30), and reads field_0x260[idx] through this + idx * 4 both times
 // where ours keeps the element's address.
