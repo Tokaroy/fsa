@@ -102,7 +102,7 @@ void fn_804408F0(JGeometry::TVec3f* pos) {
     lbl_8053AED0->fn_8043E7CC(*pos);
 }
 
-// FIXME: 98.97 %, missing/extra; behaviour clean.
+// FIXME: 99.89 %, regalloc-only; behaviour clean.
 HudMgr_804B1920::HudMgr_804B1920() {
     lbl_8053AED0 = this;
     lbl_80529DEC.field_0x24a = 0;
