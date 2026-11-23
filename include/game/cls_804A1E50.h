@@ -22,7 +22,7 @@ public:
     void fn_8018E894(s32 value);
     void fn_8018E30C(s32 anim);
     void fn_8018DFCC();
-    bool fn_8018DA6C();
+    BOOL fn_8018DA6C();
     void fn_8018DC70(s32 side);
 
     // SHARED-EDIT: carved from field_0x230[] / field_0x270[] (game/act_big_poe_2_8018A8D8.cpp).
