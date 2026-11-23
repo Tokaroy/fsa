@@ -826,7 +826,7 @@ void Player_804A6F38::fn_80262188() {
     }
 }
 
-// FIXME: 99.65 %, missing/extra; behaviour near.
+// FIXME: 99.80 %, regalloc-only; behaviour clean.
 // heldPlayer: the original passes the mHeldPlayer_0xd70 loaded at the function's entry
 // to fn_8023EFEC without reloading it (every later use reloads the field). Registers differ.
 // Update of state 0x19. Grabbing a player: follow it (its position moved to this
