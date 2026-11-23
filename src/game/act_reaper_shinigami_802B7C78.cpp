@@ -56,7 +56,7 @@ static inline bool playerInGame(s32 player) {
     return (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player)) != 0;
 }
 
-// FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.31 %, missing/extra; behaviour drift.
 void ReaperShinigami_804A886C::update() {
     if (gGameRoot_8053AAF8->field_0xfe == 0) {
         die_0x24();
@@ -131,8 +131,11 @@ void ReaperShinigami_804A886C::update() {
             }
         } else {
             JGeometry::TVec3f playerPos(*getPlayerPos_8023E724(field_0x298));
-            field_0x284.x = playerPos.x - mPos.x;
-            field_0x284.y = (playerPos.y - 48.0f) - mPos.y;
+            playerPos.y -= 48.0f;
+            JGeometry::TVec2f dir(playerPos.x, playerPos.y);
+            dir.x -= mPos.x;
+            dir.y -= mPos.y;
+            field_0x284 = dir;
             normalize(field_0x284);
             field_0x254 = field_0x284.x * field_0x268[1];
             field_0x258 = field_0x284.y * field_0x268[1];
@@ -217,38 +220,43 @@ void ReaperShinigami_804A886C::die_0x24() {
     startSound_801F0E34(0x40041, 0);
 }
 
-// The reappearance fn_802B8078 does twice (inlined): back to where it left, on the player's layer.
-static inline void reappear(ReaperShinigami_804A886C* self) {
-    self->mPos = self->field_0x28c;
-    self->mLayer_0x4 = self->field_0x29c;
-    JGeometry::TVec3f emitterPos;
-    emitterPos.set(self->mPos);
-    emitterPos.y += 32.0f;
-    emitterPos.z += 16.0f;
-    spawnEmitter_8013CC50(self->mLayer_0x4, &emitterPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
-    gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(self->mLayer_0x4, &self->mPos, 3);
-    self->field_0x244 = 50;
-    self->field_0x24c = 0;
-    self->field_0x230 = 4;
-}
-
 // 0x802B8078 is a plain `fn_802B8078` symbol in the original; ours is the mangled member.
-// FIXME(shotgun): 87.75 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void ReaperShinigami_804A886C::fn_802B8078() {
     field_0x29c = getPlayerLayer_8023DE58(field_0x298);
     if (field_0x29c < 8) {
         if (mLayer_0x4 >= 8) {
-            reappear(this);
+            mPos = field_0x28c;
+            mLayer_0x4 = field_0x29c;
+            JGeometry::TVec3f emitterPos;
+            emitterPos.set(mPos);
+            emitterPos.y += 32.0f;
+            emitterPos.z += 16.0f;
+            spawnEmitter_8013CC50(mLayer_0x4, &emitterPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
+            gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(mLayer_0x4, &mPos, 3);
+            field_0x244 = 50;
+            field_0x24c = 0;
+            field_0x230 = 4;
         } else {
             field_0x230 = 2;
             field_0x244 = 300;
         }
-    } else if (mLayer_0x4 >= 8) {
-        if (field_0x29c == mLayer_0x4) {
+    } else if (getField_0x4() >= 8) {
+        if (field_0x29c == getField_0x4()) {
             field_0x230 = 7;
             field_0x244 = 300;
         } else {
-            reappear(this);
+            mPos = field_0x28c;
+            mLayer_0x4 = field_0x29c;
+            JGeometry::TVec3f emitterPos;
+            emitterPos.set(mPos);
+            emitterPos.y += 32.0f;
+            emitterPos.z += 16.0f;
+            spawnEmitter_8013CC50(mLayer_0x4, &emitterPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
+            gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(mLayer_0x4, &mPos, 3);
+            field_0x244 = 50;
+            field_0x24c = 0;
+            field_0x230 = 4;
         }
     } else {
         JGeometry::TVec3f emitterPos;
@@ -263,22 +271,30 @@ void ReaperShinigami_804A886C::fn_802B8078() {
         field_0x244 = 180;
         field_0x24c = 0;
         field_0x230 = 5;
-        JGeometry::TVec3f at(mPos.x - 16.0f, mPos.y - 16.0f, mPos.z);
+        JGeometry::TVec3f at;
+        at.x = mPos.x - 16.0f;
+        at.y = mPos.y - 16.0f;
+        at.z = mPos.z;
         getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &at, 0x81, -1, -1);
-        at.set(mPos.x + 16.0f, mPos.y - 16.0f, mPos.z);
+        at.x = 16.0f + mPos.x;
+        at.y = mPos.y - 16.0f;
+        at.z = mPos.z;
         getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &at, 0x81, -1, -1);
-        at.set(mPos.x - 16.0f, mPos.y + 16.0f, mPos.z);
+        at.x = mPos.x - 16.0f;
+        at.y = 16.0f + mPos.y;
+        at.z = mPos.z;
         getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &at, 0x81, -1, -1);
-        at.set(mPos.x + 16.0f, mPos.y + 16.0f, mPos.z);
+        at.x = 16.0f + mPos.x;
+        at.y = 16.0f + mPos.y;
+        at.z = mPos.z;
         getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &at, 0x81, -1, -1);
     }
 }
 
-// FIXME: 94.89 %, missing/extra; behaviour near.
-// Its frame is 0x40 with the playerPos copy at 0x10 (ours
-// 0x30, playerPos at 0x8). The direction temp's dead stack stores are not
-// reproduced, and the idx table walk takes other registers (r28 / r29). (The
-// layer is read through getField_0x4(), before the call, as the original does.)
+// FIXME: 96.20 %, missing/extra; behaviour near.
+// The original keeps four dead stack stores of the direction temp (frame 0x40,
+// ours 0x30), and reads field_0x260[idx] through this + idx * 4 both times
+// where ours keeps the element's address.
 void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
     JGeometry::TVec3f playerPos(*getPlayerPos_8023E724(field_0x298));
     s32 dist = (s32)FABS(mPos.x - playerPos.x);
@@ -309,10 +325,11 @@ void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
         s32 damage = mParamAtcp_0x114;
         s32 arg3 = 0x12;
         if (gGameRoot_8053AAF8->field_0x7f == 0) {
-            s32 n = getPlayerLife_80237774(field_0x298);
-            damage = 0;
-            if (n > 1) {
-                damage = n - 1;
+            damage = getPlayerLife_80237774(field_0x298);
+            if (damage > 1) {
+                damage--;
+            } else {
+                damage = 0;
             }
             arg3 = 4;
         }
