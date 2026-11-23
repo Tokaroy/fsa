@@ -153,7 +153,7 @@ TotalScreen_804B03D8::~TotalScreen_804B03D8() {
 
 // Resets the screen for a new round: shows the rows of the players that take part and slides the
 // remaining panes out of view.
-// FIXME(shotgun): 97.86 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.71 %, regalloc-only; behaviour clean.
 void TotalScreen_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
@@ -312,7 +312,7 @@ void TotalScreen_804B03D8::fn_803D82EC() {
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
-// FIXME(shotgun): 99.72 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void TotalScreen_804B03D8::fn_803D75B0() {
     if (field_0x80 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x78);
