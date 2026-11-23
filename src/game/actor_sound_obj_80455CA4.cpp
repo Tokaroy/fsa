@@ -42,7 +42,6 @@ void ActorSoundObj_804578F4::fn_80457840(JGeometry::TVec3f* pos) {
     }
 }
 
-void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id);
 void fn_8045BA84(const Vec* pos, Vec* out);
 
 // FIXME(shotgun): 94.81 %, missing/extra; behaviour drift.
@@ -118,19 +117,18 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
     case 0x50038:
     case 0x50039:
     case 0x5004F: {
-        JAISeCategoryMgr* cat = seMgr->getCategory(group);
-        for (JSULink<JAISe>* link = cat->getSeList()->getFirst(); link != NULL; link = link->getNext()) {
+        for (JSULink<JAISe>* link = seMgr->getCategory(group)->getSeList()->getFirst(); link != NULL; link = link->getNext()) {
             JAISe* se = link->getObject();
             if (se->getID() == id && se->getCount() == 0) {
                 count += 1.0f;
-                if ((int)count > cat->getMaxActiveSe()) {
+                if ((int)count > seMgr->getCategory(group)->getMaxActiveSe()) {
                     return NULL;
                 }
             }
         }
         if (count != 0.0f) {
             f32 scale = count / (1.0f + count);
-            for (JSULink<JAISe>* link = cat->getSeList()->getFirst(); link != NULL; link = link->getNext()) {
+            for (JSULink<JAISe>* link = seMgr->getCategory(group)->getSeList()->getFirst(); link != NULL; link = link->getNext()) {
                 JAISe* se = link->getObject();
                 if (se->getID() == id && se->getCount() == 0) {
                     se->params_.mProperty._0 *= scale;
@@ -234,10 +232,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
             id = JAISoundID(0x400D9);
             break;
         }
-        gAudioMgr_8053AF80->field_0x70++;
-        if (gAudioMgr_8053AF80->field_0x70 > 5) {
-            gAudioMgr_8053AF80->field_0x70 = 0;
-        }
+        gAudioMgr_8053AF80->incField_0x70();
         break;
     case 0x3005A: {
         static JMath::TRandom_fast_ lbl_8053AF5C(0);
@@ -290,8 +285,8 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
     } else {
         mSoundPos = NULL;
     }
+    JGeometry::TVec3f screenVec;
     JGeometry::TVec3f posVec = field_0x38;
-    Vec screenVec;
     fn_8045BA84(&posVec, &screenVec);
     if (mSoundPos != NULL) {
         f32 y = mSoundPos->y;
@@ -321,11 +316,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                             v - 0x30000 == 0x32 || group == 6) {
                             sound->getAuxiliary().movePan(0.5f, 0);
                         } else {
-                            JGeometry::TVec2f screenPos;
-                            screenPos.x = screenVec.x;
-                            screenPos.y = screenVec.y;
-                            JAISoundID idCopy = v;
-                            fn_80455CA4(this, handle, &screenPos, &idCopy);
+                            fn_80455CA4(this, handle, screenVec, v);
                         }
                     } else {
                         sound->getAuxiliary().movePan(0.5f, 0);
@@ -344,8 +335,9 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                     case 0x5000B:
                     case 0x50010: {
                         static JMath::TRandom_fast_ lbl_8053AF6C(0);
+                        f32 max = 1.0f - FLT_EPSILON;
                         f32 r = 0.08f * lbl_8053AF6C.get_ufloat_1();
-                        f32 pitch = 1.0f + (r - 0.04f * (1.0f - FLT_EPSILON));
+                        f32 pitch = 1.0f + (r - 0.04f * max);
                         handle->sound_->getAuxiliary().movePitch(pitch, 0);
                         break;
                     }
@@ -355,7 +347,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                     }
                     (*handle)->setLifeTime(1, false);
                     if (handle->sound_ != NULL && fade != 0) {
-                        (*handle)->fadeIn(fade);
+                        (*handle)->fader_.fadeInFromOut2(fade);
                     }
                 }
                 fn_80455F40(handle);
@@ -377,11 +369,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                     v - 0x30000 == 0x32 || group == 6) {
                     sound->getAuxiliary().movePan(0.5f, 0);
                 } else {
-                    JGeometry::TVec2f screenPos;
-                    screenPos.x = screenVec.x;
-                    screenPos.y = screenVec.y;
-                    JAISoundID idCopy = v;
-                    fn_80455CA4(this, handle, &screenPos, &idCopy);
+                    fn_80455CA4(this, handle, screenVec, v);
                 }
             } else {
                 sound->getAuxiliary().movePan(0.5f, 0);
@@ -433,11 +421,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                             sound->getAuxiliary().movePan(x, 0);
                         }
                     } else {
-                        JGeometry::TVec2f screenPos;
-                        screenPos.x = screenVec.x;
-                        screenPos.y = screenVec.y;
-                        JAISoundID idCopy = v;
-                        fn_80455CA4(this, handle, &screenPos, &idCopy);
+                        fn_80455CA4(this, handle, screenVec, v);
                     }
                 } else {
                     sound->getAuxiliary().movePan(0.5f, 0);
@@ -461,8 +445,9 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                 case 0x50047:
                 case 0x50070: {
                     static JMath::TRandom_fast_ lbl_8053AF74(0);
+                    f32 max = 1.0f - FLT_EPSILON;
                     f32 r = 0.08f * lbl_8053AF74.get_ufloat_1();
-                    f32 pitch = 1.0f + (r - 0.04f * (1.0f - FLT_EPSILON));
+                    f32 pitch = 1.0f + (r - 0.04f * max);
                     handle->sound_->getAuxiliary().movePitch(pitch, 0);
                     break;
                 }
@@ -476,7 +461,7 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
                     break;
                 }
                 if (fade != 0) {
-                    (*handle)->fadeIn(fade);
+                    (*handle)->fader_.fadeInFromOut2(fade);
                 }
             }
             u32 v = id;
@@ -622,38 +607,38 @@ void ActorSoundObj_804578F4::fn_80455F40(JAISoundHandle* handle) {
 // fn_80455CA4: pans and sets the volume of a started sound from a screen position
 // (pos x, y in 0..1).
 // FIXME(shotgun): 96.26 %, missing/extra; behaviour clean.
-void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id) {
-    if (pos->x < 0.0f) {
+void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec3f pos, JAISoundID id) {
+    if (pos.x < 0.0f) {
         handle->sound_->getAuxiliary().movePan(0.0f, 0);
         handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-    } else if (pos->x > 1.0f) {
+    } else if (pos.x > 1.0f) {
         handle->sound_->getAuxiliary().movePan(1.0f, 0);
         handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
     } else {
-        if (pos->y < 0.0f) {
-            handle->sound_->getAuxiliary().movePan(pos->x, 0);
+        if (pos.y < 0.0f) {
+            handle->sound_->getAuxiliary().movePan(pos.x, 0);
             handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-        } else if (pos->y > 1.0f) {
-            handle->sound_->getAuxiliary().movePan(pos->x, 0);
+        } else if (pos.y > 1.0f) {
+            handle->sound_->getAuxiliary().movePan(pos.x, 0);
             handle->sound_->getAuxiliary().moveVolume(0.4f, 0);
-        } else if (pos->x < 0.1f || pos->y < 0.1f) {
-            f32 vol = 10.0f * (pos->x <= pos->y ? pos->x : pos->y) + 0.4f;
+        } else if (pos.x < 0.1f || pos.y < 0.1f) {
+            f32 vol = 10.0f * (pos.x <= pos.y ? pos.x : pos.y) + 0.4f;
             if (vol > 1.0f) {
                 vol = 1.0f;
             }
             handle->sound_->getAuxiliary().moveVolume(vol, 0);
-            handle->sound_->getAuxiliary().movePan(pos->x, 0);
-        } else if (pos->x > 0.9f || pos->y > 0.9f) {
-            f32 vol = 10.0f * (1.0f - (pos->x >= pos->y ? pos->x : pos->y)) + 0.4f;
+            handle->sound_->getAuxiliary().movePan(pos.x, 0);
+        } else if (pos.x > 0.9f || pos.y > 0.9f) {
+            f32 vol = 10.0f * (1.0f - (pos.x >= pos.y ? pos.x : pos.y)) + 0.4f;
             if (vol > 1.0f) {
                 vol = 1.0f;
             }
             handle->sound_->getAuxiliary().moveVolume(vol, 0);
-            handle->sound_->getAuxiliary().movePan(pos->x, 0);
+            handle->sound_->getAuxiliary().movePan(pos.x, 0);
         } else {
-            handle->sound_->getAuxiliary().movePan(pos->x, 0);
-            if (id->mId.mBytes.mGroupId != 0) {
-                u32 v = *id;
+            handle->sound_->getAuxiliary().movePan(pos.x, 0);
+            if (id.mId.mBytes.mGroupId != 0) {
+                u32 v = id;
                 if (v - 0x30000 != 9 && v - 0x30000 != 0x51 && v - 0x30000 != 0x4B && v - 0x50000 != 0x6D) {
                     if (obj->field_0x44 != 1) {
                         if (gAudioMgr_8053AF80->field_0x6 == 1) {
