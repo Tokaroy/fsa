@@ -225,6 +225,7 @@ public:
 
     // Inline readers (AdventureHud_804B13D4::fn_8041E8B4 loads each before the call it is compared with).
     bool isField0x239(s32 player) const { return (field_0x239 & (u8)(1 << player)) != 0 ? true : false; }
+    bool isField0x243(u8 mask) const { return (field_0x243[0] & mask) != 0 ? true : false; }
     s32 getField0xd8(s32 player) const { return field_0xd8[player]; }
     s32 getField0xe8(s32 player) const { return field_0xe8[player]; }
 }; // Size: 0x258 (at most; see above)

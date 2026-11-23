@@ -170,7 +170,7 @@ void TotalScreen_804B03D8::fn_803D87C0() {
     for (s32 k = 0; k < 4; k++) {
         u8 mask = 1 << k;
         s32 count = lbl_80529DEC.field_0x140[k];
-        if ((lbl_80529DEC.field_0x243[0] & mask) != 0) {
+        if (lbl_80529DEC.isField0x243(mask)) {
             field_0x68 = k;
             field_0x4->search(lbl_804773E8[k])->show();
             field_0x4->search(lbl_80477380[k])->show();
