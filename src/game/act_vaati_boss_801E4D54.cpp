@@ -66,7 +66,7 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
     }
 }
 
-// FIXME(shotgun): 98.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
 // Registers only: the first loop's counter and element pointer and the dx/dy FPRs take other registers.
 void VaatiBoss_804A4958::fn_801E5754() {
     for (s32 i = 0; i < 4; i++) {
@@ -176,7 +176,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
     }
 }
 
-// FIXME: 93.97 %, missing/extra; behaviour drift.
+// FIXME: 98.80 %, missing/extra; behaviour near.
 // The original materialises the isZero() result (mfcr, extrwi.) before testing it; ours branches on the compare.
 // FIXME(shotgun): written from asm
 void VaatiBoss_804A4958::fn_801E4D88() {
