@@ -14,8 +14,7 @@ s32 lbl_80539FE0[2] = {3, 5};
 
 
 // FIXME(shotgun): 96.78 %, missing/extra; behaviour drift.
-// the original addresses the 0x2d0 array off the this pointer (mr r5, r3) and has no
-// inner compare; the random/sin part allocates f-registers differently.
+// mVel_0x3c stores in the other order; the sin/cos part allocates f-registers differently.
 void BigMoldormTail_804A1FA0::init() {
     mMapBox_0x80.i.x = -6.0f;
     mMapBox_0x80.i.y = -6.0f;
@@ -39,11 +38,8 @@ void BigMoldormTail_804A1FA0::init() {
     field_0x288[3].set(mPos);
     field_0x288[4].set(mPos);
     field_0x288[5].set(mPos);
-    JGeometry::TVec3f* p = field_0x2d0;
-    for (s32 i = 0; i < 2; i++, p += 10) {
-        for (s32 j = 0; j < 10; j++) {
-            p[j].set(mPos);
-        }
+    for (int i = 0; i < 20; i++) {
+        field_0x2d0[i].set(mPos);
     }
     mEmitters[0] = NULL;
     mEmitters[1] = NULL;
