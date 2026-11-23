@@ -439,7 +439,7 @@ void BigPoe2_804A1E50::fn_8018DFCC() {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-// FIXME(shotgun): 98.79 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.81 %, scheduling+regalloc; behaviour clean.
 void BigPoe2_804A1E50::fn_8018DC70(s32 mode) {
     if (field_0x26c == 1) {
         return;
@@ -574,7 +574,7 @@ BigPoe2_804A1E50::~BigPoe2_804A1E50() {
     }
 }
 
-// FIXME(shotgun): 97.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.29 %, missing/extra + reloc-name; behaviour near.
 void BigPoe2_804A1E50::update() {
     JGeometry::TBox2f box50;
     fn_8017EC5C(&box50, -30.0f, -30.0f, 30.0f, 30.0f);
