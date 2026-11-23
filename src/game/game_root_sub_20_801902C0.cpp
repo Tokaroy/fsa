@@ -150,7 +150,7 @@ void GameRootSub20_801902C0::fn_801914C4() {
     field_0x4++;
 }
 
-// FIXME(shotgun): 98.21 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.93 %, regalloc-only; behaviour clean.
 void GameRootSub20_801902C0::fn_80190DC8() {
     s32 frame = field_0x4;
     for (s32 i = 0; i < 7; i++) {
@@ -246,7 +246,7 @@ void GameRootSub20_801902C0::fn_80190DC8() {
     }
 }
 
-// FIXME: 98.47 %, missing/extra; behaviour near.
+// FIXME: 99.19 %, scheduling+regalloc; behaviour clean.
 void GameRootSub20_801902C0::fn_801902D0() {
     for (s32 i = 0; i < 7; i++) {
         Crystal& c = mCrystals[i];
