@@ -26,7 +26,7 @@ public:
 
     // Picks the player this actor goes for (a random starting player, the next
     // free one after it), stores it in field_0x94 and returns it (0x80189DEC).
-    u16 fn_80189DEC();
+    s32 fn_80189DEC();
 
     // SHARED-EDIT: carved from the unknown ranges (game/act_phantom_ganon_2.cpp).
     /* 0x230 */ s32 field_0x230;
@@ -64,7 +64,7 @@ public:
     /* 0x2C8 */ JGeometry::TVec3f field_0x2c8;
     /* 0x2D4 */ JGeometry::TVec3f field_0x2d4;
     /* 0x2E0 */ JGeometry::TVec3f field_0x2e0;
-    /* 0x2EC */ s16 field_0x2ec;
+    /* 0x2EC */ u16 field_0x2ec;
     /* 0x2EE */ s8 field_0x2ee;
     /* 0x2EF */ u8 field_0x2ef;
     /* 0x2F0 */ u8 field_0x2f0;
