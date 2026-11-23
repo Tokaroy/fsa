@@ -78,7 +78,7 @@ void Camera_804AA9E4::fn_8030E5BC() {
 // The per-frame update: picks the table entry for the pending request (flags 0x178-0x17B), lets
 // fn_8030CD18 work out the target box and depth, blends towards it while a transition is armed,
 // sets the view (fn_8030CB10) and the zoom, and tells the audio manager where the camera is.
-// FIXME(shotgun): 99.82 %, operands; behaviour clean.
+// FIXME(shotgun): 99.94 %, scheduling+regalloc; behaviour clean.
 // (audio center construction)
 void Camera_804AA9E4::fn_8030E154() {
     JGeometry::TBox2f target;
@@ -228,7 +228,7 @@ void Camera_804AA9E4::fn_8030DD20(const Mtx m) {
     GXLoadNrmMtxImm(tmp, GX_PNMTX9);
 }
 
-// FIXME(shotgun): 88.47 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.23 %, scheduling+regalloc + reloc-name; behaviour clean.
 // + regalloc
 void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraEntry_804AA8E8* entry,
                                   JGeometry::TBox2f* prevBox, JGeometry::TBox2f* outBox, f32* outDepth) {
