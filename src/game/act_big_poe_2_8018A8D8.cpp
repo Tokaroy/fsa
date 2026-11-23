@@ -25,13 +25,14 @@ s32 lbl_804A1B70[] = {
     8, 8, 8, 8, 8, 8, 0,
     7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 20,
     3, 3, 3, 3,
-    0, 1, 2, 1,
-    0, 1, 2, 3, 4,
-    0, 1, 2, 3, 4,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 40,
-    0, 5, 6, 7, 8,
-    5, 5, 5, 5, 40,
 };
+// Frame sequences and frame lengths of the special animations; update() indexes them by field_0x24c.
+s32 lbl_804A1C9C[] = { 0, 1, 2, 1 };
+s32 lbl_804A1CAC[] = { 0, 1, 2, 3, 4 };
+s32 lbl_804A1CC0[] = { 0, 1, 2, 3, 4 };
+s32 lbl_804A1CD4[] = { 6, 6, 6, 6, 6, 6, 6, 6, 6, 40 };
+s32 lbl_804A1CFC[] = { 0, 5, 6, 7, 8 };
+s32 lbl_804A1D10[] = { 5, 5, 5, 5, 40 };
 // Sprite names of the animation frames (.data 0x804A1D24), indexed like lbl_804A1B70.
 const char* lbl_804A1D24[] = {
     "boss_p_fly_01.bti",
@@ -117,7 +118,7 @@ extern s32 lbl_80539FD0;
 
 void fn_80154718(const JGeometry::TVec3f* pos);
 void zeroVec_801546BC(JGeometry::TVec3f* v);
-s32 atan2Short_8015465C(f32 y, f32 x);
+s16 atan2Short_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
 void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
 void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
@@ -520,9 +521,9 @@ void BigPoe2_804A1E50::fn_8018DC70(s32 mode) {
     }
 }
 
-bool BigPoe2_804A1E50::fn_8018DA6C() {
+BOOL BigPoe2_804A1E50::fn_8018DA6C() {
     if (field_0x27b == 1) {
-        return false;
+        return FALSE;
     }
     if (getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 12) & 0x1F) &&
         getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> 17) & 0x1F) &&
@@ -547,12 +548,12 @@ bool BigPoe2_804A1E50::fn_8018DA6C() {
             stopEmitter(field_0x330);
             field_0x294 = 2.0f;
             mState = 6;
-            return true;
+            return TRUE;
         }
     } else {
         field_0x284 = 100.0f;
     }
-    return false;
+    return FALSE;
 }
 
 // A plain function that fn_8018DC70 inlines and whose own copy the linker dropped: the
@@ -582,8 +583,8 @@ void BigPoe2_804A1E50::update() {
     JGeometry::TVec3f pos44;
     JGeometry::TVec3f pos38;
     u16 outAngle;
-    s32 outDir = -1;
     f32 outDist;
+    s32 outDir = -1;
     bool r29 = false;
     addCalc2_801F71A4(&field_0x294, field_0x298, 0.2f, 0.4f);
     mLife = 10000;
@@ -595,15 +596,19 @@ void BigPoe2_804A1E50::update() {
         field_0x24c &= 0xF;
         if (field_0x24c == 0) {
             copyVec_8018E8C0(&pos44, &mPos);
-            pos44.x += -(64.0f * randFloat_80154744() - 32.0f);
-            pos44.y += -(64.0f * randFloat_80154744() - 32.0f);
+            pos44.x += 32.0f - 64.0f * randFloat_80154744();
+            pos44.y += 32.0f - 64.0f * randFloat_80154744();
             spawnEmitter_8013CC50(mLayer_0x4, &pos44, 0x1FF, 1, 2, NULL, NULL, true, 1.0f);
         }
         copyVec_8018E8C0(&pos44, &mPos);
         pos44.y -= 40.0f;
         fn_8017EC70(&pos44, 1.0f);
     }
-    if (updateHitReaction_801F3D94(field_0x26c != 0)) {
+    bool hitFlag = true;
+    if (field_0x26c == 0) {
+        hitFlag = false;
+    }
+    if (updateHitReaction_801F3D94(hitFlag)) {
         if (field_0x26c == 0) {
             field_0x2ac.z = 60.0f;
             mPos.z = 60.0f;
@@ -868,10 +873,10 @@ void BigPoe2_804A1E50::update() {
             field_0x2ac.y = 1.2f * cosShort_801544E4(atan2Short_8015465C(dx, dy));
         } else if (field_0x238 == 0) {
             if (randFloat_80154744() < 0.6f || (field_0x2ac.x == 0.0f && field_0x2ac.y == 0.0f)) {
-                s32 ang = (s32)(65536.0f * randFloat_80154744());
+                s16 ang = 65536.0f * randFloat_80154744();
                 field_0x238 = (s32)(300.0f * randFloat_80154744() + 300.0f);
-                field_0x2ac.x = 1.2f * sinShort_801544FC((s16)ang);
-                field_0x2ac.y = 1.2f * cosShort_801544E4((s16)ang);
+                field_0x2ac.x = 1.2f * sinShort_801544FC(ang);
+                field_0x2ac.y = 1.2f * cosShort_801544E4(ang);
                 field_0x2b8 = 0.0f;
                 field_0x2bc = 0.0f;
             } else {
@@ -892,7 +897,7 @@ void BigPoe2_804A1E50::update() {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         field_0x258 = 0;
-        field_0x25c = (s16)atan2Short_8015465C(field_0x2a0.x - mPos.x, field_0x2a0.y - mPos.y);
+        field_0x25c = atan2Short_8015465C(field_0x2a0.x - mPos.x, field_0x2a0.y - mPos.y);
         field_0x2b8 = 0.0f;
         field_0x2bc = 0.0f;
         mState = 7;
@@ -1120,11 +1125,12 @@ void BigPoe2_804A1E50::update() {
         f32 targetY = field_0x2a0.y - 96.0f;
         addCalc2_801F71A4(&mPos.y, targetY, 0.5f, 5.0f);
         addCalc2_801F71A4(&mPos.x, field_0x2a0.x, 0.5f, 5.0f);
-        if (fabsf_8015436C(mPos.y - targetY) <= 1.0f && fabsf_8015436C(mPos.x - field_0x2a0.x) <= 1.0f) {
-            fn_8018E30C(5);
-            field_0x258 = 0;
-            mState = 17;
+        if (fabsf_8015436C(mPos.y - targetY) > 1.0f || fabsf_8015436C(mPos.x - field_0x2a0.x) > 1.0f) {
+            break;
         }
+        fn_8018E30C(5);
+        field_0x258 = 0;
+        mState = 17;
         break;
     }
     case 18:
@@ -1356,7 +1362,7 @@ void BigPoe2_804A1E50::update() {
         field_0x254 = 0;
         field_0x23c = 0;
         field_0x240 = 0;
-        field_0x264 = lbl_804A1B70[0x12C / 4 + field_0x24c];
+        field_0x264 = lbl_804A1C9C[field_0x24c];
         if (field_0x238 == 0) {
             field_0x238 = (s32)(50.0f * randFloat_80154744()) + 50;
         }
@@ -1404,7 +1410,7 @@ void BigPoe2_804A1E50::update() {
             field_0x24c++;
             field_0x24c &= 3;
             field_0x234 = 8;
-            field_0x264 = lbl_804A1B70[0x12C / 4 + field_0x24c];
+            field_0x264 = lbl_804A1C9C[field_0x24c];
         }
         if (field_0x244 == 0) {
             field_0x254 = lbl_80539FCC;
@@ -1415,8 +1421,8 @@ void BigPoe2_804A1E50::update() {
     case 29:
         field_0x24c = 0;
         field_0x250 = 0;
-        field_0x234 = lbl_804A1B70[0x164 / 4 + field_0x24c];
-        field_0x264 = lbl_804A1B70[0x13C / 4 + field_0x24c];
+        field_0x234 = lbl_804A1CD4[field_0x24c];
+        field_0x264 = lbl_804A1CAC[field_0x24c];
         field_0x2ac.x = 0.0f;
         field_0x2ac.y = 0.0f;
         mState = 30;
@@ -1451,16 +1457,16 @@ void BigPoe2_804A1E50::update() {
             if (field_0x24c > 9) {
                 mState = 27;
             } else {
-                field_0x234 = lbl_804A1B70[0x164 / 4 + field_0x24c];
-                field_0x264 = lbl_804A1B70[0x13C / 4 + field_0x24c];
+                field_0x234 = lbl_804A1CD4[field_0x24c];
+                field_0x264 = lbl_804A1CAC[field_0x24c];
             }
         }
         break;
     case 31:
         field_0x24c = 0;
         field_0x250 = 0;
-        field_0x234 = lbl_804A1B70[0x1A0 / 4 + field_0x24c];
-        field_0x264 = lbl_804A1B70[0x18C / 4 + field_0x24c];
+        field_0x234 = lbl_804A1D10[field_0x24c];
+        field_0x264 = lbl_804A1CFC[field_0x24c];
         zeroVec_801546BC(&mVel_0x3c);
         field_0x2ac.x = 0.0f;
         field_0x2ac.y = 0.0f;
@@ -1497,8 +1503,8 @@ void BigPoe2_804A1E50::update() {
                     mState = 33;
                 }
             } else {
-                field_0x234 = lbl_804A1B70[0x1A0 / 4 + field_0x24c];
-                field_0x264 = lbl_804A1B70[0x18C / 4 + field_0x24c];
+                field_0x234 = lbl_804A1D10[field_0x24c];
+                field_0x264 = lbl_804A1CFC[field_0x24c];
             }
         }
         break;
@@ -1512,8 +1518,8 @@ void BigPoe2_804A1E50::update() {
         if (field_0x23c != 0) {
             if ((field_0x23c & 7) == 0) {
                 copyVec_8018E8C0(&pos44, &mPos);
-                pos44.x += -(64.0f * randFloat_80154744() - 32.0f);
-                pos44.y += -(64.0f * randFloat_80154744() - 32.0f);
+                pos44.x += 32.0f - 64.0f * randFloat_80154744();
+                pos44.y += 32.0f - 64.0f * randFloat_80154744();
                 spawnActor_80154310('HBMB', getLayer_8015461C(), &pos44, 7, -1, -1);
             }
             break;
