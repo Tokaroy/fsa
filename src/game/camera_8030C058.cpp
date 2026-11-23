@@ -81,6 +81,7 @@ void Camera_804AA9E4::fn_8030E5BC() {
 // FIXME(shotgun): 99.82 %, operands; behaviour clean.
 // (audio center construction)
 void Camera_804AA9E4::fn_8030E154() {
+    JGeometry::TBox2f target;
     JGeometry::TBox2f box = mVisibleBox_0x154;
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         if (field_0x179 != 0) {
@@ -119,7 +120,6 @@ void Camera_804AA9E4::fn_8030E154() {
         box.f.y = box.f.y + h;
     }
     if (mSkipUpdate_0x17d == 0) {
-        JGeometry::TBox2f target;
         f32 depth;
         fn_8030CD18(&box, entry, &mPrevFocusBox_0x1b4, &target, &depth);
         if (mInTransition_0x1e8 != 0) {
@@ -151,9 +151,9 @@ void Camera_804AA9E4::fn_8030E154() {
         }
         fn_8030CB10(&target, depth);
         mZoom_0x858 = (f32)(s32)JUTVideo::sManager->getFbWidth() / (target.f.x - target.i.x);
-        JGeometry::TVec3f a(target.f.x, target.i.y, depth);
-        JGeometry::TVec3f b(target.i.x, target.i.y, depth);
         JGeometry::TVec3f center;
+        JGeometry::TVec3f a(target.i.x, target.i.y, depth);
+        JGeometry::TVec3f b(target.f.x, target.i.y, depth);
         center.add(a, b);
         center.scale(0.5f);
         gAudioMgr_8053AF80->fn_80459624(&center, mViewMtx_0x4, 0);
