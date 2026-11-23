@@ -44,7 +44,7 @@ void ActorSoundObj_804578F4::fn_80457840(JGeometry::TVec3f* pos) {
 
 void fn_8045BA84(const Vec* pos, Vec* out);
 
-// FIXME(shotgun): 94.81 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.83 %, regalloc-only; behaviour drift.
 JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 fade) {
     if (field_0x31 == 0) {
         return NULL;
@@ -476,7 +476,6 @@ JAISoundHandle* ActorSoundObj_804578F4::startSound_80456334(JAISoundID id, u32 f
     }
 }
 
-// FIXME(shotgun): 96.17 %, missing/extra + reloc-name; behaviour drift.
 void ActorSoundObj_804578F4::fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c) {
     field_0x44 = c;
     JAISoundHandle* handle = startSound_80456334(id, fade);
@@ -607,7 +606,6 @@ void ActorSoundObj_804578F4::fn_80455F40(JAISoundHandle* handle) {
 
 // fn_80455CA4: pans and sets the volume of a started sound from a screen position
 // (pos x, y in 0..1).
-// FIXME(shotgun): 96.26 %, missing/extra; behaviour clean.
 void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec3f pos, JAISoundID id) {
     if (pos.x < 0.0f) {
         handle->sound_->getAuxiliary().movePan(0.0f, 0);
