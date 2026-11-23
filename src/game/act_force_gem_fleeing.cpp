@@ -84,7 +84,6 @@ void FleeingForceGem_804AB170::init() {
     }
 }
 
-// FIXME(shotgun): 89.23 %, missing/extra; behaviour clean.
 bool FleeingForceGem_804AB170::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = (u16)getTileCollisionCode_8022461C(pos, layer);
     if (tile == 3) {
@@ -141,7 +140,7 @@ inline void bobForceGem(FleeingForceGem_804AB170* gem) {
 }
 
 // 0x8031C598.
-// FIXME(shotgun): 99.23 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.95 %, regalloc-only + reloc-name; behaviour near.
 void FleeingForceGem_804AB170::update() {
     s32 player = 0;
     u16 angle = 0;
@@ -518,7 +517,7 @@ void FleeingForceGem_804AB170::update() {
 }
 
 // 0x8031C0B0.
-// FIXME(shotgun): 96.04 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.39 %, regalloc-only; behaviour clean.
 void FleeingForceGem_804AB170::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x2d = 1;
