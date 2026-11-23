@@ -18,6 +18,13 @@
 struct cls_801D6A88 {
     cls_801D6A88();
     void fn_801D789C();
+    // Counts field_0x4 down to 0 (the caller tests it again: fn_801E5754).
+    bool isField_0x4Positive() const { return field_0x4 > 0; }
+    void decField_0x4() {
+        if (field_0x4 > 0) {
+            field_0x4--;
+        }
+    }
 
     /* 0x00 */ u8 field_0x0; // cleared by fn_801D789C
     /* 0x01 */ u8 field_0x1[0x4 - 0x1]; // not yet known
@@ -36,7 +43,6 @@ struct cls_801D6A58 {
     void fn_801D7874();
     // 0x801D7830: damps the two floats (0.97) and lets field_0x10 fall by 0.2 per call, to -4.
     void fn_801D7830();
-
     /* 0x00 */ s32 field_0x0;
     /* 0x04 */ u8 field_0x4;
     /* 0x05 */ u8 field_0x5;
@@ -232,7 +238,14 @@ public:
     // dir normalised and doubled, z 1.5. Otherwise a player within 160 units
     // of mPos whose field_0x2a8 entry has field_0x0 clear gives the sin and
     // cos of its angle, else dir is normalised; both are quadrupled, z 3.
-    void fn_801E5BA8(const ActorBase_804A5770* actor, const JGeometry::TVec2f* dir, bool flag);
+    void fn_801E5BA8(const ActorBase_804A5770* actor, const JGeometry::TVec3f* dir, bool flag);
+    // Inline: every site of 0x801E4D88 recomputes the element's address, calls
+    // fn_801D7874 and stores 0 to its field_0x4 again.
+    void clearEntry(s32 i) {
+        cls_801D6A58* entry = &field_0x308[i];
+        entry->fn_801D7874();
+        entry->field_0x4 = 0;
+    }
     // 0x801E5754 (game/act_vaati_boss_801E4D54.cpp): steps the four player records in
     // field_0x2a8 (countdowns, the 0x2AC timers) against this boss's layer and
     // the positions of the players.
