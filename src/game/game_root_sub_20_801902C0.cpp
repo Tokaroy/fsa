@@ -395,15 +395,15 @@ void GameRootSub20_801902C0::fn_801902D0() {
         SandFall& s = mSandFalls[i];
         if (s.mModel != NULL) {
             JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
-            SpriteParams_801F5AE0 params;
             Mtx mtx;
+            SpriteParams_801F5AE0 params;
             PSMTXTrans(mtx, s.mPos.x, s.mPos.y, s.mPos.z);
             mtx[1][3] -= 1024.0f;
             mtx[2][3] -= 1024.0f;
             if (s.field_0xc[0] != 0) {
                 scale.scale(0.33333334f);
             }
-            JGeometry::TVec3f pos = s.mPos;
+            JGeometry::TVec3f pos(s.mPos.x, s.mPos.y, s.mPos.z);
             if (s.field_0xc[0] != 0) {
                 pos.x -= 16.0f;
                 pos.y -= 16.0f;
