@@ -131,8 +131,11 @@ void ReaperShinigami_804A886C::update() {
             }
         } else {
             JGeometry::TVec3f playerPos(*getPlayerPos_8023E724(field_0x298));
-            field_0x284.x = playerPos.x - mPos.x;
-            field_0x284.y = (playerPos.y - 48.0f) - mPos.y;
+            playerPos.y -= 48.0f;
+            JGeometry::TVec2f dir(playerPos.x, playerPos.y);
+            dir.x -= mPos.x;
+            dir.y -= mPos.y;
+            field_0x284 = dir;
             normalize(field_0x284);
             field_0x254 = field_0x284.x * field_0x268[1];
             field_0x258 = field_0x284.y * field_0x268[1];
