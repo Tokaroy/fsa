@@ -635,7 +635,7 @@ void Ganon_804A25F0::fn_80196020(s32 player) {
     }
 }
 
-// FIXME(shotgun): 97.82 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.99 %, missing/extra + reloc-name; behaviour near.
 void Ganon_804A25F0::update() {
     JGeometry::TVec3f posA;
     JGeometry::TVec3f posB;
