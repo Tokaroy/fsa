@@ -179,7 +179,7 @@ void Navi_804A6708::init() {
 }
 
 
-// FIXME: 90.50 %, missing/extra; behaviour near.
+// FIXME: 98.86 %, different; behaviour near.
 // Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void Navi_804A6708::fn_8021E4F8() {
     switch (mState) {
@@ -249,7 +249,7 @@ void Navi_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.98 %, scheduling+regalloc; behaviour drift.
 void Navi_804A6708::setState_8021DFAC(s32 newState) {
     s32 p;
     switch (newState) {

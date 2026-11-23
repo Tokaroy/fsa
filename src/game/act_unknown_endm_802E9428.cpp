@@ -538,7 +538,8 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
 void UnknownENDM_804AA0FC::pool_805412F8() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TVec2f focus(pos);
+    focus += offset;
     JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
     f32 halfW = view.getWidth() * 0.5f;
     f32 halfH = view.getHeight() * 0.5f;
