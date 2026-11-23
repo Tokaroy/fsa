@@ -151,7 +151,6 @@ void GameRootSub20_801902C0::fn_801914C4() {
 }
 
 // FIXME(shotgun): 98.21 %, missing/extra; behaviour near.
-// (the two small requests are unrolled in the target)
 void GameRootSub20_801902C0::fn_80190DC8() {
     s32 frame = field_0x4;
     for (s32 i = 0; i < 7; i++) {
@@ -172,11 +171,11 @@ void GameRootSub20_801902C0::fn_80190DC8() {
             }
         }
     }
-    for (s32 i = 0; i < 2; i++) {
-        SmallRequest& r = mSmallRequests[i];
-        if (r.field_0x14 != NULL && r.mActive != 0) {
-            r.field_0x14->mCurrentFrame = (f32)(frame % r.field_0x14->mTotalFrameCount);
-        }
+    if (mSmallRequests[0].field_0x14 != NULL && mSmallRequests[0].mActive != 0) {
+        mSmallRequests[0].field_0x14->mCurrentFrame = (f32)(frame % mSmallRequests[0].field_0x14->mTotalFrameCount);
+    }
+    if (mSmallRequests[1].field_0x14 != NULL && mSmallRequests[1].mActive != 0) {
+        mSmallRequests[1].field_0x14->mCurrentFrame = (f32)(frame % mSmallRequests[1].field_0x14->mTotalFrameCount);
     }
     if (mRequests[0].field_0x10 != NULL && mRequests[0].mActive != 0) {
         mRequests[0].field_0x10->mCurrentFrame = 121.0f * mRequests[0].mValue;
