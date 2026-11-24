@@ -114,11 +114,9 @@ void cls_804AE9A0::fn_8037A664() {
     }
 }
 
-// FIXME: 94.74 %, missing/extra; behaviour drift.
-// Same mode-byte clrlwi as fn_80379F84 and fn_8037A664.
 void cls_804AE9A0::fn_8037A580() {
     if (field_0x4 != NULL) {
-        u8 mode = lbl_8053ADA0->mMode_0x4c0;
+        const u8 mode = lbl_8053ADA0->mMode_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7) {
             lbl_8053ADA0->fn_803A8F5C();
         } else {
@@ -127,14 +125,14 @@ void cls_804AE9A0::fn_8037A580() {
         }
     }
     if (field_0x8 != NULL) {
-        u8 mode = lbl_8053ADA8->field_0x294;
+        const u8 mode = lbl_8053ADA8->field_0x294;
         if (mode == 5 || mode == 8 || mode == 7) {
             fn_8037AA7C();
             lbl_8053ADA8->fn_803B7DCC();
         }
     }
     if (field_0xc != NULL) {
-        u8 mode = lbl_8053ADC0->field_0x76;
+        const u8 mode = lbl_8053ADC0->field_0x76;
         if (mode == 2 || mode == 8 || mode == 7) {
             lbl_8053ADC0->fn_803D8364();
             lbl_8053ADC0->fn_803D82EC();
