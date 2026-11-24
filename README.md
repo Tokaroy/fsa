@@ -48,9 +48,9 @@ game code in its eight categories, the bottom row the libraries. Click a block t
 <!-- progress:start -->
 As of 2026-11-24:
 
-- **Structural progress: 84.77 %** (3,765,314 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
+- **Structural progress: 84.78 %** (3,766,157 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
 - **Matched code: 60.55 %** (2,689,732 of 4,442,032 bytes), **10,404 / 11,557** functions fully matched.
-- **Structurally matched:** 11,013 / 11,557 functions (same instructions, register or order differences only), +227 close.
+- **Structurally matched:** 11,014 / 11,557 functions (same instructions, register or order differences only), +227 close.
 - **490 of 904** split units are Matching, and `main.dol` built from them links byte-identically (SHA-1 OK).
 <!-- progress:end -->
 
@@ -156,7 +156,7 @@ Of 3,573,784 bytes of game code: **81.2 %** structural progress, **51.5 %** matc
 | [Objects & gimmicks](https://sh1ftmaker.github.io/fsa/#/game/game-objects) | 75.8 % | 45.6 % of 900,452 bytes | 1,193 / 1,518 | 78 / 229 | 56 |
 | [Stage & world](https://sh1ftmaker.github.io/fsa/#/game/game-stage) | 68.9 % | 30.9 % of 182,272 bytes | 225 / 311 | 0 / 10 | 2 |
 | [Menus & screens](https://sh1ftmaker.github.io/fsa/#/game/game-menus) | 88.0 % | 56.1 % of 801,312 bytes | 710 / 863 | 9 / 47 | 11 |
-| [Game core](https://sh1ftmaker.github.io/fsa/#/game/game-core) | 88.4 % | 72.7 % of 198,580 bytes | 712 / 773 | 5 / 24 | 7 |
+| [Game core](https://sh1ftmaker.github.io/fsa/#/game/game-core) | 88.9 % | 72.7 % of 198,580 bytes | 712 / 773 | 5 / 24 | 7 |
 | [Media & link](https://sh1ftmaker.github.io/fsa/#/game/game-media) | 76.2 % | 50.5 % of 113,028 bytes | 302 / 337 | 6 / 15 | 2 |
 
 - **Player:** The four players and their manager: the ten Player units of docs/PLAYER.md (states, movement, drawing).
