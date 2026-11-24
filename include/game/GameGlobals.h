@@ -1471,16 +1471,13 @@ extern "C" cls_80204638* fn_80204638();
 // FrostareTail_804A4F90::fn_801DC264 (BOIT) and Navi_804A6708::fn_8021D734 / fn_8021D764 /
 // fn_8021D794 (NAVI) in game/act/tu_801F9484.h.
 
-// A shared .sdata2 constant (1.0f), owned by game/act_shadow_link_generator's
-// .sdata2 (8053EDF0); act_shadow_link_2's helper loads it and subtracts 0.001f at run time.
+// Shared .sdata2 constants of game/act_shadow_link_2.cpp (8053EDF0-8053EE03, before its
+// literals). 1.0f: act_shadow_link_2's helper loads it and subtracts 0.001f at run time.
 extern const f32 lbl_8053EDF0;
-// The next one (64.0f, 8053EDF4), same owner; act_shadow_link_2's
-// game/act_shadow_link_2_801C6A4C.cpp loads it and squares it at run time.
+// 64.0f: game/act_shadow_link_2_801C6A4C.cpp loads it and squares it at run time.
 extern const f32 lbl_8053EDF4;
-// The next three (s32 constants at 8053EDF8, 8053EDFC, 8053EE00; owners:
-// act_shadow_link_generator's .sdata2 for the first two, the following unit
-// for the last): act_shadow_link_2's game/act_shadow_link_2_801D3CBC.cpp converts each to
-// float at run time as the divisor of a fade (255 * mStateTimer / value).
+// 60, 90, 110: game/act_shadow_link_2_801D3CBC.cpp converts each to float at run time as
+// the divisor of a fade (255 * mStateTimer / value).
 extern const s32 lbl_8053EDF8;
 extern const s32 lbl_8053EDFC;
 extern const s32 lbl_8053EE00;
@@ -1491,7 +1488,7 @@ extern const s32 lbl_8053EE00;
 // (8, 0, slot, 0, 0) for each spawn.
 u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e);
 
-// Shared .sdata2 constants owned by game/tu_801CB270.cpp (not written yet),
+// Shared .sdata2 constants of game/enemy_base_801CDC8C.cpp (they lead its .sdata2),
 // global consts read by several Shadow Link and enemy units: the gravity step
 // (act_shadow_link_2 vfunc_0x84, act_shadow_link_jump, act_terrorpin,
 // act_frostare_tail, tu_801D8400) and the fall-speed limit (act_shadow_link_2,

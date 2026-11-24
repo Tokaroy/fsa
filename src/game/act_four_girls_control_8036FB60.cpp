@@ -908,6 +908,8 @@ void FourGirlsControl_804AE4B0::fn_8036FDAC() {
     }
 }
 
+cls_804AE9A0* lbl_8053AD68;
+
 void FourGirlsControl_804AE4B0::fn_8036FB60() {
     s32 i;
     s32 j;

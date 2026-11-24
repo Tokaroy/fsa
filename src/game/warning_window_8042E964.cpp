@@ -19,6 +19,7 @@ static inline int charWidth(int c) {
 
 WarningWindow_804B1634* lbl_8053AEC0;
 StageSelectWindow_804B1600* lbl_8053AEC4;
+GameOverScreen_804B17A0* lbl_8053AEC8;
 
 // Two 4-entry tables read with lhax by byte index (0xEB); used by fn_80431174 / fn_8042F6DC (not written yet).
 static const s16 lbl_80543AE8[4] = {0x8, 0x154, 0x5, 0x0};

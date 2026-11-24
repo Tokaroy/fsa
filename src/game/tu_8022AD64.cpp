@@ -24,6 +24,11 @@
 // destructor chain after it.
 JGeometry::TVec3f lbl_804CF460(0.0f, 0.0f, 0.0f);
 
+PlayerManager_804A6F28* gPlayerManager_8053AC90;
+BgRewrite_804A7C98* gBgRewrite_8053AC98;
+BlackFade_804A8390* lbl_8053ACA0;
+cls_804A8578* lbl_8053ACA8;
+
 // fn_8022ADFC inlines the flag getters; 0x70 has no out-of-line getter in the
 // original, so its test is a file inline.
 static inline bool getFlag_0x70() {

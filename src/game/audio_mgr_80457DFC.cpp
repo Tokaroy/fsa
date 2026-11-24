@@ -215,6 +215,7 @@ public:
 };
 
 f32 lbl_8053AF78;
+AudioMgr_8045A080* gAudioMgr_8053AF80;
 
 
 // 0x8045A0E4 / 0x8045A0D8

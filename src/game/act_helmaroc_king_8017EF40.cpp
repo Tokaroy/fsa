@@ -33,12 +33,12 @@ static inline void setRotScaleMtx3(Mtx m, const JGeometry::TVec3f& rot, f32 sx, 
     m[2][2] = sz * (cosx * cosy);
 }
 
-extern s32 lbl_80539F98;
-extern s32 lbl_80539F9C;
-extern s32 lbl_80539FA0;
-extern s32 lbl_80539FA4;
-extern s32 lbl_80539FA8[2];
-extern s32 lbl_80539FB0[2];
+s32 lbl_80539F98 = 8;
+s32 lbl_80539F9C = 60;
+s32 lbl_80539FA0 = -1;
+s32 lbl_80539FA4 = -1;
+s32 lbl_80539FA8[2] = {7, 15};
+s32 lbl_80539FB0[2] = {10, 30};
 s32 lbl_8053AB70;
 u8 lbl_8053AB74;
 u8 lbl_8053AB75;

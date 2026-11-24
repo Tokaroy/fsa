@@ -9,7 +9,7 @@
 #include "game/mg_oni_screen_804465B8.h"
 #include "game/act/act_hammer_shop_minigame_800FF060.h"
 
-extern const u8 lbl_80539EA8[2];
+u8 lbl_80539EA8[2] = {20, 15};
 extern s32 lbl_8049C848[4];
 s32 lbl_8049C848[4] = { 500, 300, 100, 0 };
 

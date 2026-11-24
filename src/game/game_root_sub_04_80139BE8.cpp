@@ -16,9 +16,8 @@
 #include "game/act_light_environment_control_802EF76C.h"
 #include "JSystem/JKernel/JKRExpHeap.h"
 
-// Shift-JIS report strings (.rodata of this unit); not written as source because the bytes are escaped.
-extern const char lbl_80465920[];
-extern const char lbl_80465960[];
+GameRoot_8049EF20* gGameRoot_8053AAF8;
+JKRHeap* lbl_8053AB00;
 
 // FIXME(shotgun): 33.1 %, missing/extra (the colour is copied byte by byte; fn_8013A884 takes a u32* in act_light_environment_control_802EF76C.h)
 // 0x8013A884
@@ -62,10 +61,10 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
             if (reported == 0) {
                 reported = 1;
                 f32 total = (s32)heap->getTotalFreeSize() / 1024.0f;
-                OSReport(lbl_80465920, 600000.0 / 1024.0, heap->getFreeSize() / 1024.0f, total);
+                OSReport("Expヒープ%fKの確保失敗　連続空き容量　%fK 残り空き容量　%fK\n", 600000.0 / 1024.0, heap->getFreeSize() / 1024.0f, total);
             }
         } else {
-            OSReport(lbl_80465960);
+            OSReport("領域確保成功\n");
         }
         heap->becomeCurrentHeap();
         field_0x2c = new (heap, 0) StaffRollLoader_804B1D10();
@@ -74,6 +73,8 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
         field_0x2c = NULL;
     }
 }
+
+GameRoot2_8049F108* gGameRoot2_8053AB10;
 
 GameRootSub04_801F856C::~GameRootSub04_801F856C() {
     u32 color = 0xFFFFFF00;

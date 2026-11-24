@@ -2216,7 +2216,7 @@ game/act_ice_wall.cpp:
 	.rodata     start:0x80464BE8 end:0x80464C58
 	.data       start:0x8049DE18 end:0x8049DE90
 	.bss        start:0x804BCA60 end:0x804BCB60
-	.sdata      start:0x80539F28 end:0x80539F38
+	.sdata      start:0x80539F28 end:0x80539F30
 	.sdata2     start:0x8053C8B0 end:0x8053C8F8
 
 game/act_random_toggle_switch_8011E96C.cpp:
@@ -2472,7 +2472,7 @@ game/act_navi_after_crystal_cutscene_8013394C.cpp:
 	.data       start:0x8049ED30 end:0x8049ED88
 	.bss        start:0x804BE720 end:0x804BE838
 	.sdata      start:0x80539F50 end:0x80539F58
-	.sbss       start:0x8053AAE8 end:0x8053AAF8
+	.sbss       start:0x8053AAE8 end:0x8053AAF0
 	.sdata2     start:0x8053CD30 end:0x8053CD50
 
 game/tu_801344C0.cpp:
@@ -2481,6 +2481,7 @@ game/tu_801344C0.cpp:
 	.text       start:0x801344C0 end:0x80134C04
 	.ctors      start:0x8045BEF0 end:0x8045BEF4
 	.bss        start:0x804BE838 end:0x804BE938
+	.sbss       start:0x8053AAF0 end:0x8053AAF8
 
 game/game_root_80134C04.cpp:
 	extab       start:0x8000695C end:0x80006A2C
@@ -3329,7 +3330,7 @@ game/act_shadow_link_generator.cpp:
 	.data       start:0x804A4310 end:0x804A43E8
 	.bss        start:0x804C7FD0 end:0x804C80D0
 	.sbss       start:0x8053AC18 end:0x8053AC28
-	.sdata2     start:0x8053EDA8 end:0x8053EE00
+	.sdata2     start:0x8053EDA8 end:0x8053EDF0
 
 game/act_shadow_link_2.cpp:
 	extab       start:0x80008050 end:0x80008120
@@ -3339,7 +3340,7 @@ game/act_shadow_link_2.cpp:
 	.rodata     start:0x80469450 end:0x80469460
 	.data       start:0x804A43E8 end:0x804A4798
 	.bss        start:0x804C80D0 end:0x804C81D0
-	.sdata2     start:0x8053EE00 end:0x8053EE68
+	.sdata2     start:0x8053EDF0 end:0x8053EE68
 
 game/act_shadow_link_2_801C5B08.cpp:
 	extab       start:0x80008120 end:0x80008148
@@ -3380,7 +3381,7 @@ game/tu_801CB270.cpp:
 	.text       start:0x801CB270 end:0x801CDC8C
 	.ctors      start:0x8045C050 end:0x8045C054
 	.bss        start:0x804C85D0 end:0x804C86D0
-	.sdata2     start:0x8053EF58 end:0x8053EFC0
+	.sdata2     start:0x8053EF58 end:0x8053EFB8
 
 game/enemy_base_801CDC8C.cpp:
 	extab       start:0x80008350 end:0x800084AC
@@ -3389,7 +3390,7 @@ game/enemy_base_801CDC8C.cpp:
 	.ctors      start:0x8045C054 end:0x8045C058
 	.data       start:0x804A4808 end:0x804A48B0
 	.bss        start:0x804C86D0 end:0x804C87D0
-	.sdata2     start:0x8053EFC0 end:0x8053F018
+	.sdata2     start:0x8053EFB8 end:0x8053F018
 
 game/tu_801D11FC.cpp:
 	extab       start:0x800084AC end:0x800084E8
@@ -6504,6 +6505,7 @@ game/game_mode_803DAC3C.cpp:
 	.rodata     start:0x804774C8 end:0x80477970
 	.data       start:0x804B0508 end:0x804B06A0
 	.bss        start:0x80528468 end:0x80528568
+	.sbss       start:0x8053ADD0 end:0x8053ADD8
 	.sdata2     start:0x805435D8 end:0x80543648
 
 game/adv_entry_screen_803E1668.cpp:

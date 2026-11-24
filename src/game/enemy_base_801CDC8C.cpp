@@ -30,6 +30,10 @@
 // pickNewDir_801CF720, fn_801CF798 and isStepBlocked_801CFCF0 out of line.
 #pragma auto_inline off
 
+// The gravity step and the fall-speed limit the enemy and Shadow Link units read (declared in
+// GameGlobals.h); with lbl_8053EFC0 they lead this unit's .sdata2.
+const f32 lbl_8053EFB8 = -0.2f;
+const f32 lbl_8053EFBC = 4.0f;
 const bool lbl_8053EFC0 = false;
 
 inline void EnemyBase_804A4808::stateStep(u8 mapHit) {

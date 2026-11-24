@@ -11,8 +11,14 @@
 #include "game/act/act_shadow_link_2.h"
 #include "game/GameGlobals.h"
 
-// 110, the divisor of the fade in game/act_shadow_link_2_801D3CBC.cpp (declared in GameGlobals.h). It leads this
-// unit's .sdata2, before the function literals.
+// The unit's shared constants (declared in GameGlobals.h); they lead its .sdata2, before the
+// function literals. 1.0f and 64.0f: act_shadow_link_2_801C71BC / bomb_drop_timer_802188B0 and
+// act_shadow_link_2_801C6A4C / _801C5B08; 60, 90 and 110: the divisors of the fades in
+// game/act_shadow_link_2_801D3CBC.cpp.
+const f32 lbl_8053EDF0 = 1.0f;
+const f32 lbl_8053EDF4 = 64.0f;
+const s32 lbl_8053EDF8 = 60;
+const s32 lbl_8053EDFC = 90;
 const s32 lbl_8053EE00 = 110;
 
 const u32 lbl_80469450[4] = {

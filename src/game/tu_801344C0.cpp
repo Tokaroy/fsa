@@ -9,6 +9,8 @@
 #include <dolphin/dvd.h>
 #include <dolphin/os.h>
 
+BootLoader_804B0F50* lbl_8053AAF0;
+
 // The game's entry point (symbol "main", 0x801344C0): sets up the framework,
 // the game pads, the heaps, the loader and the memory card, then runs the
 // frame loop forever.

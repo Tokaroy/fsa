@@ -33,6 +33,8 @@ static const GXColor lbl_804661E0[8][3] = {
 
 // A flag of the ghost's attacks, .sbss at 0x8053AB58.
 s32 lbl_8053AB58;
+u8 lbl_8053AB60;
+s32 lbl_8053AB68;
 
 // 0x80164118.
 BigPoe_804A0440::~BigPoe_804A0440() {
