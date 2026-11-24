@@ -222,14 +222,13 @@ s32 MalonAndTalonController_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) 
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.53 %, operands + reloc-name; behaviour near.
+// FIXME: 98.93 %, regalloc-only.
 bool MalonAndTalonController_8049EA88::fn_80130370() {
     ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
     if (target == NULL) {
         return false;
     }
     JGeometry::TVec3f pos = target->mPos;
-    const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
     pos.x += -56.0f;
     pos.y += 48.0f;
     bool done = true;
@@ -240,8 +239,8 @@ bool MalonAndTalonController_8049EA88::fn_80130370() {
         s32 dir = angleToDir_801F681C(angle);
         bool xDone;
         bool yDone;
-        f32 sn = sincos.sinShort(angle);
-        f32 cs = sincos.cosShort(angle);
+        f32 sn = JMath::sincosTable_.sinShort(angle);
+        f32 cs = JMath::sincosTable_.cosShort(angle);
         if (moveToward_801CD950(&p.x, pos.x, sn)) {
             done = false;
             xDone = false;
