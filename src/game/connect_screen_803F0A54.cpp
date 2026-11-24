@@ -1,5 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
+#include "game/PlayerBit.h"
 #include "game/GameState.h"
 #include "game/Effect.h"
 #include "game/ActorBase.h"
@@ -278,18 +279,6 @@ static inline void stepBlink(ConnectScreen_804B0F10* self) {
     self->field_0x210[0]++;
     if (self->field_0x210[0] >= 30) {
         self->field_0x210[0] = 0;
-    }
-}
-
-static inline void setBounce(ConnectScreen_804B0F10* self, s32 i) {
-    if (i <= self->field_0x1ac) {
-        self->field_0x240[i] = 1;
-    }
-}
-
-static inline void setBounceIfReady(ConnectScreen_804B0F10* self, s32 i) {
-    if (i <= self->field_0x1ac && self->field_0x1b0[i] == 4) {
-        self->field_0x240[i] = 1;
     }
 }
 
@@ -1573,7 +1562,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 98.72 %, different; behaviour near.
+// FIXME(shotgun): 98.99 %, scheduling+regalloc; behaviour clean.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
@@ -1618,6 +1607,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
         }
     }
     s16 others[2];
+    s16* src = others;
     s16* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0x1a8) {
@@ -1647,10 +1637,10 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             }
         }
     } else {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++, src++) {
             if (field_0x240[0] > i * 10) {
                 if (field_0x240[0] < i * 10 + 10) {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
                     f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
@@ -1662,7 +1652,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
                         mEntryConScreen_0xc->search(lbl_804790F0[idx][j])->setAlpha(fadeAlpha(field_0x326[idx][j], alpha));
                     }
                 } else {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f;
                     for (int j = 0; j < 5; j++) {
                         mEntryConScreen_0xc->search(lbl_804790F0[idx][j])->setAlpha(fadeAlpha(field_0x326[idx][j], 0.0f));
@@ -1765,7 +1755,6 @@ void ConnectScreen_804B0F10::fn_803F715C() {
     }
 }
 
-// FIXME(shotgun): 96.28 %, missing/extra; behaviour drift.
 void ConnectScreen_804B0F10::fn_803F5A0C() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x240[i] != 0) {
@@ -1778,10 +1767,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
             if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x1000)) {
                 if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                     field_0x1a8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
@@ -1804,10 +1794,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
             } else if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100)) {
                 if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                     field_0x1a8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
@@ -1824,17 +1815,10 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                     gAudioMgr_8053AF80->playSystemSound_80458880(11, -1);
                     if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                         field_0x1a8 = 0;
-                        if (0 <= field_0x1ac + 1) {
-                            field_0x240[0] = 1;
-                        }
-                        if (1 <= field_0x1ac + 1) {
-                            field_0x240[1] = 1;
-                        }
-                        if (2 <= field_0x1ac + 1) {
-                            field_0x240[2] = 1;
-                        }
-                        if (3 <= field_0x1ac + 1) {
-                            field_0x240[3] = 1;
+                        for (s32 j = 0; j < 4; j++) {
+                            if (j <= field_0x1ac + 1) {
+                                field_0x240[j] = 1;
+                            }
                         }
                         if (mFadeState_0x25e == 0) {
                             mNextState_0x1cc = 7;
@@ -1842,7 +1826,7 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                         }
                         return;
                     }
-                } else {
+                } else if (field_0x1b0[i] < 3) {
                     switch (field_0x1b0[i]) {
                     case 0: {
                         field_0x1e0[i]++;
@@ -1878,10 +1862,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                     field_0x1d0[i] = 30;
                     updateHandicapCursor(this, i);
                 } else {
-                    setBounceIfReady(this, 0);
-                    setBounceIfReady(this, 1);
-                    setBounceIfReady(this, 2);
-                    setBounceIfReady(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac && field_0x1b0[j] == 4) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
@@ -1994,10 +1979,10 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME(shotgun): 96.54 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4)) {
             u8 alpha;
             if (field_0x210[i] == 0) {
                 field_0x25b &= ~(1 << i);
@@ -2038,9 +2023,9 @@ void ConnectScreen_804B0F10::fn_803F4120() {
                     } else {
                         t = (f32)((50 - (field_0x24a - 50)) * (50 - (field_0x24a - 50))) / 2500.0f;
                     }
-                    mEntryScreen_0x8->search(lbl_80479258[i])->setAlpha(t * field_0x253);
-                    mEntryScreen_0x8->search(lbl_80479278[i])->setAlpha(t * field_0x254);
-                    mEntryScreen_0x8->search(lbl_80479298[i])->setAlpha(t * field_0x255);
+                    mEntryScreen_0x8->search(lbl_80479258[i])->setAlpha(field_0x253 * t);
+                    mEntryScreen_0x8->search(lbl_80479278[i])->setAlpha(field_0x254 * t);
+                    mEntryScreen_0x8->search(lbl_80479298[i])->setAlpha(field_0x255 * t);
                 }
             } else if (field_0x25b & (1 << (i + 4))) {
                 field_0x25b &= ~(1 << (i + 4));
@@ -2065,7 +2050,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             }
         }
     }
-    for (s32 i = 0; i < field_0x1ac + 2; i++) {
+    for (s32 i = 0; i <= field_0x1ac + 1; i++) {
         if (field_0x220[i] != 0) {
             field_0x220[i]++;
             if (field_0x220[i] >= mArrowAnms_0x38[i]->getFrameMax()) {
@@ -2101,13 +2086,15 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             }
         }
         f32 w1 = mArrowAnimScreens_0x18[i]->search('NULL_001')->getWidth();
+        J2DPane* pane = mEntryScreen_0x8->search(lbl_80479378[i]);
         f32 x = mEntryScreen_0x8->search('NULL_001')->getBounds()->i.x +
-                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.x +
-                (mEntryScreen_0x8->search(lbl_80479378[i])->getWidth() - w1) / 2;
+                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.x;
+        x += (pane->getWidth() - w1) / 2;
         f32 h1 = mArrowAnimScreens_0x18[i]->search('NULL_001')->getHeight();
+        pane = mEntryScreen_0x8->search(lbl_80479378[i]);
         f32 y = mEntryScreen_0x8->search('NULL_001')->getBounds()->i.y +
-                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.y +
-                (mEntryScreen_0x8->search(lbl_80479378[i])->getHeight() - h1) / 2;
+                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.y;
+        y += (pane->getHeight() - h1) / 2;
         mArrowAnimScreens_0x18[i]->search('NULL_001')->move(x, y);
         f32 x2 = mEntryScreen_0x8->search('Ndata03')->getBounds()->i.x +
                  mEntryScreen_0x8->search(lbl_80479398[i])->getBounds()->i.x;
@@ -2126,6 +2113,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     for (s32 i = 0; i < 4; i++) {
         SpriteParams_801F5AE0 params;
+        params.field_0x0[7] = i + 12;
         params.field_0x26 = 0;
         JGeometry::TVec3f pos;
         f32 size = mEntryScreen_0x8->search(lbl_80479238[i])->getWidth();
@@ -2133,7 +2121,6 @@ void ConnectScreen_804B0F10::fn_803F4120() {
         size = mEntryScreen_0x8->search(lbl_80479238[i])->getHeight();
         pos.y = toEffectY(size / 2 + mEntryScreen_0x8->search(lbl_80479238[i])->getGlobalBounds().i.y);
         pos.z = 0.0f;
-        params.field_0x0[7] = i + 12;
         f32 scale = (f32)mEntryScreen_0x8->search(lbl_80478F30[i][0])->getAlpha() / (f32)field_0x2ee[i][0];
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) || field_0x210[i] == 0) {
             if (i > field_0x1ac + 1) {
@@ -2147,18 +2134,19 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
             gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         } else {
+            s32 count = field_0x210[i];
             params.field_0x10.a = 255.0f * scale;
-            if (field_0x210[i] <= 10) {
+            if (count <= 10) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x210[i] <= 36) {
+            } else if (count <= 36) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (field_0x210[i] - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x210[i] < 100) {
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (count - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+            } else if (count < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             } else {
-                s32 frame = lbl_80478AA0[field_0x210[i] - 100] + 0x10;
+                s32 frame = lbl_80478AA0[count - 100] + 0x10;
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
