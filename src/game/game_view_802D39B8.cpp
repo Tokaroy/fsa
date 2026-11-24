@@ -149,6 +149,21 @@ static inline bool epsilonEquals(const JGeometry::TVec2f& a, const JGeometry::TV
     return equal;
 }
 
+// Clears every screen's two bit tables and its byte table.
+inline void GameView_804A9950::clearScreenBits() {
+    for (int row = 0; row < 10; row++) {
+        for (int col = 0; col < 10; col++) {
+            for (int bit = 0; bit < 1024; bit += 32) {
+                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
+                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
+            }
+            for (int i = 0; i < 0x100; i++) {
+                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
+            }
+        }
+    }
+}
+
 // resetStage_802DA8DC, restartStage_802DBD60 and vfunc_0xC inline these two instruction for instruction
 // (no out-of-line copy). Clears the screen masks (fn_802DEE2C), the per-screen layer
 // masks, the layer slot lists and the per-screen bit tables.
@@ -171,17 +186,7 @@ inline void GameView_804A9950::clearStageTables() {
             getGameView_802D6A9C()->field_0x2d48[k][i] = 0;
         }
     }
-    for (int row = 0; row < 10; row++) {
-        for (int col = 0; col < 10; col++) {
-            for (int bit = 0; bit < 1024; bit += 32) {
-                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
-                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
-            }
-            for (int i = 0; i < 0x100; i++) {
-                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
-            }
-        }
-    }
+    clearScreenBits();
 }
 
 // Frees the eight key slots (fn_802D6F38) and the eight pair slots (fn_802D6D70).
@@ -471,24 +476,24 @@ GameView_804A9950::GameView_804A9950() {
 
 GameView_804A9950::~GameView_804A9950() {}
 
-// FIXME: 99.13 %, different; behaviour near.
-// Structurally close: regalloc in clearStageTables' first loop (as resetStage_802DA8DC),
-// the 0x131b8 loop's set-up (the target copies 0 with mr r7, r4; ours li r7, 0) and the four
-// save-row flag tests (missing 9): the target rematerialises lbl_8050EC80 and adds 0x28 per
-// test; ours hoists the row's address + 0x28 once (also with the masks written out
-// instead of isStageFlagSet).
+// FIXME: 99.08 %, regalloc-only; behaviour clean.
+// Regalloc only: clearStageTables' first loop (zero and row counters swapped, as
+// resetStage_802DA8DC) and the registers around the four save-file flag tests. The flags
+// are tested directly: through isStageFlagSet the bit-12 test becomes extrwi. where the
+// target has rlwinm. like the other three.
 // Enters the stage: clears every table, rebuilds the map (fn_802D3D48, fn_802D92F0,
 // loadScreenTiles_802D8D50), places the players, spawns the 'RANK' and 'GBAO' actors, sets the camera
 // and the time limit, and reads the save row's flags.
 void GameView_804A9950::vfunc_0xC() {
+    int i;
     getGameView_802D6A9C()->field_0x1328c = 0;
     clearStageTables();
     clearSlots();
-    for (int i = 0; i < 16; i++) {
+    for (i = 0; i < 16; i++) {
         field_0xf0[i].set(0.0f, 0.0f);
     }
     fn_802D3D48();
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true &&
             lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(i)) == 1) {
             if (gGameRoot_8053AAF8->field_0x7f == 0 || lbl_80529DEC.mStage_0x118 != 10 || lbl_80529DEC.mLevel_0x11c != 2) {
@@ -500,7 +505,7 @@ void GameView_804A9950::vfunc_0xC() {
     fn_802D7920(1);
     fn_802D790C(1);
     getGameView_802D6A9C()->field_0x174 = 0;
-    for (int i = 0; i < 0x10; i++) {
+    for (i = 0; i < 0x10; i++) {
         field_0x131b8[i] = 0;
         field_0x131df[i] = 0;
     }
@@ -528,7 +533,7 @@ void GameView_804A9950::vfunc_0xC() {
     } else {
         field_0xc4 = 10800;
     }
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x1323c[i] = 0.0f;
         field_0x1324c[i] = 0.0f;
         field_0x1325c[i] = 0.0f;
@@ -537,22 +542,22 @@ void GameView_804A9950::vfunc_0xC() {
     }
     gGameRoot_8053AAF8->fn_80134FE0(0);
     gGameRoot_8053AAF8->fn_80134FBC(0);
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x131d8[i] = 0;
     }
-    if (isStageFlagSet(3, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (3 * 4 + 0))) {
         field_0x131f7 |= 1;
     }
-    if (isStageFlagSet(4, 1)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (4 * 4 + 1))) {
         field_0x131f7 |= 2;
     }
-    if (isStageFlagSet(5, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (5 * 4 + 0))) {
         field_0x131f7 |= 4;
     }
-    if (isStageFlagSet(6, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (6 * 4 + 0))) {
         field_0x131f7 |= 8;
     }
-    for (int i = 0; i < 8; i++) {
+    for (i = 0; i < 8; i++) {
         if (fn_803B8EBC(i)) {
             field_0x131f8 |= (u8)(1 << i);
         }
@@ -1038,24 +1043,11 @@ void GameView_804A9950::fn_802D9FBC() {
     }
 }
 
-// FIXME: 96.32 %, different; behaviour clean.
-// One opcode at the loop set-up: the target starts the row offsets with
-// mr from the row counter (li r5, 0; mr r8, r5; mr r9, r5), ours with a second li.
+// FIXME: 97.92 %, regalloc-only; behaviour clean.
+// Registers only, in the inlined clearScreenBits loop.
 void GameView_804A9950::fn_802D9CD8() {
     fn_802D3D48();
-    for (int row = 0; row < 10; row++) {
-        for (int col = 0; col < 10; col++) {
-            // Every bit of the screen's two 1024-bit tables, a word at a time (a plain
-            // word loop unrolls differently: the target steps the word offset in a register).
-            for (int bit = 0; bit < 1024; bit += 32) {
-                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
-                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
-            }
-            for (int i = 0; i < 0x100; i++) {
-                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
-            }
-        }
-    }
+    clearScreenBits();
     getActorManager_801F856C()->fn_801F7B18();
     fn_8016A3AC()->fn_8016A330();
     gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
@@ -1176,6 +1168,14 @@ void GameView_804A9950::fn_802D92F0() {
 // out, the load comes after the lookup (loadScreenTiles_802D8D50 92.7 -> 87.7).
 static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
+}
+
+// A tile of the tile map through an inlined accessor that returns it as an int: in fn_802D4CCC
+// every u16 local taken from it is clrlwi'd once, right after the call, and then compared as is
+// (0x802D532C, 0x802D58E0), where a u16 assigned straight from getTile_802F9908 is extended at
+// each use instead.
+static inline s32 getTile(s32 layer, s32 cell) {
+    return getTileMap()->getTile_802F9908(layer, cell);
 }
 
 // FIXME: 99.75 %, regalloc-only; behaviour clean.
@@ -1848,7 +1848,7 @@ GameView_804A9950* getGameView_802D6A9C(void) {
 // tiles in field_0x2948 and, where the screen's mask (getScreenLayerMask_802D7AC4) has their bit set,
 // rewrites them to their other state; layer 8 and up also handle the two-cell and
 // multi-cell pieces. Layers below 8 then copy the "bg_tenso_sch.bin" tiles.
-// FIXME: 92.13 %, missing/extra; behaviour near.
+// FIXME: 97.20 %, missing/extra; behaviour near.
 void GameView_804A9950::fn_802D4CCC(s32 layer) {
     u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(layer);
     field_0x131b8[layer] = 0;
@@ -1858,12 +1858,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     s32 i = 0;
     if (layer < 8) {
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
+            u16 tile = getTile(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer + 1, n);
                 getGameView_802D6A9C()->field_0x2948[0][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 1, cell);
+                    u16 under = getTile(layer + 1, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -1964,12 +1964,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     } else {
         s32 slot = layer - 7;
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
+            u16 tile = getTile(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer, n);
                 getGameView_802D6A9C()->field_0x2948[slot][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 8, cell);
+                    u16 under = getTile(layer + 8, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -2033,7 +2033,7 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 getGameView_802D6A9C()->field_0x2948[slot][i + 1] = other;
                 if ((mask & bit) != 0) {
                     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(
-                        layer, cell, gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, other));
+                        layer, cell, getTile(layer, other));
                     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, other, 0x20);
                 }
                 bit <<= 2;
@@ -2072,12 +2072,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 }
                 s32 right = ((cell + 1) & 0xF) != 0 ? cell + 1 : cell + 0xF1;
                 s32 right2 = ((right + 1) & 0xF) != 0 ? right + 1 : right + 0xF1;
-                u16 upTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, up);
-                u16 downTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down);
-                u16 leftTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, left);
-                u16 rightTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right);
-                u16 down2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down2);
-                u16 right2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right2);
+                u16 upTile = getTile(layer, up);
+                u16 downTile = getTile(layer, down);
+                u16 leftTile = getTile(layer, left);
+                u16 rightTile = getTile(layer, right);
+                u16 down2Tile = getTile(layer, down2);
+                u16 right2Tile = getTile(layer, right2);
                 if (tile == 0x300) {
                     if (leftTile != 0x30a) skip = 1;
                 } else if (tile == 0x310) {
@@ -2128,7 +2128,10 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                     if (upTile != 0x326) skip = 1;
                 }
                 if (skip == 0) {
-                    u8 step = layer >= 8 ? 8 : 1;
+                    u8 step = 8;
+                    if (layer < 8) {
+                        step = 1;
+                    }
                     getGameView_802D6A9C()->field_0x2948[slot][i] = cell;
                     if ((mask & bit) != 0) {
                         switch (tile) {

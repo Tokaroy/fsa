@@ -131,6 +131,7 @@ public:
     inline void clearScreenState();
     // Inlined by resetStage_802DA8DC, restartStage_802DBD60 and vfunc_0xC; no out-of-line copy.
     inline void clearStageTables();
+    inline void clearScreenBits();
     inline void clearSlots();
     inline void placePlayers();
     // Unless fn_802DA000() (returned as is, no clrlwi), moves the four players
