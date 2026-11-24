@@ -194,12 +194,13 @@ void fn_8038D570() {
     }
     MessageManager_804AF070* manager = lbl_8053AD78;
     if (manager->field_0xe9 != 0) {
-        if (manager->field_0xe9 == 1 && manager->field_0x44 < 0x57E40u) {
+        if (manager->field_0xe9 == 1 && manager->field_0x44 < 0x57E40) {
             manager->field_0x44++;
         }
         manager = lbl_8053AD78;
-        s32 minutes = manager->field_0x44 / 3600;
-        s32 seconds = manager->field_0x44 / 60 % 60;
+        s32 frames = manager->field_0x44;
+        s32 minutes = frames / 3600;
+        s32 seconds = frames / 60 % 60;
         if (seconds == 0) {
             seconds = 1;
         }
