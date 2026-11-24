@@ -20,17 +20,15 @@ public:
     bool setState_801096C8(s32 state);
     bool fn_80109AE0(JGeometry::TVec3f* outPos);
     bool stepRail();
+    bool canBeHit();
+    s32 findTalker();
+    void talkToFirstPlayer();
     // Plain functions without a copy of their own in the original (bottom of the .cpp).
     void stepSpeed(f32 dist);
-    void approachPlayerSide(JGeometry::TVec3f& ppos);
-    void followPlayerSide(JGeometry::TVec3f& ppos);
+    void approachPlayerSide();
+    void followPlayerSide();
     void pool_8053C3E4();
     void pool_8053C3E0();
-
-    // openMessage_8038AD24 takes the position by value; serial and layer are loaded before that copy.
-    bool talk(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
-    }
 
     /* 0x230 */ cls_800FE3EC mRail;
     /* 0x2F8 */ u8 field_0x2f8;
