@@ -1047,13 +1047,13 @@ void AdvEntryScreen_804B0B00::fn_803EC804() {
 }
 
 // FIXME: 96.93 %, missing/extra + reloc-name; behaviour near.
-// 2 fewer instrs (853 vs 855): extsh. vs cmpwi r0, 0 on
-// field_0x254[0] > 0, .rodata base load scheduled before others[], and one
-// merged i * 5 induction variable where the original keeps two (r29 and r27).
+// Same length; the original starts the i * 5 counter with mr from start
+// where ours loads 0 again.
 void AdvEntryScreen_804B0B00::fn_803EBAA8() {
     s32 others[3];
-    s32* dst = others;
-    for (s32 i = 0; i < 4; i++) {
+    s32* src = others;
+    s32* dst = src;
+    for (int i = 0; i < 4; i++) {
         if (i != field_0x1bc) {
             *dst++ = i;
         }
@@ -1078,17 +1078,19 @@ void AdvEntryScreen_804B0B00::fn_803EBAA8() {
             }
         }
     }
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 8) {
-            field_0xfc = -200.0f * ((f32)(field_0x254[0] * field_0x254[0]) / 64.0f);
+    int timer = field_0x254[0];
+    if (timer > 0) {
+        if (timer < 8) {
+            field_0xfc = -200.0f * ((f32)(timer * timer) / 64.0f);
         } else {
             field_0xfc = -200.0f;
         }
     }
-    for (int i = 0; i < 3; i++) {
-        if (field_0x254[0] > i * 5) {
+    int start = 0;
+    for (int i = 0; i < 3; i++, src++, start += 5) {
+        if (field_0x254[0] > start) {
             if (field_0x254[0] < i * 5 + 8) {
-                s32 idx = others[i];
+                s32 idx = *src;
                 field_0x120[idx] = -350.0f * ((f32)((field_0x254[0] - i * 5) * (field_0x254[0] - i * 5)) / 64.0f);
                 f32 alpha = (f32)(8 - (field_0x254[0] - i * 5)) / 8.0f;
                 if (alpha < 0.0f) {
@@ -1100,7 +1102,7 @@ void AdvEntryScreen_804B0B00::fn_803EBAA8() {
                     mScreen->search(lbl_80477AB0[idx][j])->setAlpha(fadeAlpha(field_0x280[idx][j], alpha));
                 }
             } else {
-                s32 idx = others[i];
+                s32 idx = *src;
                 field_0x120[idx] = -350.0f;
                 for (int j = 0; j < 6; j++) {
                     mScreen->search(lbl_80477AB0[idx][j])->setAlpha(fadeAlpha(field_0x280[idx][j], 0.0f));
