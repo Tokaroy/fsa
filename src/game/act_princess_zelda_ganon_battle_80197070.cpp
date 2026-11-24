@@ -568,8 +568,10 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getLayer_8015461C(), getSerial_801545E8(), false, false);
         if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2D9, getSerial_801545E8(), getLayer_8015461C(), pos, 0x4102)) {
             mState = 11;
+        } else {
+            break;
         }
-        break;
+        // fall through
     }
     case 11:
         if (mTimers[0] == 0) {
@@ -1490,7 +1492,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
                 field_0x244++;
                 field_0x244 &= 7;
                 field_0x274.x = 0.7f;
-                if (mPos.x > field_0x280[0].x + 32.0f) {
+                if (field_0x280[0].x + 32.0f < mPos.x) {
                     zeroVec_801546BC(&field_0x274);
                     zeroVec_801546BC(&mVel_0x3c);
                     field_0x244 = 0;
@@ -1531,12 +1533,13 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         copyVec3_8019CECC(&pos, &mPos);
         addCalc2_801F71A4(&field_0x2d4[0].y, field_0x280[2].y, 0.3f, 1.0f);
         setPlayerFacing_80230BF4(0, 3);
-        fn_802303FC(0, &field_0x2d4[0], true);
-        if (fabsf_8015436C(field_0x280[2].y - field_0x2d4[0].y) <= 1.0f) {
-            mTimers[1] = 8;
-            field_0x248 = 0;
-            mState = 0x3D;
+        fn_802303FC(0, &field_0x2d4[0], 0xFF);
+        if (fabsf_8015436C(field_0x280[2].y - field_0x2d4[0].y) > 1.0f) {
+            break;
         }
+        mTimers[1] = 8;
+        field_0x248 = 0;
+        mState = 0x3D;
         break;
     }
     case 0x3D:
@@ -1713,6 +1716,8 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         }
         break;
     }
+    case 0x45:
+        break;
     }
 
     if (mState == 0x1F || mState == 0x21 || mState == 0x23 || mState == 0x24 || mState == 0x26 || mState == 0x2D) {
