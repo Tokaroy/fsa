@@ -90,7 +90,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     markRandomCucco(serials, count);
 }
 
-// FIXME(shotgun): 95.91 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.34 %, missing/extra + reloc-name; behaviour near.
 void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -121,22 +121,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         area.i.y += mPos.y;
         area.f.x += mPos.x;
         area.f.y += mPos.y;
-        bool any;
-        s32 cucco = -1;
-        for (;;) {
-            cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
-            if (cucco < 0) {
-                any = false;
-                break;
-            }
-            Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
-            if (c != NULL && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
-                !c->field_0xc4) {
-                any = true;
-                break;
-            }
-        }
-        if (any == true) {
+        if (isCuccoInArea(area) == true) {
             field_0x230 = 4;
             break;
         }
@@ -502,6 +487,23 @@ void CuccoHerdingNPC_804AC8C0::update() {
     }
 }
 
+// Not in the binary (update inlines it).
+bool CuccoHerdingNPC_804AC8C0::isCuccoInArea(const JGeometry::TBox2f& area) {
+    s32 cucco = -1;
+    for (;;) {
+        cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
+        if (cucco < 0) {
+            break;
+        }
+        Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
+        if (c != NULL && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
+            !c->field_0xc4) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Not in the binary (init and update inline it); the pool has its 100.0f and 10430.378f ahead of
 // update's literals. Faces the nearest player within 100, else left in state 13 and down otherwise.
 // R2 pool helper (inlined at 2 call sites); was updateFacing.
@@ -529,7 +531,6 @@ void CuccoHerdingNPC_804AC8C0::pool_80542558() {
 }
 
 // 0x8034AFE8.
-// FIXME(shotgun): 99.25 %, same-text; behaviour clean.
 void CuccoHerdingNPC_804AC8C0::draw() {
     const char* name;
     s32 frame;
@@ -550,11 +551,9 @@ void CuccoHerdingNPC_804AC8C0::draw() {
 static const s32 lbl_80472158[3] = {10, 5, 1};
 
 // The box is built in a temporary and copied, as in the original. Literal pool names differ.
-// FIXME: 99.26 %, missing/extra; behaviour near.
 void CuccoHerdingNPC_804AC8C0::fn_8034ACF4() {
     JGeometry::TBox2f box;
-    JGeometry::TBox2f src(9.0f, -7.0f, 103.0f, 87.0f);
-    box = src;
+    box = JGeometry::TBox2f(9.0f, -7.0f, 103.0f, 87.0f);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
@@ -577,7 +576,7 @@ void CuccoHerdingNPC_804AC8C0::fn_8034ACF4() {
             field_0x288[i] = 0;
         }
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-        if (pos.z <= 1.0f && containsPoint(box, pos)) {
+        if (pos.z <= 1.0f && containsPoint(box, pos) == true) {
             lbl_8053AED0->requestMessage_8043D67C(0x410, 0, 0);
             JGeometry::TVec3f push;
             switch (field_0x260[i]) {

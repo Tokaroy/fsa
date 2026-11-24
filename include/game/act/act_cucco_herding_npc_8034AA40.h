@@ -24,6 +24,9 @@ public:
     bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
         return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
     }
+    // Not in the binary (update inlines it; the loop leaves with li 1 / li 0): whether a cucco
+    // ('NIWA') on this layer stands on the ground inside `area` and is not carried.
+    bool isCuccoInArea(const JGeometry::TBox2f& area);
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ s32 field_0x238;
