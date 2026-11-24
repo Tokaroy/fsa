@@ -77,6 +77,41 @@ was a template instance at all is open: "local, one per unit" also fits a file-s
 Ganon::update reached 1 instruction off with them, so the placement puzzle is worth one more
 look (deferred-inlining emission order of template instances); until then keep the helpers.
 
+**Template ctors: placement settled (2026-11-24, branch `lead-tctor`), no commit.** Scratch
+builds with the game flags (`-O4,p -inline auto,deferred`, forced out of line) show where MWCC
+puts an out-of-line value ctor, by how it is written:
+
+| construct | binding | placed |
+|---|---|---|
+| in-class template ctor (implicit instance), or `inline` explicit specialization | local `t` | right after its first emitted referencer (update) |
+| template ctor defined out of class, not `inline` | weak | at its source position |
+| non-template ctor defined out of class, not `inline` | global | at its source position |
+| **`template <> template <> TVec2<f32>::TVec2(f32, f32) {…}`, not `inline`** | **local `t`, same `__ct<f>__…Fff` name** | **at its source position** |
+| file-local struct (`namespace { struct V : TVec3f { V(f32, f32, f32); }; }`, ctor out of class) | local | at its source position |
+
+Only the non-inline explicit specialization has every property of the original (MWCC's
+template-instance name, local, one per unit, sitting among the late helpers; act_door's
+`__ct<f>__…TVec3<f>Ffff` at 0x802C7CB8, right after update, is the plain implicit instance,
+so both forms occur in the game). mkdd, whose JSystem we import, found the same:
+`libs/sdk/include/JSystem/JGeometry/Vec.h:445` specializes `TVec3f::TVec3(f32, f32, f32)`
+"to emit them in the right order in RaceMgr", but `inline`.
+
+It can't be written in our units: a unit may only specialize before the first use, and our
+imported headers already use both. `Vec.h:447` defines the `TVec3f` specialization `inline`
+("redefined"), and `Box.h:32` (`addPos(TVec2<f32>(x, y))`) instantiates the TVec2 one ("illegal
+explicit template specialization"). Making the header's specialization non-inline doesn't
+help: header code sits at the very end of `.text`, while 0x80196D24 / 0x80196D60 sit between
+the unit's own helpers (D18 < D24 < D30 < D60 < D70).
+
+The file-local struct is the only form that builds: Ganon::update +7 -> +1 (98.69 -> 98.74,
+before renaming symbols), order_check clean, saved as
+`/tmp/claude-1005/-bigdata-agent-tom-projects-fsadecomp/95b86131-5188-44d8-833d-1059682321d6/scratchpad/tctor/e_anon_struct.cpp`.
+But it invents a type no programmer would write, which CLAUDE.md rule 5 forbids outside
+the crack pass. It is left out. Options for the owner: (a) allow it as `FAKEMATCH(crack-pass)`
+in the ten units; (b) reshape the imported `Vec.h` / `Box.h` so that the units can specialize
+(drop the `inline` specialization and Box.h's temporary). Option (b) touches every unit that
+inlines these, so it needs a whole-game build.
+
 **The inline budget caveat.** These ctors are out of line in the original only because
 the caller is huge (MWCC stops inlining past its per-function budget). Our source writes
 many of the other inlines (zeroVec, getLayer, set...) as explicit calls, so our function is
