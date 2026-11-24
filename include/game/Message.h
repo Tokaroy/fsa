@@ -66,6 +66,10 @@ public:
     // Virtual: MessageWindow_804AF490's destructor deletes these through the
     // vtable (lwz 8(r12), deleting flag 1), so the dtor is in slot 2.
     /* 0x008 */ virtual ~cls_804AF5A0();
+    // Inlined at MessageWindow_804AF490::fn_80390EBC's three message starts (both positions are
+    // copied before the body): sets the message code, the box position and the speaker's.
+    // Defined in game/message_window_80390818.cpp (needs the full JMessage::TControl).
+    inline void setMessage_inl_80390EBC(u32 msg, JGeometry::TVec3f boxPos, JGeometry::TVec3f speakerPos);
 
     /* 0x000 */ // vtable
     // The BMG resources (the destructor destroys them all, then deletes it).
@@ -463,7 +467,7 @@ public:
     // compares msg with it (cmplw).
     /* 0x03C */ s32 field_0x3c;
     /* 0x040 */ s32 field_0x40; // -1 after construction
-    /* 0x044 */ s32 field_0x44; // 4 units (message_window_80390818, tu_803944C8)
+    /* 0x044 */ u32 field_0x44; // 4 units (message_window_80390818, tu_803944C8); compared unsigned
     /* 0x048 */ s32 field_0x48;
     /* 0x04C */ s32 field_0x4c[4];
     /* 0x05C */ f32 field_0x5c[4];

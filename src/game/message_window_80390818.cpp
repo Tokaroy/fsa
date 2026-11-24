@@ -111,6 +111,14 @@ void MessageWindow_804AF490::fn_803913E0() {
 
 // FIXME(shotgun): 96.51 %, missing/extra; behaviour drift.
 // (the two position copies and their stack slots)
+inline void cls_804AF5A0::setMessage_inl_80390EBC(u32 msg, JGeometry::TVec3f boxPos,
+                                                  JGeometry::TVec3f speakerPos) {
+    field_0x14c = msg;
+    field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
+    field_0x98 = boxPos;
+    field_0xa4.set(speakerPos);
+}
+
 void MessageWindow_804AF490::fn_80390EBC() {
     switch (field_0x24) {
     case 0:
@@ -129,14 +137,7 @@ void MessageWindow_804AF490::fn_80390EBC() {
         proc->field_0x8->resetResourceCache();
         proc->field_0x1a2 = 0;
         field_0x44 = 2;
-        JGeometry::TVec3f pos = field_0x50;
-        JGeometry::TVec3f boxPos = field_0x50;
-        proc = field_0x4c;
-        u32 msg = field_0x20;
-        proc->field_0x14c = msg;
-        proc->field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
-        proc->field_0x98 = pos;
-        proc->field_0xa4.set(boxPos);
+        field_0x4c->setMessage_inl_80390EBC(field_0x20, field_0x50, field_0x50);
         field_0x24 = 2;
         break;
     }
@@ -178,7 +179,7 @@ void MessageWindow_804AF490::fn_80390EBC() {
         field_0x44 = 1;
         s32 kind = 0;
         u16 flags = field_0x28;
-        if (flags & 0x200) {
+        if ((flags >> 9) & 1) {
             kind = 1;
         } else if (flags & 0x400) {
             kind = 2;
@@ -196,24 +197,10 @@ void MessageWindow_804AF490::fn_80390EBC() {
             } else {
                 pos.set(field_0x50);
             }
-            JGeometry::TVec3f speakerPos = pos;
-            JGeometry::TVec3f boxPos = field_0x50;
-            proc = field_0x48;
-            u32 msg = field_0x20;
-            proc->field_0x14c = msg;
-            proc->field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
             // The box stays at the window's position; the speaker's goes second.
-            proc->field_0x98 = boxPos;
-            proc->field_0xa4.set(speakerPos);
+            field_0x48->setMessage_inl_80390EBC(field_0x20, field_0x50, pos);
         } else {
-            JGeometry::TVec3f speakerPos = field_0x50;
-            JGeometry::TVec3f boxPos = field_0x50;
-            proc = field_0x48;
-            u32 msg = field_0x20;
-            proc->field_0x14c = msg;
-            proc->field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
-            proc->field_0x98 = boxPos;
-            proc->field_0xa4.set(speakerPos);
+            field_0x48->setMessage_inl_80390EBC(field_0x20, field_0x50, field_0x50);
         }
         field_0x24 = 7;
         break;
