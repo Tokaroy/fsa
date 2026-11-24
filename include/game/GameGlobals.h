@@ -385,6 +385,17 @@ struct GameRoot_8049EF20 {
     // (field_0x4c == 11 or field_0x88 == 2) and the fade object gGameRoot2_8053AB10->0x2C
     // has its byte at 0xC clear (0xC is 0 when it is idle).
     u8 fn_80134CC8();
+    // Inline: the paused test alone (li 1 / subfic-cntlzw-srwi, then clrlwi.) in
+    // EnvironmentSwitchControl_804A8638::update.
+    bool isPaused_0x4c() {
+        bool paused;
+        if (field_0x4c == 11) {
+            paused = true;
+        } else {
+            paused = field_0x88 == 2;
+        }
+        return paused;
+    }
     // Owner: game/game_root_80134C04.cpp (0x80134D20; called by collect_screen_8044C7F0).
     void fn_80134D20(bool arg);
     // Owner: game/game_root_80134C04.cpp (0x80136320; 8 calls in tu_803099FC).
@@ -1839,9 +1850,8 @@ struct GameRootSub24_8016A3AC {
     /* 0x1D8 */ s32 field_0x1d8;
     /* 0x1DC */ u8 field_0x1dc;
     /* 0x1DD */ u8 field_0x1dd;
-    /* 0x1DE */ u8 field_0x1de[0x1E4 - 0x1DE];
-    /* 0x1E4 */ f32 field_0x1e4;
-    /* 0x1E8 */ u8 field_0x1e8[0x1EC - 0x1E8];
+    /* 0x1DE */ u8 field_0x1de[0x1E0 - 0x1DE];
+    /* 0x1E0 */ JGeometry::TVec3f field_0x1e0; // EnvironmentSwitchControl_804A8638::update stores x / y / z; fn_8016xxxx reads y
     /* 0x1EC */ u8 field_0x1ec;
     /* 0x1ED */ u8 field_0x1ed;
     /* 0x1EE */ u8 field_0x1ee;
@@ -1909,6 +1919,18 @@ struct GameRootSub24_8016A3AC {
     // 0x8016EE84 (game/game_root_sub_24_8016A2B4.cpp): deletes the entries' emitters and
     // sound objects, the emitters, the textures, and destroys the heap.
     // GameRootSub04_801F856C's destructor deletes mMoyaBrk_0x24 with it.
+    // Inline: callers load the object first and the constant after (bl fn_8016A3AC; li; stb 0x1ee).
+    void setField_0x1ee(u8 value) { field_0x1ee = value; }
+    // Same shape (bl fn_8016A3AC; li; stb 0x1c4 / 0x1c7) in EnvironmentSwitchControl_804A8638's init and update.
+    void setField_0x1c4(u8 value) { field_0x1c4 = value; }
+    void setField_0x1c7(u8 value) { field_0x1c7 = value; }
+    void setField_0x1c5(u8 value) { field_0x1c5 = value; }
+    void setField_0x1c6(u8 value) { field_0x1c6 = value; }
+    void setField_0x1c8(u8 value) { field_0x1c8 = value; }
+    void setField_0x1c9(u8 value) { field_0x1c9 = value; }
+    void setField_0x1cc(u8 value) { field_0x1cb[1] = value; }
+    void setField_0x1cd(u8 value) { field_0x1cb[2] = value; }
+    void setField_0x1ce(u8 value) { field_0x1cb[3] = value; }
     ~GameRootSub24_8016A3AC();
 };
 // game/game_root_sub_24_8016A2B4.cpp (0x8016A3AC): returns gGameRoot_8053AAF8->field_0x4->field_0x24.

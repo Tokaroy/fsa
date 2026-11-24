@@ -15,11 +15,6 @@
 
 u8 lbl_8053A1A0[8] = {10, 60, 80, 100, 210, 0, 0, 0};
 
-// The two emitters that start the rain; their 0x28 float (field_0x2c0[0], [1]) is not stored
-// (JPABaseEmitter in include/JSystem/JParticle/JPAEmitter.h has mEmitterRot (s16) at 0x24..0x29
-// and mVolumeType at 0x2A, so no float field at 0x28 is identifiable; the two stfs are
-// omitted, a behaviour difference until the real field is known).
-// FIXME(shotgun): 95.64 %, missing/extra; behaviour drift.
 void EnvironmentSwitchControl_804A8638::init() {
     field_0x234 = NULL;
     field_0x238 = NULL;
@@ -74,10 +69,10 @@ void EnvironmentSwitchControl_804A8638::init() {
     }
     fn_8016A3AC()->field_0x1ed = field_0x2d0[2];
     if (field_0x270 != 0) {
-        fn_8016A3AC()->field_0x1c7 = 1;
+        fn_8016A3AC()->setField_0x1c7(1);
     }
     if (field_0x274 != 0) {
-        fn_8016A3AC()->field_0x1c4 = 1;
+        fn_8016A3AC()->setField_0x1c4(1);
     }
     field_0x2d0[3] = fn_8016A3AC()->field_0x1f1;
     if (field_0x280 != 0) {
@@ -146,7 +141,13 @@ void EnvironmentSwitchControl_804A8638::init() {
             field_0x24c = randInt_801CD664(100);
             field_0x250 = 0;
             field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
+            if (field_0x234 != NULL) {
+                field_0x234->setRate(field_0x2c0[0]);
+            }
             field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
+            if (field_0x238 != NULL) {
+                field_0x238->setRate(field_0x2c0[1]);
+            }
             getGameView_802D6A9C()->fn_802D6BF8(1);
             vfunc_0x60();
         } else {
@@ -163,7 +164,13 @@ void EnvironmentSwitchControl_804A8638::init() {
             field_0x24c = randInt_801CD664(100);
             field_0x250 = 0;
             field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
+            if (field_0x234 != NULL) {
+                field_0x234->setRate(field_0x2c0[0]);
+            }
             field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
+            if (field_0x238 != NULL) {
+                field_0x238->setRate(field_0x2c0[1]);
+            }
             getGameView_802D6A9C()->fn_802D6BF8(1);
             vfunc_0x60();
         }
@@ -172,7 +179,7 @@ void EnvironmentSwitchControl_804A8638::init() {
         mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x449, 1, 0, NULL, NULL, true, 1.0f);
     } else if (field_0x294 != 0) {
         mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x58, 1, 0, NULL, NULL, true, 1.0f);
-    } else if (mEmitter != NULL) {
+    } else if (field_0x290 == 0 && field_0x294 == 0 && mEmitter != NULL) {
         mEmitter->becomeInvalidEmitter();
         mEmitter = NULL;
     }
@@ -186,8 +193,9 @@ void EnvironmentSwitchControl_804A8638::init() {
     field_0x308 = 0xFF;
     field_0x30c = 0;
     field_0x310 = fn_801B7550();
-    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[0][3];
-    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[1][3];
+    Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+    field_0x254.x = -camera->mViewMtx_0x4[0][3];
+    field_0x254.y = -camera->mViewMtx_0x4[1][3];
     field_0x254.z = 0.0f;
     switch (field_0x2d8) {
     case 0:
@@ -279,9 +287,8 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x10() {
     fn_8013A884(&color);
 }
 
-// FIXME(shotgun): 87.08 %, missing/extra; behaviour near.
 EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
-    fn_8016A3AC()->field_0x1ee = 0;
+    fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
     }
@@ -291,19 +298,20 @@ EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
     if (mEmitter != NULL) {
         releaseEmitter_801EE434(mEmitter);
     }
-    delete mSoundObj;
+    if (mSoundObj != NULL) {
+        delete mSoundObj;
+    }
 }
 
 // 0x802B3AB8.
-// GameRootSub24_8016A3AC's 0x1E0 and 0x1E8 floats are not declared in GameGlobals.h (only 0x1E4 is),
-// and JPABaseEmitter's 0x28 float / 0xF4 status word differ from include/JSystem/JParticle/JPAEmitter.h,
-// so those stores are omitted or call JPA's methods.
-// FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
+// JPABaseEmitter's 0x28 float / 0xF4 status word differ from include/JSystem/JParticle/JPAEmitter.h,
+// so the 0x28 stores (field_0x2c0[0] / [1] before each setEmitterPos pair) are omitted.
+// FIXME(shotgun): 98.03 %, missing/extra; behaviour drift.
 void EnvironmentSwitchControl_804A8638::update() {
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 &&
          (isPlayerDead_80236B50(0) && isPlayerDead_80236B50(1) && isPlayerDead_80236B50(2) && isPlayerDead_80236B50(3) ||
-          (gGameRoot_8053AAF8->field_0x4c == 0xB || gGameRoot_8053AAF8->field_0x88 == 2))) ||
+          gGameRoot_8053AAF8->isPaused_0x4c())) ||
         lbl_80529DEC.field_0x240 != 0) {
         paused = true;
     }
@@ -324,20 +332,20 @@ void EnvironmentSwitchControl_804A8638::update() {
     }
     fn_8016A3AC()->field_0x1ed = field_0x2d0[2];
     if (field_0x270 != 0) {
-        fn_8016A3AC()->field_0x1c7 = 1;
+        fn_8016A3AC()->setField_0x1c7(1);
     }
     if (field_0x274 != 0) {
-        fn_8016A3AC()->field_0x1ee = 0xFF;
+        fn_8016A3AC()->setField_0x1ee(0xFF);
         if (gGameRoot_8053AAF8->field_0x4c != 0xB) {
             mSoundObj->startSound(0x3001F);
         }
-        fn_8016A3AC()->field_0x1c4 = 1;
+        fn_8016A3AC()->setField_0x1c4(1);
     }
     if (field_0x278 != 0) {
-        fn_8016A3AC()->field_0x1c8 = 1;
+        fn_8016A3AC()->setField_0x1c8(1);
     }
     if (field_0x27c != 0) {
-        fn_8016A3AC()->field_0x1c9 = 1;
+        fn_8016A3AC()->setField_0x1c9(1);
     }
     if (field_0x280 == 0) {
         if (field_0x2d0[3] != 0) {
@@ -348,16 +356,16 @@ void EnvironmentSwitchControl_804A8638::update() {
     }
     fn_8016A3AC()->field_0x1f1 = field_0x2d0[3];
     if (field_0x28c != 0) {
-        f32 y = mPos.y - 16.0f;
+        JGeometry::TVec3f pos(mPos.x, mPos.y - 16.0f, mPos.z);
         GameRootSub24_8016A3AC* sub24 = fn_8016A3AC();
         sub24->field_0x1cb[0] = 1;
-        sub24->field_0x1e4 = y;
+        sub24->field_0x1e0.set(pos);
     }
     if (field_0x298 != 0) {
-        fn_8016A3AC()->field_0x1cb[1] = 1;
+        fn_8016A3AC()->setField_0x1cc(1);
     }
     if (field_0x29c != 0) {
-        fn_8016A3AC()->field_0x1cb[3] = 1;
+        fn_8016A3AC()->setField_0x1ce(1);
     }
     if (field_0x2a0 != 0) {
         GameRootSub24_8016A3AC* sub24 = fn_8016A3AC();
@@ -365,10 +373,10 @@ void EnvironmentSwitchControl_804A8638::update() {
         sub24->field_0x1d0 = 1;
     }
     if (field_0x2a4 != 0) {
-        fn_8016A3AC()->field_0x1cb[2] = 1;
+        fn_8016A3AC()->setField_0x1cd(1);
     }
     if (field_0x2a8 != 0) {
-        fn_8016A3AC()->field_0x1c5 = 1;
+        fn_8016A3AC()->setField_0x1c5(1);
     }
     if (field_0x2ac == 0) {
         if (field_0x2d0[4] != 0) {
@@ -379,7 +387,7 @@ void EnvironmentSwitchControl_804A8638::update() {
     }
     fn_8016A3AC()->field_0x1f0 = field_0x2d0[4];
     if (field_0x2b4 != 0) {
-        fn_8016A3AC()->field_0x1c6 = 1;
+        fn_8016A3AC()->setField_0x1c6(1);
     }
     if (field_0x2b8 == 0) {
         if (field_0x2d0[5] != 0) {
@@ -389,8 +397,9 @@ void EnvironmentSwitchControl_804A8638::update() {
         field_0x2d0[5]++;
     }
     fn_8016A3AC()->field_0x1ef = field_0x2d0[5];
-    field_0x254.x = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[0][3];
-    field_0x254.y = -gGameRoot2_8053AB10->field_0x24->mViewMtx_0x4[1][3];
+    Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+    field_0x254.x = -camera->mViewMtx_0x4[0][3];
+    field_0x254.y = -camera->mViewMtx_0x4[1][3];
     field_0x254.z = 0.0f;
     switch (field_0x2d8) {
     case 0: {
@@ -553,13 +562,13 @@ void EnvironmentSwitchControl_804A8638::update() {
     case 6:
         switch (field_0x240) {
         case 0xB: {
-            bool found = false;
+            BOOL found = FALSE;
             s32 end = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'BPH2') {
                     u32 p = actor->mSpawnParam_0x90;
-                    found = true;
+                    found = TRUE;
                     field_0x324[0] = p >> 27;
                     field_0x324[1] = (p >> 22) & 0x1F;
                     field_0x324[2] = (p >> 17) & 0x1F;
@@ -673,8 +682,8 @@ void EnvironmentSwitchControl_804A8638::update() {
     }
 
     if (field_0x288 != 0) {
-        mPos = *getPlayerPos_8023E724(0);
-        if (field_0x288 != 1 || (mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+        mPos.set(*getPlayerPos_8023E724(0));
+        if (field_0x288 != 1 || (field_0x288 == 1 && ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true))) {
             if (!paused) {
                 field_0x24c--;
                 if (field_0x24c == 0) {
@@ -786,15 +795,15 @@ void EnvironmentSwitchControl_804A8638::update() {
     case 3:
         if (field_0x250 == 0 && ((mSpawnParam_0x90 >> 27) == 0 || !isScreenFlagSet_0x34())) {
             field_0x250 = 20;
-            if (field_0x2c0[0] > 1.0f) {
+            if (field_0x2c0[0] >= 1.0f) {
                 field_0x2c0[0] -= field_0x2c0[2];
-                if (field_0x2c0[0] < 1.0f) {
+                if (field_0x2c0[0] <= 1.0f) {
                     field_0x2c0[0] = 1.0f;
                 }
             }
-            if (field_0x2c0[1] > 1.0f) {
+            if (field_0x2c0[1] >= 1.0f) {
                 field_0x2c0[1] -= field_0x2c0[3];
-                if (field_0x2c0[1] < 1.0f) {
+                if (field_0x2c0[1] <= 1.0f) {
                     field_0x2c0[1] = 1.0f;
                 }
             }
@@ -803,7 +812,8 @@ void EnvironmentSwitchControl_804A8638::update() {
         } else if (field_0x250 != 0) {
             field_0x250--;
         }
-        if (field_0x244 == 0) {
+        switch (field_0x244) {
+        case 0: {
             field_0x24c = 100;
             s32 changed = 0;
             if (field_0x2e0 != field_0x300) {
@@ -863,6 +873,8 @@ void EnvironmentSwitchControl_804A8638::update() {
             }
             u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
+            break;
+        }
         }
         break;
     case 2: {
@@ -884,6 +896,8 @@ void EnvironmentSwitchControl_804A8638::update() {
         vfunc_0x60();
         break;
     }
+    case 4:
+        break;
     }
 
     if (field_0x290 != 0 || field_0x294 != 0) {
@@ -893,10 +907,10 @@ void EnvironmentSwitchControl_804A8638::update() {
         setEmitterPos_8013CB44(mEmitter, &field_0x254, 1, 1, true);
     }
 
-    if (field_0x310 == 0xFF) {
-        getGameView_802D6A9C()->fn_802D6BE0(0);
-    } else {
+    if (field_0x310 != 0xFF) {
         getGameView_802D6A9C()->fn_802D6BE0(1);
+    } else {
+        getGameView_802D6A9C()->fn_802D6BE0(0);
     }
 }
 
@@ -904,9 +918,8 @@ void EnvironmentSwitchControl_804A8638::update() {
 void EnvironmentSwitchControl_804A8638::draw() {}
 
 // 0x802B3A48.
-// FIXME(shotgun): 84.07 %, missing/extra; behaviour clean.
 void EnvironmentSwitchControl_804A8638::fn_802B3A48() {
-    fn_8016A3AC()->field_0x1ee = 0;
+    fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
     }

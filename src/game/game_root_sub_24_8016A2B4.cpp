@@ -920,7 +920,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
 
 void GameRootSub24_8016A3AC::fn_8016B8AC() {
     if (field_0x1cb[0]) {
-        JGeometry::TVec3f pos(256.0f, 256.0f + field_0x1e4, 0.0f);
+        JGeometry::TVec3f pos(256.0f, 256.0f + field_0x1e0.y, 0.0f);
         drawParallaxModel_8016A7DC(mMekakusiModel_0x34, pos, 1, true, false, 1.0f, 102.4f);
     }
 }
