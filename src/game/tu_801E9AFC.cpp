@@ -108,9 +108,7 @@ s32 cls_801E9B54::fn_801EA6D8(u8 arg0, s32 arg1) {
 }
 
 // FIXME: 94.56 %, missing/extra; behaviour near.
-// The slot shift-down loop: the original recomputes the source
-// slot from the index each pass (addi, mulli, add; 81 instructions), ours
-// walks a second pointer (80).
+// Registers of `removed` and the loop index are swapped.
 void cls_801E9B54::fn_801EA594() {
     if (field_0x60 > 0) {
         bool removed;
@@ -118,14 +116,14 @@ void cls_801E9B54::fn_801EA594() {
             removed = false;
             for (s32 i = 0; i < field_0x60; i++) {
                 if (field_0x0[i].value == -1) {
-                    if (field_0x0[i].actor != NULL) {
-                        field_0x0[i].actor->mAlive = false;
-                        field_0x0[i].actor->mDrawEnabled = false;
+                    Slot_801E9B54* slot = &field_0x0[i];
+                    if (slot->actor != NULL) {
+                        slot->actor->mAlive = false;
+                        slot->actor->mDrawEnabled = false;
                     }
-                    Slot_801E9B54* dst = &field_0x0[i];
                     while (i < field_0x60 - 1) {
-                        *dst = field_0x0[++i];
-                        dst++;
+                        *slot = field_0x0[i++ + 1];
+                        slot++;
                     }
                     field_0x60 = field_0x60 - 1;
                     removed = true;
