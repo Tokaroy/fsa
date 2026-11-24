@@ -70,6 +70,11 @@ void fn_80154718(const JGeometry::TVec3f* pos) {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(pos);
 }
 
+JGeometry::TVec2f* fn_801546E8(JGeometry::TVec2f* v, f32 x, f32 y) {
+    v->set(x, y);
+    return v;
+}
+
 void zeroVec_801546BC(JGeometry::TVec3f* v) {
     v->zero();
 }
@@ -475,10 +480,12 @@ BOOL SwordSoldier_8049FCA0::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 99.45 %, missing/extra; getTileAt_80226998 takes a TVec2f here (TVec2f(mPos.x, mPos.y) in the original).
+// FIXME(shotgun): missing/extra; fn_801546E8 is MWCC's local TVec2(x, y) template ctor (no default ctor first in the original),
+// but ours emits it right after update(), not at 0x801546E8; getTileAt_80226998 takes a TVec2f here.
 void SwordSoldier_8049FCA0::update() {
     JGeometry::TBox2f boxD8(mMapBox_0x80);
-    JGeometry::TVec2f pos70(mPos.x, mPos.y);
+    JGeometry::TVec2f pos70;
+    fn_801546E8(&pos70, mPos.x, mPos.y);
     JGeometry::TVec2f vec68;
     JGeometry::TVec3f oldPos(mPos);
     u16 angle = 0;
@@ -633,7 +640,8 @@ void SwordSoldier_8049FCA0::update() {
             for (s32 i = 0; i < 4; i++) {
                 playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 if (playerIdx >= 0) {
-                    JGeometry::TVec2f tmp60(JGeometry::TVec2f(mPos.x, mPos.y));
+                    JGeometry::TVec2f tmp28;
+                    JGeometry::TVec2f tmp60(*fn_801546E8(&tmp28, mPos.x, mPos.y));
                     JGeometry::TVec2f center58;
                     JGeometry::TBox2f boxB0(mBox);
                     addVec2_80154558(&boxB0.i, &tmp60);
@@ -697,7 +705,8 @@ void SwordSoldier_8049FCA0::update() {
         for (s32 i = 0; i < 4; i++) {
             playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (playerIdx >= 0) {
-                JGeometry::TVec2f tmp50(JGeometry::TVec2f(mPos.x, mPos.y));
+                JGeometry::TVec2f tmp20;
+                JGeometry::TVec2f tmp50(*fn_801546E8(&tmp20, mPos.x, mPos.y));
                 JGeometry::TVec2f center48;
                 JGeometry::TBox2f boxA0(mBox);
                 addVec2_80154558(&boxA0.i, &tmp50);
@@ -1466,7 +1475,8 @@ void SwordSoldier_8049FCA0::update() {
         }
         {
             JGeometry::TBox2f box78(mMapBox_0x80);
-            JGeometry::TVec2f tmp40(JGeometry::TVec2f(mPos.x, mPos.y));
+            JGeometry::TVec2f tmp18;
+            JGeometry::TVec2f tmp40(*fn_801546E8(&tmp18, mPos.x, mPos.y));
             addVec2_80154558(&box78.i, &tmp40);
             addVec2_80154558(&box78.f, &tmp40);
             fn_80239914(&box78, getLayer_8015461C(), getSerial_801545E8());

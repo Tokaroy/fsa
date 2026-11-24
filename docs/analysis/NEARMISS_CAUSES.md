@@ -41,34 +41,41 @@ unit has its own: fn_80196D24 / fn_80196D60 in act_ganon, etc.
    - `copyBox_801546F4` -> `__ct__Q29JGeometry8TBox2<f>FRCQ29JGeometry8TBox2<f>`
    - `fn_801546D0` -> `__ct__Q29JGeometry8TVec3<f>FRCQ29JGeometry8TVec3<f>`
    - `fn_8015457C` -> `__ct__Q29JGeometry8TVec2<f>FRCQ29JGeometry8TVec2<f>`
-   - a `fn_X__FPQ29JGeometry8TVec2<f>ff` of size 0xC -> `__ct<f>__Q29JGeometry8TVec2<f>Fff`, `scope:local`
-   - a `fn_X__FPQ29JGeometry8TVec3<f>fff` of size 0x10 -> `__ct<f>__Q29JGeometry8TVec3<f>Ffff`, `scope:local`
+   - **not** the `TVec2(x, y)` / `TVec3(x, y, z)` helpers (`fn_X__FPQ29JGeometry8TVec2<f>ff`, 0xC;
+     `...TVec3<f>fff`, 0x10): see "Template ctors: reverted" below.
 2. Delete the hand-written helper definition; write the construction:
-   `TBox2f b(mBox);`, `TVec3f old(mPos);`, `TVec2f p(mPos.x, mPos.y);`,
-   `TVec2f t(TVec2f(mPos.x, mPos.y));` for `fn_8015457C(&t, fn_801546E8(&tmp, x, y))`, and
+   `TBox2f b(mBox);`, `TVec3f old(mPos);`,
+   `TVec2f t(*fn_801546E8(&tmp, x, y));` for `fn_8015457C(&t, fn_801546E8(&tmp, x, y))`, and
    pass by value where the callee takes a `TVec3f` (openMessage_8038AD24).
 3. Only where the original has no `__ct...Fv` on that slot first (check the target rows).
 
-**Done** (commits 8021507b0, 6a78cb427; SHA-1 OK, no function at 100 % dropped):
+**Done** (copy ctors only; SHA-1 OK, order_check clean, no function at 100 % dropped):
 
 | Function | before | after | insns |
 |---|---:|---:|---|
-| SwordSoldier::update | 98.64 | 99.45 | +15 -> -9 |
-| Ganon::update | 97.99 | 98.59 | +17 -> +1, **structural** |
+| SwordSoldier::update | 98.64 | 99.20 | +15 -> -1 |
+| Ganon::update | 97.99 | 98.53 | +17 -> +7 |
 | PhantomGanon2::update | 98.38 | 98.64 | +6 -> +2, **structural** |
 | PrincessZeldaGanonBattle::fn_80198828 | 99.42 | 99.49 | +11 -> +9 |
 | PhantomGanon::update (loss) | 94.13 | 93.70 | ours inlines the copy ctor (below) |
 
-**Still to apply** (local template ctors, one unit each; also check the copy-ctor sites
-the units already have): `fn_8018A6A0`, `fn_8018A5B8` (act_phantom_ganon_2),
-`fn_8019C4F4` (act_princess_zelda_ganon_battle_80197070), `fn_8018E964` (act_big_poe_2_8018A8D8),
-`fn_801826E4`, `fn_80182640`, `fn_80182650`, `fn_80182690` (act_helmaroc_king_8017EF40),
-`fn_801583D4` (act_bow_soldier_801555D8), `fn_80178F00` (act_wizzrobe), `fn_802C7CB8`
-(act_door), `fn_80453874` (collect_screen_8044C7F0), `setVec_80154518` (act_sword_soldier),
-`fn_8017ECE8` / `fn_8017EB0C` (act_phantom_ganon_8017C01C: tested, **loses**, see below).
-Find more with `grep -E '__FPQ29JGeometry8T(Vec2|Vec3|Box2)<f>(ff|fff|PCQ29JGeometry8T\w+<f>) =' config/G4SE01/symbols.txt`
-and check sizes against the list above. `fn_8017EC38` (TBox2, 0x24, 5 units) and
-`fn_80233BA0` are assigned into existing boxes: probably `set`/`operator=`, not ctors.
+**Still to apply.** Other copy-ctor-shaped helpers: `fn_80182690` (TVec2, 0x24,
+act_helmaroc_king_8017EF40) and the 0x1C TVec3 copies (`fn_801545A4`, `copyVec3_80196D70`, ...)
+look like `set(const TVec3&)` (lfs/stfs, not MWCC's psq copy ctor): check the body before
+renaming. `fn_8017EC38` (TBox2, 0x24, 5 units) and `fn_80233BA0` are assigned into existing
+boxes: probably `set`/`operator=`, not ctors. Find candidates with
+`grep -E '__FPQ29JGeometry8T(Vec2|Vec3|Box2)<f>PCQ29JGeometry8T\w+<f> =' config/G4SE01/symbols.txt`.
+
+**Template ctors: reverted.** `fn_801546E8` (act_sword_soldier), `fn_80196D24` / `fn_80196D60`
+(act_ganon) and the other 0xC / 0x10 `(x, y)` / `(x, y, z)` helpers behave like the
+`TVec2(U x, U y)` / `TVec3(U, U, U)` template ctors (no default ctor first, this returned, one
+local copy per unit). Written that way, MWCC emits the instance local, but right after its
+first user (update), while the original has it among the unit's late helpers (0x801546E8,
+0x80196D24): tools/order_check.py fails. A non-template `TVec2(T, T)` ctor next to the
+template one isn't chosen by MWCC (it still emits `__ct<f>`). Whether the original's helper
+was a template instance at all is open: "local, one per unit" also fits a file-static helper.
+Ganon::update reached 1 instruction off with them, so the placement puzzle is worth one more
+look (deferred-inlining emission order of template instances); until then keep the helpers.
 
 **The inline budget caveat.** These ctors are out of line in the original only because
 the caller is huge (MWCC stops inlining past its per-function budget). Our source writes
