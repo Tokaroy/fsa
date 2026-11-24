@@ -162,15 +162,64 @@ static inline bool checkTile(u16 code) {
     return false;
 }
 
+inline bool PrincessZelda_8049CEE0::canBeHit() {
+    if (field_0x328 >= 8 || field_0x328 <= 4) {
+        return false;
+    }
+    if (field_0x2f8 != 0) {
+        return false;
+    }
+    return true;
+}
+
+// The player (0-3) that takes part, stands in the box and opened message 0x170; else -1.
+inline s32 PrincessZelda_8049CEE0::findTalker() {
+    JGeometry::TBox2f searchBox(mBox);
+    searchBox.i.x += mPos.x;
+    searchBox.i.y += mPos.y;
+    searchBox.f.x += mPos.x;
+    searchBox.f.y += mPos.y;
+
+    fn_8022FEB8(&searchBox, mLayer_0x4, mSerial, false, false);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0) {
+        return -1;
+    }
+    if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
+        return -1;
+    }
+    if (!fn_8022C5EC(player, 0x120)) {
+        return -1;
+    }
+    if (!openMessage_8038AD24(player, 0x170, mSerial, mLayer_0x4, mPos, 0x20)) {
+        return -1;
+    }
+    return player;
+}
+
+// State 1 while lbl_8053AA81 is set: message 0x170 for player 0, then state 4.
+inline void PrincessZelda_8049CEE0::talkToFirstPlayer() {
+    if (field_0x328 != 1) {
+        return;
+    }
+    fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
+    if (fn_8022FD8C(mSerial) >= 0) {
+        if (openMessage_8038AD24(0, 0x170, mSerial, mLayer_0x4, mPos, 0x28)) {
+            lbl_8053AA81 = 0;
+            setState_801096C8(4);
+        }
+    }
+}
+
 inline bool PrincessZelda_8049CEE0::stepRail() {
     if (field_0x2fc <= 0) {
         return true;
     }
-    u16 angle = 0;
+    s16 angle = 0;
     JGeometry::TVec3f moveVec(0.0f, 0.0f, 0.0f);
     s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
-    if (mRail.stepAlongRail_800FDEA0(&pos, 1.0f, &moveVec, &layer, &angle, 0x200) == 3) {
+    if (mRail.stepAlongRail_800FDEA0(&pos, 1.0f, &moveVec, &layer, (u16*)&angle, 0x200) == 3) {
         return true;
     }
     mVel_0x3c.x = moveVec.x;
@@ -185,8 +234,7 @@ inline bool PrincessZelda_8049CEE0::stepRail() {
     return false;
 }
 
-// FIXME: 98.14 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: ours has 4 fewer instrs (919 vs 923); some argument setups before calls are scheduled differently and one comparison compiles to an extra cror.
+// The position copies for openMessage_8038AD24 are made before serial and layer are loaded (after, in the original).
 void PrincessZelda_8049CEE0::update() {
     ActorBase_804A5770::update();
     field_0x330 = 1.0f;
@@ -198,11 +246,7 @@ void PrincessZelda_8049CEE0::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
 
-    bool canHit = true;
-    if (field_0x328 >= 8 || field_0x328 <= 4 || field_0x2f8 != 0) {
-        canHit = false;
-    }
-    if (canHit) {
+    if (canBeHit()) {
         if (findOverlappingActorOf_801F26CC(lbl_80464204) >= 0) {
             mLife -= 2;
             if (mLife > 0) {
@@ -212,23 +256,7 @@ void PrincessZelda_8049CEE0::update() {
     }
 
     if (field_0x328 >= 5 && field_0x328 <= 7) {
-        JGeometry::TBox2f searchBox(mBox);
-        searchBox.i.x += mPos.x;
-        searchBox.i.y += mPos.y;
-        searchBox.f.x += mPos.x;
-        searchBox.f.y += mPos.y;
-
-        fn_8022FEB8(&searchBox, mLayer_0x4, mSerial, false, false);
-        s32 player = fn_8022FD8C(mSerial);
-        if (player < 0) {
-            player = -1;
-        } else if (!(gGameRoot_8053AAF8->mPlayerMask & (1 << player))) {
-            player = -1;
-        } else if (!fn_8022C5EC(player, 0x120)) {
-            player = -1;
-        } else if (!talk(player, 0x170, mSerial, mLayer_0x4, mPos, 0x20)) {
-            player = -1;
-        }
+        s32 player = findTalker();
         if (player >= 0) {
             field_0x304 = player;
             setState_801096C8(3);
@@ -253,27 +281,21 @@ void PrincessZelda_8049CEE0::update() {
 
     case 1:
         if (lbl_8053AA81 != 0) {
-            if (field_0x328 == 1) {
-                fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
-                if (fn_8022FD8C(mSerial) >= 0) {
-                    if (talk(0, 0x170, mSerial, mLayer_0x4, mPos, 0x28)) {
-                        lbl_8053AA81 = 0;
-                        setState_801096C8(4);
-                    }
-                }
-            }
+            talkToFirstPlayer();
         } else {
             u16 angle;
-            s32 dir;
             f32 dist;
             s32 unk;
+            s32 dir;
             findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &unk, 0, 1);
-            if (dir >= 0 && dist <= 64.0f) {
-                if (field_0x328 == 1) {
+            if (dir >= 0 && !(dist > 64.0f)) {
+                switch (field_0x328) {
+                case 1:
                     if (dir >= 0 && dir + 5 != mSpriteAnim.mAnim) {
                         mSpriteAnim.startAnim_801D22DC(dir + 5, 2, false);
                         pool_8053C3E0();
                     }
+                    break;
                 }
             }
             switch (field_0x320) {
@@ -281,7 +303,7 @@ void PrincessZelda_8049CEE0::update() {
                 fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
                 s32 player = fn_8022FD8C(mSerial);
                 if (player >= 0 && !hasPlayerLeader_8022F514(player)) {
-                    if (talk(player, 0x230, mSerial, mLayer_0x4, mPos, 0x28)) {
+                    if (openMessage_8038AD24(player, 0x230, mSerial, mLayer_0x4, mPos, 0x28)) {
                         field_0x300 = player;
                         setState_801096C8(2);
                     }
@@ -314,10 +336,8 @@ void PrincessZelda_8049CEE0::update() {
         camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->mBlendBoxOn_0x840 == 0) {
             camera->mBlendBoxOn_0x840 = 1;
-            camera->mBlendBox_0x844.f.x = mPos.x;
-            camera->mBlendBox_0x844.i.x = mPos.x;
-            camera->mBlendBox_0x844.f.y = mPos.y;
-            camera->mBlendBox_0x844.i.y = mPos.y;
+            camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = mPos.x;
+            camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = mPos.y;
             camera->mBlendWeight_0x854 = 0.08f;
             camera->mMargin_0x1d4 = -1.0f;
             camera->mMinHalfWidth_0x1d8 = -1.0f;
@@ -357,10 +377,13 @@ void PrincessZelda_8049CEE0::update() {
             }
             break;
         }
+        f32 dist;
+        s32 unk;
+        s32 dir;
         u16 angle = 0;
-        s32 dir = 0;
-        f32 dist = 0.0f;
-        s32 unk = 0;
+        dir = 0;
+        unk = 0;
+        dist = 0.0f;
         findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &unk, player, 2);
         stepSpeed(dist);
         mVel_0x3c.x = field_0x334 * JMath::sincosTable_.sinShort(angle);
@@ -401,12 +424,7 @@ void PrincessZelda_8049CEE0::update() {
         break;
 
     case 9:
-        if (field_0x300 >= 0) {
-            field_0x339 = 0;
-            JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
-            approachPlayerSide(ppos);
-        }
+        approachPlayerSide();
         if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             setState_801096C8(5);
         }
@@ -414,12 +432,7 @@ void PrincessZelda_8049CEE0::update() {
 
     case 10:
         mLayer_0x4 = getPlayerLayer_8023DE58(field_0x300);
-        if (field_0x300 >= 0) {
-            field_0x339 = 0;
-            JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
-            followPlayerSide(ppos);
-        }
+        followPlayerSide();
         if (!fn_8022D75C(field_0x300)) {
             setState_801096C8(5);
         }
@@ -467,8 +480,8 @@ void PrincessZelda_8049CEE0::update() {
     case 16:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x31c = fn_8022FD8C(mSerial);
-        if (field_0x31c >= 0 && (gGameRoot_8053AAF8->mPlayerMask & (1 << field_0x31c))) {
-            if (talk(field_0x31c, 0x16E, mSerial, mLayer_0x4, mPos, 0x28)) {
+        if (field_0x31c >= 0 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << field_0x31c))) {
+            if (openMessage_8038AD24(field_0x31c, 0x16E, mSerial, mLayer_0x4, mPos, 0x28)) {
                 setState_801096C8(17);
             }
         }
@@ -746,9 +759,15 @@ void PrincessZelda_8049CEE0::fn_80109534() {
 // generated before fn_80109534, in this order from the bottom, which is the order of
 // 0, -24, 1, 16, 0.5, 5, 2 in the original's .sdata2.
 
-// State 9: `ppos` (the player's position) moved 16 to the side mDir_0x98, mPos towards it by 2.
+// State 9, with a player to follow: the player's position moved 16 to the side mDir_0x98, mPos towards it by 2.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
-void PrincessZelda_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
+void PrincessZelda_8049CEE0::approachPlayerSide() {
+    if (field_0x300 < 0) {
+        return;
+    }
+    field_0x339 = 0;
+    JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
+    mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
     switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
@@ -770,7 +789,13 @@ void PrincessZelda_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
 
 // The same side position; mPos jumps to it on the player's layer, else moves towards it by 5.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 25-line definition): split out only where the .sdata2 order needs it.
-void PrincessZelda_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
+void PrincessZelda_8049CEE0::followPlayerSide() {
+    if (field_0x300 < 0) {
+        return;
+    }
+    field_0x339 = 0;
+    JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
+    mDir_0x98 = getPlayerFacing_80230CFC(field_0x300);
     switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
