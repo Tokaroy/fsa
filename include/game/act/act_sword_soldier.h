@@ -6,7 +6,6 @@
 #include "game/ActorBase.h"
 
 // Small out-of-line helpers of game/act_sword_soldier.cpp, called from other units.
-void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 void zeroVec_801546BC(JGeometry::TVec3f* v);
 s32 atan2Short_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
@@ -14,7 +13,6 @@ void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
 f32 sinShort_801544FC(s16 angle);
 f32 cosShort_801544E4(s16 angle);
 f32 fabsf_8015436C(f32 x);
-void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src); // *dst = *src (psq copy)
 void fn_80154528(const JGeometry::TBox2f* box, JGeometry::TVec2f* out);   // a point of the box
 
 // The SLR1 actor (Sword Soldier, docs/names/actors.tsv, high confidence).

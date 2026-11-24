@@ -70,19 +70,6 @@ void fn_80154718(const JGeometry::TVec3f* pos) {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(pos);
 }
 
-void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src) {
-    dst->set(*src);
-}
-
-JGeometry::TVec2f* fn_801546E8(JGeometry::TVec2f* v, f32 x, f32 y) {
-    v->set(x, y);
-    return v;
-}
-
-void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
-    *dst = *src;
-}
-
 void zeroVec_801546BC(JGeometry::TVec3f* v) {
     v->zero();
 }
@@ -131,10 +118,6 @@ void fn_801545A4(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
 
 void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1) {
     box->set(x0, y0, x1, y1);
-}
-
-void fn_8015457C(JGeometry::TVec2f* dst, const JGeometry::TVec2f* src) {
-    dst->set(*src);
 }
 
 void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b) {
@@ -492,15 +475,12 @@ BOOL SwordSoldier_8049FCA0::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 98.64 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.45 %, missing/extra; getTileAt_80226998 takes a TVec2f here (TVec2f(mPos.x, mPos.y) in the original).
 void SwordSoldier_8049FCA0::update() {
-    JGeometry::TBox2f boxD8;
-    copyBox_801546F4(&boxD8, &mMapBox_0x80);
-    JGeometry::TVec2f pos70;
-    fn_801546E8(&pos70, mPos.x, mPos.y);
+    JGeometry::TBox2f boxD8(mMapBox_0x80);
+    JGeometry::TVec2f pos70(mPos.x, mPos.y);
     JGeometry::TVec2f vec68;
-    JGeometry::TVec3f oldPos;
-    fn_801546D0(&oldPos, &mPos);
+    JGeometry::TVec3f oldPos(mPos);
     u16 angle = 0;
     u8 moved = 0;
     f32 dist = 0.0f;
@@ -653,12 +633,9 @@ void SwordSoldier_8049FCA0::update() {
             for (s32 i = 0; i < 4; i++) {
                 playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 if (playerIdx >= 0) {
-                    JGeometry::TVec2f tmp28;
-                    JGeometry::TVec2f tmp60;
-                    fn_8015457C(&tmp60, fn_801546E8(&tmp28, mPos.x, mPos.y));
+                    JGeometry::TVec2f tmp60(JGeometry::TVec2f(mPos.x, mPos.y));
                     JGeometry::TVec2f center58;
-                    JGeometry::TBox2f boxB0;
-                    copyBox_801546F4(&boxB0, &mBox);
+                    JGeometry::TBox2f boxB0(mBox);
                     addVec2_80154558(&boxB0.i, &tmp60);
                     addVec2_80154558(&boxB0.f, &tmp60);
                     fn_80154528(&boxB0, &center58);
@@ -720,12 +697,9 @@ void SwordSoldier_8049FCA0::update() {
         for (s32 i = 0; i < 4; i++) {
             playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (playerIdx >= 0) {
-                JGeometry::TVec2f tmp20;
-                JGeometry::TVec2f tmp50;
-                fn_8015457C(&tmp50, fn_801546E8(&tmp20, mPos.x, mPos.y));
+                JGeometry::TVec2f tmp50(JGeometry::TVec2f(mPos.x, mPos.y));
                 JGeometry::TVec2f center48;
-                JGeometry::TBox2f boxA0;
-                copyBox_801546F4(&boxA0, &mBox);
+                JGeometry::TBox2f boxA0(mBox);
                 addVec2_80154558(&boxA0.i, &tmp50);
                 addVec2_80154558(&boxA0.f, &tmp50);
                 fn_80154528(&boxA0, &center48);
@@ -1491,11 +1465,8 @@ void SwordSoldier_8049FCA0::update() {
             break;
         }
         {
-            JGeometry::TBox2f box78;
-            copyBox_801546F4(&box78, &mMapBox_0x80);
-            JGeometry::TVec2f tmp18;
-            JGeometry::TVec2f tmp40;
-            fn_8015457C(&tmp40, fn_801546E8(&tmp18, mPos.x, mPos.y));
+            JGeometry::TBox2f box78(mMapBox_0x80);
+            JGeometry::TVec2f tmp40(JGeometry::TVec2f(mPos.x, mPos.y));
             addVec2_80154558(&box78.i, &tmp40);
             addVec2_80154558(&box78.f, &tmp40);
             fn_80239914(&box78, getLayer_8015461C(), getSerial_801545E8());

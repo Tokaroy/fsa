@@ -250,8 +250,6 @@ u8 lbl_8053AB90;
 u8 lbl_8053AB91;
 
 void fn_80154718(const JGeometry::TVec3f* pos);
-void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
-void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src);
 void zeroVec_801546BC(JGeometry::TVec3f* v);
 s32 atan2Short_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
@@ -807,11 +805,9 @@ void Ganon_804A25F0::update() {
         fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getLayer_8015461C(), getSerial_801545E8(), false, false);
         zeroVec_801546BC(&posA);
         posA.y = -10.0f;
-        // The original passes posA by value; its copy ctor is fn_801546D0 (and fn_80196D60 / fn_80196D24 are the
-        // TVec3(x, y, z) / TVec2(x, y) ctors), so these locals keep the call names at the cost of a ctor call each.
-        JGeometry::TVec3f msgPos;
-        fn_801546D0(&msgPos, &posA);
-        if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x34E, getSerial_801545E8(), getLayer_8015461C(), msgPos, 0x4102)) {
+        // posA goes by value: the compiler's out-of-line TVec3 copy ctor (0x801546D0, act_sword_soldier's copy).
+        // fn_80196D60 / fn_80196D24 are this unit's TVec3(x, y, z) / TVec2(x, y) template ctors.
+        if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x34E, getSerial_801545E8(), getLayer_8015461C(), posA, 0x4102)) {
             mState = 2;
         }
         // fall through
@@ -1138,9 +1134,7 @@ void Ganon_804A25F0::update() {
             zeroVec_801546BC(&posA);
             posA.y = -10.0f;
             fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getLayer_8015461C(), getSerial_801545E8(), false, false);
-            JGeometry::TVec3f msgPos2;
-            fn_801546D0(&msgPos2, &posA);
-            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DD, getSerial_801545E8(), getLayer_8015461C(), msgPos2, 0x102)) {
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DD, getSerial_801545E8(), getLayer_8015461C(), posA, 0x102)) {
                 field_0x28c = 6;
                 mState = 18;
             }
@@ -1467,7 +1461,7 @@ void Ganon_804A25F0::update() {
             }
         }
         {
-            copyBox_801546F4(&box58, &mBox);
+            JGeometry::TBox2f box58(mBox);
             JGeometry::TVec2f pos2d;
             fn_80196D24(&pos2d, mPos.x, mPos.y);
             addVec2_80154558(&box58.i, &pos2d);
