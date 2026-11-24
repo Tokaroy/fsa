@@ -12,7 +12,7 @@
 #include "game/act/act_small_key.h"
 #include "game/act/act_warp.h"
 
-// FIXME(shotgun): 98.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.90 %, missing/extra; behaviour drift.
 void Door_804A8D88::init() {
     field_0x258 = mPos;
     field_0x234 = mSpawnParam_0x90 & 0x7F;
@@ -219,7 +219,7 @@ static const s32 lbl_8046D7E8[4] = {0, 0, -16, 16};
 // second layer cell offset y [dir]
 static const s32 lbl_8046D7F8[4] = {16, -16, 0, 0};
 
-// FIXME(shotgun): 82.59 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.71 %, missing/extra; behaviour drift.
 void Door_804A8D88::update() {
     JGeometry::TVec2f pos(field_0x258.x, field_0x258.y);
     s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
