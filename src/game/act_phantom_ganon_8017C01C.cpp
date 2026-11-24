@@ -80,8 +80,7 @@ u8 fn_8017ECC0() {
 }
 
 // FIXME: 93.55 %, missing/extra + reloc-name; behaviour clean.
-// The original stores the box corners in the order f.x, i.x, f.y, i.y (ours
-// i.x, i.y, f.x, f.y) and keeps the constant 1 of mBlendBoxOn_0x840 in the result's register.
+// The original keeps the constant 1 of mBlendBoxOn_0x840 in the result's register (ours loads it twice).
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     s32 result = 0;
@@ -89,7 +88,8 @@ u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     if (camera->mBlendBoxOn_0x840 == 0) {
         result = 1;
         camera->mBlendBoxOn_0x840 = 1;
-        camera->mBlendBox_0x844.set(pos->x, pos->y, pos->x, pos->y);
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
         camera->mBlendWeight_0x854 = value;
         camera->mMargin_0x1d4 = -1.0f;
         camera->mMinHalfWidth_0x1d8 = -1.0f;
