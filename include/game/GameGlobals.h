@@ -1911,6 +1911,9 @@ struct GameRootSub24_8016A3AC {
     // GameRootSub04_801F856C's destructor deletes mMoyaBrk_0x24 with it.
     // Inline: callers load the object first and the constant after (bl fn_8016A3AC; li; stb 0x1ee).
     void setField_0x1ee(u8 value) { field_0x1ee = value; }
+    // Same shape (bl fn_8016A3AC; li; stb 0x1c4 / 0x1c7) in EnvironmentSwitchControl_804A8638's init and update.
+    void setField_0x1c4(u8 value) { field_0x1c4 = value; }
+    void setField_0x1c7(u8 value) { field_0x1c7 = value; }
     ~GameRootSub24_8016A3AC();
 };
 // game/game_root_sub_24_8016A2B4.cpp (0x8016A3AC): returns gGameRoot_8053AAF8->field_0x4->field_0x24.
