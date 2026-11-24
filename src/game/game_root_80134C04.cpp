@@ -1702,19 +1702,16 @@ void GameRoot_8049EF20::createModeScreen_80135020(s32 mode) {
     }
 }
 
-// FIXME: 93.12 %, missing/extra; behaviour clean.
-// The target reloads field_0x94 into r4 and passes it on unconverted
-// (no li r4, 1); ours loads it into r0 and materialises the true.
-void GameRoot_8049EF20::fn_80134FE0(u8 value) {
+void GameRoot_8049EF20::fn_80134FE0(bool value) {
     field_0x94 = value;
     if (field_0x94 == 1) {
-        gAudioMgr_8053AF80->fn_80458658(true);
+        gAudioMgr_8053AF80->fn_80458658(field_0x94);
     } else {
         field_0x95 = 1;
     }
 }
 
-void GameRoot_8049EF20::fn_80134FC4(u8 value) {
+void GameRoot_8049EF20::fn_80134FC4(bool value) {
     field_0x94 = value;
     if (field_0x94 == 1) {
         return;

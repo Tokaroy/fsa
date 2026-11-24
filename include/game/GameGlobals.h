@@ -295,7 +295,7 @@ struct GameRoot_8049EF20 {
     /* 0x90 */ f32 field_0x90;
     // Stored by fn_80134FC4 (game/game_root_80134C04.cpp, 0x80134FC4, stb of r4), which
     // sets field_0x95 to 1 unless the value is 1.
-    /* 0x94 */ u8 field_0x94;
+    /* 0x94 */ bool field_0x94;
     // Set to 1 by fn_80134FC4 (game/game_root_80134C04.cpp) when field_0x94 is not 1.
     /* 0x95 */ u8 field_0x95;
     // Stored by fn_80134FBC (game/game_root_80134C04.cpp, 0x80134FBC, stb of r4).
@@ -375,12 +375,12 @@ struct GameRoot_8049EF20 {
     void fn_80134FBC(u8 value);
     // Stores r4 at this+0x94 (stb), then sets this+0x95 to 1 unless the value
     // is 1. Defined in game/game_root_80134C04.cpp (0x80134FC4); no callers found yet.
-    void fn_80134FC4(u8 value);
+    void fn_80134FC4(bool value);
     // Owner: game/game_root_80134C04.cpp (0x80134FE0, not written yet). Stores r4 at
     // this+0x94 (stb), reads it back, and calls fn_80458658 on gAudioMgr_8053AF80 when
     // it is 1, else sets this+0x95 to 1. Callers: game/act_unknown_form_8029C584.cpp
     // (UnknownFORM_804A7BE8's destructor, with 0), game/player_8023FBF0.cpp and game/game_view_802D39B8.cpp.
-    void fn_80134FE0(u8 value);
+    void fn_80134FE0(bool value);
     // Owner: game/game_root_80134C04.cpp (0x80134CC8). Whether the game is paused
     // (field_0x4c == 11 or field_0x88 == 2) and the fade object gGameRoot2_8053AB10->0x2C
     // has its byte at 0xC clear (0xC is 0 when it is idle).
