@@ -186,8 +186,10 @@ u8 IronPot_804A5418::checkHitByActor_0x60() {
                 } else if (other->mActorId == 'SWBM') {
                     fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
                 } else if (field_0x1dc.fn_801EAC54(other->mSerial)) {
-                    if (other->mActorId == ACTOR_FIRE) {
+                    switch (other->mActorId) {
+                    case ACTOR_FIRE:
                         startSound_801F0E34(0x3002E, 0);
+                        break;
                     }
                 }
                 other->field_0x164 = 1;
