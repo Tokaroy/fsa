@@ -338,7 +338,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             break;
         case 1:
             if (field_0x304[i] == 1) {
-                rowIdx += 4;
+                rowIdx = row + 4;
             }
             if (field_0x2f4[i] < 4) {
                 frame = 0;
@@ -984,7 +984,7 @@ void HelmarocKing_804A1630::update() {
         }
         mPos.x = field_0x288.x + lbl_804A13E0[mDir_0x98][0];
         mPos.y = field_0x288.y + lbl_804A13E0[mDir_0x98][1];
-        if (lbl_8053AB70 == (s32)mSpawnParam_0x90) {
+        if (lbl_8053AB70 == mSpawnParam_0x90) {
             field_0x238 = 1000;
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 field_0x238 = 240;
@@ -1269,7 +1269,7 @@ void HelmarocKing_804A1630::draw() {
             return;
         }
         if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5) {
-            if (lbl_8053AB70 == (s32)mSpawnParam_0x90) {
+            if (lbl_8053AB70 == getField_0x90()) {
                 fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x29, 0, 0, -1);
             }
             return;
