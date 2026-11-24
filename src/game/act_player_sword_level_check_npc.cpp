@@ -35,7 +35,6 @@ static const s32 lbl_8046F628_DC[8][4] = {
     {0, 1, 3, 0},
 };
 
-// FIXME(shotgun): 100 %, matches
 void PlayerSwordLevelCheckNPC_804AA590::init() {
     field_0x258 = fn_801B7550();
     field_0x25c = field_0x258;
@@ -55,7 +54,6 @@ void PlayerSwordLevelCheckNPC_804AA590::init() {
     mSoundObj = new ActorSoundObj_804578F4(NULL, NULL, 8);
 }
 
-// FIXME(shotgun): 97.92 %, missing/extra
 PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
     for (s32 i = 0; i < 4; i++) {
         if (mEmitters[i] != NULL) {
@@ -67,7 +65,8 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
     }
 }
 
-// FIXME(shotgun): 96.88 %, PlayerSwordLevelCheckNPC_804AA590
+// FIXME(shotgun): 97.46 %, different; behaviour drift.
+// PlayerSwordLevelCheckNPC_804AA590
 // Still differs: `(field_0x83 & 3) == 2` is an unsigned compare in the original; case 13 keeps
 // the raw level / view pointer across the getGameView calls; registers of the loop counters.
 void PlayerSwordLevelCheckNPC_804AA590::update() {
@@ -409,5 +408,4 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
     }
 }
 
-// FIXME(shotgun): 100 %, matches
 void PlayerSwordLevelCheckNPC_804AA590::draw() {}
