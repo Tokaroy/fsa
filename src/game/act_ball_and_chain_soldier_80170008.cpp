@@ -3,8 +3,10 @@
 #include "game/GameGlobals.h"
 #include "game/GameState.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/act/tu_801F9484.h"
 #include "game/SpriteParams.h"
+#include "game/RotMatrix.h"
 #include <math.h>
 #include "game/Effect.h"
 #include "game/Player.h"
@@ -12,9 +14,29 @@
 #include "game/BgRewrite.h"
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
+// Both corners of a box on screen. Inlined (the corners' stack slots lie below update()'s own
+// temporaries); act_phantom_ganon_8017C01C's fn_8017EB94 is the same test out of line.
+inline bool isBoxOnScreen(f32 left, f32 top, f32 right, f32 bottom) {
+    Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+    bool visible = false;
+    JGeometry::TVec3f corner1(left, top, 0.0f);
+    if (camera->isOnScreen_8030C2A8(&corner1)) {
+        JGeometry::TVec3f corner2(right, bottom, 0.0f);
+        if (camera->isOnScreen_8030C2A8(&corner2)) {
+            visible = true;
+        }
+    }
+    return visible;
+}
+
+// The original reaches mRandom.get_ufloat() through one more inline level (its union slot is
+// allocated after std::sqrtf's fpclassify slot); the name is ours.
+inline f32 randomFloat(f32 max) {
+    return gGameRoot_8053AAF8->mRandom.get_ufloat(max);
+}
 
 // 0x80171AF8.
-// FIXME(shotgun): 90.23 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.99 %, regalloc-only; behaviour clean.
 void BallAndChainSoldier_804A0810::init() {
     field_0x94 = mSpawnParam_0x90 & 0xFF;
     field_0x270 = (mSpawnParam_0x90 >> 8) & 1;
@@ -32,6 +54,7 @@ void BallAndChainSoldier_804A0810::init() {
     for (s32 i = 0; i < 10; i++) {
         field_0x29c[i] = mPos;
     }
+    field_0x314 = mPos;
     field_0x290[2] = 0.0f;
     field_0x290[1] = 0.0f;
     field_0x290[0] = 0.0f;
@@ -75,6 +98,14 @@ void BallAndChainSoldier_804A0810::init() {
     case 0:
         field_0x250 = 0x190;
         break;
+    case 3:
+        field_0x274 = 6;
+        mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+        field_0x250 = 100;
+        field_0x27c = 1.0f;
+        field_0x288 = 10.0f;
+        field_0x230 = 2;
+        break;
     case 1:
         field_0x274 = 4;
         field_0x27c = 1.0f;
@@ -83,14 +114,6 @@ void BallAndChainSoldier_804A0810::init() {
         break;
     case 2:
         field_0x274 = 2;
-        break;
-    case 3:
-        field_0x274 = 6;
-        mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
-        field_0x250 = 100;
-        field_0x27c = 1.0f;
-        field_0x288 = 10.0f;
-        field_0x230 = 2;
         break;
     case 4:
         mTimers[2] = 50;
@@ -145,7 +168,7 @@ void BallAndChainSoldier_804A0810::vfunc_0x44() {
 }
 
 // 0x801704A0.
-// FIXME: 99.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.81 %, scheduling+regalloc; behaviour near.
 void BallAndChainSoldier_804A0810::update() {
     static s32 lbl_804A07D8[4] = {0, 1, 2, 1};
     static s32 lbl_804A07E8[4] = {10, 2, 10, 10};
@@ -244,8 +267,8 @@ void BallAndChainSoldier_804A0810::update() {
                 center.x = right + 0.5f * (left - right);
                 center.y = bottom + 0.5f * (top - bottom);
                 if (fn_80237948(player, &center)) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, false, 1.0f);
-                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, false, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x400D1, 0);
                 }
             }
@@ -293,7 +316,7 @@ void BallAndChainSoldier_804A0810::update() {
         field_0x32c[1] = pos->y;
         field_0x32c[2] = pos->z;
     }
-    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+    if (viewLayerFlag(mLayer_0x4) != 0) {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
         mVel_0x3c.z = 0.0f;
@@ -303,14 +326,14 @@ void BallAndChainSoldier_804A0810::update() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x290[1], 0.3f, 1.0f);
     mPos += mVel_0x3c;
     if (field_0x230 != 4) {
-        bool hit = false;
+        u8 hit = 0;
         if (field_0x270 == 0 && dir == -1) {
-            hit = true;
+            hit = 1;
         }
         if (checkPlayerAttacks_801F2FAC()) {
-            hit = true;
+            hit = 1;
         }
-        if (hit) {
+        if (hit == 1) {
             field_0x290[2] = 0.0f;
             field_0x290[1] = 0.0f;
             field_0x290[0] = 0.0f;
@@ -405,7 +428,7 @@ void BallAndChainSoldier_804A0810::update() {
             addCalc2_801F71A4(&field_0x288, 10.0f, 0.3f, 3.0f);
             addCalc2_801F71A4(&field_0x27c, 1.0f, 0.2f, 0.2f);
             if (FABS(field_0x288 - 10.0f) < 0.1f) {
-                mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                mTimers[2] = (s32)randomFloat(50.0f) + 50;
                 field_0x288 = 10.0f;
                 field_0x27c = 1.0f;
                 field_0x25c = 0;
@@ -421,20 +444,11 @@ void BallAndChainSoldier_804A0810::update() {
                 field_0x250 = 3000;
             }
             if (mTimers[2] == 0) {
-                Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
                 left += x;
                 top += y;
                 right += x;
                 bottom += y;
-                JGeometry::TVec3f corner1(left, top, 0.0f);
-                bool visible = false;
-                if (camera->isOnScreen_8030C2A8(&corner1)) {
-                    JGeometry::TVec3f corner2(right, bottom, 0.0f);
-                    if (camera->isOnScreen_8030C2A8(&corner2)) {
-                        visible = true;
-                    }
-                }
-                if (visible) {
+                if (isBoxOnScreen(left, top, right, bottom)) {
                     if (player >= 0) {
                         field_0x320 = *getPlayerPos_8023E724(player);
                         s32 serial = field_0x26c;
@@ -484,7 +498,7 @@ void BallAndChainSoldier_804A0810::update() {
                 f32 ddy = field_0x314.y - field_0x320.y;
                 if (std::sqrtf(ddx * ddx + ddy * ddy) < 2.0f) {
                     field_0x27c = 1.0f;
-                    mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                    mTimers[2] = (s32)randomFloat(50.0f) + 50;
                     field_0x250 = 100;
                     field_0x260 = 0;
                     field_0x25c = 0;
@@ -518,11 +532,11 @@ void BallAndChainSoldier_804A0810::update() {
         if (dir != -1) {
             field_0x230 = 0;
             if (field_0x94 == 1) {
-                mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                mTimers[2] = (s32)randomFloat(50.0f) + 50;
                 field_0x230 = 1;
             }
             if (field_0x94 == 3) {
-                mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                mTimers[2] = (s32)randomFloat(50.0f) + 50;
                 field_0x260 = 0;
                 field_0x250 = 100;
                 field_0x27c = 1.0f;
@@ -566,8 +580,8 @@ void BallAndChainSoldier_804A0810::update() {
 
 // Draws the body (frame 0x7F + field_0x258), the ten trail segments (frame 0x83, at the stored
 // positions) and, rotated by field_0x278 and scaled by field_0x27c, the shell (frame 0x82 or 0x11).
-// FIXME(shotgun): 97.92 %, different; behaviour drift.
-// the sin/cos zero arguments fold to lfd doubles; regalloc
+// FIXME(shotgun): 98.75 %, scheduling+regalloc; behaviour clean.
+// float register allocation and instruction order around setRotScaleMtx
 void BallAndChainSoldier_804A0810::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -611,25 +625,9 @@ void BallAndChainSoldier_804A0810::draw() {
             } else {
                 params.field_0x20 = 0;
             }
-            f32 angle = field_0x278;
-            f32 scale = field_0x27c;
-            f32 sa = sin(0.0f);
-            f32 sb = sin(angle);
-            f32 sc = sin(0.0f);
-            f32 ca = cos(0.0f);
-            f32 cb = cos(angle);
-            f32 cc = cos(0.0f);
+            setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x278, 0.0f), field_0x27c);
             params.field_0x30 = 0x11;
             params.mMtx = mtx;
-            mtx[0][0] = scale * (cb * cc);
-            mtx[1][0] = scale * (cb * sc);
-            mtx[2][0] = scale * -sb;
-            mtx[0][1] = scale * ((sa * sb) * cc - ca * sc);
-            mtx[1][1] = scale * ((sa * sb) * sc + ca * cc);
-            mtx[2][1] = scale * (sa * cb);
-            mtx[0][2] = scale * ((ca * cc) * sb + sa * sc);
-            mtx[1][2] = scale * ((ca * sc) * sb - sa * cc);
-            mtx[2][2] = scale * (ca * cb);
             if (field_0x94 == 4) {
                 params.field_0x0[6] = field_0x274;
                 params.field_0x1d = 0;
