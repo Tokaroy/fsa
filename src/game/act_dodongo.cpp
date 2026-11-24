@@ -15,7 +15,12 @@ extern const f32 lbl_804A31C8[];
 extern const char* lbl_804A3208[];
 extern const s32 lbl_804689C0[];
 u16 lbl_8053A110[] = { 0x168, 0x167, 0x166, 0x169 };
-extern s32 lbl_8053ABE0;
+s32 lbl_8053ABE0;
+u8 lbl_8053ABE8;
+s32 lbl_8053ABEC;
+u8 lbl_8053ABF0;
+u8 lbl_8053ABF8;
+u8 lbl_8053AC00;
 
 void Dodongo_804A3334::fn_801AE5AC() {
     if (mTimers[0] != 0) {

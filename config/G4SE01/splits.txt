@@ -2472,7 +2472,7 @@ game/act_navi_after_crystal_cutscene_8013394C.cpp:
 	.data       start:0x8049ED30 end:0x8049ED88
 	.bss        start:0x804BE720 end:0x804BE838
 	.sdata      start:0x80539F50 end:0x80539F58
-	.sbss       start:0x8053AAE8 end:0x8053AAF8
+	.sbss       start:0x8053AAE8 end:0x8053AAF0
 	.sdata2     start:0x8053CD30 end:0x8053CD50
 
 game/tu_801344C0.cpp:
@@ -2481,6 +2481,7 @@ game/tu_801344C0.cpp:
 	.text       start:0x801344C0 end:0x80134C04
 	.ctors      start:0x8045BEF0 end:0x8045BEF4
 	.bss        start:0x804BE838 end:0x804BE938
+	.sbss       start:0x8053AAF0 end:0x8053AAF8
 
 game/game_root_80134C04.cpp:
 	extab       start:0x8000695C end:0x80006A2C

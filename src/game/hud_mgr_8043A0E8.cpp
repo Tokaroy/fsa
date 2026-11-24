@@ -60,6 +60,7 @@ static inline bool outsideBox(f32 x, f32 y, f32 px, f32 py, f32 margin) {
     return true;
 }
 
+HudMgr_804B1920* lbl_8053AED0;
 
 void fn_804408F0(JGeometry::TVec3f* pos);
 void fn_80440928(f32 x, f32 y);
@@ -1238,6 +1239,9 @@ void HudMgr_804B1920::fn_8043ACE4() {
         field_0x253 = 0;
     }
 }
+
+ButtonIcons_804B1988* lbl_8053AED8;
+GbaConnectErrorWindow_804B19F0* lbl_8053AEE0;
 
 void HudMgr_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     index = index < 0 ? 0 : index;

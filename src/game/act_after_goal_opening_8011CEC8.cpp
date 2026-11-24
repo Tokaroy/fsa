@@ -63,6 +63,8 @@ void AfterGoalOpening_8049DD68::update() {
     field_0x274.update_801D1C18();
 }
 
+u8 lbl_8053AAA0;
+
 void AfterGoalOpening_8049DD68::draw() {
     DemoActorBase_8049D140::draw();
 }
