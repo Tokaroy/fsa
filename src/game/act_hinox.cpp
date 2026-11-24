@@ -67,7 +67,8 @@ void Hinox_8049F9B4::init() {
 
 // FIXME(shotgun): 98.20 %, different; behaviour near.
 Hinox_8049F9B4::~Hinox_8049F9B4() {
-    JGeometry::TVec3f dir(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f dir;
+    dir.zero();
     if (mDir_0x98 == 2) {
         dir.set(0.0f, 15.0f, 0.0f);
     } else {
@@ -95,8 +96,9 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (held != NULL) {
-            held->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
-            held->mVel_0x3c.z = 3.0f;
+            JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
+            vel.z = 3.0f;
+            held->mVel_0x3c = vel;
             field_0x250 = -1;
             startSound_801F0E34(0x40008, 0);
         }
