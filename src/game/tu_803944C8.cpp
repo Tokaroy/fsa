@@ -91,7 +91,7 @@ static const SjisGlyph_80475830 lbl_80475830[317] = {
     {0x0079, 0x3980}, {0x007A, 0x39A0}, {0x002E, 0x39C0}, {0x0027, 0x39E0}, {0x002B, 0x0000}, {0x0028, 0x0020},
     {0x0029, 0x0040}, {0x003A, 0x0060}, {0x0025, 0x0080}, {0x0022, 0x3CA0}, {0xFFFF, 0xFFFF},
 };
-// The buffers fn_8039F540 / fn_8039C9A0 / fn_8039ACD0 / fn_8039A638 format the colour code "\033CR[%d]" into.
+// The buffers do_character (0x8039F540) / fn_8039C9A0 / fn_8039ACD0 / fn_8039A638 format the colour code "\033CR[%d]" into.
 static char lbl_8050E518[16];
 static char lbl_8050E528[16];
 static char lbl_8050E538[16];
@@ -1763,7 +1763,7 @@ void cls_804AF72C::do_end() {
 
 // FIXME(shotgun): 99.83 %, scheduling+regalloc; behaviour clean.
 // (registers only: the float temporaries of the centring offset and the tail's length/shown values)
-void cls_804AF72C::fn_8039F540(int c) {
+void cls_804AF72C::do_character(int c) {
     char* text = field_0x2d8->field_0x3ab;
     text[0] = 0;
     if (field_0x2d8->field_0x1aa == 0) {

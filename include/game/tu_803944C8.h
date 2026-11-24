@@ -201,7 +201,7 @@ public:
     void fn_8039D30C(u8 value);
     // 0x8039F540: lays one character of the message out in the line buffers (handles the newline,
     // the leading offset, two-byte characters).
-    void fn_8039F540(int c);
+    virtual void do_character(int c);
     // 0x8039CDF8: places a picture (field_0x68 entry) in the first free slot.
     void fn_8039CDF8(u8 value);
     // 0x8039C9A0: writes a number's digits (with a leading '-', and a colour-code offset first).

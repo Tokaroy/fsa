@@ -196,22 +196,24 @@ void MessageWindow_804AF490::fn_80390EBC() {
             } else {
                 pos.set(field_0x50);
             }
+            JGeometry::TVec3f speakerPos = pos;
             JGeometry::TVec3f boxPos = field_0x50;
             proc = field_0x48;
             u32 msg = field_0x20;
             proc->field_0x14c = msg;
             proc->field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
-            proc->field_0x98 = pos;
-            proc->field_0xa4.set(boxPos);
+            // The box stays at the window's position; the speaker's goes second.
+            proc->field_0x98 = boxPos;
+            proc->field_0xa4.set(speakerPos);
         } else {
-            JGeometry::TVec3f pos = field_0x50;
+            JGeometry::TVec3f speakerPos = field_0x50;
             JGeometry::TVec3f boxPos = field_0x50;
             proc = field_0x48;
             u32 msg = field_0x20;
             proc->field_0x14c = msg;
             proc->field_0x8->setMessageCode(msg >> 16, msg & 0xFFFF);
-            proc->field_0x98 = pos;
-            proc->field_0xa4.set(boxPos);
+            proc->field_0x98 = boxPos;
+            proc->field_0xa4.set(speakerPos);
         }
         field_0x24 = 7;
         break;
