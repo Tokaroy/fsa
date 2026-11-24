@@ -90,11 +90,14 @@ static inline void curvePoint(const UnknownFSOB_804A5568* self, u8 idx, u8 seg, 
 }
 
 // Moves the chain's head along its curve by the speed (0.5 per frame).
-// FIXME(shotgun): 97.46 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.71 %, missing/extra; behaviour near.
 void UnknownFSOB_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
-        // The original clamps this with fsel (0.5f >= 0 ? 0.5f : 0.0f, all in float); not reproduced.
-        f32 budget = 0.5f;
+        // The speed, never below zero (the MWCC fsel intrinsic). Ours rounds the result (frsp)
+        // and copies sq before inv_sqrt.
+        f32 speed = 0.5f;
+        f32 zero = 0.0f;
+        f32 budget = __fsel(speed, speed, zero);
         bool finished = false;
         while (budget > 0.0f) {
             f32 curX;
@@ -237,7 +240,7 @@ void UnknownFSOB_804A5568::fn_801E8EB4(u8 index, s32 arg, const JGeometry::TVec2
     field_0x2b0[index].y = pos->y;
 }
 
-// FIXME(shotgun): 98.19 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.72 %, missing/extra; behaviour clean.
 void UnknownFSOB_804A5568::fn_801E8C74(s32 arg) {
     field_0x3b8 = arg;
     mCount = 0;
@@ -258,7 +261,7 @@ void UnknownFSOB_804A5568::fn_801E8C74(s32 arg) {
     f32 y1 = field_0x2b0[1].y;
     f32 x2;
     f32 y3;
-    if (mCount == 2) {
+    if (mCount - 2 == 0) {
         x2 = x1;
         y3 = y1;
     } else {
@@ -267,7 +270,7 @@ void UnknownFSOB_804A5568::fn_801E8C74(s32 arg) {
     }
     f32 ry = fn_801CD6D8(y2, y2, y1, y3, 0.0625f);
     f32 rx = fn_801CD6D8(x0, x0, x1, x2, 0.0625f);
-    field_0x3bc = (s32)(JMath::atanTable_.atan2_(mPos.x - rx, mPos.y - ry) * 10430.378f);
+    field_0x3bc = (s32)(JGeometry::TUtil<f32>::atan2(mPos.x - rx, mPos.y - ry) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     JGeometry::TVec2f off;
     fn_801E9C00(field_0x3bc, &off);
     mBox.i.x += off.x;
