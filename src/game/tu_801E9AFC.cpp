@@ -4,6 +4,7 @@
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
 #include "game/act/act_iron_pot_801E6D48.h"
+#include "game/act/tu_801F9484.h"
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
@@ -277,16 +278,17 @@ void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
 }
 
 // FIXME: 97.38 %, missing/extra; behaviour clean.
-// The original copies findActorBySerial_801F666C's result through r0 (mr r0, r3; mr. r30, r0); ours tests it in place.
+// The looked-up actor is used as the Fire Rod fire ('FIRE', FireRodFire_804A89F0; fn_802BAA00 lives in its file).
 s32 ActorBase_804A5770::fn_801E9B58() {
     s32 serial = getActorManager_801F856C()->fn_801F7F58(this, lbl_80469C78, mSerial, 32.0f);
     if (serial >= 0 && serial != mSerial) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor != NULL) {
-            if (fn_801CC8E4(actor)) {
+        FireRodFire_804A89F0* fire = static_cast<FireRodFire_804A89F0*>(actor);
+        if (fire != NULL) {
+            if (fn_801CC8E4(fire)) {
                 serial = -1;
-            } else if (actor->mActorId == ACTOR_FIRE) {
-                actor->fn_802BAA00();
+            } else if (fire->mActorId == ACTOR_FIRE) {
+                fire->fn_802BAA00();
             }
         }
     }
