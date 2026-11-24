@@ -472,23 +472,23 @@ GameView_804A9950::GameView_804A9950() {
 GameView_804A9950::~GameView_804A9950() {}
 
 // FIXME: 99.13 %, different; behaviour near.
-// Structurally close: regalloc in clearStageTables' first loop (as resetStage_802DA8DC),
-// the 0x131b8 loop's set-up (the target copies 0 with mr r7, r4; ours li r7, 0) and the four
-// save-row flag tests (missing 9): the target rematerialises lbl_8050EC80 and adds 0x28 per
-// test; ours hoists the row's address + 0x28 once (also with the masks written out
-// instead of isStageFlagSet).
+// Regalloc only: clearStageTables' first loop (zero and row counters swapped, as
+// resetStage_802DA8DC) and the registers around the four save-file flag tests. The flags
+// are tested directly: through isStageFlagSet the bit-12 test becomes extrwi. where the
+// target has rlwinm. like the other three.
 // Enters the stage: clears every table, rebuilds the map (fn_802D3D48, fn_802D92F0,
 // loadScreenTiles_802D8D50), places the players, spawns the 'RANK' and 'GBAO' actors, sets the camera
 // and the time limit, and reads the save row's flags.
 void GameView_804A9950::vfunc_0xC() {
+    int i;
     getGameView_802D6A9C()->field_0x1328c = 0;
     clearStageTables();
     clearSlots();
-    for (int i = 0; i < 16; i++) {
+    for (i = 0; i < 16; i++) {
         field_0xf0[i].set(0.0f, 0.0f);
     }
     fn_802D3D48();
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true &&
             lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(i)) == 1) {
             if (gGameRoot_8053AAF8->field_0x7f == 0 || lbl_80529DEC.mStage_0x118 != 10 || lbl_80529DEC.mLevel_0x11c != 2) {
@@ -500,7 +500,7 @@ void GameView_804A9950::vfunc_0xC() {
     fn_802D7920(1);
     fn_802D790C(1);
     getGameView_802D6A9C()->field_0x174 = 0;
-    for (int i = 0; i < 0x10; i++) {
+    for (i = 0; i < 0x10; i++) {
         field_0x131b8[i] = 0;
         field_0x131df[i] = 0;
     }
@@ -528,7 +528,7 @@ void GameView_804A9950::vfunc_0xC() {
     } else {
         field_0xc4 = 10800;
     }
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x1323c[i] = 0.0f;
         field_0x1324c[i] = 0.0f;
         field_0x1325c[i] = 0.0f;
@@ -537,22 +537,22 @@ void GameView_804A9950::vfunc_0xC() {
     }
     gGameRoot_8053AAF8->fn_80134FE0(0);
     gGameRoot_8053AAF8->fn_80134FBC(0);
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x131d8[i] = 0;
     }
-    if (isStageFlagSet(3, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (3 * 4 + 0))) {
         field_0x131f7 |= 1;
     }
-    if (isStageFlagSet(4, 1)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (4 * 4 + 1))) {
         field_0x131f7 |= 2;
     }
-    if (isStageFlagSet(5, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (5 * 4 + 0))) {
         field_0x131f7 |= 4;
     }
-    if (isStageFlagSet(6, 0)) {
+    if (lbl_8050EC80.getCurrentFile().mFlags & (1 << (6 * 4 + 0))) {
         field_0x131f7 |= 8;
     }
-    for (int i = 0; i < 8; i++) {
+    for (i = 0; i < 8; i++) {
         if (fn_803B8EBC(i)) {
             field_0x131f8 |= (u8)(1 << i);
         }
