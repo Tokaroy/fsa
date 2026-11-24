@@ -201,7 +201,7 @@ public:
     // the actor field_0x280 names when this one's life is spent.
     /* 0x44 */ virtual void vfunc_0x44();
     // 0x80157C68: after a landing on a tile of kind 2, 3 or 0xE puts it in state 0xC; true when it did.
-    /* 0x54 */ virtual bool vfunc_0x54();
+    /* 0x54 */ virtual BOOL vfunc_0x54();
     /* 0x230 */ s32 mState;
     /* 0x234 */ s16 field_0x234;
     /* 0x236 */ u8 field_0x236[2];
@@ -236,7 +236,7 @@ public:
     /* 0x2A4 */ f32 field_0x2a4;
     /* 0x2A8 */ u8 field_0x2a8;
     /* 0x2A9 */ u8 field_0x2a9;
-    /* 0x2AA */ s16 field_0x2aa;
+    /* 0x2AA */ u16 field_0x2aa;
     /* 0x2AC */ f32 field_0x2ac;
     /* 0x2B0 */ f32 field_0x2b0;
     /* 0x2B4 */ f32 field_0x2b4;
