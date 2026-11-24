@@ -189,7 +189,7 @@ void Gohma_804A307C::vfunc_0x44() {
     field_0x230 = 5;
 }
 
-// FIXME: 98.59 %, missing/extra; behaviour drift.
+// FIXME: 99.02 %, missing/extra; behaviour drift.
 // FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
 // (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
