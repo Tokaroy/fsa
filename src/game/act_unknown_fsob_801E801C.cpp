@@ -270,11 +270,7 @@ void UnknownFSOB_804A5568::fn_801E8C74(s32 arg) {
     }
     f32 ry = fn_801CD6D8(y2, y2, y1, y3, 0.0625f);
     f32 rx = fn_801CD6D8(x0, x0, x1, x2, 0.0625f);
-    f32 dx = mPos.x;
-    f32 dy = mPos.y;
-    dx -= rx;
-    dy -= ry;
-    field_0x3bc = (s32)(JGeometry::TUtil<f32>::atan2(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+    field_0x3bc = (s32)(JGeometry::TUtil<f32>::atan2(mPos.x - rx, mPos.y - ry) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     JGeometry::TVec2f off;
     fn_801E9C00(field_0x3bc, &off);
     mBox.i.x += off.x;
