@@ -54,7 +54,7 @@ static inline void showMessage(s32 who) {
     }
 }
 
-// FIXME(shotgun): 96.09 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.31 %, scheduling+regalloc; behaviour drift.
 void WingedForceGem_804AB098::init() {
     field_0x94 = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x270 = mSpawnParam_0x90 & 7;
@@ -154,7 +154,7 @@ void WingedForceGem_804AB098::init() {
     }
 }
 
-// FIXME(shotgun): 98.06 %, different; behaviour near.
+// FIXME(shotgun): 98.44 %, operands; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
         if (isScreenFlagSet_0x34() == 1) {
