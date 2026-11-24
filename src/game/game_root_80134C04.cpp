@@ -358,8 +358,7 @@ s32 GameRoot_8049EF20::getPlayerCount_80138A30() {
 // mode (field_0x4c) and, once it asks for another one (field_0x50), the fade and load sequence of field_0x58.
 //
 // FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
-// (one fn_802DEBF8 call folded; the saved-register set differs;
-// the target loads field_0x4 into r3 before each fn_80139D70 call).
+// (the target loads field_0x4 into r3 before each fn_80139D70 call and narrows fn_8045959C's result to a byte).
 void GameRoot_8049EF20::fn_80137300() {
     field_0x5c++;
     field_0x8->pollInputs_8030A43C();
@@ -381,8 +380,9 @@ void GameRoot_8049EF20::fn_80137300() {
     u8 loading = field_0xfd;
     if (loading == 0 && (field_0x58 == 0 || field_0x58 == 2 || field_0x58 == 3)) {
         if (lbl_80529DEC.field_0x24c == 0) {
-            s32 mode = field_0x4c;
-            if (mode == 7 || (mode >= 8 && mode <= 0xF) || (mode >= 0x11 && mode <= 0x12) || mode == 6) {
+            if (field_0x4c == 7 || field_0x4c == 8 || field_0x4c == 9 || field_0x4c == 0xA || field_0x4c == 0xB ||
+                field_0x4c == 0xC || field_0x4c == 0xD || field_0x4c == 0xE || field_0x4c == 0xF ||
+                field_0x4c == 0x11 || field_0x4c == 0x12 || field_0x4c == 6) {
                 s32 joiner;
                 s32 i = 0;
                 for (;;) {
@@ -422,18 +422,15 @@ void GameRoot_8049EF20::fn_80137300() {
                         inSet = isGameModeSetB(gGameRoot_8053AAF8->field_0x4c);
                     }
                     if (inSet) {
-                        if (getGameView_802D6A9C()->isInTransition_802DCD0C() == 1 && field_0xfc != 0) {
+                        if ((getGameView_802D6A9C()->isInTransition_802DCD0C() == 1 && field_0xfc != 0) ||
+                            (fn_802DEBF8() && (gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x2C ||
+                                               gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x1D ||
+                                               gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x1F ||
+                                               gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x20 ||
+                                               gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x2B)) ||
+                            (fn_802DEBA0() && (gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x26 ||
+                                               gAudioMgr_8053AF80->field_0x58 - 0x1000000 == 0x28))) {
                             allowed = 0;
-                        } else {
-                            u32 seq = gAudioMgr_8053AF80->field_0x58 - 0x1000000;
-                            if (fn_802DEBF8() && (seq == 0x2C || seq == 0x1D || seq - 0x1F <= 1 || seq == 0x2B)) {
-                                allowed = 0;
-                            } else if (fn_802DEBA0()) {
-                                u32 seq2 = gAudioMgr_8053AF80->field_0x58 - 0x1000000;
-                                if (seq2 == 0x26 || seq2 == 0x28) {
-                                    allowed = 0;
-                                }
-                            }
                         }
                     }
                 }
@@ -633,6 +630,8 @@ void GameRoot_8049EF20::fn_80137300() {
                 field_0x60++;
                 field_0x80 = 0;
                 break;
+            case 5:
+                break;
             }
             gGameRoot2_8053AB10->fn_8013BBE0();
             field_0x4->fn_80139D9C();
@@ -692,13 +691,13 @@ void GameRoot_8049EF20::fn_80137300() {
             }
             lbl_8053AED0->fn_8043D644();
             break;
-        case 11:
+        case 11: {
             gGameRoot2_8053AB10->fn_8013BBE0();
             field_0x4->fn_80139D9C();
             fn_80139D70();
             lbl_8053AED0->fn_8043D644();
-            switch (lbl_8053AEC8->fn_80438E94()) {
-            case 7:
+            s32 overState = lbl_8053AEC8->fn_80438E94();
+            if (overState == 7) {
                 field_0x4->fn_80139BE8();
                 gGameRoot2_8053AB10->fn_8013B4C0();
                 field_0x50 = 0xC;
@@ -707,8 +706,7 @@ void GameRoot_8049EF20::fn_80137300() {
                 field_0x84 = 0;
                 lbl_80529DEC.field_0x237 = 8;
                 field_0x60 = 0;
-                break;
-            case 5:
+            } else if (overState == 5) {
                 gGameRoot2_8053AB10->fn_8013BBE0();
                 field_0x4->fn_80139D9C();
                 lbl_8053AEC8->fn_80438E10(0);
@@ -717,9 +715,9 @@ void GameRoot_8049EF20::fn_80137300() {
                 }
                 lbl_80529DEC.field_0x253 = 0;
                 field_0x4c = 7;
-                break;
             }
             break;
+        }
         case 12:
             gGameRoot2_8053AB10->fn_8013BBE0();
             fn_8038D570();
@@ -758,17 +756,25 @@ void GameRoot_8049EF20::fn_80137300() {
                     } else {
                         lbl_80529DEC.field_0x237 = 6;
                     }
-                } else if (lbl_80529DEC.field_0x237 == 8) {
-                    lbl_80529DEC.field_0x237 = 7;
+                    field_0x50 = 6;
+                    field_0x58 = 1;
+                    lbl_8053ACA0->fn_802AC8AC(0);
+                    field_0x84 = 0;
+                    gGameRoot2_8053AB10->fn_8013B4C0();
+                    field_0xa0->stopBgm_80458F9C(0xA);
                 } else {
-                    lbl_80529DEC.field_0x237 = 6;
+                    if (lbl_80529DEC.field_0x237 == 8) {
+                        lbl_80529DEC.field_0x237 = 7;
+                    } else {
+                        lbl_80529DEC.field_0x237 = 6;
+                    }
+                    field_0x50 = 6;
+                    field_0x58 = 1;
+                    lbl_8053ACA0->fn_802AC8AC(0);
+                    field_0x84 = 0;
+                    gGameRoot2_8053AB10->fn_8013B4C0();
+                    field_0xa0->stopBgm_80458F9C(0xA);
                 }
-                field_0x50 = 6;
-                field_0x58 = 1;
-                lbl_8053ACA0->fn_802AC8AC(0);
-                field_0x84 = 0;
-                gGameRoot2_8053AB10->fn_8013B4C0();
-                field_0xa0->stopBgm_80458F9C(0xA);
             }
             break;
         case 13:
@@ -893,18 +899,30 @@ void GameRoot_8049EF20::fn_80137300() {
                     delete field_0x4;
                     field_0x4 = NULL;
                 }
-                delete field_0x1c;
-                field_0x1c = NULL;
-                delete mGameMode_0x28;
-                mGameMode_0x28 = NULL;
-                delete mFileSelect_0x24;
-                mFileSelect_0x24 = NULL;
-                delete field_0x2c;
-                field_0x2c = NULL;
-                delete field_0x30;
-                field_0x30 = NULL;
-                delete mTitle_0x20;
-                mTitle_0x20 = NULL;
+                if (field_0x1c != NULL) {
+                    delete field_0x1c;
+                    field_0x1c = NULL;
+                }
+                if (mGameMode_0x28 != NULL) {
+                    delete mGameMode_0x28;
+                    mGameMode_0x28 = NULL;
+                }
+                if (mFileSelect_0x24 != NULL) {
+                    delete mFileSelect_0x24;
+                    mFileSelect_0x24 = NULL;
+                }
+                if (field_0x2c != NULL) {
+                    delete field_0x2c;
+                    field_0x2c = NULL;
+                }
+                if (field_0x30 != NULL) {
+                    delete field_0x30;
+                    field_0x30 = NULL;
+                }
+                if (mTitle_0x20 != NULL) {
+                    delete mTitle_0x20;
+                    mTitle_0x20 = NULL;
+                }
                 if (mTitle_0x20 == NULL) {
                     u8 group = field_0x98->changeGroupID(1);
                     mTitle_0x20 = new (field_0x98, 0) Title_804AF820();

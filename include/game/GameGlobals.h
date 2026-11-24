@@ -1214,7 +1214,7 @@ public:
     // 0x80438C68: the per-frame state machine (field_0x58): spawns the TNGL actor, then the message and the DETH sweep.
     void fn_80438C68();
     // 0x80438E94 (game/game_over_screen_80438C68.cpp): the per-frame update (field_0x40 states); returns the state.
-    u8 fn_80438E94();
+    s32 fn_80438E94();
     /* 0x04 */ J2DScreen* field_0x4;
     /* 0x08 */ J2DAnmBase* field_0x8;
     /* 0x0C */ JPABaseEmitter* field_0xc[10]; // 0xC..0x30; the last two are single emitters

@@ -147,7 +147,7 @@ static inline void sparkEmitter(JPABaseEmitter*& slot, JGeometry::TVec3f& pos, f
 }
 
 // 0x80438E94
-u8 GameOverScreen_804B17A0::fn_80438E94() {
+s32 GameOverScreen_804B17A0::fn_80438E94() {
     s32 serial = field_0x44;
     if (serial > 0 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) == NULL) {
         field_0x44 = -2;
