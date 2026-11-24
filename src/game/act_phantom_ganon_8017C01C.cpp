@@ -52,8 +52,6 @@ void fn_8017ECE8(JGeometry::TVec2f* v, f32 x, f32 y) {
     v->set(x, y);
 }
 
-// FIXME: 89.00 %, missing/extra; behaviour clean.
-// Sets the camera's field_0x178 flag unless field_0x179 is set.
 u8 fn_8017ECC0() {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
@@ -63,7 +61,7 @@ u8 fn_8017ECC0() {
     return result;
 }
 
-// FIXME: 93.55 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 94.25 %, missing/extra + reloc-name; behaviour clean.
 // The original keeps the constant 1 of mBlendBoxOn_0x840 in the result's register (ours loads it twice).
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
@@ -164,7 +162,7 @@ void invalidateEmitter_8017EAB4(JPABaseEmitter* emitter) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 63.32 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 88.16 %, missing/extra + reloc-name; behaviour near.
 // The original's emitter loop keeps the id table base and a byte offset in separate registers
 // (the offset shares the zero constant's register); ours folds them into one pointer.
 void PhantomGanon_804A1318::init() {
@@ -307,7 +305,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 93.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.06 %, missing/extra; behaviour drift.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
@@ -1129,7 +1127,7 @@ void PhantomGanon_804A1318::update() {
     }
 }
 
-// FIXME(shotgun): 83.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.66 %, scheduling+regalloc; behaviour drift.
 void PhantomGanon_804A1318::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
