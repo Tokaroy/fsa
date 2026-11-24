@@ -65,9 +65,10 @@ void Hinox_8049F9B4::init() {
     mState = 0;
 }
 
-// FIXME(shotgun): 98.20 %, different; behaviour near.
+// FIXME(shotgun): 99.79 %, operands; behaviour clean.
 Hinox_8049F9B4::~Hinox_8049F9B4() {
-    JGeometry::TVec3f dir(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f dir;
+    dir.zero();
     if (mDir_0x98 == 2) {
         dir.set(0.0f, 15.0f, 0.0f);
     } else {
@@ -95,21 +96,24 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (held != NULL) {
-            held->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
-            held->mVel_0x3c.z = 3.0f;
+            JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
+            vel.z = 3.0f;
+            held->mVel_0x3c = vel;
             field_0x250 = -1;
             startSound_801F0E34(0x40008, 0);
         }
     }
 }
 
-// FIXME(shotgun): 88.33 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.94 %, scheduling; behaviour clean.
 void Hinox_8049F9B4::fn_8014F76C() {
     s32 serial = field_0x250;
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (held != NULL) {
-            held->mVel_0x3c.set(0.0f, 0.0f, 3.0f);
+            JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
+            vel.z = 3.0f;
+            held->mVel_0x3c = vel;
             field_0x250 = -1;
             startSound_801F0E34(0x40008, 0);
         }
@@ -130,7 +134,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
         f32 z = mPos.z;
         mPos.set(*getPlayerPos_8023E724(field_0x254));
         if (sweepMapBox_801F2618(NULL, false)) {
-            f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
+            f32 angle = 10430.378f * JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y);
             releaseDir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
             releaseDir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
         }
@@ -144,7 +148,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
     return 0;
 }
 
-// FIXME(shotgun): 90.21 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.21 %, missing/extra; behaviour drift.
 void Hinox_8049F9B4::update() {
     JGeometry::TVec3f pos = mPos;
     s32 playerDir = 0;
@@ -168,8 +172,8 @@ void Hinox_8049F9B4::update() {
         mSpawnParam_0x90 = 0;
     }
 
-    JGeometry::TVec3f savedVel;
-    savedVel.set(mVel_0x3c);
+    JGeometry::TVec3f vel;
+    vel.set(mVel_0x3c);
     bool dead = true;
     if (mLife > 0) {
         dead = false;
@@ -181,7 +185,7 @@ void Hinox_8049F9B4::update() {
 
     findTargetPlayer_801EEC98(mSerial, NULL, &playerDir, &playerDist, &field_0x268, 0, 0);
 
-    savedVel.set(mVel_0x3c);
+    vel.set(mVel_0x3c);
     s32 hitSerial = field_0x9c;
     bool hitByActor = false;
     if (hitSerial >= 0) {
@@ -198,7 +202,7 @@ void Hinox_8049F9B4::update() {
     if (checkActorHit_801F2DB4('HBMB', 'NULL', NULL) || checkPlayerAttacks_801F2FAC() || hitByActor == true) {
         field_0xbc = 3;
         if (mLife > 0) {
-            mVel_0x3c.set(savedVel);
+            mVel_0x3c.set(vel);
         }
         if (mState == 9) {
             if (releasePlayer()) {
@@ -216,8 +220,9 @@ void Hinox_8049F9B4::update() {
             if (serial >= 0) {
                 ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (held != NULL) {
-                    held->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
-                    held->mVel_0x3c.z = 3.0f;
+                    vel.zero();
+                    vel.z = 3.0f;
+                    held->mVel_0x3c = vel;
                     startSound_801F0E34(0x40008, 0);
                 }
             }
@@ -243,9 +248,9 @@ void Hinox_8049F9B4::update() {
                 }
             }
         }
-        field_0x270 = 0.0f;
-        field_0x274 = 0.0f;
         field_0x278 = 0.0f;
+        field_0x274 = 0.0f;
+        field_0x270 = 0.0f;
     }
 
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x270, 0.3f, 1.0f);
@@ -301,8 +306,8 @@ void Hinox_8049F9B4::update() {
                 if (field_0x248 == 0) {
                     field_0x24c++;
                     if (field_0x24c > 2) {
-                        field_0x24c = 0;
                         moveAngle += (s32)(12288.0f - 24576.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                        field_0x24c = 0;
                     }
                 }
                 field_0x274 = 1.2f * JMath::sincosTable_.cosShort(moveAngle);
@@ -438,9 +443,9 @@ void Hinox_8049F9B4::update() {
                     s32 throwAngle = (s16)dirToAngle_801F6874(mDir_0x98);
                     f32 speed = 2.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     throwAngle += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                    JGeometry::TVec3f vel(speed * JMath::sincosTable_.sinShort(throwAngle),
-                                          speed * JMath::sincosTable_.cosShort(throwAngle),
-                                          3.0f);
+                    vel.set(speed * JMath::sincosTable_.sinShort(throwAngle),
+                            speed * JMath::sincosTable_.cosShort(throwAngle),
+                            3.0f);
                     rock->mVel_0x3c = vel;
                     startSound_801F0E34(0x40093, 0);
                     startSound_801F0E34(0x40008, 0);
@@ -485,11 +490,12 @@ void Hinox_8049F9B4::update() {
         if (isOutsideView_801F6758(&mPos, mLayer_0x4, -130.0f)) {
             s32 layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
-            const JGeometry::TBox2f* boxPtr = (layer < 8) ? &view->mVisibleBox : &view->field_0xdc;
-            JGeometry::TBox2f box = *boxPtr;
-            pos.x = (box.i.x + box.f.x) * 0.5f;
-            pos.y = (box.i.y + box.f.y) * 0.5f;
-            field_0x26e = (s16)(s32)(JMath::atanTable_.atan2_(pos.x - mPos.x, pos.y - mPos.y) * 10430.378f);
+            const JGeometry::TBox2f* boxp = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+            JGeometry::TBox2f box;
+            box = *boxp;
+            pos.x = 0.5f * (box.i.x + box.f.x);
+            pos.y = 0.5f * (box.i.y + box.f.y);
+            field_0x26e = (s16)(s32)(10430.378f * JMath::atanTable_.atan2_(pos.x - mPos.x, pos.y - mPos.y));
             field_0x27c = 15.0f * JMath::sincosTable_.sinShort(field_0x26e);
             field_0x280 = 15.0f * JMath::sincosTable_.cosShort(field_0x26e);
             if (mPos.y < pos.y) {
@@ -526,12 +532,13 @@ void Hinox_8049F9B4::update() {
             field_0x24c++;
             field_0x24c &= 1;
             if (field_0x25c < 10 && field_0x254 >= 0 && fn_80236228(field_0x254) > 0) {
-                s32 dropAngle = (s16)dirToAngle_801F6874(mDir_0x98) - (s16)(0x1000 - (field_0x24c << 13));
+                s32 dropAngle = (s16)dirToAngle_801F6874(mDir_0x98);
                 s32 dropIdx = (s32)(7.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                dropAngle -= (s16)(0x1000 - (field_0x24c << 13));
                 dropAngle -= (s32)(1280.0f - 4096.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                JGeometry::TVec3f gemVel(1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
-                                         1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
-                                         2.0f);
+                vel.x = 1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                vel.y = 1.0f + 1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                vel.z = 2.0f;
                 for (s32 i = 0; i < 8; i++) {
                     if (field_0x254 >= 0 && fn_80236228(field_0x254) >= dropAmounts_8049F840[dropIdx]) {
                         s32 gemSerial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, dropIdx);
@@ -539,19 +546,20 @@ void Hinox_8049F9B4::update() {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(gemSerial);
                             if (gem != NULL) {
                                 if (field_0x27c == 0.0f && field_0x280 == 0.0f) {
-                                    gemVel.x *= JMath::sincosTable_.sinShort(dropAngle);
-                                    gemVel.y *= JMath::sincosTable_.cosShort(dropAngle);
+                                    vel.x *= JMath::sincosTable_.sinShort(dropAngle);
+                                    vel.y *= JMath::sincosTable_.cosShort(dropAngle);
                                 } else {
-                                    gemVel.x *= JMath::sincosTable_.sinShort(field_0x26e);
-                                    gemVel.y *= JMath::sincosTable_.cosShort(field_0x26e);
+                                    vel.x *= JMath::sincosTable_.sinShort(field_0x26e);
+                                    vel.y *= JMath::sincosTable_.cosShort(field_0x26e);
                                 }
-                                gem->mVel_0x3c = gemVel;
+                                gem->mVel_0x3c = vel;
                             }
                             fn_802362C4(field_0x254, -dropAmounts_8049F840[dropIdx]);
                             break;
                         }
                     }
-                    dropIdx = (dropIdx + 1) & 7;
+                    dropIdx++;
+                    dropIdx &= 7;
                 }
             }
         }
@@ -579,20 +587,18 @@ void Hinox_8049F9B4::update() {
                 field_0x248 = 0;
             }
             if (field_0x248 > 2) {
-                JGeometry::TVec3f checkDir;
                 if (mDir_0x98 == 2) {
-                    checkDir.set(0.0f, 15.0f, 0.0f);
+                    vel.set(0.0f, 15.0f, 0.0f);
                 } else {
-                    checkDir.set(0.0f, -15.0f, 0.0f);
+                    vel.set(0.0f, -15.0f, 0.0f);
                 }
                 if (field_0x254 >= 0) {
-                    JGeometry::TVec3f savedPos;
-                    savedPos.set(mPos);
+                    pos.set(mPos);
                     mPos.set(*getPlayerPos_8023E724(field_0x254));
                     if (sweepMapBox_801F2618(NULL, false)) {
-                        checkDir.zero();
+                        vel.zero();
                     }
-                    mPos.set(savedPos);
+                    mPos.set(pos);
                 }
                 if (releasePlayer()) {
                     field_0x254 = -1;
