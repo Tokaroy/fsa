@@ -55,7 +55,7 @@ void IronPot_804A5418::vfunc_0x10() {
 
 extern const s32 lbl_80469C40[4][2];
 
-// FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
 void IronPot_804A5418::fn_801E728C(int state) {
     switch (state) {
     case 1:
@@ -132,7 +132,6 @@ void IronPot_804A5418::fn_801E728C(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour near.
 void IronPot_804A5418::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
@@ -146,7 +145,7 @@ void IronPot_804A5418::updateState_0x90(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 96.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.78 %, regalloc-only; behaviour clean.
 u8 IronPot_804A5418::checkHitByActor_0x60() {
     s32 skip = -1;
     if (mState == 0 && field_0x2ac == -1) {
