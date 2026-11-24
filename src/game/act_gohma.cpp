@@ -190,6 +190,8 @@ void Gohma_804A307C::vfunc_0x44() {
 }
 
 // FIXME: 98.59 %, missing/extra; behaviour drift.
+// FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
+// (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
@@ -270,7 +272,7 @@ void Gohma_804A307C::fn_801AB6A8() {
         if (mTimers[2] == 1) {
             for (s32 i = 0; i < 2; i++) {
                 if (mEmitters[i] != NULL) {
-                    mEmitters[i]->becomeInvalidEmitter();
+                    mEmitters[i]->stopCreateParticle();
                     mEmitters[i] = NULL;
                 }
             }
