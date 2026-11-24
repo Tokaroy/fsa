@@ -889,7 +889,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         break;
     }
     if (field_0x230 != 0x11) {
-        if (mLife == 0 || dead == 1 || isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (mLife == 0 || dead == 1 || isOutsideView_801F6758(-16.0f, &mPos, mLayer_0x4)) {
             field_0x238[1] = 50;
             if (mLife != 0) {
                 s32 serial = field_0x320;

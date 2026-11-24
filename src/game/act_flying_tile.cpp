@@ -456,7 +456,7 @@ void FlyingTile_804AC100::update() {
         }
     }
     if (field_0x230 == 1 || field_0x230 == 2) {
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(16.0f, &mPos, mLayer_0x4)) {
             mAlive = false;
         } else if (hitWall || damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, field_0x268)) {
             field_0x230 = 3;

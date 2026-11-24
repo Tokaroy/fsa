@@ -426,7 +426,7 @@ void ChainChomp_804A18E0::update() {
         JGeometry::TVec3f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(-16.0f, &mPos, mLayer_0x4)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;
@@ -459,7 +459,7 @@ void ChainChomp_804A18E0::update() {
                 }
             }
         }
-        if (field_0x258 == 2 && isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (field_0x258 == 2 && isOutsideView_801F6758(16.0f, &mPos, mLayer_0x4)) {
             mAlive = false;
         }
         break;

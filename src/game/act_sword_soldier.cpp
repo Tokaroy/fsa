@@ -1184,7 +1184,7 @@ void SwordSoldier_8049FCA0::update() {
         addVec2_80154558(&boxD8.i, &pos70);
         addVec2_80154558(&boxD8.f, &pos70);
         fn_80154528(&boxD8, &vec68);
-        if (field_0x248 == 0 || isOutsideView_801F6758(&mPos, getLayer_8015461C(), -24.0f)) {
+        if (field_0x248 == 0 || isOutsideView_801F6758(-24.0f, &mPos, getLayer_8015461C())) {
             zeroVec_801546BC(&field_0x2ac);
             zeroVec_801546BC(&mVel_0x3c);
             field_0x238 = 2;

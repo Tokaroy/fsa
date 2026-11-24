@@ -688,7 +688,7 @@ void Wizzrobe_804A0EDC::update() {
         }
         {
             u8 hitWall = sweepMapBox_801F2618(NULL, false);
-            if (field_0x240 == 0 || (field_0x23c == 0 && isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) || hitWall) {
+            if (field_0x240 == 0 || (field_0x23c == 0 && isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) || hitWall) {
                 mAlive = false;
                 if (field_0x94 == 11) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
@@ -815,7 +815,7 @@ void Wizzrobe_804A0EDC::update() {
             JGeometry::TVec3f p;
             fn_80178F10(&p, &mPos);
             for (s32 i = 0; i < 4; i++) {
-                if (!sweepMapBox_801F2618(NULL, false) && !isOutsideView_801F6758(&p, mLayer_0x4, 0.0f)) {
+                if (!sweepMapBox_801F2618(NULL, false) && !isOutsideView_801F6758(0.0f, &p, mLayer_0x4)) {
                     u32 spawnId = ACTOR_POPO;
                     s32 spawnArg = 1;
                     if (field_0x94 == 22) {

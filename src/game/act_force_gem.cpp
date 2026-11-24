@@ -289,13 +289,13 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 99.08 %, different; behaviour near.
+// FIXME(shotgun): 99.92 %, operands; behaviour near.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
         mPos += mVel_0x3c;
     }
-    if (field_0x94 != 1 && isOutsideView_801F6758(&mPos, mLayer_0x4, 36.0f) == 1) {
+    if (field_0x94 != 1 && isOutsideView_801F6758(36.0f, &mPos, mLayer_0x4) == 1) {
         mAlive = false;
     }
     fn_8032B7C0();
@@ -312,7 +312,7 @@ void ForceGem_804AB6D8::update() {
                                   true, 0.15f);
         }
         if (field_0x94 == 0x22) {
-            if (isOutsideView_801F6758(&mPos, mLayer_0x4, -32.0f)) {
+            if (isOutsideView_801F6758(-32.0f, &mPos, mLayer_0x4)) {
                 mVel_0x3c.x = 0.0f;
                 mVel_0x3c.y = 0.0f;
             }
@@ -672,7 +672,7 @@ void ForceGem_804AB6D8::draw() {
     mPos = saved;
 }
 
-// FIXME(shotgun): 97.10 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.98 %, scheduling+regalloc; behaviour clean.
 void ForceGem_804AB6D8::fn_8032BB90() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
@@ -708,6 +708,8 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(id, mLayer_0x4, &mPos, field_0x268);
                     if (serial >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        // The -y case negates one 2.0f with fneg in the original; the -x case is a -2.0f literal.
+                        f32 speed = 2.0f;
                         switch (dir) {
                         case 0:
                             actor->mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
@@ -716,7 +718,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                             actor->mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
                             break;
                         case 2:
-                            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, -speed, 5.0f);
                             break;
                         case 3:
                             actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);
@@ -731,6 +733,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     } else {
                         dir = field_0x94 - 0xc;
                     }
+                    f32 speed = 2.0f;
                     switch (dir) {
                     case 0:
                         mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
@@ -739,7 +742,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                         mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
                         break;
                     case 2:
-                        mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                        mVel_0x3c = JGeometry::TVec3f(0.0f, -speed, 5.0f);
                         break;
                     case 3:
                         mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);

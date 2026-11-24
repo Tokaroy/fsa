@@ -627,7 +627,7 @@ void PhantomGanon_804A1318::update() {
         break;
     case 10:
         if (field_0x234 != 0) {
-            if (isOutsideView_801F6758(&mPos, mLayer_0x4, 48.0f)) {
+            if (isOutsideView_801F6758(48.0f, &mPos, mLayer_0x4)) {
                 zeroVec_801546BC(&field_0x294);
                 zeroVec_801546BC(&mVel_0x3c);
             }
@@ -909,7 +909,7 @@ void PhantomGanon_804A1318::update() {
             }
             field_0x254++;
         }
-        if (field_0x254 > 50 && isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (field_0x254 > 50 && isOutsideView_801F6758(16.0f, &mPos, mLayer_0x4)) {
             u16 spread = 0;
             for (i = 0; i < 4; i++) {
                 deleteEmitter(&mEmitters2bc[i]);

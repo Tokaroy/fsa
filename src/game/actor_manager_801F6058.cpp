@@ -932,7 +932,7 @@ s32 angleToDir_801F681C(u16 angle) {
     return dir;
 }
 
-bool isOutsideView_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin) {
+bool isOutsideView_801F6758(f32 margin, const JGeometry::TVec3f* pos, s32 layer) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     if (pos->x <= box->i.x - margin || pos->x >= box->f.x + margin ||

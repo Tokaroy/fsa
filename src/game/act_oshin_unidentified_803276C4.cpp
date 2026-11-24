@@ -33,7 +33,7 @@ void OshinUnidentified_804AB528::init() {
             continue;
         }
         if (other->field_0x248 == field_0x248) {
-            if (!isOutsideView_801F6758(&other->mPos, other->mLayer_0x4, 0.0f)) {
+            if (!isOutsideView_801F6758(0.0f, &other->mPos, other->mLayer_0x4)) {
                 mAlive = false;
             }
         }
@@ -120,7 +120,7 @@ void OshinUnidentified_804AB528::update() {
     }
 
     s32 blocked = 0;
-    if (!isOutsideView_801F6758(&mPos, mLayer_0x4, -40.0f)) {
+    if (!isOutsideView_801F6758(-40.0f, &mPos, mLayer_0x4)) {
         blocked = sweepMapBox_801F2618(NULL, false);
     }
     field_0x238 = 0;

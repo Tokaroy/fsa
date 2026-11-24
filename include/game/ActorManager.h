@@ -362,9 +362,10 @@ ActorManager_804A5800* getActorManager_801F856C(void);
 
 // Defined in game/actor_manager_801F6058.cpp. 21 units / 38 calls. True when pos (x, y) is outside the view's box
 // (getGameView_802D6A9C 0xCC, or 0xDC for layer 8 and up) grown by `margin` on
-// each side (<= / >= compares). Callers pass &mPos, mViewMtx_0x4 and a
-// literal, and test r3 with clrlwi. 24.
-bool isOutsideView_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin);
+// each side (<= / >= compares). Callers pass a literal, &mPos and mLayer_0x4,
+// and test r3 with clrlwi. 24. `margin` is the first parameter: every caller
+// loads f1 before r3 and r4.
+bool isOutsideView_801F6758(f32 margin, const JGeometry::TVec3f* pos, s32 layer);
 
 // 29 units / 49 calls. The direction (0-3) of a 16-bit angle: 2 below
 // 0x2000 or from 0xE000, 0 below 0x6000, 3 up to 0xA000, else 1. Callers

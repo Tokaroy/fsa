@@ -201,7 +201,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
         if (other->field_0x16c != field_0x16c) {
             continue;
         }
-        if (isOutsideView_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
+        if (isOutsideView_801F6758(16.0f, &other->mPos, other->mLayer_0x4) && other->field_0xc4 != 1) {
             continue;
         }
         mAlive = false;
@@ -662,7 +662,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL) == 1) {
         return true;
     }
-    if (isOutsideView_801F6758(pos, layer, -8.0f)) {
+    if (isOutsideView_801F6758(-8.0f, pos, layer)) {
         return true;
     }
     s32 tile = getRawTile_80226850(pos, layer);
@@ -1101,7 +1101,7 @@ void Cucco_804AB8C0::update() {
                 }
             }
         }
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
             if (field_0x94 <= 3) {
                 if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
                     if (getPlayerLayer_8023DE58(field_0x94) < 8) {
@@ -1215,7 +1215,7 @@ void Cucco_804AB8C0::update() {
         if (field_0x290 == 0xFFFF) {
             field_0x2b8.z += 0.1;
         }
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
+        if (isOutsideView_801F6758(16.0f, &mPos, mLayer_0x4) || r27) {
             mAlive = false;
         }
         break;
@@ -1240,7 +1240,7 @@ void Cucco_804AB8C0::update() {
                 outDist = 10000.0f;
             }
         }
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
             if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0x25c);
                 s32 pLayer = getPlayerLayer_8023DE58(field_0x25c);

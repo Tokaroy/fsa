@@ -150,7 +150,7 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
     if (field_0x268 == 1) {
         field_0x230 = 2;
         field_0x254 = 0;
-        if (!isOutsideView_801F6758(&field_0x278, mLayer_0x4, 0.0f)) {
+        if (!isOutsideView_801F6758(0.0f, &field_0x278, mLayer_0x4)) {
             field_0x230 = 1;
             mPos = field_0x278;
         }
