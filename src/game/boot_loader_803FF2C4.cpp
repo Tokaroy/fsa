@@ -125,12 +125,7 @@ void BootLoader_804B0F50::fn_803FFAA8() {
             field_0x2c = new J2DPicture(tex);
             tex = (const ResTIMG*)getLogoArchiveResource_80403244('TIMG', "kk_titleLogo_01.bti");
             field_0x30 = new J2DPicture(tex);
-            if ((lbl_80529DEC.mSaveRegion.f.field_0x4[0] == 0xA7 || lbl_80529DEC.mSaveRegion.f.field_0x4[1] == 0xA5) && field_0x7a == 0) {
-                field_0x6c = 4;
-                lbl_80529DEC.field_0x238 = 0xFF;
-                lbl_80529DEC.mSaveRegion.f.field_0x10 = 1;
-                lbl_80529DEC.field_0x249[0] = 1;
-            } else {
+            if ((lbl_80529DEC.mSaveRegion.f.field_0x4[0] != 0xA7 && lbl_80529DEC.mSaveRegion.f.field_0x4[1] != 0xA5) || field_0x7a != 0) {
                 field_0x6c = 0;
                 if (VIGetDTVStatus() != 0) {
                     if (OSGetResetCode() == 0 || field_0x7a != 0) {
@@ -143,6 +138,11 @@ void BootLoader_804B0F50::fn_803FFAA8() {
                     lbl_80529DEC.mSaveRegion.f.field_0x10 = 1;
                     OSSetProgressiveMode(0);
                 }
+            } else {
+                field_0x6c = 4;
+                lbl_80529DEC.field_0x238 = 0xFF;
+                lbl_80529DEC.mSaveRegion.f.field_0x10 = 1;
+                lbl_80529DEC.field_0x249[0] = 1;
             }
             field_0x79 = 2;
         } else {
