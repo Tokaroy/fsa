@@ -36,7 +36,7 @@ inline f32 randomFloat(f32 max) {
 }
 
 // 0x80171AF8.
-// FIXME(shotgun): 90.23 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.99 %, regalloc-only; behaviour clean.
 void BallAndChainSoldier_804A0810::init() {
     field_0x94 = mSpawnParam_0x90 & 0xFF;
     field_0x270 = (mSpawnParam_0x90 >> 8) & 1;
@@ -168,7 +168,7 @@ void BallAndChainSoldier_804A0810::vfunc_0x44() {
 }
 
 // 0x801704A0.
-// FIXME: 99.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.81 %, scheduling+regalloc; behaviour near.
 void BallAndChainSoldier_804A0810::update() {
     static s32 lbl_804A07D8[4] = {0, 1, 2, 1};
     static s32 lbl_804A07E8[4] = {10, 2, 10, 10};
@@ -580,7 +580,7 @@ void BallAndChainSoldier_804A0810::update() {
 
 // Draws the body (frame 0x7F + field_0x258), the ten trail segments (frame 0x83, at the stored
 // positions) and, rotated by field_0x278 and scaled by field_0x27c, the shell (frame 0x82 or 0x11).
-// FIXME(shotgun): 97.92 %, different; behaviour drift.
+// FIXME(shotgun): 98.75 %, scheduling+regalloc; behaviour clean.
 // float register allocation and instruction order around setRotScaleMtx
 void BallAndChainSoldier_804A0810::draw() {
     SpriteParams_801F5AE0 params;
