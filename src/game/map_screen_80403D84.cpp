@@ -74,15 +74,28 @@ static const u64 lbl_8048C5D0[9] = {
 static const u64 lbl_8048C618[4][2] = {
     {'Plicu01', 'Plicu02'}, {'Plicu07', 'Plicu08'}, {'Plicu03', 'Plicu04'}, {'Plicu05', 'Plicu06'},
 };
-static const u64 lbl_8048C658[63] = {
-    'Plv1b02', 'Plv1b01', 'Tlv01', 'Plv2b02', 'Plv2b01', 'Tlv02', 'Plv3b02', 'Plv3b01',
-    'Tlv03', 'Plv4b02', 'Plv4b01', 'Tlv04', 'Plv5b02', 'Plv5b01', 'Tlv05', 'Plv6b02',
-    'Plv6b01', 'Tlv06', 'Plv7b02', 'Plv7b01', 'Tlv07', 'Plv8b02', 'Plv8b01', 'Tlv08',
-    'Pbsk01', 'Pdot03', 'Pdot02', 'Pdot01', 'Pbsbb05', 'Pbsbb04', 'Pbsbb03', 'Pbsbb02',
-    'Pbsbb01', 'Pbsb05', 'Pbsb04', 'Pbsb03', 'Pbsb02', 'Pbsb01', 'Pbs01', 'Ppl01',
-    'Ppl02', 'Ppl03', 'Ppl04', 'Ppl05', 'Ppl06', 'Ppl07', 'Ppl08', 'Ppl09',
-    'Ppl10', 'Ppl11', 'Ppl12', 'Ppl13', 'Ppl14', 'Ppl15', 'Ppl16', 'Ppl17',
-    'Ppl18', 'Ppl19', 'Ppl20', 'Ppl21', 'Ppl22', 'Ppl23', 'Ppl24',
+// The level rows (two bars and a text box each), the 15 Pbs/Pdot marks and the
+// 24 Ppl panes in 8 rows of 3.
+static const struct {
+    u64 rows[8][3];
+    u64 marks[15];
+    u64 pl[8][3];
+} lbl_8048C658 = {
+    {
+        {'Plv1b02', 'Plv1b01', 'Tlv01'}, {'Plv2b02', 'Plv2b01', 'Tlv02'},
+        {'Plv3b02', 'Plv3b01', 'Tlv03'}, {'Plv4b02', 'Plv4b01', 'Tlv04'},
+        {'Plv5b02', 'Plv5b01', 'Tlv05'}, {'Plv6b02', 'Plv6b01', 'Tlv06'},
+        {'Plv7b02', 'Plv7b01', 'Tlv07'}, {'Plv8b02', 'Plv8b01', 'Tlv08'},
+    },
+    {
+        'Pbsk01', 'Pdot03', 'Pdot02', 'Pdot01', 'Pbsbb05', 'Pbsbb04', 'Pbsbb03', 'Pbsbb02',
+        'Pbsbb01', 'Pbsb05', 'Pbsb04', 'Pbsb03', 'Pbsb02', 'Pbsb01', 'Pbs01',
+    },
+    {
+        {'Ppl01', 'Ppl02', 'Ppl03'}, {'Ppl04', 'Ppl05', 'Ppl06'}, {'Ppl07', 'Ppl08', 'Ppl09'},
+        {'Ppl10', 'Ppl11', 'Ppl12'}, {'Ppl13', 'Ppl14', 'Ppl15'}, {'Ppl16', 'Ppl17', 'Ppl18'},
+        {'Ppl19', 'Ppl20', 'Ppl21'}, {'Ppl22', 'Ppl23', 'Ppl24'},
+    },
 };
 static const f32 lbl_8048C850[7] = {
     1034.0f, 1277.0f, 1277.0f, 1034.0f, 1216.0f, 1277.0f, 1034.0f,
@@ -284,7 +297,7 @@ void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src) {
     *dst = *src;
 }
 
-// FIXME(shotgun): 94.39 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.80 %, missing/extra + reloc-name; behaviour drift.
 MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053ADF8 = this;
     lbl_80529DEC.field_0x23e[1] = 0;
@@ -292,7 +305,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
     JKRExpHeap* heap = lbl_80529DEC.mHeap;
     OSReport("***** heap check\x81\x40\x98\x41\x91\xb1\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK "
              "\x8e\x63\x82\xe8\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK *****\n",
-             heap->getFreeSize() * (1.0f / 1024.0f), heap->getTotalFreeSize() * (1.0f / 1024.0f));
+             heap->getFreeSize() / 1024.0f, heap->getTotalFreeSize() / 1024.0f);
     field_0x4 = new MapYaguraWindow_804B1B60;
     field_0x8 = new SaveScreen_804B0288(lbl_80529DEC.mMapArchive_0x34, false);
     mMapScreen_0xc = new J2DScreen;
@@ -340,42 +353,42 @@ MapScreen_804B1288::MapScreen_804B1288() {
     mMapAreaScreen_0x10->search('Pp02')->hide();
     mMapAreaScreen_0x10->search('Pp03')->hide();
     mMapAreaScreen_0x10->search('Pp04')->hide();
-    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv11'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv12'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv13'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv14'))->setFont(lbl_8053AD78->mFont);
+    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv11'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv12'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv13'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv14'))->setFont(lbl_8053AD78->getFont());
     for (s32 i = 0; i < 8; i++) {
-        static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658[i * 3 + 2]))->setFont(lbl_8053AD78->mFont);
-        getMessageText_803832BC(static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658[i * 3 + 2]))->getStringPtr(),
+        static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][2]))->setFont(lbl_8053AD78->getFont());
+        getMessageText_803832BC(static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][2]))->getStringPtr(),
                                 lbl_8048C218[i], 0, NULL, NULL);
     }
     for (s32 i = 0; i < 8; i++) {
         getMessageText_803832BC(mStageNames_0x474[i], lbl_8048C1F8[i], 0, NULL, NULL);
     }
-    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt02'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt01'))->setFont(lbl_8053AD78->mFont);
-    field_0x404 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.x - mMapAreaScreen_0x10->search(lbl_8048C658[3])->getBounds()->i.x;
-    field_0x408 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.y - mMapAreaScreen_0x10->search(lbl_8048C658[3])->getBounds()->i.y;
+    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt02'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt01'))->setFont(lbl_8053AD78->getFont());
+    field_0x404 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.x - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.x;
+    field_0x408 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.y - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.y;
     mMapAreaScreen_0x10->search('Plvcu')->setAlpha(0);
-    f32 y = 0.5f * (mMapAreaScreen_0x10->search(lbl_8048C658[0])->getBounds()->i.y + mMapAreaScreen_0x10->search(lbl_8048C658[6])->getBounds()->i.y);
-    mMapAreaScreen_0x10->search(lbl_8048C658[3])->move(mMapAreaScreen_0x10->search(lbl_8048C658[0])->getBounds()->i.x, y);
-    mMapAreaScreen_0x10->search(lbl_8048C658[4])->move(mMapAreaScreen_0x10->search(lbl_8048C658[1])->getBounds()->i.x,
-                                              mMapAreaScreen_0x10->search(lbl_8048C658[1])->getBounds()->i.y);
-    mMapAreaScreen_0x10->search(lbl_8048C658[5])->move(mMapAreaScreen_0x10->search(lbl_8048C658[2])->getBounds()->i.x,
-                                              mMapAreaScreen_0x10->search(lbl_8048C658[2])->getBounds()->i.y);
+    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][0])->getBounds()->i.x,
+                                              (mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][0])->getBounds()->i.y + mMapAreaScreen_0x10->search(lbl_8048C658.rows[2][0])->getBounds()->i.y) * 0.5f);
+    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][1])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][1])->getBounds()->i.x,
+                                              mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][1])->getBounds()->i.y);
+    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][2])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][2])->getBounds()->i.x,
+                                              mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][2])->getBounds()->i.y);
     for (s32 i = 0; i < 3; i++) {
-        mMapAreaScreen_0x10->search(lbl_8048C658[i + 3])->resize(mMapAreaScreen_0x10->search(lbl_8048C658[i])->getWidth(),
-                                                        mMapAreaScreen_0x10->search(lbl_8048C658[i])->getHeight());
+        mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][i])->resize(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][i])->getWidth(),
+                                                        mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][i])->getHeight());
     }
     for (s32 i = 0; i < 8; i++) {
         for (s32 j = 0; j < 3; j++) {
             mLevelRowPanes_0x28[i][j] = new PaneCtrl_804AF86C;
-            mLevelRowPanes_0x28[i][j]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658[i * 3 + j]));
+            mLevelRowPanes_0x28[i][j]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][j]));
         }
     }
     for (s32 i = 0; i < 15; i++) {
         field_0x278[i] = new PaneCtrl_804AF86C;
-        field_0x278[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658[24 + i]));
+        field_0x278[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.marks[i]));
         for (s32 j = 0; j < 20; j++) {
             field_0x278[i]->animateAlpha_80402628(20, field_0x278[i]->field_0x28, 0);
         }
@@ -409,7 +422,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
     }
     for (s32 i = 0; i < 24; i++) {
         field_0x1a8[i] = new PaneCtrl_804AF86C;
-        field_0x1a8[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658[39 + (i / 3) * 3 + i % 3]));
+        field_0x1a8[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.pl[i / 3][i % 3]));
     }
     for (s32 i = 0; i < 8; i++) {
         mTinkPanes_0x208[i] = new PaneCtrl_804AF86C;
@@ -471,18 +484,14 @@ MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053AED8->fn_80440CE4(static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', "kk_modoru_01.bti")));
     for (s32 i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
-            JUtility::TColor white = static_cast<J2DPicture*>(mLevelRowPanes_0x28[i][j]->mPane)->getWhite();
-            fn_8041499C(&mRowWhiteColors_0x310[i * 3 + j], &white);
-            JUtility::TColor black = static_cast<J2DPicture*>(mLevelRowPanes_0x28[i][j]->mPane)->getBlack();
-            fn_8041499C(&mRowBlackColors_0x328[i * 3 + j], &black);
-            mRowBlackColors_0x328[i * 3 + j].a = 0xFF;
+            fn_8041499C(&mRowWhiteColors_0x310[i][j], &static_cast<J2DPicture*>(mLevelRowPanes_0x28[i][j]->mPane)->getWhite());
+            fn_8041499C(&mRowBlackColors_0x328[i][j], &static_cast<J2DPicture*>(mLevelRowPanes_0x28[i][j]->mPane)->getBlack());
+            mRowBlackColors_0x328[i][j].a = 0xFF;
         }
     }
     for (s32 i = 0; i < 2; i++) {
-        JUtility::TColor white = static_cast<J2DTextBox*>(mLevelRowPanes_0x28[i][2]->mPane)->getWhite();
-        fn_8041499C(&mRowWhiteColors_0x310[i * 3 + 2], &white);
-        JUtility::TColor black = static_cast<J2DTextBox*>(mLevelRowPanes_0x28[i][2]->mPane)->getBlack();
-        fn_8041499C(&mRowBlackColors_0x328[i * 3 + 2], &black);
+        fn_8041499C(&mRowWhiteColors_0x310[i][2], &static_cast<J2DTextBox*>(mLevelRowPanes_0x28[i][2]->mPane)->getWhite());
+        fn_8041499C(&mRowBlackColors_0x328[i][2], &static_cast<J2DTextBox*>(mLevelRowPanes_0x28[i][2]->mPane)->getBlack());
     }
     mPointAlpha_0x641 = mMapAreaScreen_0x10->search('Ppoint02')->getAlpha();
     for (s32 i = 0; i < 4; i++) {
@@ -973,8 +982,8 @@ void MapScreen_804B1288::update_804108B4() {
         }
     }
     if (mStage_0x340 < 8) {
-        mMapAreaScreen_0x10->search('Plvcu')->move(field_0x404 + mMapAreaScreen_0x10->search(lbl_8048C658[mStage_0x340 * 3])->getBounds()->i.x,
-                                          field_0x408 + mMapAreaScreen_0x10->search(lbl_8048C658[mStage_0x340 * 3])->getBounds()->i.y);
+        mMapAreaScreen_0x10->search('Plvcu')->move(field_0x404 + mMapAreaScreen_0x10->search(lbl_8048C658.rows[mStage_0x340][0])->getBounds()->i.x,
+                                          field_0x408 + mMapAreaScreen_0x10->search(lbl_8048C658.rows[mStage_0x340][0])->getBounds()->i.y);
         if (!isCursorState() || field_0x42e != 0) {
             field_0x42e++;
             if (field_0x42e >= 60) {
@@ -2511,16 +2520,16 @@ void MapScreen_804B1288::fn_804083D8() {
             boundsX = mLevelRowPanes_0x28[i][0]->mPane->getBounds()->i.x;
             mLevelRowPanes_0x28[i][2]->mPane->move(mLevelRowPanes_0x28[i][2]->field_0x8 + (mLevelRowPanes_0x28[i][0]->field_0x8 - boundsX),
                                           textY + (iconY - boundsY));
-            ((J2DPicture*)mLevelRowPanes_0x28[i][0]->mPane)->setBlackWhite(mRowBlackColors_0x328[3], mRowWhiteColors_0x310[3]);
-            ((J2DPicture*)mLevelRowPanes_0x28[i][1]->mPane)->setBlackWhite(mRowBlackColors_0x328[4], mRowWhiteColors_0x310[4]);
-            ((J2DTextBox*)mLevelRowPanes_0x28[i][2]->mPane)->setBlackWhite(mRowBlackColors_0x328[5], mRowWhiteColors_0x310[5]);
+            ((J2DPicture*)mLevelRowPanes_0x28[i][0]->mPane)->setBlackWhite(mRowBlackColors_0x328[1][0], mRowWhiteColors_0x310[1][0]);
+            ((J2DPicture*)mLevelRowPanes_0x28[i][1]->mPane)->setBlackWhite(mRowBlackColors_0x328[1][1], mRowWhiteColors_0x310[1][1]);
+            ((J2DTextBox*)mLevelRowPanes_0x28[i][2]->mPane)->setBlackWhite(mRowBlackColors_0x328[1][2], mRowWhiteColors_0x310[1][2]);
         } else {
             mLevelRowPanes_0x28[i][0]->scaleKeepCentre_80402CE0(1.0f, 1.0f);
             mLevelRowPanes_0x28[i][1]->mPane->resize(mLevelRowPanes_0x28[i][1]->field_0x18, mLevelRowPanes_0x28[i][1]->field_0x1c);
             mLevelRowPanes_0x28[i][2]->mPane->move(mLevelRowPanes_0x28[i][2]->field_0x8, mLevelRowPanes_0x28[i][2]->getY());
-            ((J2DPicture*)mLevelRowPanes_0x28[i][0]->mPane)->setBlackWhite(mRowBlackColors_0x328[0], mRowWhiteColors_0x310[0]);
-            ((J2DPicture*)mLevelRowPanes_0x28[i][1]->mPane)->setBlackWhite(mRowBlackColors_0x328[1], mRowWhiteColors_0x310[1]);
-            ((J2DTextBox*)mLevelRowPanes_0x28[i][2]->mPane)->setBlackWhite(mRowBlackColors_0x328[2], mRowWhiteColors_0x310[2]);
+            ((J2DPicture*)mLevelRowPanes_0x28[i][0]->mPane)->setBlackWhite(mRowBlackColors_0x328[0][0], mRowWhiteColors_0x310[0][0]);
+            ((J2DPicture*)mLevelRowPanes_0x28[i][1]->mPane)->setBlackWhite(mRowBlackColors_0x328[0][1], mRowWhiteColors_0x310[0][1]);
+            ((J2DTextBox*)mLevelRowPanes_0x28[i][2]->mPane)->setBlackWhite(mRowBlackColors_0x328[0][2], mRowWhiteColors_0x310[0][2]);
         }
     }
     if (mStage_0x340 < 8) {
