@@ -263,7 +263,6 @@ void OkameSan_804A3448::init() {
     }
 }
 
-// FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
 void OkameSan_804A3448::update() {
     if (updateHitReaction_801F3D94(1)) {
         sweepMapBox_801F2618(NULL, false);
