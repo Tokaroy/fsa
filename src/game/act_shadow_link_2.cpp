@@ -779,7 +779,8 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (field_0x59b != 0) {
         field_0x59b--;
     }
-    switch (mState) {
+    s32 state = mState;
+    switch (state) {
     case 0:
         if ((mFlags & 0x2000) && fn_801CD228(mLayer_0x4)) {
             if (findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x55c[2]) >= 0) {
@@ -940,7 +941,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x19:
     case 0x1A:
         if (mStateTimer >= 0x73) {
-            if (mState == 0x19 || mState == 0x1A) {
+            if (state == 0x19 || state == 0x1A) {
                 setState_801C3B7C(0xF);
             } else {
                 JGeometry::TVec3f savedPos = mPos;
@@ -1000,7 +1001,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x1E:
         if (mStateTimer > 1 && mPos.z <= 0.0f) {
             field_0x4ec.fn_802144F0();
-            if (mFlags & 0x01000000) {
+            if (checkFlag(0x01000000)) {
                 mFlags &= ~0x01000000;
                 setState_801C3B7C(0x2C);
             } else if (mFlags & 0x02000000) {
@@ -1047,7 +1048,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x29:
         if (mStateTimer >= 0xA0) {
             if (mFlags & 0x10000) {
-                getShadowLinkFight_801C0D70()->fn_801C1224(mSerial);
+                getShadowLinkFight_801C0D70()->fn_801C1224(mLastAttacker_0x10c);
             }
             die_0x24();
         } else {
