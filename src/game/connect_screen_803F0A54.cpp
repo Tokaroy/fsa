@@ -1618,6 +1618,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
         }
     }
     s16 others[2];
+    s16* src = others;
     s16* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0x1a8) {
@@ -1647,10 +1648,10 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             }
         }
     } else {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++, src++) {
             if (field_0x240[0] > i * 10) {
                 if (field_0x240[0] < i * 10 + 10) {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
                     f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
@@ -1662,7 +1663,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
                         mEntryConScreen_0xc->search(lbl_804790F0[idx][j])->setAlpha(fadeAlpha(field_0x326[idx][j], alpha));
                     }
                 } else {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f;
                     for (int j = 0; j < 5; j++) {
                         mEntryConScreen_0xc->search(lbl_804790F0[idx][j])->setAlpha(fadeAlpha(field_0x326[idx][j], 0.0f));
