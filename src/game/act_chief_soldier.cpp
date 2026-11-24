@@ -117,11 +117,12 @@ void ChiefSoldier_804A0B90::fn_80175024() {
     if (partner == NULL) {
         s32 type = 7;
         s32 layer = mLayer_0x4;
+        s32 spawnLayer = layer;
         if (layer >= 8) {
             type = 8;
-            layer = 0;
+            spawnLayer = 0;
         }
-        field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', layer, &mPos, type, -1, -1);
+        field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', spawnLayer, &mPos, type, -1, -1);
         serial = field_0x238;
         if (serial >= 0) {
             partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -139,8 +140,8 @@ void ChiefSoldier_804A0B90::fn_80175024() {
             if (mVel_0x3c.x < 0.1f && mVel_0x3c.y < 0.1f) {
                 partner->field_0x94 = 0;
                 if (mLayer_0x4 >= 8 && field_0x23c == 1) {
-                    const f32* box = lbl_804A0A58[mDir_0x98];
-                    mBox.set(JGeometry::TVec2f(box[0], box[1]), JGeometry::TVec2f(box[2], box[3]));
+                    mBox.set(JGeometry::TVec2f(lbl_804A0A58[mDir_0x98][0], lbl_804A0A58[mDir_0x98][1]),
+                             JGeometry::TVec2f(lbl_804A0A58[mDir_0x98][2], lbl_804A0A58[mDir_0x98][3]));
                 }
                 damagePlayersInBox_801F2B7C(-100, -1, 1);
             } else {
