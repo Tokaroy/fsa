@@ -990,12 +990,12 @@ config.libs = [
     ]),
     MkddJSystemLib("J3DGraphLoader", [
         Object(NonMatching, "JSystem/J3DGraphLoader/J3DMaterialFactory.cpp", extra_cflags=["-O4,p"]),
-        Object(NonMatching, "JSystem/J3DGraphLoader/J3DBinaryFormat.cpp", extra_cflags=["-O4,p"]),  # FIXME: pikmin2 emits the weak J3DShapeMtx::getType through a fabricated function
+        Object(Matching, "JSystem/J3DGraphLoader/J3DBinaryFormat.cpp", extra_cflags=["-O4,p"]),  # FIXME: pikmin2 emits the weak J3DShapeMtx::getType through a fabricated function
         Object(Matching, "JSystem/J3DGraphLoader/J3DModelLoader.cpp", extra_cflags=["-O4,p"]),
         Object(NonMatching, "JSystem/J3DGraphLoader/J3DJointFactory.cpp", extra_cflags=["-O4,p"]),
         Object(Matching, "JSystem/J3DGraphLoader/J3DShapeFactory.cpp", extra_cflags=["-O4,p"]),
         Object(NonMatching, "JSystem/J3DGraphLoader/J3DAnmLoader.cpp", extra_cflags=["-O4,p"]),
-        Object(NonMatching, "JSystem/J3DGraphLoader/J3DModelSaver.cpp", extra_cflags=["-O4,p"]),  # FIXME: pikmin2 emits the weak getUseMtxIndex through a fabricated function
+        Object(Matching, "JSystem/J3DGraphLoader/J3DModelSaver.cpp", extra_cflags=["-O4,p"]),  # FIXME: pikmin2 emits the weak getUseMtxIndex through a fabricated function
         Object(Matching, "JSystem/J3DGraphLoader/J3DMaterialFactory_v21.cpp", extra_cflags=["-O4,p"]),
         Object(Matching, "JSystem/J3DGraphLoader/J3DModelLoaderCalcSize.cpp", extra_cflags=["-O4,p"]),
     ]),
@@ -1521,7 +1521,7 @@ config.libs = [
         Object(NonMatching, "game/act_link_ending_2.cpp"),
         Object(NonMatching, "game/act_four_girls_control_8036FB60.cpp"),
         Object(Matching, "game/act_tutorial_old_man.cpp"),
-        Object(NonMatching, "game/act_four_person_pull_switch_pswb.cpp"),
+        Object(Matching, "game/act_four_person_pull_switch_pswb.cpp"),
         Object(Matching, "game/act_four_person_pull_switch_pswk.cpp"),
         Object(NonMatching, "game/act_colour_block.cpp"),
         Object(NonMatching, "game/act_eyeball_switch.cpp"),
@@ -1532,7 +1532,7 @@ config.libs = [
         Object(Matching, "game/act_horse_race_end_area.cpp"),
         Object(NonMatching, "game/act_ice_melted_by_four_players.cpp"),
         Object(NonMatching, "game/act_push_switch_in_pyramid.cpp"),
-        Object(NonMatching, "game/act_warp_entrance_wall.cpp"),
+        Object(Matching, "game/act_warp_entrance_wall.cpp"),
         Object(NonMatching, "game/tu_80379F84.cpp"),
         Object(NonMatching, "game/tu_8037ACC4.cpp"),
         Object(NonMatching, "game/act_old_man.cpp"),
