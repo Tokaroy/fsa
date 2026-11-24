@@ -17,7 +17,8 @@
 
 // The 'FGAN' actor's .data tables (0x804A1210): emitter ids per slot, the frame counts of
 // each state, and the "FGAN" resource names / sprite offsets of each draw mode.
-static u16 lbl_804A1210[16] = {0x374, 0x375, 0x378, 0x379, 0x372, 0x373, 0x376, 0x377, 0x368, 0x369, 0x36C, 0x36D, 0x366, 0x367, 0x36A, 0x36B};
+static u16 lbl_804A1210[8] = {0x374, 0x375, 0x378, 0x379, 0x372, 0x373, 0x376, 0x377};
+static u16 lbl_804A1220[8] = {0x368, 0x369, 0x36C, 0x36D, 0x366, 0x367, 0x36A, 0x36B};
 static s32 lbl_804A1230[6] = {4, 4, 4, 4, 2, 4};
 static s32 lbl_804A1248[5] = {2, 2, 2, 2, 5};
 static s32 lbl_804A125C[8] = {4, 4, 4, 4, 4, 4, 4, 4};
@@ -305,7 +306,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 98.06 %, missing/extra; behaviour drift.
+// FIXME: 98.20 %, missing/extra; behaviour near.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
@@ -914,8 +915,8 @@ void PhantomGanon_804A1318::update() {
                 deleteEmitter(&mEmitters2bc[i]);
                 deleteEmitter(&mEmitters2cc[i]);
             }
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1220[field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1220[field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
             findTargetPlayer_801EEC98(mSerial, &spread, NULL, NULL, NULL, 0, 1);
             spread += 0xD000;
             for (i = 0; i < 7; i++) {
@@ -1007,8 +1008,8 @@ void PhantomGanon_804A1318::update() {
             deleteEmitter(&mEmitters2bc[i]);
             deleteEmitter(&mEmitters2cc[i]);
         }
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1220[field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1220[field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
         PhantomGanon_804A1318* parent = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
         if (parent != NULL && parent->mAlive == true) {
             parent->field_0x28c = 3.0f;
