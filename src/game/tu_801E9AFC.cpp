@@ -4,6 +4,7 @@
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
 #include "game/act/act_iron_pot_801E6D48.h"
+#include "game/act/tu_801F9484.h"
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
@@ -106,10 +107,8 @@ s32 cls_801E9B54::fn_801EA6D8(u8 arg0, s32 arg1) {
     return result;
 }
 
-// FIXME: 94.56 %, missing/extra; behaviour near.
-// The slot shift-down loop: the original recomputes the source
-// slot from the index each pass (addi, mulli, add; 81 instructions), ours
-// walks a second pointer (80).
+// FIXME: 98.83 %, regalloc-only; behaviour clean.
+// Registers of `removed` and the loop index are swapped.
 void cls_801E9B54::fn_801EA594() {
     if (field_0x60 > 0) {
         bool removed;
@@ -117,14 +116,14 @@ void cls_801E9B54::fn_801EA594() {
             removed = false;
             for (s32 i = 0; i < field_0x60; i++) {
                 if (field_0x0[i].value == -1) {
-                    if (field_0x0[i].actor != NULL) {
-                        field_0x0[i].actor->mAlive = false;
-                        field_0x0[i].actor->mDrawEnabled = false;
+                    Slot_801E9B54* slot = &field_0x0[i];
+                    if (slot->actor != NULL) {
+                        slot->actor->mAlive = false;
+                        slot->actor->mDrawEnabled = false;
                     }
-                    Slot_801E9B54* dst = &field_0x0[i];
                     while (i < field_0x60 - 1) {
-                        *dst = field_0x0[++i];
-                        dst++;
+                        *slot = field_0x0[i++ + 1];
+                        slot++;
                     }
                     field_0x60 = field_0x60 - 1;
                     removed = true;
@@ -277,16 +276,17 @@ void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
 }
 
 // FIXME: 97.38 %, missing/extra; behaviour clean.
-// The original copies findActorBySerial_801F666C's result through r0 (mr r0, r3; mr. r30, r0); ours tests it in place.
+// The looked-up actor is used as the Fire Rod fire ('FIRE', FireRodFire_804A89F0; fn_802BAA00 lives in its file).
 s32 ActorBase_804A5770::fn_801E9B58() {
     s32 serial = getActorManager_801F856C()->fn_801F7F58(this, lbl_80469C78, mSerial, 32.0f);
     if (serial >= 0 && serial != mSerial) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor != NULL) {
-            if (fn_801CC8E4(actor)) {
+        FireRodFire_804A89F0* fire =
+            static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+        if (fire != NULL) {
+            if (fn_801CC8E4(fire)) {
                 serial = -1;
-            } else if (actor->mActorId == ACTOR_FIRE) {
-                actor->fn_802BAA00();
+            } else if (fire->mActorId == ACTOR_FIRE) {
+                fire->fn_802BAA00();
             }
         }
     }
