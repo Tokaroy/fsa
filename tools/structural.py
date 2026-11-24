@@ -55,7 +55,7 @@ sides have a relocation, of the same type) is verified one of three ways:
            the target's symbol. Equal initial bytes alone don't prove the same
            variable (mutable data has an identity), so a bss pair passes only when
            nothing but these identical instructions can ever read or write it.
-Reordered: in a scheduling or scheduling+regalloc function the rows objdiff sets side
+Reordered: in a regalloc-only or scheduling function the rows objdiff sets side
 by side are not each other's instructions, so when that positional pairing fails, the
 relocated instructions of each form (mnemonic, non-register operands, relocation type)
 are paired one to one instead (reordered_pairs), every pair verified as above.
@@ -567,7 +567,7 @@ def diff_unit(T, u):
         if "reloc-name" in cls:
             pending = pending_pairs(rich_pairs(s, r, left, right), tsyms, osyms,
                                     {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": is_done(cls)})
-            if pending is None and cls.split(" + ")[0] in ("scheduling", "scheduling+regalloc"):
+            if pending is None and cls.split(" + ")[0] in ("regalloc-only", "scheduling", "scheduling+regalloc"):
                 alt = reordered_pairs(T, s, r, left, right, tsyms, osyms,
                                       {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": False})
                 if alt == []:
