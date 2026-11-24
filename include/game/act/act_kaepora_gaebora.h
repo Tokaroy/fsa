@@ -33,6 +33,14 @@ public:
     // 0x80219E04 (act_kaepora_gaebora): true in states 6-10 and in state 2
     // while field_0x2b4 == 3; the sprites and effects then move by -6.
     bool fn_80219E04() const;
+    // The sprite and effect offset: -6 while fn_80219E04(), else 0.
+    s8 getShift() const {
+        s8 shift = 0;
+        if (fn_80219E04()) {
+            shift = -6;
+        }
+        return shift;
+    }
     // Draws the flipped sprite with the 0x25C + mAnim.mCel frame.
     void fn_8021AFB8();
     // Draws the body (frame 0x279) and the rotated head (frame 0x27A).

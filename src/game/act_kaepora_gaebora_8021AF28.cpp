@@ -44,34 +44,20 @@ void KaeporaGaebora_804A6550::fn_8021B5A0() {
 }
 
 void KaeporaGaebora_804A6550::fn_8021B548() {
-    s8 shift = 0;
-    if (fn_80219E04()) {
-        shift = -6;
-    }
-    fn_801CB71C(&mEmitter, &mPos, 0, shift);
+    fn_801CB71C(&mEmitter, &mPos, 0, getShift());
 }
 
-// FIXME: 98.9%. Same as fn_8021AFB8: the SpriteParams reset's zero stores use
-// r6 here, the original shares r30 (the `shift` register) and has one li less.
 void KaeporaGaebora_804A6550::fn_8021B1AC() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1f = 0;
-    s8 shift = 0;
-    if (fn_80219E04()) {
-        shift = -6;
-    }
-    params.field_0x1d = shift;
+    params.field_0x1d = getShift();
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x279, &params, -1, 1.0f, 1.0f);
     drawSecond(this, params, 0x279);
 
     params.reset();
     params.field_0x1f = 0;
-    shift = 0;
-    if (fn_80219E04()) {
-        shift = -6;
-    }
-    params.field_0x1d = shift + 1;
+    params.field_0x1d = getShift() + 1;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
@@ -99,19 +85,12 @@ void KaeporaGaebora_804A6550::fn_8021B1AC() {
     mPos.y -= -10.5f;
 }
 
-// FIXME: 93.4%. Same instructions bar one; the original keeps the zero of the
-// SpriteParams reset in r30 (the saved register that also holds `shift`
-// across the fn_80219E04 call) and loads it once (li r30, 0 before the first
-// zero store); here the reset stores use r6 and `shift` gets its own li r30, 0.
+// Registers and instruction order differ from the original.
 void KaeporaGaebora_804A6550::fn_8021AFB8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1f = 0;
-    s8 shift = 0;
-    if (fn_80219E04()) {
-        shift = -6;
-    }
-    params.field_0x1d = shift;
+    params.field_0x1d = getShift();
     if (mFlags & 0x2000) {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
