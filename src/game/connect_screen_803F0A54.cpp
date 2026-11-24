@@ -1562,7 +1562,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 98.72 %, different; behaviour near.
+// FIXME(shotgun): 98.99 %, scheduling+regalloc; behaviour clean.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
@@ -1755,7 +1755,6 @@ void ConnectScreen_804B0F10::fn_803F715C() {
     }
 }
 
-// FIXME(shotgun): 96.28 %, missing/extra; behaviour drift.
 void ConnectScreen_804B0F10::fn_803F5A0C() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x240[i] != 0) {
@@ -1980,7 +1979,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME(shotgun): 96.54 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4)) {
