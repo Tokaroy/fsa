@@ -55,9 +55,10 @@ void IronPot_804A5418::vfunc_0x10() {
 
 extern const s32 lbl_80469C40[4][2];
 
-// FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
 void IronPot_804A5418::fn_801E728C(int state) {
-    if (state == 1) {
+    switch (state) {
+    case 1:
         if ((mFlags & 0x4000) && !(mFlags & 0x10000)) {
             getActorManager_801F856C()->spawnActor_801F9484('IBBM', mLayer_0x4, &mPos, mSpawnParam_0x90, field_0x16c, -1);
             mAlive = false;
@@ -106,12 +107,9 @@ void IronPot_804A5418::fn_801E728C(int state) {
                         if (serial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                             if (gem != NULL) {
-                                f32 z = 6.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 6.0f;
-                                f32 y = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                                f32 x = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                                gem->mVel_0x3c.x = x;
-                                gem->mVel_0x3c.y = y;
-                                gem->mVel_0x3c.z = z;
+                                gem->mVel_0x3c = JGeometry::TVec3f(0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
+                                                                   0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
+                                                                   6.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 6.0f);
                             }
                         }
                     }
@@ -126,12 +124,14 @@ void IronPot_804A5418::fn_801E728C(int state) {
             startSound_801F0E34(0x30001, 0);
             markDead_801F3668();
         }
+        break;
+    case 2:
+        break;
     }
     mStateTimer = 0;
     mState = state;
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour near.
 void IronPot_804A5418::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
@@ -140,10 +140,12 @@ void IronPot_804A5418::updateState_0x90(u8 mapHit) {
             fn_801E728C(1);
         }
         break;
+    case 1:
+        break;
     }
 }
 
-// FIXME(shotgun): 96.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.78 %, regalloc-only; behaviour clean.
 u8 IronPot_804A5418::checkHitByActor_0x60() {
     s32 skip = -1;
     if (mState == 0 && field_0x2ac == -1) {
@@ -184,8 +186,10 @@ u8 IronPot_804A5418::checkHitByActor_0x60() {
                 } else if (other->mActorId == 'SWBM') {
                     fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
                 } else if (field_0x1dc.fn_801EAC54(other->mSerial)) {
-                    if (other->mActorId == ACTOR_FIRE) {
+                    switch (other->mActorId) {
+                    case ACTOR_FIRE:
                         startSound_801F0E34(0x3002E, 0);
+                        break;
                     }
                 }
                 other->field_0x164 = 1;
