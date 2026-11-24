@@ -25,10 +25,9 @@ static inline void spawnImup(u32 param, s32 i, const JGeometry::TVec3f* pos) {
     getActorManager_801F856C()->spawnActor_801F9484('IMUP', layer, pos, fullParam, -1, -1);
 }
 
-// The player `player` follows, or `player` itself without one. int, not s32 (long): the original keeps
-// the converted argument in a saved register of its own (mr r22, r25; mr r26, r22).
-static inline int leaderOrSelf(int player) {
-    int leader = player;
+// The player `player` follows, or `player` itself without one.
+static inline s32 leaderOrSelf(s32 player) {
+    s32 leader = player;
     if (hasPlayerLeader_8022F514(player)) {
         leader = getPlayerLeader_8022F3DC(player);
     }
@@ -185,10 +184,10 @@ void DroppedItem_804A8C80::update() {
                 mVel_0x3c.z -= 0.3f;
                 JGeometry::TVec3f hit(0.0f, 0.0f, 0.0f);
                 if (sweepMapBox_801F2618(&hit, false)) {
-                    if (0.0f != hit.x) {
+                    if (hit.x != 0.0f) {
                         mVel_0x3c.x *= -1.0f;
                     }
-                    if (0.0f != hit.y) {
+                    if (hit.y != 0.0f) {
                         mVel_0x3c.y *= -1.0f;
                     }
                 }
@@ -201,7 +200,7 @@ void DroppedItem_804A8C80::update() {
         } else {
             JGeometry::TVec3f hit;
             if (sweepMapBox_801F2618(&hit, false) == 1) {
-                if (0.0f != hit.y) {
+                if (hit.y != 0.0f) {
                     mVel_0x3c.z = 0.0f;
                     mVel_0x3c.y = 0.0f;
                     mVel_0x3c.x = 0.0f;
