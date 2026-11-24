@@ -54,7 +54,7 @@ static inline void showMessage(s32 who) {
     }
 }
 
-// FIXME(shotgun): 96.09 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.31 %, scheduling+regalloc; behaviour drift.
 void WingedForceGem_804AB098::init() {
     field_0x94 = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x270 = mSpawnParam_0x90 & 7;
@@ -99,7 +99,7 @@ void WingedForceGem_804AB098::init() {
         mPos.z = 8.0f;
         field_0xb0 = 0x20000;
     }
-    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4]) {
+    if (viewLayerFlag(mLayer_0x4)) {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
         field_0xb0 = 0x20000;
@@ -154,7 +154,7 @@ void WingedForceGem_804AB098::init() {
     }
 }
 
-// FIXME(shotgun): 98.06 %, different; behaviour near.
+// FIXME(shotgun): 98.44 %, operands; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
         if (isScreenFlagSet_0x34() == 1) {
@@ -184,7 +184,7 @@ void WingedForceGem_804AB098::update() {
         mPos.add(mVel_0x3c);
     }
     if (field_0x230 != 5 && field_0x230 != 6) {
-        field_0x27c = field_0x27c + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+        field_0x27c += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         addCalc2_801F71A4(&field_0x2b0.z, 3.0f + 3.0f * JMath::sincosTable_.sinShort(field_0x27c), 0.1f, 0.2f);
     }
     JGeometry::TBox2f box(mBox);
@@ -580,7 +580,7 @@ void WingedForceGem_804AB098::updateRise() {
             addCalc2_801F71A4(&field_0x248, 0.0f, 0.05f, 0.2f);
         }
     }
-    field_0x260 = field_0x260 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+    field_0x260 += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
 WingedForceGem_804AB098::~WingedForceGem_804AB098() {}
