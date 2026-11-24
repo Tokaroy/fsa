@@ -30,8 +30,7 @@ inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::T
 }
 
 // FIXME: 97.66 %, missing/extra; behaviour clean.
-// FIXME: missing/extra (ours has 1 more instruction: mr r29, r4 in the fn_802D6F38 key
-// build, plus hit.x/hit.y vs 0.0f load order in the `!= 0.0f` tests).
+// Still differs: 0.0f is loaded before hit.x/hit.y in the `!= 0.0f` tests, and callee-saved registers.
 void DroppedItem_804A8C80::init() {
     field_0x238 = mSpawnParam_0x90 & 0x7F;
     // Both arms unpack the same four fields: hoisting them out of the if/else drops init from 96 % to 91 %
@@ -55,9 +54,7 @@ void DroppedItem_804A8C80::init() {
     field_0x264 = mSpawnParam_0x90;
     field_0x268.set(mPos.x, mPos.y);
 
-    s32 viewRow = getGameView_802D6A9C()->mScreenY_0x18;
-    s32 viewCol = getGameView_802D6A9C()->mScreenX_0x14;
-    field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
+    field_0x270 = packViewKey();
 
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
@@ -99,11 +96,8 @@ void DroppedItem_804A8C80::init() {
         }
 
         if (field_0x234 == 0) {
-            // The original re-reads the view row/col and rebuilds the key (field_0x270 above) here.
-            viewRow = getGameView_802D6A9C()->mScreenY_0x18;
-            viewCol = getGameView_802D6A9C()->mScreenX_0x14;
+            s32 packed = packViewKey();
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
             u32 key = mSpawnParam_0x90;
             getGameView_802D6A9C()->fn_802D6F38(key, pos, packed, true);
         }
@@ -181,10 +175,10 @@ void DroppedItem_804A8C80::update() {
                 mVel_0x3c.z -= 0.3f;
                 JGeometry::TVec3f hit(0.0f, 0.0f, 0.0f);
                 if (sweepMapBox_801F2618(&hit, false)) {
-                    if (hit.x != 0.0f) {
+                    if (0.0f != hit.x) {
                         mVel_0x3c.x *= -1.0f;
                     }
-                    if (hit.y != 0.0f) {
+                    if (0.0f != hit.y) {
                         mVel_0x3c.y *= -1.0f;
                     }
                 }
@@ -197,7 +191,7 @@ void DroppedItem_804A8C80::update() {
         } else {
             JGeometry::TVec3f hit;
             if (sweepMapBox_801F2618(&hit, false) == 1) {
-                if (hit.y != 0.0f) {
+                if (0.0f != hit.y) {
                     mVel_0x3c.z = 0.0f;
                     mVel_0x3c.y = 0.0f;
                     mVel_0x3c.x = 0.0f;

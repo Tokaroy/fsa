@@ -21,6 +21,12 @@ public:
     // Serial and layer are loaded before the position copy, the player after it (RULES_CARD, by-value message calls).
     void talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos);
     bool fn_802BFF30(s32 player);
+    // field_0x244, the view's screen column and row and the layer in one word (built twice in init()).
+    s32 packViewKey() {
+        s32 viewRow = getGameView_802D6A9C()->mScreenY_0x18;
+        s32 viewCol = getGameView_802D6A9C()->mScreenX_0x14;
+        return (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
+    }
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
