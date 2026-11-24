@@ -708,6 +708,8 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544(id, mLayer_0x4, &mPos, field_0x268);
                     if (serial >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        // The -y case negates one 2.0f with fneg in the original; the -x case is a -2.0f literal.
+                        f32 speed = 2.0f;
                         switch (dir) {
                         case 0:
                             actor->mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
@@ -716,7 +718,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                             actor->mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
                             break;
                         case 2:
-                            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, -speed, 5.0f);
                             break;
                         case 3:
                             actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);
@@ -731,6 +733,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     } else {
                         dir = field_0x94 - 0xc;
                     }
+                    f32 speed = 2.0f;
                     switch (dir) {
                     case 0:
                         mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
@@ -739,7 +742,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                         mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
                         break;
                     case 2:
-                        mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                        mVel_0x3c = JGeometry::TVec3f(0.0f, -speed, 5.0f);
                         break;
                     case 3:
                         mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);
