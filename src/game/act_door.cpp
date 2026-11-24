@@ -12,7 +12,7 @@
 #include "game/act/act_small_key.h"
 #include "game/act/act_warp.h"
 
-// FIXME(shotgun): 98.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.90 %, missing/extra; behaviour drift.
 void Door_804A8D88::init() {
     field_0x258 = mPos;
     field_0x234 = mSpawnParam_0x90 & 0x7F;
@@ -174,46 +174,174 @@ void Door_804A8D88::init() {
 }
 
 
-// Plain TVec3 setter that update calls everywhere.
-void fn_802C7CB8(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
-    v->set(x, y, z);
-}
-
 // The unit's .rodata (0x8046D598, 0x270 bytes): BG tile pairs per door type, direction and width,
-// and the cell offsets of the second layer. FIXME(shotgun): table contents not written as source
-// (the original's separate arrays are addressed off the section base).
-struct DoorTiles_8046D598 {
-    /* 0x000 */ u16 mWidth1[9][4][2];  // [type][dir]
-    /* 0x090 */ u16 mWidth2[3][4][4];  // [type][dir]
-    /* 0x0F0 */ u16 mWidth3[3][4][6];  // [type][dir]
-    /* 0x180 */ u16 mLayer2Type2[4][2]; // [dir], width 1, type 2
-    /* 0x190 */ u16 mLayer2Type4[4][2]; // [dir], width 1, type 4
-    /* 0x1A0 */ u16 mLayer2Width2[4][4];
-    /* 0x1C0 */ u16 mLayer2Width3[4][6];
-    /* 0x1F0 */ u16 mOpenWidth1[4][2];
-    /* 0x200 */ u16 mOpenWidth2[4][4];
-    /* 0x220 */ u16 mOpenWidth3[4][6];
-    /* 0x250 */ s32 mLayer2DX[4];
-    /* 0x260 */ s32 mLayer2DY[4];
+// and the cell offsets of the second layer.
+// [type][dir], width 1
+static const u16 lbl_8046D598[9][4][2] = {
+    {{0x342, 0x343}, {0x350, 0x351}, {0x345, 0x355}, {0x346, 0x356}},
+    {{0x342, 0x343}, {0x350, 0x351}, {0x345, 0x355}, {0x346, 0x356}},
+    {{0x32A, 0x32B}, {0x338, 0x339}, {0x32D, 0x33D}, {0x32E, 0x33E}},
+    {{0x3A2, 0x3A3}, {0x3B0, 0x3B1}, {0x3A5, 0x3B5}, {0x3A6, 0x3B6}},
+    {{0x38A, 0x38B}, {0x398, 0x399}, {0x38D, 0x39D}, {0x38E, 0x39E}},
+    {{0x38A, 0x38B}, {0x398, 0x399}, {0x38D, 0x39D}, {0x38E, 0x39E}},
+    {{0x38A, 0x38B}, {0x398, 0x399}, {0x38D, 0x39D}, {0x38E, 0x39E}},
+    {{0x38A, 0x38B}, {0x398, 0x399}, {0x38D, 0x39D}, {0x38E, 0x39E}},
+    {{0x3A2, 0x3A3}, {0x3B0, 0x3B1}, {0x3A5, 0x3B5}, {0x3A6, 0x3B6}},
 };
-extern const DoorTiles_8046D598 lbl_8046D598;
+// [type][dir], width 2
+static const u16 lbl_8046D628[3][4][4] = {
+    {{0x2FA, 0x2FE, 0x2FE, 0x2FB}, {0x2EA, 0x2EE, 0x2EE, 0x2EB}, {0x2EC, 0x2EF, 0x2EF, 0x2FC}, {0x2ED, 0x2FF, 0x2FF, 0x2FD}},
+    {{0x2FA, 0x2FE, 0x2FE, 0x2FB}, {0x2EA, 0x2EE, 0x2EE, 0x2EB}, {0x2EC, 0x2EF, 0x2EF, 0x2FC}, {0x2ED, 0x2FF, 0x2FF, 0x2FD}},
+    {{0x2DA, 0x2DE, 0x2DE, 0x2DB}, {0x2CA, 0x2CE, 0x2CE, 0x2CB}, {0x2CC, 0x2CF, 0x2CF, 0x2DC}, {0x2CD, 0x2DF, 0x2DF, 0x2DD}},
+};
+// [type][dir], width 3
+static const u16 lbl_8046D688[3][4][6] = {
+    {{0x2FA, 0x2FE, 0x2FE, 0x2FE, 0x2FE, 0x2FB}, {0x2EA, 0x2EE, 0x2EE, 0x2EE, 0x2EE, 0x2EB}, {0x2EC, 0x2EF, 0x2EF, 0x2EF, 0x2EF, 0x2FC}, {0x2ED, 0x2FF, 0x2FF, 0x2FF, 0x2FF, 0x2FD}},
+    {{0x2FA, 0x2FE, 0x2FE, 0x2FE, 0x2FE, 0x2FB}, {0x2EA, 0x2EE, 0x2EE, 0x2EE, 0x2EE, 0x2EB}, {0x2EC, 0x2EF, 0x2EF, 0x2EF, 0x2EF, 0x2FC}, {0x2ED, 0x2FF, 0x2FF, 0x2FF, 0x2FF, 0x2FD}},
+    {{0x2DA, 0x2DE, 0x2DE, 0x2DE, 0x2DE, 0x2DB}, {0x2CA, 0x2CE, 0x2CE, 0x2CE, 0x2CE, 0x2CB}, {0x2CC, 0x2CF, 0x2CF, 0x2CF, 0x2CF, 0x2DC}, {0x2CD, 0x2DF, 0x2DF, 0x2DF, 0x2DF, 0x2DD}},
+};
+// second layer [dir], width 1, type 2
+static const u16 lbl_8046D718[4][2] = {{0x33A, 0x33B}, {0x328, 0x329}, {0x32C, 0x33C}, {0x32F, 0x33F}};
+// second layer [dir], width 1, type 4
+static const u16 lbl_8046D728[4][2] = {{0x39A, 0x39B}, {0x388, 0x389}, {0x38C, 0x39C}, {0x38F, 0x39F}};
+// second layer [dir], width 2
+static const u16 lbl_8046D738[4][4] = {{0x2D4, 0x2D5, 0x2D5, 0x2D6}, {0x2C4, 0x2C5, 0x2C5, 0x2C6}, {0x2C7, 0x2C8, 0x2C8, 0x2C9}, {0x2D7, 0x2D8, 0x2D8, 0x2D9}};
+// second layer [dir], width 3
+static const u16 lbl_8046D758[4][6] = {{0x2D4, 0x2D5, 0x2D5, 0x2D5, 0x2D5, 0x2D6}, {0x2C4, 0x2C5, 0x2C5, 0x2C5, 0x2C5, 0x2C6}, {0x2C7, 0x2C8, 0x2C8, 0x2C8, 0x2C8, 0x2C9}, {0x2D7, 0x2D8, 0x2D8, 0x2D8, 0x2D8, 0x2D9}};
+// open [dir], width 1
+static const u16 lbl_8046D788[4][2] = {{0x2F0, 0x2F1}, {0x2E0, 0x2E1}, {0x2E2, 0x2F2}, {0x2E3, 0x2F3}};
+// open [dir], width 2
+static const u16 lbl_8046D798[4][4] = {{0x31A, 0x310, 0x311, 0x31B}, {0x30A, 0x300, 0x301, 0x30B}, {0x30C, 0x302, 0x312, 0x31C}, {0x30D, 0x303, 0x313, 0x31D}};
+// open [dir], width 3
+static const u16 lbl_8046D7B8[4][6] = {{0x31A, 0x318, 0x310, 0x311, 0x318, 0x31B}, {0x30A, 0x308, 0x300, 0x301, 0x308, 0x30B}, {0x30C, 0x309, 0x302, 0x312, 0x309, 0x31C}, {0x30D, 0x319, 0x303, 0x313, 0x319, 0x31D}};
+// second layer cell offset x [dir]
+static const s32 lbl_8046D7E8[4] = {0, 0, -16, 16};
+// second layer cell offset y [dir]
+static const s32 lbl_8046D7F8[4] = {16, -16, 0, 0};
 
-// FIXME(shotgun): 82.59 %, missing/extra + reloc-name; behaviour drift.
-// The TVec3f temporaries make MWCC emit the weak
-// template ctor __ct<f>__Q29JGeometry8TVec3<f>Ffff right after update: that is the original's
-// fn_802C7CB8 (16 bytes at 0x802C7CB8). Follow-up: drop the free fn_802C7CB8 below and rename its
-// symbols.txt entry to the ctor (measured: update 82.71 %, ctor matches).
+// FIXME(shotgun): 97.71 %, missing/extra; behaviour drift.
 void Door_804A8D88::update() {
-    const DoorTiles_8046D598& tiles = lbl_8046D598;
     JGeometry::TVec2f pos(field_0x258.x, field_0x258.y);
     s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
     switch (field_0x230) {
     case 0:
     case 3: {
-        if (field_0x234 == 5 || field_0x234 == 6 || field_0x234 == 7) {
-            if (field_0x230 != 3) {
+        if (field_0x234 != 5 && field_0x234 != 6 && field_0x234 != 7) {
+            if (field_0x230 == 3) {
+                s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
+                if (bit != -1) {
+                    getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
+                }
+            }
+            u8 upper = 8;
+            if (mLayer_0x4 < 8) {
+                upper = 1;
+            }
+            switch (field_0x23c) {
+            case 0: {
+                gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D598[field_0x234][field_0x238][0], lbl_8046D598[field_0x234][field_0x238][1]);
+                if (field_0x234 == 0 && field_0x230 == 3) {
+                    if (field_0x238 == 0) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x443, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 1) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, field_0x258.y, 0.0f), 0x446, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 2) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x444, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 3) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x445, 0, 0, NULL, NULL, true, 1.0f);
+                    }
+                }
+                if (field_0x234 == 2 || field_0x234 == 4) {
+                    JGeometry::TVec2f pos2(field_0x258.x + lbl_8046D7E8[field_0x238], field_0x258.y + lbl_8046D7F8[field_0x238]);
+                    s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
+                    if (field_0x234 == 2) {
+                        gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, lbl_8046D718[field_0x238][0], lbl_8046D718[field_0x238][1]);
+                    } else {
+                        gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, lbl_8046D728[field_0x238][0], lbl_8046D728[field_0x238][1]);
+                    }
+                }
                 break;
             }
+            case 1: {
+                gBgRewrite_8053AC98->writeFourTiles_8029DD50(
+                    mLayer_0x4, cell, (field_0x238 >> 1) & 1,
+                    lbl_8046D628[field_0x234][field_0x238][0],
+                    lbl_8046D628[field_0x234][field_0x238][1],
+                    lbl_8046D628[field_0x234][field_0x238][2],
+                    lbl_8046D628[field_0x234][field_0x238][3]);
+                if (field_0x234 == 0 && field_0x230 == 3) {
+                    if (field_0x238 == 0) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(32.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43F, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 1) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(32.0f + field_0x258.x, field_0x258.y, 0.0f), 0x442, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 2) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 32.0f + field_0x258.y, 0.0f), 0x440, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 3) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 32.0f + field_0x258.y, 0.0f), 0x441, 0, 0, NULL, NULL, true, 1.0f);
+                    }
+                }
+                if (field_0x234 == 2) {
+                    JGeometry::TVec2f pos2(field_0x258.x + lbl_8046D7E8[field_0x238], field_0x258.y + lbl_8046D7F8[field_0x238]);
+                    s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
+                    gBgRewrite_8053AC98->writeFourTiles_8029DD50(
+                        mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1,
+                        lbl_8046D738[field_0x238][0],
+                        lbl_8046D738[field_0x238][1],
+                        lbl_8046D738[field_0x238][2],
+                        lbl_8046D738[field_0x238][3]);
+                }
+                break;
+            }
+            case 2: {
+                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D688[field_0x234][field_0x238][0], lbl_8046D688[field_0x234][field_0x238][1], lbl_8046D688[field_0x234][field_0x238][2], lbl_8046D688[field_0x234][field_0x238][3], lbl_8046D688[field_0x234][field_0x238][4], lbl_8046D688[field_0x234][field_0x238][5]);
+                if (field_0x234 == 0 && field_0x230 == 3) {
+                    if (field_0x238 == 0) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43B, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 1) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, field_0x258.y, 0.0f), 0x43E, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 2) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 48.0f + field_0x258.y, 0.0f), 0x43C, 0, 0, NULL, NULL, true, 1.0f);
+                    } else if (field_0x238 == 3) {
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 48.0f + field_0x258.y, 0.0f), 0x43D, 0, 0, NULL, NULL, true, 1.0f);
+                    }
+                }
+                if (field_0x234 == 2) {
+                    JGeometry::TVec2f pos2(field_0x258.x + lbl_8046D7E8[field_0x238], field_0x258.y + lbl_8046D7F8[field_0x238]);
+                    cell = getCellIndex_80226BC4(&pos2, mLayer_0x4);
+                    gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D758[field_0x238][0], lbl_8046D758[field_0x238][1], lbl_8046D758[field_0x238][2], lbl_8046D758[field_0x238][3], lbl_8046D758[field_0x238][4], lbl_8046D758[field_0x238][5]);
+                    gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4 + upper, cell, (field_0x238 >> 1) & 1, lbl_8046D758[field_0x238][0], lbl_8046D758[field_0x238][1], lbl_8046D758[field_0x238][2], lbl_8046D758[field_0x238][3], lbl_8046D758[field_0x238][4], lbl_8046D758[field_0x238][5]);
+                }
+                break;
+            }
+            }
+            if (field_0x234 == 8) {
+                startSound_801F0E34(0x30006, 0);
+            } else {
+                startSound_801F0E34(0x30007, 0);
+            }
+            if ((field_0x230 == 3 && field_0x234 == 2) || field_0x234 == 4) {
+                if (mLayer_0x4 >= 8) {
+                    JGeometry::TVec3f p = field_0x258;
+                    JGeometry::TVec3f spawnPos(8.0f + p.x, 10.0f + p.y, 0.0f);
+                    getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &spawnPos, 0, -1, -1);
+                }
+            } else if (field_0x234 == 8) {
+                playSe_801F0D20(3);
+            }
+            if (field_0x230 == 3 && field_0x234 == 0 && field_0x240 == 0) {
+                getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x2800, -1, -1);
+            }
+            if (field_0x230 == 0) {
+                field_0x230 = 1;
+            } else if (field_0x234 == 0 && field_0x240 != 0) {
+                field_0x230 = 6;
+            } else if (field_0x234 == 0 && mLayer_0x4 < 8 && field_0x24c != 0) {
+                field_0x230 = 9;
+                field_0x250 = 120;
+            } else {
+                field_0x230 = 5;
+            }
+        } else if (field_0x230 == 3) {
             if (field_0x234 == 5) {
                 gBgRewrite_8053AC98->fn_802A3948(&field_0x258, 0, mLayer_0x4, 0x9E);
                 if (mLayer_0x4 >= 8) {
@@ -239,126 +367,6 @@ void Door_804A8D88::update() {
                 startSound_801F0E34(0x30075, 0);
                 field_0x230 = 5;
             }
-            break;
-        }
-        if (field_0x230 == 3) {
-            s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
-            if (bit != -1) {
-                getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
-            }
-        }
-        u8 upper = 8;
-        if (mLayer_0x4 < 8) {
-            upper = 1;
-        }
-        switch (field_0x23c) {
-        case 0: {
-            const u16* t = tiles.mWidth1[field_0x234][field_0x238];
-            gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
-            if (field_0x234 == 0 && field_0x230 == 3) {
-                if (field_0x238 == 0) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x443, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 1) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, field_0x258.y, 0.0f), 0x446, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 2) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x444, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 3) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x445, 0, 0, NULL, NULL, true, 1.0f);
-                }
-            }
-            if (field_0x234 == 2 || field_0x234 == 4) {
-                JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
-                if (field_0x234 == 2) {
-                    const u16* t2 = tiles.mLayer2Type2[field_0x238];
-                    gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
-                } else {
-                    const u16* t2 = tiles.mLayer2Type4[field_0x238];
-                    gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1]);
-                }
-            }
-            break;
-        }
-        case 1: {
-            gBgRewrite_8053AC98->writeFourTiles_8029DD50(
-                mLayer_0x4, cell, (field_0x238 >> 1) & 1,
-                tiles.mWidth2[field_0x234][field_0x238][0],
-                tiles.mWidth2[field_0x234][field_0x238][1],
-                tiles.mWidth2[field_0x234][field_0x238][2],
-                tiles.mWidth2[field_0x234][field_0x238][3]);
-            if (field_0x234 == 0 && field_0x230 == 3) {
-                if (field_0x238 == 0) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(32.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43F, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 1) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(32.0f + field_0x258.x, field_0x258.y, 0.0f), 0x442, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 2) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 32.0f + field_0x258.y, 0.0f), 0x440, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 3) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 32.0f + field_0x258.y, 0.0f), 0x441, 0, 0, NULL, NULL, true, 1.0f);
-                }
-            }
-            if (field_0x234 == 2) {
-                JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                s32 cell2 = getCellIndex_80226BC4(&pos2, mLayer_0x4);
-                gBgRewrite_8053AC98->writeFourTiles_8029DD50(
-                    mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1,
-                    tiles.mLayer2Width2[field_0x238][0],
-                    tiles.mLayer2Width2[field_0x238][1],
-                    tiles.mLayer2Width2[field_0x238][2],
-                    tiles.mLayer2Width2[field_0x238][3]);
-            }
-            break;
-        }
-        case 2: {
-            const u16* t = tiles.mWidth3[field_0x234][field_0x238];
-            gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
-            if (field_0x234 == 0 && field_0x230 == 3) {
-                if (field_0x238 == 0) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43B, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 1) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, field_0x258.y, 0.0f), 0x43E, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 2) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x258.x, 48.0f + field_0x258.y, 0.0f), 0x43C, 0, 0, NULL, NULL, true, 1.0f);
-                } else if (field_0x238 == 3) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 48.0f + field_0x258.y, 0.0f), 0x43D, 0, 0, NULL, NULL, true, 1.0f);
-                }
-            }
-            if (field_0x234 == 2) {
-                JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
-                cell = getCellIndex_80226BC4(&pos2, mLayer_0x4);
-                const u16* t2 = tiles.mLayer2Width3[field_0x238];
-                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
-                t2 = tiles.mLayer2Width3[field_0x238];
-                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4 + upper, cell, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3], t2[4], t2[5]);
-            }
-            break;
-        }
-        }
-        if (field_0x234 == 8) {
-            startSound_801F0E34(0x30006, 0);
-        } else {
-            startSound_801F0E34(0x30007, 0);
-        }
-        if ((field_0x230 == 3 && field_0x234 == 2) || field_0x234 == 4) {
-            if (mLayer_0x4 >= 8) {
-                JGeometry::TVec3f p = field_0x258;
-                getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &JGeometry::TVec3f(8.0f + p.x, 10.0f + p.y, 0.0f), 0, -1, -1);
-            }
-        } else if (field_0x234 == 8) {
-            playSe_801F0D20(3);
-        }
-        if (field_0x230 == 3 && field_0x234 == 0 && field_0x240 == 0) {
-            getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x2800, -1, -1);
-        }
-        if (field_0x230 == 0) {
-            field_0x230 = 1;
-        } else if (field_0x234 == 0 && field_0x240 != 0) {
-            field_0x230 = 6;
-        } else if (field_0x234 == 0 && mLayer_0x4 < 8 && field_0x24c != 0) {
-            field_0x230 = 9;
-            field_0x250 = 120;
-        } else {
-            field_0x230 = 5;
         }
         break;
     }
@@ -515,8 +523,7 @@ void Door_804A8D88::update() {
         }
         switch (field_0x23c) {
         case 0: {
-            const u16* t = tiles.mOpenWidth1[field_0x238];
-            gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1]);
+            gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D788[field_0x238][0], lbl_8046D788[field_0x238][1]);
             if (field_0x234 != 0) {
                 break;
             }
@@ -534,10 +541,10 @@ void Door_804A8D88::update() {
         case 1: {
             gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                 mLayer_0x4, cell, (field_0x238 >> 1) & 1,
-                tiles.mOpenWidth2[field_0x238][0],
-                tiles.mOpenWidth2[field_0x238][1],
-                tiles.mOpenWidth2[field_0x238][2],
-                tiles.mOpenWidth2[field_0x238][3]);
+                lbl_8046D798[field_0x238][0],
+                lbl_8046D798[field_0x238][1],
+                lbl_8046D798[field_0x238][2],
+                lbl_8046D798[field_0x238][3]);
             if (field_0x234 != 0) {
                 break;
             }
@@ -553,8 +560,7 @@ void Door_804A8D88::update() {
             break;
         }
         case 2: {
-            const u16* t = tiles.mOpenWidth3[field_0x238];
-            gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3], t[4], t[5]);
+            gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D7B8[field_0x238][0], lbl_8046D7B8[field_0x238][1], lbl_8046D7B8[field_0x238][2], lbl_8046D7B8[field_0x238][3], lbl_8046D7B8[field_0x238][4], lbl_8046D7B8[field_0x238][5]);
             if (field_0x234 != 0) {
                 break;
             }
