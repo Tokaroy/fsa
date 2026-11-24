@@ -112,6 +112,34 @@ in the ten units; (b) reshape the imported `Vec.h` / `Box.h` so that the units c
 (drop the `inline` specialization and Box.h's temporary). Option (b) touches every unit that
 inlines these, so it needs a whole-game build.
 
+**Header reshape (2026-11-24, branch `lead-headers`).** Owner chose option (b). Result:
+
+- *TVec3f(x, y, z): done.* Vec.h's `inline` specialization is mkdd's (its comment: RaceMgr
+  ordering) and is gone; the in-class member template has the same body, so no function in
+  the whole build moved (honest report, SHA-1 OK). act_ganon 0x80196D60 is now
+  `template <> template <> TVec3f::TVec3(f32, f32, f32) { set(x, y, z); }`, emitted local at
+  its source position as `__ct<f>__Q29JGeometry8TVec3<f>Ffff` (symbols.txt renamed, scope:local).
+  Ganon::update is unchanged at 98.69 %: the original passes the ctor's result on
+  (`bl __ct; mr r4, r3`, 0xF80 and 0x21F8), i.e. a temporary given straight to the 0x80196D70
+  helper, which our `copyVec3_80196D70(TVec3f*, const TVec3f*)` can't take. 0x80196D70 itself
+  sits among the helpers like the ctor, so it may be a non-inline specialization of
+  `set(const TVec3&)` too (not tried).
+- *TVec2f(x, y): not viable faithfully.* Declaring the specialization in the header doesn't
+  work: a declared-but-undefined specialization is called, never inlined (scratch test: every
+  use becomes `bl __ct<f>...`), so every unit that uses the ctor would need its own
+  definition; and a non-inline definition is emitted even when unreferenced. The blockers
+  are inline bodies in non-template classes, which MWCC instantiates when parsed:
+  `Box.h:32 addPos(TVec2<f32>(x, y))`, `J2DGrafContext.h:42-43 lineTo/moveTo(TVec2f(x, y))`
+  and `J2DPane.h:291,297,323,329,788`. TP's JSystem has the same `addPos` and `lineTo`/`moveTo`
+  text, so rewriting them would move our JSystem headers away from the real ones. Measured
+  with those bodies stubbed out (probe only, not committed), both specializations together
+  give Ganon::update 98.69 -> 98.75 (+3 -> +1 instructions); the TVec2 half is worth 0.06.
+  Left as helpers: fn_80196D24 and the other `__FPQ29JGeometry8TVec2<f>ff` ones.
+- Other TVec3 `(x, y, z)` helpers (0x10, `__FPQ29JGeometry8TVec3<f>fff`): setVec_80154518,
+  fn_801583D4, fn_80178F00, fn_8017EB0C, fn_80182640/50, fn_8018A5B8, fn_80453874. A ctor
+  and `set(x, y, z)` are both 0x10 here; only callers that use r3 afterwards (`mr rX, r3`) show a
+  ctor. Not applied yet.
+
 **The inline budget caveat.** These ctors are out of line in the original only because
 the caller is huge (MWCC stops inlining past its per-function budget). Our source writes
 many of the other inlines (zeroVec, getLayer, set...) as explicit calls, so our function is
