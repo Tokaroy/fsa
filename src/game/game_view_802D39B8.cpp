@@ -476,7 +476,7 @@ GameView_804A9950::GameView_804A9950() {
 
 GameView_804A9950::~GameView_804A9950() {}
 
-// FIXME: 99.13 %, different; behaviour near.
+// FIXME: 99.08 %, regalloc-only; behaviour clean.
 // Regalloc only: clearStageTables' first loop (zero and row counters swapped, as
 // resetStage_802DA8DC) and the registers around the four save-file flag tests. The flags
 // are tested directly: through isStageFlagSet the bit-12 test becomes extrwi. where the
@@ -1043,7 +1043,7 @@ void GameView_804A9950::fn_802D9FBC() {
     }
 }
 
-// FIXME: 96.32 %, different; behaviour clean.
+// FIXME: 97.92 %, regalloc-only; behaviour clean.
 // Registers only, in the inlined clearScreenBits loop.
 void GameView_804A9950::fn_802D9CD8() {
     fn_802D3D48();
@@ -1848,7 +1848,7 @@ GameView_804A9950* getGameView_802D6A9C(void) {
 // tiles in field_0x2948 and, where the screen's mask (getScreenLayerMask_802D7AC4) has their bit set,
 // rewrites them to their other state; layer 8 and up also handle the two-cell and
 // multi-cell pieces. Layers below 8 then copy the "bg_tenso_sch.bin" tiles.
-// FIXME: 92.13 %, missing/extra; behaviour near.
+// FIXME: 97.20 %, missing/extra; behaviour near.
 void GameView_804A9950::fn_802D4CCC(s32 layer) {
     u64 mask = getGameView_802D6A9C()->getScreenLayerMask_802D7AC4(layer);
     field_0x131b8[layer] = 0;
