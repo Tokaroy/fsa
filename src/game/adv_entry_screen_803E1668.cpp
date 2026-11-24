@@ -344,6 +344,42 @@ static inline void updateHandicapCursor(AdvEntryScreen_804B0B00* self, s32 i) {
     }
 }
 
+static inline void updateRupeeDigits(AdvEntryScreen_804B0B00* self, s32 i) {
+    s32 rupees = fn_80403070(self->field_0x1f0[i]);
+    const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478430[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 100 / 10]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783D0[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783F0[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
+}
+
+static inline void updateMarkerPanes(AdvEntryScreen_804B0B00* self, s32 i) {
+    s32 j;
+    s32 count = fn_8040305C(self->field_0x200[i]) - 1;
+    for (j = 0; j < 6; j++) {
+        if (j < count) {
+            self->field_0x10->search(lbl_80478518[i][j])->show();
+            self->field_0x10->search(lbl_804785D8[i][j])->show();
+            self->field_0x10->search(lbl_80478698[i][j])->hide();
+            self->field_0x10->search(lbl_80478758[i][j])->hide();
+        } else if (j == count) {
+            self->field_0x10->search(lbl_80478518[i][j])->hide();
+            self->field_0x10->search(lbl_804785D8[i][j])->hide();
+            self->field_0x10->search(lbl_80478698[i][j])->show();
+            self->field_0x10->search(lbl_80478758[i][j])->show();
+        } else {
+            self->field_0x10->search(lbl_80478518[i][j])->hide();
+            self->field_0x10->search(lbl_804785D8[i][j])->hide();
+            self->field_0x10->search(lbl_80478698[i][j])->hide();
+            self->field_0x10->search(lbl_80478758[i][j])->hide();
+        }
+    }
+}
+
 // The centre of a pane of field_0xc. Macros: the original evaluates the tag
 // expression (table index, field_0x1bc and all) again for each search, and
 // reads the size before the second search (as in game/connect_screen_803F0A54.cpp).
@@ -1831,9 +1867,6 @@ void AdvEntryScreen_804B0B00::fn_803E8210() {
     }
 }
 
-// FIXME: 95.41 %, missing/extra; behaviour drift.
-// 4 fewer instrs (1492 vs 1496): register allocation and loop
-// induction pointers across the per-player button and marker loops.
 void AdvEntryScreen_804B0B00::fn_803E6AB0() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x254[i] != 0) {
@@ -1846,10 +1879,9 @@ void AdvEntryScreen_804B0B00::fn_803E6AB0() {
             if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x1000)) {
                 if (field_0x1c0[0] == 4 && field_0x1c0[1] == 4 && field_0x1c0[2] == 4 && field_0x1c0[3] == 4) {
                     field_0x1b8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 k = 0; k < 4; k++) {
+                        setBounce(this, k);
+                    }
                     if (field_0x26e == 0) {
                         field_0x1dc = 9;
                         field_0x26e = 1;
@@ -1872,10 +1904,9 @@ void AdvEntryScreen_804B0B00::fn_803E6AB0() {
             } else if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100)) {
                 if (field_0x1c0[0] == 4 && field_0x1c0[1] == 4 && field_0x1c0[2] == 4 && field_0x1c0[3] == 4) {
                     field_0x1b8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 k = 0; k < 4; k++) {
+                        setBounce(this, k);
+                    }
                     if (field_0x26e == 0) {
                         field_0x1dc = 9;
                         field_0x26e = 1;
@@ -1892,33 +1923,23 @@ void AdvEntryScreen_804B0B00::fn_803E6AB0() {
                     gAudioMgr_8053AF80->playSystemSound_80458880(11, -1);
                     if (field_0x1c0[0] == 4 && field_0x1c0[1] == 4 && field_0x1c0[2] == 4 && field_0x1c0[3] == 4) {
                         field_0x1b8 = 0;
-                        setBounce(this, 0);
-                        setBounce(this, 1);
-                        setBounce(this, 2);
-                        setBounce(this, 3);
+                        for (s32 k = 0; k < 4; k++) {
+                            setBounce(this, k);
+                        }
                         if (field_0x26e == 0) {
                             field_0x1dc = 9;
                             field_0x26e = 1;
                         }
                         return;
                     }
-                } else {
+                } else if (field_0x1c0[i] < 3) {
                     switch (field_0x1c0[i]) {
                     case 0: {
                         field_0x1f0[i]++;
                         if (field_0x1f0[i] > 3) {
                             field_0x1f0[i] = 0;
                         }
-                        s32 rupees = fn_80403070(field_0x1f0[i]);
-                        const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80478430[i]))->changeTexture(tex, 0);
-                        tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 100 / 10]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_804783D0[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_804783F0[i]))->changeTexture(tex, 0);
-                        tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
+                        updateRupeeDigits(this, i);
                         gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
                         break;
                     }
@@ -1927,25 +1948,7 @@ void AdvEntryScreen_804B0B00::fn_803E6AB0() {
                         if (field_0x200[i] > 2) {
                             field_0x200[i] = 0;
                         }
-                        s32 count = fn_8040305C(field_0x200[i]) - 1;
-                        for (s32 j = 0; j < 6; j++) {
-                            if (j < count) {
-                                field_0x10->search(lbl_80478518[i][j])->show();
-                                field_0x10->search(lbl_804785D8[i][j])->show();
-                                field_0x10->search(lbl_80478698[i][j])->hide();
-                                field_0x10->search(lbl_80478758[i][j])->hide();
-                            } else if (j == count) {
-                                field_0x10->search(lbl_80478518[i][j])->hide();
-                                field_0x10->search(lbl_804785D8[i][j])->hide();
-                                field_0x10->search(lbl_80478698[i][j])->show();
-                                field_0x10->search(lbl_80478758[i][j])->show();
-                            } else {
-                                field_0x10->search(lbl_80478518[i][j])->hide();
-                                field_0x10->search(lbl_804785D8[i][j])->hide();
-                                field_0x10->search(lbl_80478698[i][j])->hide();
-                                field_0x10->search(lbl_80478758[i][j])->hide();
-                            }
-                        }
+                        updateMarkerPanes(this, i);
                         gAudioMgr_8053AF80->playSystemSound_80458880(0x26, -1);
                         break;
                     }
@@ -1965,10 +1968,9 @@ void AdvEntryScreen_804B0B00::fn_803E6AB0() {
                     field_0x1e0[i] = 30;
                     updateHandicapCursor(this, i);
                 } else {
-                    setBounceIfReady(this, 0);
-                    setBounceIfReady(this, 1);
-                    setBounceIfReady(this, 2);
-                    setBounceIfReady(this, 3);
+                    for (s32 k = 0; k < 4; k++) {
+                        setBounceIfReady(this, k);
+                    }
                     if (field_0x26e == 0) {
                         field_0x1dc = 9;
                         field_0x26e = 1;
@@ -2644,42 +2646,6 @@ void AdvEntryScreen_804B0B00::fn_803E3320() {
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
 // four marker tables, the cursor panes by field_0x1c0[i] (3: joined,
 // 4: not); then the panes start their slide-in.
-static inline void updateRupeeDigits(AdvEntryScreen_804B0B00* self, s32 i) {
-    s32 rupees = fn_80403070(self->field_0x1f0[i]);
-    const ResTIMG* tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478430[i]))->changeTexture(tex, 0);
-    tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 100 / 10]);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783D0[i]))->changeTexture(tex, 0);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783F0[i]))->changeTexture(tex, 0);
-    tex = (const ResTIMG*)getMain2DResource_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
-    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
-}
-
-static inline void updateMarkerPanes(AdvEntryScreen_804B0B00* self, s32 i) {
-    s32 j;
-    s32 count = fn_8040305C(self->field_0x200[i]) - 1;
-    for (j = 0; j < 6; j++) {
-        if (j < count) {
-            self->field_0x10->search(lbl_80478518[i][j])->show();
-            self->field_0x10->search(lbl_804785D8[i][j])->show();
-            self->field_0x10->search(lbl_80478698[i][j])->hide();
-            self->field_0x10->search(lbl_80478758[i][j])->hide();
-        } else if (j == count) {
-            self->field_0x10->search(lbl_80478518[i][j])->hide();
-            self->field_0x10->search(lbl_804785D8[i][j])->hide();
-            self->field_0x10->search(lbl_80478698[i][j])->show();
-            self->field_0x10->search(lbl_80478758[i][j])->show();
-        } else {
-            self->field_0x10->search(lbl_80478518[i][j])->hide();
-            self->field_0x10->search(lbl_804785D8[i][j])->hide();
-            self->field_0x10->search(lbl_80478698[i][j])->hide();
-            self->field_0x10->search(lbl_80478758[i][j])->hide();
-        }
-    }
-}
-
 void AdvEntryScreen_804B0B00::fn_803E2A20() {
     for (s32 i = 0; i < 4; i++) {
         if (i >= 1) {
