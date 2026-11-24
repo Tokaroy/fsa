@@ -25,13 +25,13 @@ static const f32 lbl_8046F834[7] = {1.0f, 1.0f, 1.3f, 1.3f, 1.0f, 1.0f, 1.0f};
 
 // The rotation part of m from Euler angles (R = Rz Ry Rx), as setRotScaleMtx (game/RotMatrix.h)
 // without the scale and with the cosines first (z, y, x, then the sines).
-static inline void setRotMtx(Mtx m, const JGeometry::TVec3f& rot) {
-    f32 cz = cos(rot.z);
-    f32 cy = cos(rot.y);
-    f32 cx = cos(rot.x);
-    f32 sz = sin(rot.z);
-    f32 sy = sin(rot.y);
-    f32 sx = sin(rot.x);
+static inline void setRotMtx(Mtx m, f32 x, f32 y, f32 z) {
+    f32 cz = cos(z);
+    f32 cy = cos(y);
+    f32 cx = cos(x);
+    f32 sz = sin(z);
+    f32 sy = sin(y);
+    f32 sx = sin(x);
     m[0][0] = cy * cz;
     m[1][0] = cy * sz;
     m[2][0] = -sy;
@@ -397,13 +397,14 @@ void TrickFloor2_804AA628::draw() {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    setRotMtx(m, JGeometry::TVec3f(0.0f, field_0x248, 0.0f));
+    setRotMtx(m, 0.0f, field_0x248, 0.0f);
     sp.field_0x1c = -1;
     sp.field_0x1d = -1;
     sp.field_0x21 = 1;
     sp.mMtx = m;
     switch (mType) {
     case 0:
+    default:
         drawSmp(this, &mPos, "floor_smp.bin", &sp);
         break;
     case 1:
@@ -428,13 +429,14 @@ void TrickFloor2_804AA628::draw() {
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
     if (mType == 3 || mType == 4 || mType == 5) {
-        setRotMtx(m, JGeometry::TVec3f(0.0f, 3.1415927f - field_0x248, 0.0f));
+        setRotMtx(m, 0.0f, 3.1415927f - field_0x248, 0.0f);
     } else {
-        setRotMtx(m, JGeometry::TVec3f(0.0f, -field_0x248, 0.0f));
+        setRotMtx(m, 0.0f, -field_0x248, 0.0f);
     }
     sp.mMtx = m;
     switch (mType) {
-    case 0: {
+    case 0:
+    default: {
         JGeometry::TVec3f pos(64.0f + mPos.x - 32.0f * JMath::sincosTable_.cosRadian(-field_0x248),
                               32.0f * JMath::sincosTable_.sinRadian(field_0x248) + mPos.y, mPos.z);
         drawSmp(this, &pos, "floor_smp.bin", &sp);
