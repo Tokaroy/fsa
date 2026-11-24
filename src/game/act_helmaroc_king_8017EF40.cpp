@@ -9,17 +9,10 @@
 #include "std/math.h"
 #include "game/RotMatrix.h"
 #include "game/SpriteParams.h"
+#include "game/ViewLayer.h"
 #include "game/act/act_sword_soldier.h"
 #include "game/act/act_wizzrobe.h"
 #include "game/act/act_phantom_ganon_8017C01C.h"
-
-// FIXME(shotgun): draw's texture tables, inside the lbl_804A1440 block (.data 0x804A1460 on):
-// texture names and y offsets by frame, a set for the normal states and one for states 9
-// and 15. Extern-declared under their addresses; sizes from the gaps between them.
-extern const char* const lbl_804A1460[30];
-extern const f32 lbl_804A14D8[30];
-extern const char* const lbl_804A1550[28];
-extern const f32 lbl_804A15C0[28];
 
 // setRotScaleMtx with a scale per axis (draw mirrors the sprite with x = -1).
 static inline void setRotScaleMtx3(Mtx m, const JGeometry::TVec3f& rot, f32 sx, f32 sy, f32 sz) {
@@ -40,8 +33,6 @@ static inline void setRotScaleMtx3(Mtx m, const JGeometry::TVec3f& rot, f32 sx, 
     m[2][2] = sz * (cosx * cosy);
 }
 
-// The marker frames of the SHA actor (.data 0x804A1440, not written as source here), by row.
-extern const s32 lbl_804A1440[];
 extern s32 lbl_80539F98;
 extern s32 lbl_80539F9C;
 extern s32 lbl_80539FA0;
@@ -58,6 +49,44 @@ static f32 lbl_804A13F0[2][2] = {{24.0f, -8.0f}, {-24.0f, -8.0f}};
 static s32 lbl_804A1400[8] = {0, 1, 0, 1, 8, 9, 8, 9};
 static s32 lbl_804A1420[4] = {30, 10, 10, 10};
 static s32 lbl_804A1430[4] = {2, 3, 10, 11};
+
+// The marker frames of the SHA actor, by row.
+static s32 lbl_804A1440[8] = {0x3C, 0x3D, 0x3E, 0x3F, 0x302, 0x308, 0x30E, 0x314};
+
+// draw's texture names and y offsets by frame: a set for the normal states and one for
+// states 9 and 15.
+static const char* lbl_804A1460[30] = {
+    "fly_0001.bti", "fly_0003.bti", "fly_0005.bti", "fly_0007.bti",
+    "fly_0009.bti", "fly_0011.bti", "fly_0013.bti", "fly_0015.bti",
+    "fly_0017.bti", "fly_0019.bti", "fly_0021.bti", "fly_0023.bti",
+    "fly_0025.bti", "fly_0027.bti", "fly2_0001.bti", "fly2_0003.bti",
+    "fly2_0005.bti", "fly2_0007.bti", "fly2_0009.bti", "fly2_0011.bti",
+    "fly2_0013.bti", "fly2_0015.bti", "fly2_0017.bti", "fly2_0019.bti",
+    "fly2_0021.bti", "fly2_0023.bti", "fly2_0025.bti", "fly2_0027.bti",
+    "fly_0025_geki.bti", "fly_0027_geki.bti",
+};
+static f32 lbl_804A14D8[30] = {
+    -32.0f, -32.0f, -32.0f, 0.0f, 32.0f, 32.0f, 32.0f,
+    32.0f, 32.0f, 32.0f, 32.0f, 0.0f, 0.0f, 0.0f,
+    -32.0f, -32.0f, -32.0f, 0.0f, 32.0f, 32.0f, 32.0f,
+    32.0f, 32.0f, 32.0f, 32.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f,
+};
+static const char* lbl_804A1550[28] = {
+    "damage1_1_0001.bti", "damage1_1_0003.bti", "damage1_1_0005.bti", "damage1_1_0007.bti",
+    "damage1_1_0009.bti", "damage1_1_0011.bti", "damage1_1_0013.bti", "damage1_1_0015.bti",
+    "damage1_1_0017.bti", "damage1_1_0019.bti", "damage1_1_0021.bti", "damage1_1_0023.bti",
+    "damage1_1_0025.bti", "damage1_1_0027.bti", "damage1_2_0001.bti", "damage1_2_0003.bti",
+    "damage1_2_0005.bti", "damage1_2_0007.bti", "damage1_2_0009.bti", "damage1_2_0011.bti",
+    "damage1_2_0013.bti", "damage1_2_0015.bti", "damage1_2_0017.bti", "damage1_2_0019.bti",
+    "damage1_2_0021.bti", "damage1_2_0023.bti", "damage1_2_0025.bti", "damage1_2_0027.bti",
+};
+static f32 lbl_804A15C0[28] = {
+    -32.0f, 0.0f, 0.0f, 32.0f, 32.0f, 0.0f, 0.0f,
+    0.0f, -32.0f, -32.0f, 32.0f, 32.0f, 32.0f, 0.0f,
+    -32.0f, 0.0f, 0.0f, 32.0f, 32.0f, 0.0f, 0.0f,
+    0.0f, -32.0f, -32.0f, 32.0f, 32.0f, 32.0f, 0.0f,
+};
 
 u8 fn_8017ECC0();
 void fn_8017ED08();
@@ -109,7 +138,6 @@ JGeometry::TVec3f* fn_80182640(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
 
 #pragma auto_inline reset
 
-// FIXME(shotgun): 99.89 %, reloc-name; behaviour drift.
 void HelmarocKing_804A1630::init() {
     mSpawnParam_0x90 &= 0xF;
     field_0x94 = 0;
@@ -282,22 +310,22 @@ HelmarocKing_804A1630::~HelmarocKing_804A1630() {
     }
 }
 
-// FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
 void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
+    s32 rowIdx = row;
     s32 frame = 0;
     for (s32 i = 0; i < 4; i++) {
         if (!isPlayerActive_8023F264(i)) {
             continue;
         }
-        if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+        if (getField_0x4() != getPlayerLayer_8023DE58(i)) {
             continue;
         }
         switch (mode) {
         case 0:
             if (getPlayerPos_8023E724(i)->x < mPos.x) {
-                row = 0;
+                rowIdx = 0;
             } else {
-                row = 1;
+                rowIdx = 1;
             }
             field_0x2f4[i] = 0;
             field_0x294[i].set(*getPlayerPos_8023E724(i));
@@ -308,7 +336,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             break;
         case 1:
             if (field_0x304[i] == 1) {
-                row += 4;
+                rowIdx = row + 4;
             }
             if (field_0x2f4[i] < 4) {
                 frame = 0;
@@ -325,7 +353,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             } else {
                 field_0x2f4[i] = 20;
                 frame = 0;
-                row = 3;
+                rowIdx = 3;
             }
             addCalc2_801F71A4(&field_0x294[i].y, field_0x2c4[i].y, 0.3f, 1.0f);
             if (field_0x304[i] == 0) {
@@ -343,12 +371,12 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             break;
         }
         if (mode == 0 || field_0x304[i] == 1) {
-            fn_80230498(i, &field_0x294[i], frame + lbl_804A1440[row], 0xFF, -0x80, -0x80, true);
+            fn_80230498(i, &field_0x294[i], frame + lbl_804A1440[rowIdx], 0xFF, -0x80, -0x80, true);
         }
     }
 }
 
-// FIXME(shotgun): 98.98 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.96 %, missing/extra; behaviour near.
 // Still differs: the original calls the TBox2 copy constructor of box40 out of line; ours inlines it.
 void HelmarocKing_804A1630::update() {
     JGeometry::TBox2f box40(mBox);
@@ -954,7 +982,7 @@ void HelmarocKing_804A1630::update() {
         }
         mPos.x = field_0x288.x + lbl_804A13E0[mDir_0x98][0];
         mPos.y = field_0x288.y + lbl_804A13E0[mDir_0x98][1];
-        if (lbl_8053AB70 == (s32)mSpawnParam_0x90) {
+        if (lbl_8053AB70 == mSpawnParam_0x90) {
             field_0x238 = 1000;
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 field_0x238 = 240;
@@ -1199,7 +1227,7 @@ void HelmarocKing_804A1630::update() {
 }
 
 // 0x8017EF98.
-// FIXME(shotgun): 91.71 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.94 %, scheduling+regalloc; behaviour clean.
 void HelmarocKing_804A1630::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1231,27 +1259,26 @@ void HelmarocKing_804A1630::draw() {
         drawSpriteRes_801EFD34(res, &params, -1, x, -6.0f, 0.0f);
         return;
     }
-    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4]) {
-        u32 kind = mSpawnParam_0x90;
-        if (kind == 8) {
+    if (viewLayerFlag(mLayer_0x4)) {
+        if (mSpawnParam_0x90 == 8) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
                 showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
             }
             return;
         }
-        if (kind == 4 || kind == 5) {
-            if (lbl_8053AB70 == kind) {
+        if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5) {
+            if (lbl_8053AB70 == getField_0x90()) {
                 fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x29, 0, 0, -1);
             }
             return;
         }
-        if (kind == 10) {
+        if (mSpawnParam_0x90 == 10) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
                 showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
             }
             return;
         }
-        if (kind == 9) {
+        if (mSpawnParam_0x90 == 9) {
             if (field_0x250 == 0 || !(field_0x24c & 2)) {
                 showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + 0x192, 0, 2, -1, true, 0, 0);
                 mPos.x = saved.x;
@@ -1280,17 +1307,18 @@ void HelmarocKing_804A1630::draw() {
         return;
     }
     JGeometry::TVec3f rot(0.0f, 0.0f, 0.0f);
-    s32 frame = field_0x26c;
+    s32 anim = field_0x26c;
+    s32 frame = anim;
     if (lbl_80539F98 <= 0) {
-        frame = field_0x26c + 0xE;
+        frame = anim + 0xE;
     }
     void* res;
     f32 offset;
     if (mState != 9 && mState != 15) {
         if (mState == 12) {
-            if (field_0x26c == 12) {
+            if (anim == 12) {
                 frame = 0x1C;
-            } else if (field_0x26c == 13) {
+            } else if (anim == 13) {
                 frame = 0x1D;
             }
         }
@@ -1321,15 +1349,16 @@ void HelmarocKing_804A1630::draw() {
     params.field_0x10.b = 0xFF;
     params.field_0x10.a = 0xFF;
     setRotScaleMtx(mtx, rot, 1.0f);
-    frame = field_0x26c;
+    anim = field_0x26c;
+    frame = anim;
     if (lbl_80539F98 <= 0) {
-        frame = field_0x26c + 0xE;
+        frame = anim + 0xE;
     }
     if (mState != 9 && mState != 15) {
         if (mState == 12) {
-            if (field_0x26c == 12) {
+            if (anim == 12) {
                 frame = 0x1C;
-            } else if (field_0x26c == 13) {
+            } else if (anim == 13) {
                 frame = 0x1D;
             }
         }
@@ -1340,10 +1369,10 @@ void HelmarocKing_804A1630::draw() {
         offset = lbl_804A15C0[frame];
     }
     params.field_0x1d = 1;
-    if (mState == 15) {
-        params.field_0x1d = 0;
-    } else {
+    if (mState != 15) {
         params.field_0x1f = 0;
+    } else {
+        params.field_0x1d = 0;
     }
     if (mDir_0x98 == 0) {
         setRotScaleMtx3(mtx, rot, -1.0f, 1.0f, 1.0f);
