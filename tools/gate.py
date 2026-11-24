@@ -17,6 +17,8 @@ Checks (see docs/PLAN.md, "Submission gate"):
     renamed, resized or split into the real symbols they cover;
   * no unit marked Matching contains a fakematch (FakeMatch headers,
     force_order dummies, "fakematch" comments), donor-imported or not;
+  * every #ifdef __MWERKS__ block holding asm in compiled code has an #else
+    portable body (tools/asm_else_check.py, docs/PORTABLE.md);
   * every unit marked Matching has source and a compiled object (configure.py
     would otherwise link dtk's split of the original in its place) and is
     100 % in code and data in the honest report
@@ -1491,6 +1493,17 @@ def check_gen_game(problems):
         problems.append("tools/gen_game.py --check failed:\n" + "\n".join(lines[:40]))
 
 
+def check_asm_else(problems):
+    """Every #ifdef __MWERKS__ block with asm in code the build compiles has an
+    #else portable body (tools/asm_else_check.py, docs/PORTABLE.md). Reads
+    ninja's dependency data, so it runs after check_report."""
+    out = subprocess.run([sys.executable, "tools/asm_else_check.py"], capture_output=True, text=True)
+    if out.returncode != 0:
+        flagged = [l for l in out.stdout.splitlines() if "has no #else" in l]
+        problems.append("MWERKS-only asm without a portable #else (tools/asm_else_check.py):\n"
+                        + "\n".join(flagged[:40]))
+
+
 def check_link(problems):
     """Every Matching unit must link: main.dol's SHA-1 must equal build.sha1."""
     out = ninja("build/G4SE01/ok")
@@ -1532,6 +1545,7 @@ def main():
     check_configure(problems)
     check_report(problems)
     check_gen_game(problems)
+    check_asm_else(problems)
     if not args.no_link:
         check_link(problems)
     check_fakematch(problems)
