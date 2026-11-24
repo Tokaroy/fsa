@@ -140,6 +140,8 @@ void IronPot_804A5418::updateState_0x90(u8 mapHit) {
             fn_801E728C(1);
         }
         break;
+    case 1:
+        break;
     }
 }
 
