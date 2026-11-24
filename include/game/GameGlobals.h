@@ -1909,6 +1909,8 @@ struct GameRootSub24_8016A3AC {
     // 0x8016EE84 (game/game_root_sub_24_8016A2B4.cpp): deletes the entries' emitters and
     // sound objects, the emitters, the textures, and destroys the heap.
     // GameRootSub04_801F856C's destructor deletes mMoyaBrk_0x24 with it.
+    // Inline: callers load the object first and the constant after (bl fn_8016A3AC; li; stb 0x1ee).
+    void setField_0x1ee(u8 value) { field_0x1ee = value; }
     ~GameRootSub24_8016A3AC();
 };
 // game/game_root_sub_24_8016A2B4.cpp (0x8016A3AC): returns gGameRoot_8053AAF8->field_0x4->field_0x24.

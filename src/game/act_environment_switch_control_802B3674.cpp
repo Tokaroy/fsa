@@ -281,7 +281,7 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x10() {
 
 // FIXME(shotgun): 87.08 %, missing/extra; behaviour near.
 EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
-    fn_8016A3AC()->field_0x1ee = 0;
+    fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
     }
@@ -291,7 +291,9 @@ EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
     if (mEmitter != NULL) {
         releaseEmitter_801EE434(mEmitter);
     }
-    delete mSoundObj;
+    if (mSoundObj != NULL) {
+        delete mSoundObj;
+    }
 }
 
 // 0x802B3AB8.
@@ -327,7 +329,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         fn_8016A3AC()->field_0x1c7 = 1;
     }
     if (field_0x274 != 0) {
-        fn_8016A3AC()->field_0x1ee = 0xFF;
+        fn_8016A3AC()->setField_0x1ee(0xFF);
         if (gGameRoot_8053AAF8->field_0x4c != 0xB) {
             mSoundObj->startSound(0x3001F);
         }
@@ -906,7 +908,7 @@ void EnvironmentSwitchControl_804A8638::draw() {}
 // 0x802B3A48.
 // FIXME(shotgun): 84.07 %, missing/extra; behaviour clean.
 void EnvironmentSwitchControl_804A8638::fn_802B3A48() {
-    fn_8016A3AC()->field_0x1ee = 0;
+    fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
     }
