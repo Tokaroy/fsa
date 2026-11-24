@@ -90,7 +90,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     markRandomCucco(serials, count);
 }
 
-// FIXME(shotgun): 95.91 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.34 %, missing/extra + reloc-name; behaviour near.
 void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -531,7 +531,6 @@ void CuccoHerdingNPC_804AC8C0::pool_80542558() {
 }
 
 // 0x8034AFE8.
-// FIXME(shotgun): 99.25 %, same-text; behaviour clean.
 void CuccoHerdingNPC_804AC8C0::draw() {
     const char* name;
     s32 frame;
@@ -552,7 +551,6 @@ void CuccoHerdingNPC_804AC8C0::draw() {
 static const s32 lbl_80472158[3] = {10, 5, 1};
 
 // The box is built in a temporary and copied, as in the original. Literal pool names differ.
-// FIXME: 99.26 %, missing/extra; behaviour near.
 void CuccoHerdingNPC_804AC8C0::fn_8034ACF4() {
     JGeometry::TBox2f box;
     box = JGeometry::TBox2f(9.0f, -7.0f, 103.0f, 87.0f);
