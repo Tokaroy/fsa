@@ -32,7 +32,7 @@
 <!-- treemap:start -->
 <p align="center">
 <a href="https://sh1ftmaker.github.io/fsa/#/game/game-player" title="Player: 71.9 % of 407,528 bytes matched, 1,002 / 1,054 functions. Open it on the progress site."><img src="site/badges/treemap/player.svg" width="11.4%" alt="Player: 71.9 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-enemies" title="Enemies &amp; bosses: 41.8 % of 679,252 bytes matched, 1,053 / 1,339 functions. Open it on the progress site."><img src="site/badges/treemap/enemies.svg" width="19%" alt="Enemies &amp; bosses: 41.8 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-npcs" title="NPCs: 50.2 % of 291,360 bytes matched, 490 / 594 functions. Open it on the progress site."><img src="site/badges/treemap/npcs.svg" width="8.15%" alt="NPCs: 50.2 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-objects" title="Objects &amp; gimmicks: 45.6 % of 900,452 bytes matched, 1,193 / 1,518 functions. Open it on the progress site."><img src="site/badges/treemap/objects.svg" width="25.02%" alt="Objects &amp; gimmicks: 45.6 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-stage" title="Stage &amp; world: 30.9 % of 182,272 bytes matched, 225 / 311 functions. Open it on the progress site."><img src="site/badges/treemap/stage.svg" width="5.1%" alt="Stage &amp; world: 30.9 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-menus" title="Menus &amp; screens: 56.1 % of 801,312 bytes matched, 710 / 863 functions. Open it on the progress site."><img src="site/badges/treemap/menus.svg" width="22.42%" alt="Menus &amp; screens: 56.1 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-core" title="Game core: 72.7 % of 198,580 bytes matched, 712 / 773 functions. Open it on the progress site."><img src="site/badges/treemap/core.svg" width="5.55%" alt="Game core: 72.7 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/game/game-media" title="Media &amp; link: 50.5 % of 113,028 bytes matched, 302 / 337 functions. Open it on the progress site."><img src="site/badges/treemap/media.svg" width="3.16%" alt="Media &amp; link: 50.5 % matched"></a><br>
-<a href="https://sh1ftmaker.github.io/fsa/#/jsystem" title="JSystem: 97.9 % of 630,852 bytes matched, 3,651 / 3,702 functions. Open it on the progress site."><img src="site/badges/treemap/jsystem.svg" width="72.47%" alt="JSystem: 97.9 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/sdk" title="Dolphin SDK: 100 % of 131,224 bytes matched, 610 / 610 functions. Open it on the progress site."><img src="site/badges/treemap/sdk.svg" width="15.11%" alt="Dolphin SDK: 100 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/runtime" title="MSL, Runtime, TRK: 90.0 % of 72,512 bytes matched, 281 / 284 functions. Open it on the progress site."><img src="site/badges/treemap/runtime.svg" width="8.35%" alt="MSL, Runtime, TRK: 90.0 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/gx" title="GX: 100 % of 33,660 bytes matched, 172 / 172 functions. Open it on the progress site."><img src="site/badges/treemap/gx.svg" width="3.87%" alt="GX: 100 % matched"></a><br>
+<a href="https://sh1ftmaker.github.io/fsa/#/jsystem" title="JSystem: 98.0 % of 630,852 bytes matched, 3,653 / 3,702 functions. Open it on the progress site."><img src="site/badges/treemap/jsystem.svg" width="72.47%" alt="JSystem: 98.0 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/sdk" title="Dolphin SDK: 100 % of 131,224 bytes matched, 610 / 610 functions. Open it on the progress site."><img src="site/badges/treemap/sdk.svg" width="15.11%" alt="Dolphin SDK: 100 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/runtime" title="MSL, Runtime, TRK: 90.5 % of 72,512 bytes matched, 282 / 284 functions. Open it on the progress site."><img src="site/badges/treemap/runtime.svg" width="8.35%" alt="MSL, Runtime, TRK: 90.5 % matched"></a><a href="https://sh1ftmaker.github.io/fsa/#/gx" title="GX: 100 % of 33,660 bytes matched, 172 / 172 functions. Open it on the progress site."><img src="site/badges/treemap/gx.svg" width="3.87%" alt="GX: 100 % matched"></a><br>
 <a href="https://sh1ftmaker.github.io/fsa/#treemap" title="Open the interactive treemap"><img src="site/badges/treemap/legend.svg" width="100%" alt="area = bytes of code, fill = matched"></a>
 </p>
 <!-- treemap:end -->
@@ -48,10 +48,10 @@ game code in its eight categories, the bottom row the libraries. Click a block t
 <!-- progress:start -->
 As of 2026-11-24:
 
-- **Structural progress: 84.36 %** (3,747,438 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
-- **Matched code: 60.54 %** (2,689,276 of 4,442,032 bytes), **10,401 / 11,557** functions fully matched.
-- **Structurally matched:** 11,004 / 11,557 functions (same instructions, register or order differences only), +227 close.
-- **489 of 903** split units are Matching, and `main.dol` built from them links byte-identically (SHA-1 OK).
+- **Structural progress: 84.37 %** (3,747,894 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
+- **Matched code: 60.55 %** (2,689,732 of 4,442,032 bytes), **10,404 / 11,557** functions fully matched.
+- **Structurally matched:** 11,007 / 11,557 functions (same instructions, register or order differences only), +227 close.
+- **490 of 904** split units are Matching, and `main.dol` built from them links byte-identically (SHA-1 OK).
 <!-- progress:end -->
 
 <picture>
@@ -67,14 +67,14 @@ other decompilations and finished file by file. What is left is a few dozen
 holdouts.
 
 <!-- libraries:start -->
-Of 868,248 bytes of library code: **98.6 %** structural progress, **97.7 %** matched code; **4,714 / 4,768** functions fully matched.
+Of 868,248 bytes of library code: **98.7 %** structural progress, **97.7 %** matched code; **4,717 / 4,768** functions fully matched.
 
 | Library | Code matched | Functions | Left |
 |---|--:|--:|--:|
 | [Dolphin SDK](https://sh1ftmaker.github.io/fsa/#/sdk) | 100 % of 131,224 bytes | 610 / 610 | – |
 | [GX](https://sh1ftmaker.github.io/fsa/#/gx) | 100 % of 33,660 bytes | 172 / 172 | – |
-| [JSystem](https://sh1ftmaker.github.io/fsa/#/jsystem) | 97.9 % of 630,852 bytes | 3,651 / 3,702 | 51 |
-| [MSL, Runtime, TRK](https://sh1ftmaker.github.io/fsa/#/runtime) | 90.0 % of 72,512 bytes | 281 / 284 | 3 |
+| [JSystem](https://sh1ftmaker.github.io/fsa/#/jsystem) | 98.0 % of 630,852 bytes | 3,653 / 3,702 | 49 |
+| [MSL, Runtime, TRK](https://sh1ftmaker.github.io/fsa/#/runtime) | 90.5 % of 72,512 bytes | 282 / 284 | 2 |
 
 <details><summary>Every library</summary>
 
@@ -108,7 +108,7 @@ Of 868,248 bytes of library code: **98.6 %** structural progress, **97.7 %** mat
 | Library | Code matched | Functions |
 |---|--:|--:|
 | [J3D](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-j3d) | 98.2 % of 173,328 bytes | 1,166 / 1,191 |
-| [J2DGraph](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-j2dgraph) | 97.1 % of 159,196 bytes | 878 / 887 |
+| [J2DGraph](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-j2dgraph) | 97.1 % of 159,196 bytes | 879 / 887 |
 | [JAudio](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jaudio) | 96.7 % of 120,700 bytes | 747 / 755 |
 | [JKernel](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jkernel) | 99.3 % of 55,724 bytes | 325 / 327 |
 | [JParticle](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jparticle) | 98.7 % of 54,360 bytes | 200 / 202 |
@@ -116,7 +116,7 @@ Of 868,248 bytes of library code: **98.6 %** structural progress, **97.7 %** mat
 | [JMessage](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jmessage) | 100 % of 7,936 bytes | 79 / 79 |
 | [JFramework](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jframework) | 100 % of 7,092 bytes | 21 / 21 |
 | [JSupport](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jsupport) | 100 % of 3,264 bytes | 29 / 29 |
-| [JMath](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jmath) | 96.5 % of 1,256 bytes | 6 / 7 |
+| [JMath](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jmath) | 100 % of 1,256 bytes | 7 / 7 |
 | [JGadget](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jgadget) | 100 % of 936 bytes | 10 / 10 |
 | [JStudio\_JParticle](https://sh1ftmaker.github.io/fsa/#/jsystem/jsystem-jstudio-jparticle) | 0 % of 16 bytes | 0 / 4 |
 
@@ -126,7 +126,7 @@ Of 868,248 bytes of library code: **98.6 %** structural progress, **97.7 %** mat
 
 | Library | Code matched | Functions |
 |---|--:|--:|
-| [MSL\_C](https://sh1ftmaker.github.io/fsa/#/runtime/runtime-msl-c) | 79.4 % of 35,380 bytes | 83 / 86 |
+| [MSL\_C](https://sh1ftmaker.github.io/fsa/#/runtime/runtime-msl-c) | 80.5 % of 35,380 bytes | 84 / 86 |
 | [MetroTRK](https://sh1ftmaker.github.io/fsa/#/runtime/runtime-metrotrk) | 100 % of 33,288 bytes | 165 / 165 |
 | [Runtime](https://sh1ftmaker.github.io/fsa/#/runtime/runtime-runtime) | 100 % of 3,844 bytes | 33 / 33 |
 
@@ -189,7 +189,7 @@ same symbols too. They are regenerated with every merge; see
 </picture>
 
 <!-- now:start -->
-- **Now** (phase 2): **Library holdouts.** About fifty JSystem functions that resist (register allocation and J3DMatBlock's word copies, tagged with FIXMEs) and MSL's ansi_fp and strtoul. Most go to the crack pass. Currently 98.6 % of the functions matched.
+- **Now** (phase 2): **Library holdouts.** About fifty JSystem functions that resist (register allocation and J3DMatBlock's word copies, tagged with FIXMEs) and MSL's ansi_fp and strtoul. Most go to the crack pass. Currently 98.7 % of the functions matched.
 - **Now** (phase 3): **Waves of small-function units.** One agent per file, one reviewer per wave. Actor waves, the ActorManager spawner (tu_801F9484, 322 functions) and many small units are merged; recurring shapes are in the rules card. Currently 83.8 % of the functions matched.
 - **Now** (phase 3): **Big functions, structure first.** Write a big function before it reaches 100 %, merge it when it is structurally done or close, so the literal pool, field offsets and callee names settle (docs/RULES_CARD.md). Just started on the file select, game mode screen and GBA link units.
 - **Now** (phase 4): **Boot to main menu.** main(), the framework, the THP movie player (162 of 168 functions), the title screen and the screens built at boot (file select, the game mode screen, the GBA link manager). Currently 54.6 % of the code matched.
