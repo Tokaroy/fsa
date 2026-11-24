@@ -3,6 +3,7 @@
 #include "game/GameGlobals.h"
 #include "game/Player.h"
 #include "game/act/act_okame_san_801AE9C4.h"
+#include "std/math.h"
 
 
 // TIMG names indexed by field_0x24c. Not const: the table sits in .data.
@@ -29,7 +30,7 @@ void OkameSan_804A3448::setState_801AF7D0(s32 state) {
 
     field_0x258 = state;
     field_0x25c = 0;
-    field_0x234 = 0;
+    field_0x234[0] = 0;
     field_0x240 = 0;
 
     switch (field_0x258) {
@@ -80,13 +81,13 @@ void OkameSan_804A3448::setState_801AF7D0(s32 state) {
 }
 
 void OkameSan_804A3448::fn_801AF678() {
-    if (field_0x234 != 0) {
+    if (field_0x234[0] != 0) {
         return;
     }
 
     field_0x24c = field_0x254;
     field_0x24c += field_0x240;
-    field_0x234 = 5;
+    field_0x234[0] = 5;
 
     switch (field_0x258) {
     case 0:
@@ -219,9 +220,9 @@ void OkameSan_804A3448::init() {
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
 
     if (gGameRoot_8053AAF8->getPlayerCount_80138A30() <= 1) {
         s32 k = (mSpawnParam_0x90 >> 8) & 0xF;
@@ -274,7 +275,7 @@ void OkameSan_804A3448::update() {
     addCalc2_801F71A4(&field_0x270, field_0x27c, 0.5f, 1.0f);
     mPos += mVel_0x3c;
     fn_801AF1EC();
-    bool hit = sweepMapBox_801F2618(NULL, false);
+    u8 hit = sweepMapBox_801F2618(NULL, false);
 
     switch (field_0x230) {
     case 0:
@@ -282,8 +283,8 @@ void OkameSan_804A3448::update() {
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
         field_0x260 = 0.0f;
-        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
-        field_0x238 = 0;
+        mVel_0x3c.zero();
+        field_0x234[1] = 0;
         field_0x230 = 1;
         // fall through
     case 1:
@@ -298,17 +299,17 @@ void OkameSan_804A3448::update() {
             break;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
                 !fn_80230188(i) && !fn_8022DCD8(i)) {
-                f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
-                f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
-                s32 vertical = (mDir_0x98 & 2) != 0;
+                f32 dx = std::fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
+                f32 dy = std::fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
+                s32 vertical = mDir_0x98 & 2;
                 if ((!vertical && dy < 16.0f) || (vertical && dx < 16.0f)) {
                     JGeometry::TVec3f out1;
                     JGeometry::TVec3f out2;
                     if (!fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(i), &mBox2, &out1, &out2, false)) {
                         if (field_0x244 < 0 || field_0x244 == i) {
-                            if (field_0x238 != 0) {
+                            if (field_0x234[1] != 0) {
                                 break;
                             }
                             field_0x244 = i;
@@ -331,7 +332,7 @@ void OkameSan_804A3448::update() {
                             } else {
                                 setState_801AF7D0(5);
                             }
-                            field_0x238 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                            field_0x234[1] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
                             break;
                         }
                     }
@@ -356,7 +357,7 @@ void OkameSan_804A3448::update() {
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
         field_0x260 = 0.0f;
-        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.zero();
         field_0x230 = 3;
         // fall through
     case 3:
@@ -367,14 +368,10 @@ void OkameSan_804A3448::update() {
     }
 
     fn_801AF678();
-    if (field_0x234 > 0) {
-        field_0x234--;
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
+    for (s32 i = 0; i < 3; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+        }
     }
 }
 
