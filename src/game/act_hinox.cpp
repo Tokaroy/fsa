@@ -148,7 +148,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
     return 0;
 }
 
-// FIXME(shotgun): 99.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.28 %, scheduling+regalloc; behaviour drift.
 void Hinox_8049F9B4::update() {
     JGeometry::TVec3f pos = mPos;
     s32 playerDir = 0;
@@ -301,12 +301,12 @@ void Hinox_8049F9B4::update() {
             field_0x274 = 0.0f;
             field_0x270 = 0.0f;
             if ((field_0x248 & 1) == 0) {
-                s32 moveAngle = (s16)((mDir_0x98 & 1) << 15);
+                s16 moveAngle = (mDir_0x98 & 1) << 15;
                 field_0x270 = 1.2f * JMath::sincosTable_.sinShort(moveAngle);
                 if (field_0x248 == 0) {
                     field_0x24c++;
                     if (field_0x24c > 2) {
-                        moveAngle += (s32)(12288.0f - 24576.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                        moveAngle += (s16)(12288.0f - 24576.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                         field_0x24c = 0;
                     }
                 }
