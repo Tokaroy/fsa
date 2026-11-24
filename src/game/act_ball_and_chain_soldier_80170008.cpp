@@ -54,6 +54,7 @@ void BallAndChainSoldier_804A0810::init() {
     for (s32 i = 0; i < 10; i++) {
         field_0x29c[i] = mPos;
     }
+    field_0x314 = mPos;
     field_0x290[2] = 0.0f;
     field_0x290[1] = 0.0f;
     field_0x290[0] = 0.0f;
@@ -97,6 +98,14 @@ void BallAndChainSoldier_804A0810::init() {
     case 0:
         field_0x250 = 0x190;
         break;
+    case 3:
+        field_0x274 = 6;
+        mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+        field_0x250 = 100;
+        field_0x27c = 1.0f;
+        field_0x288 = 10.0f;
+        field_0x230 = 2;
+        break;
     case 1:
         field_0x274 = 4;
         field_0x27c = 1.0f;
@@ -105,14 +114,6 @@ void BallAndChainSoldier_804A0810::init() {
         break;
     case 2:
         field_0x274 = 2;
-        break;
-    case 3:
-        field_0x274 = 6;
-        mTimers[2] = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
-        field_0x250 = 100;
-        field_0x27c = 1.0f;
-        field_0x288 = 10.0f;
-        field_0x230 = 2;
         break;
     case 4:
         mTimers[2] = 50;
