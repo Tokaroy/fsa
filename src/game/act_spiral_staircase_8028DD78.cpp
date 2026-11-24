@@ -3,6 +3,7 @@
 #include "game/Player.h"
 #include "game/GameGlobals.h"
 #include "game/cls_804AE9B0.h"
+#include "game/ViewLayer.h"
 
 void SpiralStaircase_804A7A68::init() {
     switch (mSpawnParam_0x90 & 0xF) {
@@ -85,6 +86,8 @@ static inline s32 kind(u32 f) {
 }
 
 // FIXME(shotgun): 95.67 %, missing/extra; behaviour drift.
+// Still differs: the original loads 16.0f once for both scrollTo coordinates (kinds 4-7) and keeps
+// mSpawnParam_0x90 & 0x80 for all three field4 tests; r30 / r31 swapped in scrollTo.
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
 // then lines them up (fn_8028DDD8) at 16-unit spacing; 1 fades field_0x268 out and walks them
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
@@ -104,7 +107,7 @@ void SpiralStaircase_804A7A68::update() {
             if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                 return;
             }
-            if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                 return;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -131,7 +134,7 @@ void SpiralStaircase_804A7A68::update() {
                 if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                     return;
                 }
-                if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+                if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                     return;
                 }
                 JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -218,13 +221,13 @@ void SpiralStaircase_804A7A68::update() {
                     pos.y -= 0.5f;
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                    if (viewLayerFlag(mLayer_0x4) == 0) {
                         pos.y -= 0.5f;
                     }
                     fn_8022E088(i, 3, &ahead);
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                    if (viewLayerFlag(mLayer_0x4) == 0) {
                         pos.y += 0.5f;
                     }
                     fn_8022E088(i, 2, &ahead);
@@ -353,7 +356,7 @@ void SpiralStaircase_804A7A68::update() {
                 switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
                 case 1:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
@@ -362,7 +365,7 @@ void SpiralStaircase_804A7A68::update() {
                     }
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y -= 8.0f;
                         }
@@ -371,7 +374,7 @@ void SpiralStaircase_804A7A68::update() {
                     }
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
