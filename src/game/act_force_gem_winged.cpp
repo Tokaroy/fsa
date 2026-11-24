@@ -99,7 +99,7 @@ void WingedForceGem_804AB098::init() {
         mPos.z = 8.0f;
         field_0xb0 = 0x20000;
     }
-    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4]) {
+    if (viewLayerFlag(mLayer_0x4)) {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
         field_0xb0 = 0x20000;
