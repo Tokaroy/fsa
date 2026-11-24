@@ -348,7 +348,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
     }
 }
 
-// FIXME(shotgun): 94.71 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.98 %, missing/extra + reloc-name; behaviour near.
 // Still differs: the original calls the TBox2 copy constructor of box40 out of line; ours inlines it.
 void HelmarocKing_804A1630::update() {
     JGeometry::TBox2f box40(mBox);
