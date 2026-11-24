@@ -10,7 +10,7 @@
 #include "std/math.h"
 
 // 0x80186D24.
-// FIXME(shotgun): 95.31 %, missing/extra
+// FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
 void ChainChomp_804A18E0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -54,7 +54,7 @@ void ChainChomp_804A18E0::init() {
 }
 
 // 0x80184FC0.
-// FIXME(shotgun): 95.20 %, missing/extra
+// FIXME(shotgun): 98.25 %, different; behaviour near.
 void ChainChomp_804A18E0::update() {
     f32 box80_ix = mMapBox_0x80.i.x;
     f32 box80_iy = mMapBox_0x80.i.y;
