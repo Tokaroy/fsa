@@ -967,6 +967,8 @@ asm u32 __TRK_get_MSR(void)
 	mfmsr r3
 	blr
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -978,6 +980,8 @@ asm void __TRK_set_MSR(register u32 v)
 	mtmsr v
 	blr
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1020,6 +1024,8 @@ static asm void TRK_ppc_memcpy(register void* dest, register const void* src, re
 	#undef byte
 	#undef msr
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1133,6 +1139,8 @@ L_802CF694:
 	lwz r2, TRKState_PPC.GPR[2](r2)
 	b TRKPostInterruptEvent
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1184,6 +1192,8 @@ LAB_00010bb0:
 	mfsprg r3, 2
 	rfi
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1244,6 +1254,8 @@ L_802CF930:
 	lwz r2, ProcessorState_PPC.Default.GPR[2](r2)
 	rfi
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1275,6 +1287,8 @@ asm void TRKInterruptHandlerEnableInterrupts(void)
 	lwz       r2, TRKState_PPC.GPR[2](r2)
 	b         TRKPostInterruptEvent
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1294,6 +1308,8 @@ asm void ReadFPSCR(register f64*)
 	addi	r1, r1, 0x40
 	blr
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 /**
@@ -1313,4 +1329,6 @@ asm void WriteFPSCR(register f64*)
 	addi	r1,	r1, 0x40
 	blr 
 }
+#else
+#error "needs portable body"
 #endif // clang-format on
