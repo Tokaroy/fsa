@@ -295,7 +295,7 @@ struct GameRoot_8049EF20 {
     /* 0x90 */ f32 field_0x90;
     // Stored by fn_80134FC4 (game/game_root_80134C04.cpp, 0x80134FC4, stb of r4), which
     // sets field_0x95 to 1 unless the value is 1.
-    /* 0x94 */ u8 field_0x94;
+    /* 0x94 */ bool field_0x94;
     // Set to 1 by fn_80134FC4 (game/game_root_80134C04.cpp) when field_0x94 is not 1.
     /* 0x95 */ u8 field_0x95;
     // Stored by fn_80134FBC (game/game_root_80134C04.cpp, 0x80134FBC, stb of r4).
@@ -375,12 +375,12 @@ struct GameRoot_8049EF20 {
     void fn_80134FBC(u8 value);
     // Stores r4 at this+0x94 (stb), then sets this+0x95 to 1 unless the value
     // is 1. Defined in game/game_root_80134C04.cpp (0x80134FC4); no callers found yet.
-    void fn_80134FC4(u8 value);
+    void fn_80134FC4(bool value);
     // Owner: game/game_root_80134C04.cpp (0x80134FE0, not written yet). Stores r4 at
     // this+0x94 (stb), reads it back, and calls fn_80458658 on gAudioMgr_8053AF80 when
     // it is 1, else sets this+0x95 to 1. Callers: game/act_unknown_form_8029C584.cpp
     // (UnknownFORM_804A7BE8's destructor, with 0), game/player_8023FBF0.cpp and game/game_view_802D39B8.cpp.
-    void fn_80134FE0(u8 value);
+    void fn_80134FE0(bool value);
     // Owner: game/game_root_80134C04.cpp (0x80134CC8). Whether the game is paused
     // (field_0x4c == 11 or field_0x88 == 2) and the fade object gGameRoot2_8053AB10->0x2C
     // has its byte at 0xC clear (0xC is 0 when it is idle).
@@ -1214,7 +1214,7 @@ public:
     // 0x80438C68: the per-frame state machine (field_0x58): spawns the TNGL actor, then the message and the DETH sweep.
     void fn_80438C68();
     // 0x80438E94 (game/game_over_screen_80438C68.cpp): the per-frame update (field_0x40 states); returns the state.
-    u8 fn_80438E94();
+    s32 fn_80438E94();
     /* 0x04 */ J2DScreen* field_0x4;
     /* 0x08 */ J2DAnmBase* field_0x8;
     /* 0x0C */ JPABaseEmitter* field_0xc[10]; // 0xC..0x30; the last two are single emitters
