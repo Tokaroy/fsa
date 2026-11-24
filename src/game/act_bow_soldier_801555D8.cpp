@@ -69,7 +69,7 @@ void fn_801583D4(JGeometry::TVec3f* dst, f32 x, f32 y, f32 z) {
     dst->set(x, y, z);
 }
 
-// FIXME(shotgun): 94.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.23 %, scheduling + reloc-name; behaviour clean.
 void BowSoldier_804A00C8::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -12.0f;
@@ -245,7 +245,7 @@ BOOL BowSoldier_804A00C8::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 85.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.37 %, missing/extra + reloc-name; behaviour drift.
 void BowSoldier_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
