@@ -21,7 +21,7 @@ static const f32 lbl_8046C924[7] = {32.0f, 32.0f, 40.0f, 40.0f, 64.0f, 64.0f, 32
 static const f32 lbl_8046C940[7] = {1.0f, 1.0f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f};
 static const f32 lbl_8046C95C[7] = {1.0f, 1.0f, 1.3f, 1.3f, 1.0f, 1.0f, 1.0f};
 
-// FIXME(shotgun): 97.89 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.58 %, regalloc-only; behaviour clean.
 void TrickFloor_804A83A0::init() {
     field_0x234 = mSpawnParam_0x90 & 0x7F;
     field_0x238 = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -87,7 +87,7 @@ void TrickFloor_804A83A0::init() {
                 } else if (y >= 0x200) {
                     y = 0x1FF;
                 }
-                s32 idx =(x & 0x100) | ((y << 1) & 0x200) | (y & 0xF0) | ((x >> 4) & 0xF);
+                s32 idx = ((y << 1) & 0x200) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
                 gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, idx, 6);
                 py += 16.0f;
             }
@@ -99,13 +99,13 @@ void TrickFloor_804A83A0::init() {
 
 // The rotation part of m from Euler angles (R = Rz Ry Rx), as setRotScaleMtx (game/RotMatrix.h)
 // without the scale and with the cosines first (z, y, x, then the sines).
-static inline void setRotMtx(Mtx m, const JGeometry::TVec3f& rot) {
-    f32 cz = cos(rot.z);
-    f32 cy = cos(rot.y);
-    f32 cx = cos(rot.x);
-    f32 sz = sin(rot.z);
-    f32 sy = sin(rot.y);
-    f32 sx = sin(rot.x);
+static inline void setRotMtx(Mtx m, f32 x, f32 y, f32 z) {
+    f32 cz = cos(z);
+    f32 cy = cos(y);
+    f32 cx = cos(x);
+    f32 sz = sin(z);
+    f32 sy = sin(y);
+    f32 sx = sin(x);
     m[0][0] = cy * cz;
     m[1][0] = cy * sz;
     m[2][0] = -sy;
@@ -142,7 +142,7 @@ static inline s32 tileIndex(s32 tx, s32 ty) {
     } else if (ty >= 0x200) {
         ty = 0x1FF;
     }
-    return (tx & 0x100) | ((ty << 1) & 0x200) | (ty & 0xF0) | ((tx >> 4) & 0xF);
+    return ((ty << 1) & 0x200) | (tx & 0x100) | (ty & 0xF0) | ((tx >> 4) & 0xF);
 }
 
 // Sets every tile of the floor's block (counts by kind) from startX to `tile`.
@@ -188,7 +188,7 @@ static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
 // Who stands on the floor, then: 0 reads the tile under it, 1 waits for the switch,
 // 2 waits for a rider (kinds 4/5: all four players) and drops, 3 sinks, 4 holds while
 // ridden, 5 rises back and restores the tiles, 6 / 7 fall away, 8 stays down.
-// FIXME: 96.57 %, different + reloc-name; behaviour near.
+// FIXME: 96.76 %, missing/extra + reloc-name; behaviour near.
 void TrickFloor_804A83A0::update() {
     JGeometry::TVec3f savedPos = mPos;
     JGeometry::TVec2f p;
@@ -359,10 +359,13 @@ void TrickFloor_804A83A0::update() {
                 for (s32 j = 0; j < lbl_8046C8CC[field_0x234]; j++) {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
-                    if (field_0x234 == 1) {
-                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
-                    } else {
+                    switch (field_0x234) {
+                    default:
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
+                        break;
+                    case 1:
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
+                        break;
                     }
                     y += 16.0f;
                 }
@@ -432,7 +435,7 @@ void TrickFloor_804A83A0::update() {
 // The hole picture "otosiana_bg_s.bti" under the floor (scaled per type), then the floor's two
 // halves tilted by field_0x248 (the left one about its edge, the right one mirrored); types 4 / 5
 // draw the ground or the house instead while falling.
-// FIXME: 95.61 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.41 %, missing/extra; behaviour clean.
 void TrickFloor_804A83A0::draw() {
     SpriteParams_801F5AE0 sp;
     sp.field_0x1c = -1;
@@ -460,13 +463,13 @@ void TrickFloor_804A83A0::draw() {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    setRotMtx(m, JGeometry::TVec3f(0.0f, field_0x248, 0.0f));
+    setRotMtx(m, 0.0f, field_0x248, 0.0f);
     sp.field_0x1c = -1;
     sp.field_0x1d = -1;
     sp.field_0x21 = 1;
     sp.mMtx = m;
     switch (field_0x234) {
-    case 0:
+    default:
         drawSmp(this, &mPos, "floor_smp.bin", &sp);
         break;
     case 1:
@@ -491,13 +494,13 @@ void TrickFloor_804A83A0::draw() {
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
     if (field_0x234 == 3 || field_0x234 == 4 || field_0x234 == 5) {
-        setRotMtx(m, JGeometry::TVec3f(0.0f, 3.1415927f - field_0x248, 0.0f));
+        setRotMtx(m, 0.0f, 3.1415927f - field_0x248, 0.0f);
     } else {
-        setRotMtx(m, JGeometry::TVec3f(0.0f, -field_0x248, 0.0f));
+        setRotMtx(m, 0.0f, -field_0x248, 0.0f);
     }
     sp.mMtx = m;
     switch (field_0x234) {
-    case 0: {
+    default: {
         JGeometry::TVec3f pos(64.0f + mPos.x - 32.0f * JMath::sincosTable_.cosRadian(-field_0x248),
                               32.0f * JMath::sincosTable_.sinRadian(field_0x248) + mPos.y, mPos.z);
         drawSmp(this, &pos, "floor_smp.bin", &sp);
