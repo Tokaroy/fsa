@@ -36,7 +36,6 @@ void HammerShopMinigame_8049C858::init() {
     }
 }
 
-// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 void HammerShopMinigame_8049C858::fn_801003F4() {
     s32 rank = 0;
     u8 used[4] = {0, 0, 0, 0};
@@ -101,7 +100,7 @@ inline void HammerShopMinigame_8049C858::facePlayer_inline() {
     }
 }
 
-// FIXME(shotgun): 95.85 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour near.
 void HammerShopMinigame_8049C858::update() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
@@ -381,7 +380,7 @@ void HammerShopMinigame_8049C858::update() {
     }
 }
 
-// FIXME: 77.86 %, different; behaviour clean.
+// FIXME: 80.47 %, different; behaviour clean.
 // Register allocation and instruction order differ in the unrolled score loop.
 void HammerShopMinigame_8049C858::draw() {
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
