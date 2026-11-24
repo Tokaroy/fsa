@@ -142,7 +142,7 @@ static inline s32 tileIndex(s32 tx, s32 ty) {
     } else if (ty >= 0x200) {
         ty = 0x1FF;
     }
-    return (tx & 0x100) | ((ty << 1) & 0x200) | (ty & 0xF0) | ((tx >> 4) & 0xF);
+    return ((ty << 1) & 0x200) | (tx & 0x100) | (ty & 0xF0) | ((tx >> 4) & 0xF);
 }
 
 // Sets every tile of the floor's block (counts by kind) from startX to `tile`.
@@ -359,10 +359,13 @@ void TrickFloor_804A83A0::update() {
                 for (s32 j = 0; j < lbl_8046C8CC[field_0x234]; j++) {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
-                    if (field_0x234 == 1) {
-                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
-                    } else {
+                    switch (field_0x234) {
+                    default:
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
+                        break;
+                    case 1:
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046C8E8[i][j]);
+                        break;
                     }
                     y += 16.0f;
                 }
