@@ -323,19 +323,8 @@ void copyVec3_80196D70(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
-// Out-of-line copy of TVec3<f32>::set(x, y, z).
-JGeometry::TVec3f* fn_80196D60(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
-    v->set(x, y, z);
-    return v;
-}
-
 void fn_80196D30(s32 a, s32 b) {
     gGameRoot_8053AAF8->startRumble_80134DE4(a, b);
-}
-
-// Out-of-line copy of TVec2<f32>::set(x, y).
-void fn_80196D24(JGeometry::TVec2f* v, f32 x, f32 y) {
-    v->set(x, y);
 }
 
 // Sets the emitter's particle scale (0xB0, 0xB4).
@@ -959,8 +948,8 @@ void Ganon_804A25F0::update() {
                     spear->setAlive_8018A598(false);
                 }
             }
-            JGeometry::TVec3f one;
-            copyVec3_80196D70(&field_0x2d0, fn_80196D60(&one, 1.0f, 1.0f, 1.0f));
+            JGeometry::TVec3f one(1.0f, 1.0f, 1.0f);
+            copyVec3_80196D70(&field_0x2d0, &one);
             field_0x294 = -1;
             field_0x2a5 = 0;
         }
@@ -1414,8 +1403,8 @@ void Ganon_804A25F0::update() {
         field_0x264 = 0;
         zeroVec_801546BC(&field_0x2b8);
         zeroVec_801546BC(&mVel_0x3c);
-        JGeometry::TVec3f one;
-        copyVec3_80196D70(&field_0x2d0, fn_80196D60(&one, 1.0f, 1.0f, 1.0f));
+        JGeometry::TVec3f one(1.0f, 1.0f, 1.0f);
+        copyVec3_80196D70(&field_0x2d0, &one);
         field_0x28c = 8;
         mState = 30;
         // fall through
@@ -1462,8 +1451,7 @@ void Ganon_804A25F0::update() {
         }
         {
             JGeometry::TBox2f box58(mBox);
-            JGeometry::TVec2f pos2d;
-            fn_80196D24(&pos2d, mPos.x, mPos.y);
+            JGeometry::TVec2f pos2d(mPos.x, mPos.y);
             addVec2_80154558(&box58.i, &pos2d);
             addVec2_80154558(&box58.f, &pos2d);
             s32 hitPlayer = fn_8023B004(&box58, mLayer_0x4);
