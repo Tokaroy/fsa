@@ -193,7 +193,8 @@ static inline void startSwing(TennisShop_804A2BF4* self) {
 // FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
 void TennisShop_804A2BF4::fn_801A17B8() {
     JGeometry::TVec3f talkPos = mPos;
-    JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
+    JGeometry::TVec3f spawnPos;
+    spawnPos.set(mPos);
     addCalc2_801F71A4(&field_0x33c, 0.0f, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x324[0], field_0x324[3], 0.2f, 0.1f);
     addCalc2_801F71A4(&field_0x324[1], field_0x324[4], 0.2f, 0.1f);
@@ -260,6 +261,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, mLayer_0x4, mSerial);
+    const JGeometry::TVec3f* focusPos = &mPos;
     box = mBox2;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -344,7 +346,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         break;
     }
     case 5:
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(focusPos);
         field_0x2c8[field_0x318] = field_0x24c[2];
         if (field_0x2c8[field_0x318] > 999) {
             field_0x2c8[field_0x318] = 999;
@@ -388,8 +390,10 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             field_0x230 = 4;
             break;
         }
-        switch (field_0x238[1]) {
-        case 1: {
+        if (field_0x238[1] != 0) {
+            if (field_0x238[1] != 1) {
+                break;
+            }
             s32 serial = field_0x320;
             if (serial >= 0) {
                 TennisShop_804A2BF4* ball = static_cast<TennisShop_804A2BF4*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -414,9 +418,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             if (field_0x24c[2] != 0) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x12C, 0, 1, NULL, NULL, true, field_0x324[0]);
             }
-            break;
-        }
-        case 0:
+        } else {
             if (field_0x24c[3] == 0) {
                 s32 serial = field_0x320;
                 if (serial < 0) {
@@ -459,11 +461,10 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             } else {
                 field_0x24c[1] = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
             }
-            break;
         }
         break;
     case 6:
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(focusPos);
         field_0x24c[1]--;
         if (field_0x24c[1] > 0) {
             break;
@@ -485,7 +486,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         }
         break;
     case 8:
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(focusPos);
         fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
         if (!stepMessageWindow_803865B8(0)) {
             break;
@@ -512,7 +513,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         field_0x230 = 9;
         break;
     case 9: {
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(focusPos);
         fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
         if (!stepMessageWindow_803865B8(0) || !fn_80384C58(0, mSerial)) {
             break;
@@ -530,15 +531,16 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         s32 best = -1;
         s32 bestPlayer = -1;
         for (s32 i = 0; i < 4; i++) {
-            if (field_0x28c[i] > 0) {
-                if (best < 0 && field_0x28c[i] != 0) {
+            s32 count = field_0x28c[i];
+            if (count > 0) {
+                if (best < 0 && count != 0) {
                     field_0x27c[i] = i;
-                    best = field_0x28c[i];
+                    best = count;
                     bestPlayer = i;
-                } else if (best < field_0x28c[i]) {
+                } else if (best < count) {
                     field_0x27c[i] = i;
                     field_0x27c[bestPlayer] = -1;
-                    best = field_0x28c[i];
+                    best = count;
                     bestPlayer = i;
                 }
             }
@@ -584,7 +586,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         break;
     }
     case 0xA: {
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(focusPos);
         if (field_0x24c[3] == 0) {
             s32 left = 0;
             for (s32 i = 0; i < 4; i++) {
@@ -599,11 +601,11 @@ void TennisShop_804A2BF4::fn_801A17B8() {
                 break;
             }
         } else {
-            JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-            pos.y -= 16.0f;
+            spawnPos.set(mPos);
+            spawnPos.y -= 16.0f;
             field_0x238[1] = 80;
             startSound_801F0E34(0x4000E, 0);
-            mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x565, 0, 1, NULL, NULL, true, 0.7f);
+            mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x565, 0, 1, NULL, NULL, true, 0.7f);
         }
         getActorManager_801F856C()->fn_801F6884();
         s32 budget = field_0x26c * 40;
@@ -680,10 +682,10 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             field_0x248 = 3;
             break;
         }
-        if (field_0x248 & 1) {
-            field_0x238[0] = 10;
-        } else {
+        if (!(field_0x248 & 1)) {
             field_0x238[0] = 12;
+        } else {
+            field_0x238[0] = 10;
         }
         field_0x248++;
         field_0x248 &= 3;
