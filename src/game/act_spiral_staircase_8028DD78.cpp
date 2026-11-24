@@ -3,6 +3,7 @@
 #include "game/Player.h"
 #include "game/GameGlobals.h"
 #include "game/cls_804AE9B0.h"
+#include "game/ViewLayer.h"
 
 void SpiralStaircase_804A7A68::init() {
     switch (mSpawnParam_0x90 & 0xF) {
@@ -84,7 +85,9 @@ static inline s32 kind(u32 f) {
     return f & 0xF;
 }
 
-// FIXME(shotgun): 95.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.08 %, missing/extra; behaviour drift.
+// Still differs: the original loads 16.0f once for both scrollTo coordinates (kinds 4-7) and keeps
+// mSpawnParam_0x90 & 0x80 for all three field4 tests; r30 / r31 swapped in scrollTo.
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
 // then lines them up (fn_8028DDD8) at 16-unit spacing; 1 fades field_0x268 out and walks them
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
@@ -104,7 +107,7 @@ void SpiralStaircase_804A7A68::update() {
             if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                 return;
             }
-            if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                 return;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -131,7 +134,7 @@ void SpiralStaircase_804A7A68::update() {
                 if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                     return;
                 }
-                if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+                if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                     return;
                 }
                 JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -218,13 +221,13 @@ void SpiralStaircase_804A7A68::update() {
                     pos.y -= 0.5f;
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                    if (viewLayerFlag(mLayer_0x4) == 0) {
                         pos.y -= 0.5f;
                     }
                     fn_8022E088(i, 3, &ahead);
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                    if (viewLayerFlag(mLayer_0x4) == 0) {
                         pos.y += 0.5f;
                     }
                     fn_8022E088(i, 2, &ahead);
@@ -353,7 +356,7 @@ void SpiralStaircase_804A7A68::update() {
                 switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
                 case 1:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
@@ -362,7 +365,7 @@ void SpiralStaircase_804A7A68::update() {
                     }
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y -= 8.0f;
                         }
@@ -371,7 +374,7 @@ void SpiralStaircase_804A7A68::update() {
                     }
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
+                    if (viewLayerFlag(mLayer_0x4) != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
@@ -429,11 +432,11 @@ void SpiralStaircase_804A7A68::draw() {}
 
 // 0x8028DDD8. Orders the players for the four marker slots: out[] gets the player indices
 // sorted by their x (y for the vertical variants 6 and 7), grouped by team for two players.
-// FIXME(shotgun): 97.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.19 %, missing/extra; behaviour clean.
 void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
-        if ((mSpawnParam_0x90 & 0xF) == 6 || (mSpawnParam_0x90 & 0xF) == 7) {
+        if (kind(mSpawnParam_0x90) == 6 || kind(mSpawnParam_0x90) == 7) {
             key[i] = getPlayerPos_8023E724(i)->y;
         } else {
             key[i] = getPlayerPos_8023E724(i)->x;
@@ -523,6 +526,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             }
         }
         break;
+    case 1:
     default:
         out[0] = 0;
         out[1] = 1;
