@@ -1921,6 +1921,7 @@ game/act_hammer_shop_minigame_800FF060.cpp:
 	.bss        start:0x804BADF8 end:0x804BAEF8
 	.sdata      start:0x80539EA8 end:0x80539EB0
 	.sdata2     start:0x8053C110 end:0x8053C140
+	.sbss2      start:0x80543F18 end:0x80543F20
 
 game/act_whack_a_mole_shop_8010089C.cpp:
 	extab       start:0x800058D8 end:0x80005918
@@ -3699,6 +3700,7 @@ game/actor_base_801EE24C.cpp:
 	.data       start:0x804A5770 end:0x804A5800
 	.bss        start:0x804CAAD8 end:0x804CABD8
 	.sdata2     start:0x8053F728 end:0x8053F800
+	.sbss2      start:0x80543F40 end:0x80543F50
 
 game/actor_manager_801F6058.cpp:
 	extab       start:0x80008F04 end:0x80008FCC
@@ -6106,6 +6108,7 @@ game/act_four_girls_control_8036FB60.cpp:
 	.bss        start:0x8050C840 end:0x8050CA00
 	.sbss       start:0x8053AD60 end:0x8053AD70
 	.sdata2     start:0x80542DC0 end:0x80542E50
+	.sbss2      start:0x80543F68 end:0x80543F6C
 
 game/act_tutorial_old_man.cpp:
 	extab       start:0x8000E8DC end:0x8000E8EC
