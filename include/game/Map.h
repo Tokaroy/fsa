@@ -63,6 +63,15 @@ public:
     // 0x80433718: follows GameView's field_0x131dc (bit 0x8000 = 'raised').
     void fn_80433718();
 
+    // The field_0xa4 entry of each array (TileMap_804AA858::fn_802FCE74 reads them
+    // with base + (index + offset) addressing).
+    const JGeometry::TVec3f& getField_0x40() const { return field_0x40[field_0xa4]; }
+    const JGeometry::TVec3f& getField_0x58() const { return field_0x58[field_0xa4]; }
+    f32 getField_0x70() const { return field_0x70[field_0xa4]; }
+    f32 getField_0x78() const { return field_0x78[field_0xa4]; }
+    f32 getField_0x80() const { return field_0x80[field_0xa4]; }
+    f32 getField_0x88() const { return field_0x88[field_0xa4]; }
+
     /* 0x04 */ J2DScreen* field_0x4[2];
     /* 0x0C */ J2DScreen* field_0xc;
     /* 0x10 */ J2DAnmTextureSRTKey* field_0x10[2]; // the screens' animations
@@ -494,10 +503,7 @@ public:
     /* 0x021B */ u8 field_0x21b;
     // A rectangle (x, y, w, h: fn_802FCE74 stores it, drawPlayerPanels_802FF0EC passes it
     // as floats to field_0xfc's fn_80432750).
-    /* 0x021C */ s32 field_0x21c;
-    /* 0x0220 */ s32 field_0x220;
-    /* 0x0224 */ s32 field_0x224;
-    /* 0x0228 */ s32 field_0x228;
+    /* 0x021C */ IntRect_803004C0 field_0x21c;
     // 0x22C-0x244: the window of one player (player_window_select_80441318's setWindow, from
     // fn_80441318 / update): field_0x22c is the window index, field_0x234 a
     // flag (0, or MessageManager's byte 0xEE), field_0x238 / field_0x23c the
