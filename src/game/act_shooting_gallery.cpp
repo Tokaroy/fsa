@@ -137,16 +137,17 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
-// missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
-// top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
-// the by-value position temporaries for openMessage_8038AD24 and getNearestPlayerDir_801EE8F4 and the loop registers in cases 0, 3,
-// and 5 differ; lbl_8053ABB8 is referenced via @sda21 in the original (split into act_all_enemies_defeated.cpp).
+// FIXME: 97.96 %, missing/extra + reloc-name; behaviour drift.
+// The original reloads mPos.z for savedPos.z at the top (ours reuses the load made for pos), and in
+// case 3 it copies the zeroed loop counter into the flag/count register (mr) where ours loads 0 twice;
+// stack slots of the by-value position temporaries and the loop registers differ.
 void ShootingGallery_804A2B18::fn_8019F3AC() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 50.0f;
     JGeometry::TVec3f savedPos;
-    savedPos.set(mPos.x, mPos.y, mPos.z);
+    savedPos.x = mPos.x;
+    savedPos.y = mPos.y;
+    savedPos.z = mPos.z;
     // Unused copy of mPos at 0xa0(r1) (like camPos in act_digging_game.cpp).
     JGeometry::TVec3f unusedPos = mPos;
     JGeometry::TBox2f box(mBox);
@@ -240,7 +241,9 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         }
         break;
     case 3: {
-        savedPos.set(mPos.x, mPos.y, mPos.z);
+        savedPos.x = mPos.x;
+        savedPos.y = mPos.y;
+        savedPos.z = mPos.z;
         mPos.x = 128.0f;
         mPos.y = 138.0f;
         box = mBox2;
