@@ -93,8 +93,11 @@ static inline void curvePoint(const UnknownFSOB_804A5568* self, u8 idx, u8 seg, 
 // FIXME(shotgun): 97.46 %, missing/extra; behaviour near.
 void UnknownFSOB_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
-        // The original clamps this with fsel (0.5f >= 0 ? 0.5f : 0.0f, all in float); not reproduced.
-        f32 budget = 0.5f;
+        // The speed, never below zero (the MWCC fsel intrinsic). Ours rounds the result (frsp)
+        // and copies sq before inv_sqrt.
+        f32 speed = 0.5f;
+        f32 zero = 0.0f;
+        f32 budget = __fsel(speed, speed, zero);
         bool finished = false;
         while (budget > 0.0f) {
             f32 curX;
