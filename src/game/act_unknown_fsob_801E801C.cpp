@@ -90,7 +90,7 @@ static inline void curvePoint(const UnknownFSOB_804A5568* self, u8 idx, u8 seg, 
 }
 
 // Moves the chain's head along its curve by the speed (0.5 per frame).
-// FIXME(shotgun): 97.46 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.71 %, missing/extra; behaviour near.
 void UnknownFSOB_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
         // The speed, never below zero (the MWCC fsel intrinsic). Ours rounds the result (frsp)
@@ -240,7 +240,7 @@ void UnknownFSOB_804A5568::fn_801E8EB4(u8 index, s32 arg, const JGeometry::TVec2
     field_0x2b0[index].y = pos->y;
 }
 
-// FIXME(shotgun): 98.19 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.72 %, missing/extra; behaviour clean.
 void UnknownFSOB_804A5568::fn_801E8C74(s32 arg) {
     field_0x3b8 = arg;
     mCount = 0;
