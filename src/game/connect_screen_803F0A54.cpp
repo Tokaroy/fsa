@@ -281,18 +281,6 @@ static inline void stepBlink(ConnectScreen_804B0F10* self) {
     }
 }
 
-static inline void setBounce(ConnectScreen_804B0F10* self, s32 i) {
-    if (i <= self->field_0x1ac) {
-        self->field_0x240[i] = 1;
-    }
-}
-
-static inline void setBounceIfReady(ConnectScreen_804B0F10* self, s32 i) {
-    if (i <= self->field_0x1ac && self->field_0x1b0[i] == 4) {
-        self->field_0x240[i] = 1;
-    }
-}
-
 static inline void updateHandicapCursor(ConnectScreen_804B0F10* self, s32 i) {
     if (i <= self->field_0x1ac + 1) {
         if (self->field_0x1b0[i] < 3) {
@@ -1779,10 +1767,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
             if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x1000)) {
                 if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                     field_0x1a8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
@@ -1805,10 +1794,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
             } else if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100)) {
                 if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                     field_0x1a8 = 0;
-                    setBounce(this, 0);
-                    setBounce(this, 1);
-                    setBounce(this, 2);
-                    setBounce(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
@@ -1825,17 +1815,10 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                     gAudioMgr_8053AF80->playSystemSound_80458880(11, -1);
                     if (field_0x1b0[0] == 4 && field_0x1b0[1] == 4 && field_0x1b0[2] == 4 && field_0x1b0[3] == 4) {
                         field_0x1a8 = 0;
-                        if (0 <= field_0x1ac + 1) {
-                            field_0x240[0] = 1;
-                        }
-                        if (1 <= field_0x1ac + 1) {
-                            field_0x240[1] = 1;
-                        }
-                        if (2 <= field_0x1ac + 1) {
-                            field_0x240[2] = 1;
-                        }
-                        if (3 <= field_0x1ac + 1) {
-                            field_0x240[3] = 1;
+                        for (s32 j = 0; j < 4; j++) {
+                            if (j <= field_0x1ac + 1) {
+                                field_0x240[j] = 1;
+                            }
                         }
                         if (mFadeState_0x25e == 0) {
                             mNextState_0x1cc = 7;
@@ -1843,7 +1826,7 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                         }
                         return;
                     }
-                } else {
+                } else if (field_0x1b0[i] < 3) {
                     switch (field_0x1b0[i]) {
                     case 0: {
                         field_0x1e0[i]++;
@@ -1879,10 +1862,11 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                     field_0x1d0[i] = 30;
                     updateHandicapCursor(this, i);
                 } else {
-                    setBounceIfReady(this, 0);
-                    setBounceIfReady(this, 1);
-                    setBounceIfReady(this, 2);
-                    setBounceIfReady(this, 3);
+                    for (s32 j = 0; j < 4; j++) {
+                        if (j <= field_0x1ac && field_0x1b0[j] == 4) {
+                            field_0x240[j] = 1;
+                        }
+                    }
                     if (mFadeState_0x25e == 0) {
                         mNextState_0x1cc = 7;
                         mFadeState_0x25e = 1;
