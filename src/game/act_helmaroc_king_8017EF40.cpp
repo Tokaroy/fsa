@@ -284,20 +284,21 @@ HelmarocKing_804A1630::~HelmarocKing_804A1630() {
 
 // FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
 void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
+    s32 rowIdx = row;
     s32 frame = 0;
     for (s32 i = 0; i < 4; i++) {
         if (!isPlayerActive_8023F264(i)) {
             continue;
         }
-        if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
+        if (getField_0x4() != getPlayerLayer_8023DE58(i)) {
             continue;
         }
         switch (mode) {
         case 0:
             if (getPlayerPos_8023E724(i)->x < mPos.x) {
-                row = 0;
+                rowIdx = 0;
             } else {
-                row = 1;
+                rowIdx = 1;
             }
             field_0x2f4[i] = 0;
             field_0x294[i].set(*getPlayerPos_8023E724(i));
@@ -308,7 +309,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             break;
         case 1:
             if (field_0x304[i] == 1) {
-                row += 4;
+                rowIdx += 4;
             }
             if (field_0x2f4[i] < 4) {
                 frame = 0;
@@ -325,7 +326,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             } else {
                 field_0x2f4[i] = 20;
                 frame = 0;
-                row = 3;
+                rowIdx = 3;
             }
             addCalc2_801F71A4(&field_0x294[i].y, field_0x2c4[i].y, 0.3f, 1.0f);
             if (field_0x304[i] == 0) {
@@ -343,7 +344,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
             break;
         }
         if (mode == 0 || field_0x304[i] == 1) {
-            fn_80230498(i, &field_0x294[i], frame + lbl_804A1440[row], 0xFF, -0x80, -0x80, true);
+            fn_80230498(i, &field_0x294[i], frame + lbl_804A1440[rowIdx], 0xFF, -0x80, -0x80, true);
         }
     }
 }
