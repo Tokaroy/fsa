@@ -1408,6 +1408,8 @@ struct ShadowLinkFight_801C0D70 {
     // act_shadow_link_2's fn_801C53F8 tests bit 0x80000000.
     /* 0x50 */ u32 field_0x50;
     /* 0x54 */ JGeometry::TVec3f field_0x54;
+    // Inline (act_shadow_link_2's setState_801C3B7C materialises the bool): field_0x50 is not -1.
+    u8 hasGenerator() const { return (field_0x50 >> 31) ^ 1; }
     // Owner shadow_link_fight_801C0D70. True when a target for the player at *pos was found;
     // writes its x/y to *out. Called by FlyingPieces_8021C2B4::fn_8021C468 and act_shadow_link_2.
     bool fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const;
