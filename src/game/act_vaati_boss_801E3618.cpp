@@ -68,7 +68,7 @@ u8 VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVe
 
 // Vaati's per-frame player check: when the boss is in one of its states and
 // a player is in its box, the attack states answer with a sound or effect.
-bool VaatiBoss_804A4958::fn_801E4348() {
+bool VaatiBoss_804A4958::vfunc_0x58() {
     bool result = false;
     bool stateOk = true;
     switch (mState) {
@@ -192,7 +192,7 @@ bool VaatiBoss_804A4958::fn_801E4094() {
 // area (and below its head) turns it towards that player; otherwise each player that hit it
 // this frame is run through takeHit_801F37AC.
 // FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
-u8 VaatiBoss_804A4958::fn_801E3B2C() {
+u8 VaatiBoss_804A4958::checkHitByPlayer_0x5C() {
     u8 result = 0;
     s32 state = mState;
     bool stateOk = true;
@@ -318,7 +318,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
     return result;
 }
 
-u8 VaatiBoss_804A4958::fn_801E3A4C() {
+u8 VaatiBoss_804A4958::attackPlayers_0x68() {
     u8 result = 0;
     bool stateOk = true;
     switch (mState) {
@@ -347,7 +347,7 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
 }
 
 // vtable slot 0x64. Pushes Vaati out of the map-free area when a player-sized box is inside.
-u8 VaatiBoss_804A4958::fn_801E376C() {
+u8 VaatiBoss_804A4958::sweepMap_0x64() {
     u8 result = 0;
     bool stateOk = true;
     switch (mState) {

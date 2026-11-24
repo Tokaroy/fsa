@@ -218,13 +218,13 @@ public:
     void setState_801D5D84(s32 state);
     // 0x801E4348: runs the attack-state checks for one player in range and
     // returns whether it acted (game/act_vaati_boss_801E3618.cpp).
-    bool fn_801E4348();
+    /* 0x58 */ virtual bool vfunc_0x58();
     // Shotgun pass (game/act_vaati_boss_801E3618.cpp), named by address: the area checks, the
     // attack hooks and the hit box setters.
     u8 fn_801E3618(s32 layer, const JGeometry::TVec2f* pos);
-    u8 fn_801E3B2C();
-    u8 fn_801E3A4C();
-    u8 fn_801E376C();
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x64 */ virtual u8 sweepMap_0x64();
     bool fn_801E4094();
     u8 fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec3f* pos, JGeometry::TVec3f* outDir);
     void fn_801E4618(JGeometry::TBox2f* out, bool region);
