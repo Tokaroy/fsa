@@ -280,8 +280,8 @@ void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
 s32 ActorBase_804A5770::fn_801E9B58() {
     s32 serial = getActorManager_801F856C()->fn_801F7F58(this, lbl_80469C78, mSerial, 32.0f);
     if (serial >= 0 && serial != mSerial) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        FireRodFire_804A89F0* fire = static_cast<FireRodFire_804A89F0*>(actor);
+        FireRodFire_804A89F0* fire =
+            static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (fire != NULL) {
             if (fn_801CC8E4(fire)) {
                 serial = -1;
