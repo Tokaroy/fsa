@@ -87,7 +87,7 @@ void TrickFloor_804A83A0::init() {
                 } else if (y >= 0x200) {
                     y = 0x1FF;
                 }
-                s32 idx =(x & 0x100) | ((y << 1) & 0x200) | (y & 0xF0) | ((x >> 4) & 0xF);
+                s32 idx = ((y << 1) & 0x200) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
                 gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, idx, 6);
                 py += 16.0f;
             }
