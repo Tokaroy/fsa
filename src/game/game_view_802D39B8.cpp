@@ -149,6 +149,21 @@ static inline bool epsilonEquals(const JGeometry::TVec2f& a, const JGeometry::TV
     return equal;
 }
 
+// Clears every screen's two bit tables and its byte table.
+inline void GameView_804A9950::clearScreenBits() {
+    for (int row = 0; row < 10; row++) {
+        for (int col = 0; col < 10; col++) {
+            for (int bit = 0; bit < 1024; bit += 32) {
+                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
+                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
+            }
+            for (int i = 0; i < 0x100; i++) {
+                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
+            }
+        }
+    }
+}
+
 // resetStage_802DA8DC, restartStage_802DBD60 and vfunc_0xC inline these two instruction for instruction
 // (no out-of-line copy). Clears the screen masks (fn_802DEE2C), the per-screen layer
 // masks, the layer slot lists and the per-screen bit tables.
@@ -171,17 +186,7 @@ inline void GameView_804A9950::clearStageTables() {
             getGameView_802D6A9C()->field_0x2d48[k][i] = 0;
         }
     }
-    for (int row = 0; row < 10; row++) {
-        for (int col = 0; col < 10; col++) {
-            for (int bit = 0; bit < 1024; bit += 32) {
-                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
-                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
-            }
-            for (int i = 0; i < 0x100; i++) {
-                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
-            }
-        }
-    }
+    clearScreenBits();
 }
 
 // Frees the eight key slots (fn_802D6F38) and the eight pair slots (fn_802D6D70).
@@ -1039,23 +1044,10 @@ void GameView_804A9950::fn_802D9FBC() {
 }
 
 // FIXME: 96.32 %, different; behaviour clean.
-// One opcode at the loop set-up: the target starts the row offsets with
-// mr from the row counter (li r5, 0; mr r8, r5; mr r9, r5), ours with a second li.
+// Registers only, in the inlined clearScreenBits loop.
 void GameView_804A9950::fn_802D9CD8() {
     fn_802D3D48();
-    for (int row = 0; row < 10; row++) {
-        for (int col = 0; col < 10; col++) {
-            // Every bit of the screen's two 1024-bit tables, a word at a time (a plain
-            // word loop unrolls differently: the target steps the word offset in a register).
-            for (int bit = 0; bit < 1024; bit += 32) {
-                getGameView_802D6A9C()->field_0x3548[row][col][bit / 32] = 0;
-                getGameView_802D6A9C()->field_0x6768[row][col][bit / 32] = 0;
-            }
-            for (int i = 0; i < 0x100; i++) {
-                getGameView_802D6A9C()->field_0x9968[row][col][i] = 0;
-            }
-        }
-    }
+    clearScreenBits();
     getActorManager_801F856C()->fn_801F7B18();
     fn_8016A3AC()->fn_8016A330();
     gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
