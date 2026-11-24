@@ -137,7 +137,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.96 %, missing/extra + reloc-name; behaviour drift.
 // The original reloads mPos.z for savedPos.z at the top (ours reuses the load made for pos), and in
 // case 3 it copies the zeroed loop counter into the flag/count register (mr) where ours loads 0 twice;
 // stack slots of the by-value position temporaries and the loop registers differ.
