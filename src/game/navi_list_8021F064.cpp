@@ -14,6 +14,7 @@ void NaviList_8021F064::fn_8021F25C(s32 serial) {
     mCount++;
 }
 
+// FIXME: 92.96 %, missing/extra; behaviour clean.
 void NaviList_8021F064::fn_8021F1F0(s32 serial) {
     // FIXME: 93%. The original tests mCount twice (a second blelr before the
     // loop, i copied from the zeroed removed flag in r6) and keeps mCount in
@@ -36,19 +37,18 @@ void NaviList_8021F064::fn_8021F1F0(s32 serial) {
     }
 }
 
+// FIXME: 99.38 %, regalloc-only; behaviour clean.
 void NaviList_8021F064::fn_8021F130() {
-    // FIXME: 97.7%. Only the null test of the looked-up actor differs: the
-    // original does mr r0, r3 then mr. r30, r0; here it is a single mr. r30, r3.
     if (mCount > 0 && (mFlags & 3) != 0) {
-        ActorBase_804A5770* actor;
         for (s32 i = 0; i < mCount; i++) {
-            actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
-            if (actor) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
+            Navi_804A6708* navi = static_cast<Navi_804A6708*>(actor);
+            if (navi) {
                 if (mFlags & 1) {
-                    static_cast<Navi_804A6708*>(actor)->fn_8021D764();
+                    navi->fn_8021D764();
                 }
                 if (mFlags & 2) {
-                    static_cast<Navi_804A6708*>(actor)->fn_8021D734();
+                    navi->fn_8021D734();
                 }
             }
         }
