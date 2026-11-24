@@ -55,6 +55,10 @@ sides have a relocation, of the same type) is verified one of three ways:
            the target's symbol. Equal initial bytes alone don't prove the same
            variable (mutable data has an identity), so a bss pair passes only when
            nothing but these identical instructions can ever read or write it.
+Reordered: in a scheduling or scheduling+regalloc function the rows objdiff sets side
+by side are not each other's instructions, so when that positional pairing fails, the
+relocated instructions of each form (mnemonic, non-register operands, relocation type)
+are paired one to one instead (reordered_pairs), every pair verified as above.
 A symbol our object defines has no proven address (its layout is what is being
 measured), so it passes only by value (a bss one only as private): a same-offset literal with another value
 (5.0f for 10.0f) or ours const data in .rodata against the target's .data stays
@@ -87,7 +91,7 @@ REPORT = OUT / "report_honest.json"
 CACHE = OUT / "structural_cache.json"
 DONE = {"regalloc-only", "scheduling", "scheduling+regalloc", "reloc-name"}
 CLOSE_INSNS, CLOSE_PCT = 4, 85.0
-VERSION = 5  # bump when the classification changes
+VERSION = 6  # bump when the classification changes
 
 
 LOCAL_LIT = re.compile(r"^@(stringBase)?\d+$")
@@ -356,6 +360,58 @@ def rich_pairs(lsym, rsym, left, right):
     return pairs
 
 
+def reordered_pairs(T, lsym, rsym, left, right, tsyms, osyms, ctx):
+    """For a scheduling class, where the instructions are the same multiset in another
+    order and positional pairing (rich_pairs) sets unrelated loads side by side: the
+    relocated instructions of each form (mnemonic and non-register operands, relocation
+    type) paired one to one, target with ours, each pair one pending_pairs accepts on
+    its own; the pairs with differing names, in rich_pairs' format. None when a form's
+    counts differ or no such one-to-one pairing exists."""
+    def groups(sym, side):
+        g = {}
+        for row in sym.get("instructions", []):
+            ins = row.get("instruction")
+            r = ins.get("relocation") if ins else None
+            if r is None:
+                continue
+            i, = T.insn_list(side, {"address": sym.get("address", 0), "instructions": [row]})
+            t = r.get("target_symbol")
+            name = side["symbols"][t]["name"] if t is not None and t < len(side["symbols"]) else None
+            key = (T.nobranch(T.noreg(T.noreloc(i))), r.get("type"))
+            g.setdefault(key, []).append((name, int(r.get("addend") or 0), r.get("type")))
+        return g
+    tg, og = groups(lsym, left), groups(rsym, right)
+    if set(tg) != set(og):
+        return None
+    out = []
+    for key in tg:
+        ts, os_ = list(tg[key]), list(og[key])
+        if len(ts) != len(os_):
+            return None
+        for x in list(ts):  # the same symbol on both sides needs no proof
+            if x in os_:
+                ts.remove(x)
+                os_.remove(x)
+        if not ts:
+            continue
+        ok = [[o[0] is not None and t[0] is not None and
+               pending_pairs([[*t, *o]], tsyms, osyms, ctx) is not None for o in os_] for t in ts]
+        match = [-1] * len(os_)  # Kuhn's augmenting paths
+
+        def augment(a, seen):
+            for b in range(len(os_)):
+                if ok[a][b] and b not in seen:
+                    seen.add(b)
+                    if match[b] < 0 or augment(match[b], seen):
+                        match[b] = a
+                        return True
+            return False
+        if not all(augment(a, set()) for a in range(len(ts))):
+            return None
+        out += [[*ts[match[b]], *os_[b]] for b in range(len(os_))]
+    return out
+
+
 def pending_pairs(pairs, tsyms, osyms, ctx=None):
     """The pairs value_pair can't verify, as [target key, addend, our key, addend] for
     verify_addresses; None when one can't be verified at all (no pairs found, a
@@ -511,6 +567,14 @@ def diff_unit(T, u):
         if "reloc-name" in cls:
             pending = pending_pairs(rich_pairs(s, r, left, right), tsyms, osyms,
                                     {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": is_done(cls)})
+            if pending is None and cls.split(" + ")[0] in ("scheduling", "scheduling+regalloc"):
+                alt = reordered_pairs(T, s, r, left, right, tsyms, osyms,
+                                      {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": False})
+                if alt == []:
+                    pending = []
+                elif alt is not None:
+                    pending = pending_pairs(alt, tsyms, osyms,
+                                            {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": False})
             if pending != []:  # main() may still verify these by address
                 cls = cls.replace("reloc-name", "reloc-name-unverified")
         res[s["name"]] = [float(s.get("match_percent") or 0), size, cls, len(o) - len(t), pending or []]
