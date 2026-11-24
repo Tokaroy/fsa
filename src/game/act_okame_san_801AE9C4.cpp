@@ -21,18 +21,9 @@ static const char* lbl_804A33D0[] = {
 static u32 lbl_804A33B8[] = {'OKTA', 'PEAC', 'STAL'};
 static u32 lbl_804A33C4[] = {0, 0, 2};
 
-// FIXME: 98.70 %, missing/extra; behaviour drift.
-// The (6, 5) early return is `cmpwi r4,5; bne; blr` in the
-// original; ours is `cmpwi r4,5; beqlr`, one instruction fewer. The
-// jump table and the sdata2 literals differ only by @NNN names (data split).
 void OkameSan_804A3448::setState_801AF7D0(s32 state) {
-    if (field_0x258 == state) {
-        return;
-    }
-    if (field_0x258 == 2 && state == 1) {
-        return;
-    }
-    if (field_0x258 == 6 && state == 5) {
+    if (field_0x258 == state || (field_0x258 == 2 && state == 1) ||
+        (field_0x258 == 6 && state == 5)) {
         return;
     }
 
