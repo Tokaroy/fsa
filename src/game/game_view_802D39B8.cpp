@@ -1170,6 +1170,14 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
+// A tile of the tile map through an inlined accessor that returns it as an int: in fn_802D4CCC
+// every u16 local taken from it is clrlwi'd once, right after the call, and then compared as is
+// (0x802D532C, 0x802D58E0), where a u16 assigned straight from getTile_802F9908 is extended at
+// each use instead.
+static inline s32 getTile(s32 layer, s32 cell) {
+    return getTileMap()->getTile_802F9908(layer, cell);
+}
+
 // FIXME: 99.75 %, regalloc-only; behaviour clean.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
@@ -1850,12 +1858,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     s32 i = 0;
     if (layer < 8) {
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
+            u16 tile = getTile(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer + 1, n);
                 getGameView_802D6A9C()->field_0x2948[0][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 1, cell);
+                    u16 under = getTile(layer + 1, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -1956,12 +1964,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     } else {
         s32 slot = layer - 7;
         for (s32 cell = 0; cell < 0x800; cell++) {
-            u16 tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, cell);
+            u16 tile = getTile(layer, cell);
             if (tile == 0x17 || tile == 0x16) {
                 u16 kind = fn_802DED40(layer, n);
                 getGameView_802D6A9C()->field_0x2948[slot][0x3c - n * 4] = cell;
                 if (kind == 0) {
-                    u16 under = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer + 8, cell);
+                    u16 under = getTile(layer + 8, cell);
                     switch (under) {
                     case 0x28:
                     case 0x29:
@@ -2025,7 +2033,7 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 getGameView_802D6A9C()->field_0x2948[slot][i + 1] = other;
                 if ((mask & bit) != 0) {
                     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(
-                        layer, cell, gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, other));
+                        layer, cell, getTile(layer, other));
                     gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, other, 0x20);
                 }
                 bit <<= 2;
@@ -2064,12 +2072,12 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 }
                 s32 right = ((cell + 1) & 0xF) != 0 ? cell + 1 : cell + 0xF1;
                 s32 right2 = ((right + 1) & 0xF) != 0 ? right + 1 : right + 0xF1;
-                u16 upTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, up);
-                u16 downTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down);
-                u16 leftTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, left);
-                u16 rightTile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right);
-                u16 down2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, down2);
-                u16 right2Tile = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(layer, right2);
+                u16 upTile = getTile(layer, up);
+                u16 downTile = getTile(layer, down);
+                u16 leftTile = getTile(layer, left);
+                u16 rightTile = getTile(layer, right);
+                u16 down2Tile = getTile(layer, down2);
+                u16 right2Tile = getTile(layer, right2);
                 if (tile == 0x300) {
                     if (leftTile != 0x30a) skip = 1;
                 } else if (tile == 0x310) {
@@ -2120,7 +2128,10 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                     if (upTile != 0x326) skip = 1;
                 }
                 if (skip == 0) {
-                    u8 step = layer >= 8 ? 8 : 1;
+                    u8 step = 8;
+                    if (layer < 8) {
+                        step = 1;
+                    }
                     getGameView_802D6A9C()->field_0x2948[slot][i] = cell;
                     if ((mask & bit) != 0) {
                         switch (tile) {
