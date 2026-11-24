@@ -66,15 +66,12 @@ void fn_8017ECE8(JGeometry::TVec2f* v, f32 x, f32 y) {
 }
 
 // FIXME: 89.00 %, missing/extra; behaviour clean.
-// The original stores the result's own register (1) to field_0x178; ours loads
-// the constant twice (li r0 and li r4).
 // Sets the camera's field_0x178 flag unless field_0x179 is set.
 u8 fn_8017ECC0() {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->field_0x179 == 0) {
-        result = 1;
-        camera->field_0x178 = 1;
+        camera->field_0x178 = result = 1;
     }
     return result;
 }
