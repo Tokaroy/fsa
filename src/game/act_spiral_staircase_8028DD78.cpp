@@ -433,7 +433,7 @@ void SpiralStaircase_804A7A68::draw() {}
 void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
-        if ((mSpawnParam_0x90 & 0xF) == 6 || (mSpawnParam_0x90 & 0xF) == 7) {
+        if (kind(mSpawnParam_0x90) == 6 || kind(mSpawnParam_0x90) == 7) {
             key[i] = getPlayerPos_8023E724(i)->y;
         } else {
             key[i] = getPlayerPos_8023E724(i)->x;
@@ -523,6 +523,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             }
         }
         break;
+    case 1:
     default:
         out[0] = 0;
         out[1] = 1;
