@@ -190,7 +190,7 @@ static inline void startSwing(TennisShop_804A2BF4* self) {
     self->field_0x324[2] = 1.75f;
 }
 
-// FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.30 %, missing/extra + reloc-name; behaviour drift.
 void TennisShop_804A2BF4::fn_801A17B8() {
     JGeometry::TVec3f talkPos = mPos;
     JGeometry::TVec3f spawnPos;
@@ -736,7 +736,7 @@ static inline void bumpCount(s32* count) {
     }
 }
 
-// FIXME(shotgun): 95.22 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.53 %, scheduling+regalloc; behaviour clean.
 // (still differs: operand order of the 0.0f velocity compares and the mLayer load before getPlayerLayer)
 void TennisShop_804A2BF4::fn_801A0F90() {
     u8 dead = 0;
