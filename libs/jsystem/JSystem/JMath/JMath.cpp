@@ -84,12 +84,38 @@ void JMAFastVECNormalize(register const Vec *src, register Vec *dst)
 #endif
 }
 
-// FIXME: FSA has an unnamed function here, fn_80093280 (0x2C bytes, called
-// from game code): the fast vector magnitude
-//   psq_l xy,0(v); lfs z,8(v); ps_mul; ps_madd; ps_sum0  (squared length)
-//   fcmpu 0.0f,sq; frsqrte r,sq; beqlr; fmuls sq,sq,r; blr
-// i.e. sq == 0 ? sq : sq * frsqrte(sq). No donor has it and none names it, so
-// it is not written yet (its 0.0f constant is .sdata2 0x8053B944).
+// pikmin2's map has JMAFastVECMag(const Vec*) (0x2C bytes) at this place, right before
+// JMAFastVECNormalize; FSA's copy is called from game code under its provisional name
+// (include/game/GameGlobals.h). The magnitude: 0 for the zero vector, else sq * frsqrte(sq).
+// FIXME: FSA's .sdata2 has JMAMTXApplyScale's 1.0f before this 0.0f: a function using 1.0f
+// (pikmin2's map has the unused JMALagrangeInterpolation here) was compiled before this one.
+extern "C" f32 fn_80093280(register const Vec *vec)
+{
+    register f32 zero = 0.0f;
+    register f32 sq, vxy;
+#ifdef __MWERKS__
+    __asm {
+        // clang-format off
+        psq_l vxy, 0(vec), 0, 0
+        lfs sq, vec->z
+        ps_mul vxy, vxy, vxy
+        ps_madd sq, sq, sq, vxy
+        ps_sum0 sq, sq, vxy, vxy
+        fcmpu cr0, zero, sq
+        frsqrte vxy, sq
+        beqlr
+        fmuls sq, sq, vxy
+        // clang-format on
+    }
+#else
+    sq = vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
+    if (sq != zero) {
+        sq = sq * (1.0f / sqrtf(sq));
+    }
+#endif
+    return sq;
+}
+
 void JMAVECScaleAdd(register const Vec *vec1, register const Vec *vec2, register Vec *dst, register f32 scale)
 {
     register f32 v1xy, v2xy, rxy, v1z, v2z, rz;
