@@ -307,7 +307,7 @@ void fn_8019C4F4(JGeometry::TVec2f* v, f32 x, f32 y) {
     v->set(x, y);
 }
 
-// FIXME(shotgun): 99.42 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.79 %, missing/extra + reloc-name; behaviour near.
 void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     JGeometry::TVec3f pos;
     u16 angle = 0;
@@ -2079,7 +2079,6 @@ void PrincessZeldaGanonBattle_804A2944::update() {
     }
 }
 
-// FIXME: 99.86 %, same-text; behaviour clean.
 void PrincessZeldaGanonBattle_804A2944::draw() {
     switch (mSpawnParam_0x90) {
     case 0: {
