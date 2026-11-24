@@ -142,8 +142,6 @@ void cls_804AE9A0::fn_8037A580() {
     }
 }
 
-// FIXME(shotgun): 98.84 %, missing/extra; behaviour clean.
-// (the clrlwi after the first mode compare)
 void cls_804AE9A0::fn_8037A174() {
     if (field_0x4 != NULL) {
         u8 mode = lbl_8053ADA0->mMode_0x4c0;
@@ -226,7 +224,7 @@ u8 fn_8037A120(void) {
     return 0;
 }
 
-void fn_80379FF4(void) {
+void cls_804AE9A0::fn_80379FF4() {
     s32 stage = lbl_80529DEC.mStage_0x118;
     s32 sub = lbl_80529DEC.mLevel_0x11c;
     if (stage < 8 && sub < 4 && stage >= 0 && stage <= 7 && sub >= 0 && sub <= 3) {

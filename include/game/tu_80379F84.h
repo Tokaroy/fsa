@@ -234,6 +234,9 @@ struct cls_804AE9A0 {
     cls_804AE9A0();
     /* 0x08 */ virtual ~cls_804AE9A0();
     bool fn_80379F84();
+    // Steps lbl_80529DEC's stage (0x118) and sub-stage (0x11C) and sets the flag bit
+    // of the current save file.
+    void fn_80379FF4();
     // 0x8037A174: the per-frame update: steps the active screen (the result screen's mode 5 asks fn_8037AA28
     // for the next stage: 0x1A moves on, 0x19 goes back).
     void fn_8037A174();
@@ -271,9 +274,6 @@ void fn_8037AA34(void);
 void fn_8037AA58(void);
 void fn_8037AA7C(void);
 u8 fn_8037A120(void);
-// Steps lbl_80529DEC's stage (0x118) and sub-stage (0x11C) and sets the flag bit
-// of the current save file.
-void fn_80379FF4(void);
 }
 
 #endif
