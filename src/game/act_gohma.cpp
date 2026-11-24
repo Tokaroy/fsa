@@ -190,8 +190,6 @@ void Gohma_804A307C::vfunc_0x44() {
 }
 
 // FIXME: 98.59 %, missing/extra; behaviour drift.
-// FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
-// (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
@@ -242,10 +240,11 @@ void Gohma_804A307C::fn_801AB6A8() {
                     mVel_0x3c.x = -10.0f * JMASinShort(angle);
                     mVel_0x3c.y = -10.0f * JMACosShort(angle);
                 }
-                JGeometry::TVec3f hitPos;
+                // an 8-byte pair on the original's stack, passed as a TVec3f (as act_deadrock)
+                JGeometry::TVec2f hitPos;
                 hitPos.x = centerX;
                 hitPos.y = centerY;
-                if (fn_802379E4(hitPlayer, &hitPos)) {
+                if (fn_802379E4(hitPlayer, (const JGeometry::TVec3f*)&hitPos)) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x400D1, 0);
@@ -269,13 +268,11 @@ void Gohma_804A307C::fn_801AB6A8() {
         setEmitterPos_8013CB44(mEmitters[0], &mPos, 0, -1, true);
         setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
         if (mTimers[2] == 1) {
-            if (mEmitters[0] != NULL) {
-                mEmitters[0]->stopCreateParticle();
-                mEmitters[0] = NULL;
-            }
-            if (mEmitters[1] != NULL) {
-                mEmitters[1]->stopCreateParticle();
-                mEmitters[1] = NULL;
+            for (s32 i = 0; i < 2; i++) {
+                if (mEmitters[i] != NULL) {
+                    mEmitters[i]->becomeInvalidEmitter();
+                    mEmitters[i] = NULL;
+                }
             }
             field_0x230 = 3;
         }
