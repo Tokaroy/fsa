@@ -80,10 +80,10 @@ SaveScreen_804B0288::SaveScreen_804B0288(JKRArchive* archive, bool flag) {
     field_0x6c = field_0x10->getWidth();
     field_0x74 = 0.0f;
     field_0x70 = 0.0f;
-    field_0xc->setFont(lbl_8053AD78->mFont);
-    field_0x10->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tno01'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->setFont(lbl_8053AD78->mFont);
+    field_0xc->setFont(lbl_8053AD78->getFont());
+    field_0x10->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tno01'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->setFont(lbl_8053AD78->getFont());
     getMessageText_803832BC(static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->getStringPtr(), 0x11E, 0, NULL, NULL);
     getMessageText_803832BC(static_cast<J2DTextBox*>(mScreen->search('Tno01'))->getStringPtr(), 0x11F, 0, NULL, NULL);
     field_0x14 = new PaneCtrl_804AF86C();
