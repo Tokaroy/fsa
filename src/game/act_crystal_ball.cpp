@@ -29,7 +29,7 @@ static const s32 lbl_80471784[6][7] = {
 
 // The item shown / dropped for ball state `item`; inlined by draw (0x80320D18) and
 // die_0x24 (0x80320374).
-inline s32 adjustItem_80320374(CrystalBall_804AB308* ball, s32 item) {
+inline s32 adjustItem_80320374(CrystalBall_804AB308* ball, s32& item) {
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             if (item == 8) {
@@ -912,7 +912,6 @@ void CrystalBall_804AB308::draw() {
 }
 
 // FIXME(shotgun): 96.33 %, missing/extra + reloc-name; behaviour drift.
-// item switch / spawn sequences are laid out differently
 void CrystalBall_804AB308::die_0x24() {
     s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (code == 3 && mPos.z < 0.1f) {
@@ -961,8 +960,9 @@ void CrystalBall_804AB308::die_0x24() {
     case 0:
     case 1:
     case 3: {
-        s32 item = field_0x264;
-        if (item < 2) {
+        s32 base = field_0x264;
+        s32 item = base;
+        if (base < 2) {
             item = field_0x294;
         }
         item = adjustItem_80320374(this, item);
@@ -978,8 +978,8 @@ void CrystalBall_804AB308::die_0x24() {
             break;
         }
         case 4: {
-            JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
             s32 param = ((field_0x23c & 3) << 8) + 3;
+            JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &p, param, -1, -1);
             break;
         }
@@ -1063,6 +1063,7 @@ void CrystalBall_804AB308::die_0x24() {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
+                    JGeometry::TVec3f vel = mVel_0x3c;
                     mVel_0x3c.z = 0.0f;
                     actor->mVel_0x3c = mVel_0x3c;
                 }
