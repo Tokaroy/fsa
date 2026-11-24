@@ -38,7 +38,7 @@ inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::T
     openMessage_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
-// FIXME: 97.66 %, missing/extra; behaviour clean.
+// FIXME: 98.33 %, scheduling+regalloc; behaviour clean.
 // Still differs: 0.0f is loaded before hit.x/hit.y in the `!= 0.0f` tests, and callee-saved registers.
 void DroppedItem_804A8C80::init() {
     field_0x238 = mSpawnParam_0x90 & 0x7F;
@@ -396,7 +396,7 @@ void DroppedItem_804A8C80::draw() {
     drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
 }
 
-// FIXME: 95.55 %, missing/extra; behaviour clean.
+// FIXME: 95.57 %, missing/extra; behaviour clean.
 // Still differs: the 0x30000000 addis comes after the (player << 26) add in the original, and registers.
 bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
     s32 leader = leaderOrSelf(player);
