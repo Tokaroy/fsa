@@ -194,6 +194,15 @@ void SlimeFormation_804A5D60::setState_8020AA78(s32 state) {
     mState = state;
 }
 
+// One step of an approach to `target` with `remaining` frames left.
+static inline void approach(f32& cur, f32 target, f32 remaining) {
+    if (remaining < FLT_EPSILON) {
+        cur = target;
+    } else {
+        cur += (1.0f / remaining) * (target - cur);
+    }
+}
+
 // The animation steps of the box-shrinking state machine; updateState_0x90 is its per-frame step.
 // FIXME(shotgun): 99.42 %, missing/extra; behaviour drift.
 void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
@@ -386,11 +395,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
             mAlive = false;
         } else {
             f32 left = (f32)(12 - mStateTimer);
-            if (left < FLT_EPSILON) {
-                field_0x54.x = 0.0f;
-            } else {
-                field_0x54.x = (1.0f / left) * (0.0f - field_0x54.x) + field_0x54.x;
-            }
+            approach(field_0x54.x, 0.0f, left);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
         }
