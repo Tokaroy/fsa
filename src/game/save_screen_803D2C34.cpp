@@ -40,7 +40,6 @@ static inline void touchCurrentFile() {
 // The tags of the eight border panes.
 static const u64 lbl_80476F20[8] = {'Psl01', 'Psl02', 'Psl03', 'Psl04', 'Psl05', 'Psl06', 'Psl07', 'Psl08'};
 
-// FIXME(shotgun): 97.11 %, missing/extra; behaviour drift.
 SaveScreen_804B0288::SaveScreen_804B0288(JKRArchive* archive, bool flag) {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADB8 = this;
