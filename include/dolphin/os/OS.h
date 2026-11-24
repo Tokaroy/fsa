@@ -127,6 +127,9 @@ inline s16 __OSf32tos16(__REGISTER f32 inF) {
         psq_st inF, 0(tmpPtr), 0x1, 5
         lha out, 0(tmpPtr)
     }
+#else
+    // GQR5 = s16, no scale: truncate and clamp.
+    out = inF <= -32768.0f ? -32768 : inF >= 32767.0f ? 32767 : (s16)inF;
 #endif
     // clang-format on
 
@@ -147,6 +150,9 @@ inline u8 __OSf32tou8(__REGISTER f32 inF) {
         psq_st inF, 0(tmpPtr), 0x1, 2
         lbz out, 0(tmpPtr)
     }
+#else
+    // GQR2 = u8, no scale: truncate and clamp.
+    out = inF <= 0.0f ? 0 : inF >= 255.0f ? 255 : (u8)inF;
 #endif
     // clang-format on
 
@@ -168,6 +174,9 @@ inline s8 __OSf32tos8(__REGISTER f32 inF) {
         lbz out, 0(tmpPtr)
         extsb out, out
     }
+#else
+    // GQR4 = s8, no scale: truncate and clamp.
+    out = (s8)(inF <= -128.0f ? -128 : inF >= 127.0f ? 127 : (s8)inF);
 #endif
     // clang-format on
 
@@ -195,6 +204,9 @@ static inline void OSInitFastCast(void) {
         oris r3, r3, 7
         mtspr GQR5, r3
     }
+#else
+    // No GQRs off the Gekko: the portable conversions above hard-code this
+    // table (GQR2 u8, GQR3 u16, GQR4 s8, GQR5 s16, no scale).
 #endif
     // clang-format on
 }

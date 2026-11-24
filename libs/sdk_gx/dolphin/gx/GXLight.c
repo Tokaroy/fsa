@@ -69,7 +69,21 @@ static inline void PushLight(const register __GXLightObjInt_struct* lt_obj, regi
         psq_st  pz_dx, 0(dest), 0, 0
         psq_st  dy_dz, 0(dest), 0, 0
     }
-#endif // clang-format on
+#else // clang-format on
+    // Same FIFO writes in the same order: three zero words, the colour,
+    // then a[0..2], k[0..2], lpos[0..2], ldir[0..2].
+    volatile u32* fifo_u32 = (volatile u32*)dest;
+    volatile f32* fifo_f32 = (volatile f32*)dest;
+    int i;
+    *fifo_u32 = 0;
+    *fifo_u32 = 0;
+    *fifo_u32 = 0;
+    *fifo_u32 = lt_obj->Color;
+    for (i = 0; i < 3; i++) *fifo_f32 = lt_obj->a[i];
+    for (i = 0; i < 3; i++) *fifo_f32 = lt_obj->k[i];
+    for (i = 0; i < 3; i++) *fifo_f32 = lt_obj->lpos[i];
+    for (i = 0; i < 3; i++) *fifo_f32 = lt_obj->ldir[i];
+#endif
 }
 
 void GXLoadLightObjImm(const GXLightObj* lt_obj, GXLightID light) {

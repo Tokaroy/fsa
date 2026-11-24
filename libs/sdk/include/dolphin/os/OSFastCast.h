@@ -51,10 +51,15 @@ static inline s16 __OSf32tos16(register f32 inF)
 	u32 tmp;
 	register u32* tmpPtr = &tmp;
 	// clang-format off
+#ifdef __MWERKS__
     asm {
         psq_st inF, 0(tmpPtr), 0x1, OS_FASTCAST_S16
         lha out, 0(tmpPtr)
     }
+#else
+    // GQR5 = s16, no scale: truncate and clamp.
+    out = inF <= -32768.0f ? -32768 : inF >= 32767.0f ? 32767 : (s16)inF;
+#endif
   // clang-format on
 
   return out;
@@ -68,10 +73,15 @@ static inline u8 __OSf32tou8(register f32 inF)
   u32 tmp;
   register u32 *tmpPtr = &tmp;
   // clang-format off
+#ifdef __MWERKS__
     asm {
         psq_st inF, 0(tmpPtr), 0x1, OS_FASTCAST_U8
         lbz out, 0(tmpPtr)
     }
+#else
+    // GQR2 = u8, no scale: truncate and clamp.
+    out = inF <= 0.0f ? 0 : inF >= 255.0f ? 255 : (u8)inF;
+#endif
   // clang-format on
 
   return out;

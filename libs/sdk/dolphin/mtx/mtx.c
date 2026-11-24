@@ -1,6 +1,9 @@
 #include "dolphin/mtx.h"
 
 #include "PowerPC_EABI_Support/MSL_C/PPC_EABI/math_ppc.h"
+#ifndef __MWERKS__
+#include <math.h>
+#endif
 
 // .sbss
 static float Unit01[2] = {0.0f, 1.0f};
@@ -40,6 +43,10 @@ void PSMTXIdentity(register Mtx m)
         psq_st c_10, 0(m), 0, 0;
         psq_st c_10, 40(m), 0, 0;
     }
+#else
+    m[0][0] = c_one;  m[0][1] = c_zero; m[0][2] = c_zero; m[0][3] = c_zero;
+    m[1][0] = c_zero; m[1][1] = c_one;  m[1][2] = c_zero; m[1][3] = c_zero;
+    m[2][0] = c_zero; m[2][1] = c_zero; m[2][2] = c_one;  m[2][3] = c_zero;
 #endif
 }
 
@@ -61,10 +68,15 @@ void PSMTXCopy(register const Mtx src, register Mtx dst)
         psq_l f5, 40(src), 0, 0;
         psq_st f5, 40(dst), 0, 0;
     }
+#else
+    int r, c;
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 4; c++)
+            dst[r][c] = src[r][c];
 #endif
 }
 
-asm void PSMTXConcat(register const Mtx mA, register const Mtx mB, register Mtx mAB)
+ASM void PSMTXConcat(register const Mtx mA, register const Mtx mB, register Mtx mAB)
 {
 #ifdef __MWERKS__
     nofralloc;
@@ -119,6 +131,18 @@ asm void PSMTXConcat(register const Mtx mA, register const Mtx mB, register Mtx 
     lfd f31, 40(r1);
     addi r1, r1, 64;
     blr;
+#else
+    Mtx tmp;
+    int r, c;
+    for (r = 0; r < 3; r++) {
+        for (c = 0; c < 4; c++) {
+            tmp[r][c] = mA[r][0] * mB[0][c] + mA[r][1] * mB[1][c] + mA[r][2] * mB[2][c];
+        }
+        tmp[r][3] += mA[r][3];
+    }
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 4; c++)
+            mAB[r][c] = tmp[r][c];
 #endif
 }
 
@@ -148,10 +172,21 @@ void PSMTXTranspose(register const Mtx src, register Mtx xPose)
         psq_st f5, 0x18(r4), 0, 0;
         stfs f3, 0x28(r4);
     }
+#else
+    Mtx tmp;
+    int r, c;
+    for (r = 0; r < 3; r++) {
+        for (c = 0; c < 3; c++)
+            tmp[r][c] = src[c][r];
+        tmp[r][3] = c_zero;
+    }
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 4; c++)
+            xPose[r][c] = tmp[r][c];
 #endif
 }
 
-asm u32 PSMTXInverse(register const Mtx src, register Mtx inv)
+ASM u32 PSMTXInverse(register const Mtx src, register Mtx inv)
 {
 #ifdef __MWERKS__
     psq_l f0, 0(src), 1, 0;
@@ -216,6 +251,34 @@ skip_return:
     ps_nmadd f7, f8, f3, f7;
     li r3, 1;
     psq_st f7, 44(inv), 1, 0;
+#else
+    Mtx tmp;
+    f32 det;
+    int r, c;
+
+    det = src[0][0] * src[1][1] * src[2][2] + src[0][1] * src[1][2] * src[2][0] + src[0][2] * src[1][0] * src[2][1]
+        - src[2][0] * src[1][1] * src[0][2] - src[1][0] * src[0][1] * src[2][2] - src[0][0] * src[2][1] * src[1][2];
+    if (det == 0.0f) {
+        return 0;
+    }
+    det = 1.0f / det;
+
+    tmp[0][0] = (src[1][1] * src[2][2] - src[2][1] * src[1][2]) * det;
+    tmp[0][1] = -(src[0][1] * src[2][2] - src[2][1] * src[0][2]) * det;
+    tmp[0][2] = (src[0][1] * src[1][2] - src[1][1] * src[0][2]) * det;
+    tmp[1][0] = -(src[1][0] * src[2][2] - src[2][0] * src[1][2]) * det;
+    tmp[1][1] = (src[0][0] * src[2][2] - src[2][0] * src[0][2]) * det;
+    tmp[1][2] = -(src[0][0] * src[1][2] - src[1][0] * src[0][2]) * det;
+    tmp[2][0] = (src[1][0] * src[2][1] - src[2][0] * src[1][1]) * det;
+    tmp[2][1] = -(src[0][0] * src[2][1] - src[2][0] * src[0][1]) * det;
+    tmp[2][2] = (src[0][0] * src[1][1] - src[1][0] * src[0][1]) * det;
+    for (r = 0; r < 3; r++) {
+        tmp[r][3] = -tmp[r][0] * src[0][3] - tmp[r][1] * src[1][3] - tmp[r][2] * src[2][3];
+    }
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 4; c++)
+            inv[r][c] = tmp[r][c];
+    return 1;
 #endif
 }
 
@@ -244,6 +307,9 @@ void PSMTXRotTrig(register Mtx m, register char axis, register f32 dsinA, regist
         frsp sinA, dsinA;
         frsp cosA, dcosA;
     }
+#else
+    sinA = dsinA;
+    cosA = dcosA;
 #endif
 
     fc0 = 0.0f;
@@ -299,6 +365,25 @@ void PSMTXRotTrig(register Mtx m, register char axis, register f32 dsinA, regist
         psq_st      fw1, 40(m), 0, 0;
 
     _end:
+    }
+#else
+    nsinA = -sinA;
+    switch (axis | 0x20) {
+    case 'x':
+        m[0][0] = fc1; m[0][1] = fc0;  m[0][2] = fc0;   m[0][3] = fc0;
+        m[1][0] = fc0; m[1][1] = cosA; m[1][2] = nsinA; m[1][3] = fc0;
+        m[2][0] = fc0; m[2][1] = sinA; m[2][2] = cosA;  m[2][3] = fc0;
+        break;
+    case 'y':
+        m[0][0] = cosA;  m[0][1] = fc0; m[0][2] = sinA; m[0][3] = fc0;
+        m[1][0] = fc0;   m[1][1] = fc1; m[1][2] = fc0;  m[1][3] = fc0;
+        m[2][0] = nsinA; m[2][1] = fc0; m[2][2] = cosA; m[2][3] = fc0;
+        break;
+    case 'z':
+        m[0][0] = cosA; m[0][1] = nsinA; m[0][2] = fc0; m[0][3] = fc0;
+        m[1][0] = sinA; m[1][1] = cosA;  m[1][2] = fc0; m[1][3] = fc0;
+        m[2][0] = fc0;  m[2][1] = fc0;   m[2][2] = fc1; m[2][3] = fc0;
+        break;
     }
 #endif
 }
@@ -367,6 +452,14 @@ static void __PSMTXRotAxisRadInternal(register Mtx m,
         psq_st f6, 0x20(r3), 0, 0;
         psq_st f7, 0x28(r3), 0, 0;
     }
+#else
+    // Normalised axis (the asm refines frsqrte by one Newton step).
+    f32 inv = 1.0f / sqrtf(axis->x * axis->x + axis->y * axis->y + axis->z * axis->z);
+    f32 x = axis->x * inv, y = axis->y * inv, z = axis->z * inv;
+    f32 t = 1.0f - cT;
+    m[0][0] = t * x * x + cT;     m[0][1] = t * x * y - sT * z; m[0][2] = t * x * z + sT * y; m[0][3] = 0.0f;
+    m[1][0] = t * x * y + sT * z; m[1][1] = t * y * y + cT;     m[1][2] = t * y * z - sT * x; m[1][3] = 0.0f;
+    m[2][0] = t * x * z - sT * y; m[2][1] = t * y * z + sT * x; m[2][2] = t * z * z + cT;     m[2][3] = 0.0f;
 #endif
 }
 
@@ -399,6 +492,10 @@ void PSMTXTrans(Mtx m, f32 xT, f32 yT, f32 zT)
         stfs f3, 0x2c(r3);
         stfs one, 0x0(r3);
     }
+#else
+    m[0][0] = one;  m[0][1] = zero; m[0][2] = zero; m[0][3] = xT;
+    m[1][0] = zero; m[1][1] = one;  m[1][2] = zero; m[1][3] = yT;
+    m[2][0] = zero; m[2][1] = zero; m[2][2] = one;  m[2][3] = zT;
 #endif
 }
 
@@ -426,6 +523,14 @@ void PSMTXTransApply(const Mtx src, Mtx dst, f32 xT, f32 yT, f32 zT)
         psq_st f9, 0x20(r4), 0, 0;
         psq_st f8, 0x28(r4), 0, 0;
     }
+#else
+    int r, c;
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 3; c++)
+            dst[r][c] = src[r][c];
+    dst[0][3] = src[0][3] + xT;
+    dst[1][3] = src[1][3] + yT;
+    dst[2][3] = src[2][3] + zT;
 #endif
 }
 
@@ -445,6 +550,10 @@ void PSMTXScale(Mtx m, f32 xS, f32 yS, f32 zS)
         stfs f3, 0x28(r3);
         stfs zero, 0x2c(r3);
     }
+#else
+    m[0][0] = xS;   m[0][1] = zero; m[0][2] = zero; m[0][3] = zero;
+    m[1][0] = zero; m[1][1] = yS;   m[1][2] = zero; m[1][3] = zero;
+    m[2][0] = zero; m[2][1] = zero; m[2][2] = zS;   m[2][3] = zero;
 #endif
 }
 
@@ -474,6 +583,13 @@ void PSMTXScaleApply(const Mtx src, Mtx dst, f32 xS, f32 yS, f32 zS)
         psq_st f7, 0x18(r4), 0, 0;
         psq_st f8, 0x20(r4), 0, 0;
         psq_st f2, 0x28(r4), 0, 0;
+    }
+#else
+    int c;
+    for (c = 0; c < 4; c++) {
+        dst[0][c] = src[0][c] * xS;
+        dst[1][c] = src[1][c] * yS;
+        dst[2][c] = src[2][c] * zS;
     }
 #endif
 }
@@ -526,6 +642,16 @@ void PSMTXQuat(Mtx m, const Quaternion *q)
         psq_st f7, 0x18(r3), 0, 0;
         psq_st f11, 0x20(r3), 0, 0;
     }
+#else
+    // The asm's fres+Newton 2/|q|^2 as a plain divide.
+    f32 s = 2.0f / (q->x * q->x + q->y * q->y + q->z * q->z + q->w * q->w);
+    f32 xs = q->x * s, ys = q->y * s, zs = q->z * s;
+    f32 wx = q->w * xs, wy = q->w * ys, wz = q->w * zs;
+    f32 xx = q->x * xs, xy = q->x * ys, xz = q->x * zs;
+    f32 yy = q->y * ys, yz = q->y * zs, zz = q->z * zs;
+    m[0][0] = one - (yy + zz); m[0][1] = xy - wz;         m[0][2] = xz + wy;         m[0][3] = 0.0f;
+    m[1][0] = xy + wz;         m[1][1] = one - (xx + zz); m[1][2] = yz - wx;         m[1][3] = 0.0f;
+    m[2][0] = xz - wy;         m[2][1] = yz + wx;         m[2][2] = one - (xx + yy); m[2][3] = 0.0f;
 #endif
 }
 

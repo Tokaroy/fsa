@@ -26,6 +26,11 @@ void PSMTXMultVec(const Mtx m, const Vec *src, Vec *dst)
         ps_sum0 f6, f5, f6, f5;
         psq_st f6, 0x8(r5), 1, 0;
     }
+#else
+    f32 x = src->x, y = src->y, z = src->z;
+    dst->x = m[0][0] * x + m[0][1] * y + m[0][2] * z + m[0][3];
+    dst->y = m[1][0] * x + m[1][1] * y + m[1][2] * z + m[1][3];
+    dst->z = m[2][0] * x + m[2][1] * y + m[2][2] * z + m[2][3];
 #endif
 }
 
@@ -55,6 +60,11 @@ void PSMTXMultVecSR(const Mtx m, const Vec *src, Vec *dst)
         ps_madd f13, f5, f7, f12;
         psq_st f13, 0x8(r5), 1, 0;
     }
+#else
+    f32 x = src->x, y = src->y, z = src->z;
+    dst->x = m[0][0] * x + m[0][1] * y + m[0][2] * z;
+    dst->y = m[1][0] * x + m[1][1] * y + m[1][2] * z;
+    dst->z = m[2][0] * x + m[2][1] * y + m[2][2] * z;
 #endif
 }
 
@@ -97,6 +107,15 @@ void PSMTXMultVecArraySR(const Mtx m, const Vec *srcBase, Vec *dstBase, u32 coun
         ps_sum0 f13, f10, f9, f9;
         psq_stu f12, 0x4(r5), 0, 0;
         psq_stu f13, 0x8(r5), 1, 0;
+    }
+#else
+    // Like the asm, always does at least one vector (count is assumed >= 1).
+    u32 i;
+    for (i = 0; i < count; i++) {
+        f32 x = srcBase[i].x, y = srcBase[i].y, z = srcBase[i].z;
+        dstBase[i].x = m[0][0] * x + m[0][1] * y + m[0][2] * z;
+        dstBase[i].y = m[1][0] * x + m[1][1] * y + m[1][2] * z;
+        dstBase[i].z = m[2][0] * x + m[2][1] * y + m[2][2] * z;
     }
 #endif
 }

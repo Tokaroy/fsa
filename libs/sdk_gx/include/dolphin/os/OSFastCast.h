@@ -33,6 +33,9 @@ static inline void OSInitFastCast(void) {
         mtspr   GQR5, r3
     }
     // clang-format off
+#else
+    // No GQRs off the Gekko: the portable conversions below hard-code this
+    // table (GQR2 u8, GQR3 u16, GQR4 s8, GQR5 s16, no scale).
 #endif
 }
 
@@ -118,7 +121,7 @@ static inline u8 __OSf32tou8(register f32 arg) {
     // clang-format on
     r = *(u8*)ptr;
 #else
-    r = (u8)arg;
+    r = arg <= 0.0f ? 0 : arg >= 255.0f ? 255 : (u8)arg; // quantised store: truncate, clamp
 #endif
 
     return r;
@@ -137,7 +140,7 @@ static inline u16 __OSf32tou16(register f32 arg) {
     // clang-format on
     r = *(u16*)ptr;
 #else
-    r = (u16)arg;
+    r = arg <= 0.0f ? 0 : arg >= 65535.0f ? 65535 : (u16)arg; // quantised store: truncate, clamp
 #endif
 
     return r;
@@ -156,7 +159,7 @@ static inline s8 __OSf32tos8(register f32 arg) {
     // clang-format on
     r = *(s8*)ptr;
 #else
-    r = (s8)arg;
+    r = arg <= -128.0f ? -128 : arg >= 127.0f ? 127 : (s8)arg; // quantised store: truncate, clamp
 #endif
 
     return r;
@@ -175,7 +178,7 @@ static inline s16 __OSf32tos16(register f32 arg) {
     // clang-format on
     r = *(s16*)ptr;
 #else
-    r = (s16)arg;
+    r = arg <= -32768.0f ? -32768 : arg >= 32767.0f ? 32767 : (s16)arg; // quantised store: truncate, clamp
 #endif
 
     return r;

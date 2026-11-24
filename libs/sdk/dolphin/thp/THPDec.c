@@ -414,6 +414,10 @@ static inline void __THPGQRSetup(void)
 		mfspr   tmp1, GQR5;
 		mfspr   tmp2, GQR6;
 	}
+#else
+	// No GQRs off the Gekko.
+	tmp1 = 0;
+	tmp2 = 0;
 #endif // clang-format on
 
 	__THPOldGQR5 = tmp1;
@@ -428,6 +432,9 @@ static inline void __THPGQRSetup(void)
 		oris    r3, r3, 0x3D04
 		mtspr   GQR6, r3
 	}
+#else
+	// No GQRs off the Gekko. The IDCT code that relies on GQR5 = s16 and
+	// GQR6 = u8 with scale -3 (stores divide by 8) has no portable body yet.
 #endif // clang-format on
 }
 
@@ -442,6 +449,8 @@ static inline void __THPGQRRestore(void)
 		mtspr   GQR5, tmp1;
 		mtspr   GQR6, tmp2;
 	}
+#else
+	// No GQRs off the Gekko: nothing to restore.
 #endif // clang-format on
 }
 
@@ -714,6 +723,8 @@ inline void __THPInverseDCTNoYPos(register THPCoeff* in, register u32 xPos)
 
 		_loopEnd:
 		}
+	#else
+	#error "needs portable body"
 	#endif // clang-format on
 	}
 
@@ -841,6 +852,8 @@ inline void __THPInverseDCTNoYPos(register THPCoeff* in, register u32 xPos)
 			psq_st      tmp20, 0(out1), 0, 6
 			psq_st      tmp21, 8(out1), 0, 6
 		}
+	#else
+	#error "needs portable body"
 	#endif // clang-format on
 	}
 }
@@ -1022,6 +1035,8 @@ inline void __THPInverseDCTY8(register THPCoeff* in, register u32 xPos)
 		_loopEnd:
 
 		}
+	#else
+	#error "needs portable body"
 	#endif // clang-format on
 	}
 
@@ -1152,6 +1167,8 @@ inline void __THPInverseDCTY8(register THPCoeff* in, register u32 xPos)
 			psq_st      tmp21, 8(out1), 0, 6
 
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	}
 }
@@ -1245,6 +1262,8 @@ inline s32 __THPHuffDecodeTab(register THPFileInfo* info,
 		add     cnt, cnt, increment;
 		stw     cnt, info->cnt;
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	_done : return code;
 
@@ -1300,6 +1319,8 @@ inline s32 __THPHuffDecodeTab(register THPFileInfo* info,
 			addi        code, code, 1
 			bgt     __WHILE_START;
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	}
 _FCEB_Done:
@@ -1327,6 +1348,8 @@ _FCEB_Done:
 		stw     code, info->cnt
 		bgt     _FailedCheckNoBits1
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	return tmp;
 
@@ -1345,6 +1368,8 @@ _FCEB_Done:
 		beq     _DammitRead4
 
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	return tmp;
 
@@ -1371,6 +1396,8 @@ _DammitRead4: {
 		addi    cnt, cnt, 1
 		bgt     __DR4_WHILE_START
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 }
 
@@ -1394,6 +1421,8 @@ _getfullword:
 
 		stw     increment, info->cnt
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	return (s32)cnt;
 
@@ -1407,6 +1436,8 @@ _FailedCheckEnoughbits_Updated:
 			addi    cnt, cnt, 1
 			srw     code, cb, tmp
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 	} while (code > h->maxCode[cnt]);
 
@@ -1454,6 +1485,8 @@ _FailedCheckNoBits1:
 		rlwnm   increment, cb, tmp, 31, 31
 		bgt     __FCNB1_WHILE_START
 	}
+#else
+#error "needs portable body"
 #endif // clang-format on
 }
 
@@ -1568,6 +1601,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 					subfic   v, t, 32
 					srw      diff, cnt, v
 				}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -1587,6 +1622,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 					srw diff, v, tmp
 				_DoneDIFF:
 				}
+#else
+#error "needs portable body"
 #endif // clang-format on
 			}
 
@@ -1616,6 +1653,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 			addi    increment, h, 32
 			lwz     cb, info->currByte
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 		for (k = 1; k < 64; k++)
@@ -1638,6 +1677,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				add     cnt, cnt, code
 				b       _DoneDecodeTab
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 			{
@@ -1693,6 +1734,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 					addi    code, code, 1
 					bgt     __WHILE_START
 				}
+#else
+#error "needs portable body"
 #endif // clang-format on
 			}
 		_FCEB_Done:
@@ -1719,6 +1762,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				cmpwi   code, 33
 				bgt     _FailedCheckNoBits1
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 			cnt = (u32)code;
 			goto _DoneDecodeTab;
@@ -1735,6 +1780,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				addi    cnt, tmp, 1
 				beq     _FailedCheckEnoughbits_Updated
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 		}
 			goto _DoneDecodeTab;
@@ -1749,6 +1796,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 					addi    ssss, ssss, 1
 					srw     code, cb, tmp
 				}
+#else
+#error "needs portable body"
 #endif // clang-format on
 			} while (code > h->maxCode[ssss]);
 
@@ -1769,6 +1818,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				cmpwi   ssss, 0xFF
 				beq     _DammitRead4;
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 			goto _DoneDecodeTab;
@@ -1796,6 +1847,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				addi    cnt, cnt, 1
 				bgt     __DR4_WHILE_START
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 		}
 			ssss = (h->Vij[(s32)(code + h->valPtr[cnt])]);
@@ -1837,6 +1890,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 				rlwnm   rrrr, cb, cnt, 31, 31
 				bgt     __FCNB1_WHILE_START
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 			ssss = (h->Vij[(s32)(code + h->valPtr[tmp3])]);
 		}
@@ -1850,6 +1905,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 			    srawi   ssss, ssss, 4
 			    beq     _RECV_SSSS_ZERO
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 			{
@@ -1870,6 +1927,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 						subfic   v, rrrr, 32
 						srw      ssss, tmp1, v
 					}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -1888,6 +1947,8 @@ void __THPHuffDecodeDCTCompY(register THPFileInfo* info, THPCoeff* block)
 						srw ssss, v, tmp
 					_RECVDone:
 					}
+#else
+#error "needs portable body"
 #endif // clang-format on
 				}
 
@@ -1956,6 +2017,8 @@ void __THPHuffDecodeDCTCompU(register THPFileInfo* info, THPCoeff* block)
 			subfic   v,t,32
 			srw      diff,cnt,v
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -1975,6 +2038,8 @@ void __THPHuffDecodeDCTCompU(register THPFileInfo* info, THPCoeff* block)
 			srw diff, v, tmp
 		_DoneDIFF:
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 		if (__cntlzw((u32)diff) > 32 - t) {
@@ -2008,6 +2073,8 @@ void __THPHuffDecodeDCTCompU(register THPFileInfo* info, THPCoeff* block)
 				subfic   v, ssss, 32
 				srw      rrrr, cnt, v
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -2027,6 +2094,8 @@ void __THPHuffDecodeDCTCompU(register THPFileInfo* info, THPCoeff* block)
 				srw rrrr, v, tmp
 			_Done:
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 			if (__cntlzw((u32)rrrr) > 32 - ssss) {
@@ -2081,6 +2150,8 @@ void __THPHuffDecodeDCTCompV(register THPFileInfo* info, THPCoeff* block)
 			subfic   v, t, 32
 			srw      diff, cnt, v
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -2100,6 +2171,8 @@ void __THPHuffDecodeDCTCompV(register THPFileInfo* info, THPCoeff* block)
 			srw diff, v, tmp
 		_DoneDIFF:
 		}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 		if (__cntlzw((u32)diff) > 32 - t) {
@@ -2137,6 +2210,8 @@ void __THPHuffDecodeDCTCompV(register THPFileInfo* info, THPCoeff* block)
 				subfic   v, ssss, 32
 				srw      rrrr, cnt, v
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 #ifdef __MWERKS__ // clang-format off
@@ -2156,6 +2231,8 @@ void __THPHuffDecodeDCTCompV(register THPFileInfo* info, THPCoeff* block)
 				srw rrrr, v, tmp
 			_Done:
 			}
+#else
+#error "needs portable body"
 #endif // clang-format on
 
 			if (__cntlzw((u32)rrrr) > 32 - ssss) {

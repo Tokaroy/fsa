@@ -43,7 +43,12 @@ inline void WriteProjPS(const register f32 src[6], register volatile void* dst) 
         psq_st ps_1,  0(dst), 0, 0
         psq_st ps_2,  0(dst), 0, 0
     }
-#endif // clang-format on
+#else // clang-format on
+    // All six floats go to the same FIFO address.
+    volatile f32* fifo = (volatile f32*)dst;
+    int i;
+    for (i = 0; i < 6; i++) *fifo = src[i];
+#endif
 }
 
 inline void Copy6Floats(const register f32 src[6], register f32 dst[6]) {
@@ -58,7 +63,10 @@ inline void Copy6Floats(const register f32 src[6], register f32 dst[6]) {
         psq_st ps_1,  8(dst), 0, 0
         psq_st ps_2, 16(dst), 0, 0
     }
-#endif // clang-format on
+#else // clang-format on
+    int i;
+    for (i = 0; i < 6; i++) dst[i] = src[i];
+#endif
 }
 
 inline void __GXSetProjection(void) {
@@ -140,7 +148,13 @@ inline void WriteMTXPS4x3(register volatile void* dst, register const Mtx src) {
         psq_st ps_4, 0(dst),  0, 0
         psq_st ps_5, 0(dst),  0, 0
     }
-#endif // clang-format on
+#else // clang-format on
+    // Rows 0-2, four floats each, to the FIFO.
+    volatile f32* fifo = (volatile f32*)dst;
+    int r, c;
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 4; c++) *fifo = src[r][c];
+#endif
 }
 
 inline void WriteMTXPS3x3from3x4(register volatile void* dst, register const Mtx src) {
@@ -162,7 +176,13 @@ inline void WriteMTXPS3x3from3x4(register volatile void* dst, register const Mtx
         psq_st ps_4, 0(dst),  0, 0
         stfs   ps_5, 0(dst)
     }
-#endif // clang-format on
+#else // clang-format on
+    // The upper 3x3 of a 3x4, row by row, to the FIFO.
+    volatile f32* fifo = (volatile f32*)dst;
+    int r, c;
+    for (r = 0; r < 3; r++)
+        for (c = 0; c < 3; c++) *fifo = src[r][c];
+#endif
 }
 
 inline void WriteMTXPS4x2(register volatile void* dst, register const Mtx src) {
@@ -180,7 +200,13 @@ inline void WriteMTXPS4x2(register volatile void* dst, register const Mtx src) {
         psq_st ps_2, 0(dst),  0, 0
         psq_st ps_3, 0(dst),  0, 0
     }
-#endif // clang-format on
+#else // clang-format on
+    // Rows 0-1, four floats each, to the FIFO.
+    volatile f32* fifo = (volatile f32*)dst;
+    int r, c;
+    for (r = 0; r < 2; r++)
+        for (c = 0; c < 4; c++) *fifo = src[r][c];
+#endif
 }
 
 void GXLoadPosMtxImm(const Mtx mtx, u32 id) {

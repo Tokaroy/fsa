@@ -1,5 +1,8 @@
 #include "types.h"
 #include "dolphin/mtx.h"
+#ifndef __MWERKS__
+#include <math.h>
+#endif
 
 #define R_RET fp1
 #define FP2 fp2
@@ -33,7 +36,11 @@ ASM void PSVECAdd(const register Vec *vec1, const register Vec *vec2, register V
     ps_add    FP7, FP3, FP5;
     psq_st    FP7,   8(ret), 1, 0;
     blr
-#endif // clang-format on
+#else // clang-format on
+    ret->x = vec1->x + vec2->x;
+    ret->y = vec1->y + vec2->y;
+    ret->z = vec1->z + vec2->z;
+#endif
 }
 
 void C_VECSubtract(void)
@@ -54,7 +61,11 @@ ASM void PSVECSubtract(const register Vec *vec1, const register Vec *vec2, regis
     ps_sub    FP7, FP3, FP5;
     psq_st    FP7,  8(ret), 1, 0;
     blr
-#endif // clang-format on
+#else // clang-format on
+    ret->x = vec1->x - vec2->x;
+    ret->y = vec1->y - vec2->y;
+    ret->z = vec1->z - vec2->z;
+#endif
 }
 
 void C_VECScale(void)
@@ -66,6 +77,7 @@ void PSVECScale(register const Vec *src, register Vec *dst, register f32 scale)
 {
     // clang-format off
     register f32 vxy, vz, rxy, rz;
+#ifdef __MWERKS__
     __asm {		
         psq_l       vxy, 0(src), 0, 0
         psq_l       vz,  8(src), 1, 0
@@ -74,6 +86,11 @@ void PSVECScale(register const Vec *src, register Vec *dst, register f32 scale)
         ps_muls0    rz,  vz,  scale                        
         psq_st      rz,  8(dst), 1, 0
     }
+#else
+    dst->x = src->x * scale;
+    dst->y = src->y * scale;
+    dst->z = src->z * scale;
+#endif
     // clang-format on
 }
 
@@ -107,7 +124,12 @@ void PSVECNormalize(const register Vec *vec1, register Vec *ret)
         ps_muls0    FP3, FP3, ret_sqrt;
         psq_st      FP3, 8(ret), 1, 0;
     }
-#endif // clang-format on
+#else // clang-format on
+    f32 inv = 1.0f / sqrtf(vec1->x * vec1->x + vec1->y * vec1->y + vec1->z * vec1->z);
+    ret->x = vec1->x * inv;
+    ret->y = vec1->y * inv;
+    ret->z = vec1->z * inv;
+#endif
 }
 
 void C_VECSquareMag(void)
@@ -143,7 +165,12 @@ f32 PSVECMag(const register Vec *v)
         beq-        __exit
         frsqrte     ret_mag, square_mag
     }
-    #endif // clang-format on
+    #else // clang-format on
+    square_mag = v->x * v->x + v->y * v->y + v->z * v->z;
+    if (square_mag != 0.0f) {
+        square_mag = sqrtf(square_mag);
+    }
+    #endif
     three = 3.0f;
     #ifdef __MWERKS__ // clang-format off
     asm {
@@ -154,7 +181,9 @@ f32 PSVECMag(const register Vec *v)
         fmuls       square_mag, square_mag, ret_mag
     __exit:
     }
-    #endif // clang-format on
+    #else // clang-format on
+    // Done in the block above.
+    #endif
     return square_mag;
 }
 
@@ -175,7 +204,9 @@ ASM f32 PSVECDotProduct(register const Vec *a, register const Vec *b)
     ps_madd   f3, f5, f4, f2;
     ps_sum0   R_RET, f3, f2, f2;
     blr
-#endif // clang-format on
+#else // clang-format on
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#endif
 }
 
 void C_VECCrossProduct(void)
@@ -202,7 +233,14 @@ ASM void PSVECCrossProduct(const register Vec *vec1, const register Vec *vec2, r
     ps_neg      fp10, fp10
     psq_st      fp10, 4(ret), 0, 0
     blr;
-#endif // clang-format on
+#else // clang-format on
+    f32 x = vec1->y * vec2->z - vec1->z * vec2->y;
+    f32 y = vec1->z * vec2->x - vec1->x * vec2->z;
+    f32 z = vec1->x * vec2->y - vec1->y * vec2->x;
+    ret->x = x;
+    ret->y = y;
+    ret->z = z;
+#endif
 }
 
 void C_VECHalfAngle(void)
@@ -273,5 +311,11 @@ ASM f32 PSVECDistance(register const Vec *a, register const Vec *b)
     fmuls     R_RET, f1, f0;
 exit:
     blr
-#endif // clang-format on
+#else // clang-format on
+    f32 dx = a->x - b->x;
+    f32 dy = a->y - b->y;
+    f32 dz = a->z - b->z;
+    f32 sq = dx * dx + dy * dy + dz * dz;
+    return sq == 0.0f ? sq : sqrtf(sq);
+#endif
 }
