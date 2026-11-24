@@ -235,6 +235,7 @@ inline bool PrincessZelda_8049CEE0::stepRail() {
 }
 
 // The position copies for openMessage_8038AD24 are made before serial and layer are loaded (after, in the original).
+// FIXME: 97.75 %, scheduling; behaviour near.
 void PrincessZelda_8049CEE0::update() {
     ActorBase_804A5770::update();
     field_0x330 = 1.0f;
@@ -593,7 +594,7 @@ void PrincessZelda_8049CEE0::stepSpeed(f32 dist) {
     }
 }
 
-// FIXME: 99.54 %, missing/extra; behaviour drift.
+// FIXME: 99.92 %, operands; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
 bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
     field_0x32c = field_0x328;
