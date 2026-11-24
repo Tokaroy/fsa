@@ -408,7 +408,7 @@ void TileMap_804AA858::drawPlayerPanels_802FF0EC() {
         if (field_0x214) {
             s32 owner = field_0x230;
             if (i == owner || owner == -1) {
-                field_0xfc->fn_80432750(owner == -1, field_0x21c, field_0x220, field_0x224, field_0x228);
+                field_0xfc->fn_80432750(owner == -1, field_0x21c.field_0x0, field_0x21c.field_0x4, field_0x21c.field_0x8, field_0x21c.field_0xc);
                 window = true;
             }
         }
@@ -487,7 +487,7 @@ void TileMap_804AA858::fn_802FEE68() {
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
-// FIXME: 91.16 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.49 %, missing/extra; behaviour near.
 void TileMap_804AA858::fn_802FDDD4() {
     mHeightGridIndex_0x2388++;
     if (mHeightGridIndex_0x2388 >= 2) {
@@ -531,10 +531,13 @@ void TileMap_804AA858::fn_802FDDD4() {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
-                    f32 dist = e.squared();
-                    if (inner < dist && outer > dist) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
-                        f32 w = r - std::fabsf(dist - radius);
+                    f32 distSq = e.squared();
+                    f32 dist = distSq;
+                    if (inner < distSq && outer > distSq) {
+                        if (distSq > 0.0f) {
+                            dist = JMAFastSqrtNewton(distSq);
+                        }
+                        f32 w = r - JMAAbs(dist - radius);
                         p->z += w * amp * -JMath::sincosTable_.cosDegree(180.0f * w / 96.0f);
                     }
                     p++;
@@ -544,7 +547,7 @@ void TileMap_804AA858::fn_802FDDD4() {
             break;
         }
         case 1: {
-            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 5.0f);
+            f32 t = JMAFastSqrtNewton(slot->mTimer / 5.0f);
             f32 r = 48.0f * slot->field_0x14;
             f32 h = 8.0f * (slot->field_0x18 * t);
             f32 k = 180.0f / r;
@@ -557,7 +560,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                     e.sub(d, q);
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        dist = JMAFastSqrtNewton(dist);
                         p->z += h * (-1.0f - JMath::sincosTable_.cosDegree(k * dist));
                     }
                     p++;
@@ -568,7 +571,7 @@ void TileMap_804AA858::fn_802FDDD4() {
         }
         case 3: {
             f32 t = slot->mTimer / 18.0f;
-            f32 s = 3000.0f * JGeometry::TUtil<f32>::sqrt(1.0f - t);
+            f32 s = 3000.0f * JMAFastSqrtNewton(1.0f - t);
             f32 amp = 0.7f * (t * (t * (slot->field_0x18 * JMath::sincosTable_.sinDegree(s))));
             if (amp < 0.0f) {
                 amp *= 0.5f;
@@ -634,7 +637,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                     e.sub(d, q);
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        dist = JMAFastSqrtNewton(dist);
                         p->z += h * (1.0f + JMath::sincosTable_.cosDegree(k * dist));
                     }
                     p++;
@@ -644,7 +647,7 @@ void TileMap_804AA858::fn_802FDDD4() {
             break;
         }
         case 6: {
-            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 300.0f);
+            f32 t = JMAFastSqrtNewton(slot->mTimer / 300.0f);
             f32 r = 128.0f * slot->field_0x14;
             f32 k = 90.0f / r;
             f32 h = 32.0f * (slot->field_0x18 * t);
@@ -663,13 +666,13 @@ void TileMap_804AA858::fn_802FDDD4() {
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
                         if (dist < innerSq) {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h * -JMath::sincosTable_.cosDegree(k * (1.6666666f * dist));
                         } else if (dist > outerSq) {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h2 * (0.5f * (1.0f + JMath::sincosTable_.cosDegree(k * (10.0f * (dist - outerR)))));
                         } else {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h2 * JMath::sincosTable_.sinDegree(k * (5.0f * (dist - innerR)));
                         }
                     }
@@ -706,7 +709,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                 } else {
                     f32 slope = 0.5f * ((p->z - p[-1].z) + (p->z - (p - mHeightGridCellsX_0x2380)[-1].z));
                     if (slope >= 0.1f || slope <= -0.1f) {
-                        f32 shade = (1.0f + slope) / JGeometry::TUtil<f32>::sqrt(2.0f * (slope * slope + 1.0f)) -
+                        f32 shade = (1.0f + slope) / JMAFastSqrtNewton(2.0f * (slope * slope + 1.0f)) -
                                     0.70710677f;
                         if (shade > 0.0f) {
                             shade *= 2.0f;
@@ -733,12 +736,13 @@ void TileMap_804AA858::fn_802FDDD4() {
 // (field_0x150 / field_0x190, the field_0x21c window); then every 10 frames
 // copies the next of the four 0x40-byte blocks of mAnimTileData_0x238c to
 // field_0x4[1] + 0x200.
-// Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
-// with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
-// loop with lfsx; registers and stack slots follow. The original converts
-// 240.0f / 160.0f at run time (fctiwz, hoisted before the loop), so they are
-// float variables there, not literals at the stores.
-// FIXME: 72.87 %, missing/extra + reloc-name; behaviour near.
+// Still differs: in the loop's second rectangle the original reads field_0x88
+// and one field_0x80 with a plain offset and the other field_0x80 indexed
+// (ours both indexed); it keeps separate zero registers around the sine loop;
+// registers and stack slots follow. The original converts 240.0f / 160.0f at
+// run time (fctiwz, hoisted before the loop), so they are float variables
+// there, not literals at the stores.
+// FIXME: 85.93 %, missing/extra + reloc-name; behaviour near.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -821,35 +825,30 @@ void TileMap_804AA858::fn_802FCE74() {
                     f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
                     f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
 
-                    f32 height = field_0xfc->field_0x78[field_0xfc->field_0xa4];
-                    f32 width = field_0xfc->field_0x70[field_0xfc->field_0xa4];
+                    f32 height = field_0xfc->getField_0x78();
+                    f32 width = field_0xfc->getField_0x70();
                     s32 h = height * scaleY[i];
                     s32 w = width * scaleX[i];
                     field_0x214 = 1;
-                    const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
-                    f32 x = lbl_8046F980[field_0x234] + ((((s32)width - w) >> 1) + pos40.x);
-                    f32 y = lbl_8046F994[field_0x234] + ((((s32)height - h) >> 1) + pos40.y);
-                    field_0x21c = (w * offX + screen.x) * (1.0f - scaleX[i]) + scaleX[i] * x;
-                    field_0x220 = (h * offY + screen.y) * (1.0f - scaleY[i]) + scaleY[i] * y;
-                    field_0x224 = w;
-                    field_0x228 = h;
+                    s32 dy = ((s32)height - h) >> 1;
+                    s32 dx = ((s32)width - w) >> 1;
+                    f32 x = scaleX[i] * (lbl_8046F980[field_0x234] + (dx + field_0xfc->getField_0x40().x));
+                    f32 y = scaleY[i] * (lbl_8046F994[field_0x234] + (dy + field_0xfc->getField_0x40().y));
+                    field_0x21c.set((w * offX + screen.x) * (1.0f - scaleX[i]) + x,
+                                    (h * offY + screen.y) * (1.0f - scaleY[i]) + y, w, h);
 
-                    width = field_0xfc->field_0x80[field_0xfc->field_0xa4];
-                    height = field_0xfc->field_0x88[field_0xfc->field_0xa4];
-                    w = width * scaleX[i];
-                    h = height * scaleY[i];
+                    height = field_0xfc->getField_0x88();
+                    width = field_0xfc->getField_0x80();
+                    h = scaleY[i] * height;
+                    w = scaleX[i] * width;
                     field_0x148[i] = 1;
-                    field_0x150[i].field_0x0 = 0;
-                    field_0x150[i].field_0x4 = 0;
-                    field_0x150[i].field_0x8 = screenW;
-                    field_0x150[i].field_0xc = screenH;
-                    const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
-                    x = lbl_8046F980[field_0x234] + ((((s32)width - w) >> 1) + pos58.x);
-                    y = lbl_8046F994[field_0x234] + ((((s32)height - h) >> 1) + pos58.y);
-                    field_0x190[i].field_0x0 = (w * offX + screen.x) * (1.0f - scaleX[i]) + scaleX[i] * x;
-                    field_0x190[i].field_0x4 = (h * offY + screen.y) * (1.0f - scaleY[i]) + scaleY[i] * y;
-                    field_0x190[i].field_0x8 = w;
-                    field_0x190[i].field_0xc = h;
+                    field_0x150[i].set(0, 0, screenW, screenH);
+                    dy = ((s32)height - h) >> 1;
+                    dx = ((s32)width - w) >> 1;
+                    x = scaleX[i] * (lbl_8046F980[field_0x234] + (dx + field_0xfc->getField_0x58().x));
+                    y = scaleY[i] * (lbl_8046F994[field_0x234] + (dy + field_0xfc->getField_0x58().y));
+                    field_0x190[i].set((w * offX + screen.x) * (1.0f - scaleX[i]) + x,
+                                       (h * offY + screen.y) * (1.0f - scaleY[i]) + y, w, h);
                     field_0x210[i] = 1;
                 } else if (!field_0x217[i]) {
                     cls_804AA858Sub11CEntry* mark = &field_0x11c[i]->f.mEntries[lbl_80506DD8[i]];
@@ -861,18 +860,13 @@ void TileMap_804AA858::fn_802FCE74() {
                     s32 bottom = markY + 40 > 160 ? 160 : markY + 40;
                     field_0x148[i] = 1;
                     field_0x14c[i] = 1;
-                    field_0x150[i].field_0x0 = right - 48;
-                    field_0x150[i].field_0x4 = bottom - 40;
-                    field_0x150[i].field_0x8 = 48;
-                    field_0x150[i].field_0xc = 48;
+                    field_0x150[i].set(right - 48, bottom - 40, 48, 48);
                     s32 fullH = field_0x1d0[i].field_0xc;
                     s32 fullW = field_0x1d0[i].field_0x8;
                     s32 h = fullH * scaleY[i];
                     s32 w = fullW * scaleX[i];
-                    field_0x190[i].field_0x0 = ((fullW - w) >> 1) + field_0x1d0[i].field_0x0;
-                    field_0x190[i].field_0x4 = ((fullH - h) >> 1) + field_0x1d0[i].field_0x4;
-                    field_0x190[i].field_0x8 = w;
-                    field_0x190[i].field_0xc = h;
+                    field_0x190[i].set(((fullW - w) >> 1) + field_0x1d0[i].field_0x0,
+                                       ((fullH - h) >> 1) + field_0x1d0[i].field_0x4, w, h);
                 }
             }
             field_0x217[i] = 0;
@@ -909,29 +903,22 @@ void TileMap_804AA858::fn_802FCE74() {
         const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
         f32 x = dx + pos40.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
         f32 y = dy + pos40.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
-        field_0x21c = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
-        field_0x220 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
-        field_0x224 = w;
-        field_0x228 = h;
+        field_0x21c.set((1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x,
+                        (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y, w, h);
 
         width = field_0xfc->field_0x80[field_0xfc->field_0xa4];
         height = field_0xfc->field_0x88[field_0xfc->field_0xa4];
         w = scaleX[0] * width;
         h = scaleY[0] * height;
         field_0x148[0] = 1;
-        field_0x150[0].field_0x0 = 0;
-        field_0x150[0].field_0x4 = 0;
-        field_0x150[0].field_0x8 = screenW;
-        field_0x150[0].field_0xc = screenH;
+        field_0x150[0].set(0, 0, screenW, screenH);
         dx = ((s32)width - w) >> 1;
         dy = ((s32)height - h) >> 1;
         const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
         x = dx + pos58.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
         y = dy + pos58.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
-        field_0x190[0].field_0x0 = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
-        field_0x190[0].field_0x4 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
-        field_0x190[0].field_0x8 = w;
-        field_0x190[0].field_0xc = h;
+        field_0x190[0].set((1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x,
+                           (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y, w, h);
         field_0x210[0] = 1;
     }
 
@@ -2287,14 +2274,14 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-// FIXME: 89.55 %, missing/extra; behaviour near.
-// The original keeps obj in memory as if its address were taken:
-// every bit-field store is kept (byte 0x11 stored after each field, the
-// unused mAffineParam = 0 too) and the draw re-reads the fields; ours keeps
-// them in registers and drops the dead stores. The three tables are at
-// .rodata + 0x40 / 0x60 / 0xA0 here, + 0x1620 / 0x1640 / 0x1680 in the original
-// (the local tables of the later fn_802FA3FC ... fn_802FCE74 come first and
-// are not written yet). tmp's constructor stores are scheduled later.
+// FIXME: 96.59 %, different; behaviour near.
+// obj is filled and read through a pointer: the original keeps every
+// bit-field store (byte 0x11 after each field, the unused mAffineParam = 0 too).
+// Left: the low byte of mX is extracted from the halfword again (extrwi 8, 17)
+// where ours reuses the 9-bit value; tmp's constructor stores are scheduled
+// later. The three tables are at .rodata + 0x40 / 0x60 / 0xA0 here, + 0x1620 /
+// 0x1640 / 0x1680 in the original (the local tables of the later fn_802FA3FC ...
+// fn_802FCE74 come first and are not written yet).
 // Draws frame `frame` of the "SOB " resource res at pos: res + 2 holds the
 // little-endian start offsets of the frames, each frame 6-byte GBA OAM
 // entries, drawn last to first as quads of the 4-bit tile images (mSpriteTexObjs_0xb5c,
@@ -2335,6 +2322,7 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
     SpriteParams_801F5AE0 tmp;
     JGeometry::TVec3f out;
     SpriteObj_802F86CC obj;
+    SpriteObj_802F86CC* oam = &obj;
     SpriteParams_801F5AE0* outParams;
     bool loaded;
     s32 lastPriority = -1;
@@ -2352,33 +2340,33 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
     s32 dx = 4.0f * (1.0f - scaleX);
     for (s32 i = count - 1; i >= 0; i--) {
         SobObj_802F86CC* entry = (SobObj_802F86CC*)(data + start) + i;
-        obj.mY = entry->mY;
-        obj.mAffine = entry->mAffine;
-        obj.mMode = entry->mMode;
-        obj.mMosaic = entry->mMosaic;
-        obj.mColor256 = entry->mColor256;
-        obj.mShape = entry->mShape;
-        obj.mX = entry->mX | (entry->mX & 0x80) << 1;
+        oam->mY = entry->mY;
+        oam->mAffine = entry->mAffine;
+        oam->mMode = entry->mMode;
+        oam->mMosaic = entry->mMosaic;
+        oam->mColor256 = entry->mColor256;
+        oam->mShape = entry->mShape;
+        oam->mX = entry->mX | (entry->mX & 0x80) << 1;
         if (i != 0) {
-            obj.mY += dy;
-            obj.mX += dx;
+            oam->mY += dy;
+            oam->mX += dx;
         }
-        obj.mAffineIndex = entry->mAffineIndex;
-        obj.mHFlip = entry->mHFlip;
-        obj.mVFlip = entry->mVFlip;
-        obj.mSize = entry->mSize;
-        obj.mTile = entry->mTileLow | entry->mTileHigh << 8;
-        obj.mPriority = entry->mPriority;
+        oam->mAffineIndex = entry->mAffineIndex;
+        oam->mHFlip = entry->mHFlip;
+        oam->mVFlip = entry->mVFlip;
+        oam->mSize = entry->mSize;
+        oam->mTile = entry->mTileLow | entry->mTileHigh << 8;
+        oam->mPriority = entry->mPriority;
         if (outParams != NULL) {
-            obj.mPalette = outParams->field_0x0[entry->mPalette];
+            oam->mPalette = outParams->field_0x0[entry->mPalette];
         } else {
-            obj.mPalette = entry->mPalette;
+            oam->mPalette = entry->mPalette;
         }
-        obj.mAffineParam = 0;
-        s32 priority = obj.mPriority;
-        if (lastPriority != priority || lastPalette != obj.mPalette) {
+        oam->mAffineParam = 0;
+        s32 priority = oam->mPriority;
+        if (lastPriority != priority || lastPalette != oam->mPalette) {
             lastPriority = priority;
-            lastPalette = obj.mPalette;
+            lastPalette = oam->mPalette;
             s32 set = 0;
             if (outParams != NULL) {
                 set = outParams->field_0x1e;
@@ -2388,29 +2376,29 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, lbl_80470F60[(lastPalette & 1) << 2 | priority], GX_COLOR_NULL);
         }
         f32 x, y, z, u0, v0, u1, v1, w, h;
-        w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
-        h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
-        if (obj.mX & 0x100) {
-            x = (s16)(obj.mX | 0xFE00);
+        w = lbl_80470FC0[oam->mShape][oam->mSize][0] * 8;
+        h = lbl_80470FC0[oam->mShape][oam->mSize][1] * 8;
+        if (oam->mX & 0x100) {
+            x = (s16)(oam->mX | 0xFE00);
         } else {
-            x = (u8)obj.mX;
+            x = (u8)oam->mX;
         }
         y = 0.0f;
-        z = -(f32)(s8)obj.mY;
+        z = -(f32)(s8)oam->mY;
         if (!loaded) {
             x += out.x;
             y += out.y + offset;
             z += out.z + offset;
         }
-        u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
-        v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
-        if (obj.mHFlip) {
+        u0 = (8.0f * (oam->mTile & 0x1F) + 0.5f) / 256.0f;
+        v0 = (8.0f * (oam->mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
+        if (oam->mHFlip) {
             u1 = u0;
             u0 = (w - 1.0f) / 256.0f + u0;
         } else {
             u1 = (w - 1.0f) / 256.0f + u0;
         }
-        if (obj.mVFlip) {
+        if (oam->mVFlip) {
             v1 = v0;
             v0 = (h - 1.0f) / 256.0f + v0;
         } else {
@@ -3125,11 +3113,11 @@ f32 TileMap_804AA858::getHeightAt_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 96.23 %, different; behaviour near.
+// FIXME: 96.37 %, scheduling+regalloc; behaviour clean.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
-bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
+u8 TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
     bool result = false;
     if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
         pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
