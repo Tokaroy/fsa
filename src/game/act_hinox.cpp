@@ -148,7 +148,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
     return 0;
 }
 
-// FIXME(shotgun): 99.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.28 %, scheduling+regalloc; behaviour drift.
 void Hinox_8049F9B4::update() {
     JGeometry::TVec3f pos = mPos;
     s32 playerDir = 0;
