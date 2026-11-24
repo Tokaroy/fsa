@@ -1716,8 +1716,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     }
 
     if (mState == 0x1F || mState == 0x21 || mState == 0x23 || mState == 0x24 || mState == 0x26 || mState == 0x2D) {
-        JGeometry::TBox2f box;
-        copyBox_801546F4(&box, &mBox);
+        JGeometry::TBox2f box(mBox);
         JGeometry::TVec2f offset;
         fn_8019C4F4(&offset, mPos.x, mPos.y);
         addVec2_80154558(&box.i, &offset);

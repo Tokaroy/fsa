@@ -55,7 +55,6 @@ static inline JGeometry::TVec3f* playerOffset2B8(s32 player) {
 }
 
 // act_sword_soldier.cpp: the out-of-line TBox2f::set copy fn_80232A0C calls.
-void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 
 // forward declarations (functions reversed for -inline deferred)
 s32 getPlayerLayer_8023DE58(s32 player);
@@ -2639,8 +2638,7 @@ void fn_80232A0C() {
         if (!fn_8023188C(i) || a->field_0xd58 > 0 || a->mDragPlayer_0xd08 >= 0) {
             continue;
         }
-        JGeometry::TBox2f boxA;
-        copyBox_801546F4(&boxA, &a->field_0x4c0);
+        JGeometry::TBox2f boxA(a->field_0x4c0);
         JGeometry::TBox2f* viewA = layerBox(getPlayerLayer_8023DE58(i));
         boxA.addPos(JGeometry::TVec2f(-viewA->i.x, -viewA->i.y));
 
@@ -2671,8 +2669,7 @@ void fn_80232A0C() {
             if (!fn_8023188C(j) || b->field_0xd58 > 0 || b->mDragPlayer_0xd08 >= 0) {
                 continue;
             }
-            JGeometry::TBox2f boxB;
-            copyBox_801546F4(&boxB, &b->field_0x4c0);
+            JGeometry::TBox2f boxB(b->field_0x4c0);
             JGeometry::TBox2f* viewB = layerBox(getPlayerLayer_8023DE58(j));
             boxB.addPos(JGeometry::TVec2f(-viewB->i.x, -viewB->i.y));
 

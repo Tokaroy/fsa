@@ -75,13 +75,11 @@ s32 lbl_8053AB7C;
 s32 lbl_8053AB80;
 u8 lbl_8053AB84;
 
-void copyBox_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 void fn_80154718(const JGeometry::TVec3f* pos);
 void zeroVec_801546BC(JGeometry::TVec3f* v);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
 void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
 void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
-void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src);
 s32 atan2Short_8015465C(f32 y, f32 x);
 f32 sinShort_801544FC(s16 angle);
 f32 cosShort_801544E4(s16 angle);
@@ -389,8 +387,7 @@ s32 PhantomGanon2_804A1A98::fn_80189DEC() {
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
-    JGeometry::TBox2f box44;
-    copyBox_801546F4(&box44, &mBox);
+    JGeometry::TBox2f box44(mBox);
     JGeometry::TVec2f vec14;
     fn_8018A6A0(&vec14, field_0x2bc.x, field_0x2bc.y);
     s32 outDir = -1;
@@ -837,8 +834,7 @@ void PhantomGanon2_804A1A98::update() {
                 PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)findActorBySerial_8015445C(field_0x274);
                 field_0x278 = 1;
                 if (ball != NULL) {
-                    JGeometry::TVec3f oldPos;
-                    fn_801546D0(&oldPos, &mPos);
+                    JGeometry::TVec3f oldPos(mPos);
                     startSound_801F0E34(0x40043, 0);
                     zeroVec_801546BC(&vec54);
                     copyVec3_8018A684(&mPos, ball->getPos_801544DC());
