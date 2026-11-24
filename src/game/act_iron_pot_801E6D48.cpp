@@ -57,7 +57,8 @@ extern const s32 lbl_80469C40[4][2];
 
 // FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
 void IronPot_804A5418::fn_801E728C(int state) {
-    if (state == 1) {
+    switch (state) {
+    case 1:
         if ((mFlags & 0x4000) && !(mFlags & 0x10000)) {
             getActorManager_801F856C()->spawnActor_801F9484('IBBM', mLayer_0x4, &mPos, mSpawnParam_0x90, field_0x16c, -1);
             mAlive = false;
@@ -106,12 +107,9 @@ void IronPot_804A5418::fn_801E728C(int state) {
                         if (serial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                             if (gem != NULL) {
-                                f32 z = 6.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 6.0f;
-                                f32 y = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                                f32 x = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                                gem->mVel_0x3c.x = x;
-                                gem->mVel_0x3c.y = y;
-                                gem->mVel_0x3c.z = z;
+                                gem->mVel_0x3c = JGeometry::TVec3f(0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
+                                                                   0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
+                                                                   6.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 6.0f);
                             }
                         }
                     }
@@ -126,6 +124,9 @@ void IronPot_804A5418::fn_801E728C(int state) {
             startSound_801F0E34(0x30001, 0);
             markDead_801F3668();
         }
+        break;
+    case 2:
+        break;
     }
     mStateTimer = 0;
     mState = state;
