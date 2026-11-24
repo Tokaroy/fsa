@@ -17,29 +17,16 @@
 
 // The 'FGAN' actor's .data tables (0x804A1210): emitter ids per slot, the frame counts of
 // each state, and the "FGAN" resource names / sprite offsets of each draw mode.
-struct FganTables_804A1210 {
-    u16 emitters[16];
-    s32 frames1230[6];
-    s32 frames1248[5];
-    s32 frames125C[8];
-    s32 frames127C[5];
-    const char* names1290[6];
-    f32 offsets12A8[5][2];
-    const char* names12D0[5];
-    const char* names12E4[8];
-    const char* names1304[5];
-};
-FganTables_804A1210 lbl_804A1210 = {
-    {0x374, 0x375, 0x378, 0x379, 0x372, 0x373, 0x376, 0x377, 0x368, 0x369, 0x36C, 0x36D, 0x366, 0x367, 0x36A, 0x36B},
-    {4, 4, 4, 4, 2, 4},
-    {2, 2, 2, 2, 5},
-    {4, 4, 4, 4, 4, 4, 4, 4},
-    {4, 4, 4, 8, 4},
-    {"dawn_00.bti", "dawn_04.bti", "dawn_08.bti", "dawn_12.bti", "dawn_16.bti", "dawn_18.bti"},
-    {{0.0f, 0.0f}, {0.0f, 0.0f}, {-21.0f, 0.0f}, {21.0f, 0.0f}, {21.0f, 0.0f}},
-    {"kenhuri_05.bti", "kenhuri_07.bti", "kenhuri_09_l.bti", "kenhuri_11_r.bti", "kenhuri_13_r.bti"},
-    {"wait_00_u.bti", "wait_04_u.bti", "wait_08_u.bti", "wait_12_u.bti", "wait_16_u.bti", "wait_20_u.bti", "wait_24_u.bti", "wait_28_u.bti"},
-    {"yarare_02.bti", "yarare_06.bti", "yarare_10.bti", "yarare_14.bti", "yarare_22.bti"}};
+static u16 lbl_804A1210[16] = {0x374, 0x375, 0x378, 0x379, 0x372, 0x373, 0x376, 0x377, 0x368, 0x369, 0x36C, 0x36D, 0x366, 0x367, 0x36A, 0x36B};
+static s32 lbl_804A1230[6] = {4, 4, 4, 4, 2, 4};
+static s32 lbl_804A1248[5] = {2, 2, 2, 2, 5};
+static s32 lbl_804A125C[8] = {4, 4, 4, 4, 4, 4, 4, 4};
+static s32 lbl_804A127C[5] = {4, 4, 4, 8, 4};
+static const char* lbl_804A1290[6] = {"dawn_00.bti", "dawn_04.bti", "dawn_08.bti", "dawn_12.bti", "dawn_16.bti", "dawn_18.bti"};
+static f32 lbl_804A12A8[5][2] = {{0.0f, 0.0f}, {0.0f, 0.0f}, {-21.0f, 0.0f}, {21.0f, 0.0f}, {21.0f, 0.0f}};
+static const char* lbl_804A12D0[5] = {"kenhuri_05.bti", "kenhuri_07.bti", "kenhuri_09_l.bti", "kenhuri_11_r.bti", "kenhuri_13_r.bti"};
+static const char* lbl_804A12E4[8] = {"wait_00_u.bti", "wait_04_u.bti", "wait_08_u.bti", "wait_12_u.bti", "wait_16_u.bti", "wait_20_u.bti", "wait_24_u.bti", "wait_28_u.bti"};
+static const char* lbl_804A1304[5] = {"yarare_02.bti", "yarare_06.bti", "yarare_10.bti", "yarare_14.bti", "yarare_22.bti"};
 u8 lbl_80539F88[8] = {2, 6, 1, 5, 11, 0, 0, 0};
 u16 lbl_80539F90[4] = {0x37D, 0x37F, 0x37C, 0x37E}; // emitter id per player
 
@@ -65,23 +52,17 @@ void fn_8017ECE8(JGeometry::TVec2f* v, f32 x, f32 y) {
     v->set(x, y);
 }
 
-// FIXME: 89.00 %, missing/extra; behaviour clean.
-// The original stores the result's own register (1) to field_0x178; ours loads
-// the constant twice (li r0 and li r4).
-// Sets the camera's field_0x178 flag unless field_0x179 is set.
 u8 fn_8017ECC0() {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->field_0x179 == 0) {
-        result = 1;
-        camera->field_0x178 = 1;
+        camera->field_0x178 = result = 1;
     }
     return result;
 }
 
-// FIXME: 93.55 %, missing/extra + reloc-name; behaviour clean.
-// The original stores the box corners in the order f.x, i.x, f.y, i.y (ours
-// i.x, i.y, f.x, f.y) and keeps the constant 1 of mBlendBoxOn_0x840 in the result's register.
+// FIXME: 94.25 %, missing/extra + reloc-name; behaviour clean.
+// The original keeps the constant 1 of mBlendBoxOn_0x840 in the result's register (ours loads it twice).
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     s32 result = 0;
@@ -89,7 +70,8 @@ u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     if (camera->mBlendBoxOn_0x840 == 0) {
         result = 1;
         camera->mBlendBoxOn_0x840 = 1;
-        camera->mBlendBox_0x844.set(pos->x, pos->y, pos->x, pos->y);
+        camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
+        camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
         camera->mBlendWeight_0x854 = value;
         camera->mMargin_0x1d4 = -1.0f;
         camera->mMinHalfWidth_0x1d8 = -1.0f;
@@ -180,8 +162,9 @@ void invalidateEmitter_8017EAB4(JPABaseEmitter* emitter) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 63.32 %, missing/extra + reloc-name; behaviour near.
-// The original hoists the float constants and the stmw prologue differently.
+// FIXME(shotgun): 88.16 %, missing/extra + reloc-name; behaviour near.
+// The original's emitter loop keeps the id table base and a byte offset in separate registers
+// (the offset shares the zero constant's register); ours folds them into one pointer.
 void PhantomGanon_804A1318::init() {
     field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
     mSpawnParam_0x90 &= 0xF;
@@ -228,10 +211,31 @@ void PhantomGanon_804A1318::init() {
     field_0x2a0.set(mPos);
     field_0x2a0.y += 16.0f;
     switch (mSpawnParam_0x90) {
+    case 0:
+        field_0x2ac.z = 0.0f;
+        field_0x2ac.y = 0.0f;
+        field_0x2ac.x = 0.0f;
+        field_0x290 = 0.0f;
+        getGameView_802D6A9C()->fn_802D7440(false);
+        // fall through
+    case 1:
+    default:
+        mBox.i.x = -16.0f;
+        mBox.i.y = -8.0f;
+        mBox.f.x = 16.0f;
+        mBox.f.y = 40.0f;
+        mMapBox_0x80.i.x = -8.0f;
+        mMapBox_0x80.i.y = -8.0f;
+        mMapBox_0x80.f.x = 8.0f;
+        mMapBox_0x80.f.y = 8.0f;
+        mParamAtcp_0x114 = 2;
+        field_0x2ba = 1;
+        mState = 0;
+        break;
     case 10:
         for (int i = 0; i < 4; i++) {
-            mEmitters2bc[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[i * 2], 1, 2, NULL, NULL, true, 1.0f);
-            mEmitters2cc[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[i * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters2bc[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[i * 2], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters2cc[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[i * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
             if (i != 0) {
                 if (mEmitters2bc[i] != NULL) {
                     mEmitters2bc[i]->setStatus(4);
@@ -272,27 +276,6 @@ void PhantomGanon_804A1318::init() {
         mMapBox_0x80.f.y = 2.0f;
         mState = 0x1B;
         break;
-    case 0:
-        field_0x2ac.z = 0.0f;
-        field_0x2ac.y = 0.0f;
-        field_0x2ac.x = 0.0f;
-        field_0x290 = 0.0f;
-        getGameView_802D6A9C()->fn_802D7440(false);
-        // fall through
-    case 1:
-    default:
-        mBox.i.x = -16.0f;
-        mBox.i.y = -8.0f;
-        mBox.f.x = 16.0f;
-        mBox.f.y = 40.0f;
-        mMapBox_0x80.i.x = -8.0f;
-        mMapBox_0x80.i.y = -8.0f;
-        mMapBox_0x80.f.x = 8.0f;
-        mMapBox_0x80.f.y = 8.0f;
-        mParamAtcp_0x114 = 2;
-        field_0x2ba = 1;
-        mState = 0;
-        break;
     }
 }
 
@@ -322,7 +305,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 93.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.06 %, missing/extra; behaviour drift.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
@@ -375,7 +358,7 @@ void PhantomGanon_804A1318::update() {
             field_0x268 = 5;
             field_0x280 = 0.0f;
             field_0x270 = 0;
-            field_0x234 = lbl_804A1210.frames1230[field_0x268];
+            field_0x234 = lbl_804A1230[field_0x268];
             mState = 0x15;
             return;
         }
@@ -463,7 +446,7 @@ void PhantomGanon_804A1318::update() {
             if (field_0x268 > 7) {
                 field_0x268 = 0;
             }
-            field_0x234 = lbl_804A1210.frames125C[field_0x268];
+            field_0x234 = lbl_804A125C[field_0x268];
         }
         addCalc2_801F71A4(&field_0x290, 255.0f, 0.5f, 5.0f);
         addCalc2_801F71A4(&field_0x2ac.y, 1.0f, 0.3f, 3.0f);
@@ -484,7 +467,7 @@ void PhantomGanon_804A1318::update() {
             if (field_0x268 > 7) {
                 field_0x268 = 0;
             }
-            field_0x234 = lbl_804A1210.frames125C[field_0x268];
+            field_0x234 = lbl_804A125C[field_0x268];
         }
         if (field_0x238 == 0) {
             field_0x27c = 1;
@@ -497,7 +480,7 @@ void PhantomGanon_804A1318::update() {
         fn_8017EB44(&mPos);
         fn_8017EB1C(0.05f);
         if (field_0x234 == 0) {
-            field_0x234 = lbl_804A1210.frames1248[field_0x268];
+            field_0x234 = lbl_804A1248[field_0x268];
             field_0x27c = 1;
             field_0x268++;
             if (field_0x268 == 4) {
@@ -525,7 +508,7 @@ void PhantomGanon_804A1318::update() {
             break;
         }
         field_0x268--;
-        field_0x234 = lbl_804A1210.frames1248[field_0x268];
+        field_0x234 = lbl_804A1248[field_0x268];
         if (field_0x268 >= 0) {
             break;
         }
@@ -547,7 +530,7 @@ void PhantomGanon_804A1318::update() {
         }
         field_0x280 = 2.0f;
         field_0x268 = 0;
-        field_0x234 = lbl_804A1210.frames125C[field_0x268];
+        field_0x234 = lbl_804A125C[field_0x268];
         field_0x28c = 3.0f;
         field_0x278 = 0;
         field_0x27c = 2;
@@ -559,7 +542,7 @@ void PhantomGanon_804A1318::update() {
             if (field_0x268 > 7) {
                 field_0x268 = 0;
             }
-            field_0x234 = lbl_804A1210.frames125C[field_0x268];
+            field_0x234 = lbl_804A125C[field_0x268];
         }
         f32 dx = field_0x2a0.x - mPos.x;
         f32 dy = field_0x2a0.y - mPos.y;
@@ -627,7 +610,7 @@ void PhantomGanon_804A1318::update() {
                 mVel_0x3c.y = 13.0f * cosShort_801544E4(angle);
             }
             field_0x268++;
-            field_0x234 = lbl_804A1210.frames1248[field_0x268];
+            field_0x234 = lbl_804A1248[field_0x268];
             if (field_0x268 == 4) {
                 field_0x234 = 50;
                 mState = 10;
@@ -657,14 +640,14 @@ void PhantomGanon_804A1318::update() {
         }
         field_0x268--;
         if (field_0x268 >= 0) {
-            field_0x234 = lbl_804A1210.frames1248[field_0x268];
+            field_0x234 = lbl_804A1248[field_0x268];
             break;
         }
         field_0x268 = 0;
         field_0x248 = 50.0f + 50.0f * randFloat_80154744();
         setBox_80154590(&mBox, -16.0f, -8.0f, 16.0f, 40.0f);
         field_0x268 = 0;
-        field_0x234 = lbl_804A1210.frames125C[field_0x268];
+        field_0x234 = lbl_804A125C[field_0x268];
         field_0x28c = 3.0f;
         field_0x278 = 0;
         field_0x250 = 0;
@@ -715,7 +698,7 @@ void PhantomGanon_804A1318::update() {
         }
         field_0x250 = 0;
         field_0x268 = 0;
-        field_0x234 = lbl_804A1210.frames1248[field_0x268];
+        field_0x234 = lbl_804A1248[field_0x268];
         s32 serial = field_0x274;
         if (serial >= 0) {
             PhantomGanon_804A1318* child = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -750,7 +733,7 @@ void PhantomGanon_804A1318::update() {
     }
     case 15:
         if (field_0x268 < 4 && field_0x234 == 0) {
-            field_0x234 = lbl_804A1210.frames1248[field_0x268];
+            field_0x234 = lbl_804A1248[field_0x268];
             field_0x268++;
             if (field_0x268 == 4) {
                 field_0x234 = 20;
@@ -791,19 +774,19 @@ void PhantomGanon_804A1318::update() {
                 field_0x268 = 0;
                 field_0x27c = 2;
             }
-            field_0x234 = lbl_804A1210.frames1248[field_0x268];
+            field_0x234 = lbl_804A1248[field_0x268];
         } else {
             field_0x268++;
             if (field_0x268 > 7) {
                 field_0x268 = 0;
             }
-            field_0x234 = lbl_804A1210.frames125C[field_0x268];
+            field_0x234 = lbl_804A125C[field_0x268];
         }
         break;
     }
     case 18:
         field_0x268 = 0;
-        field_0x234 = lbl_804A1210.frames127C[field_0x268];
+        field_0x234 = lbl_804A127C[field_0x268];
         setVec3_8017EADC(&pos, &mPos);
         if (mEmitter2dc != NULL) {
             invalidateEmitter_8017EAB4(mEmitter2dc);
@@ -830,13 +813,13 @@ void PhantomGanon_804A1318::update() {
         }
         if (field_0x268 < 4) {
             field_0x268++;
-            field_0x234 = lbl_804A1210.frames127C[field_0x268];
+            field_0x234 = lbl_804A127C[field_0x268];
             break;
         }
         field_0x288 = 0.0f;
         field_0x268 = 0;
         field_0x27c = 0;
-        field_0x234 = lbl_804A1210.frames1230[field_0x268];
+        field_0x234 = lbl_804A1230[field_0x268];
         field_0x280 = 3.0f;
         field_0x250 = 0;
         field_0x254 = 0;
@@ -854,7 +837,7 @@ void PhantomGanon_804A1318::update() {
                     break;
                 }
                 field_0x268++;
-                field_0x234 = lbl_804A1210.frames1230[field_0x268];
+                field_0x234 = lbl_804A1230[field_0x268];
                 break;
             }
             field_0x254 = 1;
@@ -876,7 +859,7 @@ void PhantomGanon_804A1318::update() {
     case 21:
         if (field_0x234 == 0) {
             field_0x268--;
-            field_0x234 = lbl_804A1210.frames1230[field_0x268];
+            field_0x234 = lbl_804A1230[field_0x268];
             field_0x280 = 1.0f;
         }
         if (field_0x268 > 0) {
@@ -931,8 +914,8 @@ void PhantomGanon_804A1318::update() {
                 deleteEmitter(&mEmitters2bc[i]);
                 deleteEmitter(&mEmitters2cc[i]);
             }
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
             findTargetPlayer_801EEC98(mSerial, &spread, NULL, NULL, NULL, 0, 1);
             spread += 0xD000;
             for (i = 0; i < 7; i++) {
@@ -1024,8 +1007,8 @@ void PhantomGanon_804A1318::update() {
             deleteEmitter(&mEmitters2bc[i]);
             deleteEmitter(&mEmitters2cc[i]);
         }
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2], 1, 2, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[8 + field_0x24c * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
         PhantomGanon_804A1318* parent = static_cast<PhantomGanon_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x274));
         if (parent != NULL && parent->mAlive == true) {
             parent->field_0x28c = 3.0f;
@@ -1036,8 +1019,8 @@ void PhantomGanon_804A1318::update() {
     }
     case 27:
         field_0x94 &= 3;
-        mEmitters2bc[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[field_0x94 * 2], 1, 2, NULL, NULL, true, 0.5f);
-        mEmitters2cc[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210.emitters[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters2bc[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[field_0x94 * 2], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters2cc[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 0.5f);
         mState = 28;
     case 28:
         if (mEmitters2bc[0] != NULL) {
@@ -1144,36 +1127,36 @@ void PhantomGanon_804A1318::update() {
     }
 }
 
-// FIXME(shotgun): 83.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.66 %, scheduling+regalloc; behaviour drift.
 void PhantomGanon_804A1318::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos = mPos;
+    f32 scaleY = 0.0f;
+    f32 scaleX = 0.0f;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.field_0x1f = 0;
     params.field_0x2d = 1;
-    f32 scaleX = 0.0f;
-    f32 scaleY = 0.0f;
     if (mSpawnParam_0x90 == 0 || mSpawnParam_0x90 == 1) {
         mPos.z = 0.0f;
         void* res;
         switch (field_0x27c) {
         case 0:
-            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1210.names1290[field_0x268]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1290[field_0x268]);
             break;
         case 1:
-            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1210.names12D0[field_0x268]);
-            scaleX = lbl_804A1210.offsets12A8[field_0x268][0];
-            scaleY = lbl_804A1210.offsets12A8[field_0x268][1];
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A12D0[field_0x268]);
+            scaleX = lbl_804A12A8[field_0x268][0];
+            scaleY = lbl_804A12A8[field_0x268][1];
             break;
         case 2:
-            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1210.names12E4[field_0x268]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A12E4[field_0x268]);
             scaleY = -21.0f;
             break;
         case 3:
-            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1210.names1304[field_0x268]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1304[field_0x268]);
             break;
         }
         if (mSpawnParam_0x90 == 0) {
