@@ -551,7 +551,7 @@ void BigPoe_804A0440::update() {
                 field_0x234 = 8;
                 field_0x258 = lbl_804A0430[field_0x244];
             }
-            if (field_0x23c == 0 || isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+            if (field_0x23c == 0 || isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
                 mAlive = false;
             }
         }

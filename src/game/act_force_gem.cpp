@@ -295,7 +295,7 @@ void ForceGem_804AB6D8::update() {
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
         mPos += mVel_0x3c;
     }
-    if (field_0x94 != 1 && isOutsideView_801F6758(&mPos, mLayer_0x4, 36.0f) == 1) {
+    if (field_0x94 != 1 && isOutsideView_801F6758(36.0f, &mPos, mLayer_0x4) == 1) {
         mAlive = false;
     }
     fn_8032B7C0();
@@ -312,7 +312,7 @@ void ForceGem_804AB6D8::update() {
                                   true, 0.15f);
         }
         if (field_0x94 == 0x22) {
-            if (isOutsideView_801F6758(&mPos, mLayer_0x4, -32.0f)) {
+            if (isOutsideView_801F6758(-32.0f, &mPos, mLayer_0x4)) {
                 mVel_0x3c.x = 0.0f;
                 mVel_0x3c.y = 0.0f;
             }

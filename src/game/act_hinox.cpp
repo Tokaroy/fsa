@@ -487,7 +487,7 @@ void Hinox_8049F9B4::update() {
         field_0x284 = 0.0f;
         field_0x280 = 0.0f;
         field_0x27c = 0.0f;
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, -130.0f)) {
+        if (isOutsideView_801F6758(-130.0f, &mPos, mLayer_0x4)) {
             s32 layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxp = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;

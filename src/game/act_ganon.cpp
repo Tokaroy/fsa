@@ -1456,7 +1456,7 @@ void Ganon_804A25F0::update() {
                 field_0x234[0] = 0;
             } else if (fn_801F2A10(-1, -1, true, true)) {
                 field_0x234[0] = 0;
-            } else if (isOutsideView_801F6758(&mPos, getLayer_8015461C(), 16.0f)) {
+            } else if (isOutsideView_801F6758(16.0f, &mPos, getLayer_8015461C())) {
                 field_0x234[0] = 0;
             }
         }
@@ -1725,7 +1725,7 @@ void Ganon_804A25F0::update() {
         posA.x += 74.0f * sinShort_801544FC((s16)(field_0x2b4 + 0xA000));
         posA.y += 74.0f * cosShort_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
-            if (!isOutsideView_801F6758(&posA, mLayer_0x4, 16.0f)) {
+            if (!isOutsideView_801F6758(16.0f, &posA, mLayer_0x4)) {
                 spawnActor_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
             }
             field_0x234[1] = 1;
@@ -1742,7 +1742,7 @@ void Ganon_804A25F0::update() {
         posA.x += 74.0f * sinShort_801544FC((s16)(field_0x2b4 + 0xA000));
         posA.y += 74.0f * cosShort_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
-            if (!isOutsideView_801F6758(&posA, mLayer_0x4, 16.0f)) {
+            if (!isOutsideView_801F6758(16.0f, &posA, mLayer_0x4)) {
                 spawnActor_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
             }
             field_0x234[1] = 1;

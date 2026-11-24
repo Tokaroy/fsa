@@ -1775,7 +1775,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
             mEmitters[2]->becomeInvalidEmitter();
             mEmitters[2] = NULL;
         }
-        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(16.0f, &mPos, mLayer_0x4)) {
             field_0x258 = 0;
             break;
         }

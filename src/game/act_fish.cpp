@@ -38,7 +38,7 @@ void Fish_804AC658::init() {
     field_0x268 = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f);
+    isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4);
     if (mSpawnParam_0x90 != 0) {
         s32 count = mSpawnParam_0x90;
         u16 tiles[0x2C9];
