@@ -382,16 +382,17 @@ void HammerShopMinigame_8049C858::update() {
 }
 
 // FIXME: 77.86 %, different; behaviour clean.
-// FIXME(shotgun): register allocation differs in the unrolled score loop
+// Register allocation and instruction order differ in the unrolled score loop.
 void HammerShopMinigame_8049C858::draw() {
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
         s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         for (s32 i = 0; i < count; i++) {
             lbl_8053AF00->field_0x30 |= (u8)(1 << i);
             s32 score = field_0x250[i];
-            s32 minutes = score / 60;
-            lbl_8053AF00->field_0x2c[i] = minutes;
-            lbl_8053AF00->field_0x28[i] = (f32)(score - minutes * 60) / 0.6f;
+            s32 value = score / 60;
+            lbl_8053AF00->field_0x2c[i] = value;
+            value = (f32)(score - value * 60) / 0.6f;
+            lbl_8053AF00->field_0x28[i] = value;
         }
         lbl_8053AF00->field_0x30 |= (u8)(1 << (field_0x240 + 4));
         if (field_0x230 == 4) {
@@ -410,7 +411,7 @@ void HammerShopMinigame_8049C858::draw() {
             mPos.z = savedPos.z;
         }
     }
-    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x235 * 2 + field_0x23c + 0x311, NULL, 0, 1.0f, 1.0f);
+    drawSprite_801F06F0("enemy_gc_sob.bin", 0x311 + field_0x235 * 2 + field_0x23c, NULL, 0, 1.0f, 1.0f);
 }
 
 HammerShopMinigame_8049C858::~HammerShopMinigame_8049C858() {}
