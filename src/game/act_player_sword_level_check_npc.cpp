@@ -61,7 +61,9 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
             releaseEmitter_801EE434(mEmitters[i]);
         }
     }
-    delete mSoundObj;
+    if (mSoundObj != NULL) {
+        delete mSoundObj;
+    }
 }
 
 // FIXME(shotgun): 96.88 %, PlayerSwordLevelCheckNPC_804AA590
