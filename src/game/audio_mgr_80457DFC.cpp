@@ -216,12 +216,6 @@ public:
 
 f32 lbl_8053AF78;
 
-static const JASDsp::FxlineConfig_ lbl_80491600[4] = {
-    {1, 0x6000, 1, 0, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-    {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-    {1, 0x6000, 1, 0, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-    {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-};
 
 // 0x8045A0E4 / 0x8045A0D8
 // Not auto-inlined: init_80459AE4 calls fn_8045A0E4 and fn_80459674 calls
@@ -309,10 +303,10 @@ void AudioMgr_8045A080::init_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void
     field_0x34->getCategory(6)->getParams()->moveVolume(1.0f, 0);
 
     JASDsp::FxlineConfig_ fxConfig[4] = {
-        {1, 0x6000, 1, 0, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-        {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-        {1, 0x6000, 1, 0, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
-        {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
+        {1, 0, 0x6000, 1, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
+        {1, 0, 0, 1, 0x6000, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
+        {1, 0, 0x6000, 1, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
+        {1, 0, 0, 1, 0x6000, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
     };
     for (u8 i = 0; i < 4; i++) {
         s16* buf = new (heap, 0x20) s16[(fxConfig[i].mBufCount * 0xA0) / 2];
