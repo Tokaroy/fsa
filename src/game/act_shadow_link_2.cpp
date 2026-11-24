@@ -235,7 +235,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
 }
 
 // 0x801C3B7C.
-// FIXME: 95.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.87 %, regalloc-only; behaviour near.
 // FIXME(shotgun): behaviour drift remains (see fingerprint).
 void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
     fn_801C50A8(state);
@@ -725,7 +725,7 @@ void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
 }
 
 // 0x801C2ED4.
-// FIXME(shotgun): 98.95 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.55 %, missing/extra; behaviour drift.
 void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (mapHit) {
         if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
