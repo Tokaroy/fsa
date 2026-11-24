@@ -139,8 +139,6 @@ void FourPersonPullSwitchBTIVersion_804AE574::draw() {
     }
 }
 
-// FIXME: 96.83 %, missing/extra; behaviour clean.
-// missing/extra: ours has 2 more instrs (169 vs 167). TVec3f temporary on stack around vector addition in branch 1 shifts stack slots.
 void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
     s32 i;
     if (field_0x24c < 0) {
