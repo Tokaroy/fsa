@@ -85,7 +85,7 @@ static inline s32 kind(u32 f) {
     return f & 0xF;
 }
 
-// FIXME(shotgun): 95.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.08 %, missing/extra; behaviour drift.
 // Still differs: the original loads 16.0f once for both scrollTo coordinates (kinds 4-7) and keeps
 // mSpawnParam_0x90 & 0x80 for all three field4 tests; r30 / r31 swapped in scrollTo.
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
@@ -432,7 +432,7 @@ void SpiralStaircase_804A7A68::draw() {}
 
 // 0x8028DDD8. Orders the players for the four marker slots: out[] gets the player indices
 // sorted by their x (y for the vertical variants 6 and 7), grouped by team for two players.
-// FIXME(shotgun): 97.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.19 %, missing/extra; behaviour clean.
 void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
