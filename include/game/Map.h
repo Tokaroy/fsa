@@ -588,8 +588,11 @@ u16 getTileCollisionCodeAlt_802265FC(const JGeometry::TVec3f* pos, s32 layer);
 // 46 units. The raw tile code (clrlwi 22 of getTile_802F9908), 0xF outside the
 // box; callers clrlwi 16 the result.
 u16 getRawTile_80226850(const JGeometry::TVec3f* pos, s32 layer);
-// 13 units. The same as getRawTile_80226850 (only the register allocation differs).
-u16 getTileAt_80226998(const JGeometry::TVec3f* pos, s32 layer);
+// 13 units. The same as getRawTile_80226850 (only the register allocation differs), but
+// on a 2D point: most callers build an 8-byte TVec2f temporary from mPos.x, mPos.y
+// (act_sword_soldier 0x80150358 with the TVec2(x, y) ctor); the few that pass a TVec3
+// position pass its address unchanged (act_candlestick_switch, act_panel_rewrite_npc).
+u16 getTileAt_80226998(const JGeometry::TVec2f& pos, s32 layer);
 // 7 units each. The packed cell index of pos (no lookup; clamped like the
 // queries, no outside test in getCellIndexVec3_80226AE0).
 s32 getCellIndexVec3_80226AE0(const JGeometry::TVec3f* pos, s32 layer);

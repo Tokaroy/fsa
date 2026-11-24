@@ -21,7 +21,7 @@ static inline void writeCell(PanelRewriteNPC_804A8E40* p) {
     if (0x30 == p->field_0x234 || p->field_0x234 == 0x10) {
         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(p->mLayer_0x4 + p->field_0x256, p->field_0x250, p->field_0x234);
     } else {
-        u16 tile = getTileAt_80226998(&p->mPos, p->mLayer_0x4);
+        u16 tile = getTileAt_80226998(reinterpret_cast<const JGeometry::TVec2f&>(p->mPos), p->mLayer_0x4);
         if (tile == 2) {
             gBgRewrite_8053AC98->fn_802A3948(&p->mPos, 0, p->mLayer_0x4 + p->field_0x256, 0xB8);
         } else if (tile == 0xDC) {

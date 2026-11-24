@@ -78,12 +78,12 @@ void Tektite_8049FD50::update() {
             }
             s32 layer = mLayer_0x4;
             JGeometry::TVec2f p(mPos.x, mPos.y);
-            field_0x254 = getTileAt_80226998((const JGeometry::TVec3f*)&p, layer);
+            field_0x254 = getTileAt_80226998(p, layer);
             return;
         }
         s32 layer = mLayer_0x4;
         JGeometry::TVec2f p(mPos.x, mPos.y);
-        if (field_0x254 == getTileAt_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        if (field_0x254 == getTileAt_80226998(p, layer)) {
             return;
         }
         mSpawnParam_0x90 &= 1;

@@ -75,12 +75,12 @@ void IronPot_804A5418::fn_801E728C(int state) {
             damagePlayersInBox_801F2B7C(4, -1, 0x16);
             JGeometry::TVec2f center;
             getBoxCenter_801F3128(&center);
-            JGeometry::TVec3f spot;
+            JGeometry::TVec2f spot;
             spot.y = center.y - 16.0f;
             for (s32 j = 0; j < 3; j++) {
                 spot.x = center.x - 16.0f;
                 for (s32 i = 0; i < 3; i++) {
-                    if (fn_801EE3C0(getTileAt_80226998(&spot, mLayer_0x4))) {
+                    if (fn_801EE3C0(getTileAt_80226998(spot, mLayer_0x4))) {
                         JGeometry::TVec3f at(spot.x, spot.y, 0.0f);
                         getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &at, 15, -1, -1);
                     }

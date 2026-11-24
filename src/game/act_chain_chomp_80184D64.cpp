@@ -71,7 +71,7 @@ void ChainChomp_804A18E0::update() {
         if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
             JGeometry::TVec2f p(field_0x384[0], field_0x384[1]);
-            field_0x270 = getTileAt_80226998((const JGeometry::TVec3f*)&p, mLayer_0x4);
+            field_0x270 = getTileAt_80226998(p, mLayer_0x4);
         }
         return;
     }
@@ -124,7 +124,7 @@ void ChainChomp_804A18E0::update() {
         field_0x260 = fn_8023AA18(&box, mLayer_0x4, &origin);
         if (field_0x260 >= 0) {
             JGeometry::TVec2f p(field_0x384[0], field_0x384[1]);
-            if (field_0x270 != getTileAt_80226998((const JGeometry::TVec3f*)&p, mLayer_0x4)) {
+            if (field_0x270 != getTileAt_80226998(p, mLayer_0x4)) {
                 field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
                 field_0x230 = 6;
             } else {

@@ -86,12 +86,12 @@ void Keese_804A02B8::update() {
             // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
             s32 layer = mLayer_0x4;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            field_0x26a = getTileAt_80226998((const JGeometry::TVec3f*)&pos, layer);
+            field_0x26a = getTileAt_80226998(pos, layer);
             return;
         }
         s32 layer = mLayer_0x4;
         JGeometry::TVec2f pos(mPos.x, mPos.y);
-        if (field_0x26a == getTileAt_80226998((const JGeometry::TVec3f*)&pos, layer)) {
+        if (field_0x26a == getTileAt_80226998(pos, layer)) {
             return;
         }
         field_0x264 = 0;

@@ -259,16 +259,16 @@ void BowSoldier_804A00C8::update() {
             if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 return;
             }
-            JGeometry::TVec3f tmpPos;
+            JGeometry::TVec2f tmpPos;
             tmpPos.x = mPos.x;
             tmpPos.y = mPos.y;
-            field_0x2aa = getTileAt_80226998(&tmpPos, mLayer_0x4);
+            field_0x2aa = getTileAt_80226998(tmpPos, mLayer_0x4);
             return;
         }
-        JGeometry::TVec3f tmpPos;
+        JGeometry::TVec2f tmpPos;
         tmpPos.x = mPos.x;
         tmpPos.y = mPos.y;
-        if (field_0x2aa == getTileAt_80226998(&tmpPos, mLayer_0x4)) {
+        if (field_0x2aa == getTileAt_80226998(tmpPos, mLayer_0x4)) {
             return;
         }
         field_0x254 = 40;

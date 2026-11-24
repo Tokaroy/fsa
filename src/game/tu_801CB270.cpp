@@ -426,7 +426,7 @@ void fn_801CCCC4(JGeometry::TVec3f* pos) {
 // Whether the tile at pos is one of the codes 0x40-0x49.
 bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
-    switch (getTileAt_80226998(pos, layer)) {
+    switch (getTileAt_80226998(reinterpret_cast<const JGeometry::TVec2f&>(*pos), layer)) {
     case 0x40:
     case 0x41:
     case 0x42:
@@ -450,7 +450,7 @@ bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
     p.y = pos->y;
     bool found = false;
     for (s32 i = 0; i < 2; i++) {
-        switch (getTileAt_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        switch (getTileAt_80226998(p, layer)) {
         case 0x19C:
         case 0x19D:
             found = true;

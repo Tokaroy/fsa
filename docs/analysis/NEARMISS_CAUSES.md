@@ -84,14 +84,23 @@ smaller to the compiler and may still inline the ctor: that happened in
 PhantomGanon::update (8.7 KB), which lost 0.4 % and is listed as a known loss. Apply the
 recipe per unit and keep it only where the function gains.
 
-## Lead (unproven): map tile queries take a TVec2f
+## Map tile query getTileAt_80226998 takes a TVec2f (applied 2026-11-24)
 
-SwordSoldier::update's remaining -9 is `getTileAt_80226998(TVec2f(mPos.x, mPos.y), layer)`:
-the target builds a TVec2 with the template ctor and passes its address. Our Map.h declares
-`getTileAt_80226998(const TVec3f*, s32)`, and 27 call sites in other units build a
-`TVec3f p; p.x = ...; p.y = ...;` with z unset just to call it. Changing the parameter to
-`const TVec2f&` (and the same check for getRawTile_80226850 / getTileCollisionCodeAlt_802265FC)
-is a header fix that would touch every caller; test it unit by unit.
+Proof: the callee reads only 0x0 and 0x4 of its argument, and its callers' argument
+temporaries are 8 bytes apart (act_keese 0x44 / 0x3c, act_tektite 0x28 / 0x20,
+act_chain_chomp 0x5c / 0x54, act_bow_soldier 0x1c / 0x14), never a z store;
+act_sword_soldier builds it with the TVec2(x, y) ctor (0x80150358); act_shovel_old_timer
+passes a TBox2 query's TVec2 output. Three callers pass a TVec3 position's address
+unchanged (act_candlestick_switch, act_panel_rewrite_npc, fn_801CCC78), so those cast.
+Map.h now declares `getTileAt_80226998(const JGeometry::TVec2f&, s32)`; the 27 sites no
+longer build a TVec3 with z unset. Measured: SwordSoldier::update 99.27 -> 99.44 (the
+getTileAt hunks are gone; the default-ctor inserts at the two new temporaries belong to
+the TVec2 ctor-placement lead), FallingFloor::update 99.34 -> 99.41, BowSoldier::update
+91.50 -> 91.55, IronPot fn_801E728C 98.84 -> 98.86; nothing dropped.
+
+The siblings stay `const TVec3f*`: getRawTile_80226850, getTileCollisionCode_8022461C and
+getTileCollisionCodeAlt_802265FC are mostly called with an actor's &mPos directly, and one
+getRawTile_80226850 caller stores all three floats (0x802BCBA0).
 
 ## Clusters without a single cause
 

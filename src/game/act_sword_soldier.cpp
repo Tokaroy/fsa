@@ -502,10 +502,12 @@ void SwordSoldier_8049FCA0::update() {
             if (fn_80154698()) {
                 return;
             }
-            field_0x29c = getTileAt_80226998(&mPos, getLayer_8015461C());
+            JGeometry::TVec2f tile38;
+            field_0x29c = getTileAt_80226998(*fn_801546E8(&tile38, mPos.x, mPos.y), getLayer_8015461C());
             return;
         }
-        if (field_0x29c == getTileAt_80226998(&mPos, getLayer_8015461C())) {
+        JGeometry::TVec2f tile30;
+        if (field_0x29c == getTileAt_80226998(*fn_801546E8(&tile30, mPos.x, mPos.y), getLayer_8015461C())) {
             return;
         }
         field_0x250 = 40;

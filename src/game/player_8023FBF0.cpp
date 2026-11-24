@@ -3248,7 +3248,7 @@ bool Player_804A6F38::fn_80248B9C() {
             clamped = true;
             break;
         }
-    } while (getTileAt_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
+    } while (getTileAt_80226998(pos, mLayer_0x3b4) != 0x231);
     pos.y += 24.0f;
     if (fn_8026E5F8(&pos)) {
         field_0x43f = true;
@@ -3277,7 +3277,7 @@ bool Player_804A6F38::fn_80248A24() {
             break;
         }
         getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x3b4);
-    } while (getTileAt_80226998((const JGeometry::TVec3f*)&pos, mLayer_0x3b4) != 0x231);
+    } while (getTileAt_80226998(pos, mLayer_0x3b4) != 0x231);
     pos.y += 24.0f;
     if (fn_8026E5F8(&pos)) {
         field_0x43f = true;

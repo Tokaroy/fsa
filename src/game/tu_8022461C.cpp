@@ -186,8 +186,8 @@ s32 getCellIndexVec3_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
 
 // The same as getRawTile_80226850 (only the register allocation differs in the original).
 // FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
-u16 getTileAt_80226998(const JGeometry::TVec3f* pos, s32 layer) {
-    return rawTileAt(pos, layer);
+u16 getTileAt_80226998(const JGeometry::TVec2f& pos, s32 layer) {
+    return rawTileAt(&pos, layer);
 }
 
 // The raw tile code at pos, 0xF outside the layer's box.

@@ -710,9 +710,9 @@ void cls_804A71A8::fn_8026E68C(u16 tile) {
         // The centre of the 16-unit cell.
         pos.x = ((s32)pos.x & 0xFFFFFFF0) + 8.0f;
         pos.y = ((s32)pos.y & 0xFFFFFFF0) + 8.0f;
-        if (getTileAt_80226998((const JGeometry::TVec3f*)&pos, field_0x4->mLayer_0x3b4) == 0x17E) {
+        if (getTileAt_80226998(pos, field_0x4->mLayer_0x3b4) == 0x17E) {
             pos.x += 8.0f;
-        } else if (getTileAt_80226998((const JGeometry::TVec3f*)&pos, field_0x4->mLayer_0x3b4) == 0x17F) {
+        } else if (getTileAt_80226998(pos, field_0x4->mLayer_0x3b4) == 0x17F) {
             pos.x -= 8.0f;
         }
         if (field_0x4->fn_8026E5F8(&pos) && tile == 0x11) {

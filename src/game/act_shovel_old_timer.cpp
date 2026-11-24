@@ -190,7 +190,7 @@ void ShovelOldTimer_804AAB40::fn_8031179C() {
         if (fn_8023A97C(i, &field_0x230, 0, &pos)) {
             // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f
             // (as act_keese does).
-            if (getTileAt_80226998((const JGeometry::TVec3f*)&pos, 0) == 0x1B0) {
+            if (getTileAt_80226998(pos, 0) == 0x1B0) {
                 if (!field_0x259) {
                     showHint(field_0x250, 0x826);
                 } else {
