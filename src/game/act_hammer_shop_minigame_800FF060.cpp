@@ -125,7 +125,7 @@ void HammerShopMinigame_8049C858::update() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (openMessage_8038AD24(field_0x240, 0x26B, mSerial, mLayer_0x4, msgPos, 0)) {
+            if (openMessage_8038AD24(field_0x240, 0x26B, getSerial(), getField_0x4(), msgPos, 0)) {
                 for (s32 i = 0; i < 4; i++) {
                     fn_802308E0(i);
                 }
@@ -154,7 +154,7 @@ void HammerShopMinigame_8049C858::update() {
                     field_0x248 = 0;
                 } else {
                     s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
-                    field_0x284 = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                    field_0x284 = (s32)gGameRoot_8053AAF8->mRandom.get_ufloat((f32)count);
                     if (field_0x284 == 4) {
                         field_0x284 = 3;
                     }
@@ -302,7 +302,7 @@ void HammerShopMinigame_8049C858::update() {
             if (fn_8022FD8C(mSerial) >= 0) {
                 fn_801003F4();
                 fn_803894BC(field_0x240, 1);
-                openMessage_8038AD24(field_0x240, 0x26E, mSerial, mLayer_0x4, msgPos, 2);
+                openMessage_8038AD24(field_0x240, 0x26E, getSerial(), getField_0x4(), msgPos, 2);
                 field_0x230 = 6;
                 field_0x248 = 0;
                 fn_8022B260();
@@ -365,7 +365,7 @@ void HammerShopMinigame_8049C858::update() {
     case 8:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
-        if (field_0x240 >= 0 && openMessage_8038AD24(field_0x240, 0x370, mSerial, mLayer_0x4, msgPos, 0)) {
+        if (field_0x240 >= 0 && openMessage_8038AD24(field_0x240, 0x370, getSerial(), getField_0x4(), msgPos, 0)) {
             field_0x230 = 9;
             field_0x248 = 0;
             facePlayer_inline();
