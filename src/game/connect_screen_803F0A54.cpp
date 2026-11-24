@@ -1998,7 +1998,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
 // FIXME(shotgun): 96.54 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) {
+        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) ? true : false) {
             u8 alpha;
             if (field_0x210[i] == 0) {
                 field_0x25b &= ~(1 << i);
@@ -2039,9 +2039,9 @@ void ConnectScreen_804B0F10::fn_803F4120() {
                     } else {
                         t = (f32)((50 - (field_0x24a - 50)) * (50 - (field_0x24a - 50))) / 2500.0f;
                     }
-                    mEntryScreen_0x8->search(lbl_80479258[i])->setAlpha(t * field_0x253);
-                    mEntryScreen_0x8->search(lbl_80479278[i])->setAlpha(t * field_0x254);
-                    mEntryScreen_0x8->search(lbl_80479298[i])->setAlpha(t * field_0x255);
+                    mEntryScreen_0x8->search(lbl_80479258[i])->setAlpha(field_0x253 * t);
+                    mEntryScreen_0x8->search(lbl_80479278[i])->setAlpha(field_0x254 * t);
+                    mEntryScreen_0x8->search(lbl_80479298[i])->setAlpha(field_0x255 * t);
                 }
             } else if (field_0x25b & (1 << (i + 4))) {
                 field_0x25b &= ~(1 << (i + 4));
@@ -2066,7 +2066,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             }
         }
     }
-    for (s32 i = 0; i < field_0x1ac + 2; i++) {
+    for (s32 i = 0; i <= field_0x1ac + 1; i++) {
         if (field_0x220[i] != 0) {
             field_0x220[i]++;
             if (field_0x220[i] >= mArrowAnms_0x38[i]->getFrameMax()) {
@@ -2102,13 +2102,15 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             }
         }
         f32 w1 = mArrowAnimScreens_0x18[i]->search('NULL_001')->getWidth();
+        J2DPane* pane = mEntryScreen_0x8->search(lbl_80479378[i]);
         f32 x = mEntryScreen_0x8->search('NULL_001')->getBounds()->i.x +
-                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.x +
-                (mEntryScreen_0x8->search(lbl_80479378[i])->getWidth() - w1) / 2;
+                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.x;
+        x += (pane->getWidth() - w1) / 2;
         f32 h1 = mArrowAnimScreens_0x18[i]->search('NULL_001')->getHeight();
+        pane = mEntryScreen_0x8->search(lbl_80479378[i]);
         f32 y = mEntryScreen_0x8->search('NULL_001')->getBounds()->i.y +
-                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.y +
-                (mEntryScreen_0x8->search(lbl_80479378[i])->getHeight() - h1) / 2;
+                mEntryScreen_0x8->search(lbl_80479378[i])->getBounds()->i.y;
+        y += (pane->getHeight() - h1) / 2;
         mArrowAnimScreens_0x18[i]->search('NULL_001')->move(x, y);
         f32 x2 = mEntryScreen_0x8->search('Ndata03')->getBounds()->i.x +
                  mEntryScreen_0x8->search(lbl_80479398[i])->getBounds()->i.x;
@@ -2127,6 +2129,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     for (s32 i = 0; i < 4; i++) {
         SpriteParams_801F5AE0 params;
+        params.field_0x0[7] = i + 12;
         params.field_0x26 = 0;
         JGeometry::TVec3f pos;
         f32 size = mEntryScreen_0x8->search(lbl_80479238[i])->getWidth();
@@ -2134,7 +2137,6 @@ void ConnectScreen_804B0F10::fn_803F4120() {
         size = mEntryScreen_0x8->search(lbl_80479238[i])->getHeight();
         pos.y = toEffectY(size / 2 + mEntryScreen_0x8->search(lbl_80479238[i])->getGlobalBounds().i.y);
         pos.z = 0.0f;
-        params.field_0x0[7] = i + 12;
         f32 scale = (f32)mEntryScreen_0x8->search(lbl_80478F30[i][0])->getAlpha() / (f32)field_0x2ee[i][0];
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) || field_0x210[i] == 0) {
             if (i > field_0x1ac + 1) {
@@ -2148,18 +2150,19 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
             gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         } else {
+            s32 count = field_0x210[i];
             params.field_0x10.a = 255.0f * scale;
-            if (field_0x210[i] <= 10) {
+            if (count <= 10) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x210[i] <= 36) {
+            } else if (count <= 36) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (field_0x210[i] - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x210[i] < 100) {
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (count - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+            } else if (count < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             } else {
-                s32 frame = lbl_80478AA0[field_0x210[i] - 100] + 0x10;
+                s32 frame = lbl_80478AA0[count - 100] + 0x10;
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
