@@ -46,7 +46,6 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
     return false;
 }
 
-// FIXME: 97.85 %, missing/extra; behaviour near.
 void ExtendingLift_804A78B0::init() {
     if (((getField_0x90() >> 7) & 0x1F) == 0) {
         mSpawnParam_0x90 |= 0x80;
@@ -81,7 +80,7 @@ void ExtendingLift_804A78B0::init() {
     field_0x244 = 0;
 }
 
-// FIXME: 92.98 %, missing/extra; behaviour clean.
+// FIXME: 95.82 %, scheduling+regalloc; behaviour clean.
 // Instruction order and float registers around the field_0x230 divides still differ.
 void ExtendingLift_804A78B0::update() {
     if (isScreenFlagSet_0x34()) {
