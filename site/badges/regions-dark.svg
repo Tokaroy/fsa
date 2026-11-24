@@ -78,7 +78,7 @@
 <text x="50" y="527" font-size="16" font-weight="700" fill="#eceefb">Menus &amp; screens</text>
 <text x="50" y="547" font-size="12" fill="#7c82a8">47 files · 783 KiB · 9 Matching · 11 unconfirmed</text>
 <rect x="330" y="514" width="440" height="14" rx="4" fill="#1d2142"/>
-<rect class="grow" style="animation-delay:0.6s" x="330" y="514" width="387.22" height="14" rx="4" fill="#8c55b4" fill-opacity="0.35"/>
+<rect class="grow" style="animation-delay:0.6s" x="330" y="514" width="387.23" height="14" rx="4" fill="#8c55b4" fill-opacity="0.35"/>
 <rect class="grow" style="animation-delay:0.6s" x="330" y="514" width="247.01" height="14" rx="4" fill="#8c55b4"/>
 <text x="330" y="547" class="mono" font-size="11.5" fill="#7c82a8">structural 88.0 % · matched code 56.1 %</text>
 <text x="932" y="528" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#8c55b4">88.0 %</text>
