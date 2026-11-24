@@ -514,39 +514,38 @@ void SlimeFormation_804A5D60::die_0x24() {
 
 // FIXME: 95.97 %, missing/extra; behaviour near.
 void SlimeFormation_804A5D60::draw() {
-    if (field_0x54.isZero()) {
-        return;
-    }
+    // the original materialises the bool (mfcr; extrwi.) and tests it against 0
+    if (field_0x54.isZero() == false) {
+        SpriteParams_801F5AE0 params;
+        params.field_0x1c = 0;
+        params.field_0x1d = 0;
 
-    SpriteParams_801F5AE0 params;
-    params.field_0x1c = 0;
-    params.field_0x1d = 0;
+        Mtx mtx;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
+        mtx[0][0] = field_0x54.x;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = field_0x54.y;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = field_0x54.z;
+        params.mMtx = mtx;
 
-    Mtx mtx;
-    mtx[0][3] = 0.0f;
-    mtx[1][3] = 0.0f;
-    mtx[2][3] = 0.0f;
-    mtx[0][0] = field_0x54.x;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = field_0x54.y;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = field_0x54.z;
-    params.mMtx = mtx;
-
-    s32 frame = mAnim.mCel + 0x2C9;
-    if (!(mFlags & ENEMY_FLAG_NO_HURT)) {
-        drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
-    } else {
-        if (mSpriteParams.mMtx == NULL) {
-            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
-        }
-        if (mLayer_0x4 < 8) {
-            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        s32 frame = mAnim.mCel + 0x2C9;
+        if (!(mFlags & ENEMY_FLAG_NO_HURT)) {
+            drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
+        } else {
+            if (mSpriteParams.mMtx == NULL) {
+                drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+            }
+            if (mLayer_0x4 < 8) {
+                void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            }
         }
     }
 }
