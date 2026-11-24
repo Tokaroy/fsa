@@ -305,7 +305,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
     JKRExpHeap* heap = lbl_80529DEC.mHeap;
     OSReport("***** heap check\x81\x40\x98\x41\x91\xb1\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK "
              "\x8e\x63\x82\xe8\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK *****\n",
-             heap->getFreeSize() / 1024.0f, (s32)heap->getTotalFreeSize() / 1024.0f);
+             heap->getFreeSize() / 1024.0f, heap->getTotalFreeSize() / 1024.0f);
     field_0x4 = new MapYaguraWindow_804B1B60;
     field_0x8 = new SaveScreen_804B0288(lbl_80529DEC.mMapArchive_0x34, false);
     mMapScreen_0xc = new J2DScreen;
@@ -710,7 +710,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
     }
     fn_80408F38(0.0f);
     // field_0x1b4[3] (0x1C0): the free heap size the map screen saw last.
-    if (lbl_80529DEC.field_0x1b4[3] != 0 && lbl_80529DEC.field_0x1b4[3] != (s32)lbl_80529DEC.mHeap->getTotalFreeSize()) {
+    if (lbl_80529DEC.field_0x1b4[3] != 0 && lbl_80529DEC.field_0x1b4[3] != lbl_80529DEC.mHeap->getTotalFreeSize()) {
         OSReport("\x1b[31m\x83\x81\x83\x82\x83\x8a\x82\xaa\x89\xf0\x95\xfa\x82\xb3\x82\xea\x82\xc4\x82\xa2\x82\xdc\x82\xb9\x82\xf1"
                  "(GAME) %8d \x1b[m\n",
                  lbl_80529DEC.field_0x1b4[3] - lbl_80529DEC.mHeap->getTotalFreeSize());
