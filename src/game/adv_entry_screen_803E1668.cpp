@@ -1047,7 +1047,7 @@ void AdvEntryScreen_804B0B00::fn_803EC804() {
     }
 }
 
-// FIXME: 96.93 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 97.58 %, missing/extra; behaviour near.
 // Register allocation of the i * 5 induction variables remains.
 void AdvEntryScreen_804B0B00::fn_803EBAA8() {
     s32 others[3];
@@ -1655,7 +1655,7 @@ void AdvEntryScreen_804B0B00::fn_803E9034() {
 }
 
 // Callee-saved register rotation (r19/r20/r21) remains.
-// FIXME: 98.66 %, different; behaviour near.
+// FIXME: 98.76 %, different; behaviour near.
 void AdvEntryScreen_804B0B00::fn_803E831C() {
     if (field_0x1bc != 3) {
         if (field_0x220[0] < 100) {
@@ -2026,7 +2026,7 @@ void AdvEntryScreen_804B0B00::fn_803E6A2C() {
 
 void AdvEntryScreen_804B0B00::fn_803E6A28() {}
 
-// FIXME: 99.17 %, operands; behaviour clean.
+// FIXME: 99.22 %, scheduling+regalloc; behaviour clean.
 // Registers only: the loop's table pointers / the lit alpha sit in other
 // registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
@@ -2095,7 +2095,7 @@ void AdvEntryScreen_804B0B00::fn_803E64A0() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME: 97.03 %, missing/extra; behaviour near.
+// FIXME: 98.80 %, different; behaviour clean.
 // Left: the else value of `t` goes through f0 (fmr f24) in the original, and
 // the argument registers of the (count - 10) / 2 drawSobSprite call.
 void AdvEntryScreen_804B0B00::fn_803E51C4() {
