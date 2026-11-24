@@ -40,7 +40,6 @@ static inline void touchCurrentFile() {
 // The tags of the eight border panes.
 static const u64 lbl_80476F20[8] = {'Psl01', 'Psl02', 'Psl03', 'Psl04', 'Psl05', 'Psl06', 'Psl07', 'Psl08'};
 
-// FIXME(shotgun): 97.11 %, missing/extra; behaviour drift.
 SaveScreen_804B0288::SaveScreen_804B0288(JKRArchive* archive, bool flag) {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADB8 = this;
@@ -80,10 +79,10 @@ SaveScreen_804B0288::SaveScreen_804B0288(JKRArchive* archive, bool flag) {
     field_0x6c = field_0x10->getWidth();
     field_0x74 = 0.0f;
     field_0x70 = 0.0f;
-    field_0xc->setFont(lbl_8053AD78->mFont);
-    field_0x10->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tno01'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->setFont(lbl_8053AD78->mFont);
+    field_0xc->setFont(lbl_8053AD78->getFont());
+    field_0x10->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tno01'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->setFont(lbl_8053AD78->getFont());
     getMessageText_803832BC(static_cast<J2DTextBox*>(mScreen->search('Tyes01'))->getStringPtr(), 0x11E, 0, NULL, NULL);
     getMessageText_803832BC(static_cast<J2DTextBox*>(mScreen->search('Tno01'))->getStringPtr(), 0x11F, 0, NULL, NULL);
     field_0x14 = new PaneCtrl_804AF86C();
