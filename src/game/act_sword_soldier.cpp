@@ -17,14 +17,12 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-extern const char lbl_80465DBC[]; // "enemy_both2_sob.bin"
-extern const char lbl_80465DD0[]; // "enemy_gc_sob.bin"
 extern s32 lbl_80529DEC[];
 s32 lbl_804BF850[4]; // serials of the soldiers that took a hit
 s32 lbl_8053AB40;
 s32 lbl_8053AB44;
 s32 lbl_8053AB48;
-extern s32 lbl_80539F68;
+s32 lbl_80539F68 = 200;
 
 // Life and sprite mode per kind.
 // The four facing directions in turning order.
@@ -1702,9 +1700,9 @@ void SwordSoldier_8049FCA0::draw() {
             setRotScaleMtx(mtx, rot, field_0x298);
             params.mMtx = mtx;
             if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3 || mSpawnParam_0x90 == 1) {
-                drawSpriteScaled_801F02BC(lbl_80465DBC, field_0x274 + 0x1F4, &params, 0, 0, false, 1.0f, 1.0f);
+                drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x274 + 0x1F4, &params, 0, 0, false, 1.0f, 1.0f);
             } else {
-                drawSpriteScaled_801F02BC(lbl_80465DD0, field_0x274 + 0x8F, &params, 0, 0, false, 1.0f, 1.0f);
+                drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x274 + 0x8F, &params, 0, 0, false, 1.0f, 1.0f);
             }
             return;
         }
@@ -1757,11 +1755,11 @@ void SwordSoldier_8049FCA0::draw() {
         far = 1;
     }
     if (field_0x288 == 1 || field_0x288 == 3) {
-        drawSpriteScaled_801F02BC(lbl_80465DD0, field_0x274 + 0xA8, &params, flags, far, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x274 + 0xA8, &params, flags, far, false, 1.0f, 1.0f);
     } else if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3 || mSpawnParam_0x90 == 1) {
-        drawSpriteScaled_801F02BC(lbl_80465DBC, field_0x274 + 0x1F4, &params, flags, far, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x274 + 0x1F4, &params, flags, far, false, 1.0f, 1.0f);
     } else {
-        drawSpriteScaled_801F02BC(lbl_80465DD0, field_0x274 + 0x8F, &params, flags, far, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x274 + 0x8F, &params, flags, far, false, 1.0f, 1.0f);
     }
 }
 

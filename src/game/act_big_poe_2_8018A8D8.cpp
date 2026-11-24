@@ -112,9 +112,9 @@ const char* lbl_804A1D24[] = {
     "boss_p_odoroki_fly_2.bti",
 };
 JGeometry::TVec3f lbl_804C18B8;
-extern s32 lbl_80539FC8;
-extern s32 lbl_80539FCC;
-extern s32 lbl_80539FD0;
+s32 lbl_80539FC8 = -1;
+s32 lbl_80539FCC = -1;
+s32 lbl_80539FD0 = 9;
 
 void fn_80154718(const JGeometry::TVec3f* pos);
 void zeroVec_801546BC(JGeometry::TVec3f* v);

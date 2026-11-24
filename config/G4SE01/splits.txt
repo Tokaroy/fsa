@@ -2216,7 +2216,7 @@ game/act_ice_wall.cpp:
 	.rodata     start:0x80464BE8 end:0x80464C58
 	.data       start:0x8049DE18 end:0x8049DE90
 	.bss        start:0x804BCA60 end:0x804BCB60
-	.sdata      start:0x80539F28 end:0x80539F38
+	.sdata      start:0x80539F28 end:0x80539F30
 	.sdata2     start:0x8053C8B0 end:0x8053C8F8
 
 game/act_random_toggle_switch_8011E96C.cpp:

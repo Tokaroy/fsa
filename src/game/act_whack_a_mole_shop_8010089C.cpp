@@ -84,7 +84,7 @@ void WhackAMoleShop_8049C8EC::update() {
     }
 }
 
-extern const u8 lbl_80539EB0[2]; // frames per animation step (.sdata of this unit)
+u8 lbl_80539EB0[2] = {20, 15}; // frames per animation step
 // Frames before the next mole, by player count.
 static s32 lbl_8049C8D8[5] = {0, 40, 40, 25, 18};
 
