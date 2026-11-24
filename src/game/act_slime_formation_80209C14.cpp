@@ -204,7 +204,6 @@ static inline void approach(f32& cur, f32 target, f32 remaining) {
 }
 
 // The animation steps of the box-shrinking state machine; updateState_0x90 is its per-frame step.
-// FIXME(shotgun): 99.42 %, missing/extra; behaviour drift.
 void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         switch (mState) {
@@ -512,7 +511,7 @@ void SlimeFormation_804A5D60::die_0x24() {
     ActorBase_804A5770::die_0x24();
 }
 
-// FIXME: 95.97 %, missing/extra; behaviour near.
+// FIXME: 97.30 %, scheduling+regalloc; behaviour clean.
 void SlimeFormation_804A5D60::draw() {
     // the original materialises the bool (mfcr; extrwi.) and tests it against 0
     if (field_0x54.isZero() == false) {
