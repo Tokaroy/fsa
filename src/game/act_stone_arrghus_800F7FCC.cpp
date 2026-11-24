@@ -70,6 +70,15 @@ static inline f32 cut4(f32 v) {
     return (f32)(s32)(10000.0f * v) * 0.0001f;
 }
 
+static inline void moveToward(JGeometry::TVec3f& pos, const Vec* target, f32 speed) {
+    f32 x = target->x;
+    f32 y = target->y;
+    f32 z = target->z;
+    pos.x += cut4(x - pos.x) * speed;
+    pos.y += cut4(y - pos.y) * speed;
+    pos.z += cut4(z - pos.z) * speed;
+}
+
 static inline void moveToward(JGeometry::TVec3f& pos, JGeometry::TVec3f target, f32 speed) {
     pos.x += cut4(target.x - pos.x) * speed;
     pos.y += cut4(target.y - pos.y) * speed;
@@ -106,9 +115,10 @@ static inline JGeometry::TVec3f linePosOf(StoneArrghus_8049C718* parent, s32 slo
         ang = parent->mAngleB;
         off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
     }
-    JGeometry::TVec3f out(parent->mPos.x + off * JMASinShort(ang),
-                          parent->mPos.y + off * JMACosShort(ang),
-                          10.0f + parent->mPos.z);
+    JGeometry::TVec3f out;
+    out.x = parent->mPos.x + off * JMASinShort(ang);
+    out.y = parent->mPos.y + off * JMACosShort(ang);
+    out.z = 10.0f + parent->mPos.z;
     parent->mSlot++;
     return out;
 }
@@ -1188,11 +1198,12 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
         mFlag249 = 0;
     }
     if (updateHitReaction_801F3D94(1) == 0) {
-        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
+        if (player >= 0) {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
-            hitPlayerGroup_80238548(0, 0, &xy, 0x10);
+            hitPlayerGroup_80238548(player, 0, &xy, 0x10);
         }
-        moveToward(mPos, target, speed);
+        moveToward(mPos, &target, speed);
         damagePlayersInBox_801F2B7C(2, -1, 1);
     }
 }
