@@ -142,6 +142,7 @@ void FourPersonPullSwitchBTIVersion_804AE574::draw() {
 // FIXME: 96.83 %, missing/extra; behaviour clean.
 // missing/extra: ours has 2 more instrs (169 vs 167). TVec3f temporary on stack around vector addition in branch 1 shifts stack slots.
 void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
+    s32 i;
     if (field_0x24c < 0) {
         return;
     }
@@ -150,13 +151,13 @@ void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
             field_0x24c = 4;
             field_0x248 = 50;
             field_0x250 = 0;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
                 fn_80230498(i, &(playerPos + JGeometry::TVec3f(0.0f, 7.0f, 0.0f)), 0x2E2, 0xFF, -0x80, -0x80, true);
             }
         }
     } else if (field_0x250 == 0 && field_0x248 > 30) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
             fn_80230498(i, &playerPos, 0x2E2, 0xFF, -0x80, -0x80, true);
         }
@@ -164,7 +165,7 @@ void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
         if (field_0x248 == 0) {
             field_0x250++;
             field_0x248 = lbl_80475024[field_0x250];
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
                 fn_80230498(i, &playerPos, field_0x250 + 0xDB, 0xFF, -0x80, -0x80, true);
                 if (field_0x250 == 1) {
