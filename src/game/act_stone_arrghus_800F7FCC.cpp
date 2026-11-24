@@ -1212,7 +1212,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
     StoneArrghus_8049C718* parent = mParent;
-    JGeometry::TVec3f target = slotPosOf(parent, parent->mSlot);
+    slotPosOf(parent, parent->mSlot);
     s32 serial = field_0xa0;
     if (serial != -1) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1222,10 +1222,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
             return;
         }
     }
-    if (updateHitReaction_801F3D94(1) != 0) {
-        return;
-    }
-    if (checkHits_801F305C()) {
+    if (updateHitReaction_801F3D94(1) != 0 || checkHits_801F305C()) {
         return;
     }
     field_0xb0 = 0x80002;
@@ -1238,7 +1235,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     v.normalize();
     v.scale(0.8f);
     v.z = 0.0f;
-    if (mPos.z < 10.0f || mCount >= 0x50) {
+    if (mPos.z < 10.0f || mCount < 0x50) {
         v.zero();
     }
     mVel_0x3c.set(v);
