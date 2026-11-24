@@ -1654,8 +1654,7 @@ void AdvEntryScreen_804B0B00::fn_803E9034() {
     }
 }
 
-// extsh. vs cmpwi r0, 0 on field_0x254[0] > 0, &others[0] CSE into r29,
-// and callee-saved register rotation (r19/r20/r21).
+// Callee-saved register rotation (r19/r20/r21) remains.
 // FIXME: 98.66 %, different; behaviour near.
 void AdvEntryScreen_804B0B00::fn_803E831C() {
     if (field_0x1bc != 3) {
@@ -1692,14 +1691,16 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
             }
         }
     }
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 10) {
-            field_0x168 = -200.0f * ((f32)(field_0x254[0] * field_0x254[0]) / 100.0f);
+    int timer = field_0x254[0];
+    if (timer > 0) {
+        if (timer < 10) {
+            field_0x168 = -200.0f * ((f32)(timer * timer) / 100.0f);
         } else {
             field_0x168 = -200.0f;
         }
     }
     s16 others[2];
+    s16* src = others;
     s16* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0x1b8) {
@@ -1729,10 +1730,10 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
             }
         }
     } else {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++, src++) {
             if (field_0x254[0] > i * 10) {
                 if (field_0x254[0] < i * 10 + 10) {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f * ((f32)((field_0x254[0] - i * 10) * (field_0x254[0] - i * 10)) / 100.0f);
                     f32 alpha = (f32)(10 - (field_0x254[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
@@ -1744,7 +1745,7 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
                         field_0xc->search(lbl_80478048[idx][j])->setAlpha(fadeAlpha(field_0x333[idx][j], alpha));
                     }
                 } else {
-                    s16 idx = others[i];
+                    s16 idx = *src;
                     field_0x184[idx] = 300.0f;
                     for (int j = 0; j < 5; j++) {
                         field_0xc->search(lbl_80478048[idx][j])->setAlpha(fadeAlpha(field_0x333[idx][j], 0.0f));
