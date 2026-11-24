@@ -1169,7 +1169,7 @@ void StoneArrghusChildPuff_8049C678::init() {
     }
 }
 
-// FIXME(shotgun): 92.16 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.97 %, regalloc-only; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
     mParamDstr_0x1a8 = true;
@@ -1205,7 +1205,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     }
 }
 
-// FIXME(shotgun): 84.23 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.14 %, scheduling+regalloc; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
     StoneArrghus_8049C718* parent = mParent;
