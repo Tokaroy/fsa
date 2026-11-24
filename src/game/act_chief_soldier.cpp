@@ -25,7 +25,9 @@ extern const f32 lbl_804A0A58[][4];
 extern const f32 lbl_804A0AD8[][2];
 extern const s32 lbl_804A0AF8[];
 extern const f32 lbl_804A0B10[][4];
-extern const u8 lbl_80539F78[];
+
+// Indexed by spawn kind / 2 (.sdata, 8 bytes).
+u8 lbl_80539F78[8] = { 1, 2, 3, 0, 0, 0, 0, 0 };
 
 // Starts with the per-heading (mDir_0x98) frame shown when the chief bumps into a wall.
 s32 lbl_804A0920[78] = {
@@ -236,13 +238,14 @@ void ChiefSoldier_804A0B90::init() {
         if (fn_802DE814() == 1) {
             mLife = lbl_804A0AF8[mSpawnParam_0x90 & 0xFF];
         }
-        s32 type = 7;
         s32 layer = mLayer_0x4;
+        s32 spawnLayer = layer;
+        s32 type = 7;
         if (layer >= 8) {
             type = 8;
-            layer = 0;
+            spawnLayer = 0;
         }
-        field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', layer, &mPos, type, -1, -1);
+        field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', spawnLayer, &mPos, type, -1, -1);
         s32 serial = field_0x238;
         if (serial >= 0) {
             BowSoldier_804A00C8* partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
