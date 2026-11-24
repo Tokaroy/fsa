@@ -6,6 +6,7 @@
 #include "game/ViewLayer.h"
 #include "game/act/tu_801F9484.h"
 #include "game/SpriteParams.h"
+#include "game/RotMatrix.h"
 #include <math.h>
 #include "game/Effect.h"
 #include "game/Player.h"
@@ -579,7 +580,7 @@ void BallAndChainSoldier_804A0810::update() {
 // Draws the body (frame 0x7F + field_0x258), the ten trail segments (frame 0x83, at the stored
 // positions) and, rotated by field_0x278 and scaled by field_0x27c, the shell (frame 0x82 or 0x11).
 // FIXME(shotgun): 97.92 %, different; behaviour drift.
-// the sin/cos zero arguments fold to lfd doubles; regalloc
+// float register allocation and instruction order around setRotScaleMtx
 void BallAndChainSoldier_804A0810::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -623,25 +624,9 @@ void BallAndChainSoldier_804A0810::draw() {
             } else {
                 params.field_0x20 = 0;
             }
-            f32 angle = field_0x278;
-            f32 scale = field_0x27c;
-            f32 sa = sin(0.0f);
-            f32 sb = sin(angle);
-            f32 sc = sin(0.0f);
-            f32 ca = cos(0.0f);
-            f32 cb = cos(angle);
-            f32 cc = cos(0.0f);
+            setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x278, 0.0f), field_0x27c);
             params.field_0x30 = 0x11;
             params.mMtx = mtx;
-            mtx[0][0] = scale * (cb * cc);
-            mtx[1][0] = scale * (cb * sc);
-            mtx[2][0] = scale * -sb;
-            mtx[0][1] = scale * ((sa * sb) * cc - ca * sc);
-            mtx[1][1] = scale * ((sa * sb) * sc + ca * cc);
-            mtx[2][1] = scale * (sa * cb);
-            mtx[0][2] = scale * ((ca * cc) * sb + sa * sc);
-            mtx[1][2] = scale * ((ca * sc) * sb - sa * cc);
-            mtx[2][2] = scale * (ca * cb);
             if (field_0x94 == 4) {
                 params.field_0x0[6] = field_0x274;
                 params.field_0x1d = 0;
