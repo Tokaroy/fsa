@@ -138,7 +138,6 @@ JGeometry::TVec3f* fn_80182640(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
 
 #pragma auto_inline reset
 
-// FIXME(shotgun): 99.89 %, reloc-name; behaviour drift.
 void HelmarocKing_804A1630::init() {
     mSpawnParam_0x90 &= 0xF;
     field_0x94 = 0;
@@ -311,7 +310,6 @@ HelmarocKing_804A1630::~HelmarocKing_804A1630() {
     }
 }
 
-// FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
 void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
     s32 rowIdx = row;
     s32 frame = 0;
@@ -378,7 +376,7 @@ void HelmarocKing_804A1630::fn_80181BC8(s32 row, s32 mode) {
     }
 }
 
-// FIXME(shotgun): 98.98 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.96 %, missing/extra; behaviour near.
 // Still differs: the original calls the TBox2 copy constructor of box40 out of line; ours inlines it.
 void HelmarocKing_804A1630::update() {
     JGeometry::TBox2f box40(mBox);
@@ -1229,7 +1227,7 @@ void HelmarocKing_804A1630::update() {
 }
 
 // 0x8017EF98.
-// FIXME(shotgun): 91.71 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.94 %, scheduling+regalloc; behaviour clean.
 void HelmarocKing_804A1630::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
