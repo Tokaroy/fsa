@@ -531,10 +531,13 @@ void TileMap_804AA858::fn_802FDDD4() {
                     JGeometry::TVec3f q(p->x, p->y, 0.0f);
                     JGeometry::TVec3f e;
                     e.sub(d, q);
-                    f32 dist = e.squared();
-                    if (inner < dist && outer > dist) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
-                        f32 w = r - std::fabsf(dist - radius);
+                    f32 distSq = e.squared();
+                    f32 dist = distSq;
+                    if (inner < distSq && outer > distSq) {
+                        if (distSq > 0.0f) {
+                            dist = JMAFastSqrtNewton(distSq);
+                        }
+                        f32 w = r - JMAAbs(dist - radius);
                         p->z += w * amp * -JMath::sincosTable_.cosDegree(180.0f * w / 96.0f);
                     }
                     p++;
@@ -544,7 +547,7 @@ void TileMap_804AA858::fn_802FDDD4() {
             break;
         }
         case 1: {
-            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 5.0f);
+            f32 t = JMAFastSqrtNewton(slot->mTimer / 5.0f);
             f32 r = 48.0f * slot->field_0x14;
             f32 h = 8.0f * (slot->field_0x18 * t);
             f32 k = 180.0f / r;
@@ -557,7 +560,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                     e.sub(d, q);
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        dist = JMAFastSqrtNewton(dist);
                         p->z += h * (-1.0f - JMath::sincosTable_.cosDegree(k * dist));
                     }
                     p++;
@@ -568,7 +571,7 @@ void TileMap_804AA858::fn_802FDDD4() {
         }
         case 3: {
             f32 t = slot->mTimer / 18.0f;
-            f32 s = 3000.0f * JGeometry::TUtil<f32>::sqrt(1.0f - t);
+            f32 s = 3000.0f * JMAFastSqrtNewton(1.0f - t);
             f32 amp = 0.7f * (t * (t * (slot->field_0x18 * JMath::sincosTable_.sinDegree(s))));
             if (amp < 0.0f) {
                 amp *= 0.5f;
@@ -634,7 +637,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                     e.sub(d, q);
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
-                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        dist = JMAFastSqrtNewton(dist);
                         p->z += h * (1.0f + JMath::sincosTable_.cosDegree(k * dist));
                     }
                     p++;
@@ -644,7 +647,7 @@ void TileMap_804AA858::fn_802FDDD4() {
             break;
         }
         case 6: {
-            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 300.0f);
+            f32 t = JMAFastSqrtNewton(slot->mTimer / 300.0f);
             f32 r = 128.0f * slot->field_0x14;
             f32 k = 90.0f / r;
             f32 h = 32.0f * (slot->field_0x18 * t);
@@ -663,13 +666,13 @@ void TileMap_804AA858::fn_802FDDD4() {
                     f32 dist = e.squared();
                     if (dist < radiusSq) {
                         if (dist < innerSq) {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h * -JMath::sincosTable_.cosDegree(k * (1.6666666f * dist));
                         } else if (dist > outerSq) {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h2 * (0.5f * (1.0f + JMath::sincosTable_.cosDegree(k * (10.0f * (dist - outerR)))));
                         } else {
-                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            dist = JMAFastSqrtNewton(dist);
                             p->z += h2 * JMath::sincosTable_.sinDegree(k * (5.0f * (dist - innerR)));
                         }
                     }
@@ -706,7 +709,7 @@ void TileMap_804AA858::fn_802FDDD4() {
                 } else {
                     f32 slope = 0.5f * ((p->z - p[-1].z) + (p->z - (p - mHeightGridCellsX_0x2380)[-1].z));
                     if (slope >= 0.1f || slope <= -0.1f) {
-                        f32 shade = (1.0f + slope) / JGeometry::TUtil<f32>::sqrt(2.0f * (slope * slope + 1.0f)) -
+                        f32 shade = (1.0f + slope) / JMAFastSqrtNewton(2.0f * (slope * slope + 1.0f)) -
                                     0.70710677f;
                         if (shade > 0.0f) {
                             shade *= 2.0f;
