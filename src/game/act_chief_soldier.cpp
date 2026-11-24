@@ -106,7 +106,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
     }
 }
 
-// FIXME(shotgun): 97.23 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.24 %, scheduling+regalloc; behaviour clean.
 void ChiefSoldier_804A0B90::fn_80175024() {
     if (getType() == 6) {
         return;
@@ -185,7 +185,7 @@ void ChiefSoldier_804A0B90::fn_80175024() {
     }
 }
 
-// FIXME(shotgun): 98.20 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::init() {
     mBox.i.x = -12.0f;
     mBox.i.y = -20.0f;
