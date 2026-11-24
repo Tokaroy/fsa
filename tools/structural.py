@@ -58,7 +58,10 @@ sides have a relocation, of the same type) is verified one of three ways:
 Reordered: in a regalloc-only or scheduling function the rows objdiff sets side
 by side are not each other's instructions, so when that positional pairing fails, the
 relocated instructions of each form (mnemonic, non-register operands, relocation type)
-are paired one to one instead (reordered_pairs), every pair verified as above.
+are paired one to one instead (reordered_pairs), every pair verified as above. A
+missing/extra function gets the same pairing, where each side may leave unpaired at
+most as many relocated instructions as it has instructions without a counterpart,
+and never both sides within one form (that would be a differing value).
 A symbol our object defines has no proven address (its layout is what is being
 measured), so it passes only by value (a bss one only as private): a same-offset literal with another value
 (5.0f for 10.0f) or ours const data in .rodata against the target's .data stays
@@ -91,7 +94,7 @@ REPORT = OUT / "report_honest.json"
 CACHE = OUT / "structural_cache.json"
 DONE = {"regalloc-only", "scheduling", "scheduling+regalloc", "reloc-name"}
 CLOSE_INSNS, CLOSE_PCT = 4, 85.0
-VERSION = 6  # bump when the classification changes
+VERSION = 7  # bump when the classification changes
 
 
 LOCAL_LIT = re.compile(r"^@(stringBase)?\d+$")
@@ -360,13 +363,15 @@ def rich_pairs(lsym, rsym, left, right):
     return pairs
 
 
-def reordered_pairs(T, lsym, rsym, left, right, tsyms, osyms, ctx):
+def reordered_pairs(T, lsym, rsym, left, right, tsyms, osyms, ctx, slack=(0, 0)):
     """For a scheduling class, where the instructions are the same multiset in another
     order and positional pairing (rich_pairs) sets unrelated loads side by side: the
     relocated instructions of each form (mnemonic and non-register operands, relocation
     type) paired one to one, target with ours, each pair one pending_pairs accepts on
     its own; the pairs with differing names, in rich_pairs' format. None when a form's
-    counts differ or no such one-to-one pairing exists."""
+    counts differ or no such one-to-one pairing exists. slack (target, ours): for a
+    missing/extra function, how many relocated instructions each side may leave
+    unpaired in all: at most its instructions without a counterpart on the other side."""
     def groups(sym, side):
         g = {}
         for row in sym.get("instructions", []):
@@ -381,13 +386,10 @@ def reordered_pairs(T, lsym, rsym, left, right, tsyms, osyms, ctx):
             g.setdefault(key, []).append((name, int(r.get("addend") or 0), r.get("type")))
         return g
     tg, og = groups(lsym, left), groups(rsym, right)
-    if set(tg) != set(og):
-        return None
+    left_t, left_o = slack
     out = []
-    for key in tg:
-        ts, os_ = list(tg[key]), list(og[key])
-        if len(ts) != len(os_):
-            return None
+    for key in set(tg) | set(og):
+        ts, os_ = list(tg.get(key, [])), list(og.get(key, []))
         for x in list(ts):  # the same symbol on both sides needs no proof
             if x in os_:
                 ts.remove(x)
@@ -406,9 +408,14 @@ def reordered_pairs(T, lsym, rsym, left, right, tsyms, osyms, ctx):
                         match[b] = a
                         return True
             return False
-        if not all(augment(a, set()) for a in range(len(ts))):
+        paired = sum(augment(a, set()) for a in range(len(ts)))
+        if paired < len(ts) and paired < len(os_):
+            return None  # a load on each side that pairs with nothing: a differing value
+        left_t -= len(ts) - paired
+        left_o -= len(os_) - paired
+        if left_t < 0 or left_o < 0:
             return None
-        out += [[*ts[match[b]], *os_[b]] for b in range(len(os_))]
+        out += [[*ts[match[b]], *os_[b]] for b in range(len(os_)) if match[b] >= 0]
     return out
 
 
@@ -567,9 +574,15 @@ def diff_unit(T, u):
         if "reloc-name" in cls:
             pending = pending_pairs(rich_pairs(s, r, left, right), tsyms, osyms,
                                     {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": is_done(cls)})
-            if pending is None and cls.split(" + ")[0] in ("regalloc-only", "scheduling", "scheduling+regalloc"):
+            head = cls.split(" + ")[0]
+            if pending is None and head in ("regalloc-only", "scheduling", "scheduling+regalloc", "missing/extra"):
+                slack = (0, 0)
+                if head == "missing/extra":
+                    rows = list(zip(s.get("instructions", []), r.get("instructions", [])))
+                    slack = (sum(1 for a, b in rows if a.get("instruction") and not b.get("instruction")),
+                             sum(1 for a, b in rows if b.get("instruction") and not a.get("instruction")))
                 alt = reordered_pairs(T, s, r, left, right, tsyms, osyms,
-                                      {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": False})
+                                      {"self": (s["name"], r["name"]), "pairs": fpairs, "aligned": False}, slack)
                 if alt == []:
                     pending = []
                 elif alt is not None:
