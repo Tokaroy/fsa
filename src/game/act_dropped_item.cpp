@@ -25,6 +25,16 @@ static inline void spawnImup(u32 param, s32 i, const JGeometry::TVec3f* pos) {
     getActorManager_801F856C()->spawnActor_801F9484('IMUP', layer, pos, fullParam, -1, -1);
 }
 
+// The player `player` follows, or `player` itself without one. int, not s32 (long): the original keeps
+// the converted argument in a saved register of its own (mr r22, r25; mr r26, r22).
+static inline int leaderOrSelf(int player) {
+    int leader = player;
+    if (hasPlayerLeader_8022F514(player)) {
+        leader = getPlayerLeader_8022F3DC(player);
+    }
+    return leader;
+}
+
 inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos) {
     openMessage_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
@@ -388,13 +398,9 @@ void DroppedItem_804A8C80::draw() {
 }
 
 // FIXME: 95.55 %, missing/extra; behaviour clean.
-// (ours has 1 fewer instruction). The original copies player into a second saved
-// register (r22, an inlined leader lookup) and orders the 0x30000000 addis / param add differently.
+// Still differs: the 0x30000000 addis comes after the (player << 26) add in the original, and registers.
 bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
-    s32 leader = player;
-    if (hasPlayerLeader_8022F514(player)) {
-        leader = getPlayerLeader_8022F3DC(player);
-    }
+    s32 leader = leaderOrSelf(player);
     if (gGameRoot_8053AAF8->field_0x7e == 1) {
         if (!fn_802308E0(leader)) {
             return false;
