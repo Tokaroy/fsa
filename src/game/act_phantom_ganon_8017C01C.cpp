@@ -306,7 +306,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 98.06 %, missing/extra; behaviour drift.
+// FIXME: 98.20 %, missing/extra; behaviour near.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
