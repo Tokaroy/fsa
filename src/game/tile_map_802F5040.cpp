@@ -2291,13 +2291,13 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
 }
 
 // FIXME: 89.55 %, missing/extra; behaviour near.
-// The original keeps obj in memory as if its address were taken:
-// every bit-field store is kept (byte 0x11 stored after each field, the
-// unused mAffineParam = 0 too) and the draw re-reads the fields; ours keeps
-// them in registers and drops the dead stores. The three tables are at
-// .rodata + 0x40 / 0x60 / 0xA0 here, + 0x1620 / 0x1640 / 0x1680 in the original
-// (the local tables of the later fn_802FA3FC ... fn_802FCE74 come first and
-// are not written yet). tmp's constructor stores are scheduled later.
+// obj is filled and read through a pointer: the original keeps every
+// bit-field store (byte 0x11 after each field, the unused mAffineParam = 0 too).
+// Left: the low byte of mX is extracted from the halfword again (extrwi 8, 17)
+// where ours reuses the 9-bit value; tmp's constructor stores are scheduled
+// later. The three tables are at .rodata + 0x40 / 0x60 / 0xA0 here, + 0x1620 /
+// 0x1640 / 0x1680 in the original (the local tables of the later fn_802FA3FC ...
+// fn_802FCE74 come first and are not written yet).
 // Draws frame `frame` of the "SOB " resource res at pos: res + 2 holds the
 // little-endian start offsets of the frames, each frame 6-byte GBA OAM
 // entries, drawn last to first as quads of the 4-bit tile images (mSpriteTexObjs_0xb5c,
@@ -2338,6 +2338,7 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
     SpriteParams_801F5AE0 tmp;
     JGeometry::TVec3f out;
     SpriteObj_802F86CC obj;
+    SpriteObj_802F86CC* oam = &obj;
     SpriteParams_801F5AE0* outParams;
     bool loaded;
     s32 lastPriority = -1;
@@ -2355,33 +2356,33 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
     s32 dx = 4.0f * (1.0f - scaleX);
     for (s32 i = count - 1; i >= 0; i--) {
         SobObj_802F86CC* entry = (SobObj_802F86CC*)(data + start) + i;
-        obj.mY = entry->mY;
-        obj.mAffine = entry->mAffine;
-        obj.mMode = entry->mMode;
-        obj.mMosaic = entry->mMosaic;
-        obj.mColor256 = entry->mColor256;
-        obj.mShape = entry->mShape;
-        obj.mX = entry->mX | (entry->mX & 0x80) << 1;
+        oam->mY = entry->mY;
+        oam->mAffine = entry->mAffine;
+        oam->mMode = entry->mMode;
+        oam->mMosaic = entry->mMosaic;
+        oam->mColor256 = entry->mColor256;
+        oam->mShape = entry->mShape;
+        oam->mX = entry->mX | (entry->mX & 0x80) << 1;
         if (i != 0) {
-            obj.mY += dy;
-            obj.mX += dx;
+            oam->mY += dy;
+            oam->mX += dx;
         }
-        obj.mAffineIndex = entry->mAffineIndex;
-        obj.mHFlip = entry->mHFlip;
-        obj.mVFlip = entry->mVFlip;
-        obj.mSize = entry->mSize;
-        obj.mTile = entry->mTileLow | entry->mTileHigh << 8;
-        obj.mPriority = entry->mPriority;
+        oam->mAffineIndex = entry->mAffineIndex;
+        oam->mHFlip = entry->mHFlip;
+        oam->mVFlip = entry->mVFlip;
+        oam->mSize = entry->mSize;
+        oam->mTile = entry->mTileLow | entry->mTileHigh << 8;
+        oam->mPriority = entry->mPriority;
         if (outParams != NULL) {
-            obj.mPalette = outParams->field_0x0[entry->mPalette];
+            oam->mPalette = outParams->field_0x0[entry->mPalette];
         } else {
-            obj.mPalette = entry->mPalette;
+            oam->mPalette = entry->mPalette;
         }
-        obj.mAffineParam = 0;
-        s32 priority = obj.mPriority;
-        if (lastPriority != priority || lastPalette != obj.mPalette) {
+        oam->mAffineParam = 0;
+        s32 priority = oam->mPriority;
+        if (lastPriority != priority || lastPalette != oam->mPalette) {
             lastPriority = priority;
-            lastPalette = obj.mPalette;
+            lastPalette = oam->mPalette;
             s32 set = 0;
             if (outParams != NULL) {
                 set = outParams->field_0x1e;
@@ -2391,29 +2392,29 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, lbl_80470F60[(lastPalette & 1) << 2 | priority], GX_COLOR_NULL);
         }
         f32 x, y, z, u0, v0, u1, v1, w, h;
-        w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
-        h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
-        if (obj.mX & 0x100) {
-            x = (s16)(obj.mX | 0xFE00);
+        w = lbl_80470FC0[oam->mShape][oam->mSize][0] * 8;
+        h = lbl_80470FC0[oam->mShape][oam->mSize][1] * 8;
+        if (oam->mX & 0x100) {
+            x = (s16)(oam->mX | 0xFE00);
         } else {
-            x = (u8)obj.mX;
+            x = (u8)oam->mX;
         }
         y = 0.0f;
-        z = -(f32)(s8)obj.mY;
+        z = -(f32)(s8)oam->mY;
         if (!loaded) {
             x += out.x;
             y += out.y + offset;
             z += out.z + offset;
         }
-        u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
-        v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
-        if (obj.mHFlip) {
+        u0 = (8.0f * (oam->mTile & 0x1F) + 0.5f) / 256.0f;
+        v0 = (8.0f * (oam->mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
+        if (oam->mHFlip) {
             u1 = u0;
             u0 = (w - 1.0f) / 256.0f + u0;
         } else {
             u1 = (w - 1.0f) / 256.0f + u0;
         }
-        if (obj.mVFlip) {
+        if (oam->mVFlip) {
             v1 = v0;
             v0 = (h - 1.0f) / 256.0f + v0;
         } else {
