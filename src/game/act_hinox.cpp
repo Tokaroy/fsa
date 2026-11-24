@@ -65,7 +65,7 @@ void Hinox_8049F9B4::init() {
     mState = 0;
 }
 
-// FIXME(shotgun): 98.20 %, different; behaviour near.
+// FIXME(shotgun): 99.79 %, operands; behaviour clean.
 Hinox_8049F9B4::~Hinox_8049F9B4() {
     JGeometry::TVec3f dir;
     dir.zero();
@@ -105,7 +105,7 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
     }
 }
 
-// FIXME(shotgun): 88.33 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.94 %, scheduling; behaviour clean.
 void Hinox_8049F9B4::fn_8014F76C() {
     s32 serial = field_0x250;
     if (serial >= 0) {
@@ -148,7 +148,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
     return 0;
 }
 
-// FIXME(shotgun): 90.21 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.21 %, missing/extra; behaviour drift.
 void Hinox_8049F9B4::update() {
     JGeometry::TVec3f pos = mPos;
     s32 playerDir = 0;
