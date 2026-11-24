@@ -10,7 +10,7 @@
 #include "std/math.h"
 
 // 0x80186D24.
-// FIXME(shotgun): 95.31 %, missing/extra
+// FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
 void ChainChomp_804A18E0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -36,21 +36,14 @@ void ChainChomp_804A18E0::init() {
     field_0x384[1] = mPos.y;
     field_0x384[2] = mPos.z;
     field_0x270 = 0xFFFF;
-    for (s32 i = 0; i < 5; i++) {
-        field_0x294[i * 2].x = mPos.x;
-        field_0x294[i * 2].y = mPos.y;
-        field_0x294[i * 2].z = mPos.z;
-        field_0x30c[i * 2].x = mPos.x;
-        field_0x30c[i * 2].y = mPos.y;
-        field_0x30c[i * 2].z = mPos.z;
-        field_0x274[i * 2] = 0;
-        field_0x294[i * 2 + 1].x = mPos.x;
-        field_0x294[i * 2 + 1].y = mPos.y;
-        field_0x294[i * 2 + 1].z = mPos.z;
-        field_0x30c[i * 2 + 1].x = mPos.x;
-        field_0x30c[i * 2 + 1].y = mPos.y;
-        field_0x30c[i * 2 + 1].z = mPos.z;
-        field_0x274[i * 2 + 1] = 0;
+    for (s32 i = 0; i < 10; i++) {
+        field_0x294[i].x = mPos.x;
+        field_0x294[i].y = mPos.y;
+        field_0x294[i].z = mPos.z;
+        field_0x30c[i].x = mPos.x;
+        field_0x30c[i].y = mPos.y;
+        field_0x30c[i].z = mPos.z;
+        field_0x274[i] = 0;
     }
     field_0x26c = 0.0f;
     field_0x268 = 3;
@@ -61,7 +54,7 @@ void ChainChomp_804A18E0::init() {
 }
 
 // 0x80184FC0.
-// FIXME(shotgun): 95.20 %, missing/extra
+// FIXME(shotgun): 98.25 %, different; behaviour near.
 void ChainChomp_804A18E0::update() {
     f32 box80_ix = mMapBox_0x80.i.x;
     f32 box80_iy = mMapBox_0x80.i.y;
@@ -71,14 +64,14 @@ void ChainChomp_804A18E0::update() {
     f32 posX = mPos.x;
     f32 outDist = 0.0f;
     s32 outDir = -1;
+    JGeometry::TVec3f diff;
     mLife = 10000;
 
     if (field_0x270 == 0xFFFF) {
         if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-            JGeometry::TVec3f p;
-            p.x = field_0x384[0];
-            p.y = field_0x384[1];
-            field_0x270 = getTileAt_80226998(&p, mLayer_0x4);
+            // getTileAt_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
+            JGeometry::TVec2f p(field_0x384[0], field_0x384[1]);
+            field_0x270 = getTileAt_80226998((const JGeometry::TVec3f*)&p, mLayer_0x4);
         }
         return;
     }
@@ -130,14 +123,12 @@ void ChainChomp_804A18E0::update() {
         box.f.y += origin.y;
         field_0x260 = fn_8023AA18(&box, mLayer_0x4, &origin);
         if (field_0x260 >= 0) {
-            JGeometry::TVec3f p;
-            p.x = field_0x384[0];
-            p.y = field_0x384[1];
-            if (field_0x270 == getTileAt_80226998(&p, mLayer_0x4)) {
-                field_0x260 = -1;
-            } else {
+            JGeometry::TVec2f p(field_0x384[0], field_0x384[1]);
+            if (field_0x270 != getTileAt_80226998((const JGeometry::TVec3f*)&p, mLayer_0x4)) {
                 field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
                 field_0x230 = 6;
+            } else {
+                field_0x260 = -1;
             }
         }
     }
@@ -207,12 +198,14 @@ void ChainChomp_804A18E0::update() {
         }
         if (field_0x240 == 0 && field_0x23c != 0) {
             for (int i = 0; i < 4; i++) {
-                if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                    JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
-                    if (diff.squared() < 4096.0f) {
-                        findTargetPlayer_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
-                        field_0x230 = 2;
-                        break;
+                if (isPlayerActive_8023F264(i)) {
+                    if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                        diff.sub(*getPlayerPos_8023E724(i), mPos);
+                        if (diff.squared() < 4096.0f) {
+                            findTargetPlayer_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
+                            field_0x230 = 2;
+                            break;
+                        }
                     }
                 }
             }
@@ -297,10 +290,9 @@ void ChainChomp_804A18E0::update() {
         field_0x272 = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         mDir_0x98 = angleToDir_801F681C(field_0x272);
-        f32 distSq = dx * dx + dy * dy;
         field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
-        if (std::sqrtf(distSq) < 16.0f) {
+        if (std::sqrtf(dx * dx + dy * dy) < 16.0f) {
             field_0x288[2] = 0.0f;
             field_0x288[1] = 0.0f;
             field_0x288[0] = 0.0f;
@@ -311,26 +303,28 @@ void ChainChomp_804A18E0::update() {
     case 7:
         if (field_0x248 == 0 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
             for (int i = 0; i < 4; i++) {
-                if (i != field_0x260 && isPlayerActive_8023F264(i) && !fn_8022F478(i) &&
-                    mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                    JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
-                    if (diff.squared() < 6400.0f) {
-                        field_0x254 = i;
-                        field_0x238 = 0;
-                        field_0x25c = 0;
-                        field_0x23c = 0;
-                        field_0x258 = 0;
-                        field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
-                        field_0x230 = 8;
-                        return;
+                if (i != field_0x260 && isPlayerActive_8023F264(i) && !fn_8022F478(i)) {
+                    if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                        diff.sub(*getPlayerPos_8023E724(i), mPos);
+                        if (diff.squared() < 6400.0f) {
+                            field_0x254 = i;
+                            field_0x238 = 0;
+                            field_0x25c = 0;
+                            field_0x23c = 0;
+                            field_0x258 = 0;
+                            field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                            field_0x230 = 8;
+                            return;
+                        }
                     }
                 }
             }
         }
         if (field_0x240 == 0 && field_0x25c == 0) {
             field_0x254 = getActorManager_801F856C()->fn_801F7664(&mPos, NULL);
-            if (field_0x254 >= 0 &&
-                mLayer_0x4 == getActorManager_801F856C()->findActorBySerial_801F666C(field_0x254)->mLayer_0x4) {
+            s32 serial = field_0x254;
+            if (serial >= 0 &&
+                mLayer_0x4 == getActorManager_801F856C()->findActorBySerial_801F666C(serial)->mLayer_0x4) {
                 field_0x258 = 1;
                 field_0x25c = 0;
                 field_0x238 = 0;
@@ -404,9 +398,11 @@ void ChainChomp_804A18E0::update() {
                 mDir_0x98 = outDir;
             } else if (field_0x258 == 0) {
                 for (int i = 0; i < 4; i++) {
-                    if (i != field_0x260 && isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                        field_0x238 = 0;
-                        field_0x254 = i;
+                    if (i != field_0x260 && isPlayerActive_8023F264(i)) {
+                        if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                            field_0x238 = 0;
+                            field_0x254 = i;
+                        }
                     }
                 }
             } else {
@@ -470,7 +466,8 @@ void ChainChomp_804A18E0::update() {
     }
     }
 
-    if (field_0x230 == 1 || (field_0x230 >= 5 && field_0x230 <= 8) || field_0x230 == 9) {
+    if (field_0x230 == 1 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7 || field_0x230 == 8 ||
+        field_0x230 == 9) {
         if (field_0x23c == 0 && field_0x234 == 0) {
             if (mDir_0x98 == 3) {
                 field_0x24c = 0;
@@ -482,7 +479,7 @@ void ChainChomp_804A18E0::update() {
         }
     }
 
-    if (field_0x230 == 6 || (field_0x230 >= 7 && field_0x230 <= 8) || field_0x230 == 9) {
+    if (field_0x230 == 6 || field_0x230 == 7 || field_0x230 == 8 || field_0x230 == 9) {
         fn_801F2B20(0);
         if (mPos.z > 0.0f) {
             mVel_0x3c.z -= 1.0f;
@@ -533,25 +530,25 @@ void ChainChomp_804A18E0::update() {
     }
 
     if (field_0x260 < 0) {
-        for (int i = 1; i < 9; i++) {
+        for (int i = 1; i < 10; i++) {
             field_0x30c[i - 1].x = field_0x30c[i].x;
             field_0x30c[i - 1].y = field_0x30c[i].y;
             field_0x30c[i - 1].z = field_0x30c[i].z;
         }
         for (int i = 1; i < 9; i++) {
-            f32 dx = field_0x294[i - 1].x - field_0x30c[i].x;
-            f32 dy = field_0x294[i - 1].y - field_0x30c[i].y;
+            f32 dx = field_0x294[i - 1].x - field_0x30c[i + 1].x;
+            f32 dy = field_0x294[i - 1].y - field_0x30c[i + 1].y;
             s16 ang = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
             f32 tx = field_0x26c * JMath::sincosTable_.sinShort(ang) + field_0x294[i - 1].x;
-            if (JGeometry::TUtil<f32>::abs(field_0x294[i].x - tx) >= 4.0f) {
+            if (FABS(field_0x294[i].x - tx) >= 4.0f) {
                 addCalc2_801F71A4(&field_0x294[i].x, tx, 0.5f, 10.0f);
             }
             f32 ty = field_0x26c * JMath::sincosTable_.cosShort(ang) + field_0x294[i - 1].y;
-            if (JGeometry::TUtil<f32>::abs(field_0x294[i].y - ty) >= 4.0f) {
+            if (FABS(field_0x294[i].y - ty) >= 4.0f) {
                 addCalc2_801F71A4(&field_0x294[i].y, ty, 0.5f, 10.0f);
             }
-            field_0x294[i].z = field_0x30c[i].z * (0.1f * i);
+            field_0x294[i].z = field_0x30c[i + 1].z * (0.1f * i);
         }
     }
 
