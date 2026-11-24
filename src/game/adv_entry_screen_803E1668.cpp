@@ -1048,12 +1048,10 @@ void AdvEntryScreen_804B0B00::fn_803EC804() {
 }
 
 // FIXME: 96.93 %, missing/extra + reloc-name; behaviour near.
-// Same length; the original starts the i * 5 counter with mr from start
-// where ours loads 0 again.
+// Register allocation of the i * 5 induction variables remains.
 void AdvEntryScreen_804B0B00::fn_803EBAA8() {
     s32 others[3];
-    s32* src = others;
-    s32* dst = src;
+    s32* dst = others;
     for (int i = 0; i < 4; i++) {
         if (i != field_0x1bc) {
             *dst++ = i;
@@ -1087,11 +1085,10 @@ void AdvEntryScreen_804B0B00::fn_803EBAA8() {
             field_0xfc = -200.0f;
         }
     }
-    int start = 0;
-    for (int i = 0; i < 3; i++, src++, start += 5) {
-        if (field_0x254[0] > start) {
+    for (int i = 0; i < 3; i++) {
+        if (field_0x254[0] > i * 5) {
             if (field_0x254[0] < i * 5 + 8) {
-                s32 idx = *src;
+                s32 idx = others[i];
                 field_0x120[idx] = -350.0f * ((f32)((field_0x254[0] - i * 5) * (field_0x254[0] - i * 5)) / 64.0f);
                 f32 alpha = (f32)(8 - (field_0x254[0] - i * 5)) / 8.0f;
                 if (alpha < 0.0f) {
@@ -1103,7 +1100,7 @@ void AdvEntryScreen_804B0B00::fn_803EBAA8() {
                     mScreen->search(lbl_80477AB0[idx][j])->setAlpha(fadeAlpha(field_0x280[idx][j], alpha));
                 }
             } else {
-                s32 idx = *src;
+                s32 idx = others[i];
                 field_0x120[idx] = -350.0f;
                 for (int j = 0; j < 6; j++) {
                     mScreen->search(lbl_80477AB0[idx][j])->setAlpha(fadeAlpha(field_0x280[idx][j], 0.0f));
@@ -1703,7 +1700,6 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
         }
     }
     s16 others[2];
-    s16* src = others;
     s16* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0x1b8) {
@@ -1733,10 +1729,10 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
             }
         }
     } else {
-        for (int i = 0; i < 2; i++, src++) {
+        for (int i = 0; i < 2; i++) {
             if (field_0x254[0] > i * 10) {
                 if (field_0x254[0] < i * 10 + 10) {
-                    s16 idx = *src;
+                    s16 idx = others[i];
                     field_0x184[idx] = 300.0f * ((f32)((field_0x254[0] - i * 10) * (field_0x254[0] - i * 10)) / 100.0f);
                     f32 alpha = (f32)(10 - (field_0x254[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
@@ -1748,7 +1744,7 @@ void AdvEntryScreen_804B0B00::fn_803E831C() {
                         field_0xc->search(lbl_80478048[idx][j])->setAlpha(fadeAlpha(field_0x333[idx][j], alpha));
                     }
                 } else {
-                    s16 idx = *src;
+                    s16 idx = others[i];
                     field_0x184[idx] = 300.0f;
                     for (int j = 0; j < 5; j++) {
                         field_0xc->search(lbl_80478048[idx][j])->setAlpha(fadeAlpha(field_0x333[idx][j], 0.0f));
