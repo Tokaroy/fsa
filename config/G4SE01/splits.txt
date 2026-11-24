@@ -6505,6 +6505,7 @@ game/game_mode_803DAC3C.cpp:
 	.rodata     start:0x804774C8 end:0x80477970
 	.data       start:0x804B0508 end:0x804B06A0
 	.bss        start:0x80528468 end:0x80528568
+	.sbss       start:0x8053ADD0 end:0x8053ADD8
 	.sdata2     start:0x805435D8 end:0x80543648
 
 game/adv_entry_screen_803E1668.cpp:
