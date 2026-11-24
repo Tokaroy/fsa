@@ -14,6 +14,7 @@
 #include "game/Message.h"
 #include "game/Map.h"
 #include "game/Effect.h"
+#include "game/PlayerBit.h"
 #include "JSystem/JUtility/JUTVideo.h"
 #include "dolphin/os.h"
 
@@ -2099,11 +2100,11 @@ void AdvEntryScreen_804B0B00::fn_803E64A0() {
 }
 
 // FIXME: 97.03 %, missing/extra; behaviour near.
-// 4 fewer instrs (1179 vs 1183): stack slot and induction
-// variable register allocation across the three per-player loops.
+// Left: the else value of `t` goes through f0 (fmr f24) in the original, and
+// the argument registers of the (count - 10) / 2 drawSobSprite call.
 void AdvEntryScreen_804B0B00::fn_803E51C4() {
     for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4) != 0) {
             u8 alpha;
             if (field_0x220[i] == 0) {
                 field_0x26b &= ~(1 << i);
@@ -2207,13 +2208,15 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
             }
         }
         f32 w1 = field_0x18[i]->search('NULL_001')->getWidth();
+        J2DPane* pane = field_0x8->search(lbl_804782D0[i]);
         f32 x = field_0x8->search('NULL_001')->getBounds()->i.x +
-                field_0x8->search(lbl_804782D0[i])->getBounds()->i.x +
-                (field_0x8->search(lbl_804782D0[i])->getWidth() - w1) / 2;
+                field_0x8->search(lbl_804782D0[i])->getBounds()->i.x;
+        x += (pane->getWidth() - w1) / 2;
         f32 h1 = field_0x18[i]->search('NULL_001')->getHeight();
+        pane = field_0x8->search(lbl_804782D0[i]);
         f32 y = field_0x8->search('NULL_001')->getBounds()->i.y +
-                field_0x8->search(lbl_804782D0[i])->getBounds()->i.y +
-                (field_0x8->search(lbl_804782D0[i])->getHeight() - h1) / 2;
+                field_0x8->search(lbl_804782D0[i])->getBounds()->i.y;
+        y += (pane->getHeight() - h1) / 2;
         field_0x18[i]->search('NULL_001')->move(x, y);
         f32 x2 = field_0x8->search('Ndata03')->getBounds()->i.x +
                  field_0x8->search(lbl_804782F0[i])->getBounds()->i.x;
@@ -2254,17 +2257,18 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
             gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x10, &params, 1.0f, 1.0f);
         } else {
             params.field_0x10.a = 255.0f * scale;
-            if (field_0x220[i] <= 10) {
+            s32 count = field_0x220[i];
+            if (count <= 10) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x220[i] <= 36) {
+            } else if (count <= 36) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (field_0x220[i] - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
-            } else if (field_0x220[i] < 100) {
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (count - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+            } else if (count < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             } else {
-                s32 frame = lbl_804779B0[field_0x220[i] - 100] + 0x10;
+                s32 frame = lbl_804779B0[count - 100] + 0x10;
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
