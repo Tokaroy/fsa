@@ -25,8 +25,8 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scaleX, f32
     m[2][2] = scaleZ * (cx * cy);
 }
 
-static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
-    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+static inline bool contains(f32 minX, f32 minY, f32 maxX, f32 maxY, const JGeometry::TVec3f& p) {
+    return p.x >= minX && p.y >= minY && p.x < maxX && p.y < maxY;
 }
 
 inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
@@ -38,7 +38,7 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
         fn_8022E088(player, j, &pt);
         pt -= mPos;
         pt.z = 0.0f;
-        if (contains(mBox, pt)) {
+        if (contains(mBox.i.x, mBox.i.y, mBox.f.x, mBox.f.y, pt)) {
             fn_8022DF48(player);
             return true;
         }
@@ -82,7 +82,7 @@ void ExtendingLift_804A78B0::init() {
 }
 
 // FIXME: 92.98 %, missing/extra; behaviour clean.
-// FIXME: missing/extra (2 extra instrs): stack frame is 16 bytes larger, mBox bounds in contains() are loaded lazily instead of upfront, and the field_0x230/0x234 divides are scheduled differently.
+// Instruction order and float registers around the field_0x230 divides still differ.
 void ExtendingLift_804A78B0::update() {
     if (isScreenFlagSet_0x34()) {
         if (!field_0x244) {
@@ -154,8 +154,7 @@ void ExtendingLift_804A78B0::update() {
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerOn(i)) {
             if (!(newCenter - oldCenter).isZero()) {
-                JGeometry::TVec3f delta = newCenter - oldCenter;
-                fn_8023DF68(i, &delta);
+                fn_8023DF68(i, &(newCenter - oldCenter));
             }
         }
     }
