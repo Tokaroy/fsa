@@ -107,7 +107,7 @@ static inline void spawnDust(TrickFloor2_804AA628* self, s32 a) {
     }
 }
 
-// FIXME(shotgun): 97.57 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.36 %, scheduling+regalloc; behaviour clean.
 void TrickFloor2_804AA628::init() {
     mType = mSpawnParam_0x90 & 0xF;
     field_0x238 = (mSpawnParam_0x90 >> 4) & 0xF;
@@ -142,7 +142,7 @@ void TrickFloor2_804AA628::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 95.00 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.37 %, different + reloc-name; behaviour near.
 // Finds who stands on the floor (fn_8023AF14, the 'SBAL' ball, fn_8023A97C per player), then:
 // 0 reads the tile under it, 2 waits for a rider (isScreenFlagSet_0x34) and drops (tiles 6, state 3) or,
 // for types 4 / 5, waits for all four players to open (state 6), 3 sinks to 1.6384, 4 holds
@@ -421,7 +421,7 @@ void TrickFloor2_804AA628::update() {
     }
 }
 
-// FIXME(shotgun): 95.61 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.41 %, missing/extra; behaviour clean.
 // The hole picture "otosiana_bg_s.bti" under the floor (scaled per type), then the floor's two
 // halves tilted by field_0x248 (the left one about its edge, the right one mirrored); types 4 / 5
 // draw the ground or the house instead while falling.
