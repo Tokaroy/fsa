@@ -214,7 +214,8 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             // fall through
         case 5:
             if (kind != 16) {
-                s32 life = mLife - fn_8023B5B4(player);
+                s32 life = mLife;
+            life -= fn_8023B5B4(player);
                 if (life <= 0) {
                     mLife = 0;
                     result = 20;
@@ -815,7 +816,8 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         case 1:
         case 2:
         case 5: {
-            s32 life = mLife - fn_8023B5B4(player);
+            s32 life = mLife;
+            life -= fn_8023B5B4(player);
             weapon->mAlive = false;
             if (life <= 0) {
                 mLife = 0;
@@ -837,9 +839,10 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             for (s32 i = 0; i < 4; i++) {
                 s32 serial = fn_8023B358(i);
                 if (serial >= 0) {
-                    weapon = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                    if (weapon != NULL) {
-                        weapon->mLife = 0;
+                    ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    weapon = other;
+                    if (other != NULL) {
+                        other->mLife = 0;
                     }
                 }
             }
