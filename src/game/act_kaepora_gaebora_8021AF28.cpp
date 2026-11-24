@@ -47,6 +47,7 @@ void KaeporaGaebora_804A6550::fn_8021B548() {
     fn_801CB71C(&mEmitter, &mPos, 0, getShift());
 }
 
+// FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
 void KaeporaGaebora_804A6550::fn_8021B1AC() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -86,6 +87,7 @@ void KaeporaGaebora_804A6550::fn_8021B1AC() {
 }
 
 // Registers and instruction order differ from the original.
+// FIXME: 94.95 %, scheduling+regalloc; behaviour clean.
 void KaeporaGaebora_804A6550::fn_8021AFB8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
