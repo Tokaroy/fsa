@@ -30,13 +30,14 @@ void fn_8013A884(u32* color) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 95.97 %, missing/extra + reloc-name; behaviour drift.
+// Other stages clear the staff-roll pointers (the destructor tests them).
+// FIXME: 99.81 %, names only: the report's statics and pool constants.
 // 0x8013A538
 GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
     lbl_8053AB00 = heap;
     heap->getTotalFreeSize();
     mView = new (heap, 0) GameView_804A9950();
-    lbl_8053AB00->getTotalFreeSize();
+    heap->getTotalFreeSize();
     field_0x4 = new (heap, 0) PlayerManager_804A6F28();
     heap->getTotalFreeSize();
     mActorManager = new (heap, 0) ActorManager_804A5800(heap);
@@ -60,14 +61,17 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
             static s32 reported = 0;
             if (reported == 0) {
                 reported = 1;
-                f32 total = (f32)heap->getTotalFreeSize() * (1.0f / 1024.0f);
-                OSReport(lbl_80465920, 600000.0 / 1024.0, (f32)heap->getFreeSize() * (1.0f / 1024.0f), total);
+                f32 total = (s32)heap->getTotalFreeSize() / 1024.0f;
+                OSReport(lbl_80465920, 600000.0 / 1024.0, heap->getFreeSize() / 1024.0f, total);
             }
         } else {
             OSReport(lbl_80465960);
         }
         heap->becomeCurrentHeap();
         field_0x2c = new (heap, 0) StaffRollLoader_804B1D10();
+    } else {
+        field_0x30 = NULL;
+        field_0x2c = NULL;
     }
 }
 
