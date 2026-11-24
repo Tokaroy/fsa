@@ -514,7 +514,7 @@ void CrystalBall_804AB308::vfunc_0x40() {
     }
 }
 
-// FIXME(shotgun): 97.31 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.41 %, scheduling+regalloc; behaviour near.
 // (partial)
 void CrystalBall_804AB308::update() {
     if (field_0x230 == 1 || field_0x230 == 3) {
@@ -911,7 +911,7 @@ void CrystalBall_804AB308::draw() {
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x90, 0, 2, -1, held, 0, 0);
 }
 
-// FIXME(shotgun): 96.33 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.04 %, different + reloc-name; behaviour drift.
 void CrystalBall_804AB308::die_0x24() {
     s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (code == 3 && mPos.z < 0.1f) {
