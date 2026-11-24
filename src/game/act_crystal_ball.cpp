@@ -10,6 +10,7 @@
 #include "game/ActorManager.h"
 #include "game/Map.h"
 #include "game/Message.h"
+#include "game/GameMath.h"
 #include "std/math.h"
 
 static const s32 lbl_80471760[9] = {5, 10, 15, 20, 25, 30, 35, 40, 45};
@@ -573,7 +574,8 @@ void CrystalBall_804AB308::update() {
             }
             sweepMapBox_801F2618(NULL, false);
         } else {
-            JGeometry::TVec3f hitNormal(0.0f, 0.0f, 0.0f);
+            JGeometry::TVec3f hitNormal;
+            hitNormal.zero();
             sweepMapBox_801F2618(&hitNormal, false);
             if (hitNormal.y == 0.0f) {
                 if (field_0x27c == 0) {
@@ -599,11 +601,9 @@ void CrystalBall_804AB308::update() {
                 mVel_0x3c.y = 1.0f;
             }
         }
-        JGeometry::TBox2f box = mBox;
-        box.i.x += mPos.x;
-        box.i.y += mPos.y;
-        box.f.x += mPos.x;
-        box.f.y += mPos.y;
+        JGeometry::TVec2<f32> pos(mPos.x, mPos.y);
+        JGeometry::TBox2f box(mBox);
+        box.addPos(pos);
         field_0x29c = -1;
         if (field_0x2a8 == 0) {
             fn_80322964();
@@ -626,7 +626,7 @@ void CrystalBall_804AB308::update() {
                     mPos = target;
                     field_0x258 = 0x5A;
                     field_0x25c = 10;
-                    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                    mVel_0x3c.zero();
                     field_0x230 = 5;
                     fn_801F3604();
                 }
@@ -738,10 +738,11 @@ void CrystalBall_804AB308::update() {
         field_0x258--;
         if (field_0x258 <= 0) {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
-                if (mLayer_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
+                s32 layer = mLayer_0x4;
+                if (layer >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
                     lbl_8053AED0->requestMessage_8043D67C(0x1A1, field_0x29c, 0);
                 } else {
-                    fn_8038BD08(field_0x29c, 0xD3, mLayer_0x4, mPos, true);
+                    fn_8038BD08(field_0x29c, 0xD3, layer, mPos, true);
                 }
             } else {
                 fn_8038BD08(field_0x29c, 0xD3, mLayer_0x4, mPos, true);
@@ -801,11 +802,11 @@ void CrystalBall_804AB308::update() {
         break;
     case 7:
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) == true && getPlayerLayer_8023DE58(i) == mLayer_0x4) {
+            if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* p = fn_8023A478(i);
                 f32 dx = p->x - mPos.x;
                 f32 dy = p->y - mPos.y;
-                if (dx * dx + dy * dy <= 6400.0f) {
+                if (!(square(dx) + square(dy) > 6400.0f)) {
                     s32 dir = -1;
                     switch (field_0x2b0) {
                     case 1:
@@ -845,7 +846,7 @@ void CrystalBall_804AB308::update() {
                     field_0x2b0 = 0;
                     field_0xb0 = 0x2100A;
                     field_0x230 = 8;
-                    break;
+                    return;
                 }
             }
         }
