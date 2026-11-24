@@ -173,8 +173,8 @@ public:
     void fn_80406F68(f32 x, f32 y);
     // 0x804083D8: highlights row mStage_0x340 of mLevelRowPanes_0x28 (its picture scaled back by
     // the 72 x 36 size, the second resized to 72 x 36, the text box moved with it, the
-    // colours mRowBlackColors_0x328[3-5] / mRowWhiteColors_0x310[3-5]); the other rows get their own size,
-    // place and colours [0-2]; then hangs the rows under 'Ndata01', the selected one last.
+    // colours mRowBlackColors_0x328[1] / mRowWhiteColors_0x310[1]); the other rows get their own size,
+    // place and colours [0]; then hangs the rows under 'Ndata01', the selected one last.
     void fn_804083D8();
     // 0x80409014: every 15 frames swaps which pane of each mLevelCursorPanes_0x228 pair is shown;
     // cross-fades field_0x23c's picture (setBlendRatio) over a 180-frame cycle and turns
@@ -222,8 +222,8 @@ public:
     /* 0x2EC */ JPABaseEmitter* field_0x2ec[3];
     /* 0x2F8 */ JPABaseEmitter* field_0x2f8[4];
     /* 0x308 */ JPABaseEmitter* mCursorEmitters_0x308[2];
-    /* 0x310 */ JUtility::TColor mRowWhiteColors_0x310[6];
-    /* 0x328 */ JUtility::TColor mRowBlackColors_0x328[6];
+    /* 0x310 */ JUtility::TColor mRowWhiteColors_0x310[2][3];
+    /* 0x328 */ JUtility::TColor mRowBlackColors_0x328[2][3];
     /* 0x340 */ s32 mStage_0x340; // the selected stage (0-7; fn_80404270)
     /* 0x344 */ s32 mPrevStage_0x344; // the stage selected before mStage_0x340 (fn_80408114)
     /* 0x348 */ s32 mLevel_0x348; // sub-stage of mStage_0x340 (0-3; fn_80409450)
