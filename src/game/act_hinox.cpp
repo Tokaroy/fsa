@@ -109,7 +109,9 @@ void Hinox_8049F9B4::fn_8014F76C() {
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (held != NULL) {
-            held->mVel_0x3c.set(0.0f, 0.0f, 3.0f);
+            JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
+            vel.z = 3.0f;
+            held->mVel_0x3c = vel;
             field_0x250 = -1;
             startSound_801F0E34(0x40008, 0);
         }
