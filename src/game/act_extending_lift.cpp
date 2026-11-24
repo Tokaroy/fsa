@@ -47,12 +47,11 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
 }
 
 // FIXME: 97.85 %, missing/extra; behaviour near.
-// FIXME: The flags test loads 0x90 into r3 and reuses it; the original loads it into r0 for the test and reloads 0x90(r31) for ori/oris.
 void ExtendingLift_804A78B0::init() {
-    if (!((mSpawnParam_0x90 >> 7) & 0x1F)) {
+    if (((getField_0x90() >> 7) & 0x1F) == 0) {
         mSpawnParam_0x90 |= 0x80;
     }
-    if (!((mSpawnParam_0x90 >> 17) & 0x1F)) {
+    if (((getField_0x90() >> 17) & 0x1F) == 0) {
         mSpawnParam_0x90 |= 0x20000;
     }
 
