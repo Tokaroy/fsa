@@ -20,11 +20,31 @@ Pieces:
   B: `build/G4SE01/fsa_game_code.elf.MAP`), finds the hook by scanning
   `JUTGamePad::read` for the `bl PADRead`, writes the spec, runs Dolphin under
   `sbg`, collects the streams. Its state tables (`GLOBALS`, `ACTOR_FIELDS`,
-  `PLAYER_FIELDS`) mirror the port's `game/src/port/harness_state.cpp` row for
+  `PLAYER_FIELDS`; the file select screen `lbl_8053ADB0` rows included) mirror the port's `game/src/port/harness_state.cpp` row for
   row, with offsets from `include/game` (big-endian reads from emulated RAM;
   a null pointer on the way gives `null`, as in the port).
 
 ## Usage
+
+Scripted (closed-loop) runs, the way to compare with the port:
+
+    python3 tools/harness_dolphin.py run --dol A --script tools/harness_scripts/opening.json --reads 3000 -o runs/a1
+    python3 tools/harness_dolphin.py run --dol B --script tools/harness_scripts/opening.json --reads 3000 -o runs/b1
+    python3 tools/harness_dolphin.py compare runs/a1 runs/b1 --anchor scene
+    python3 tools/harness_dolphin.py compare runs/a1 <fsaport logs/diag/<run>> --anchor scene
+
+The script format and its rules are fsaport `docs/HARNESS.md` "Scripted
+input"; `tools/harness_scripts/opening.json` is a copy of the port's. The
+hook interprets it at each pad read exactly as the port's `platform/harness.cpp`
+does (scene sync point, then the active step: a finished step ends before the
+read and the next starts at it, zero-read steps, `step` / `script_end` /
+`script_timeout` sync lines, timeouts checked after "finished"), writes its
+input to `inputs.jsonl`, puts ticks every 60 reads after the latest anchor
+(`scene` or `step`) and a state record at each step start. A script error
+(unknown key, button or condition key) stops Dolphin at load with the reason
+in `dolphin.log`.
+
+Per-read input files (fixed timings; fine for A vs B, not for the port):
 
     python3 tools/harness_dolphin.py inputs --script opening --reads 8000 -o in.jsonl
     python3 tools/harness_dolphin.py run --dol A --inputs in.jsonl --reads 8000 -o runs/a1
@@ -50,6 +70,29 @@ next to the worktrees), `FSA_DISC` (the .rvz), `FSA_DISC_DIR` (default
 `harness-disc/` in the project dir, outside every repo), `FSA_DTK`,
 `FSA_PORT` (the fsaport checkout, for `compare`).
 
+## Scripted opening (2026-11-24, `opening.json`)
+
+Dolphin A: title at read 350, main menu 509, file select 656, the
+create-a-file prompt (step 4) 703, card write done (step 7) 812, player count
+1071, stage 8/3 chosen 1204, mode 7/8/3 at 1315, `script_end` 2215. The port
+(run `20261124-225612-g807y207` in an fsaport agent worktree's `logs/diag`):
+122, 269, 419, 466, 520, 760, 912, 938, 1838.
+
+| Comparison (`--anchor scene`) | anchors | sync | state |
+|---|---|---|---|
+| A vs A (two runs, also per read; `inputs.jsonl` identical) | 20/20 | 63/63 | 59/59 |
+| A vs B | 20/20, every anchor one read earlier in B from the title on | 60/60 | 57/59: `mRandom.seed` at the main menu and player-count scene entries |
+| A vs port | 20/20 | 67/67 | 6/66 |
+
+A vs the port: identical through the title; from the main menu on the RNG
+seed differs in every record (the seed advances per frame and the menus take
+different numbers of reads: e.g. the card write is 69 reads in Dolphin, 14 in
+the port). The other differences are at +120 into steps 2 and 9, where one
+side has already moved on (requested mode, fade state, stage/level), i.e.
+segment length, not behaviour. Through the 900 reads of the opening
+narration (step 11) actors, players, camera box, stage view, fade and demo
+timer are identical at every offset; only the seed differs.
+
 ## How a run is set up (and why)
 
 - **Boot.** Both DOLs boot as an extracted disc tree (`harness-disc/A`, made
@@ -64,6 +107,7 @@ next to the worktrees), `FSA_DISC` (the .rvz), `FSA_DISC_DIR` (default
   without that option Dolphin reports port 0 unplugged and the game never
   leaves the title screen, whatever is injected into `PADStatus` (the game
   checks the SI side too). Ports 1-3 are empty, as the port's replay assumes.
+- **Script mode input**: pad 0 connected, ports 1-3 unplugged, as the port.
 - **PADRead's return value** (`sRumbleSupported`) is left as Dolphin's PADRead
   computed it; only the four `PADStatus` are replaced (analogA/B 0, as the port).
 - The `start` sync line carries `"emu":"dolphin"`; compare ignores it.

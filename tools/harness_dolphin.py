@@ -63,6 +63,12 @@ GLOBALS = [  # name, type, guard (None or path), path
     ('gGameRoot_8053AAF8->mRandom.seed', 'u32', None, ROOT_ + ['+b4']),
     ('lbl_80529DEC.mStage_0x118', 's32', None, ['lbl_80529DEC', '+118']),
     ('lbl_80529DEC.mLevel_0x11c', 's32', None, ['lbl_80529DEC', '+11c']),
+    # The file select screen (FileSelect_804AFF60, include/game/file_select_803BC6F0.h).
+    # field_0x7c is a u32 the port prints with j.i (signed), hence s32 here.
+    ('lbl_8053ADB0->mState', 'u8', None, ['lbl_8053ADB0', '*', '+110']),
+    ('lbl_8053ADB0->field_0x7c', 's32', None, ['lbl_8053ADB0', '*', '+7c']),
+    ('lbl_8053ADB0->field_0x114', 'u8', None, ['lbl_8053ADB0', '*', '+114']),
+    ('lbl_8053ADB0->field_0x116', 'u8', None, ['lbl_8053ADB0', '*', '+116']),
     ('getGameView_802D6A9C()->mStage_0x4', 's32', STAGE_SUB, VIEW + ['+4']),
     ('getGameView_802D6A9C()->mLevel_0x8', 's32', STAGE_SUB, VIEW + ['+8']),
     ('getGameView_802D6A9C()->mScreenX_0x14', 's32', STAGE_SUB, VIEW + ['+14']),
@@ -167,10 +173,12 @@ def find_hook(dol_path, syms):
     raise SystemExit('harness_dolphin: no bl PADRead in JUTGamePad::read')
 
 
-def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60):
+def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, script=None):
     lines = ['# written by tools/harness_dolphin.py', f'out {out}']
     if inputs:
         lines.append(f'inputs {inputs}')
+    if script:
+        lines.append(f'script {script}')
     lines.append(f'stop {stop}')
     lines += [f'shot {n}' for n in shots]
     if tick != 60:
@@ -270,7 +278,10 @@ def run(args):
     spec = os.path.join(out, 'spec.txt')
     inputs = os.path.abspath(args.inputs) if args.inputs else None
     shots = [int(x) for x in args.shots.split(',')] if args.shots else []
-    write_spec(spec, dol, syms, out, inputs, args.reads, shots, args.tick)
+    script = os.path.abspath(args.script) if args.script else None
+    if script and inputs:
+        raise SystemExit('harness_dolphin: --script and --inputs exclude each other')
+    write_spec(spec, dol, syms, out, inputs, args.reads, shots, args.tick, script)
     name = args.name or 'hd-' + os.path.basename(out)
     log = os.path.join(out, 'dolphin.log')
     env = ['env', '-u', 'DISPLAY', '-u', 'WAYLAND_DISPLAY',
@@ -303,7 +314,15 @@ def run(args):
             shutil.move(os.path.join(d, f), os.path.join(out, 'shots', f))
     if not args.keep_user:
         shutil.rmtree(user, ignore_errors=True)
-    print(f'{out}: last sync at read {reads}, {time.time() - t0:.0f}s')
+    ends = []
+    try:
+        for line in open(os.path.join(out, 'sync.jsonl')):
+            o = json.loads(line)
+            if o.get('sync') in ('script_end', 'script_timeout'):
+                ends.append(line.strip())
+    except FileNotFoundError:
+        pass
+    print(f'{out}: last sync at read {reads}, {time.time() - t0:.0f}s {" ".join(ends)}')
 
 
 # --- inputs -----------------------------------------------------------------------------------------
@@ -406,6 +425,8 @@ def build_b(args):
 def compare(args):
     tool = os.path.join(PORT, 'tools', 'harness_compare.py')
     extra = ['--upto', str(args.upto)] if args.upto is not None else []
+    if args.anchor:
+        extra += ['--anchor', args.anchor]
     return subprocess.run([sys.executable, tool, args.a, args.b, '--show', str(args.show)] + extra).returncode
 
 
@@ -416,6 +437,7 @@ def main():
     r.add_argument('--dol', required=True, help='A (original), B (build), or a DOL path (with --symbols)')
     r.add_argument('--symbols', help='symbols.txt or linker .MAP for a DOL path')
     r.add_argument('--inputs', help='inputs JSONL to replay (default: record)')
+    r.add_argument('--script', help='input script (fsaport docs/HARNESS.md "Scripted input"), e.g. tools/harness_scripts/opening.json')
     r.add_argument('--reads', type=int, required=True, help='stop after this many pad reads')
     r.add_argument('-o', '--out', required=True)
     r.add_argument('--name', help='sbg process name')
@@ -439,6 +461,7 @@ def main():
     c.add_argument('b')
     c.add_argument('--upto', type=int)
     c.add_argument('--show', type=int, default=3)
+    c.add_argument('--anchor', choices=['scene'], help='scene/step-anchored comparison (script runs, port vs Dolphin)')
     args = ap.parse_args()
     if args.cmd == 'run':
         run(args)
