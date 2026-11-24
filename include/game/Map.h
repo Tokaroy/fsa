@@ -359,7 +359,7 @@ public:
                      SpriteParams_801F5AE0* tmp);
     // 0x802F58A8: when pos is on the height grid, mtx = the ground's tilt
     // there (cross products of the grid's slopes); returns whether it did.
-    bool fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx);
+    u8 fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx);
     // 0x802F601C: starts an effect of `kind` (1-6; 4 becomes 5 with scaleX
     // negated) at pos in a mHeightGridEffects_0xbf9c slot; kind 3 keeps dir normalized
     // (r6 is read as a TVec3f only there). act_warp_cannon passes (1, NULL,

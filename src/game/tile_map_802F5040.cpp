@@ -3129,7 +3129,7 @@ f32 TileMap_804AA858::getHeightAt_802F5E9C(const JGeometry::TVec3f* pos) {
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
-bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
+u8 TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
     bool result = false;
     if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
         pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
