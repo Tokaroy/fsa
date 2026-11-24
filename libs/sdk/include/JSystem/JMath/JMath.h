@@ -25,6 +25,7 @@ namespace JMath
         register f32 rxzyz;
         register f32 rzztz;
         
+#ifdef __MWERKS__
         __asm {
             // clang-format off
             psq_l     rxxyx, 0(pSrc), 0, 0
@@ -41,6 +42,11 @@ namespace JMath
             psq_st    rzztz, 0x28(pDest), 0, 0
             // clang-format on
         }
+#else
+        for (int i = 0; i < 12; i++) {
+            ((f32*)pDest)[i] = ((const f32*)pSrc)[i];
+        }
+#endif
     }
 
     // gekko_ps_copy3/6/16 from zeldaret/tp's JMath.h (J3DStruct.cpp uses them).
@@ -48,6 +54,7 @@ namespace JMath
     {
         register f32 src0;
         register f32 src1;
+#ifdef __MWERKS__
         asm {
             // clang-format off
             psq_l src0, 0(src), 0, 0
@@ -56,6 +63,11 @@ namespace JMath
             stfs src1, 8(dst)
             // clang-format on
         };
+#else
+        for (int i = 0; i < 3; i++) {
+            ((f32*)dst)[i] = ((const f32*)src)[i];
+        }
+#endif
     }
 
     inline void gekko_ps_copy6(register void* dst, register const void* src)
@@ -63,6 +75,7 @@ namespace JMath
         register f32 src0;
         register f32 src1;
         register f32 src2;
+#ifdef __MWERKS__
         asm {
             // clang-format off
             psq_l src0, 0(src), 0, 0
@@ -73,6 +86,11 @@ namespace JMath
             psq_st src2, 16(dst), 0, 0
             // clang-format on
         };
+#else
+        for (int i = 0; i < 6; i++) {
+            ((f32*)dst)[i] = ((const f32*)src)[i];
+        }
+#endif
     }
 
     inline void gekko_ps_copy16(register void* dst, register const void* src)
@@ -85,6 +103,7 @@ namespace JMath
         register f32 src5;
         register f32 src6;
         register f32 src7;
+#ifdef __MWERKS__
         asm {
             // clang-format off
             psq_l src0, 0(src), 0, 0
@@ -105,6 +124,11 @@ namespace JMath
             psq_st src7, 56(dst), 0, 0
             // clang-format on
         };
+#else
+        for (int i = 0; i < 16; i++) {
+            ((f32*)dst)[i] = ((const f32*)src)[i];
+        }
+#endif
     }
 
     template <typename T>
@@ -379,6 +403,7 @@ inline f32 JMAHermiteInterpolation(register f32 p1, register f32 p2, register f3
     register f32 ff27;
     register f32 ff26;
     // clang-format off
+#ifdef __MWERKS__
     __asm {
         fsubs   ff31, p1, p2
         fsubs   ff30, p5, p2
@@ -395,6 +420,21 @@ inline f32 JMAHermiteInterpolation(register f32 p1, register f32 p2, register f3
         fnmsubs ff25,ff31,ff25,ff26
 
     }
+#else
+    ff31 = p1 - p2;
+    ff30 = p5 - p2;
+    ff29 = ff31 / ff30;
+    ff28 = ff29 * ff29;
+    ff25 = ff29 + ff29;
+    ff27 = ff28 - ff29;
+    ff30 = p3 - p6;
+    ff26 = ff25 * ff27 - ff28;
+    ff25 = p4 * ff27 + p4;
+    ff26 = ff26 * ff30 + p3;
+    ff25 = p7 * ff27 + ff25;
+    ff25 = ff29 * p4 - ff25;
+    ff25 = ff26 - ff31 * ff25;
+#endif
     // clang-format on
     return ff25;
 }
@@ -405,7 +445,11 @@ inline f32 JMAFastSqrt(register f32 x)
 
     if (x > 0.0f)
     {
+#ifdef __MWERKS__
         __asm { frsqrte recip, x }
+#else
+        recip = 1.0f / sqrtf(x);
+#endif
         return recip * x;
     }
     return x;

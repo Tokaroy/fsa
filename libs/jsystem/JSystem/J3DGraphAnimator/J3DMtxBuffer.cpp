@@ -256,7 +256,10 @@ void J3DMtxBuffer::calcWeightEnvelopeMtx()
 		ps_merge00 sum1ZW, unit01, unit01
 		ps_merge00 sum2ZW, unit01, unit01
 	}
-#endif // clang-format on
+#else // clang-format on
+	// The portable body accumulates straight into weightAnmMtx (zeroed per
+	// envelope below) instead of the asm's paired-single sum registers.
+#endif
 	while (++envelopeIdx < envelopeCount)
 	{
 		scaleFlags   = &mEnvelopeScaleFlags[envelopeIdx];
@@ -268,7 +271,13 @@ void J3DMtxBuffer::calcWeightEnvelopeMtx()
 			ps_merge00 sum1XY, unit01, unit01
 			ps_merge00 sum2XY, unit01, unit01
 		}
-#endif // clang-format on
+#else // clang-format on
+		for (int r = 0; r < 3; r++) {
+			for (int c = 0; c < 4; c++) {
+				weightAnmMtx[r][c] = 0.0f;
+			}
+		}
+#endif
 		mixIdx   = 0;
 		mixCount = mJointTree->getWEvlpMixMtxNum(envelopeIdx);
 		// this feels bad as a do-while, but I can't get the instruction order to work otherwise
@@ -322,7 +331,17 @@ void J3DMtxBuffer::calcWeightEnvelopeMtx()
 				ps_madds0 sum1ZW, product1ZW, weight, sum1ZW
 				ps_madds0 sum2ZW, scratch1, weight, sum2ZW
 			}
-#endif // clang-format on
+#else // clang-format on
+			// weightAnmMtx += (world * inverse joint) * weight
+			weight = *++weights;
+			Mtx product;
+			C_MTXConcat(*worldMtx, *invMtx, product);
+			for (int r = 0; r < 3; r++) {
+				for (int c = 0; c < 4; c++) {
+					weightAnmMtx[r][c] += product[r][c] * weight;
+				}
+			}
+#endif
 			*scaleFlags &= mScaleFlags[jointIdx];
 		} while (++mixIdx < mixCount);
 #ifdef __MWERKS__ // clang-format off
@@ -334,7 +353,9 @@ void J3DMtxBuffer::calcWeightEnvelopeMtx()
 			psq_st sum2ZW, 40(weightAnmMtx), 0, 0
 			ps_merge00 sum2ZW, unit01, unit01
 		}
-#endif // clang-format on
+#else // clang-format on
+		// Nothing to flush: the sums are already in weightAnmMtx.
+#endif
 	}
 }
 

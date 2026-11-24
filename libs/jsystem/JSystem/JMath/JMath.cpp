@@ -24,6 +24,7 @@ void JMAQuatLerp(register const Quaternion *p, register const Quaternion *q, f32
 {
     register f32 pxy, pzw, qxy, qzw;
     register f32 dp;
+#ifdef __MWERKS__
     __asm // compute dot product
     {
         // clang-format off
@@ -38,6 +39,9 @@ void JMAQuatLerp(register const Quaternion *p, register const Quaternion *q, f32
         ps_sum0     dp, dp, dp, dp
         // clang-format on
     }
+#else
+    dp = p->x * q->x + p->y * q->y + p->z * q->z + p->w * q->w;
+#endif
 
     if (dp < 0.0)
     {
@@ -57,6 +61,7 @@ void JMAQuatLerp(register const Quaternion *p, register const Quaternion *q, f32
 void JMAFastVECNormalize(register const Vec *src, register Vec *dst)
 {
     register f32 vxy, rxy, vz, length;
+#ifdef __MWERKS__
     __asm {
         // clang-format off
         psq_l vxy, 0(src), 0, 0
@@ -71,6 +76,12 @@ void JMAFastVECNormalize(register const Vec *src, register Vec *dst)
         stfs vz, dst->z
         // clang-format on
     }
+#else
+    length = 1.0f / sqrtf(src->x * src->x + src->y * src->y + src->z * src->z);
+    dst->x = src->x * length;
+    dst->y = src->y * length;
+    dst->z = src->z * length;
+#endif
 }
 
 // FIXME: FSA has an unnamed function here, fn_80093280 (0x2C bytes, called
@@ -83,6 +94,7 @@ void JMAVECScaleAdd(register const Vec *vec1, register const Vec *vec2, register
 {
     register f32 v1xy, v2xy, rxy, v1z, v2z, rz;
     // clang-format off
+#ifdef __MWERKS__
     __asm {
         // load vector XY of vector 1
         psq_l v1xy, 0(vec1), 0, 0
@@ -101,6 +113,11 @@ void JMAVECScaleAdd(register const Vec *vec1, register const Vec *vec2, register
         // store result Z in dst
         psq_st rz,  8(dst), 1, 0
     }
+#else
+    dst->x = vec1->x * scale + vec2->x;
+    dst->y = vec1->y * scale + vec2->y;
+    dst->z = vec1->z * scale + vec2->z;
+#endif
     // clang-format on
 }
 
@@ -108,6 +125,7 @@ void JMAVECLerp(register const Vec *vec1, register const Vec *vec2, register Vec
 {
     register f32 v1xy, v2xy, v1z, v2z;
     // clang-format off
+#ifdef __MWERKS__
     __asm {
         // load XY components of both vectors
         psq_l v1xy, 0(vec1), 0, 0
@@ -129,6 +147,11 @@ void JMAVECLerp(register const Vec *vec1, register const Vec *vec2, register Vec
         // store result z in dst
         stfs v2z, 8(dst)
     }
+#else
+    dst->x = (vec2->x - vec1->x) * t + vec1->x;
+    dst->y = (vec2->y - vec1->y) * t + vec1->y;
+    dst->z = (vec2->z - vec1->z) * t + vec1->z;
+#endif
     // clang-format on
 
     /*dst->x = (vec2->x - vec1->x) * t + vec1->x;
@@ -150,6 +173,7 @@ register f32 xScale, register f32 yScale, register f32 zScale)
     register f32 scale, x, y, z;
     register f32 normal = 1.0f;
     // clang-format off
+#ifdef __MWERKS__
     __asm {
         // scale first 2 components
         psq_l x, 0(src), 0, 0
@@ -175,6 +199,14 @@ register f32 xScale, register f32 yScale, register f32 zScale)
         psq_st y, 0x18(dst), 0, 0
         psq_st z, 0x28(dst), 0, 0
     }
+#else
+    for (int r = 0; r < 3; r++) {
+        dst[r][0] = src[r][0] * xScale;
+        dst[r][1] = src[r][1] * yScale;
+        dst[r][2] = src[r][2] * zScale;
+        dst[r][3] = src[r][3] * normal;
+    }
+#endif
     // clang-format on
 
     /*

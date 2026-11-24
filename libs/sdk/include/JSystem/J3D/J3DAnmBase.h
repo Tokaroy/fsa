@@ -135,7 +135,19 @@ inline f32 J3DHermiteInterpolation<s16>(register f32 pp1, register s16* pp2, reg
 		fmadds fout, ff4, ff2, fout
 		fsubs fout, fout, ff0
 	}
-#endif // clang-format on
+#else // clang-format on
+	// psq_l type 5 = GQR5 (s16, no scale): each key is a plain s16 -> f32.
+	f32 t0 = *p2, v0 = *p3, tan0 = *p4, t1 = *p5, v1 = *p6, tan1 = *p7;
+	f32 dt = t1 - t0;
+	f32 t = (p1 - t0) / dt;
+	f32 t2 = t * t;
+	f32 d = (v1 - v0) - dt * tan0;
+	f32 c = t2 * (((tan1 * dt + v0) - v1) - d);
+	fout = dt * tan0 + c;
+	fout = fout * t + v0;
+	fout = d * t2 + fout;
+	fout = fout - c;
+#endif
 	return fout;
 }
 

@@ -36,7 +36,13 @@ inline void J3DPSMtx33Copy(const register Mtx33 src, register Mtx33 dst)
 		psq_st      fp1, 24(dst),  0, 0
 		stfs        fp0, 32(dst)
 	}
-#endif // clang-format on
+#else // clang-format on
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			dst[i][j] = src[i][j];
+		}
+	}
+#endif
 }
 
 inline void J3DPSMtx33CopyFrom34(register MtxP src, register Mtx3P dst)
@@ -62,7 +68,13 @@ inline void J3DPSMtx33CopyFrom34(register MtxP src, register Mtx3P dst)
 		psq_st x_y3, 24(dst), 0, 0
 		stfs z3, 0x20(dst)
 	}
-#endif // clang-format on
+#else // clang-format on
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			dst[i][j] = src[i][j];
+		}
+	}
+#endif
 }
 
 #endif

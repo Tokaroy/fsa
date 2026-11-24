@@ -41,7 +41,12 @@ void J3DCalcBBoardMtx(register Mtx mtx)
 
 		psq_st zero, 0x20(mtx), 0, 0
 	}
-#endif // clang-format on
+#else // clang-format on
+	mtx[0][1] = zero;
+	mtx[0][2] = zero;
+	mtx[2][0] = zero;
+	mtx[2][1] = zero;
+#endif
 
 	mtx[0][0] = x;
 	mtx[1][0] = zero;
@@ -137,7 +142,15 @@ lbl_8005F118:
 	li       r3, 1
 	psq_st   f8, 32(r4), 1, 0
 	blr
-#endif // clang-format on
+#else // clang-format on
+	// Body from TwilitRealm/dusklight (same asm): the inverse transpose's 3x3,
+	// dst untouched when the matrix is singular.
+	Mtx invX;
+	if (C_MTXInvXpose(src, invX) == 0) {
+		return;
+	}
+	J3DPSMtx33CopyFrom34(invX, dst);
+#endif
 }
 
 /**
@@ -350,7 +363,17 @@ ASM void J3DScaleNrmMtx(register Mtx mtx, const register Vec& scl)
 	fmuls  f4, fp1, fp3
 	stfs   f4, 40(mtx)
 	blr
-#endif // clang-format on
+#else // clang-format on
+	// Body from TwilitRealm/dusklight (same asm).
+	f32 sx = scl.x;
+	f32 sy = scl.y;
+	f32 sz = scl.z;
+	for (int i = 0; i < 3; i++) {
+		mtx[i][0] *= sx;
+		mtx[i][1] *= sy;
+		mtx[i][2] *= sz;
+	}
+#endif
 }
 
 /**
@@ -380,7 +403,17 @@ ASM void J3DScaleNrmMtx33(register Mtx33 mtx, const register Vec& scale) {
 	psq_st   f4, 24(mtx), 0, 0
 	stfs     f5, 0x20(mtx)
 	blr
-#endif // clang-format on
+#else // clang-format on
+	// Body from TwilitRealm/dusklight (same asm).
+	f32 sx = scale.x;
+	f32 sy = scale.y;
+	f32 sz = scale.z;
+	for (int i = 0; i < 3; i++) {
+		mtx[i][0] *= sx;
+		mtx[i][1] *= sy;
+		mtx[i][2] *= sz;
+	}
+#endif
 }
 
 /**
@@ -463,7 +496,25 @@ ASM void J3DMtxProjConcat(register Mtx mtx1, register Mtx mtx2, register Mtx dst
 	ps_madd  f0, f9, f13, f0
 	psq_st   f0, 40(dst), 0, 0
 	blr
-#endif // clang-format on
+#else // clang-format on
+	// Body from TwilitRealm/dusklight (same asm). mtx2 is a 4x4 projection
+	// read through a Mtx pointer: its fourth row is real data.
+	Mtx tmp;
+	for (int i = 0; i < 3; i++) {
+		f32 a0 = mtx1[i][0];
+		f32 a1 = mtx1[i][1];
+		f32 a2 = mtx1[i][2];
+		f32 a3 = mtx1[i][3];
+		for (int j = 0; j < 4; j++) {
+			tmp[i][j] = a0 * mtx2[0][j] + a1 * mtx2[1][j] + a2 * mtx2[2][j] + a3 * mtx2[3][j];
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 4; j++) {
+			dst[i][j] = tmp[i][j];
+		}
+	}
+#endif
 }
 
 /**
@@ -576,4 +627,14 @@ loop:
 #undef FP31
 #undef UNIT_R
 }
-#endif // clang-format on
+#else // clang-format on
+// Body from TwilitRealm/dusklight (same asm).
+void J3DPSMtxArrayConcat(Mtx mA, Mtx mB, Mtx mAB, u32 count)
+{
+	Mtx* src = (Mtx*)mB;
+	Mtx* dst = (Mtx*)mAB;
+	for (u32 i = 0; i < count; i++) {
+		C_MTXConcat(mA, src[i], dst[i]);
+	}
+}
+#endif

@@ -11,12 +11,17 @@ struct J3DTextureSRTInfo {
 		register const f32* src = &other.mScaleX;
 		register f32* dst       = &mScaleX;
 		register f32 xy;
+#ifdef __MWERKS__
 		asm {
 			// clang-format off
 			psq_l xy, 0(src), 0, 0
 			psq_st xy, 0(dst), 0, 0
 			// clang-format on
 		};
+#else
+		dst[0] = src[0];
+		dst[1] = src[1];
+#endif
 
 		// FIXME: FSA copies mRotation and the 2 padding bytes after it as one word
 		// (lwz/stw at 0x18), as tp's *(u32*)&mRotation does; that pointer-cast word
@@ -25,12 +30,17 @@ struct J3DTextureSRTInfo {
 		src               = &other.mTranslationX;
 		dst               = &mTranslationX;
 
+#ifdef __MWERKS__
 		asm {
 			// clang-format off
 			psq_l xy, 0(src), 0, 0
 			psq_st xy, 0(dst), 0, 0
 			// clang-format on
 		};
+#else
+		dst[0] = src[0];
+		dst[1] = src[1];
+#endif
 	}
 
 	f32 mScaleX;       // _00
