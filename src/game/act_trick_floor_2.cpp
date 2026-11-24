@@ -54,23 +54,21 @@ static inline void drawSmp(TrickFloor2_804AA628* self, const JGeometry::TVec3f* 
 
 // The tile index of a view-relative position (as init computes it).
 static inline s32 tileIndex(s32 tx, s32 ty) {
-    s32 cx = tx;
-    if (cx < 0) {
-        cx = 0;
-    } else if (cx >= 0x200) {
-        cx = 0x1FF;
+    if (tx < 0) {
+        tx = 0;
+    } else if (tx >= 0x200) {
+        tx = 0x1FF;
     }
-    s32 cy = ty;
-    if (cy < 0) {
-        cy = 0;
-    } else if (cy >= 0x200) {
-        cy = 0x1FF;
+    if (ty < 0) {
+        ty = 0;
+    } else if (ty >= 0x200) {
+        ty = 0x1FF;
     }
-    return ((cy & 0x100) << 1) | (cx & 0x100) | (cy & 0xF0) | ((cx >> 4) & 0xF);
+    return ((ty & 0x100) << 1) | (tx & 0x100) | (ty & 0xF0) | ((tx >> 4) & 0xF);
 }
 
-// Sets every tile of the floor's block (counts by mType) from x to `tile` (update's four
-// copies; init's loop with tile 6).
+// Sets every tile of the floor's block (counts by mType) from x to `tile` (init's loop with
+// tile 6; update spells its loops out: it reloads the tile field per call and shares one vbox).
 static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
     s32 layer = self->mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -87,18 +85,6 @@ static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
         }
         x += 16.0f;
     }
-}
-
-// The tile under a position, read from the map.
-static inline u16 tileAt(TrickFloor2_804AA628* self, f32 x, f32 y) {
-    s32 layer = self->mLayer_0x4;
-    GameView_804A9950* gv = getGameView_802D6A9C();
-    const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-    JGeometry::TBox2f vbox;
-    vbox = view;
-    s32 tx = (s32)(x - vbox.i.x);
-    s32 ty = (s32)(y - vbox.i.y);
-    return gGameRoot2_8053AB10->field_0x20->getTile_802F9908(self->mLayer_0x4, tileIndex(tx, ty));
 }
 
 // The four dust emitters 0x381-0x384 at the floor's corner.
@@ -162,10 +148,13 @@ void TrickFloor2_804AA628::init() {
 // for types 4 / 5, waits for all four players to open (state 6), 3 sinks to 1.6384, 4 holds
 // while ridden, 5 rises back and restores the tiles, 6 / 7 fall away (camera shake, debris),
 // 8 stays down.
+// Still differs: state 0 keeps the tile index in a second register (one mr); registers, order.
 void TrickFloor2_804AA628::update() {
+    JGeometry::TBox2f vbox;
+    JGeometry::TBox2f box;
     JGeometry::TVec3f saved = mPos;
     JGeometry::TVec2f p;
-    switch (mType) {
+        switch (mType) {
     case 0:
     case 1:
     case 6:
@@ -184,13 +173,12 @@ void TrickFloor2_804AA628::update() {
     case 4:
     case 5: {
         mMapBox_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
-        JGeometry::TBox2f box4;
-        box4 = mMapBox_0x80;
+        box = mMapBox_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
         p.set(mPos.x, mPos.y);
-        box4.addPos(p);
-        fn_80239914(&box4, mLayer_0x4, mSerial);
+        box.addPos(p);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         mPos = saved;
         mPos.y += 48.0f;
         mBox.set(-16.0f, -50.0f, 24.0f, 50.0f);
@@ -198,7 +186,7 @@ void TrickFloor2_804AA628::update() {
     }
     }
     p.set(mPos.x, mPos.y);
-    JGeometry::TBox2f box = mBox;
+    box.set(mBox);
     box.addPos(p);
     s32 player = fn_8023AF14(&box, mLayer_0x4, false, 4.5f);
     if (player >= 0 && hasPlayerLeader_8022F514(player) == true && fn_8022F478(player) == player) {
@@ -218,7 +206,15 @@ void TrickFloor2_804AA628::update() {
     mPos = saved;
     switch (field_0x230) {
     case 0: {
-        field_0x250 = tileAt(this, mPos.x, mPos.y);
+        f32 x = mPos.x;
+        f32 y = mPos.y;
+        s32 layer = mLayer_0x4;
+        GameView_804A9950* gv = getGameView_802D6A9C();
+        const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
+        vbox = view;
+        s32 tx = (s32)(x - vbox.i.x);
+        s32 ty = (s32)(y - vbox.i.y);
+        field_0x250 = gGameRoot2_8053AB10->field_0x20->getTile_802F9908(mLayer_0x4, tileIndex(tx, ty));
         field_0x230 = 2;
         break;
     }
@@ -236,7 +232,23 @@ void TrickFloor2_804AA628::update() {
                 break;
             }
             spawnDust(this, 0);
-            fillTiles(this, mPos.x, 6);
+            {
+                f32 x = mPos.x;
+                s32 layer = mLayer_0x4;
+                GameView_804A9950* gv = getGameView_802D6A9C();
+                const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
+                vbox = view;
+                for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
+                    s32 tx = (s32)(x - vbox.i.x);
+                    f32 y = mPos.y;
+                    for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
+                        s32 ty = (s32)(y - vbox.i.y);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, tileIndex(tx, ty), 6);
+                        y += 16.0f;
+                    }
+                    x += 16.0f;
+                }
+            }
             field_0x230 = 3;
             startSound_801F0E34(0x3001B, 0);
             break;
@@ -247,7 +259,23 @@ void TrickFloor2_804AA628::update() {
             }
             setScreenFlag_0x30(0xFF, true);
             startSound_801F0E34(0x30009, 0);
-            fillTiles(this, mPos.x, 0x7C);
+            {
+                f32 x = mPos.x;
+                s32 layer = mLayer_0x4;
+                GameView_804A9950* gv = getGameView_802D6A9C();
+                const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
+                vbox = view;
+                for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
+                    s32 tx = (s32)(x - vbox.i.x);
+                    f32 y = mPos.y;
+                    for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
+                        s32 ty = (s32)(y - vbox.i.y);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, tileIndex(tx, ty), 0x7C);
+                        y += 16.0f;
+                    }
+                    x += 16.0f;
+                }
+            }
             field_0x24c = 0.07f;
             field_0x230 = 6;
             startSound_801F0E34(0x3001B, 0);
@@ -258,7 +286,21 @@ void TrickFloor2_804AA628::update() {
         field_0x248 += 0.2f;
         if (field_0x248 >= 1.6f) {
             field_0x248 = 1.6384f;
-            fillTiles(this, mPos.x, field_0x252);
+            f32 x = mPos.x;
+            s32 layer = mLayer_0x4;
+            GameView_804A9950* gv = getGameView_802D6A9C();
+            const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
+                        vbox = view;
+            for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
+                s32 tx = (s32)(x - vbox.i.x);
+                f32 y = mPos.y;
+                for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
+                    s32 ty = (s32)(y - vbox.i.y);
+                    gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, tileIndex(tx, ty), field_0x252);
+                    y += 16.0f;
+                }
+                x += 16.0f;
+            }
             field_0x244 = 0x28;
             if (field_0x23c == 2) {
                 field_0x230 = 8;
@@ -288,18 +330,20 @@ void TrickFloor2_804AA628::update() {
             s32 layer = mLayer_0x4;
             GameView_804A9950* gv = getGameView_802D6A9C();
             const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-            JGeometry::TBox2f vbox;
-            vbox = view;
+                        vbox = view;
             for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
                 s32 tx = (s32)(x - vbox.i.x);
                 f32 y = mPos.y;
                 for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
-                    if (mType != 1) {
+                    switch (mType) {
+                    default:
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
-                    } else {
+                        break;
+                    case 1:
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046F7C0[i][j]);
+                        break;
                     }
                     y += 16.0f;
                 }
@@ -345,7 +389,21 @@ void TrickFloor2_804AA628::update() {
                     }
                     startSound_801F0E34(0x30001, 0);
                 } else {
-                    fillTiles(this, 96.0f + mPos.x, field_0x240);
+                    f32 x = 96.0f + mPos.x;
+                    s32 layer = mLayer_0x4;
+                    GameView_804A9950* gv = getGameView_802D6A9C();
+                    const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
+                                        vbox = view;
+                    for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
+                        s32 tx = (s32)(x - vbox.i.x);
+                        f32 y = mPos.y;
+                        for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
+                            s32 ty = (s32)(y - vbox.i.y);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, tileIndex(tx, ty), field_0x240);
+                            y += 16.0f;
+                        }
+                        x += 16.0f;
+                    }
                 }
                 mAlive = false;
             }
