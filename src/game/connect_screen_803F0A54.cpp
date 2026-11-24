@@ -1,5 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
+#include "game/PlayerBit.h"
 #include "game/GameState.h"
 #include "game/Effect.h"
 #include "game/ActorBase.h"
@@ -1982,7 +1983,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
 // FIXME(shotgun): 96.54 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
-        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) ? true : false) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4)) {
             u8 alpha;
             if (field_0x210[i] == 0) {
                 field_0x25b &= ~(1 << i);
