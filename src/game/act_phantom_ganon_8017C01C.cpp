@@ -165,7 +165,8 @@ void invalidateEmitter_8017EAB4(JPABaseEmitter* emitter) {
 #pragma auto_inline reset
 
 // FIXME(shotgun): 63.32 %, missing/extra + reloc-name; behaviour near.
-// The original hoists the float constants and the stmw prologue differently.
+// The original's emitter loop keeps the id table base and a byte offset in separate registers
+// (the offset shares the zero constant's register); ours folds them into one pointer.
 void PhantomGanon_804A1318::init() {
     field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
     mSpawnParam_0x90 &= 0xF;
@@ -212,6 +213,27 @@ void PhantomGanon_804A1318::init() {
     field_0x2a0.set(mPos);
     field_0x2a0.y += 16.0f;
     switch (mSpawnParam_0x90) {
+    case 0:
+        field_0x2ac.z = 0.0f;
+        field_0x2ac.y = 0.0f;
+        field_0x2ac.x = 0.0f;
+        field_0x290 = 0.0f;
+        getGameView_802D6A9C()->fn_802D7440(false);
+        // fall through
+    case 1:
+    default:
+        mBox.i.x = -16.0f;
+        mBox.i.y = -8.0f;
+        mBox.f.x = 16.0f;
+        mBox.f.y = 40.0f;
+        mMapBox_0x80.i.x = -8.0f;
+        mMapBox_0x80.i.y = -8.0f;
+        mMapBox_0x80.f.x = 8.0f;
+        mMapBox_0x80.f.y = 8.0f;
+        mParamAtcp_0x114 = 2;
+        field_0x2ba = 1;
+        mState = 0;
+        break;
     case 10:
         for (int i = 0; i < 4; i++) {
             mEmitters2bc[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1210[i * 2], 1, 2, NULL, NULL, true, 1.0f);
@@ -255,27 +277,6 @@ void PhantomGanon_804A1318::init() {
         mMapBox_0x80.f.x = 2.0f;
         mMapBox_0x80.f.y = 2.0f;
         mState = 0x1B;
-        break;
-    case 0:
-        field_0x2ac.z = 0.0f;
-        field_0x2ac.y = 0.0f;
-        field_0x2ac.x = 0.0f;
-        field_0x290 = 0.0f;
-        getGameView_802D6A9C()->fn_802D7440(false);
-        // fall through
-    case 1:
-    default:
-        mBox.i.x = -16.0f;
-        mBox.i.y = -8.0f;
-        mBox.f.x = 16.0f;
-        mBox.f.y = 40.0f;
-        mMapBox_0x80.i.x = -8.0f;
-        mMapBox_0x80.i.y = -8.0f;
-        mMapBox_0x80.f.x = 8.0f;
-        mMapBox_0x80.f.y = 8.0f;
-        mParamAtcp_0x114 = 2;
-        field_0x2ba = 1;
-        mState = 0;
         break;
     }
 }
