@@ -70,6 +70,12 @@ static inline f32 cut4(f32 v) {
     return (f32)(s32)(10000.0f * v) * 0.0001f;
 }
 
+static inline void moveToward(JGeometry::TVec3f& pos, const Vec* target, f32 speed) {
+    pos.x += cut4(target->x - pos.x) * speed;
+    pos.y += cut4(target->y - pos.y) * speed;
+    pos.z += cut4(target->z - pos.z) * speed;
+}
+
 static inline void moveToward(JGeometry::TVec3f& pos, JGeometry::TVec3f target, f32 speed) {
     pos.x += cut4(target.x - pos.x) * speed;
     pos.y += cut4(target.y - pos.y) * speed;
@@ -106,9 +112,10 @@ static inline JGeometry::TVec3f linePosOf(StoneArrghus_8049C718* parent, s32 slo
         ang = parent->mAngleB;
         off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
     }
-    JGeometry::TVec3f out(parent->mPos.x + off * JMASinShort(ang),
-                          parent->mPos.y + off * JMACosShort(ang),
-                          10.0f + parent->mPos.z);
+    JGeometry::TVec3f out;
+    out.x = parent->mPos.x + off * JMASinShort(ang);
+    out.y = parent->mPos.y + off * JMACosShort(ang);
+    out.z = 10.0f + parent->mPos.z;
     parent->mSlot++;
     return out;
 }
@@ -1162,7 +1169,7 @@ void StoneArrghusChildPuff_8049C678::init() {
     }
 }
 
-// FIXME(shotgun): 92.16 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.97 %, regalloc-only; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
     mParamDstr_0x1a8 = true;
@@ -1188,20 +1195,21 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
         mFlag249 = 0;
     }
     if (updateHitReaction_801F3D94(1) == 0) {
-        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
+        if (player >= 0) {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
-            hitPlayerGroup_80238548(0, 0, &xy, 0x10);
+            hitPlayerGroup_80238548(player, 0, &xy, 0x10);
         }
-        moveToward(mPos, target, speed);
+        moveToward(mPos, &target, speed);
         damagePlayersInBox_801F2B7C(2, -1, 1);
     }
 }
 
-// FIXME(shotgun): 84.23 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.14 %, scheduling+regalloc; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
     StoneArrghus_8049C718* parent = mParent;
-    JGeometry::TVec3f target = slotPosOf(parent, parent->mSlot);
+    slotPosOf(parent, parent->mSlot);
     s32 serial = field_0xa0;
     if (serial != -1) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1211,10 +1219,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
             return;
         }
     }
-    if (updateHitReaction_801F3D94(1) != 0) {
-        return;
-    }
-    if (checkHits_801F305C()) {
+    if (updateHitReaction_801F3D94(1) != 0 || checkHits_801F305C()) {
         return;
     }
     field_0xb0 = 0x80002;
@@ -1227,7 +1232,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     v.normalize();
     v.scale(0.8f);
     v.z = 0.0f;
-    if (mPos.z < 10.0f || mCount >= 0x50) {
+    if (mPos.z < 10.0f || mCount < 0x50) {
         v.zero();
     }
     mVel_0x3c.set(v);
