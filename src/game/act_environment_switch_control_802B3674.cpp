@@ -287,7 +287,6 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x10() {
     fn_8013A884(&color);
 }
 
-// FIXME(shotgun): 87.08 %, missing/extra; behaviour near.
 EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
     fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
@@ -307,7 +306,7 @@ EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
 // 0x802B3AB8.
 // JPABaseEmitter's 0x28 float / 0xF4 status word differ from include/JSystem/JParticle/JPAEmitter.h,
 // so the 0x28 stores (field_0x2c0[0] / [1] before each setEmitterPos pair) are omitted.
-// FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.03 %, missing/extra; behaviour drift.
 void EnvironmentSwitchControl_804A8638::update() {
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 &&
@@ -919,7 +918,6 @@ void EnvironmentSwitchControl_804A8638::update() {
 void EnvironmentSwitchControl_804A8638::draw() {}
 
 // 0x802B3A48.
-// FIXME(shotgun): 84.07 %, missing/extra; behaviour clean.
 void EnvironmentSwitchControl_804A8638::fn_802B3A48() {
     fn_8016A3AC()->setField_0x1ee(0);
     if (field_0x234 != NULL) {
