@@ -487,7 +487,7 @@ void TileMap_804AA858::fn_802FEE68() {
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
-// FIXME: 91.16 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.49 %, missing/extra; behaviour near.
 void TileMap_804AA858::fn_802FDDD4() {
     mHeightGridIndex_0x2388++;
     if (mHeightGridIndex_0x2388 >= 2) {
@@ -742,7 +742,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // registers and stack slots follow. The original converts 240.0f / 160.0f at
 // run time (fctiwz, hoisted before the loop), so they are float variables
 // there, not literals at the stores.
-// FIXME: 72.87 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 85.93 %, missing/extra + reloc-name; behaviour near.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -2274,7 +2274,7 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-// FIXME: 89.55 %, missing/extra; behaviour near.
+// FIXME: 96.59 %, different; behaviour near.
 // obj is filled and read through a pointer: the original keeps every
 // bit-field store (byte 0x11 after each field, the unused mAffineParam = 0 too).
 // Left: the low byte of mX is extracted from the halfword again (extrwi 8, 17)
@@ -3113,7 +3113,7 @@ f32 TileMap_804AA858::getHeightAt_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 96.23 %, different; behaviour near.
+// FIXME: 96.37 %, scheduling+regalloc; behaviour clean.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
