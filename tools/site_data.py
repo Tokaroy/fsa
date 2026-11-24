@@ -487,6 +487,8 @@ def write(report, files, data_unsplit, subject):
             "fns_structural_close": st["close"]["functions"], "code_structural_close": st["close"]["code"],
             # structural progress: matched bytes + size * match % for structurally done/close functions
             "code_weighted": round(st["weighted"]["code"]), "code_weighted_partial": round(st["weighted"]["partial"]),
+            # every function's size * match %, done, close or not (owner, 2026-11-24: shown beside it)
+            **({"code_weighted_all": round(st["weighted_all"]["code"])} if "weighted_all" in st else {}),
         })
     # the four library regions as one group (the site's and README's "Libraries" section)
     libs_tot = {k: sum(reg_tot[r][k] for r in LIBRARIES) for k in ("c", "cm", "wm", "f", "fm")}
@@ -524,6 +526,7 @@ def write(report, files, data_unsplit, subject):
         "matching": matching,
         "regions": {rid: [t["cm"], t["c"], t["fm"], t["f"]] for rid, t in reg_tot.items()},
         **({"code_weighted": totals["code_weighted"]} if "code_weighted" in totals else {}),
+        **({"code_weighted_all": totals["code_weighted_all"]} if "code_weighted_all" in totals else {}),
     })
     hist_path.write_text(json.dumps(hist, separators=(",", ":"), indent=None).replace("},{", "},\n{"))
     return summary

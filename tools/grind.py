@@ -379,12 +379,11 @@ def structural_status(wt=None):
         s = json.loads(((wt or INTEG) / "build/G4SE01/structural.json").read_text())
     except (OSError, ValueError):
         return {}
-    wf, out = s.get("weighted_fns", {}), {}
+    sf, out = s.get("struct_fns", {}), {}
     for u, fns in s.get("units", {}).items():
         src = u.split("/", 1)[-1] + ".cpp"
         for f, (pct, size, cls) in fns.items():
-            credited = f in wf.get(u, {})
-            out[(src, f)] = "done" if credited and struct_done_cls(cls) else "close" if credited else "open"
+            out[(src, f)] = sf.get(u, {}).get(f, "open")
     return out
 
 

@@ -19,8 +19,11 @@ Writes build/G4SE01/structural.json:
   units       {unit: {function: [match %, bytes, class]}}  non-100 % functions
   weighted    {code, percent, partial, functions}  honest code bytes + size * fuzzy % / 100 for
               every structurally done or close function (report_honest.json's fuzzy_match_percent)
-  weighted_classes {"done"|"close": bytes}
+  weighted_all {code, percent}  the same over every function below 100 % with source, done,
+              close or not (owner, 2026-11-24: shown beside weighted)
+  weighted_classes {"done"|"close"|"open": bytes}
   weighted_fns {unit: {function: credited bytes}}  (site_data.py groups these per region)
+  struct_fns  {unit: {function: "done"|"close"}}  the structurally done and close functions
 
 It diffs every unit with source once (objdiff-cli, the same project directory
 and relocation setting as report_honest.json: build/G4SE01/honest, where the
@@ -641,12 +644,14 @@ def main():
     fuzzy = {(u["name"], f["name"]): f.get("fuzzy_match_percent", 0.0)
              for u in json.loads(REPORT.read_text())["units"] for f in u.get("functions", [])}
     done, close, classes, out_units = [0, 0], [0, 0], {}, {}
-    wfns, wcls = {}, {"done": 0.0, "close": 0.0}
+    wfns, wcls, sfns = {}, {"done": 0.0, "close": 0.0, "open": 0.0}, {}
 
     def credit(unit, fn, size, kind):
         w = size * fuzzy.get((unit, fn), 0.0) / 100
-        wfns.setdefault(unit, {})[fn] = round(w, 3)
         wcls[kind] += w
+        if kind != "open":
+            wfns.setdefault(unit, {})[fn] = round(w, 3)
+            sfns.setdefault(unit, {})[fn] = kind
     for name, fns in sorted(results.items()):
         if fns:
             out_units[name] = {f: v[:3] for f, v in fns.items()}
@@ -662,25 +667,30 @@ def main():
                 close[0] += 1
                 close[1] += size
                 credit(name, fn, size, "close")
+            else:  # weighted_all only (owner, 2026-11-24)
+                credit(name, fn, size, "open")
     partial = wcls["done"] + wcls["close"]
     wcode = honest["code"] + partial
     total_code = int(m["total_code"])
     weighted = {"code": round(wcode, 1), "percent": round(100 * wcode / total_code, 4) if total_code else 0.0,
                 "partial": round(partial, 1), "functions": done[0] + close[0]}
+    wall = wcode + wcls["open"]
+    weighted_all = {"code": round(wall, 1), "percent": round(100 * wall / total_code, 4) if total_code else 0.0}
     doc = {
         "total_functions": m["total_functions"], "total_code": int(m["total_code"]),
         "honest": honest,
         "structural": {"functions": honest["functions"] + done[0], "code": honest["code"] + done[1]},
         "done": {"functions": done[0], "code": done[1]},
         "close": {"functions": close[0], "code": close[1]},
-        "weighted": weighted, "weighted_classes": {k: round(v, 1) for k, v in wcls.items()},
-        "weighted_fns": wfns,
+        "weighted": weighted, "weighted_all": weighted_all, "weighted_classes": {k: round(v, 1) for k, v in wcls.items()},
+        "weighted_fns": wfns, "struct_fns": sfns,
         "classes": classes, "units": out_units,
     }
     (OUT / "structural.json").write_text(json.dumps(doc, separators=(",", ":")))
     print(f"structural: {doc['structural']['functions']} / {doc['total_functions']} functions "
           f"(honest {honest['functions']} + {done[0]} structurally done), "
-          f"+{close[0]} close; weighted {weighted['percent']:.2f} % of code; {len(todo)}/{len(units)} units diffed")
+          f"+{close[0]} close; weighted {weighted['percent']:.2f} % of code, all functions "
+          f"{weighted_all['percent']:.2f} %; {len(todo)}/{len(units)} units diffed")
 
 
 if __name__ == "__main__":

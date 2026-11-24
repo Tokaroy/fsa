@@ -690,6 +690,10 @@ def readme_blocks(summary, rm):
         progress.append(f"- **Structural progress: {pct(tot['code_weighted'], tot['code'], 2)}** "
                         f"({num(tot['code_weighted'])} of {num(tot['code'])} bytes): matched code plus, for each "
                         f"structurally matched or close function, its size times its match percent.")
+    if tot.get("code_weighted_all"):
+        progress.append(f"- **All functions: {pct(tot['code_weighted_all'], tot['code'], 2)}** "
+                        f"({num(tot['code_weighted_all'])} of {num(tot['code'])} bytes): the same over every "
+                        f"written function, structurally matched or not.")
     progress.append(f"- **Matched code: {pct(tot['code_matched'], tot['code'], 2)}** "
                     f"({num(tot['code_matched'])} of {num(tot['code'])} bytes), "
                     f"**{num(tot['fns_matched'])} / {num(tot['fns'])}** functions fully matched.")
