@@ -121,22 +121,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         area.i.y += mPos.y;
         area.f.x += mPos.x;
         area.f.y += mPos.y;
-        bool any;
-        s32 cucco = -1;
-        for (;;) {
-            cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
-            if (cucco < 0) {
-                any = false;
-                break;
-            }
-            Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
-            if (c != NULL && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
-                !c->field_0xc4) {
-                any = true;
-                break;
-            }
-        }
-        if (any == true) {
+        if (isCuccoInArea(area) == true) {
             field_0x230 = 4;
             break;
         }
@@ -500,6 +485,23 @@ void CuccoHerdingNPC_804AC8C0::update() {
         JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     }
+}
+
+// Not in the binary (update inlines it).
+bool CuccoHerdingNPC_804AC8C0::isCuccoInArea(const JGeometry::TBox2f& area) {
+    s32 cucco = -1;
+    for (;;) {
+        cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
+        if (cucco < 0) {
+            break;
+        }
+        Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
+        if (c != NULL && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
+            !c->field_0xc4) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Not in the binary (init and update inline it); the pool has its 100.0f and 10430.378f ahead of
