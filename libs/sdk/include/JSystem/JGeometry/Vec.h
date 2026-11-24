@@ -442,9 +442,10 @@ namespace JGeometry {
     typedef TVec4<s16> TVec4s;
 
 
-    // These need to be specialized or explicitly instantiated here to emit them in the right order in RaceMgr, and
-    // MWCC doesn't allow explicitly instantiating template constructors, so they're probably both specialized
-    template <> template <> inline TVec3f::TVec3(f32 X, f32 Y, f32 Z) { set(X, Y, Z); }
+    // mkdd specialized TVec3f::TVec3(f32, f32, f32) here as well (inline) to order RaceMgr's copies. FSA has
+    // no RaceMgr, and its units that keep an out-of-line copy of that ctor among their own helpers define it
+    // themselves as a non-inline explicit specialization, which a header definition would forbid.
+    // MWCC doesn't allow explicitly instantiating template constructors.
     template <> template <> inline void TVec3f::set(f32 X, f32 Y, f32 Z) { x = X; y = Y; z = Z; }
 }
 
