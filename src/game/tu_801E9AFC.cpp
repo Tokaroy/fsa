@@ -107,7 +107,7 @@ s32 cls_801E9B54::fn_801EA6D8(u8 arg0, s32 arg1) {
     return result;
 }
 
-// FIXME: 94.56 %, missing/extra; behaviour near.
+// FIXME: 98.83 %, regalloc-only; behaviour clean.
 // Registers of `removed` and the loop index are swapped.
 void cls_801E9B54::fn_801EA594() {
     if (field_0x60 > 0) {
