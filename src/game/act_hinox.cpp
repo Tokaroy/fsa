@@ -106,7 +106,7 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
 }
 
 // FIXME(shotgun): 99.94 %, scheduling; behaviour clean.
-void Hinox_8049F9B4::fn_8014F76C() {
+void Hinox_8049F9B4::vfunc_0x44() {
     s32 serial = field_0x250;
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
