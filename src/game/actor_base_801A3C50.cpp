@@ -91,8 +91,8 @@ s32 fn_801A6108(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 } // extern "C"
 
 // 0x801A5400.
-// Case 6 also stores 1 at this + 0x230 (past ActorBase_804A5770); that store is not written.
-// FIXME: 96.02 %, missing/extra; behaviour drift.
+// Case 6 is the Octorok rock (the only actor with field_0xb0 == 6, act_octorok_rock.cpp).
+// FIXME: 98.49 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     if ((field_0xb0 & 0xFF) == 0) {
         return 0;
@@ -126,9 +126,9 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         if (kind == 9) {
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
             s32 face = mDir_0x98;
-            if (face != angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
-                                          10430.378f))) {
+            if (face != angleToDir_801F681C((s32)(angle * 10430.378f))) {
                 kind = 5;
             }
             if (field_0xa4 != 0) {
@@ -137,9 +137,9 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         }
         if (kind == 16) {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
             s32 face = mDir_0x98;
-            if (face != angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
-                                          10430.378f))) {
+            if (face != angleToDir_801F681C((s32)(angle * 10430.378f))) {
                 kind = 4;
             }
         }
@@ -188,21 +188,31 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             }
             break;
         case 16:
-            mLife = mLife - fn_8023B5B4(player);
+            s32 life = mLife;
+            life -= fn_8023B5B4(player);
+            mLife = life;
             if (mLife < 1000) {
                 switch (arrow->mDir_0x98) {
-                case 0:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
+                case 0: {
+                    s32 layer = arrow->mLayer_0x4;
+                    spawnEmitter_8013CC50(layer, &mPos, 0x177, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
-                case 1:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
+                }
+                case 1: {
+                    s32 layer = arrow->mLayer_0x4;
+                    spawnEmitter_8013CC50(layer, &mPos, 0x176, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
-                case 2:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
+                }
+                case 2: {
+                    s32 layer = arrow->mLayer_0x4;
+                    spawnEmitter_8013CC50(layer, &mPos, 0x175, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
-                case 3:
-                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
+                }
+                case 3: {
+                    s32 layer = arrow->mLayer_0x4;
+                    spawnEmitter_8013CC50(layer, &mPos, 0x178, 1, 1, NULL, NULL, true, getEffectScale_801EE4F0());
                     break;
+                }
                 }
             }
             // fall through
@@ -214,7 +224,8 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             // fall through
         case 5:
             if (kind != 16) {
-                s32 life = mLife - fn_8023B5B4(player);
+                s32 life = mLife;
+                life -= fn_8023B5B4(player);
                 if (life <= 0) {
                     mLife = 0;
                     result = 20;
@@ -241,11 +252,12 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                         f32 dx = 0.8f * (mPos.x - rock->mPos.x);
                         f32 dy = 0.8f * (mPos.y - rock->mPos.y);
                         rock->field_0x254 = std::sqrtf(dx * dx + dy * dy);
-                        u16 angle = JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f;
+                        u16 angle = 10430.378f * JMath::atanTable_.atan2_(-dx, -dy);
                         u16 target = dirToAngle_801F6874(arrow->mDir_0x98) + 0x8000;
                         while (angleToDir_801F681C(angle) != angleToDir_801F681C(target)) {
                             addCalcAngle2_801F714C(&angle, target, 1, 0x1000);
                         }
+                        dir -= angle;
                         if (kind == 15) {
                             rock->field_0x230 = 5;
                         } else if (kind == 16 || kind == 18) {
@@ -254,7 +266,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                             rock->field_0x230 = 4;
                         }
                         rock->field_0x258 = mSerial;
-                        rock->field_0x25c = dir - angle;
+                        rock->field_0x25c = dir;
                     }
                 }
             }
@@ -275,6 +287,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         case 6:
             spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+            static_cast<OctorokRock_8049F5D8*>(this)->field_0x230 = 1;
             // fall through
         case 4:
             for (s32 i = 0; i < 4; i++) {
@@ -707,7 +720,7 @@ s32 fn_801A46FC(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 } // extern "C"
 
 // 0x801A41D8.
-// FIXME(shotgun): 98.25 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.15 %, scheduling+regalloc; behaviour drift.
 s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     ActorBase_804A5770* weapon;
     s32 player = fn_8023AD54(box, mLayer_0x4, pos);
@@ -815,7 +828,8 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         case 1:
         case 2:
         case 5: {
-            s32 life = mLife - fn_8023B5B4(player);
+            s32 life = mLife;
+            life -= fn_8023B5B4(player);
             weapon->mAlive = false;
             if (life <= 0) {
                 mLife = 0;
@@ -837,9 +851,10 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             for (s32 i = 0; i < 4; i++) {
                 s32 serial = fn_8023B358(i);
                 if (serial >= 0) {
-                    weapon = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                    if (weapon != NULL) {
-                        weapon->mLife = 0;
+                    ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    weapon = other;
+                    if (other != NULL) {
+                        other->mLife = 0;
                     }
                 }
             }
