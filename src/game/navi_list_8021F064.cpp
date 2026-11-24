@@ -14,6 +14,7 @@ void NaviList_8021F064::fn_8021F25C(s32 serial) {
     mCount++;
 }
 
+// FIXME: 92.96 %, missing/extra; behaviour clean.
 void NaviList_8021F064::fn_8021F1F0(s32 serial) {
     // FIXME: 93%. The original tests mCount twice (a second blelr before the
     // loop, i copied from the zeroed removed flag in r6) and keeps mCount in
@@ -36,6 +37,7 @@ void NaviList_8021F064::fn_8021F1F0(s32 serial) {
     }
 }
 
+// FIXME: 99.38 %, regalloc-only; behaviour clean.
 void NaviList_8021F064::fn_8021F130() {
     if (mCount > 0 && (mFlags & 3) != 0) {
         for (s32 i = 0; i < mCount; i++) {
