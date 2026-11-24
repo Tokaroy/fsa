@@ -357,7 +357,7 @@ s32 GameRoot_8049EF20::getPlayerCount_80138A30() {
 // The per-frame update (the counterpart of draw_80136828): polls the pads, then runs the screen of the current
 // mode (field_0x4c) and, once it asks for another one (field_0x50), the fade and load sequence of field_0x58.
 //
-// FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.72 %, missing/extra; behaviour drift.
 // (the target loads field_0x4 into r3 before each fn_80139D70 call and narrows fn_8045959C's result to a byte).
 void GameRoot_8049EF20::fn_80137300() {
     field_0x5c++;
