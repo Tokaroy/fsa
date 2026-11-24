@@ -71,12 +71,9 @@ static inline f32 cut4(f32 v) {
 }
 
 static inline void moveToward(JGeometry::TVec3f& pos, const Vec* target, f32 speed) {
-    f32 x = target->x;
-    f32 y = target->y;
-    f32 z = target->z;
-    pos.x += cut4(x - pos.x) * speed;
-    pos.y += cut4(y - pos.y) * speed;
-    pos.z += cut4(z - pos.z) * speed;
+    pos.x += cut4(target->x - pos.x) * speed;
+    pos.y += cut4(target->y - pos.y) * speed;
+    pos.z += cut4(target->z - pos.z) * speed;
 }
 
 static inline void moveToward(JGeometry::TVec3f& pos, JGeometry::TVec3f target, f32 speed) {
