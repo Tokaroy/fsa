@@ -36,7 +36,6 @@ void HammerShopMinigame_8049C858::init() {
     }
 }
 
-// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 void HammerShopMinigame_8049C858::fn_801003F4() {
     s32 rank = 0;
     u8 used[4] = {0, 0, 0, 0};
@@ -101,7 +100,7 @@ inline void HammerShopMinigame_8049C858::facePlayer_inline() {
     }
 }
 
-// FIXME(shotgun): 95.85 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour near.
 void HammerShopMinigame_8049C858::update() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
@@ -125,7 +124,7 @@ void HammerShopMinigame_8049C858::update() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (openMessage_8038AD24(field_0x240, 0x26B, mSerial, mLayer_0x4, msgPos, 0)) {
+            if (openMessage_8038AD24(field_0x240, 0x26B, getSerial(), getField_0x4(), msgPos, 0)) {
                 for (s32 i = 0; i < 4; i++) {
                     fn_802308E0(i);
                 }
@@ -154,7 +153,7 @@ void HammerShopMinigame_8049C858::update() {
                     field_0x248 = 0;
                 } else {
                     s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
-                    field_0x284 = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                    field_0x284 = (s32)gGameRoot_8053AAF8->mRandom.get_ufloat((f32)count);
                     if (field_0x284 == 4) {
                         field_0x284 = 3;
                     }
@@ -302,7 +301,7 @@ void HammerShopMinigame_8049C858::update() {
             if (fn_8022FD8C(mSerial) >= 0) {
                 fn_801003F4();
                 fn_803894BC(field_0x240, 1);
-                openMessage_8038AD24(field_0x240, 0x26E, mSerial, mLayer_0x4, msgPos, 2);
+                openMessage_8038AD24(field_0x240, 0x26E, getSerial(), getField_0x4(), msgPos, 2);
                 field_0x230 = 6;
                 field_0x248 = 0;
                 fn_8022B260();
@@ -365,7 +364,7 @@ void HammerShopMinigame_8049C858::update() {
     case 8:
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
-        if (field_0x240 >= 0 && openMessage_8038AD24(field_0x240, 0x370, mSerial, mLayer_0x4, msgPos, 0)) {
+        if (field_0x240 >= 0 && openMessage_8038AD24(field_0x240, 0x370, getSerial(), getField_0x4(), msgPos, 0)) {
             field_0x230 = 9;
             field_0x248 = 0;
             facePlayer_inline();
@@ -381,8 +380,8 @@ void HammerShopMinigame_8049C858::update() {
     }
 }
 
-// FIXME: 77.86 %, different; behaviour clean.
-// FIXME(shotgun): register allocation differs in the unrolled score loop
+// FIXME: 80.47 %, different; behaviour clean.
+// Register allocation and instruction order differ in the unrolled score loop.
 void HammerShopMinigame_8049C858::draw() {
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
         s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
@@ -410,7 +409,7 @@ void HammerShopMinigame_8049C858::draw() {
             mPos.z = savedPos.z;
         }
     }
-    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x235 * 2 + field_0x23c + 0x311, NULL, 0, 1.0f, 1.0f);
+    drawSprite_801F06F0("enemy_gc_sob.bin", 0x311 + field_0x235 * 2 + field_0x23c, NULL, 0, 1.0f, 1.0f);
 }
 
 HammerShopMinigame_8049C858::~HammerShopMinigame_8049C858() {}
