@@ -63,14 +63,16 @@ static inline void sleep_80300E1C(OSTime ticks) {
 
 static inline s32 readGameCode_80300E1C(GbaClient_803007D0* client) {
     u32 code;
-    if (GBAGetStatus(client->mPort, &client->mStatus) != 0) {
-        return 1;
+    s32 err = GBAGetStatus(client->mPort, &client->mStatus);
+    if (err != 0) {
+        return err;
     }
     if (client->mStatus != 0x28) {
         return 1;
     }
-    if (GBARead(client->mPort, (u8*)&code, &client->mStatus) != 0) {
-        return 1;
+    err = GBARead(client->mPort, (u8*)&code, &client->mStatus);
+    if (err != 0) {
+        return err;
     }
     client->field_0x64 = code;
     client->field_0xd7 = 1;
@@ -78,17 +80,20 @@ static inline s32 readGameCode_80300E1C(GbaClient_803007D0* client) {
 }
 
 static inline s32 writeGameCode_80300E1C(GbaClient_803007D0* client) {
-    if (GBAGetStatus(client->mPort, &client->mStatus) != 0) {
-        return 1;
+    s32 err = GBAGetStatus(client->mPort, &client->mStatus);
+    if (err != 0) {
+        return err;
     }
     if (client->mStatus != 0x20) {
         return 1;
     }
-    if (GBAWrite(client->mPort, (u8*)lbl_8053ACC4, &client->mStatus) != 0) {
-        return 1;
+    err = GBAWrite(client->mPort, (u8*)lbl_8053ACC4, &client->mStatus);
+    if (err != 0) {
+        return err;
     }
-    if (GBAGetStatus(client->mPort, &client->mStatus) != 0) {
-        return 1;
+    err = GBAGetStatus(client->mPort, &client->mStatus);
+    if (err != 0) {
+        return err;
     }
     if (client->mStatus != 0x30) {
         return 1;
@@ -97,36 +102,36 @@ static inline s32 writeGameCode_80300E1C(GbaClient_803007D0* client) {
 }
 
 static inline s32 exchangeInitialPacket_80300E1C(GbaClient_803007D0* client, u32 fallbackCode) {
-    if (readGameCode_80300E1C(client) != 0) {
-        return 1;
-    }
-    if (memcmp(&client->field_0x64, lbl_8053ACC4, 4) != 0 && client->field_0x64 != fallbackCode) {
-        return 1;
-    }
-    if (memcmp(&client->field_0x64, lbl_8053ACC4, 4) == 0) {
-        client->field_0x5c = 0;
-    }
-    if (writeGameCode_80300E1C(client) != 0) {
-        return 1;
-    }
-    u32 cmd = 0x4000000;
-    if (GBAWrite(client->mPort, (u8*)&cmd, &client->mStatus) != 0 || (client->mStatus & 0x30) != 0x30) {
-        return 1;
-    }
-    for (s32 offset = 0; offset < 0x20; offset += 4) {
-        if (GBAGetStatus(client->mPort, &client->mStatus) != 0 || client->mStatus != 0x38) {
-            return 1;
-        }
-        if (GBARead(client->mPort, (u8*)&client->mPacket + offset, &client->mStatus) != 0 || (client->mStatus & 0x30) != 0x30) {
-            return 1;
+    if (readGameCode_80300E1C(client) == 0) {
+        if (memcmp(&client->field_0x64, lbl_8053ACC4, 4) == 0 || client->field_0x64 == fallbackCode) {
+            if (memcmp(&client->field_0x64, lbl_8053ACC4, 4) == 0) {
+                client->field_0x5c = 0;
+            }
+            if (writeGameCode_80300E1C(client) == 0) {
+                u32 cmd = 0x4000000;
+                if (GBAWrite(client->mPort, (u8*)&cmd, &client->mStatus) != 0 || (client->mStatus & 0x30) != 0x30) {
+                    return 1;
+                }
+                for (s32 offset = 0; offset < 0x20; offset += 4) {
+                    if (GBAGetStatus(client->mPort, &client->mStatus) != 0 || client->mStatus != 0x38) {
+                        return 1;
+                    }
+                    if (GBARead(client->mPort, (u8*)&client->mPacket + offset, &client->mStatus) != 0 || (client->mStatus & 0x30) != 0x30) {
+                        return 1;
+                    }
+                }
+                return 0;
+            }
         }
     }
-    return 0;
+    return 1;
 }
 
-// FIXME(shotgun): 84.31 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.90 %, missing/extra + reloc-name; behaviour drift.
 // What still differs: the original leaves the poll loop from inside the switch without the two
-// flags (nextMsg, sleepBeforeRetry), and inlines fn_803006E8 where we call it.
+// flags (nextMsg, sleepBeforeRetry): one sleep block ahead of the loop head and one failure tail
+// inside case 5, both jumped to from every case. It also inlines fn_803006E8 where we call it
+// (auto-inlining does not take it; only an explicit `inline` does, which drops its own copy).
 void* fn_80300E1C(void* arg) {
     GbaClient_803007D0* client = static_cast<GbaClient_803007D0*>(arg);
     OSMessage msg;
