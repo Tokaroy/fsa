@@ -17,7 +17,8 @@ void PointCheckNPC_804A81C8::init() {
     }
 }
 
-// FIXME: 98.3%. Regalloc / scheduling: same length, 8 opcodes differ (tile compare regalloc, PRNG drops regalloc, and setTile_802F9974 call site independent load scheduling).
+// The original reloads mLayer_0x4 for spawnEmitter_8013CC50 after building pos (ours reuses the compare's load); the rest is registers and load order.
+// FIXME: 98.67 %, missing/extra; behaviour drift.
 void PointCheckNPC_804A81C8::update() {
     JGeometry::TVec2<f32> p(mPos.x + 4.0f, mPos.y + 4.0f);
     JGeometry::TBox2f box(mBox);
@@ -146,13 +147,12 @@ void PointCheckNPC_804A81C8::update() {
             field_0x238--;
             if (field_0x238 == 0) {
                 if (player < 0) {
-                    s32 layer = mLayer_0x4;
-                    if (layer >= 8) {
+                    if (mLayer_0x4 >= 8) {
                         JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-                        getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &pos, 3, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &pos, 3, -1, -1);
                     } else {
                         JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-                        spawnEmitter_8013CC50(layer, &pos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                     }
                     if (field_0x234 == 4) {
                         gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x4F);
