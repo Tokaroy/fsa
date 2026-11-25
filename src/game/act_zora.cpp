@@ -2,6 +2,7 @@
 #include "game/GameGlobals.h"
 #include "game/Camera.h"
 #include "game/Map.h"
+#include "game/RotMatrix.h"
 #include "game/act/act_zora.h"
 
 static const s16 lbl_80469318[] = { 12, 6, 13, 6, 14, 6, 15, 6, -1, -1 };
@@ -72,7 +73,8 @@ void ZoraEnemy_804A3D7C::init() {
     vfunc_0xA4();
 }
 
-// FIXME: 99.44 %, regalloc-only. Minor register allocation differences in tile search loop (r22/r23/r24/r25/r27).
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
+// Minor register allocation differences in tile search loop (r22/r23/r24/r25/r27).
 void ZoraEnemy_804A3D7C::setState_801BACE8(s32 state) {
     switch (state) {
     case 0:
@@ -271,9 +273,9 @@ void ZoraEnemy_804A3D7C::vfunc_0xA0() {
     }
 }
 
-// FIXME: 93.96 %, missing/extra (3 instructions). The original materialises isZero() as a bool (mfcr; extrwi.; bne) and
-// loads field_0x54.z, .y, .x ahead of the matrix stores (ours loads each just before its store); the mCel range test
-// also branches differently (bge/b vs blt).
+// FIXME: 98.21 %, missing/extra; behaviour near.
+// The original materialises isZero()'s result as a bool before testing it
+// (mfcr; extrwi.; bne); ours branches on the compare (beq).
 void ZoraEnemy_804A3D7C::draw() {
     switch (mState) {
     case 0:
@@ -290,18 +292,18 @@ void ZoraEnemy_804A3D7C::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = field_0x54.x;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = field_0x54.y;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = field_0x54.z;
+    setScaleMtx(mtx, field_0x54);
     params.mMtx = mtx;
-    if (mAnim.mCel < 16 && mAnim.mCel >= 9) {
+    switch (mAnim.mCel) {
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
         params.field_0x1c = -1;
+        break;
     }
     drawSprite_801F06F0("enemy_gc_sob.bin", mAnim.mCel + 0xD5, &params, -1, 1.0f, 1.0f);
 }
