@@ -28,6 +28,20 @@ inline s32 Bombchu_804AB464::hitPlayers() {
     return damagePlayersInBox_801F2B7C(0, -1, 1);
 }
 
+// Inline: update's frame holds this table below the first inlined
+// vfunc_0x48's TVec3f, the order of a local that belongs to an inlined copy.
+inline void Bombchu_804AB464::stepFrame() {
+    s32 frames[4] = {0, 3, 2, 1};
+    if (field_0x230 != 0 && !field_0xc4 && field_0x230 != 3 && field_0x23c % 4 == 0) {
+        if (field_0x23c > 100) {
+            field_0x250 ^= 1;
+        } else {
+            field_0x258 = (field_0x258 + 1) % 4;
+            field_0x250 = frames[field_0x258];
+        }
+    }
+}
+
 void Bombchu_804AB464::init() {
     field_0x26c = (mSpawnParam_0x90 >> 16) & 3;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -171,9 +185,8 @@ void Bombchu_804AB464::vfunc_0x48() {
     field_0x230 = 3;
 }
 
-// FIXME: 99.88 %. Only registers and stack slots differ: in state 2 (layer flag
-// clear) the hit mask and the loop index swap r29 / r30, and the inlined
-// vfunc_0x48's result TVec3f and the frames table swap slots (0x1C / 0x2C).
+// Only registers differ: in state 2 (layer flag clear) the hit mask and the
+// loop index swap r29 / r30.
 void Bombchu_804AB464::update() {
     if (field_0x230 == 1) {
         if (fn_8022F9E4(field_0x26c, mSerial, false, false) == true) {
@@ -294,15 +307,7 @@ void Bombchu_804AB464::update() {
             Bombchu_804AB464::vfunc_0x48();
         }
     }
-    s32 frames[4] = {0, 3, 2, 1};
-    if (field_0x230 != 0 && !field_0xc4 && field_0x230 != 3 && field_0x23c % 4 == 0) {
-        if (field_0x23c > 100) {
-            field_0x250 ^= 1;
-        } else {
-            field_0x258 = (field_0x258 + 1) % 4;
-            field_0x250 = frames[field_0x258];
-        }
-    }
+    stepFrame();
     if (field_0x230 != 3 && field_0x23c == 0) {
         Bombchu_804AB464::vfunc_0x48();
     }
