@@ -52,10 +52,77 @@ const char* lbl_804A4DA8[48] = {
     "boss_koori_fly_hiraku_02.bti",
     "boss_koori_fly_hiraku_03.bti",
 };
-// Per animation (field_0x0) the value list (0xFF ends it) and the frame counts (.rodata /
-// .sdata2 u8 arrays, 260 values: over gate.py's per-file literal limit, not written here yet).
-extern const u8* const lbl_804A4E68[];
-extern const u8* const lbl_804A4EA8[];
+// Per animation (field_0x0): the value list (0xFF ends it) and, step by step, how many
+// frames each value is held. The short lists land in .sdata2, the long ones in .rodata.
+static const u8 lbl_804699F8[] = {1, 2, 1, 2, 1, 2, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 2, 0xFF};
+static const u8 lbl_80469A14[] = {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0xFF};
+static const u8 lbl_80469A30[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 9, 8, 0xFF};
+static const u8 lbl_80469A40[] = {1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 30, 0xFF};
+static const u8 lbl_8053F238[] = {8, 9, 10, 9, 10, 9, 8, 0xFF};
+static const u8 lbl_8053F240[] = {3, 3, 3, 3, 3, 3, 30, 0xFF};
+static const u8 lbl_80469A50[] = {1, 2, 3, 4, 5, 6, 7, 8, 0xFF};
+static const u8 lbl_80469A5C[] = {3, 3, 3, 3, 4, 4, 4, 26, 0xFF};
+static const u8 lbl_8053F248[] = {8, 7, 6, 4, 11, 12, 0xFF};
+static const u8 lbl_8053F250[] = {4, 4, 4, 4, 4, 20, 0xFF};
+static const u8 lbl_8053F258[] = {13, 14, 15, 16, 0xFF};
+static const u8 lbl_8053F260[] = {4, 4, 4, 20, 0xFF};
+static const u8 lbl_8053F268[] = {17, 18, 19, 20, 0xFF};
+static const u8 lbl_8053F270[] = {4, 4, 4, 30, 0xFF};
+static const u8 lbl_80469A68[] = {20, 21, 22, 23, 24, 25, 26, 27, 28, 0xFF};
+static const u8 lbl_80469A74[] = {20, 6, 6, 6, 15, 6, 6, 6, 6, 0xFF};
+static const u8 lbl_8053F278[] = {28, 29, 28, 30, 0xFF};
+static const u8 lbl_8053F280[] = {6, 6, 6, 6, 0xFF};
+static const u8 lbl_8053F288[] = {27, 0xFF};
+static const u8 lbl_8053F28C[] = {6, 0xFF};
+static const u8 lbl_8053F290[] = {31, 32, 33, 34, 35, 36, 0xFF};
+static const u8 lbl_8053F298[] = {4, 4, 4, 4, 4, 30, 0xFF};
+static const u8 lbl_8053F2A0[] = {37, 38, 39, 40, 0xFF};
+static const u8 lbl_8053F2A8[] = {4, 4, 6, 20, 0xFF};
+static const u8 lbl_8053F2B0[] = {39, 41, 40, 0xFF};
+static const u8 lbl_8053F2B4[] = {4, 4, 40, 0xFF};
+static const u8 lbl_80469A80[] = {40, 38, 37, 36, 35, 34, 33, 32, 31, 28, 0xFF};
+static const u8 lbl_80469A8C[] = {4, 4, 15, 4, 4, 4, 4, 4, 4, 40, 0xFF};
+static const u8 lbl_8053F2B8[] = {42, 43, 42, 44, 0xFF};
+static const u8 lbl_8053F2C0[] = {6, 6, 6, 6, 0xFF};
+static const u8 lbl_8053F2C8[] = {45, 46, 45, 47, 0xFF};
+static const u8 lbl_8053F2D0[] = {6, 6, 6, 6, 0xFF};
+
+static const u8* lbl_804A4E68[16] = {
+    lbl_804699F8,
+    lbl_80469A30,
+    lbl_8053F238,
+    lbl_80469A50,
+    lbl_8053F248,
+    lbl_8053F258,
+    lbl_8053F268,
+    lbl_80469A68,
+    lbl_8053F278,
+    lbl_8053F288,
+    lbl_8053F290,
+    lbl_8053F2A0,
+    lbl_8053F2B0,
+    lbl_80469A80,
+    lbl_8053F2B8,
+    lbl_8053F2C8,
+};
+static const u8* lbl_804A4EA8[16] = {
+    lbl_80469A14,
+    lbl_80469A40,
+    lbl_8053F240,
+    lbl_80469A5C,
+    lbl_8053F250,
+    lbl_8053F260,
+    lbl_8053F270,
+    lbl_80469A74,
+    lbl_8053F280,
+    lbl_8053F28C,
+    lbl_8053F298,
+    lbl_8053F2A8,
+    lbl_8053F2B4,
+    lbl_80469A8C,
+    lbl_8053F2C0,
+    lbl_8053F2D0,
+};
 
 Sequencer_801DAA24::Sequencer_801DAA24() {
     field_0x0 = 0;
