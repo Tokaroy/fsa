@@ -1302,7 +1302,8 @@ void Player_804A6F38::fn_8029185C() {
     resetPosHistory_8024BAEC();
 }
 
-// FIXME: 99.62 %. Scheduling only: the original's lwz r4, 0x135c is scheduled at
+// FIXME: 99.62 %, scheduling; behaviour clean.
+// Scheduling only: the original's lwz r4, 0x135c is scheduled at
 // +0x7B0 (we emit it at +0x7B8), and the li r5, 0 / li r3, 0 pair at +0x840 is in the opposite order.
 void Player_804A6F38::fn_80290FC0() {
     if (mStateTimer_0x3fc == 40) {
@@ -1509,7 +1510,8 @@ void Player_804A6F38::fn_80290D58() {
     field_0xcec = 0;
 }
 
-// FIXME: 99.56. Order and stack slots only: the three offset vectors passed to
+// FIXME: 99.99 %, operands; behaviour clean.
+// Order and stack slots only: the three offset vectors passed to
 // fn_80252BAC sit at 0x2C / 0x20 / 0x14 (original 0x14 / 0x2C / 0x20, as if the
 // kind-4 group's were declared last), and for kinds 0x17 / 0x18 the 0.0f is loaded
 // before from->y, mPos.y (stores x, z, y in the original).
@@ -1684,7 +1686,10 @@ bool Player_804A6F38::startTransition_80290070(s32 layer, const JGeometry::TVec3
         }
     } else if (kind == 0x17 || kind == 0x18) {
         if (requestState_80251AEC(0x1C)) {
-            JGeometry::TVec3f offset(0.0f, from->y - mPos.y, 0.0f);
+            JGeometry::TVec3f offset;
+            offset.x = 0.0f;
+            offset.y = from->y - mPos.y;
+            offset.z = 0.0f;
             fn_80252BAC(&offset);
         } else {
             return false;
