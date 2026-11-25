@@ -69,8 +69,9 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 
 // 0x801B29EC.
 // FIXME(shotgun): 99.19 %, different; behaviour near.
-// Still differs: the life-meter stores load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8
-// inlined in the original), state 8 loads mLayer_0x4 before getPlayerLayer_8023DE58, and registers.
+// Still differs: the actor loop's second zero is a register copy (mr) in the original; the life-meter stores
+// load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8 inlined in the original; it needs to be a
+// header inline), state 8 loads mLayer_0x4 before getPlayerLayer_8023DE58, and registers and stack slots.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -115,7 +116,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                 s32 count = getActorManager_801F856C()->getActorEnd();
                 field_0x32c = 0;
                 for (s32 i = 0; i < count; i++) {
-                    ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+                    ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(i);
                     if (actor == NULL || actor->mParamDstr_0x1a8 != 1) {
                         continue;
                     }
