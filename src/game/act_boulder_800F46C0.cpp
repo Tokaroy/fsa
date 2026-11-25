@@ -14,10 +14,14 @@
 #include "game/act/act_boulder_800F46C0.h"
 #include "game/act/act_stone_arrghus_800F7FCC.h"
 
-// Sprite names of the shard textures (.data 0x8049C458, not written as source here), indexed by field_0x240.
-extern const char* const lbl_8049C458[];
-// Offsets (x, y) of the four tiles checked around a landing boulder (.rodata 0x80463678).
-extern const f32 lbl_80463678[];
+// Offsets (x, y) of the four tiles checked around a landing boulder.
+const f32 lbl_80463678[8] = {
+    -8.0f, -8.0f, 8.0f, -8.0f, -8.0f, 8.0f, 8.0f, 8.0f,
+};
+// Sprite names of the shard textures, indexed by field_0x240.
+const char* lbl_8049C458[5] = {
+    "hahen_l1.bti", "hahen_l2.bti", "hahen_s1.bti", "hahen_s2.bti", "hahen_s3.bti",
+};
 
 Boulder_8049C4C0::~Boulder_8049C4C0() {}
 

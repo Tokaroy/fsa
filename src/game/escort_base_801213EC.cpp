@@ -28,8 +28,15 @@ static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeome
     return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
-// The ids vfunc_0x80 asks findOverlappingActorOf_801F26CC about (0xAC bytes of 'PEAC', 'OKTA', 'AMOS', ... ids).
-extern const u32 lbl_80464CD8[43];
+// The ids vfunc_0x80 asks findOverlappingActorOf_801F26CC about, 'NULL'-terminated.
+const u32 lbl_80464CD8[43] = {
+    'PEAC', 'OKTA', 'AMOS', 'BZBR', 'OKTM', 'DGTL', 'HINO', 'SLR1',
+    'TKTA', 'SLR2', 'KETH', 'FLME', 'TKYU', 'TRAP', 'MOZO', 'Poon',
+    'SKUL', 'SLR3', 'POPO', 'SBAL', 'SLR4', 'FIRE', 'FBAL', 'ROPE',
+    'NZMI', 'OIWA', 'PAME', 'STAL', 'MIRA', 'WIZR', 'ZORA', 'ZOSH',
+    'BMTY', 'PUKU', 'RIVR', 'GDMN', 'FAGN', 'TNDR', 'WNWN', 'FLYO',
+    'LTZR', 'BEEE', 'NULL',
+};
 
 static const u16 lbl_80464D84[8] = {0x2C, 0x2D, 0x2E, 0x2F, 0x28, 0x29, 0x2A, 0x2B};
 

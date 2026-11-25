@@ -14,8 +14,10 @@
 
 // The arrows each player has shot, the unit's .bss object at 0x804C6330 (declared extern: defining it here changes the static initialiser).
 extern s32 lbl_804C6330[4];
-extern const u32 lbl_804662E8[5];
-extern const u32 lbl_804662FC[4];
+// The actor kinds an arrow hits, 'NULL'-terminated.
+const u32 lbl_804662E8[5] = {'TOMI', 'IPOT', 'IBBM', 'BMST', 'NULL'};
+// The z rotation by direction.
+const u32 lbl_804662FC[4] = {0x4000, 0xC000, 0x8000, 0};
 
 // The unit's .data tables at 0x804A0530.
 static f32 lbl_804A0530[4][2] = {{12.0f, 0.0f}, {-12.0f, 0.0f}, {0.5f, 12.0f}, {0.5f, -12.0f}};

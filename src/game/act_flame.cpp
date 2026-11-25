@@ -243,15 +243,29 @@ void Flame_804A0330::fn_8015EA2C() {
     }
 }
 
-// FIXME(shotgun): tables not written out (gate.py literal tripwire); extern-declared, sizes
-// from symbols.txt. By direction (mDir_0x98).
+// By direction (mDir_0x98).
 struct Tables_80466110 {
-    /* 0x00 */ s32 mRotY[4];                // the emitters' y rotation
-    /* 0x10 */ u8 field_0x10[0x10];         // not used here
-    /* 0x20 */ JGeometry::TBox2f mBoxes[4]; // mBox while burning
-    /* 0x60 */ JGeometry::TBox2f mHitBoxes[4]; // mMapBox_0x80
+    /* 0x00 */ s32 mRotY[4];         // the emitters' y rotation
+    /* 0x10 */ s32 field_0x10[4];    // not used here
+    /* 0x20 */ f32 mBoxes[4][4];     // mBox while burning (x0, y0, x1, y1)
+    /* 0x60 */ f32 mHitBoxes[4][4];  // mMapBox_0x80
 }; // Size: 0xA0
-extern const Tables_80466110 lbl_80466110;
+const Tables_80466110 lbl_80466110 = {
+    {0xC000, 0x4000, 0x8000, 0},
+    {22, 22, 26, 16},
+    {
+        {0.0f, -10.0f, 90.0f, 10.0f},
+        {-90.0f, -10.0f, 0.0f, 10.0f},
+        {-10.0f, 0.0f, 10.0f, 90.0f},
+        {-10.0f, -90.0f, 10.0f, 0.0f},
+    },
+    {
+        {0.0f, -6.0f, 88.0f, 6.0f},
+        {-88.0f, -6.0f, 0.0f, 6.0f},
+        {-6.0f, 0.0f, 6.0f, 88.0f},
+        {-6.0f, -88.0f, 6.0f, 0.0f},
+    },
+};
 // The emitter offset (x, y) from mPos.
 static f32 lbl_804A0310[4][2] = {{3.0f, 0.0f}, {-3.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, -3.0f}};
 
@@ -282,7 +296,8 @@ void Flame_804A0330::fn_8015DF7C() {
         }
         addCalc2_801F71A4(&field_0x260, target, 0.1f, 1.0f);
         if (field_0x94 != 4 && field_0x94 != 5) {
-            mBox.set(lbl_80466110.mBoxes[mDir_0x98]);
+            const f32* b = lbl_80466110.mBoxes[mDir_0x98];
+            mBox.set(b[0], b[1], b[2], b[3]);
             if (field_0x258 == 1) {
                 mBox.i.x *= 1.5f;
                 mBox.i.y *= 1.5f;
@@ -292,7 +307,8 @@ void Flame_804A0330::fn_8015DF7C() {
             if (field_0x260 > 0.7f) {
                 fn_801F2B20(5);
                 if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9) && gGameRoot_8053AAF8->field_0x7f == 1) {
-                    mMapBox_0x80.set(lbl_80466110.mHitBoxes[mDir_0x98]);
+                    const f32* hb = lbl_80466110.mHitBoxes[mDir_0x98];
+                    mMapBox_0x80.set(hb[0], hb[1], hb[2], hb[3]);
                     if (field_0x258 == 1) {
                         mMapBox_0x80.i.x *= 1.5f;
                         mMapBox_0x80.i.y *= 1.5f;

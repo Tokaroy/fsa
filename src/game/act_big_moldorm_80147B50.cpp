@@ -13,21 +13,36 @@
 #include "game/act/act_big_moldorm_80147B50.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Tables of the 'DGTL' actor (the rest not written as source here): .data 0x8049F630 emitter
-// ids per direction (below), 0x8049F640 trail indices, 0x8049F698 resource names (.rodata strings);
-// .sdata 0x80539F60 a segment-sprite order.
+// Tables of the 'DGTL' actor: emitter ids per direction, trail indices, rupee kind per segment
+// (-1: none), sprite names, the segment-sprite order.
 u16 lbl_8049F630[][2] = {
     {0x11F, 0x120},
     {0x123, 0x124},
     {0x11D, 0x11E},
     {0x121, 0x122},
 };
-extern const s32 lbl_8049F640[14];
-extern const s32 lbl_8049F678[8]; // .data 0x8049F678: rupee kind per segment (-1: none)
-extern const char* const lbl_8049F698[];
-extern const u8 lbl_80539F60[];
-extern s32 lbl_80539F58;
-extern s32 lbl_80539F5C;
+s32 lbl_8049F640[14] = {
+    18, 32, 45, 57, 68, 78, 79,
+    12, 23, 33, 42, 50, 57, 58,
+};
+s32 lbl_8049F678[8] = {4, -1, 3, -1, 3, -1, 3, -1};
+const char* lbl_8049F698[12] = {
+    "boss_deg_atama.bti",
+    "boss_deg_atama_kuchi_01.bti",
+    "boss_deg_atama_kuchi_02.bti",
+    "boss_deg_karada_01.bti",
+    "boss_deg_karada_02.bti",
+    "boss_deg_karada_03.bti",
+    "boss_deg_karada_04.bti",
+    "boss_deg_karada_maru.bti",
+    "boss_deg_shippo_green.bti",
+    "boss_deg_shippo.bti",
+    "boss_deg_shippo_blue.bti",
+    "boss_deg_shippo_purple.bti",
+};
+s32 lbl_80539F58 = -1;
+s32 lbl_80539F5C = -1;
+u8 lbl_80539F60[8] = {0, 1, 2, 1};
 s32 lbl_8053AB30;
 s32 lbl_8053AB34;
 s32 lbl_8053AB38;
