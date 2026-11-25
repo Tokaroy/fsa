@@ -56,6 +56,7 @@ void Bumper_804A0260::init() {
 
 // The loop bases sit in other registers and the boxA / pos stores are
 // scheduled in another order.
+// FIXME: 99.70 %, scheduling+regalloc; behaviour clean.
 void Bumper_804A0260::update() {
     mBox.i.x = -17.0f;
     mBox.i.y = -17.0f;
@@ -221,7 +222,8 @@ void Bumper_804A0260::update() {
     }
 }
 
-// FIXME: 96.68 %. scheduling+regalloc only: the original keeps sin x in f29,
+// FIXME: 96.68 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc only: the original keeps sin x in f29,
 // sin z in f27 and the angle in f30, ours sin x in f27, sin z in f29 and the
 // angle in f31 (the same setRotScaleMtx arithmetic, same call order).
 void Bumper_804A0260::draw() {
