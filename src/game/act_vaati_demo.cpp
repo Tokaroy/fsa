@@ -394,7 +394,8 @@ void VaatiCutscene_8049D940::fn_80115BC4(const JGeometry::TVec3f* pos, JGeometry
             pull.sub(mPos, *pos);
             pull.z = 0.0f;
             pull.normalize();
-            pull.scale(__fsel(dist - speed, speed, dist));
+            f32 len = __fsel(dist - speed, speed, dist);
+            pull.scale(len);
         }
     }
     JGeometry::TVec3f spin;
