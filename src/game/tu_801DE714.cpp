@@ -865,6 +865,7 @@ static inline bool reachedTarget(cls_804A51E4* a) {
 }
 
 // Registers and the order of findTargets' argument loads still differ.
+// FIXME: 99.32 %, scheduling+regalloc; behaviour clean.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -959,7 +960,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 99.83 %, regalloc-only; behaviour near.
+// FIXME(shotgun): 99.86 %, regalloc-only; behaviour near.
 void cls_804A51E4::updateState_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
