@@ -66,6 +66,7 @@ void Lotus_804AC330::init() {
 }
 
 // Float register allocation and load order still differ.
+// FIXME: 99.51 %, scheduling+regalloc; behaviour clean.
 void Lotus_804AC330::update() {
     if (field_0x230 == 1) {
         mPos += mVel_0x3c;
@@ -160,7 +161,8 @@ void Lotus_804AC330::update() {
     }
 }
 
-// FIXME: 98.22 % (regalloc-only). Float register allocation in setRotScaleMtx (f26/f28/f29/f31).
+// FIXME: 98.22 %, regalloc-only; behaviour clean.
+// (regalloc-only). Float register allocation in setRotScaleMtx (f26/f28/f29/f31).
 void Lotus_804AC330::draw() {
     if (field_0x240 <= 0.0f) {
         return;
