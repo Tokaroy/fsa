@@ -132,11 +132,8 @@ bool TwoSwordMotion_804ABA90::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
     return fn_802265DC(pos, layer, true);
 }
 
-// FIXME: 96.09 %, missing/extra; behaviour drift.
-// At the fn_8038BD08 call the original loads mLayer_0x4 and
-// the address of its by-value mPos copy before the psq copy and builds the
-// copy at sp+0x44 (frame 0x90); ours builds it at sp+0x8, so the stack slots
-// of the later position temporaries differ.
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
+// Float registers of the three swingPhase computations differ (f2/f3/f4).
 void TwoSwordMotion_804ABA90::update() {
     switch (field_0x230) {
     case 0:
@@ -225,7 +222,7 @@ void TwoSwordMotion_804ABA90::update() {
     case 2:
         if (field_0x234 <= 0) {
             if (field_0x254 == 0) {
-                fn_8038BD08(field_0x24c, 0xd4, mLayer_0x4, mPos, 1);
+                fn_8038BD08(field_0x24c, 0xd4, getField_0x4(), mPos, 1);
             }
             field_0x230 = 3;
         } else {
@@ -239,6 +236,7 @@ void TwoSwordMotion_804ABA90::update() {
                     fn_80230FD0(field_0x24c, 0x10008);
                     fn_80230F44(field_0x24c, 0x1000002);
                 } else if (field_0x258 == 2) {
+                    field_0x258 = 2;
                     field_0x25c = 0x1e;
                 } else if (field_0x258 >= 3) {
                     field_0x258 = 2;
@@ -257,21 +255,22 @@ void TwoSwordMotion_804ABA90::update() {
                         continue;
                     }
                 }
-                JGeometry::TVec3f pos(field_0x294.x + field_0x27c * swingPhase(count, field_0x278),
-                                      field_0x294.y, field_0x294.z);
+                JGeometry::TVec3f pos = JGeometry::TVec3f(
+                    field_0x294.x + field_0x27c * swingPhase(count, field_0x278), field_0x294.y, field_0x294.z);
                 fn_80230498(i, &pos, field_0x258 + 0x31a, 0xff, -0x80, -0x80, true);
                 if (field_0x2a0[i] != NULL) {
                     setEmitterPos_8013CB44(field_0x2a0[i], &pos, 0, -1, true);
                 }
                 if (field_0x2b0[i] != NULL) {
-                    JGeometry::TVec3f pos2(field_0x294.x + field_0x27c * swingPhase(count, field_0x278),
-                                           field_0x294.y, field_0x294.z);
-                    setEmitterPos_8013CB44(field_0x2b0[i], &pos2, 0, -1, true);
+                    setEmitterPos_8013CB44(field_0x2b0[i],
+                                           &JGeometry::TVec3f(field_0x294.x + field_0x27c * swingPhase(count, field_0x278),
+                                                              field_0x294.y, field_0x294.z),
+                                           0, -1, true);
                 }
                 if (field_0x280 == 0) {
-                    JGeometry::TVec3f p20((field_0x27c + 0.5f) * swingPhase(count, field_0x278) + field_0x294.x,
-                                          field_0x294.y, field_0x294.z);
-                    if (isBlocked_0x4C(mLayer_0x4, &p20) == true) {
+                    if (isBlocked_0x4C(mLayer_0x4,
+                                       &JGeometry::TVec3f((field_0x27c + 0.5f) * swingPhase(count, field_0x278) + field_0x294.x,
+                                                          field_0x294.y, field_0x294.z))) {
                         field_0x280 = 1;
                     }
                 }
@@ -279,10 +278,10 @@ void TwoSwordMotion_804ABA90::update() {
                     field_0x27c += 0.5f;
                 } else if (field_0x258 >= 2 || field_0x280 == 1) {
                     if (field_0x281[i] == 0) {
-                        JGeometry::TVec3f a(pos.x + 6.0f, pos.y - 29.0f, pos.z);
-                        spawnEmitter_8013CC50(mLayer_0x4, &a, 0xcb, 0, 1, NULL, NULL, true, 1.0f);
-                        JGeometry::TVec3f b(pos.x + 6.0f, pos.y - 29.0f, pos.z);
-                        spawnEmitter_8013CC50(mLayer_0x4, &b, 0xcc, 0, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(pos.x + 6.0f, pos.y - 29.0f, pos.z), 0xcb, 0, 1,
+                                              NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(pos.x + 6.0f, pos.y - 29.0f, pos.z), 0xcc, 0, 1,
+                                              NULL, NULL, true, 1.0f);
                         field_0x281[i] = 1;
                     }
                 }
@@ -302,7 +301,7 @@ void TwoSwordMotion_804ABA90::update() {
                         continue;
                     }
                 }
-                if (fn_80230224(i, false) == true) {
+                if (fn_80230224(i, false)) {
                     continue;
                 }
                 none = false;
