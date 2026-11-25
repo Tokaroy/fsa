@@ -61,6 +61,9 @@ f32 lbl_804A0008[24][2] = {
 };
 s32 lbl_8053AB50;            // running count of the soldiers spawned
 
+// Not auto-inlined: update__19BowSoldier_804A00C8Fv calls fn_801583E4 and fn_801583D4
+// out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 void fn_801583E4(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(src->x, src->y, src->z);
 }
@@ -68,6 +71,7 @@ void fn_801583E4(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
 void fn_801583D4(JGeometry::TVec3f* dst, f32 x, f32 y, f32 z) {
     dst->set(x, y, z);
 }
+#pragma auto_inline reset
 
 // FIXME(shotgun): 95.23 %, scheduling + reloc-name; behaviour clean.
 void BowSoldier_804A00C8::init() {
@@ -245,7 +249,7 @@ BOOL BowSoldier_804A00C8::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 91.37 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
 void BowSoldier_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
@@ -259,15 +263,11 @@ void BowSoldier_804A00C8::update() {
             if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 return;
             }
-            JGeometry::TVec2f tmpPos;
-            tmpPos.x = mPos.x;
-            tmpPos.y = mPos.y;
+            JGeometry::TVec2f tmpPos(mPos.x, mPos.y);
             field_0x2aa = getTileAt_80226998(tmpPos, mLayer_0x4);
             return;
         }
-        JGeometry::TVec2f tmpPos;
-        tmpPos.x = mPos.x;
-        tmpPos.y = mPos.y;
+        JGeometry::TVec2f tmpPos(mPos.x, mPos.y);
         if (field_0x2aa == getTileAt_80226998(tmpPos, mLayer_0x4)) {
             return;
         }

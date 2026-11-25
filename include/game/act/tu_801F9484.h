@@ -203,7 +203,7 @@ public:
     // 0x80157C68: after a landing on a tile of kind 2, 3 or 0xE puts it in state 0xC; true when it did.
     /* 0x54 */ virtual BOOL vfunc_0x54();
     /* 0x230 */ s32 mState;
-    /* 0x234 */ s16 field_0x234;
+    /* 0x234 */ u16 field_0x234;
     /* 0x236 */ u8 field_0x236[2];
     // SHARED-EDIT: written by the 'SLR4' actor (game/act_chief_soldier.cpp).
     /* 0x238 */ s32 field_0x238;
