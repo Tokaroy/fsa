@@ -48,8 +48,6 @@ f32 lbl_804A79E0[4][3] = {
     {0.0f, -12.0f, 0.0f},
 };
 
-// FIXME: 97.59 %, different + reloc-name; behaviour drift.
-// Only the float literal symbol names differ (pool not yet in the original order).
 void Block_804A7A10::init() {
     field_0x244 = 0;
     s32 type = mSpawnParam_0x90 & 3;
@@ -145,7 +143,7 @@ bool Block_804A7A10::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }
 
-// FIXME: 96.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.95 %, scheduling+regalloc; behaviour clean.
 // Same instructions; a few float registers and the order of some instructions still differ.
 void Block_804A7A10::update() {
     JGeometry::TBox2f box(mBox);
