@@ -465,14 +465,10 @@ void TowerAppearanceDemo_8049E770::fn_8012B02C() {
 void TowerAppearanceDemo_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
-            JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x460, 0, -1, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p1(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x46F, 0, 0, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p2(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x470, 0, 1, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p3(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &p3, 0x46E, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x46E, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x471, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x472, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x50063, 0);
@@ -558,12 +554,12 @@ void TowerAppearanceDemo_8049E770::fn_8012AA84() {
         fn_8011921C()->fn_80118454();
         field_0x230++;
     }
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 posY = field_0x238.y;
     f32 halfH = field_0x248;
     f32 posX = field_0x238.x;
     f32 y1 = posY + halfH;
     f32 y0 = posY - halfH;
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->mBlendBoxOn_0x840 == 0) {
         cam->mBlendBoxOn_0x840 = 1;
