@@ -88,7 +88,10 @@ static const s32 lbl_8046C448[6] = {1, 0, 2, 3, 4, 5};
 static const s32 lbl_8046C460[6] = {0x3A, 0x3B, 0x3C, 0x39, 0x3E, 0x3E};
 static const s32 lbl_8046C478[6] = {0x41, 0x42, 0x39, 0x39, 0x39, 0x40};
 
-// FIXME: 72.89 %, different; behaviour clean.
+// FIXME: 72.89 %, scheduling; behaviour clean.
+// Block order only: the original places the `dir >= 0` and `changed` blocks right
+// after the D-pad tests (the stick tests branch back to them; the Left/Right
+// branches skip them).
 void UnknownFORM_804A7BE8::update() {
     if (field_0x254 != NULL && field_0x254->mState >= 1 && field_0x254->mState <= 10) {
         field_0x254->fn_803703C8();
@@ -176,18 +179,18 @@ void UnknownFORM_804A7BE8::update() {
                 }
                 if (dir >= 0) {
                     if (dir == 0) {
-                        if (field_0x24c) {
-                            field_0x23c = 2;
-                        } else {
+                        if (!field_0x24c) {
                             field_0x23c = 1;
+                        } else {
+                            field_0x23c = 2;
                         }
                     } else if (dir == 1) {
                         field_0x23c = 1;
                     } else if (dir == 2) {
-                        if (field_0x24c) {
-                            field_0x23c = 3;
-                        } else {
+                        if (!field_0x24c) {
                             field_0x23c = 0;
+                        } else {
+                            field_0x23c = 3;
                         }
                     } else {
                         field_0x23c = 0;
