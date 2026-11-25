@@ -10,11 +10,9 @@ static const f32 lbl_80491680[4] = {1.0f, 1.1f, 0.9f, 0.85f};
 PlayerSoundObj_804B20F8::PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
     : ActorSoundObj_804578F4(pos, heap, numHandles), field_0x5c(kind) {}
 
-// FIXME: 95.7%. (1) The original reads the group byte once into r31 and does clrlwi before each
-// compare; ours compares r31 directly. (2) The original's sound-less early return jumps straight to
-// the epilogue (no mr r3, r30); ours folds it into the nested if. (3) kind is in r4 in the original
-// (r0 in ours) and the three pitch constants load in a different order, so the registers of the
-// random pitch expression differ.
+// The original reads the group byte once into r31 and does clrlwi before each compare; ours
+// compares r31 directly.
+// FIXME: 98.11 %, missing/extra; behaviour drift.
 JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     u8 type = id.mId.mBytes.mGroupId;
     JAISeMgr* seMgr = gAudioMgr_8053AF80->field_0x34;
@@ -61,14 +59,17 @@ JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     if (handle == NULL) {
         return NULL;
     }
-    if (handle->sound_ != NULL && (u32)id - 0x20000 != 0x33 && (u32)id - 0x20000 != 0x49) {
-        static JMath::TRandom_fast_ lbl_8053AF8C(0);
+    if (handle->sound_ == NULL) {
+        return handle;
+    }
+    if ((u32)id - 0x20000 != 0x33 && (u32)id - 0x20000 != 0x49) {
+        static JMath::TRandom_<JMath::TRandom_fast_> lbl_8053AF8C(0);
         s32 kind = field_0x5c;
         if (kind >= 0 && kind < 4) {
             if (type == 1) {
                 handle->sound_->getAuxiliary().movePitch(lbl_80491680[kind], 0);
             } else if (type == 2) {
-                f32 pitch = 1.0f + (0.03f * lbl_8053AF8C.get_ufloat_1() - 0.015f * (1.0f - FLT_EPSILON));
+                f32 pitch = 1.0f + (lbl_8053AF8C.get_ufloat(0.03f) - 0.015f * (1.0f - FLT_EPSILON));
                 handle->sound_->getAuxiliary().movePitch(pitch, 0);
             }
         }
@@ -76,16 +77,15 @@ JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     return handle;
 }
 
-// FIXME: 98.6%. The original keeps the id in r4 for the fn_80458F04 call; ours reloads it from the
-// stack (one extra lwz r4, 0x10(r1) before that call).
 void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9) {
-    JAISoundID id = lbl_8052DEE0[index];
+    u32 soundId = lbl_8052DEE0[index];
+    JAISoundID id = soundId;
     JAISoundHandle* handle = NULL;
     u8 section = id.mId.mBytes.mSectionId;
     u8 group = id.mId.mBytes.mGroupId;
     if (section == 1) {
         if (id == 0x1000002 || id == 0x1000023) {
-            gAudioMgr_8053AF80->fn_80458F04(id);
+            gAudioMgr_8053AF80->fn_80458F04(soundId);
         } else {
             gAudioMgr_8053AF80->startBgm_80458FF0(id, true, false);
         }
