@@ -252,7 +252,6 @@ static inline bool actorTouches(Frostare_804A4C58* boss, ActorBase_804A5770* oth
     return touched;
 }
 
-// FIXME(shotgun): 92.43 %, missing/extra; behaviour near.
 u8 Frostare_804A4C58::checkHitByActor_0x60() {
     u8 hit = false;
     bool active = false;
@@ -357,7 +356,6 @@ static inline bool playerTouches(Frostare_804A4C58* boss, s32 i) {
     return touched;
 }
 
-// FIXME(shotgun): 96.60 %, different; behaviour near.
 u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
     u8 hit = false;
     bool active = false;
