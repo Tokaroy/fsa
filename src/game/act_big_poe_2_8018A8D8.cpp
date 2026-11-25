@@ -3,6 +3,7 @@
 
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
+#include "game/DrawShadow.h"
 #include "game/cls_804A1E50.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/ActorManager.h"
@@ -1573,10 +1574,11 @@ void BigPoe2_804A1E50::update() {
 }
 
 
-// FIXME(shotgun): 87.08 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.96 %, missing/extra + reloc-name; behaviour near.
 void BigPoe2_804A1E50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
+    JGeometry::TVec3f pos;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
@@ -1593,41 +1595,41 @@ void BigPoe2_804A1E50::draw() {
         params.field_0x10.a = (u8)(s32)field_0x288;
         drawSpriteRes_801EFD34(res, &params, -1, -46.0f, 33.0f, 0.0f);
 
-        JGeometry::TVec3f top = mPos;
-        top.x -= 46.0f;
-        top.y += 24.0f;
-        JGeometry::TVec3f shadow(top.x, top.y + 8.0f, top.z);
-        JUtility::TColor shadowColor(0, 0, 0, (u8)(s32)(0.5f * field_0x288));
-        gGameRoot2_8053AB10->field_0x2c->drawShadow_80158B5C(mLayer_0x4, &shadow, shadowColor, 80.0f);
+        pos.set(mPos);
+        pos.x -= 46.0f;
+        pos.y += 24.0f;
+        JGeometry::TVec3f shadow;
+        shadow.set(pos);
+        shadow.y = pos.y + 8.0f;
+        drawShadow(mLayer_0x4, &shadow, JUtility::TColor(0, 0, 0, (u8)(s32)(0.5f * field_0x288)), 80.0f);
 
-        top.x += -16.0f * JMath::sincosTable_.sinShort((s32)(8192.0f * field_0x28c));
+        pos.x += -16.0f * JMath::sincosTable_.sinShort((s32)(8192.0f * field_0x28c));
         if (field_0x27c < 0) {
-            field_0x2c4[2].x = top.x;
-            field_0x2c4[2].y = top.y;
-            field_0x2c4[2].z = top.z;
+            field_0x2c4[2].x = pos.x;
+            field_0x2c4[2].y = pos.y;
+            field_0x2c4[2].z = pos.z;
             field_0x2c4[2].x += -16.0f * JMath::sincosTable_.sinShort((s32)(8192.0f * field_0x28c));
             field_0x2c4[2].y += 16.0f;
             field_0x2c4[2].z = 0.0f;
         }
         if (field_0x284 != 255.0f) {
             JUtility::TColor color(0x3F3F1F7F);
-            gGameRoot2_8053AB10->field_0x2c->fn_80158624(&top, &field_0x2c4[1], color, 48.0f);
+            gGameRoot2_8053AB10->field_0x2c->fn_80158624(&pos, &field_0x2c4[1], color, 48.0f);
         }
 
         params.field_0x1d = 2;
         params.field_0x1c = 1;
         u8 alpha = (u8)(s32)field_0x280;
         params.field_0x10.a = alpha;
-        JGeometry::TVec3f base = mPos;
-        base.x -= 8.0f;
+        pos.set(mPos);
+        pos.x -= 8.0f;
         if (alpha == 255) {
             params.field_0x26 = 1;
             params.field_0x30 = 0x11;
         } else {
             params.field_0x26 = 0;
         }
-        JUtility::TColor shadowColor2(0, 0, 0, (u8)(s32)(0.5f * field_0x280));
-        gGameRoot2_8053AB10->field_0x2c->drawShadow_80158B5C(mLayer_0x4, &base, shadowColor2, 120.0f);
+        drawShadow(mLayer_0x4, &pos, JUtility::TColor(0, 0, 0, (u8)(s32)(0.5f * field_0x280)), 120.0f);
 
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), field_0x294);
         params.mMtx = mtx;
