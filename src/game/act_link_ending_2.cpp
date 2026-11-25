@@ -103,7 +103,7 @@ void Link2Ending_804AE338::init() {
     }
 }
 
-// FIXME(shotgun): 97.57 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.05 %, scheduling+regalloc + reloc-name; behaviour drift.
 void Link2Ending_804AE338::update() {
     if (field_0x234 != 0) {
         field_0x234--;
