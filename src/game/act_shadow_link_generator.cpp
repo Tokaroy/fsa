@@ -71,6 +71,7 @@ void ShadowLinkGenerator_804A4310::init() {
 
 // FIXME(shotgun): 96.88 %, different; behaviour drift.
 void ShadowLinkGenerator_804A4310::update() {
+    s32 i;
     mPieces.fn_8021C2B4();
     mStateTimer++;
     if (mStateTimer < 0) {
@@ -105,7 +106,7 @@ void ShadowLinkGenerator_804A4310::update() {
         break;
     case 4:
         if (mStateTimer >= 0x3C) {
-            for (s32 i = 0; i < 3; i++) {
+            for (i = 0; i < 3; i++) {
                 deleteEmitter(&mEmitters[i]);
             }
             mStateTimer = 0;
@@ -128,7 +129,7 @@ void ShadowLinkGenerator_804A4310::update() {
         }
         if (getShadowLinkFight_801C0D70()->field_0x0 & 0x80) {
             setScreenFlag_0x30(0xFF, true);
-            for (s32 i = 0; i < 3; i++) {
+            for (i = 0; i < 3; i++) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDB0[i], 0, 0, NULL, NULL, true, 1.0f);
             }
             mStateTimer = 0;
@@ -149,7 +150,7 @@ void ShadowLinkGenerator_804A4310::update() {
     case 7:
         startSound_801F0E34(0x5004C, 0);
         if (mSequence.fn_8021F4B0()) {
-            for (s32 i = 0; i < 5; i++) {
+            for (i = 0; i < 5; i++) {
                 deleteEmitter(&mEmitters2[i]);
             }
             s32 serial = getActorManager_801F856C()->fn_801F7884('DMZL', mLayer_0x4);
@@ -165,12 +166,12 @@ void ShadowLinkGenerator_804A4310::update() {
         } else if (field_0x2ac != 0) {
             field_0x2ac--;
             if (field_0x2ac == 0) {
-                for (s32 i = 0; i < 5; i++) {
+                for (i = 0; i < 5; i++) {
                     deleteEmitter(&mEmitters2[i]);
                 }
             } else {
                 f32 alpha = 255.0f * (0.008333334f * (f32)field_0x2ac);
-                for (s32 i = 0; i < 5; i++) {
+                for (i = 0; i < 5; i++) {
                     if (mEmitters2[i] != NULL) {
                         mEmitters2[i]->setGlobalAlpha(alpha);
                     }
@@ -191,7 +192,7 @@ void ShadowLinkGenerator_804A4310::update() {
     case 9:
         if (mStateTimer >= 0x5A) {
             mSequence.fn_8021F924();
-            for (s32 i = 0; i < 5; i++) {
+            for (i = 0; i < 5; i++) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80469418[i], 0, 0, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x5006F, 0);
