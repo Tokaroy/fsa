@@ -8,12 +8,9 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JUtility/JUTGamePad.h"
 
-// FIXME: 96.62 %, different; behaviour clean.
-// The loop: the original keeps the index in r30 and a byte
-// offset (mr r28, r30 after the end load, stepped by 4) for mActors[i]; ours
-// keeps the index in r28 and the offset in r30 whatever the declaration order
-// (tried: index before/after the end load, actor hoisted). The 30.0f literal is
-// lbl_8054075C in the original and an anonymous literal here (data split).
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
+// Registers only: count/index/end sit in r28/r30/r29 in the original. The
+// 30.0f literal is lbl_8054075C in the original (data split).
 void UnknownFORM_804A7BE8::init() {
     if (hasPlayerLeader_8022F514(mSpawnParam_0x90 & 3)) {
         mAlive = false;
@@ -31,8 +28,9 @@ void UnknownFORM_804A7BE8::init() {
     playSe_801F0D20(0x45);
     field_0x248 = mSpawnParam_0x90 & 3;
 
+    s32 i;
     s32 count = 3;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (hasPlayerLeader_8022F514(i)) {
             count--;
         }
@@ -63,7 +61,7 @@ void UnknownFORM_804A7BE8::init() {
     field_0x254 = NULL;
     ActorBase_804A5770* actor;
     s32 actorEnd = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < actorEnd; i++) {
+    for (i = 0; i < actorEnd; i++) {
         actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == 'FGAL' && actor->mAlive == true) {
             field_0x254 = static_cast<FourGirlsControl_804AE4B0*>(actor);
@@ -83,12 +81,14 @@ UnknownFORM_804A7BE8::~UnknownFORM_804A7BE8() {
 
 // Sprite-state remap tables (rodata, 6 states each): lbl_8046C400 + 0x00..0x48 remap field_0x23c
 // on the two shoulder buttons, 0x60 / 0x78 map field_0x23c to the sprite id (field_0x230).
-static const s32 kShoulderLeft[2][6] = {{3, 0, 1, 2, 4, 5}, {1, 0, 2, 3, 4, 5}};
-static const s32 kShoulderRight[2][6] = {{1, 2, 3, 0, 4, 5}, {1, 0, 2, 3, 4, 5}};
-static const s32 kSpriteId[2][6] = {{0x3A, 0x3B, 0x3C, 0x39, 0x3E, 0x3E}, {0x41, 0x42, 0x39, 0x39, 0x39, 0x40}};
+static const s32 lbl_8046C400[6] = {3, 0, 1, 2, 4, 5};
+static const s32 lbl_8046C418[6] = {1, 0, 2, 3, 4, 5};
+static const s32 lbl_8046C430[6] = {1, 2, 3, 0, 4, 5};
+static const s32 lbl_8046C448[6] = {1, 0, 2, 3, 4, 5};
+static const s32 lbl_8046C460[6] = {0x3A, 0x3B, 0x3C, 0x39, 0x3E, 0x3E};
+static const s32 lbl_8046C478[6] = {0x41, 0x42, 0x39, 0x39, 0x39, 0x40};
 
-// FIXME: 71.25 %, missing/extra; behaviour drift.
-// FIXME(shotgun): missing/extra; the tables are separate arrays here, one rodata block in the original
+// FIXME: 72.89 %, different; behaviour clean.
 void UnknownFORM_804A7BE8::update() {
     if (field_0x254 != NULL && field_0x254->mState >= 1 && field_0x254->mState <= 10) {
         field_0x254->fn_803703C8();
@@ -162,16 +162,16 @@ void UnknownFORM_804A7BE8::update() {
                 } else if (fn_8022C5EC(mSpawnParam_0x90 & 3, 1)) {
                     playSe_801F0D20(0x46);
                     if (field_0x24c) {
-                        field_0x23c = kShoulderLeft[0][field_0x23c];
+                        field_0x23c = lbl_8046C400[field_0x23c];
                     } else {
-                        field_0x23c = kShoulderLeft[1][field_0x23c];
+                        field_0x23c = lbl_8046C418[field_0x23c];
                     }
                 } else if (fn_8022C5EC(mSpawnParam_0x90 & 3, 2)) {
                     playSe_801F0D20(0x46);
                     if (field_0x24c) {
-                        field_0x23c = kShoulderRight[0][field_0x23c];
+                        field_0x23c = lbl_8046C430[field_0x23c];
                     } else {
-                        field_0x23c = kShoulderRight[1][field_0x23c];
+                        field_0x23c = lbl_8046C448[field_0x23c];
                     }
                 }
                 if (dir >= 0) {
@@ -204,9 +204,9 @@ void UnknownFORM_804A7BE8::update() {
                 }
             }
             if (field_0x24c) {
-                field_0x230 = kSpriteId[0][field_0x23c];
+                field_0x230 = lbl_8046C460[field_0x23c];
             } else {
-                field_0x230 = kSpriteId[1][field_0x23c];
+                field_0x230 = lbl_8046C478[field_0x23c];
             }
         }
     }
@@ -229,28 +229,26 @@ void UnknownFORM_804A7BE8::update() {
     }
 }
 
-// Keeps x inside [lo, hi): below lo it becomes lo, from hi up it becomes hi.
-static inline void clampX(f32& x, f32 lo, f32 hi) {
-    if (x < lo) {
-        x = lo;
-    } else if (x >= hi) {
-        x = hi;
-    }
-}
-
-// FIXME(shotgun): 88.81 %, different + reloc-name; behaviour clean.
 void UnknownFORM_804A7BE8::draw() {
-    JGeometry::TBox2f box;
     JGeometry::TVec3f pos(mPos);
+    JGeometry::TBox2f box;
     if (mLayer_0x4 == 0) {
         box = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
         if (pos.y - pos.z < 28.0f + box.i.y) {
             pos.y += 52.0f;
         }
         if (field_0x24c) {
-            clampX(pos.x, 68.0f + box.i.x, box.f.x - 60.0f);
+            if (pos.x < 68.0f + box.i.x) {
+                pos.x = 68.0f + box.i.x;
+            } else if (pos.x >= box.f.x - 60.0f) {
+                pos.x = box.f.x - 60.0f;
+            }
         } else {
-            clampX(pos.x, 52.0f + box.i.x, box.f.x - 44.0f);
+            if (pos.x < 52.0f + box.i.x) {
+                pos.x = 52.0f + box.i.x;
+            } else if (pos.x >= box.f.x - 44.0f) {
+                pos.x = box.f.x - 44.0f;
+            }
         }
     } else {
         fn_8022B8EC(field_0x248, &box);
@@ -259,15 +257,31 @@ void UnknownFORM_804A7BE8::draw() {
         }
         if (field_0x24c) {
             if (fn_8022C8EC(mSpawnParam_0x90 & 3)) {
-                clampX(pos.x, 52.0f + box.i.x, box.f.x - 52.0f);
+                if (pos.x < 52.0f + box.i.x) {
+                    pos.x = 52.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 52.0f) {
+                    pos.x = box.f.x - 52.0f;
+                }
             } else {
-                clampX(pos.x, 80.0f + box.i.x, box.f.x - 80.0f);
+                if (pos.x < 80.0f + box.i.x) {
+                    pos.x = 80.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 80.0f) {
+                    pos.x = box.f.x - 80.0f;
+                }
             }
         } else {
             if (fn_8022C8EC(mSpawnParam_0x90 & 3)) {
-                clampX(pos.x, 36.0f + box.i.x, box.f.x - 36.0f);
+                if (pos.x < 36.0f + box.i.x) {
+                    pos.x = 36.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 36.0f) {
+                    pos.x = box.f.x - 36.0f;
+                }
             } else {
-                clampX(pos.x, 66.0f + box.i.x, box.f.x - 66.0f);
+                if (pos.x < 66.0f + box.i.x) {
+                    pos.x = 66.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 66.0f) {
+                    pos.x = box.f.x - 66.0f;
+                }
             }
         }
     }
