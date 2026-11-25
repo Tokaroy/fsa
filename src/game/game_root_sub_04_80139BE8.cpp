@@ -28,7 +28,8 @@ void fn_8013A884(const JUtility::TColor* color) {
 #pragma auto_inline reset
 
 // Other stages clear the staff-roll pointers (the destructor tests them).
-// FIXME: 99.81 %, names only: the report's statics and pool constants.
+// FIXME: 99.81 %, reloc-name; behaviour drift.
+// names only: the report's statics and pool constants.
 // 0x8013A538
 GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
     lbl_8053AB00 = heap;
@@ -161,7 +162,7 @@ static inline bool isFrozenRoom() {
     return false;
 }
 
-// FIXME(shotgun): 99.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 // 0x80139D9C
 void GameRootSub04_801F856C::fn_80139D9C() {
     s32 mode = gGameRoot_8053AAF8->field_0x4c;
