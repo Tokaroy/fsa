@@ -277,8 +277,6 @@ static inline JGeometry::TVec3f negated(const JGeometry::TVec3f& v) {
     return result;
 }
 
-// FIXME: 95.64 %, missing/extra + reloc-name; behaviour drift.
-// missing/extra + reloc-name: ours has 2 fewer instrs (274 vs 276): the original keeps the table, the actor manager tag and the serial in r27-r29 (stmw/lmw r27) and negates case 5 through two stack TVec3f copies; the single-case switch in case 13 has an extra bge in the original.
 bool Snowball_8049D020::fn_8010C294(s32 state) {
     switch (state) {
     case 1:
@@ -474,9 +472,12 @@ void Snowball_8049D020::dropRupee() {
     if (field_0x258 >= 1) {
         kind = 1;
     }
-    s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, lbl_80464328[kind]);
-    if (serial >= 0) {
-        getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    // A count of one: the original hoists the table, the index and the tag out of this loop.
+    for (s32 i = 0; i < 1; i++) {
+        s32 serial = getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &mPos, lbl_80464328[kind]);
+        if (serial >= 0) {
+            getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        }
     }
 }
 
