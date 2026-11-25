@@ -8,6 +8,7 @@
 #include "game/ViewLayer.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_stalfos.h"
+#include "game/act/act_wizzrobe.h"
 
 s32 lbl_804A0C10[24] = {
     0,  1,  0,  2,  3,  2,   //
@@ -24,8 +25,6 @@ s32 lbl_804A0C88[16] = {
 };
 s32 lbl_804A0CC8[4] = {2, 10, 2, 10};
 
-// FIXME: 99.37%, missing/extra. The original has one more beq (0x224) in the
-// WIZR loop's null check on the actor; the natural single check compiles without it.
 void Stalfos_804A0CD8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-4.0f, -4.0f, 4.0f, 4.0f);
@@ -78,9 +77,12 @@ void Stalfos_804A0CD8::init() {
         s32 count = getActorManager_801F856C()->collectActorsById_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1);
         for (int i = 0; i < count; i++) {
             ActorBase_804A5770* actor = actors[i];
-            if (actor != NULL && actor->mSpawnParam_0x90 == 1) {
-                field_0x230 = 0;
-                return;
+            if (actor != NULL) {
+                Wizzrobe_804A0EDC* wizzrobe = static_cast<Wizzrobe_804A0EDC*>(actor);
+                if (wizzrobe != NULL && wizzrobe->mSpawnParam_0x90 == 1) {
+                    field_0x230 = 0;
+                    return;
+                }
             }
         }
         field_0x230 = 7;
