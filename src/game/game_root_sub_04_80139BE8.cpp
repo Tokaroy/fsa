@@ -168,7 +168,7 @@ static inline bool isFrozenRoom() {
 void GameRootSub04_801F856C::fn_80139D9C() {
     s32 mode = gGameRoot_8053AAF8->field_0x4c;
     if ((mode == GAME_MODE_7 && gGameRoot_8053AAF8->field_0x60 >= 4) ||
-        (gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B ? true : gGameRoot_8053AAF8->field_0x88 == 2) ||
+        gGameRoot_8053AAF8->isPaused_0x4c() ||
         (gGameRoot_8053AAF8->field_0x7f == 0 && (mode == GAME_MODE_A || mode == GAME_MODE_C))) {
         gGameRoot_8053AAF8->fn_80136500();
         mView->vfunc_0x10();
@@ -221,13 +221,13 @@ void GameRootSub04_801F856C::fn_80139D9C() {
         lbl_80529DEC.field_0x214 = byte;
     }
     u8 bits = lbl_80529DEC.field_0x24a;
-    if ((bits & 1) || (bits & 2) || (bits & 4) || (bits & 8)) {
+    if (!(bits & 1) && !(bits & 2) && !(bits & 4) && !(bits & 8)) {
         if (!isFrozenRoom()) {
-            lbl_80529DEC.field_0x215 = 0;
+            lbl_80529DEC.field_0x215 = 1;
         }
     } else {
         if (!isFrozenRoom()) {
-            lbl_80529DEC.field_0x215 = 1;
+            lbl_80529DEC.field_0x215 = 0;
         }
     }
 }
