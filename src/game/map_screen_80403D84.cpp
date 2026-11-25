@@ -2732,17 +2732,16 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
 // FIXME(shotgun): 96.30 %, different; behaviour near.
 // setRotScaleMtx's six sin / cos results land in
 // other saved FPRs (target sx f28, sy f27, sz f26, cx f31, cy f30, scale f29) and its
-// products are scheduled differently (unproven inline, see game/RotMatrix.h); and the
-// else branch of the stage choice reloads mStage_0x340 where the original copies the
-// compared register (mr r30, r3).
+// products are scheduled differently (unproven inline, see game/RotMatrix.h).
 void MapScreen_804B1288::fn_804069E8() {
     SpriteParams_801F5AE0 params;
     s32 picked = -1;
+    s32 curStage = mStage_0x340;
     s32 stage;
-    if (mStage_0x340 == 10 && mLevel_0x348 == 2) {
+    if (curStage == 10 && mLevel_0x348 == 2) {
         stage = lbl_80529DEC.field_0x120;
     } else {
-        stage = mStage_0x340;
+        stage = curStage;
     }
     Mtx mtx;
     JGeometry::TVec3f rot(0.0f, 0.0f, 0.0f);
