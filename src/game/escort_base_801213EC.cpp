@@ -331,7 +331,7 @@ static inline s32 findArrivedSlot(s32 player) {
     return -1;
 }
 
-// FIXME: 97.93 %, missing/extra; behaviour clean.
+// FIXME: 99.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     if (player < 0) {
         return;
@@ -402,8 +402,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
         dir = angleToDir_801F681C(pool_8053C9F0(-dx, -dy));
-        JGeometry::TVec3f moved = mPos - mPrevPos;
-        if (PSVECMag(&moved) >= 1.0f) {
+        if (PSVECMag(&(mPos - mPrevPos)) >= 1.0f) {
             field_0x380 = 0.5f;
             field_0x37c = 0.5f;
         }
@@ -412,33 +411,9 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         mPos = *getPlayerPos_8023E724(fn_8012285C());
     }
     if (field_0x380 <= 0.0f) {
-        if (dir >= 0) {
-            field_0x364[4]++;
-            if (field_0x364[4] >= 10) {
-                field_0x364[4] = 10;
-            }
-            if (field_0x364[4] >= 10) {
-                field_0x364[4] = 0;
-                mDir_0x98 = dir;
-                if (dir + 5 != mAnim.mAnim) {
-                    mAnim.startAnim_801D22DC(dir + 5, 2, false);
-                    mAnim.setFrame_801D1F14(0.0f);
-                }
-            }
-        }
-    } else if (dir >= 0) {
-        field_0x364[4]++;
-        if (field_0x364[4] >= 10) {
-            field_0x364[4] = 10;
-        }
-        if (field_0x364[4] >= 10) {
-            field_0x364[4] = 0;
-            mDir_0x98 = dir;
-            if (dir != mAnim.mAnim) {
-                mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.setFrame_801D1F14(0.0f);
-            }
-        }
+        fn_80122730(dir, true, true);
+    } else {
+        fn_80122730(dir, false, true);
     }
 }
 
@@ -768,41 +743,17 @@ void EscortBase_8049E0C8::fn_80122548() {
     }
 }
 
-// FIXME(shotgun): 96.87 %, different; behaviour drift.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80122148() {
     if (fn_8012285C() >= 0) {
-        s32 state = fn_8012285C();
-        s32 slot = state;
-        for (s32 i = 0; i < 4; i++) {
-            if (state == getPlayerHeldPlayer_8023ECF0(i)) {
-                slot = i;
-                break;
-            }
-        }
-        bool hidden = fn_80234E30(slot) || fn_80235448(state);
-        if (hidden || !fn_8023BCD4(fn_8012285C())) {
+        if (isPlayerHidden(fn_8012285C()) || !fn_8023BCD4(fn_8012285C())) {
             mDrawEnabled = false;
         } else {
             mDrawEnabled = true;
         }
         field_0x331 = 0;
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(fn_8012285C());
-        s32 q = fn_8012285C();
-        s32 found;
-        if (!fn_8023E98C(q)) {
-            found = -1;
-        } else {
-            found = 0;
-            while (found < 4) {
-                if (fn_8023ED8C(found) && q == getPlayerHeldPlayer_8023ECF0(found) && fn_8022D75C(found)) {
-                    break;
-                }
-                found++;
-            }
-            if (found >= 4) {
-                found = -1;
-            }
-        }
+        s32 found = findArrivedSlot(fn_8012285C());
         if (found >= 0 && found != fn_8012285C()) {
             pos.z = getPlayerPos_8023E724(found)->z;
         }
