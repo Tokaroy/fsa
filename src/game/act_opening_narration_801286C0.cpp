@@ -159,7 +159,7 @@ static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
-// FIXME(shotgun): 68.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.15 %, different + reloc-name; behaviour drift.
 // cases 5 / 7: the by-value copy of pos for fn_8038BD08 is scheduled in another order; jump table is @NNN
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
