@@ -88,10 +88,10 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
         field_0x230 = 7;
         return false;
     }
-    if (tile == 0 || tile == 0x22) {
-        return false;
+    if (tile != 0 && tile != 0x22) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // 0x80334A04.
