@@ -114,7 +114,7 @@ static const u8 lbl_80543178[4] = {0x28, 0x50, 0xFF, 0xFF};
 // Force Gem / fairy sounds by tens digit.
 static const u32 sScoreSounds[10] = {0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C};
 
-// FIXME(shotgun): 99.69 %, operands; behaviour drift.
+// FIXME(shotgun): 99.72 %, regalloc-only; behaviour drift.
 void Score_804AF4C0::fn_80393514() {
     if (mTimer == 90) {
         // The original copies this 12-entry table (rodata 0x80475738) to the stack and passes entry 0.
@@ -260,7 +260,7 @@ static void putScoreDigit(const Score_804AF4C0* self, const JGeometry::TVec3f& p
     putScoreDigit(this, JGeometry::TVec3f(5.0f + mPos.x, mPos.y, mPos.z), c, fade); \
     putScoreDigit(this, JGeometry::TVec3f(10.0f + (5.0f + mPos.x), mPos.y, mPos.z), d, fade)
 
-// FIXME: 96.72 %, operands; behaviour drift.
+// FIXME: 98.60 %, scheduling+regalloc; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     switch (mValue) {
