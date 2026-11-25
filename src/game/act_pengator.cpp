@@ -60,7 +60,7 @@ void Pengator_804A1888::checkPlayerContact_0x18() {
     ActorBase_804A5770::checkPlayerContact_0x18();
 }
 
-// FIXME: 96.97 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
 // What differs: register choices only (gGameRoot_8053AAF8 in the random
 // calls, the frame table index).
 void Pengator_804A1888::update() {
