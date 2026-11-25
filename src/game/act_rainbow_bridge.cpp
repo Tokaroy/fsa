@@ -19,7 +19,8 @@ RainbowBridge_8049E610::RainbowBridge_8049E610()
     }
 }
 
-// FIXME: 87.42% (try.py class different, but instruction count and order are identical: only the register assignment differs. The original keeps the loop index in r30, the field pointer in r29 and the NULL in r31; ours has index r29, pointer r30).
+// FIXME: 87.42 %, different; behaviour clean.
+// (try.py class different, but instruction count and order are identical: only the register assignment differs. The original keeps the loop index in r30, the field pointer in r29 and the NULL in r31; ours has index r29, pointer r30).
 RainbowBridge_8049E610::~RainbowBridge_8049E610() {
     for (int i = 0; i < 5; i++) {
         releaseEmitter_801EE434(field_0x23c[i]);
@@ -40,6 +41,7 @@ void RainbowBridge_8049E610::init() {
 }
 
 // Still differs: the contains() result's li 0 is scheduled one instruction later in the original, and the emitter loops swap two registers as in __dt__.
+// FIXME: 99.01 %, scheduling+regalloc; behaviour clean.
 void RainbowBridge_8049E610::update() {
     ActorBase_804A5770::update();
     switch (field_0x238) {
