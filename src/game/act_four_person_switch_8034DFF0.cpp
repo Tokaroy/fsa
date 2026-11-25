@@ -37,10 +37,8 @@ void FourPersonSwitch_804AC9A8::init() {
 // 0x8034E49C.
 // FIXME(shotgun): 90.40 %, missing/extra; behaviour near.
 void FourPersonSwitch_804AC9A8::update() {
-    JGeometry::TBox2f box(mBox);
-    box.addPos(mPos.x, mPos.y);
-    box.i.y += -2.5f;
-    box.f.y += -2.5f;
+    JGeometry::TBox2f box(mBox.i.x + mPos.x, mBox.i.y + mPos.y + -2.5f, mBox.f.x + mPos.x,
+                          mBox.f.y + mPos.y + -2.5f);
     s32 count = 0;
     switch (field_0x230) {
     case 0: {
@@ -74,7 +72,6 @@ void FourPersonSwitch_804AC9A8::update() {
             field_0x244 = 0;
             break;
         case 4: {
-            bool wait = true;
             if (field_0x240 != count) {
                 if (field_0x23c == 0) {
                     startSound_801F0E34(0x5006E, 0);
@@ -82,7 +79,6 @@ void FourPersonSwitch_804AC9A8::update() {
                 field_0x238 = 1;
                 field_0x244 = 5;
             } else if (field_0x244 <= 0 && !isScreenFlagSet_0x34()) {
-                wait = false;
                 if (fn_8023077C()) {
                     JGeometry::TVec3f shift(0.0f, 0.0f, 0.0f);
                     shift.y = lbl_804721C8[field_0x238];
@@ -94,8 +90,9 @@ void FourPersonSwitch_804AC9A8::update() {
                     field_0x230 = 2;
                     field_0x244 = 15;
                 }
+                break;
             }
-            if (wait && leader == true && field_0x244 > 0) {
+            if (leader == true && field_0x244 > 0) {
                 field_0x244--;
             }
             break;
@@ -140,20 +137,21 @@ void FourPersonSwitch_804AC9A8::update() {
     case 1:
         field_0x244--;
         if (field_0x244 == 0) {
-            if (field_0x248 >= 13) {
+            if (field_0x248 < 13) {
+                field_0x248++;
+            } else {
                 playSe_801F0D20(3);
                 setScreenFlag_0x30(0xFF, true);
                 field_0x244 = 15;
                 field_0x230 = 3;
-            } else {
-                field_0x248++;
-                field_0x244 = lbl_804721D4[field_0x248];
-                for (s32 i = 0; i < 4; i++) {
-                    JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-                    fn_80230498(i, &p, field_0x248 + 0xDB, 0xFF, -128, -128, true);
-                    if (field_0x248 == 1) {
-                        fn_80230FD0(i, 0x10001);
-                    }
+                break;
+            }
+            field_0x244 = lbl_804721D4[field_0x248];
+            for (s32 i = 0; i < 4; i++) {
+                JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
+                fn_80230498(i, &p, field_0x248 + 0xDB, 0xFF, -128, -128, true);
+                if (field_0x248 == 1) {
+                    fn_80230FD0(i, 0x10001);
                 }
             }
         }
