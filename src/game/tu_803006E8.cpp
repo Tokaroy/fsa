@@ -16,9 +16,9 @@
 
 GbaPacket_80300A8C lbl_804D6AB8[4];
 // The client threads and their 0x1000-byte stacks (OSCreateThread in startGbaClients_803007D0:
-// stack top lbl_804D7798[i] + 0x1000, priority 8).
+// stack top &lbl_804D7798[i * 0x1000 + 0x1000], priority 8).
 OSThread lbl_804D6B38[4];
-u8 lbl_804D7798[4][0x1000];
+u8 lbl_804D7798[4 * 0x1000];
 GbaClient_803007D0 lbl_804DB798[4];
 
 // The archive the client program is loaded from (lbl_80529DEC + 0x58); startGbaClients_803007D0 sets it.
@@ -572,17 +572,19 @@ void startGbaClients_803007D0() {
     bytes[i] = sum;
     for (s32 port = 0; port < 4; port++) {
         GbaClient_803007D0* client = &lbl_804DB798[port];
+        u32 length = lbl_8053ACC0;
+        u8* program = lbl_8053ACBC->mBytes;
         memset(client, 0, sizeof(GbaClient_803007D0));
         client->mPort = port;
         client->mCallback = fn_80300A8C;
-        client->mProgram = lbl_8053ACBC->mBytes;
-        client->mLength = lbl_8053ACC0;
+        client->mProgram = program;
+        client->mLength = length;
         client->field_0xda = 0x1A;
         client->field_0xdc = 1;
         client->field_0xdd = 0;
         client->field_0xde = 0;
         OSInitMessageQueue(&client->mQueue, client->mMessage, 1);
-        OSCreateThread(&lbl_804D6B38[port], fn_80300E1C, client, lbl_804D7798[port] + 0x1000, 0x1000, 8, 0);
+        OSCreateThread(&lbl_804D6B38[port], fn_80300E1C, client, &lbl_804D7798[port * 0x1000 + 0x1000], 0x1000, 8, 0);
         OSResumeThread(&lbl_804D6B38[port]);
     }
 }
