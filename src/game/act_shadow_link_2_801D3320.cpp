@@ -10,11 +10,10 @@
 // mPos, else to a random usable entry, then toward the entry nearest the
 // actor (fn_801C976C), by a random fraction of the way.
 //
-// FIXME: 95.0 %. Only register allocation differs: the original keeps the
-// loop counter, the u8 best/count and the entry pointer in r28/r30/r31/r26
-// (counter copied from the best/numUsable zero with mr), ours picks other
-// registers; the u8 `sel` and `player` are widened a second time (clrlwi)
-// in the original. The stack slots (hoisted vectors, in reverse order) match.
+// Still differs: the original copies the loop counter's zero from the
+// best/numUsable zero (mr), widens the u8 `sel` and `player` a second time
+// (clrlwi) and copies `player` once more for the search loop; registers follow.
+// FIXME: 96.68 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801D3320() {
     // Declared up front: the original's stack slots follow this order.
     u8 usable[0x30];
@@ -51,17 +50,14 @@ void ShadowLink2_804A43E8::fn_801D3320() {
                 }
             }
         }
-        cls_800FE3EC* cur = field_0x358.fn_80214244();
-        if (best < cur->field_0x2) {
-            cur->field_0x3 = best;
-        }
+        field_0x358.fn_80214244()->setIndex(best);
         getRailPointPos_800FE294(&railA, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(railA);
     } else {
         u8 entries[0x30];
+        u8* out = usable;
         u8 count = field_0x358.fn_80214244()->fn_800FD894(mLayer_0x4, entries, 0x30);
         u8 numUsable = 0;
-        u8* out = usable;
         for (s32 i = 0; i < count; i++) {
             s32 layer = mLayer_0x4;
             getRailPointPos_800FE294(&pB, field_0x358.fn_80214244(), entries[i]);
@@ -74,23 +70,21 @@ void ShadowLink2_804A43E8::fn_801D3320() {
                 numUsable++;
             }
         }
-        u8 sel = usable[randInt_801CD664(numUsable)];
-        cls_800FE3EC* cur = field_0x358.fn_80214244();
-        if (sel < cur->field_0x2) {
-            cur->field_0x3 = sel;
-        }
+        s32 num = numUsable;
+        u8 sel = usable[randInt_801CD664(num)];
+        field_0x358.fn_80214244()->setIndex(sel);
         getRailPointPos_800FE294(&railB, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.set(railB);
         if (numUsable == 1) {
             return;
         }
-        s32 layer = mLayer_0x4;
         u32 player = fn_801C976C();
+        s32 layer = mLayer_0x4;
         if (layer != field_0x358.fn_80214244()->fn_800FE25C(player)) {
             return;
         }
         bool found = false;
-        for (s32 i = 0; i < numUsable; i++) {
+        for (s32 i = 0; i < num; i++) {
             if (player == usable[i]) {
                 found = true;
                 break;
@@ -146,18 +140,12 @@ void ShadowLink2_804A43E8::fn_801D3320() {
         if (playerOk) {
             field_0x32c.set(from);
         } else if (selOk) {
-            cls_800FE3EC* c = field_0x358.fn_80214244();
-            if (player < c->field_0x2) {
-                c->field_0x3 = player;
-            }
+            field_0x358.fn_80214244()->setIndex(player);
             field_0x32c.set(to);
         } else {
             field_0x32c.set(from);
             if (fn_801CAEF4(&field_0x32c, mLayer_0x4)) {
-                cls_800FE3EC* c = field_0x358.fn_80214244();
-                if (player < c->field_0x2) {
-                    c->field_0x3 = player;
-                }
+                field_0x358.fn_80214244()->setIndex(player);
                 field_0x32c.set(to);
             }
         }
