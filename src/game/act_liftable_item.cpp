@@ -144,6 +144,7 @@ static inline u32 checkInputs_8015A374() {
 
 // Stack slots only: the original keeps the TVec3f copied into the found actor (case 0x2E) below the by-value
 // message positions (0x38), ours above them.
+// FIXME: 99.98 %, operands; behaviour clean.
 void LiftableItem_804A01D0::update() {
     // The `== true` tests below are deliberate: the compiled code has more instructions without them.
 
