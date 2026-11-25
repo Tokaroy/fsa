@@ -35,7 +35,7 @@ static const s32 lbl_80474548[5][4] = {
 };
 static const s32 lbl_80474598[4] = {6, 9, 3, 0};
 static const s32 lbl_804745A8[4] = {910, 913, 907, 904};
-static const s32 lbl_804745B8[150] = {
+static const s32 lbl_804745B8[125] = {
     960, 954, 948, 966, 708, 710, 706, 704, 256, 258, 254, 252, 240, 242, 238, 236,
     248, 250, 246, 244, 211, 219, 203, 195, 902, 839, 974, 976, 890, 892, 895, 968,
     970, 972, 978, 980, 983, 986, 920, 1018, 842, 1017, 1019, 726, 728, 724, 722, 746,
@@ -43,8 +43,10 @@ static const s32 lbl_804745B8[150] = {
     1080, 1076, 1074, 1144, 1148, 1156, 1158, 1154, 1152, 1168, 1170, 1166, 1164, 1180, 1182, 1178,
     1176, 1194, 1196, 1192, 1190, 1212, 1214, 1210, 1208, 1226, 1228, 1224, 1222, 1240, 1242, 1238,
     1236, 1254, 1256, 1252, 1250, 1268, 1270, 1266, 1264, 1282, 1284, 1280, 1278, 1294, 1296, 1292,
-    1290, 1306, 1308, 1304, 1302, 1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328, 288, 290, 293,
-    292, 294, 296, 299, 298, 300, 306, 312, 314, 326, 328, 330, 332, 338, 340, 304,
+    1290, 1306, 1308, 1304, 1302, 1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328,
+};
+static const s32 lbl_804747AC[25] = {
+    288, 290, 293, 292, 294, 296, 299, 298, 300, 306, 312, 314, 326, 328, 330, 332, 338, 340, 304,
     1141, 898, 900, 896, 894, 1335,
 };
 static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
@@ -206,9 +208,11 @@ OtherCharactersEnding_804ADF28::~OtherCharactersEnding_804ADF28() {
     }
 }
 
-// The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
+// Still differs: the original keeps the switch value in a register for case 4/0x11's test (ours reloads field_0x234;
+// a local for it leaves only case 5's loop start, where the original copies i into the slot offset and stores i's 0).
 // FIXME: 97.56 %, missing/extra + reloc-name; behaviour drift.
 void OtherCharactersEnding_804ADF28::init() {
+    s32 i;
     field_0x234 = mSpawnParam_0x90 & 0x1f;
     field_0x238 = (mSpawnParam_0x90 >> 5) & 0x7f;
     field_0x23c = (mSpawnParam_0x90 >> 12) & 3;
@@ -226,7 +230,7 @@ void OtherCharactersEnding_804ADF28::init() {
     field_0x300 = NULL;
     field_0x304 = NULL;
     field_0x308 = NULL;
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x30c[i] = NULL;
     }
     switch (field_0x234) {
@@ -288,7 +292,7 @@ void OtherCharactersEnding_804ADF28::init() {
                 field_0x278 = randInt_801CD664(2) != 0;
             }
         } else {
-            field_0x26c = lbl_804745B8[field_0x238 + 125];
+            field_0x26c = lbl_804747AC[field_0x238];
             field_0x270 = lbl_804ADED0[lbl_804748E8[field_0x238]];
             field_0x274 = lbl_804ADF08[lbl_80474994[field_0x238]];
             field_0x268 = randInt_801CD664(lbl_80542AE0[lbl_80474994[field_0x238]]);
@@ -303,27 +307,27 @@ void OtherCharactersEnding_804ADF28::init() {
         break;
     case 5: {
         field_0x24c = -1;
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         field_0x23c = 0;
-        for (s32 i = 0; i < end; i++) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+        for (i = 0; i < end; i++) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(i);
             if (actor != NULL && actor->mActorId == ACTOR_EOWL) {
                 field_0x24c = i;
                 s32 slot = field_0x24c;
-                ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* owl = getActorManager_801F856C()->getActor(slot);
                 if (owl == NULL) {
                     field_0x24c = -1;
                 } else {
                     pool_80542B58(owl);
                 }
                 field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
-                field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
+                field_0x25c = field_0x260 = lbl_80474450[field_0x238 * 2];
                 field_0x258 = lbl_80474450[field_0x238 * 2 + 1];
                 break;
             }
         }
         field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
-        field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
+        field_0x25c = field_0x260 = lbl_80474450[field_0x238 * 2];
         field_0x258 = lbl_80474450[field_0x238 * 2 + 1];
         break;
     }
@@ -363,10 +367,10 @@ void OtherCharactersEnding_804ADF28::init() {
         field_0x238 = 0;
         field_0x258 = 3;
         field_0x248 = randInt_801CD664(60);
-        mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
+        JGeometry::TVec3f off;
         JGeometry::TVec3f oldPos = mPos;
+        mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
         for (s32 i = 0; i < 60; i++) {
-            JGeometry::TVec3f off;
             off.x = (f32)randInt_801CD664(380) - 190.0f;
             off.y = (f32)randInt_801CD664(280) - 140.0f;
             off.z = 0.0f;
@@ -407,10 +411,10 @@ void OtherCharactersEnding_804ADF28::init() {
     case 12: {
         field_0x24c = -1;
         field_0x27c[0] = mPos;
-        s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
-            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
-            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive && actor->field_0x278 == 0) {
+        s32 end = getActorManager_801F856C()->getActorEnd();
+        for (i = 0; i < end; i++) {
+            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->getActor(i));
+            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true && actor->field_0x278 == 0) {
                 pool_80542B4C(i, actor);
                 break;
             }
@@ -418,7 +422,7 @@ void OtherCharactersEnding_804ADF28::init() {
         field_0x23c = 0;
         s32 slot = field_0x24c;
         if (slot >= 0) {
-            ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+            ActorBase_804A5770* owl = getActorManager_801F856C()->getActor(slot);
             if (owl != NULL) {
                 JGeometry::TVec3f target = owl->mPos;
                 if (PSVECDistance(&mPos, &owl->mPos) >= 60.0f) {
@@ -501,10 +505,10 @@ void OtherCharactersEnding_804ADF28::init() {
         field_0x260 = 7;
         field_0x258 = 2;
         spawnRoomEmitters();
-        s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
-            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
-            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive) {
+        s32 end = getActorManager_801F856C()->getActorEnd();
+        for (i = 0; i < end; i++) {
+            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->getActor(i));
+            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true) {
                 field_0x2fc = actor;
                 break;
             }
