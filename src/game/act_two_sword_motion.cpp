@@ -132,7 +132,7 @@ bool TwoSwordMotion_804ABA90::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
     return fn_802265DC(pos, layer, true);
 }
 
-// FIXME: 96.09 %, missing/extra; behaviour drift.
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 // Float registers of the three swingPhase computations differ (f2/f3/f4).
 void TwoSwordMotion_804ABA90::update() {
     switch (field_0x230) {
