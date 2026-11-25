@@ -667,8 +667,10 @@ void GameMode_804B0688::fn_803DE58C() {
         }
     }
     if (slid && menuSlid) {
-        field_0x34[others[0]]->mPane->hide();
-        field_0x44[others[0]]->mPane->hide();
+        for (s32 i = 0; i < 1; i++) {
+            field_0x34[others[i]]->mPane->hide();
+            field_0x44[others[i]]->mPane->hide();
+        }
         field_0x30->mPane->hide();
         field_0x58->mPane->show();
         field_0x80 = 0;
