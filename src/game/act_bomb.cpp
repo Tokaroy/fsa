@@ -69,9 +69,9 @@ void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     }
 }
 
-bool Bomb_8049F784::fn_8014D6DC() {
+BOOL Bomb_8049F784::fn_8014D6DC() {
     if (mPos.z > 0.1f) {
-        return false;
+        return FALSE;
     }
     JGeometry::TBox2f box(-3.0f, -3.0f, 3.0f, 3.0f);
     JGeometry::TVec2f pos(mPos.x, mPos.y);
@@ -83,7 +83,7 @@ bool Bomb_8049F784::fn_8014D6DC() {
     if (tile == 3) {
         land(this);
         field_0x230 = 6;
-        return true;
+        return TRUE;
     }
     if (tile == 0xE) {
         land(this);
@@ -92,14 +92,14 @@ bool Bomb_8049F784::fn_8014D6DC() {
         } else {
             field_0x230 = 6;
         }
-        return true;
+        return TRUE;
     }
     if (tile == 0xD || tile == 0x3B) {
         land(this);
         field_0x230 = 7;
-        return true;
+        return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
 // Scheduling of the 2x2 probe loop (lwz r6, 0x4(r31) vs lfs/stfs of mPos.z).
@@ -290,7 +290,7 @@ Bomb_8049F784::~Bomb_8049F784() {
     }
 }
 
-// FIXME(shotgun): 97.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.95 %, scheduling+regalloc; behaviour near.
 void Bomb_8049F784::update() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f pos(mPos.x, mPos.y);
@@ -361,9 +361,9 @@ void Bomb_8049F784::update() {
             startSound_801F0E34(0x3003E, 0);
         }
         if (!viewLayerFlag(mLayer_0x4)) {
-            if (mSpawnParam_0x90 != 6) {
+            if (getField_0x90() != 6) {
                 mVel_0x3c.z -= 1.0f;
-                if (mSpawnParam_0x90 == 9) {
+                if (getField_0x90() == 9) {
                     if (mVel_0x3c.z < -10.0f) {
                         mVel_0x3c.z = -10.0f;
                     }
@@ -407,9 +407,9 @@ void Bomb_8049F784::update() {
         }
         if (field_0x238 == 0) {
             field_0x238 = 300;
-            if (mSpawnParam_0x90 == 6) {
+            if (getField_0x90() == 6) {
                 field_0x238 = 200;
-            } else if (mSpawnParam_0x90 == 9) {
+            } else if (getField_0x90() == 9) {
                 field_0x238 = 420;
             }
         }
@@ -462,7 +462,7 @@ void Bomb_8049F784::update() {
             if (!field_0xc4 && fn_8014D6DC()) {
                 break;
             }
-            if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && mSpawnParam_0x90 != 6 && field_0x230 != 10) {
+            if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && getField_0x90() != 6 && field_0x230 != 10) {
                 sweepMapBox_801F2618(NULL, false);
             }
         } else {
@@ -472,7 +472,7 @@ void Bomb_8049F784::update() {
             }
             JGeometry::TVec3f hit;
             if (sweepMapBox_801F2618(&hit, false)) {
-                if (std::fabsf(hit.y - -1.0f) < 0.001f) {
+                if (__fabsf(hit.y - -1.0f) < 0.001f) {
                     mVel_0x3c.zero();
                 } else if (hit.x != 0.0f) {
                     mVel_0x3c.x = 0.0f;
@@ -495,7 +495,7 @@ void Bomb_8049F784::update() {
                     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
                     field_0x274 = 1.0f;
                 }
-                if (mSpawnParam_0x90 == 6) {
+                if (getField_0x90() == 6) {
                     mSpawnParam_0x90 = 0;
                 }
                 field_0x230 = 3;
@@ -529,15 +529,15 @@ void Bomb_8049F784::update() {
                         mVel_0x3c.z = -4.0f;
                     }
                 }
-                if (mSpawnParam_0x90 != 6) {
+                if (getField_0x90() != 6) {
                     sweepMapBox_801F2618(NULL, false);
                 }
             }
-            if (mPos.z >= 0.0f || mVel_0x3c.z >= 0.0f) {
+            if (!(mPos.z < 0.0f) || !(mVel_0x3c.z < 0.0f)) {
                 break;
             }
             if (field_0x26c == 0 && mPos.z < 2.0f && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
-                if (getTileCollisionCodeAlt_802265FC(&mPos, mLayer_0x4) == 0x50) {
+                if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&mid, mLayer_0x4) == 0x50) {
                     field_0x26c = 1;
                 }
             }
@@ -579,7 +579,7 @@ void Bomb_8049F784::update() {
             if (!sweepMapBox_801F2618(&hit, false)) {
                 break;
             }
-            if (std::fabsf(hit.y - -1.0f) < 0.001f) {
+            if (__fabsf(hit.y - -1.0f) < 0.001f) {
                 if (field_0x25c < 2) {
                     mVel_0x3c.x *= 0.1f;
                     mVel_0x3c.y = -1.0f;
@@ -598,22 +598,22 @@ void Bomb_8049F784::update() {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 1, 1, NULL, NULL, true, field_0x27c);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 1, 1, NULL, NULL, true, field_0x27c);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 1, 1, NULL, NULL, true, field_0x27c);
-        if (mSpawnParam_0x90 == 0xB) {
+        if (getField_0x90() == 0xB) {
             field_0x234 = 0;
             field_0x24c = 0;
         }
         field_0x230 = 5;
     case 5:
         mVel_0x3c.set(0.0f, 0.0f, 0.0f);
-        if (field_0x24c < 4 && mSpawnParam_0x90 != 7 && mSpawnParam_0x90 != 0xD && mSpawnParam_0x90 != 0xB) {
+        if (field_0x24c < 4 && getField_0x90() != 7 && getField_0x90() != 0xD && getField_0x90() != 0xB) {
             mBox.set(-16.0f, -16.0f, 16.0f, 16.0f);
-            if (mSpawnParam_0x90 == 8 || mSpawnParam_0x90 == 9) {
+            if (getField_0x90() == 8 || getField_0x90() == 9) {
                 mBox.set(-32.0f, -32.0f, 32.0f, 32.0f);
             }
             damagePlayersInBox_801F2B7C(damage, -1, 5);
             fn_801F2B20(0);
         }
-        if (mSpawnParam_0x90 != 0xB) {
+        if (getField_0x90() != 0xB) {
             if (field_0x234 != 0) {
                 break;
             }
@@ -746,8 +746,8 @@ void Bomb_8049F784::update() {
     }
     u8 hit = 0;
     if (!field_0xc4 && field_0x230 != 5 &&
-        ((field_0x230 >= 1 && field_0x230 <= 3) || (field_0x230 == 10 && field_0x258 == 1))) {
-        if (((mPos.z != 0.0f && mSpawnParam_0x90 != 6) || (mPos.z != 0.0f && mPos.z < 8.0f && mSpawnParam_0x90 == 6)) && field_0x240 == 0 &&
+        ((field_0x230 == 1 || field_0x230 == 2 || field_0x230 == 3) || (field_0x230 == 10 && field_0x258 == 1))) {
+        if (((mPos.z != 0.0f && getField_0x90() != 6) || (mPos.z != 0.0f && mPos.z < 8.0f && getField_0x90() == 6)) && field_0x240 == 0 &&
             field_0x244 == 0) {
             u8 mask = getPlayersInBox_801F2740(-1);
             bool other = false;
@@ -765,7 +765,7 @@ void Bomb_8049F784::update() {
                             if (field_0x260 != getPlayerLeader_8022F3DC(player)) {
                                 other = true;
                             }
-                        } else if (player != getPlayerLeader_8022F3DC(field_0x260) && getPlayerLeader_8022F3DC(player) != getPlayerLeader_8022F3DC(field_0x260)) {
+                        } else if (player != getPlayerLeader_8022F3DC(field_0x260) && getPlayerLeader_8022F3DC(field_0x260) != getPlayerLeader_8022F3DC(player)) {
                             other = true;
                         }
                         if (other == true) {
@@ -780,7 +780,7 @@ void Bomb_8049F784::update() {
             }
         }
         if (field_0x240 == 0) {
-            if ((mSpawnParam_0x90 == 5 || mSpawnParam_0x90 == 6) && field_0x258 != 1) {
+            if ((getField_0x90() == 5 || getField_0x90() == 6) && field_0x258 != 1) {
             } else if (field_0x230 == 10) {
                 if (checkActorHit_801F2DB4('NULL', 'NULL', NULL)) {
                     hit = 2;

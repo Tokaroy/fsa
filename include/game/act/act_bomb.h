@@ -22,7 +22,7 @@ public:
     /* 0x54 */ virtual void vfunc_0x54();
 
     void fn_8014D868(const JGeometry::TVec3f* pos);
-    bool fn_8014D6DC();
+    BOOL fn_8014D6DC();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
