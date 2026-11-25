@@ -17,7 +17,11 @@ public:
     /* 0x20 */ virtual void draw();
     // 0x8019CEF8 (game/act_princess_zelda_ganon_battle_80197070.cpp, the ZLD2 actor's update): follow the actor
     // with this serial, y offset and heart index.
-    void fn_8019CEF8(s32 serial, f32 yOffset, s32 index);
+    void fn_8019CEF8(s32 serial, f32 yOffset, s32 index) {
+        field_0x250 = serial;
+        field_0x254 = yOffset;
+        field_0x24c = index;
+    }
     /* 0x230 */ s32 field_0x230; // state: 0 starts, 1 follows the player or actor
     /* 0x234 */ s32 mTimers[6]; // update counts the first three down to 0; init zeroes all
     /* 0x24C */ s32 field_0x24c; // index into the five "kk_heart_NN.bti" images; init sets 4

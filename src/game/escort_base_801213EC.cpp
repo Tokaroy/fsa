@@ -969,16 +969,6 @@ static inline s32 heartIndex(s32 life) {
     return life;
 }
 
-// LifeMeter_804B174C::fn_8019CEF8's body, which the original inlines into fn_801217EC: it was a
-// header inline (its out-of-line copy sits with act_princess_zelda_ganon_battle_80197070's other inline copies at that unit's
-// end). It stays a plain function in act_princess_zelda_ganon_battle_80197070 until its out-of-line caller there (fn_80198828)
-// is written; then this copy goes and both call the header inline.
-static inline void followActor(LifeMeter_804B174C* meter, s32 serial, f32 yOffset, s32 index) {
-    meter->field_0x250 = serial;
-    meter->field_0x254 = yOffset;
-    meter->field_0x24c = index;
-}
-
 // update's life-meter refresh: respawns the missing meters, then shows each meter (or hides it)
 // and points it at the escort with its heart index. `dead` is update's mLife == 0.
 // FIXME: 99.75 %, regalloc-only; behaviour clean.
@@ -1003,19 +993,19 @@ void EscortBase_8049E0C8::fn_801217EC(bool dead) {
         }
         if (dead) {
             if (mAnim.mKey < 8) {
-                followActor(meter, mSerial, -28.0f, heartIndex(mLife + 2 - i * 4));
+                meter->fn_8019CEF8(mSerial, -28.0f, heartIndex(mLife + 2 - i * 4));
             } else if (mAnim.mKey < 12) {
-                followActor(meter, mSerial, -28.0f, mLife);
+                meter->fn_8019CEF8(mSerial, -28.0f, mLife);
             } else {
                 meter->mDrawEnabled = false;
             }
         } else if (field_0x335) {
-            followActor(meter, mSerial, -28.0f, heartIndex(mLife - i * 4));
+            meter->fn_8019CEF8(mSerial, -28.0f, heartIndex(mLife - i * 4));
         } else if (field_0x333) {
             if (field_0x354 < 45) {
-                followActor(meter, mSerial, -28.0f, heartIndex(mLife + 2 - i * 4));
+                meter->fn_8019CEF8(mSerial, -28.0f, heartIndex(mLife + 2 - i * 4));
             } else {
-                followActor(meter, mSerial, -28.0f, heartIndex(mLife - i * 4));
+                meter->fn_8019CEF8(mSerial, -28.0f, heartIndex(mLife - i * 4));
             }
         }
     }

@@ -48,9 +48,7 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
         LifeMeter_804B174C* meter =
             static_cast<LifeMeter_804B174C*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (meter != NULL) {
-            meter->field_0x250 = mSerial;
-            meter->field_0x254 = -28.0f;
-            meter->field_0x24c = field_0x328;
+            meter->fn_8019CEF8(mSerial, -28.0f, field_0x328);
         }
     }
     lbl_8053AED0->fn_8043A450(6, 3);
@@ -69,9 +67,7 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 
 // 0x801B29EC.
 // FIXME(shotgun): 99.43 %, different; behaviour near.
-// Still differs: the actor loop's second zero is a register copy (mr) in the original; the life-meter stores
-// load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8 inlined in the original; it needs to be a
-// header inline), and registers and stack slots.
+// Still differs: the actor loop's second zero is a register copy (mr) in the original, and registers and stack slots.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -171,9 +167,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         LifeMeter_804B174C* meter =
             static_cast<LifeMeter_804B174C*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x324));
         if (meter != NULL) {
-            meter->field_0x250 = mSerial;
-            meter->field_0x254 = -28.0f;
-            meter->field_0x24c = field_0x328;
+            meter->fn_8019CEF8(mSerial, -28.0f, field_0x328);
         }
     }
     PrincessZeldaMotionObjectSpawner_804A375C* obj;

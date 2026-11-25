@@ -80,12 +80,6 @@ s32 lbl_8053A0F0[2] = {5, 20};
 void setScreenFlag_8018E8DC(s32 idx, bool flag, u8 alpha);
 void fn_80196D30(s32 a, s32 b);
 
-void LifeMeter_804B174C::fn_8019CEF8(s32 serial, f32 yOffset, s32 index) {
-    field_0x250 = serial;
-    field_0x254 = yOffset;
-    field_0x24c = index;
-}
-
 void fn_8019CEE8(u8 v) {
     lbl_80529DEC.field_0x24d = v;
 }
