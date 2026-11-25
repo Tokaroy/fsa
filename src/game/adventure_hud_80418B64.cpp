@@ -1581,7 +1581,7 @@ void AdventureHud_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 95.47 %, different; behaviour clean.
+// FIXME(shotgun): 99.39 %, operands; behaviour clean.
 void AdventureHud_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
