@@ -10,9 +10,8 @@ static u32 lbl_804A2C80[] = {
     'SLR1', 0x00, 'SLR1', 0x06, 'STAL', 0x04, 'STAL', 0x14, 'KETH', 0x100, 'KETH', 0x110,
 };
 
-// FIXME: 92%. The original loads mSpawnParam_0x90 once (clrlslwi 24,1 -> r5) before the
-// 0x234 store and keeps the zero in r4 for the timer stores; here the zero is in r0
-// and the index shift is scheduled after the second load of mSpawnParam_0x90.
+// Registers only: the -1 for mSerials and the final zero for mState are in swapped registers (r0/r4).
+// FIXME: 98.45 %, regalloc-only; behaviour clean.
 void EnemySpawnArea_804A2CB0::init() {
     field_0x28c = 0;
     field_0x290 = 0;
@@ -20,9 +19,9 @@ void EnemySpawnArea_804A2CB0::init() {
     mTimer0 = 0;
     mTimer1 = 0;
     mTimer2 = 0;
+    s32 idx = (mSpawnParam_0x90 & 0xFF) * 2;
     mEnemyId = 0;
     mEnemyParam = 0;
-    s32 idx = (mSpawnParam_0x90 & 0xFF) * 2;
     if ((mSpawnParam_0x90 & 0xFF) != 0xFF) {
         mEnemyId = lbl_804A2C80[idx];
         mEnemyParam = lbl_804A2C80[idx + 1];
@@ -55,7 +54,8 @@ void EnemySpawnArea_804A2CB0::init() {
     mState = 0;
 }
 
-// FIXME: 99.6%. Register allocation only: the two random-offset sequences use r4/r5
+// FIXME: 99.56 %, scheduling+regalloc; behaviour clean.
+// Register allocation only: the two random-offset sequences use r4/r5
 // swapped for the global pointer and the LCG multiplier, and in the second loop the
 // counters i and gone are in r31/r30 here, r30/r31 in the original.
 void EnemySpawnArea_804A2CB0::update() {
