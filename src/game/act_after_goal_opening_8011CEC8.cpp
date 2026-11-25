@@ -218,6 +218,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         moveToward_801CD950(&field_0x240.y, mSpawnPos.y - 440.0f, field_0x23c);
         {
             JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+            c.y = field_0x240.y;
             gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         }
         break;
@@ -240,11 +241,13 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
             }
         }
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+        c.y = field_0x240.y;
         gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     case 7: {
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+        c.y = field_0x240.y;
         gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
