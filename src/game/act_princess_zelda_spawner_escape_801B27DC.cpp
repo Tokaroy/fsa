@@ -26,7 +26,6 @@ PrincessZeldaSpawnerEscape_804A3698::~PrincessZeldaSpawnerEscape_804A3698() {
 }
 
 // 0x801B3B7C.
-// FIXME(shotgun): 97.52 %, scheduling+regalloc; behaviour clean.
 void PrincessZeldaSpawnerEscape_804A3698::init() {
     lbl_8053ABF0 = 0;
     mMapBox_0x80.set(-4.0f, -8.0f, 4.0f, 8.0f);
@@ -66,7 +65,7 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 }
 
 // 0x801B29EC.
-// FIXME(shotgun): 99.43 %, different; behaviour near.
+// FIXME(shotgun): 99.62 %, different; behaviour near.
 // Still differs: the actor loop's second zero is a register copy (mr) in the original, and registers and stack slots.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
