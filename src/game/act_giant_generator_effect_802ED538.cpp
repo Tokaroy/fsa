@@ -76,7 +76,7 @@ void GiantGeneratorEffect_804AA350::init() {
     mUpdateWhilePaused_0x11f = 1;
 }
 
-// FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 98.87 %, regalloc-only; behaviour clean.
 void GiantGeneratorEffect_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < count; i++) {
@@ -145,10 +145,12 @@ static inline void armFlag() {
     }
 }
 
-static inline void stopEmitter(JPABaseEmitter*& emitter) {
-    if (emitter != NULL) {
+static inline void stopEmitter(JPABaseEmitter*& slot) {
+    if (slot != NULL) {
+        JPABaseEmitter* emitter = slot;
         emitter->stopCreateParticle();
-        emitter = NULL;
+        emitter->mMaxFrame = 1;
+        slot = NULL;
     }
 }
 
@@ -163,7 +165,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
     }
 }
 
-// FIXME(shotgun): 98.45 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.72 %, scheduling+regalloc; behaviour near.
 void GiantGeneratorEffect_804AA350::update() {
     switch (field_0x24c) {
     case 0:
@@ -245,8 +247,8 @@ void GiantGeneratorEffect_804AA350::update() {
             notifySlr4(field_0x260[0], 0);
             notifySlr4(field_0x260[1], 0);
             field_0x24c++;
-            startSound_801F0E34(0x5005B, 0);
         }
+        startSound_801F0E34(0x5005B, 0);
         break;
     case 7:
         if (field_0x279) {
@@ -402,21 +404,22 @@ void GiantGeneratorEffect_804AA350::fn_802ED7D8() {
     field_0x24c++;
 }
 
-// FIXME: 82.43 %, missing/extra + reloc-name; behaviour drift.
-// FIXME(shotgun): missing/extra + reloc-name (TUtilf::sqrt tests x > 0 in the original, not x <= 0; fn_802303FC's flag is passed as 0xFF there; mLayer_0x4 is loaded late)
+// FIXME: 98.59 %, missing/extra; behaviour near.
+// JMAFastSqrtNewton's frsqrte result gets an frsp the original does not have
 bool GiantGeneratorEffect_804AA350::fn_802ED538() {
     bool result = true;
     for (s32 p = 0; p < 4; p++) {
-        if (isPlayerActive_8023F264(p) && getPlayerLayer_8023DE58(p) == mLayer_0x4) {
+        if (isPlayerActive_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
             if (!isPlayerDead_80236B50(p) && !fn_8023EA28(p) && !fn_80230188(p) && !fn_8022D534(p) &&
                 !field_0x27c[p].mActive && fn_802300EC(p)) {
-                JGeometry::TVec3f* pos = getPlayerPos_8023E724(p);
-                if (pos->z == 0.0f) {
-                    f32 dx = mPos.x - pos->x;
-                    f32 dy = (32.0f + mPos.y) - pos->y;
+                const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(p);
+                JGeometry::TVec3f pos(playerPos->x, playerPos->y, playerPos->z);
+                if (pos.z == 0.0f) {
+                    f32 dx = mPos.x - pos.x;
+                    f32 dy = (32.0f + mPos.y) - pos.y;
                     field_0x27c[p].mPos = *getPlayerPos_8023E724(p);
                     f32 len = dx * dx + dy * dy;
-                    field_0x27c[p].mDist = JGeometry::TUtilf::sqrt(len);
+                    field_0x27c[p].mDist = JMAFastSqrtNewton(len);
                     field_0x27c[p].mAngle = (s16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     field_0x27c[p].mActive = 1;
                     fn_80230AD4(p);
@@ -433,12 +436,12 @@ bool GiantGeneratorEffect_804AA350::fn_802ED538() {
             const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
             field_0x27c[p].mPos.x = mPos.x + field_0x27c[p].mDist * sincos.sinShort(field_0x27c[p].mAngle);
             field_0x27c[p].mPos.y = (32.0f + mPos.y) + field_0x27c[p].mDist * sincos.cosShort(field_0x27c[p].mAngle);
-            fn_802303FC(p, &field_0x27c[p].mPos, true);
+            fn_802303FC(p, &field_0x27c[p].mPos, 0xFF);
             if (field_0x27c[p].mDist < 1.0f) {
                 fn_80230224(p, 0);
             }
         }
-        if (getPlayerLayer_8023DE58(p) == mLayer_0x4) {
+        if (getPlayerLayer_8023DE58(p) == getField_0x4()) {
             result = false;
         }
     }
