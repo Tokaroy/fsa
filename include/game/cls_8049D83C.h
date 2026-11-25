@@ -31,6 +31,7 @@ public:
     void spawnBurstEmitters(); // inlined by vfunc_0x60, act_crystal_cutscene_80113788.cpp
     void positionPlayers(); // inlined by vfunc_0x60, act_crystal_cutscene_80113788.cpp
     void updateCameraFocus(); // inlined by update, act_crystal_cutscene_80113788.cpp
+    bool isSkipPressed(); // inlined by update, act_crystal_cutscene_80113788.cpp
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;

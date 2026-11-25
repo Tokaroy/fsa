@@ -159,9 +159,19 @@ void CrystalCutscene_8049D83C::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
+// Inlined by update (case 5): the stage flag 3 is set and the 0x1000 input is pressed.
+inline bool CrystalCutscene_8049D83C::isSkipPressed() {
+    if (!isStageFlagSet(field_0x238, 3)) {
+        return false;
+    }
+    if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+        return true;
+    }
+    return false;
+}
+
 // 0x80114C98.
 // FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
-// (case 5: the original keeps the flag test and the input test in a bool temporary)
 void CrystalCutscene_8049D83C::update() {
     DemoActorBase_8049D140::update();
     updateCameraFocus();
@@ -214,7 +224,7 @@ void CrystalCutscene_8049D83C::update() {
             fn_8011921C()->fn_801183BC();
             break;
         }
-        if (isStageFlagSet(field_0x238, 3) && lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+        if (isSkipPressed()) {
             fn_80387494(0);
             fn_8011921C()->fn_801183BC();
         }
