@@ -383,7 +383,7 @@ s32 PhantomGanon2_804A1A98::fn_80189DEC() {
     return field_0x94;
 }
 
-// FIXME(shotgun): 98.38 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.69 %, missing/extra; behaviour near.
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
@@ -1391,7 +1391,7 @@ void PhantomGanon2_804A1A98::update() {
     }
 }
 
-// FIXME: 85.45 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 98.79 %, scheduling+regalloc; behaviour drift.
 void PhantomGanon2_804A1A98::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1424,7 +1424,10 @@ void PhantomGanon2_804A1A98::draw() {
         }
         params.field_0x1c = 0;
         params.field_0x1d = -2;
-        params.field_0x10.set(0, 0, 0, (u8)(0.39f * field_0x290));
+        params.field_0x10.r = 0;
+        params.field_0x10.g = 0;
+        params.field_0x10.b = 0;
+        params.field_0x10.a = 0.39f * field_0x290;
         mtx[0][0] = 1.0f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
@@ -1449,7 +1452,10 @@ void PhantomGanon2_804A1A98::draw() {
         mtx[2][1] = 0.0f;
         mtx[2][2] = field_0x2c8.y;
         params.mMtx = mtx;
-        params.field_0x10.set(0xFF, 0xFF, 0xFF, (u8)field_0x290);
+        params.field_0x10.r = 0xFF;
+        params.field_0x10.g = 0xFF;
+        params.field_0x10.b = 0xFF;
+        params.field_0x10.a = field_0x290;
         drawSpriteRes_801EFD34(res, &params, -1, scaleX, scaleY, 0.0f);
     }
 }
