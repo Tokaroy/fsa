@@ -264,7 +264,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     }
 }
 
-// FIXME: 98.28 %, missing/extra; behaviour clean.
+// FIXME: 99.14 %, regalloc-only; behaviour clean.
 // FIXME: f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
     JGeometry::TVec2<f32> myPos(mPos.x, mPos.y);
