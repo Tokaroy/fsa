@@ -145,7 +145,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 v.y -= out.y;
                 bool started = false;
                 bool queued = false;
-                bool hit = false;
+                u8 hit = false;
                 if (!(mFlags & 0x4000)) {
                     started = true;
                     hit = hitPlayerGroup_80238548(i, 0, &v, 0x19);

@@ -3620,7 +3620,7 @@ s32 Player_804A6F38::fn_80272184() {
     return 4;
 }
 
-bool Player_804A6F38::hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
+u8 Player_804A6F38::hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
     return hitPlayerGroup_80238548(mPlayerNo_0x4, damage, pos, arg);
 }
 
@@ -3930,16 +3930,16 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
     return true;
 }
 
-bool Player_804A6F38::fn_80271098(const JGeometry::TVec3f* pos) {
+u8 Player_804A6F38::fn_80271098(const JGeometry::TVec3f* pos) {
     // hitPlayerGroup_80238548 reads only pos.x and pos.y
     return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, (const JGeometry::TVec2f*)pos, 0xd);
 }
 
-bool Player_804A6F38::fn_80271068(const JGeometry::TVec2f* pos) {
+u8 Player_804A6F38::fn_80271068(const JGeometry::TVec2f* pos) {
     return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, pos, 0xe);
 }
 
-bool Player_804A6F38::fn_80271038(const JGeometry::TVec2f* pos) {
+u8 Player_804A6F38::fn_80271038(const JGeometry::TVec2f* pos) {
     return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, pos, 0xf);
 }
 
