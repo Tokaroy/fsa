@@ -22,7 +22,8 @@ static s32 lbl_8049F2B8[16] = {0, 1, 2, 3, 4, 5, 2, 3, 6, 7, 8, 9, 10, 11, 8, 9}
 // Frames each sprite frame of lbl_8049F2B8 is held for, by field_0x238[8].
 static s32 lbl_8049F2F8[8] = {6, 6, 3, 3, 6, 6, 3, 3};
 
-// FIXME: 98.88 %. Regalloc only in the three random draws (the manager and
+// FIXME: 99.20 %, regalloc-only; behaviour drift.
+// Regalloc only in the three random draws (the manager and
 // LCG-constant registers swap) and the tail's row index (r3 in the original);
 // the literals and the jump table are @NNN vs lbl_/jumptable_ names (data
 // split, not code).
@@ -107,7 +108,7 @@ void Poe_8049F330::init() {
     field_0x25c = lbl_8049F2B8[row * 8 + field_0x238[8]];
 }
 
-// FIXME(shotgun): 99.51 %, different
+// FIXME(shotgun): 99.95 %, operands; behaviour clean.
 void Poe_8049F330::update() {
     u16 angle = 0;
     s32 dir = 0;
@@ -159,7 +160,7 @@ void Poe_8049F330::update() {
         field_0x230 = 1;
     case 1:
         addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x238[5]) + 20.0f, 0.3f, 1.0f);
-        field_0x238[5] = (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + field_0x238[5] + 0x200;
+        field_0x238[5] += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         if ((field_0x94 == 2 || field_0x94 == 6) && field_0x238[0] == 0) {
             field_0x238[0] = (s32)(150.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 150;
             field_0x238[4]++;
