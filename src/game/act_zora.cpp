@@ -73,7 +73,8 @@ void ZoraEnemy_804A3D7C::init() {
     vfunc_0xA4();
 }
 
-// FIXME: 99.44 %, regalloc-only. Minor register allocation differences in tile search loop (r22/r23/r24/r25/r27).
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
+// Minor register allocation differences in tile search loop (r22/r23/r24/r25/r27).
 void ZoraEnemy_804A3D7C::setState_801BACE8(s32 state) {
     switch (state) {
     case 0:
@@ -272,7 +273,8 @@ void ZoraEnemy_804A3D7C::vfunc_0xA0() {
     }
 }
 
-// FIXME: 98.21 %, missing/extra. The original materialises isZero()'s result as a bool before testing it
+// FIXME: 98.21 %, missing/extra; behaviour near.
+// The original materialises isZero()'s result as a bool before testing it
 // (mfcr; extrwi.; bne); ours branches on the compare (beq).
 void ZoraEnemy_804A3D7C::draw() {
     switch (mState) {
