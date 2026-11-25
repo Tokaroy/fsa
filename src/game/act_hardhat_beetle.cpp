@@ -36,7 +36,7 @@ void HardhatBeetle_804A06C0::init() {
     mState = 0;
 }
 
-// FIXME(shotgun): 95.61 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.56 %, missing/extra; behaviour clean.
 void HardhatBeetle_804A06C0::update() {
     u16 angle = 0;
     s32 outDir = 0;
