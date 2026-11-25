@@ -4,6 +4,8 @@
 // Code: game/act_goal_warp_801B6C50.cpp.
 
 #include "game/ActorBase.h"
+#include "game/Player.h"
+#include "game/Message.h"
 
 // Spawned for 'GLWP'; moved here from game/act/tu_801F9484.h.
 class GoalWarp_804A39DC : public ActorBase_804A5770 {
@@ -13,10 +15,12 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary (update inlines it): the message call with the position by reference.
+    bool talk(u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
+        return openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), msg, serial, layer, pos, flags);
+    }
     /* 0x230 */ s32 field_0x230; // state (0-8)
-    /* 0x234 */ s32 field_0x234;
-    /* 0x238 */ s32 field_0x238; // countdown
-    /* 0x23C */ s32 field_0x23c;
+    /* 0x234 */ s32 field_0x234[3]; // counted down every update ([1]: state countdown)
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
