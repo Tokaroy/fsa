@@ -258,10 +258,7 @@ public:
     // come from field_0x2f4 and, if given, params' two colours.
     void fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params);
     /* 0x230 */ s32 field_0x230; // state
-    /* 0x234 */ s32 field_0x234;
-    /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ s32 field_0x23c;
-    /* 0x240 */ s32 field_0x240;
+    /* 0x234 */ s32 field_0x234[4]; // timers, update counts all four down to 0
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
     /* 0x24C */ s32 field_0x24c;
@@ -283,7 +280,9 @@ public:
     /* 0x28C */ f32 field_0x28c;
     /* 0x290 */ u16 field_0x290;
     /* 0x292 */ u8 field_0x292[2]; // not yet known
-    /* 0x294 */ f32 field_0x294[9]; // three positions (x, y, z) copied from mPos by init
+    /* 0x294 */ JGeometry::TVec3f field_0x294; // position moved towards
+    /* 0x2A0 */ JGeometry::TVec3f field_0x2a0;
+    /* 0x2AC */ JGeometry::TVec3f field_0x2ac; // position of the emitter (kind 1: set by the parent)
     /* 0x2B8 */ JGeometry::TVec3f field_0x2b8[4];
     /* 0x2E8 */ JPABaseEmitter* field_0x2e8;
     /* 0x2EC */ s32 field_0x2ec; // colour set in use (-1: none yet)
