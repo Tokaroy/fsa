@@ -408,7 +408,7 @@ void PhantomGanon_804A1318::update() {
         }
         fn_8022ADE4();
         JUtility::TColor color;
-        fn_8013A884((u32*)fn_8017ECF4(&color, 0xFF, 0xFF, 0xFF, 0));
+        fn_8013A884(fn_8017ECF4(&color, 0xFF, 0xFF, 0xFF, 0));
         field_0x250 = 0;
         field_0x254 = 0;
         mState = 1;
@@ -504,7 +504,7 @@ void PhantomGanon_804A1318::update() {
             field_0x254 = 0x7F;
         }
         JUtility::TColor fade;
-        fn_8013A884((u32*)fn_8017ECF4(&fade, field_0x250, field_0x254, 0xFF, 0));
+        fn_8013A884(fn_8017ECF4(&fade, field_0x250, field_0x254, 0xFF, 0));
         if (field_0x234 != 0) {
             break;
         }
@@ -516,7 +516,7 @@ void PhantomGanon_804A1318::update() {
         field_0x250 = 0;
         field_0x254 = 0;
         JUtility::TColor tint;
-        fn_8013A884((u32*)fn_8017ECF4(&tint, 0x9F, 0x7F, 0xFF, 0));
+        fn_8013A884(fn_8017ECF4(&tint, 0x9F, 0x7F, 0xFF, 0));
         field_0x268 = 0;
         gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
         getActorManager_801F856C()->fn_801F6884();

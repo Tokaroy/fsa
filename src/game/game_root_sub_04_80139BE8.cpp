@@ -19,18 +19,17 @@
 GameRoot_8049EF20* gGameRoot_8053AAF8;
 JKRHeap* lbl_8053AB00;
 
-// FIXME(shotgun): 33.1 %, missing/extra (the colour is copied byte by byte; fn_8013A884 takes a u32* in act_light_environment_control_802EF76C.h)
 // 0x8013A884
 // auto_inline off: the original GameRootSub04 destructor (bl at 0x8013A2B8) calls it out of line.
 #pragma auto_inline off
-// FIXME: 33.09 %, missing/extra; behaviour drift.
-void fn_8013A884(u32* color) {
-    gGameRoot2_8053AB10->field_0x2c->field_0x4.set(*color);
+void fn_8013A884(const JUtility::TColor* color) {
+    gGameRoot2_8053AB10->field_0x2c->field_0x4 = *color;
 }
 #pragma auto_inline reset
 
 // Other stages clear the staff-roll pointers (the destructor tests them).
-// FIXME: 99.81 %, names only: the report's statics and pool constants.
+// FIXME: 99.81 %, reloc-name; behaviour drift.
+// names only: the report's statics and pool constants.
 // 0x8013A538
 GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
     lbl_8053AB00 = heap;
@@ -77,7 +76,7 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
 GameRoot2_8049F108* gGameRoot2_8053AB10;
 
 GameRootSub04_801F856C::~GameRootSub04_801F856C() {
-    u32 color = 0xFFFFFF00;
+    JUtility::TColor color = 0xFFFFFF00;
     fn_8013A884(&color);
     getEffectSystem_8013C824()->mEmitterManager->forceDeleteAllEmitter();
     if (lbl_80529DEC.field_0x24b != 0) {
@@ -163,12 +162,12 @@ static inline bool isFrozenRoom() {
     return false;
 }
 
-// FIXME(shotgun): 99.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 // 0x80139D9C
 void GameRootSub04_801F856C::fn_80139D9C() {
     s32 mode = gGameRoot_8053AAF8->field_0x4c;
     if ((mode == GAME_MODE_7 && gGameRoot_8053AAF8->field_0x60 >= 4) ||
-        (gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B ? true : gGameRoot_8053AAF8->field_0x88 == 2) ||
+        gGameRoot_8053AAF8->isPaused_0x4c() ||
         (gGameRoot_8053AAF8->field_0x7f == 0 && (mode == GAME_MODE_A || mode == GAME_MODE_C))) {
         gGameRoot_8053AAF8->fn_80136500();
         mView->vfunc_0x10();
@@ -221,13 +220,13 @@ void GameRootSub04_801F856C::fn_80139D9C() {
         lbl_80529DEC.field_0x214 = byte;
     }
     u8 bits = lbl_80529DEC.field_0x24a;
-    if ((bits & 1) || (bits & 2) || (bits & 4) || (bits & 8)) {
+    if (!(bits & 1) && !(bits & 2) && !(bits & 4) && !(bits & 8)) {
         if (!isFrozenRoom()) {
-            lbl_80529DEC.field_0x215 = 0;
+            lbl_80529DEC.field_0x215 = 1;
         }
     } else {
         if (!isFrozenRoom()) {
-            lbl_80529DEC.field_0x215 = 1;
+            lbl_80529DEC.field_0x215 = 0;
         }
     }
 }
