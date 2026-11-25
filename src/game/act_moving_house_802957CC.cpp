@@ -13,6 +13,7 @@
 #include "game/ActorManager.h"
 #include "game/Effect.h"
 #include "game/Player.h"
+#include "game/VecEpsilon.h"
 
 static inline bool testBox(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) {
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
@@ -201,9 +202,8 @@ void MovingHouse_804A7AE0::init() {
     field_0x238.set(mPos);
 }
 
-// FIXME(shotgun): 98.87 %, operands; behaviour clean.
-// initial position/box arithmetic is scheduled differently, 5 instructions
-void MovingHouse_804A7AE0::vfunc_0x10() {
+// Snapshots the 6x6 tiles of both layers under the actor (vfunc_0x10).
+inline void MovingHouse_804A7AE0::snapshotTiles() {
     JGeometry::TVec3f origin = mPos;
     origin.x += mBox.i.x;
     origin.y += mBox.i.y;
@@ -228,6 +228,12 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
         p.x += 16.0f;
     }
     field_0x2b5 = 1;
+}
+
+// FIXME(shotgun): 99.27 %, regalloc-only; behaviour clean.
+// initial position/box arithmetic is scheduled differently, 5 instructions
+void MovingHouse_804A7AE0::vfunc_0x10() {
+    snapshotTiles();
     f32 minX = mBox.i.x + mPos.x;
     f32 minY = mBox.i.y + mPos.y;
     f32 maxX = mBox.f.x + mPos.x;
@@ -384,8 +390,8 @@ void MovingHouse_804A7AE0::fn_8029A974() {
     }
 }
 
-// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
-// FIXME: 99.01 %, different; behaviour near.
+// Remaining: one loop pointer copy in `bakeTiles`.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
@@ -418,7 +424,7 @@ void MovingHouse_804A7AE0::fn_8029A494() {
     p.z = 0.0f;
     u8 ok = 1;
     for (int k = 0; k < 6; k++) {
-        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL)) {
+        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL) == 1) {
             ok = 0;
             break;
         }
@@ -444,8 +450,8 @@ void MovingHouse_804A7AE0::fn_8029A494() {
     }
 }
 
-// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
-// FIXME: 99.01 %, different; behaviour near.
+// Remaining: one loop pointer copy in `bakeTiles`.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_80299FB0() {
     if (!field_0x250.isZero()) {
         return;
@@ -478,7 +484,7 @@ void MovingHouse_804A7AE0::fn_80299FB0() {
     p.z = 0.0f;
     u8 ok = 1;
     for (int k = 0; k < 6; k++) {
-        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL)) {
+        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL) == 1) {
             ok = 0;
             break;
         }
@@ -930,9 +936,34 @@ void MovingHouse_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 75.60 %, missing/extra + reloc-name; behaviour drift.
+// Puts the snapshotted tiles of both layers back under the actor, remembering what was there
+// (update inlines it twice, each time with the whole test).
+inline void MovingHouse_804A7AE0::restoreTiles() {
+    if (field_0x24c != 0 && field_0x2ac <= 0) {
+        JGeometry::TVec3f origin = mPos;
+        origin.x += mBox.i.x;
+        origin.y += mBox.i.y;
+        origin.x += 8.0f;
+        origin.y += 8.0f;
+        origin.z = 0.0f;
+        JGeometry::TVec3f p = origin;
+        for (s32 row = 0; row < 6; row++) {
+            p.y = origin.y;
+            for (s32 col = 0; col < 6; col++) {
+                mTiles[row][col] = getRawTile_80226850(&p, 0);
+                gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTilesB[row][col]);
+                gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, mTilesA[row][col]);
+                p.y += 16.0f;
+            }
+            p.x += 16.0f;
+        }
+        field_0x24c = 0;
+    }
+}
+
+// FIXME: 95.62 %, missing/extra + reloc-name; behaviour near.
 void MovingHouse_804A7AE0::update() {
-    mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
+    mPos.set(field_0x238);
     for (s32 i = 0; i < 4; i++) {
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
         s32 layer = v == 0 ? 0 : v + 7;
@@ -1003,7 +1034,7 @@ void MovingHouse_804A7AE0::update() {
                 }
                 if ((field_0x244 != 1 || (field_0x2b6 == 1 && field_0x2b7 == 1)) &&
                     (fn_8023A30C() || hitActorId == 'BBMB') &&
-                    field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                    field_0x250.isZero()) {
                     field_0x234 = 50;
                     bakeTiles();
                     field_0x230 = 3;
@@ -1020,7 +1051,7 @@ void MovingHouse_804A7AE0::update() {
                     }
                     break;
                 }
-                if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon() && field_0x24c == 0 &&
+                if (field_0x250.isZero() && field_0x24c == 0 &&
                     field_0x2ac == 0) {
                     if (field_0x2b6 == 0) {
                         JGeometry::TVec3f p1 = mPos;
@@ -1030,30 +1061,7 @@ void MovingHouse_804A7AE0::update() {
                         p2.x += 16.0f;
                         if (getRawTile_80226850(&p1, 0) == 0x19E || getRawTile_80226850(&p2, 0) == 0x19F ||
                             getRawTile_80226850(&p1, 0) == 0x338 || getRawTile_80226850(&p2, 0) == 0x339) {
-                            JGeometry::TVec3f p = mPos;
-                            p.x += mBox.i.x;
-                            p.y += mBox.i.y;
-                            p.x += 8.0f;
-                            p.y += 8.0f;
-                            p.z = 0.0f;
-                            f32 baseY = p.y;
-                            for (s32 row = 0; row < 6; row++) {
-                                p.y = baseY;
-                                for (s32 col = 0; col < 6; col++) {
-                                    mTilesA[row][col] = getRawTile_80226850(&p, 1);
-                                    mTilesB[row][col] = getRawTile_80226850(&p, 0);
-                                    if (!field_0x2b5) {
-                                        if (field_0x244 == 0 || field_0x244 == 2) {
-                                            mTiles[row][col] = 0x78;
-                                        } else {
-                                            mTiles[row][col] = 0x360;
-                                        }
-                                    }
-                                    p.y += 16.0f;
-                                }
-                                p.x += 16.0f;
-                            }
-                            field_0x2b5 = 1;
+                            snapshotTiles();
                             field_0x2b6 = 1;
                         }
                     }
@@ -1064,30 +1072,7 @@ void MovingHouse_804A7AE0::update() {
                         JGeometry::TVec3f p2 = p1;
                         p2.x += 16.0f;
                         if (getRawTile_80226850(&p1, 0) == 0x32A || getRawTile_80226850(&p2, 0) == 0x32B) {
-                            JGeometry::TVec3f p = mPos;
-                            p.x += mBox.i.x;
-                            p.y += mBox.i.y;
-                            p.x += 8.0f;
-                            p.y += 8.0f;
-                            p.z = 0.0f;
-                            f32 baseY = p.y;
-                            for (s32 row = 0; row < 6; row++) {
-                                p.y = baseY;
-                                for (s32 col = 0; col < 6; col++) {
-                                    mTilesA[row][col] = getRawTile_80226850(&p, 1);
-                                    mTilesB[row][col] = getRawTile_80226850(&p, 0);
-                                    if (!field_0x2b5) {
-                                        if (field_0x244 == 0 || field_0x244 == 2) {
-                                            mTiles[row][col] = 0x78;
-                                        } else {
-                                            mTiles[row][col] = 0x360;
-                                        }
-                                    }
-                                    p.y += 16.0f;
-                                }
-                                p.x += 16.0f;
-                            }
-                            field_0x2b5 = 1;
+                            snapshotTiles();
                             field_0x2b7 = 1;
                         }
                     }
@@ -1104,7 +1089,7 @@ void MovingHouse_804A7AE0::update() {
                         ActorBase_804A5770* actor =
                             getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
                         if (actor != NULL &&
-                            field_0x250.squared() > 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                            !field_0x250.isZero()) {
                             JGeometry::TBox2f b;
                             b.i.x = -10.0f;
                             b.i.y = -10.0f;
@@ -1154,7 +1139,7 @@ void MovingHouse_804A7AE0::update() {
                         fn_80298FC4();
                         fn_80298C18();
                     }
-                    if (field_0x250.squared() > 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                    if (!field_0x250.isZero()) {
                         if (field_0x244 == 1) {
                             if (mEmitters2[0] == NULL) {
                                 u16 effId;
@@ -1204,26 +1189,7 @@ void MovingHouse_804A7AE0::update() {
                             field_0x2ac -= 4;
                             if (field_0x2ac <= 0) {
                                 field_0x2ac = 0;
-                                if (field_0x24c != 0 && field_0x2ac <= 0) {
-                                    JGeometry::TVec3f p = mPos;
-                                    p.x += mBox.i.x;
-                                    p.y += mBox.i.y;
-                                    p.x += 8.0f;
-                                    p.y += 8.0f;
-                                    p.z = 0.0f;
-                                    f32 baseY = p.y;
-                                    for (s32 row = 0; row < 6; row++) {
-                                        p.y = baseY;
-                                        for (s32 col = 0; col < 6; col++) {
-                                            mTiles[row][col] = getRawTile_80226850(&p, 0);
-                                            gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTilesB[row][col]);
-                                            gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, mTilesA[row][col]);
-                                            p.y += 16.0f;
-                                        }
-                                        p.x += 16.0f;
-                                    }
-                                    field_0x24c = 0;
-                                }
+                                restoreTiles();
                             }
                         }
                     } else if (field_0x2ac < 0x80) {
@@ -1243,7 +1209,7 @@ void MovingHouse_804A7AE0::update() {
                         ActorBase_804A5770* actor =
                             getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
                         if (actor != NULL &&
-                            field_0x250.squared() > 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                            !field_0x250.isZero()) {
                             JGeometry::TBox2f b;
                             b.i.x = -10.0f;
                             b.i.y = -10.0f;
@@ -1262,6 +1228,22 @@ void MovingHouse_804A7AE0::update() {
         }
         break;
     }
+    case 3:
+        fn_802984B0();
+        mPos.add(mVel_0x3c);
+        if (mPos.z > 0.0f) {
+            mVel_0x3c.z -= 0.3f;
+        } else if (mPos.z <= 0.0f) {
+            mPos.z = 0.0f;
+            restoreTiles();
+            s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
+            s32 layer = v == 0 ? 0 : v + 7;
+            getGameView_802D6A9C()->fn_802D79E8(layer, 8.0f, 0.0f, true);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x263, 0, 0, NULL, NULL, true, 1.0f);
+            field_0x230 = 0;
+            field_0x234 = 60;
+        }
+        break;
     case 1:
         field_0x234--;
         if (field_0x234 == 0) {
@@ -1287,11 +1269,10 @@ void MovingHouse_804A7AE0::update() {
                 b.f.x += field_0x2dc[i].x;
                 b.f.y += field_0x2dc[i].y;
                 s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
-                fn_80239914(&b, v != 0 ? v + 7 : 0, mSerial);
+                fn_80239914(&b, v == 0 ? 0 : v + 7, mSerial);
             }
-            const JGeometry::TVec3f* pPos = fn_8023E7B0(field_0xc8);
-            mPos.set(pPos->x, pPos->y, pPos->z);
-            if (!mPos.equals(field_0x238)) {
+            mPos.set(*fn_8023E7B0(field_0xc8));
+            if (!epsilonEquals(mPos, field_0x238, JGeometry::TUtilf::epsilon())) {
                 for (s32 i = 0; i < 4; i++) {
                     if (!hasPlayerLeader_8022F514(i)) {
                         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -1339,45 +1320,10 @@ void MovingHouse_804A7AE0::update() {
             }
         }
         break;
-    case 3:
-        fn_802984B0();
-        mPos.add(mVel_0x3c);
-        if (mPos.z > 0.0f) {
-            mVel_0x3c.z -= 0.3f;
-        } else if (mPos.z <= 0.0f) {
-            mPos.z = 0.0f;
-            if (field_0x24c != 0 && field_0x2ac <= 0) {
-                JGeometry::TVec3f p = mPos;
-                p.x += mBox.i.x;
-                p.y += mBox.i.y;
-                p.x += 8.0f;
-                p.y += 8.0f;
-                p.z = 0.0f;
-                f32 baseY = p.y;
-                for (s32 row = 0; row < 6; row++) {
-                    p.y = baseY;
-                    for (s32 col = 0; col < 6; col++) {
-                        mTiles[row][col] = getRawTile_80226850(&p, 0);
-                        gBgRewrite_8053AC98->writeTile_802A381C(&p, 0, mTilesB[row][col]);
-                        gBgRewrite_8053AC98->writeTile_802A381C(&p, 1, mTilesA[row][col]);
-                        p.y += 16.0f;
-                    }
-                    p.x += 16.0f;
-                }
-                field_0x24c = 0;
-            }
-            s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
-            s32 layer = v == 0 ? 0 : v + 7;
-            getGameView_802D6A9C()->fn_802D79E8(layer, 8.0f, 0.0f, true);
-            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x263, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x230 = 0;
-            field_0x234 = 60;
-        }
-        break;
     }
     JGeometry::TVec3f delta = mPos;
     delta.sub(mPrevPos);
-    if (delta.squared() > 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+    if (!delta.isZero()) {
         for (s32 i = 0; i < mSerialCountA; i++) {
             Warp_804A6DC8* warp =
                 (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
@@ -1396,9 +1342,7 @@ void MovingHouse_804A7AE0::update() {
             ActorBase_804A5770* actor =
                 getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsC[i]);
             if (actor != NULL) {
-                JGeometry::TVec3f q = actor->mPos;
-                q.add(delta);
-                actor->mPos = q;
+                actor->mPos = actor->mPos + delta;
             }
         }
     }
