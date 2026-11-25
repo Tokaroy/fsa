@@ -232,7 +232,7 @@ FireRodFire_804A89F0::~FireRodFire_804A89F0() {
     }
 }
 
-// FIXME(shotgun): 99.44 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.80 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::update() {
     switch (field_0x238) {
     case 0: {
@@ -325,7 +325,7 @@ void FireRodFire_804A89F0::update() {
             mPos += mVel_0x3c;
         }
         field_0x248 = mPos;
-        if (field_0x264 != 2 && (field_0x264 < 3 || field_0x264 > 5)) {
+        if (!(field_0x264 == 2 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5)) {
             s32 dmg = mParamAtcp_0x114;
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
                 dmg = 0;
