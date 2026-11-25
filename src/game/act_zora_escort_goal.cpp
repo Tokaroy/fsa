@@ -373,10 +373,10 @@ bool ZoraEscortGoal_8049E424::walkRail() {
     } else {
         JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
         field_0x260 = 1.0f;
-        u16 angle = 0;
+        s16 angle = 0;
         s32 layer = mLayer_0x4;
         JGeometry::TVec3f pos(mPos);
-        if (mRail.stepAlongRail_800FDEA0(&pos, 0.5f, &step, &layer, &angle, 0x200) == 3) {
+        if (mRail.stepAlongRail_800FDEA0(&pos, 0.5f, &step, &layer, (u16*)&angle, 0x200) == 3) {
             flag = true;
         } else {
             mVel_0x3c.set(step);
