@@ -78,7 +78,7 @@ void FrostareChildFrosteye_804A4EE8::init() {
     }
 }
 
-// FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 85.21 %, missing/extra; behaviour near.
 void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
     if (randInt_801CD664(2) == 0) {
         mFlags &= ~0x2000;
