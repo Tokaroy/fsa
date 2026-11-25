@@ -33,6 +33,9 @@ public:
     /* 0xAC */ virtual bool vfunc_0xAC();
     /* 0xB0 */ virtual void vfunc_0xB0();
 
+    // Inline (no copy of its own): is one of player i's 8 outline points inside mBox?
+    bool outlineInBox(s32 i);
+
     /* 0x2AC */ u8 field_0x2ac[4];
     /* 0x2B0 */ u8 field_0x2b0;
     /* 0x2B1 */ u8 field_0x2b1;
