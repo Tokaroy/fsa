@@ -167,7 +167,8 @@ void Score_804AF4C0::fn_80393514() {
                 if (serial >= 0) {
                     ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (gem != NULL) {
-                        gem->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
+                        JGeometry::TVec3f vel(0.0f, 0.0f, -1.0f);
+                        gem->mVel_0x3c = vel;
                     }
                 }
             }
