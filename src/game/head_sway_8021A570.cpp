@@ -61,6 +61,7 @@ void HeadSway_8021ACE0::fn_8021ABC0() {
 }
 
 // Registers only: r4/r5 swapped in the inlined pickNext after mAngle = 0.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
     bool result = false;
     if (mTimer != 0) {
