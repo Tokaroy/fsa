@@ -461,7 +461,7 @@ bool ShadowLink2_804A43E8::vfunc_0x58() {
 
 // Moves the actor along the map; lifts the z-offset into the ground plane for the sweep when the
 // actor is in the air (state 0x1C) and lands it when it touches ground.
-// FIXME: 98.35 %, missing/extra; behaviour near.
+// FIXME: 99.92 %, regalloc-only; behaviour clean.
 u8 ShadowLink2_804A43E8::sweepMap_0x64() {
     u8 hit = 0;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f && mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
