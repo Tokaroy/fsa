@@ -1030,7 +1030,7 @@ static inline u8 recordChecksum(s32 player, const cls_804AA858Sub11C* record) {
 // index), then for every player either sends the regular record, feeds the
 // transfer queue (file words, kinds 6-8) or the message words (kinds 10-12).
 // 0x80304FB0
-// FIXME: 77.05 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 93.90 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_80304FB0() {
     GbaClient_803007D0* client = lbl_804DB798;
     lbl_8053AD08 = 0;
