@@ -98,6 +98,9 @@ struct AudioMgr_8045A080 {
     void fn_80459508();
     // game/audio_mgr_80457DFC.cpp (0x80459674, not written yet): the per-frame update; GameRoot's fn_80137300 calls it.
     void fn_80459674();
+    // parts of fn_80459674, inline (game/audio_mgr_80457DFC.cpp; used only there).
+    inline void updateMusicVolume();
+    inline void startPendingMusic();
     // game/audio_mgr_80457DFC.cpp: stores `pause` at 0x8a and passes it to
     // JAISeCategoryMgr::pause(bool) of three categories of the object at
     // 0x34 (0x8045868C-0x804586A8); called by act_stop_npc.
