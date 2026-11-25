@@ -539,12 +539,12 @@ u8 CrystalCutscene_8049D83C::vfunc_0x5C() {
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
 // FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
-static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
-    if (layer >= 8) {
-        return;
+static inline void drawSob_80113B54(ActorBase_804A5770* actor, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
+    const JGeometry::TVec3f* pos = &actor->mPos;
+    if (actor->mLayer_0x4 < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
     }
-    void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
 }
 
 // FIXME: 96.91 %, missing/extra; behaviour clean.
@@ -555,10 +555,10 @@ void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
         drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
+        drawSob_80113B54(this, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
         drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
+        drawSob_80113B54(this, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }
 
