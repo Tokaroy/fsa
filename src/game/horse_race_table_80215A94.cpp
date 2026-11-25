@@ -124,7 +124,7 @@ void HorseRaceTable_80215E48::fn_80215ECC() const {
     }
 }
 
-s32 HorseRaceTable_80215E48::fn_80215E98() {
+s32 HorseRaceTable_80215E48::fn_80215E98() const {
     s32 count = 0;
     for (s32 i = 0; i < mCount; i++) {
         if (mEntries[i].mKey >= 0) {
@@ -145,7 +145,7 @@ s32 HorseRaceTable_80215E48::fn_80215E58(s32 key) {
     return result;
 }
 
-s32 HorseRaceTable_80215E48::fn_80215E48(s32 index) {
+s32 HorseRaceTable_80215E48::fn_80215E48(s32 index) const {
     return mEntries[index].mKey;
 }
 
@@ -243,12 +243,12 @@ void HorseRaceTable_80215E48::fn_80215B6C(s32 index) {
     }
 }
 
-// FIXME: 90.46 %, missing/extra; behaviour near.
-s32 HorseRaceTable_80215E48::fn_80215A94() {
+// const: the original loads mCount again for the second loop, once, ahead of it.
+// Registers r4-r6 still differ.
+s32 HorseRaceTable_80215E48::fn_80215A94() const {
     s32 result = -1;
     if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
-        s32 count = mCount;
-        for (s32 i = 0; i < count; i++) {
+        for (s32 i = 0; i < mCount; i++) {
             if (!hasKey(i) && isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i))) {
                 result = i;
                 break;

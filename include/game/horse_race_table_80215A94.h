@@ -55,9 +55,9 @@ struct HorseRaceTable_80215E48 {
     // entries and field_0x94, then resets with fn_802160F4.
     HorseRaceTable_80215E48();
     // Entry `index`'s mKey.
-    s32 fn_80215E48(s32 index);
+    s32 fn_80215E48(s32 index) const;
     // True once entry `index` has a key (its mKey is no longer negative).
-    u8 hasKey(s32 index) { return fn_80215E48(index) >= 0 ? true : false; }
+    u8 hasKey(s32 index) const { return fn_80215E48(index) >= 0 ? true : false; }
     // Once entry `index`'s stopwatch has stopped (and not at its 2 minute
     // limit), copies its seconds and centis into the save row and calls
     // fn_802D7844(1, mId) on the view.
@@ -72,7 +72,7 @@ struct HorseRaceTable_80215E48 {
     // Calls fn_80215E18 on every entry, in order.
     void fn_80215DB8();
     // Number of entries whose mKey is not negative.
-    s32 fn_80215E98();
+    s32 fn_80215E98() const;
     // Records every entry's displayed stopwatch time with its mId and mKey.
     void fn_80215ECC() const;
     // True when some entry with a negative mKey has its stopwatch at the
@@ -89,7 +89,7 @@ struct HorseRaceTable_80215E48 {
     // When exactly one entry still has a negative mKey, the index of the
     // first such entry for which isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i)) is
     // true; -1 otherwise.
-    s32 fn_80215A94();
+    s32 fn_80215A94() const;
     // Reads entry `index`'s byte at 0x1C, its stopwatch (fn_801ED7B0) and the
     // save row's bytes at 0x78/0x79 (lbl_8050EC80); see the asm.
     bool fn_80215C6C(s32 index);
