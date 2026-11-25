@@ -124,7 +124,7 @@ static inline s32 exchangeInitialPacket_80300E1C(GbaClient_803007D0* client, u32
     return 0;
 }
 
-// FIXME(shotgun): 72.52 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.31 %, missing/extra + reloc-name; behaviour drift.
 // What still differs: the original leaves the poll loop from inside the switch without the two
 // flags (nextMsg, sleepBeforeRetry), and inlines fn_803006E8 where we call it.
 void* fn_80300E1C(void* arg) {
@@ -527,7 +527,7 @@ void fn_80300A8C(GbaClient_803007D0* client, OSMessage msg) {
 // Loads the client program, patches its header (the tick at 0xC8, the disc's
 // game code at 0xAC and the header checksum at 0xBD) and starts one client
 // thread per port.
-// FIXME(shotgun): 89.26 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.14 %, regalloc-only; behaviour clean.
 // (the port loop's register use)
 void startGbaClients_803007D0() {
     lbl_8053ACC4 = DVDGetCurrentDiskID();
