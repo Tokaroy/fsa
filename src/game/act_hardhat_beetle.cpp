@@ -51,7 +51,7 @@ void HardhatBeetle_804A06C0::update() {
             mHome.x += -16.0f * JMath::sincosTable_.sinShort(field_0x24c);
             mHome.y += -16.0f * JMath::sincosTable_.cosShort(field_0x24c);
             s32 code = getTileCollisionCode_8022461C(&mHome, mLayer_0x4);
-            if ((code >= 2 && code <= 3) || code == 0xE) {
+            if (code == 2 || code == 3 || code == 0xE) {
                 if (fn_802DE9A0() == true && code == 0xE) {
                     field_0x25c = 1;
                 }
