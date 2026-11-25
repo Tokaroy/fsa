@@ -19,7 +19,7 @@ public:
     /* 0x20 */ virtual void draw();   // fn_80147B50
 
     // 0x80149AEC: damage check for the players overlapping the head; true when it hit.
-    bool fn_80149AEC();
+    BOOL fn_80149AEC();
     // 0x80149FDC: counts the hit timer down and picks the next direction.
     bool fn_80149FDC();
     // 0x8014A2CC: pushes the position (and heading) history and places the segments.

@@ -68,7 +68,6 @@ static inline u16 dirToAngle(s32 dir) {
     }
 }
 
-// FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
 void BigMoldorm_8049F6C8::init() {
     mMapBox_0x80.i.x = -8.0f;
     mMapBox_0x80.i.y = -8.0f;
@@ -270,11 +269,11 @@ bool BigMoldorm_8049F6C8::fn_80149FDC() {
 }
 
 // FIXME(shotgun): 99.37 %, regalloc-only; behaviour clean.
-bool BigMoldorm_8049F6C8::fn_80149AEC() {
+BOOL BigMoldorm_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
     s32 i;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
-        return false;
+        return FALSE;
     }
     f32 x = mPos.x;
     f32 y = mPos.y;
@@ -304,7 +303,7 @@ bool BigMoldorm_8049F6C8::fn_80149AEC() {
     mPos.y = y;
     mPos.z = z;
     if (!hit) {
-        return false;
+        return FALSE;
     }
     field_0x260 = 0;
     field_0x264 = 0;
@@ -368,7 +367,7 @@ bool BigMoldorm_8049F6C8::fn_80149AEC() {
             field_0x3d8[i].set(mPos);
         }
     }
-    return true;
+    return TRUE;
 }
 
 BigMoldorm_8049F6C8::~BigMoldorm_8049F6C8() {
@@ -420,9 +419,10 @@ static inline BigMoldorm_8049F6C8* findDigdogger(s32 serial) {
     return static_cast<BigMoldorm_8049F6C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
 }
 
-// FIXME(shotgun): 95.00 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.02 %, missing/extra; behaviour drift.
 void BigMoldorm_8049F6C8::update() {
     // The copy of the velocity is never read, as in the original (0x8014827C).
+    JGeometry::TVec3f pos;
     JGeometry::TVec3f vel = mVel_0x3c;
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
@@ -454,7 +454,7 @@ void BigMoldorm_8049F6C8::update() {
     if (field_0x254 > 0) {
         field_0x254--;
     }
-    if (mSpawnParam_0x90 == 1 || mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 1 || getField_0x90() == 0) {
         if (field_0x254 == 1) {
             field_0x240 = 300;
             field_0x250 = 300;
@@ -490,7 +490,8 @@ void BigMoldorm_8049F6C8::update() {
                     s32 tries = 0;
                     while (field_0x280 == field_0x278 && tries < 100) {
                         tries++;
-                        field_0x280 = (s32)(gGameRoot_8053AAF8->getPlayerCount_80138A30() * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                        f32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
+                        field_0x280 = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * count);
                         field_0x280 &= 3;
                     }
                     field_0x270 = 21;
@@ -517,10 +518,11 @@ void BigMoldorm_8049F6C8::update() {
     switch (mState) {
     case 0: {
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 layer = lbl_8053AB38;
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', layer, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
-            if (actor != NULL && actor->mSerial != lbl_80539F58 && actor->mSpawnParam_0x90 == 3) {
+            if (actor != NULL && lbl_80539F58 != actor->mSerial && actor->mSpawnParam_0x90 == 3) {
                 lbl_80539F5C = actor->mSerial;
             }
         }
@@ -535,7 +537,8 @@ void BigMoldorm_8049F6C8::update() {
         lbl_8053AB34 = 1;
         field_0x26c = 0;
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 layer = lbl_8053AB38;
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', layer, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
             if (actor != NULL && actor->mSpawnParam_0x90 == 2) {
@@ -585,13 +588,14 @@ void BigMoldorm_8049F6C8::update() {
                 field_0x258 = 0;
             }
         }
-        if (fn_80149AEC() == true) {
+        if (fn_80149AEC() == TRUE) {
             break;
         }
         mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
         field_0xb0 = 0x8040004;
-        addCalcAngle2_801F714C(&field_0x284, field_0x286 + 0x500 - (s32)(4096.0f * JMath::sincosTable_.sinShort(field_0x260)), 1, 0x200);
+        s32 target = field_0x286 + 0x500 - (s32)(4096.0f * JMath::sincosTable_.sinShort(field_0x260));
         field_0x260 += 0x500;
+        addCalcAngle2_801F714C(&field_0x284, target, 1, 0x200);
         field_0x2a0.x = field_0x290 * JMath::sincosTable_.sinShort(field_0x284);
         field_0x2a0.y = field_0x290 * JMath::sincosTable_.cosShort(field_0x284);
         mDir_0x98 = headingDir(field_0x284);
@@ -627,7 +631,7 @@ void BigMoldorm_8049F6C8::update() {
             } else if (field_0x23c == 0) {
                 if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                     for (s32 i = 0; i < 4; i++) {
-                        if (i != field_0x280 && isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                        if (i != field_0x280 && isPlayerActive_8023F264(i) && !hasPlayerLeader_8022F514(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
                             !fn_80230188(i) && !fn_8022DCD8(i)) {
                             field_0x280 = i;
                             break;
@@ -638,28 +642,29 @@ void BigMoldorm_8049F6C8::update() {
                 field_0x286 += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
             }
         }
-        JGeometry::TBox2f view = *layerBox(mLayer_0x4);
-        JGeometry::TVec3f rel(mPos.x, mPos.y, mPos.z);
-        rel.x -= view.i.x;
-        rel.y -= view.i.y;
-        if (mSpawnParam_0x90 == 1) {
+        JGeometry::TBox2f view;
+        view = *layerBox(mLayer_0x4);
+        pos.set(mPos);
+        pos.x -= view.i.x;
+        pos.y -= view.i.y;
+        if (getField_0x90() == 1) {
             s32 serial = lbl_80539F58;
             if (serial >= 0) {
                 BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
-                    other->mPos = rel;
+                    other->mPos = pos;
                     if (other->field_0x94 != 0) {
                         mState = 4;
                     }
                 }
             }
         }
-        if (mSpawnParam_0x90 == 0) {
+        if (getField_0x90() == 0) {
             s32 serial = lbl_80539F5C;
             if (serial >= 0) {
                 BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
-                    other->mPos = rel;
+                    other->mPos = pos;
                     if (other->field_0x94 != 0) {
                         mState = 4;
                     }
@@ -681,8 +686,8 @@ void BigMoldorm_8049F6C8::update() {
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             mVel_0x3c.z = 0.0f;
-            if (fn_80149AEC() == true) {
-                break;
+            if (fn_80149AEC() == TRUE) {
+                return;
             }
         } else {
             mVel_0x3c.z -= 1.0f;
@@ -693,7 +698,7 @@ void BigMoldorm_8049F6C8::update() {
         if (field_0x248 != 0) {
             break;
         }
-        if (mSpawnParam_0x90 == 1) {
+        if (getField_0x90() == 1) {
             s32 serial = lbl_80539F58;
             if (serial >= 0) {
                 BigMoldorm_8049F6C8* other = findDigdogger(serial);
@@ -703,7 +708,7 @@ void BigMoldorm_8049F6C8::update() {
                 }
             }
         }
-        if (mSpawnParam_0x90 == 0) {
+        if (getField_0x90() == 0) {
             s32 serial = lbl_80539F5C;
             if (serial >= 0) {
                 BigMoldorm_8049F6C8* other = findDigdogger(serial);
@@ -725,7 +730,6 @@ void BigMoldorm_8049F6C8::update() {
         if (field_0x238 != 0) {
             break;
         }
-        JGeometry::TVec3f pos;
         pos.set(field_0x2c0[field_0x264]);
         pos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         pos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
@@ -753,23 +757,22 @@ void BigMoldorm_8049F6C8::update() {
         field_0x238 = 20;
         field_0x260--;
         s32 gold;
-        JGeometry::TVec3f pos;
         pos.set(field_0x2c0[field_0x260]);
         switch (field_0x260) {
         case 7:
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x119, 0, 1, NULL, NULL, true, 0.68f);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11A, 0, 1, NULL, NULL, true, 0.68f);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11B, 0, 1, NULL, NULL, true, 0.68f);
-            startSound_801F0E34(0x40004, 0);
             gold = 10;
+            startSound_801F0E34(0x40004, 0);
             break;
         default: {
             s32 size = 6 - field_0x260;
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x119, 0, size, NULL, NULL, true, 1.0f - 0.08f * field_0x260);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11A, 0, size, NULL, NULL, true, 1.0f - 0.08f * field_0x260);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11B, 0, size, NULL, NULL, true, 1.0f - 0.08f * field_0x260);
-            startSound_801F0E34(0x40004, 0);
             gold = 5;
+            startSound_801F0E34(0x40004, 0);
             break;
         }
         case 0:
@@ -777,7 +780,7 @@ void BigMoldorm_8049F6C8::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11A, 0, 7, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x11B, 0, 7, NULL, NULL, true, 1.0f);
             for (s32 i = 0; i < (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1; i++) {
-                pos.set(mPos.x, mPos.y, mPos.z);
+                pos.set(mPos);
                 pos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 pos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 getActorManager_801F856C()->spawnActor_801F9484('HART', mLayer_0x4, &pos, 0, -1, -1);
@@ -788,8 +791,8 @@ void BigMoldorm_8049F6C8::update() {
                 fn_8022ADCC();
             }
             mAlive = false;
-            startSound_801F0E34(0x40006, 0);
             gold = 30;
+            startSound_801F0E34(0x40006, 0);
             break;
         }
         getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &field_0x2c0[field_0x260], gold, -1, -1);
@@ -816,14 +819,14 @@ void BigMoldorm_8049F6C8::update() {
             field_0x94 = 1;
         }
         field_0xb0 = 0;
-        if (mSpawnParam_0x90 == 2 && lbl_80539F58 < 0) {
+        if (getField_0x90() == 2 && lbl_80539F58 < 0) {
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 30, -1, -1);
                 getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &mPos, 5, -1, -1);
             }
             mAlive = false;
         }
-        if (mSpawnParam_0x90 == 3 && lbl_80539F5C < 0) {
+        if (getField_0x90() == 3 && lbl_80539F5C < 0) {
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
                 getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 30, -1, -1);
                 getActorManager_801F856C()->spawnActor_801F9484('RUPY', mLayer_0x4, &mPos, 5, -1, -1);
@@ -834,7 +837,7 @@ void BigMoldorm_8049F6C8::update() {
     }
 }
 
-// FIXME(shotgun): 88.64 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.73 %, scheduling+regalloc + reloc-name; behaviour clean.
 void BigMoldorm_8049F6C8::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -844,11 +847,13 @@ void BigMoldorm_8049F6C8::draw() {
     params.field_0x1d = 1;
     if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
         if (lbl_8053AB34 == 1) {
-            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 0, true, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 1, false, 1.0f, 1.0f);
         }
         return;
     }
-    JGeometry::TVec3f saved = mPos;
+    f32 savedX = mPos.x;
+    f32 savedY = mPos.y;
+    f32 savedZ = mPos.z;
     mPos.x = field_0x2c0[7].x;
     mPos.y = field_0x2c0[7].y;
     mPos.z = field_0x2c0[7].z;
@@ -860,13 +865,21 @@ void BigMoldorm_8049F6C8::draw() {
         mPos.x = field_0x2c0[i + 1].x;
         mPos.y = field_0x2c0[i + 1].y;
         mPos.z = field_0x2c0[i + 1].z;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
         f32 scale = 1.0f - 0.08f * i;
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[i + 1] / -10430.219f, 0.0f), scale);
         params.mMtx = mtx;
         drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
     }
-    mPos.set(saved);
+    mPos.x = savedX;
+    mPos.y = savedY;
+    mPos.z = savedZ;
     params.field_0x1d = 7;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x284 / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
     drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
