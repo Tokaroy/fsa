@@ -103,7 +103,7 @@ void Link2Ending_804AE338::init() {
     }
 }
 
-// FIXME(shotgun): 97.57 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.05 %, scheduling+regalloc + reloc-name; behaviour drift.
 void Link2Ending_804AE338::update() {
     if (field_0x234 != 0) {
         field_0x234--;
@@ -115,10 +115,12 @@ void Link2Ending_804AE338::update() {
         field_0x2B0--;
     }
     field_0x250->mPos = mPos;
+    JGeometry::TVec3f pos;
+    s32 i;
     s32 live = 0;
     JGeometry::TVec3f center((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
                              (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
-    for (s32 i = 0; i < 20; i++) {
+    for (i = 0; i < 20; i++) {
         if (field_0x258[i] != NULL) {
             live++;
             if (field_0x258[i]->isEnableDeleteEmitter()) {
@@ -131,7 +133,6 @@ void Link2Ending_804AE338::update() {
     if (live >= field_0x2B4) {
         field_0x2B4 = live;
     }
-    JGeometry::TVec3f pos;
     switch (field_0x230) {
     case 0: {
         mPos += mVel_0x3c;
@@ -144,7 +145,7 @@ void Link2Ending_804AE338::update() {
         }
         if (field_0x238 < 0) {
             s32 end = getActorManager_801F856C()->getActorEnd();
-            for (s32 i = 0; i < end; i++) {
+            for (i = 0; i < end; i++) {
                 OtherCharactersEnding_804ADF28* actor = (OtherCharactersEnding_804ADF28*)getActorManager_801F856C()->getActor(i);
                 if (actor != NULL && actor->mActorId == ACTOR_EETC && actor->field_0x234 == 4 &&
                     (actor->field_0x238 == 0x26 || actor->field_0x238 == 0x27 || actor->field_0x238 == 0x28 ||
@@ -216,9 +217,9 @@ void Link2Ending_804AE338::update() {
                 JGeometry::TBox2f(30.0f, 139.0f, 274.0f, 269.0f),
                 JGeometry::TBox2f(304.0f, 139.0f, 578.0f, 269.0f),
             };
+            JGeometry::TVec3f p;
             JGeometry::TBox2f box;
             box = sAreas[area];
-            JGeometry::TVec3f p;
             bool inside;
             do {
                 f32 y = randInt_801CD664(0x1A2);
