@@ -60,8 +60,7 @@ void BeeFormation_804AC7B8::update() {
     }
 
     if (field_0x265 == 1) {
-        const JGeometry::TVec3f* pos = getPlayerPos_8023E724(field_0x24c);
-        takeHit_801F37AC(fn_8023B6CC(field_0x24c), pos, 0, 1, -1);
+        takeHit_801F37AC(fn_8023B6CC(field_0x24c), getPlayerPos_8023E724(field_0x24c), 0, 1, -1);
         s32 mgrSerial = field_0x250;
         if (mgrSerial >= 0) {
             BeeManager_804AC810* m = (BeeManager_804AC810*)getActorManager_801F856C()->findActorBySerial_801F666C(mgrSerial);
@@ -122,6 +121,8 @@ void BeeFormation_804AC7B8::update() {
                         break;
                     case 2:
                         switch (unk) {
+                        case 1:
+                            break;
                         case 2:
                             field_0x268.x += 8.0f;
                             break;
@@ -169,7 +170,10 @@ void BeeFormation_804AC7B8::update() {
         }
     }
 
-    s16 count = mgr != NULL ? 14 : 14;
+    s16 count = 14;
+    if (mgr != NULL) {
+        count = ARRAY_SIZE(mgr->field_0x240);
+    }
     field_0x28c = field_0x280;
     s16 angle = field_0x260 + (s32)((f32)(field_0x254 << 16) / (f32)count);
     field_0x280.x = field_0x268.x + field_0x25c * JMath::sincosTable_.sinShort(angle);
