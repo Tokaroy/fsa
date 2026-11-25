@@ -10,8 +10,8 @@ results), with the operands of commutative operations sorted. Registers at a blo
 are entry symbols; the two sides' entry symbols are paired as the comparison needs them,
 one to one per block. What must agree at the same row on both sides:
   stores      address and value
-  calls       the argument registers the callee may read (r3-r10, f1-f8) that hold a
-              value computed in the block, and the callee
+  calls       the argument registers the callee reads (from its mangled signature; all of
+              r3-r10 / f1-f8 when it has none) and the callee
   branches    the compared values of a conditional branch
   returns     r3 / f1 at blr
 Relocation targets are paired one to one the same way (their names differ between the
@@ -43,6 +43,81 @@ ARGS = ["r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "f1", "f2", "f3", "f4",
 VOLATILE = ["r0"] + [f"r{k}" for k in range(3, 13)] + [f"f{k}" for k in range(0, 14)] + ["cr0", "cr1", "cr5", "cr6", "cr7"]
 STORE = re.compile(r"^(stb|sth|stw|stfs|stfd|psq_st|stmw|stwbrx|sthbrx)")
 LOAD = re.compile(r"^(lbz|lhz|lha|lwz|lfs|lfd|psq_l|lmw|lwbrx|lhbrx)")
+
+
+def parse_type(s,i):
+    """(kind, next index) of one CW-mangled parameter type: i(nt/pointer), f(loat), v(oid), e(llipsis), s(truct)."""
+    while i<len(s) and s[i] in "CVU S": 
+        if s[i]=="S": pass
+        i+=1
+    c=s[i]
+    if c in "PR":
+        _,j=parse_type(s,i+1); return "i",j
+    if c in "fd": return "f",i+1
+    if c in "lisbcxw": return "i",i+1
+    if c=="v": return "v",i+1
+    if c=="e": return "e",i+1
+    if c.isdigit():
+        m=re.match(r"\d+",s[i:]); n=int(m.group()); j=i+len(m.group())+n
+        return "s",j  # struct by value (pointer in reg)
+    if c=="Q":
+        n=int(s[i+1]); j=i+2
+        for _ in range(n):
+            m=re.match(r"\d+",s[j:]); j+=len(m.group())+int(m.group())
+        return "s",j
+    if c=="F":  # function type
+        raise ValueError
+    if c=="M": raise ValueError
+    raise ValueError(c)
+
+def skipname(s,j):
+    if s[j]=="Q":
+        n=int(s[j+1]); j+=2
+        for _ in range(n):
+            m=re.match(r"\d+",s[j:]); j+=len(m.group())+int(m.group())
+        return j
+    m=re.match(r"\d+",s[j:]); return j+len(m.group())+int(m.group())
+
+def _argregs(name):
+    if name is None: return None
+    name=name.split("+")[0]
+    for j0 in [k for k in range(len(name)-1) if name[k:k+2]=="__"]:
+        j=j0+2
+        if j>=len(name): continue
+        member=False
+        try:
+            if name[j].isdigit() or name[j]=="Q":
+                j=skipname(name,j); member=True
+                if name[j]=="C": j+=1
+            if name[j]!="F": continue
+            ps=name[j+1:]
+        except Exception:
+            continue
+        ints=1 if member else 0; flts=0; i=0
+        try:
+            while i<len(ps):
+                if ps[i]=="_": break
+                k,i=parse_type(ps,i)
+                if k=="v": break
+                if k=="e": return None
+                if k=="f": flts+=1
+                else: ints+=1
+        except Exception:
+            return None
+        return {f"r{3+k}" for k in range(min(ints,8))} | {f"f{1+k}" for k in range(min(flts,8))}
+    return None
+
+
+def argregs(name):
+    """The argument registers a callee reads, from its CW-mangled name (member functions add
+    r3 for this); None when the name carries no signature (C functions, bctrl)."""
+    return _argregs(name)
+
+
+def sort_key(e):
+    """Order for commutative operands that doesn't depend on register names (entry symbols
+    are paired between the sides, so their names must not decide the order)."""
+    return re.sub(r"\('entry', \d+, '[to]', '[rf]\d+'\)", "E", repr(e))
 
 
 class Side:
@@ -91,7 +166,8 @@ def run_row(side, i, block, mem):
             side.reg[regs[-1]] = ("upd", a)
         return None
     if mn in ("bl", "bctrl", "blrl"):
-        argv = tuple(side.reg.get(r) for r in ARGS)
+        used = argregs(i[2]) if mn == "bl" else None
+        argv = tuple(side.reg.get(r) if used is None or r in used else None for r in ARGS)
         key = ("call", rel, argv)
         res = ("call", rel, argv)
         for r in VOLATILE:
@@ -108,7 +184,13 @@ def run_row(side, i, block, mem):
         if mn in ("blr",):
             return ("ret", side.reg.get("r3"), side.reg.get("f1"))
         crs = [r for r in regs if r.startswith("cr")] or (["cr0"] if mn not in ("b", "bctr") else [])
-        return ("branch", mn, tuple(side.val(c, block) for c in crs))
+        conds = []
+        for c in crs:
+            v = side.val(c, block)
+            if mn in ("beq", "bne") and isinstance(v, tuple) and v and v[0] == "cmp":
+                v = ("cmp", v[1], tuple(sorted(v[2], key=sort_key)), v[3])  # a == b is b == a
+            conds.append(v)
+        return ("branch", mn, tuple(conds))
     if not regs:
         return None
     dst, srcs = regs[0], regs[1:]
@@ -116,10 +198,10 @@ def run_row(side, i, block, mem):
         srcs = regs
     vals = [side.val(r, block) for r in srcs]
     if mn in COMM and len(vals) >= 2:
-        vals = sorted(vals[:2], key=repr) + vals[2:]
+        vals = sorted(vals[:2], key=sort_key) + vals[2:]
     elif mn in FMA and len(vals) == 3:  # fmadds d, a, c, b = a*c + b: a and c commute
         a, c, b = vals
-        x, y = sorted([a, c], key=repr)
+        x, y = sorted([a, c], key=sort_key)
         vals = [x, y, b]
     if mn == "mr" or mn == "fmr":
         side.reg[dst] = vals[0]
@@ -145,6 +227,8 @@ def same(a, b, pairs, block):
     """Structural equality with entry symbols paired one to one per block."""
     if isinstance(a, tuple) and isinstance(b, tuple):
         if len(a) == 2 and a[0] == "rel" and len(b) == 2 and b[0] == "rel":
+            if str(a[1]).startswith("...") or str(b[1]).startswith("..."):
+                return True  # a section symbol (...bss.0) for a base address: its offset is checked by structural.py
             fa, fb = pairs.setdefault("rt", {}), pairs.setdefault("ro", {})
             if fa.get(a[1], b[1]) != b[1] or fb.get(b[1], a[1]) != a[1]:
                 return False
