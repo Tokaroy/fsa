@@ -27,8 +27,9 @@ void fn_80178F10(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
 }
 
 // Out-of-line copy of TVec3<f32>::set(x, y, z).
-void fn_80178F00(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
+JGeometry::TVec3f* fn_80178F00(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
     v->set(x, y, z);
+    return v;
 }
 
 // Out-of-line copy of TVec3<f32>::set(const TVec3&) on the emitter's mLocalDir (offset 0x18).
@@ -255,7 +256,7 @@ void Wizzrobe_804A0EDC::update() {
             }
             s32 count = 0;
             s32 idx = 7;
-            while (field_0x2c4 > 0 && count < 100 && idx >= 0) {
+            while (0 < field_0x2c4 && count < 100 && idx >= 0) {
                 if (field_0x2c4 >= lbl_804A0EBC[idx]) {
                     field_0x2c4 -= lbl_804A0EBC[idx];
                     s32 s = getActorManager_801F856C()->spawnActorSimple_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, idx | 0x220000);
@@ -342,11 +343,13 @@ void Wizzrobe_804A0EDC::update() {
                 for (s32 i = 0; i < 4; i++) {
                     fn_80178F10(&mPos, &*getPlayerPos_8023E724(player));
                     f32 sinVal = JMath::sincosTable_.sinShort(field_0x250 * 0x4000);
-                    mPos.x += (64.0f * randFloat_80154744() + 64.0f) * sinVal;
-                    f32 cosVal = JMath::sincosTable_.cosShort(field_0x250 * 0x4000);
-                    mPos.y += (64.0f * randFloat_80154744() + 64.0f) * cosVal;
+                    f32 rangeX = 64.0f * randFloat_80154744() + 64.0f;
+                    mPos.x += rangeX * sinVal;
+                    f32 rangeY = 64.0f * randFloat_80154744() + 64.0f;
+                    mPos.y += rangeY * JMath::sincosTable_.cosShort(field_0x250 * 0x4000);
                     mPos.z = 0.0f;
-                    field_0x250 = (field_0x250 + (s32)(2.99f * randFloat_80154744()) + 1) & 3;
+                    field_0x250 += (s32)(2.99f * randFloat_80154744()) + 1;
+                    field_0x250 &= 3;
                     if (!sweepMapBox_801F2618(NULL, false)) {
                         findTargetPlayer_801EEC98(mSerial, NULL, &dir, NULL, NULL, 0, 1);
                         if (dir != -1) {
@@ -386,7 +389,11 @@ void Wizzrobe_804A0EDC::update() {
         sweepMapBox_801F2618(NULL, false);
         if (field_0x94 == 1 || field_0x94 == 2 || field_0x94 == 3) {
             if (field_0x24c <= 3) {
-                findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, field_0x94 != 3 ? 1 : 0);
+                s32 mode = 1;
+                if (field_0x94 == 3) {
+                    mode = 0;
+                }
+                findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, mode);
                 if (field_0x94 != 3) {
                     for (s32 i = 0; i < 20; i++) {
                         s32 s = field_0x270[i];
@@ -499,9 +506,11 @@ void Wizzrobe_804A0EDC::update() {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         startSound_801F0E34(0x30035, 0);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
-                            a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                            JGeometry::TVec3f vel;
+                            vel.x = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            vel.y = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
+                            vel.z = 0.0f;
+                            a->mVel_0x3c = vel;
                             a->mDir_0x98 = mDir_0x98;
                         }
                         field_0x244 = 60;
@@ -517,9 +526,11 @@ void Wizzrobe_804A0EDC::update() {
                     if (s >= 0) {
                         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (a != NULL) {
-                            f32 vx = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
-                            f32 vy = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
-                            a->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                            JGeometry::TVec3f vel;
+                            vel.x = 2.5f * JMath::sincosTable_.sinShort(dirToAngle_801F6874(mDir_0x98));
+                            vel.y = 2.5f * JMath::sincosTable_.cosShort(dirToAngle_801F6874(mDir_0x98));
+                            vel.z = 0.0f;
+                            a->mVel_0x3c = vel;
                             a->mDir_0x98 = mDir_0x98;
                         }
                         startSound_801F0E34(0x40079, 0);
@@ -633,30 +644,26 @@ void Wizzrobe_804A0EDC::update() {
                 break;
             }
             if (mEmitters[0] != NULL) {
-                if (field_0x94 == 10) {
+                if ((s32)field_0x94 == 10) {
                     switch (mDir_0x98) {
                     case 0: {
                         JGeometry::TVec3f v;
-                        fn_80178F00(&v, 1.0f, 0.0f, 0.0f);
-                        fn_80178EE4(mEmitters[0], &v);
+                        fn_80178EE4(mEmitters[0], fn_80178F00(&v, 1.0f, 0.0f, 0.0f));
                         break;
                     }
                     case 1: {
                         JGeometry::TVec3f v;
-                        fn_80178F00(&v, -1.0f, 0.0f, 0.0f);
-                        fn_80178EE4(mEmitters[0], &v);
+                        fn_80178EE4(mEmitters[0], fn_80178F00(&v, -1.0f, 0.0f, 0.0f));
                         break;
                     }
                     case 2: {
                         JGeometry::TVec3f v;
-                        fn_80178F00(&v, 0.0f, 0.0f, 1.0f);
-                        fn_80178EE4(mEmitters[0], &v);
+                        fn_80178EE4(mEmitters[0], fn_80178F00(&v, 0.0f, 0.0f, 1.0f));
                         break;
                     }
                     case 3: {
                         JGeometry::TVec3f v;
-                        fn_80178F00(&v, 0.0f, 0.0f, -1.0f);
-                        fn_80178EE4(mEmitters[0], &v);
+                        fn_80178EE4(mEmitters[0], fn_80178F00(&v, 0.0f, 0.0f, -1.0f));
                         break;
                     }
                     }
@@ -666,14 +673,14 @@ void Wizzrobe_804A0EDC::update() {
                     mEmitters[0]->setGlobalRotation(rot);
                 }
             }
-            if (field_0x94 == 11 && mEmitters[1] != NULL) {
+            if ((s32)field_0x94 == 11 && mEmitters[1] != NULL) {
                 JGeometry::TVec3<s16> rot;
                 fn_80178ED4(&rot, 0, lbl_804A0EAC[mDir_0x98], 0);
                 mEmitters[1]->setGlobalRotation(rot);
             }
         } else {
             setEmitterPos_8013CB44(mEmitters[0], &mPos, 1, 1, true);
-            if (field_0x94 == 11) {
+            if ((s32)field_0x94 == 11) {
                 setEmitterPos_8013CB44(mEmitters[1], &mPos, 1, 1, true);
                 if (field_0x238 == 0) {
                     JGeometry::TVec3f p;
@@ -690,7 +697,7 @@ void Wizzrobe_804A0EDC::update() {
             u8 hitWall = sweepMapBox_801F2618(NULL, false);
             if (field_0x240 == 0 || (field_0x23c == 0 && isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) || hitWall) {
                 mAlive = false;
-                if (field_0x94 == 11) {
+                if ((s32)field_0x94 == 11) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
                 }
                 if (mEmitters[0] != NULL) {
@@ -763,7 +770,7 @@ void Wizzrobe_804A0EDC::update() {
                 field_0x24c = 0;
                 field_0x250 = 0;
                 s32 num = 4;
-                s32 spawnArg = 22;
+                u32 spawnArg = 22;
                 if (field_0x94 == 21) {
                     spawnArg = 23;
                     num = 20;
@@ -837,7 +844,10 @@ void Wizzrobe_804A0EDC::update() {
                         if (field_0x94 == 22) {
                             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x268);
                             if (a != NULL) {
-                                a->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -0.1f);
+                                JGeometry::TVec3f vel;
+                                vel.zero();
+                                vel.z = -0.1f;
+                                a->mVel_0x3c = vel;
                             }
                         }
                         s32 parentSerial = field_0x26c;
@@ -886,7 +896,7 @@ void Wizzrobe_804A0EDC::update() {
                         f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                         if (-1.0f == dist || dist > sqrtf_80154378(dx * dx + dy * dy)) {
                             dist = sqrtf_80154378(dx * dx + dy * dy);
-                            angleToDir_801F681C(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+                            angleToDir_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180())));
                             bestPlayer = i;
                             if (getPlayerLeader_8022F3DC(i) < 0) {
                                 player = i;
@@ -909,7 +919,8 @@ void Wizzrobe_804A0EDC::update() {
                             rupy->field_0x26c = mSerial;
                         }
                     }
-                    field_0x254 = (field_0x254 + 1) & 0x3F;
+                    field_0x254++;
+                    field_0x254 &= 0x3F;
                     if (field_0x254 == 0) {
                         startSound_801F0E34(0x4007D, 0);
                     }
