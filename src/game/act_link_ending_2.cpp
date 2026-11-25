@@ -76,16 +76,17 @@ void Link2Ending_804AE338::init() {
     field_0x244 = 0;
     fn_8023077C();
     fn_80230498(0, &mPos, field_0x24C + field_0x244, 0xFF, -0x80, -0x80, true);
-    for (s32 i = 1; i < 4; i++) {
+    s32 i;
+    for (i = 1; i < 4; i++) {
         fn_80230498(i, &mPos, 0, 0, -0x80, -0x80, true);
     }
+    f32 y = 192.0f + 384.0f * (s32)(mPos.y / 384.0f);
+    f32 x = 256.0f + 512.0f * (s32)(mPos.x / 512.0f);
     JGeometry::TVec3f pos;
-    pos.z = 0.0f;
-    pos.y = 384.0f * (s32)(mPos.y / 384.0f) + 192.0f;
-    pos.x = 512.0f * (s32)(mPos.x * 0.001953125f) + 256.0f;
+    pos.set(x, y, 0.0f);
     field_0x2A8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x274, 0, 0, NULL, NULL, true, 1.0f);
     s32 end = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < end; i++) {
+    for (i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true) {
             field_0x250 = (KaeporaGaeboraEnding_804ADAC8*)actor;
@@ -93,7 +94,7 @@ void Link2Ending_804AE338::init() {
         }
     }
     end = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < end; i++) {
+    for (i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_ENDM && actor->mAlive == true) {
             field_0x254 = (UnknownENDM_804AA0FC*)actor;
