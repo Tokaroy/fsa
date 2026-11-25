@@ -51,7 +51,8 @@ void WarpPillar_804AC0A8::init() {
     mBox.f.y = 15.0f;
 }
 
-// Register allocation and stack slots still differ (box edges, loop counters).
+// Register allocation and stack slots still differ (box edges, loop counters),
+// and the bubble-sort swap goes through a stack temporary in the original.
 void WarpPillar_804AC0A8::update() {
     f32 top = mPos.y + mBox.i.y;
     f32 bottom = mPos.y + mBox.f.y;
@@ -133,7 +134,7 @@ void WarpPillar_804AC0A8::update() {
                     field_0x258 = getPlayerPos_8023E724(i)->y;
                 }
             }
-            s32 order[5]; // order[4] is the swap slot
+            s32 order[4];
             for (s32 k = 0; k < 4; k++) {
                 order[k] = k;
             }
@@ -141,9 +142,9 @@ void WarpPillar_804AC0A8::update() {
                 for (s32 j = 1; j < n; j++) {
                     if (JGeometry::TVec3f(*getPlayerPos_8023E724(order[j - 1])).x > JGeometry::TVec3f(*getPlayerPos_8023E724(order[j])).x) {
                         s32 prev = j - 1;
-                        order[4] = order[prev];
+                        s32 tmp = order[prev];
                         order[prev] = order[j];
-                        order[j] = order[4];
+                        order[j] = tmp;
                     }
                 }
             }
