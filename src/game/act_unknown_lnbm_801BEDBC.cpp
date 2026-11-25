@@ -83,6 +83,7 @@ void UnknownLNBM_804A4188::onFirstUpdate_0x54() {
 }
 
 // The target loads mPos.x again for the first blockedAt probe (ours reuses the view test's load).
+// FIXME: 99.41 %, missing/extra; behaviour near.
 void UnknownLNBM_804A4188::update() {
     if (mFlags & FLAG_BURST) {
         releaseEmitter_801EE434(mEmitter2a8);
@@ -117,7 +118,8 @@ void UnknownLNBM_804A4188::update() {
     }
 }
 
-// FIXME: 91.0 %. Same instructions as ActorBase_804A5770::isBlocked_0x4C (actor_base_801EE24C); only the saved
+// FIXME: 91.02 %, scheduling+regalloc; behaviour clean.
+// Same instructions as ActorBase_804A5770::isBlocked_0x4C (actor_base_801EE24C); only the saved
 // registers differ: the target keeps this in r31, the result in r30, layer in r29 and pos in r28
 // (this code: result r31, this r30, pos r29, layer r28), so the prologue stores and the argument
 // moves are ordered differently.
