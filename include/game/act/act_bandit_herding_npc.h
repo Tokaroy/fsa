@@ -15,6 +15,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // update() compares this bool with 1 (srawi/srwi/subfc/adde, cmplwi 1).
+    u8 isCountReached() const { return field_0x238 >= field_0x234; }
     /* 0x230 */ u8 field_0x230[4]; // not yet known
     /* 0x234 */ s32 field_0x234;    // init(): mSpawnParam_0x90 & 0xFF; how many TZOK are to be herded in
     /* 0x238 */ s32 field_0x238;    // update(): how many TZOK are inside the box this frame
