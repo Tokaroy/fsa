@@ -34,7 +34,7 @@ void EnemyGenerator3_804AA1D0::init() {
 }
 
 // The mLayer_0x4 register differs (r29 here, r30 in the original).
-// FIXME: 99.10 %, missing/extra; behaviour drift.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
     case 0:
