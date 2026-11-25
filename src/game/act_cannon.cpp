@@ -111,10 +111,12 @@ void Cannon_8049CCF0::update() {
             // fn_80107360's FIXME); the box and the sin lookup are placed as
             // the original's, but the box corners are not added in its order.
             switch (field_0x274) {
+            case 1:
+                break;
             case 2:
                 fn_80230FD0(field_0x26c, 0x20035);
                 break;
-            case 1:
+            case 3:
                 break;
             }
         }
@@ -221,15 +223,15 @@ bool Cannon_8049CCF0::fn_80107360() {
     gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     field_0x278 = field_0x274;
     field_0x274 = 3;
-    // FIXME: 98.15 %. Only the branch layout differs: the original has one
-    // more unreachable `b` after the dispatch (beq, bge, b, b; ours beq,
-    // bge, b). The empty case 1 is there to produce the bge/b pair; its
-    // meaning is unknown (init() sets state 1 for some spawns).
+    // States 1 and 3 have nothing to start: the original's dispatch keeps
+    // a branch for each side of state 2 (beq, bge, b, b).
     switch (field_0x274) {
+    case 1:
+        break;
     case 2:
         fn_80230FD0(field_0x26c, 0x20035);
         break;
-    case 1:
+    case 3:
         break;
     }
     field_0x284 = 0.0f;
