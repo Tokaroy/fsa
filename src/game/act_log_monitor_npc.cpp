@@ -60,6 +60,7 @@ void LogMonitorNpc_804AD278::init() {
     field_0x230 = 0;
 }
 
+// FIXME: 93.70 %, missing/extra; behaviour clean.
 void LogMonitorNpc_804AD278::update() {
     switch (mMode) {
     case 0:
