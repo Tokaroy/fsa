@@ -1574,7 +1574,7 @@ void BigPoe2_804A1E50::update() {
 }
 
 
-// FIXME(shotgun): 87.08 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.96 %, missing/extra + reloc-name; behaviour near.
 void BigPoe2_804A1E50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
