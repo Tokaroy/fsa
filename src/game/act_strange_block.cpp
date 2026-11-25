@@ -96,7 +96,7 @@ inline void StrangeBlock_804AC2D8::checkTalk() {
         field_0x258 = fn_8022FD8C(mSerial);
         if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
             fn_802300EC(field_0x258)) {
-            if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+            if (openMessageById_8038C678(field_0x258, field_0x268, getSerial(), getField_0x4(), mPos, 0)) {
                 field_0x234 = 1;
                 field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                 field_0x254 = field_0x254 ^ 1;
@@ -210,8 +210,9 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
     if (pushers >= field_0x260) {
         if (PSVECDistance(&mPos, &mSpawnPos) < (f32)(field_0x260 << 4) - 0.1f) {
             s32 dir = fn_80238BC4(mSerial);
+            JGeometry::TVec3f step(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
             JGeometry::TVec3f saved = mPos;
-            mPos += JGeometry::TVec3f(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
+            mPos += step;
             if (sweepMapBox_801F2618(NULL, false)) {
                 mPos = saved;
                 return;
@@ -316,7 +317,7 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x258 = fn_8022FD8C(mSerial);
             if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f && fn_802300EC(field_0x258)) {
-                if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+                if (openMessageById_8038C678(field_0x258, field_0x268, getSerial(), getField_0x4(), mPos, 0)) {
                     field_0x234 = 1;
                     field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                     field_0x254 = field_0x254 ^ 1;
