@@ -72,6 +72,7 @@ void Rat_8049C400::init() {
 // Wanders in the four directions (states 0, 1, 3 and the chase 2: a player nearer than 120 turns it his way).
 // Left: in state 1, gGameRoot and the random multiplier sit in r8/r7 the other way round; the two guard
 // branches of the chase test (states 0 and 3) skip the result test, ours go to its `return false`.
+// FIXME: 99.82 %, scheduling+regalloc; behaviour clean.
 void Rat_8049C400::update() {
     if (updateHitReaction_801F3D94(true) || checkHits_801F305C()) {
         sweepMapBox_801F2618(NULL, false);
