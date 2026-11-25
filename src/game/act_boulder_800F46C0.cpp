@@ -102,7 +102,7 @@ void Boulder_8049C4C0::init() {
     }
 }
 
-// FIXME(shotgun): 98.56 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.17 %, operands + reloc-name; behaviour clean.
 // still differs: two vector stack slots are swapped and 8.0f is pooled before -0.5f; both go away when the k loop
 // is a plain function defined below this one (single call site, so not written that way).
 void Boulder_8049C4C0::fn_800F5E08() {
@@ -204,7 +204,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
 }
 
-// FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.52 %, missing/extra; behaviour clean.
 void Boulder_8049C4C0::fn_800F555C() {
     JGeometry::TBox2f box(mPos.x - 16.0f, mPos.y - 16.0f, mPos.x + 16.0f, mPos.y + 16.0f);
     s32 anyPlayer = 0;
@@ -474,7 +474,7 @@ bool Boulder_8049C4C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, false);
 }
 
-// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.51 %, regalloc-only; behaviour clean.
 void Boulder_8049C4C0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
