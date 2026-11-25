@@ -212,12 +212,12 @@ static const s32 lbl_80476DE8[6] = {
 #define PANE_CENTRE_X(dst, screen, tag)                                        \
     do {                                                                   \
         f32 size = (screen)->search(tag)->getWidth();                      \
-        dst = size * 0.5f + (screen)->search(tag)->getGlobalBounds().i.x; \
+        dst = size / 2.0f + (screen)->search(tag)->getGlobalBounds().i.x; \
     } while (0)
 #define PANE_CENTRE_Y(dst, screen, tag)                                        \
     do {                                                                   \
         f32 size = (screen)->search(tag)->getHeight();                     \
-        dst = size * 0.5f + (screen)->search(tag)->getGlobalBounds().i.y; \
+        dst = size / 2.0f + (screen)->search(tag)->getGlobalBounds().i.y; \
     } while (0)
 
 // The three loops that give a pane group back the alphas saved in the constructor (field_0x196,
@@ -278,6 +278,13 @@ static inline f32 toSpriteX(f32 x) {
 
 static inline f32 toSpriteY(f32 y) {
     return 270.0f * y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight;
+}
+
+// Makes that 360 x 270 sprite layer the ortho projection (before each of
+// fn_803BE3D8's sprite draws; provisional name, always inlined).
+static inline void setSpriteOrtho() {
+    JGeometry::TBox2f box(0.0f, 0.0f, 360.0f, 270.0f);
+    gGameRoot2_8053AB10->fn_8013B414(&box, true);
 }
 
 // Puts `pos` at the centre of mScreen's pane `tag`, moved by (dx, dy) in the
@@ -3552,9 +3559,6 @@ void FileSelect_804AFF60::fn_803BF004() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.88 %, operands; behaviour clean.
-// Operands only: four PANE_CENTRE fmadds take f25 / f27 the
-// other way round, and one TVec3f's stack slot differs (0x28 vs ours 0x34).
 // The board's enemy sprites (fn_803CEED4 draws them after the screens).
 // field_0xdc runs 0..53 for their animation. With field_0xb8[6] set every
 // one of the eight 'Padvw?1' / 'Padvw?2' pane pairs gets its enemy twice:
@@ -3592,8 +3596,7 @@ void FileSelect_804AFF60::fn_803BE3D8() {
             shadow.field_0x10.a = mScreen->search(lbl_80476A48[i])->getAlpha();
             params.field_0x10.a = mScreen->search(lbl_80476A08[i])->getAlpha();
             params.field_0x26 = 0;
-            JGeometry::TBox2f box(0.0f, 0.0f, 360.0f, 270.0f);
-            gGameRoot2_8053AB10->fn_8013B414(&box, true);
+            setSpriteOrtho();
             if (i == 6) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&shadowPos, res, 0xAB, &shadow, 1.0f, 1.0f);
@@ -3624,15 +3627,13 @@ void FileSelect_804AFF60::fn_803BE3D8() {
                 JGeometry::TVec3f pos;
                 if (i == 6) {
                     setSpritePos(this, &pos, &lbl_804769D0[i], 0.0f, 10.0f);
-                    JGeometry::TBox2f box(0.0f, 0.0f, 360.0f, 270.0f);
-                    gGameRoot2_8053AB10->fn_8013B414(&box, true);
+                    setSpriteOrtho();
                     s32 frame = (field_0xdc % 27) / 9 + 0x21B;
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                     gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
                 } else {
                     setSpritePos(this, &pos, &lbl_804769D0[i], 0.0f, 12.0f);
-                    JGeometry::TBox2f box(0.0f, 0.0f, 360.0f, 270.0f);
-                    gGameRoot2_8053AB10->fn_8013B414(&box, true);
+                    setSpriteOrtho();
                     s32 frame = field_0xdc / 9 + lbl_80476DE8[i];
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                     gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
