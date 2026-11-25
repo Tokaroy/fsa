@@ -15,6 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    bool outlineInBox(s32 i);
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ JGeometry::TVec3f field_0x234;
     /* 0x240 */ f32 field_0x240;

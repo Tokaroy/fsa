@@ -3,16 +3,19 @@
 #include "game/RotMatrix.h"
 #include "game/act/act_lotus.h"
 
-static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
-    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+    return x >= x0 && y >= y0 && x < x1 && y < y1;
 }
 
-// Does one of player `i`'s 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
-static inline bool outlineInBox(Lotus_804AC330* self, int i) {
+// Is player `i` on this layer and does one of its 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
+inline bool Lotus_804AC330::outlineInBox(s32 i) {
+    if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
+        return false;
+    }
     for (int j = 0; j < 8; j++) {
         JGeometry::TVec3f point;
         fn_8022E088(i, j, &point);
-        point -= self->mPos;
+        point -= mPos;
         point.z = 0.0f;
         f32 rad = JMath::atanTable_.atan2_(point.y, point.x);
         s16 angle = rad * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
@@ -20,7 +23,7 @@ static inline bool outlineInBox(Lotus_804AC330* self, int i) {
         point.z = 0.0f;
         point.y = dist * JMath::sincosTable_.sinShort(angle);
         point.x = dist * JMath::sincosTable_.cosShort(angle);
-        if (contains(self->mBox, point)) {
+        if (contains(point.x, point.y, mBox.i.x, mBox.i.y, mBox.f.x, mBox.f.y)) {
             fn_8022DF48(i);
             return true;
         }
@@ -62,7 +65,8 @@ void Lotus_804AC330::init() {
     }
 }
 
-// FIXME: 97.17 % (missing/extra: 422 vs 421 instrs). Register allocation in the player loop copies i into r26 (1 extra mr), and contains() loads mBox.i.y/f.x/f.y per branch instead of upfront.
+// Float register allocation and load order still differ.
+// FIXME: 99.51 %, scheduling+regalloc; behaviour clean.
 void Lotus_804AC330::update() {
     if (field_0x230 == 1) {
         mPos += mVel_0x3c;
@@ -134,13 +138,8 @@ void Lotus_804AC330::update() {
             field_0x262 = 0;
         }
     }
-    for (int i = 0; i < 4; i++) {
-        bool touching;
-        if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
-            touching = false;
-        } else {
-            touching = outlineInBox(this, i);
-        }
+    for (s32 i = 0; i < 4; i++) {
+        bool touching = outlineInBox(i);
         if (touching) {
             if (getPlayerPos_8023E724(i)->z <= 0.0f) {
                 fn_8023DEDC(i, &(mPos - mPrevPos));
@@ -162,7 +161,8 @@ void Lotus_804AC330::update() {
     }
 }
 
-// FIXME: 98.22 % (regalloc-only). Float register allocation in setRotScaleMtx (f26/f28/f29/f31).
+// FIXME: 98.22 %, regalloc-only; behaviour clean.
+// (regalloc-only). Float register allocation in setRotScaleMtx (f26/f28/f29/f31).
 void Lotus_804AC330::draw() {
     if (field_0x240 <= 0.0f) {
         return;
