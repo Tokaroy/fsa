@@ -323,7 +323,7 @@ void fn_8019C4F4(JGeometry::TVec2f* v, f32 x, f32 y) {
     v->set(x, y);
 }
 
-// FIXME(shotgun): 99.79 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.90 %, missing/extra; behaviour near.
 void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     JGeometry::TVec3f pos;
     u16 angle = 0;
@@ -1776,7 +1776,7 @@ static inline void takeToken(PrincessZeldaGanonBattle_804A2944* self, ActorBase_
     deleteEmitter(&self->mEmitters[1]);
 }
 
-// FIXME(shotgun): 95.65 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.31 %, missing/extra + reloc-name; behaviour near.
 void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
     switch (mState) {
     case 0x46:
