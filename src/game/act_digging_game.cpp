@@ -96,6 +96,7 @@ void DiggingGameKeeper_8049C970::init() {
 // Same instructions as the original up to order and registers: case 1's first
 // loop keeps its counter in r25 where the original has r30, and case 4
 // schedules the state store and the 0x3b argument in another order.
+// FIXME: 99.14 %, scheduling+regalloc; behaviour drift.
 void DiggingGameKeeper_8049C970::update() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 50.0f;
