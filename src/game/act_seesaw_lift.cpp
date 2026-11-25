@@ -219,12 +219,11 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     return 0;
 }
 
-// FIXME(shotgun): 99.57 %, different; behaviour clean.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
-    u8 near = 0;
     s32 moved = 0;
-    bool all = field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3];
+    u8 near = 0;
+    u8 all = field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3];
     if (all && __fabsf(field_0x240) < 33.0f) {
         near = 1;
     }
