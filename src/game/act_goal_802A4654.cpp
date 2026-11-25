@@ -156,7 +156,7 @@ Goal_804A7EB0::~Goal_804A7EB0() {
 }
 
 // 0x802A4A4C.
-// FIXME(shotgun): 80.73 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.06 %, different; behaviour near.
 // (states 0-2 only), missing/extra + reloc-name
 void Goal_804A7EB0::update() {
     switch (field_0x230) {
