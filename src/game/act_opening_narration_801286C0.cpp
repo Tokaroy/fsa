@@ -78,7 +78,7 @@ void OpeningNarration_8049E500::update() {
         moveToward_801CD950(&field_0x238, 1640.0f, 0.4f);
         if (fn_80119DD0()->field_0x4 >= 0xB3) {
             fn_8011921C()->fn_801183BC();
-            fn_80119DD0()->field_0x1 = 1;
+            fn_80119DD0()->setField_0x1(1);
         }
         break;
     case 4:
@@ -151,47 +151,47 @@ u8 OpeningNarration_8049E500::vfunc_0x5C() {
     return field_0x230 == 10;
 }
 
+// The visible box is passed by value: the original copies it to the stack
+// (lwz/stw) before reading it with lfs.
+static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
+    pos.x = box.f.x + 0.5f * (box.i.x - box.f.x);
+    pos.y = box.f.y + 0.5f * (box.i.y - box.f.y);
+    pos.z = 0.0f;
+}
+
 // FIXME(shotgun): 68.90 %, missing/extra + reloc-name; behaviour drift.
-// the camera-box centre in case 4 and the screen-centre vector of cases 5 / 7 are built differently; jump table is @NNN
+// cases 5 / 7: the by-value copy of pos for fn_8038BD08 is scheduled in another order; jump table is @NNN
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 0, 0, 0);
-        fn_80119DD0()->field_0x1 = 1;
+        fn_80119DD0()->setField_0x1(1);
         break;
     case 1:
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100002C, false, 0);
         fn_8011921C()->fn_80118454();
-        fn_80119DD0()->field_0x1 = 0;
+        fn_80119DD0()->setField_0x1(0);
         break;
     case 3:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 1, 0, 0, 0, 0);
-        fn_80119DD0()->field_0x1 = 0;
+        fn_80119DD0()->setField_0x1(0);
         break;
     case 4: {
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
-        fn_80119DD0()->field_0x1 = 0;
-        GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f box = view->mVisibleBox;
-        JGeometry::TVec3f pos(0.5f * (box.f.x - box.i.x) + box.i.x, 0.5f * (box.f.y - box.i.y) + box.i.y, 0.0f);
+        fn_80119DD0()->setField_0x1(0);
+        JGeometry::TVec3f pos;
+        setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33C, 1, 2, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33D, 1, 2, NULL, NULL, true, 1.0f);
         break;
     }
     case 5: {
-        GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-        JGeometry::TVec3f pos(0.5f * (s32)mode->fbWidth, 0.5f * (s32)mode->efbHeight - 40.0f, 0.0f);
+        JUTVideo* video = JUTVideo::getManager();
+        s32 height = video->getEfbHeight();
+        s32 width = video->getFbWidth();
+        JGeometry::TVec3f pos(width * 0.5f, height * 0.5f - 40.0f, 0.0f);
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x231, mLayer_0x4, pos, 0x62)) {
-            fn_8011921C()->fn_80118454();
-        }
-        break;
-    }
-    case 7: {
-        GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-        JGeometry::TVec3f pos(0.5f * (s32)mode->fbWidth, 0.5f * (s32)mode->efbHeight - 40.0f, 0.0f);
-        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x23C, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
         }
         break;
@@ -200,6 +200,17 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100001D, false, 0);
         getActorManager_801F856C()->spawnActor_801F9484('SEV2', mLayer_0x4, &mPos, 0x2000, -1, -1);
         break;
+    case 7: {
+        JUTVideo* video = JUTVideo::getManager();
+        s32 height = video->getEfbHeight();
+        s32 width = video->getFbWidth();
+        JGeometry::TVec3f pos(width * 0.5f, height * 0.5f - 40.0f, 0.0f);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, 0x23C, mLayer_0x4, pos, 0x62)) {
+            fn_8011921C()->fn_80118454();
+        }
+        break;
+    }
     case 8:
         fn_80119DD0()->startFade_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x96);

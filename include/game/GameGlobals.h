@@ -502,6 +502,8 @@ public:
     /* 0x28 */ s32 field_0x28;
     /* 0x2C */ J2DPicture* field_0x2c; // "kk_black.bti", made by fn_80119D48
     void startFade_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+    // Inline: act_opening_narration_801286C0 loads the value after the fn_80119DD0() call.
+    void setField_0x1(u8 value) { field_0x1 = value; }
     // 0x80119468 (game/tu_80118384.cpp): startFade_80119998 with the fade length picked by `mode`.
     void fn_80119468(s32 g, s32 mode);
     // 0x80119958: resets every field but the picture.
