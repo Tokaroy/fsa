@@ -144,7 +144,7 @@ static inline s32 getFlagBit(const s32* flags, s32 player) {
     return flags[fn_8022F340(player)];
 }
 
-// FIXME(shotgun): 99.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.92 %, regalloc-only; behaviour near.
 // Still differs: `layer` is in r29 in the original, r28 in ours.
 void GreatFairy_804AF338::update() {
     if (field_0x248 != 1) {
