@@ -133,7 +133,7 @@ void PauseScreen_804B1DA8::fn_80454A00() {
     }
 }
 
-// FIXME(shotgun): 97.85 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.35 %, missing/extra; behaviour near.
 // (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
 // A/B-button chain of state 8 skips the rest on a mismatched flag in the original, ours does not)
 s32 PauseScreen_804B1DA8::fn_80453B14() {
