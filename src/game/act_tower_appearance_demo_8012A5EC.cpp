@@ -298,7 +298,7 @@ inline void TowerAppearanceDemo_8049E770::spawnEmitters() {
     }
 }
 
-// FIXME(shotgun): 98.79 %, operands; behaviour drift.
+// FIXME(shotgun): 98.89 %, operands; behaviour drift.
 void TowerAppearanceDemo_8049E770::fn_8012B218() {
     static JGeometry::TVec3f lbl_804BD7C0[4] = {
         JGeometry::TVec3f(-113.0f, 382.0f, 50.0f),
@@ -461,7 +461,7 @@ void TowerAppearanceDemo_8049E770::fn_8012B02C() {
     }
 }
 
-// FIXME(shotgun): 97.13 %, different; behaviour clean.
+// FIXME(shotgun): 99.81 %, operands; behaviour clean.
 void TowerAppearanceDemo_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
@@ -607,7 +607,7 @@ void TowerAppearanceDemo_8049E770::fn_8012A8C0() {
     }
 }
 
-// FIXME(shotgun): 99.53 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.61 %, regalloc-only; behaviour drift.
 bool TowerAppearanceDemo_8049E770::fn_8012A5EC() {
     switch (field_0x230) {
     case 0:
