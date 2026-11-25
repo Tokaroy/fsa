@@ -409,7 +409,7 @@ void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
             }
             if (mState != 0x16) {
                 field_0x5a8 = (f32)(randInt_801CD664(0x51) + 0x78);
-                mPathCount = 0;
+                mPath.mCount = 0;
                 fn_801C7F98();
                 fn_801C7EE4();
             }
@@ -454,7 +454,7 @@ void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
     case 0x19:
     case 0x1A:
         mTargetSpeed = 1.0f;
-        mPathCount = 0;
+        mPath.mCount = 0;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         mFlags |= 0x1100;
@@ -607,7 +607,7 @@ void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
         if (field_0x340.mState != 1) {
             field_0x340.setState_800FEB78(1);
         }
-        mPathCount = 0;
+        mPath.mCount = 0;
         mFlags |= 0x1000;
         field_0x5b0 = (f32)(randInt_801CD664(0x15) + 0x14);
         break;
@@ -722,7 +722,7 @@ void ShadowLink2_804A43E8::setState_801C3B7C(int state) {
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        mPathCount = 0;
+        mPath.mCount = 0;
         break;
     }
     mStateTimer = 0;

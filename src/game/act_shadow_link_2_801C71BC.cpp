@@ -179,7 +179,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             if (field_0x358.fn_80214244()->fn_800FD4C0(current, prev) ||
                 field_0x358.fn_80214244()->fn_800FD4C0(current, next)) {
                 JGeometry::TVec3f railPos;
-                mPathCount = 0;
+                mPath.mCount = 0;
                 mFlags &= ~(0x1000 | 0x20000);
                 mFlags |= 0x400000;
                 getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
@@ -192,17 +192,17 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
                 return;
             }
         }
-        if (mPathCount < 16) {
-            s32 n = mPathCount;
-            mPath[n].x = detour.x;
-            mPath[n].y = detour.y;
-            mPathCount++;
+        if (mPath.mCount < 16) {
+            s32 n = mPath.mCount;
+            mPath.mPoints[n].x = detour.x;
+            mPath.mPoints[n].y = detour.y;
+            mPath.mCount++;
         }
-        if (mPathCount < 16) {
-            s32 n = mPathCount;
-            mPath[n].x = field_0x32c.x;
-            mPath[n].y = field_0x32c.y;
-            mPathCount++;
+        if (mPath.mCount < 16) {
+            s32 n = mPath.mCount;
+            mPath.mPoints[n].x = field_0x32c.x;
+            mPath.mPoints[n].y = field_0x32c.y;
+            mPath.mCount++;
         }
         field_0x32c.set(detour.x, detour.y, 0.0f);
         field_0x33c = fn_801D02E0(&field_0x32c);
@@ -238,7 +238,7 @@ void ShadowLink2_804A43E8::fn_801C8BC4(u8 flag) {
 #pragma auto_inline off
 // FIXME(shotgun): 99.59 %, scheduling; behaviour clean.
 void ShadowLink2_804A43E8::fn_801C8B50() {
-    mPathCount = 0;
+    mPath.mCount = 0;
     mFlags &= ~ENEMY_FLAG_NO_MAP_HIT;
     field_0x358.fn_80214244()->fn_800FDE38();
     fn_801C8C84(0, 0);
@@ -397,7 +397,7 @@ void ShadowLink2_804A43E8::fn_801C7EE4() {
 // FIXME(shotgun): 99.74 %, operands; behaviour clean.
 u8 ShadowLink2_804A43E8::fn_801C7BD0() {
     u8 ret = 0;
-    s32 count = mPathCount;
+    s32 count = mPath.mCount;
     if (count == 2) {
         f32 dx = field_0x32c.x - mPos.x;
         f32 dy = field_0x32c.y - mPos.y;
@@ -407,16 +407,16 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
             if (count <= 1) {
                 idx1 = 0;
             }
-            f32 ny = mPath[idx1].y;
+            f32 ny = mPath.mPoints[idx1].y;
             s32 idx0 = 1;
             if (count <= 1) {
                 idx0 = 0;
             }
-            f32 nx = mPath[idx0].x;
+            f32 nx = mPath.mPoints[idx0].x;
             field_0x32c.x = nx;
             field_0x32c.y = ny;
             field_0x32c.z = 0.0f;
-            mPathCount = 0;
+            mPath.mCount = 0;
             mFlags &= ~ENEMY_FLAG_NO_MAP_HIT;
         }
     } else {
@@ -651,7 +651,7 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
         if (field_0x358.fn_80214244()->fn_800FD4C0(cur, prev) ||
             field_0x358.fn_80214244()->fn_800FD4C0(cur, next)) {
             JGeometry::TVec3f railPos;
-            mPathCount = 0;
+            mPath.mCount = 0;
             mFlags &= ~(0x1000 | 0x20000);
             mFlags |= 0x400000;
             getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
