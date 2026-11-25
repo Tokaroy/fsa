@@ -142,9 +142,6 @@ static inline u32 checkInputs_8015A374() {
     return 0;
 }
 
-// Stack slots only: the original keeps the TVec3f copied into the found actor (case 0x2E) below the by-value
-// message positions (0x38), ours above them.
-// FIXME: 99.98 %, operands; behaviour clean.
 void LiftableItem_804A01D0::update() {
     // The `== true` tests below are deliberate: the compiled code has more instructions without them.
 
@@ -249,8 +246,7 @@ void LiftableItem_804A01D0::update() {
                         }
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x290);
                         if (actor != NULL) {
-                            JGeometry::TVec3f pos = mPos;
-                            actor->mPos = pos;
+                            actor->mPos = JGeometry::TVec3f(mPos);
                         }
                         if (field_0x288 < 4) {
                             field_0x288++;
@@ -381,8 +377,8 @@ void LiftableItem_804A01D0::update() {
                 }
                 break;
             }
-            if (field_0x234 == 0x2E) {
-                if (mLayer_0x4 < 8 && fn_80388EEC(field_0x250)) {
+            if (field_0x234 == 0x2E && mLayer_0x4 < 8) {
+                if (fn_80388EEC(field_0x250)) {
                     field_0x230 = 2;
                     field_0x238 = 20;
                     LiftableItem_804A01D0* actor = static_cast<LiftableItem_804A01D0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x290));
