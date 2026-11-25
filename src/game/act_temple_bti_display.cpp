@@ -6,40 +6,40 @@
 #include "game/SpriteParams.h"
 #include "game/Unk_8045A080.h"
 
-static const char* sBtiNames[3][9] = {
-    {
-        "bg_tenkuu.bti",
-        "tenkuunotou.bti",
-        "koorinoshinden.bti",
-        "yaminosinden.bti",
-        "honounotou.bti",
-        "pyramid.bti",
-        "sabaku_sinden_l.bti",
-        "ana.bti",
-        "higasi_sinden.bti",
-    },
-    {
-        "bg_tenkuu_ue.bti",
-        "tenkuunotou_ue.bti",
-        "koorinoshinden_kabuse.bti",
-        "yaminosinden_ue.bti",
-        "honounotou_ue.bti",
-        "pyramid_kabuse.bti",
-        "sabaku_sinden_l_ue.bti",
-        "ana_ue.bti",
-        "higasi_sinden_ue.bti",
-    },
-    {
-        "bg_tenkuu_tobira.bti",
-        "tenkuunotou_tobira.bti",
-        "koorinoshinden_tobira.bti",
-        "yaminosinden_tobira.bti",
-        "honounotou_tobira.bti",
-        "pyramid_tobira.bti",
-        "sabaku_sinden_l_tobira.bti",
-        "ana_tobira.bti",
-        "higasi_sinden_tobira.bti",
-    },
+static const char* sBtiNames[9] = {
+    "bg_tenkuu.bti",
+    "tenkuunotou.bti",
+    "koorinoshinden.bti",
+    "yaminosinden.bti",
+    "honounotou.bti",
+    "pyramid.bti",
+    "sabaku_sinden_l.bti",
+    "ana.bti",
+    "higasi_sinden.bti",
+};
+
+static const char* sBtiNamesUe[9] = {
+    "bg_tenkuu_ue.bti",
+    "tenkuunotou_ue.bti",
+    "koorinoshinden_kabuse.bti",
+    "yaminosinden_ue.bti",
+    "honounotou_ue.bti",
+    "pyramid_kabuse.bti",
+    "sabaku_sinden_l_ue.bti",
+    "ana_ue.bti",
+    "higasi_sinden_ue.bti",
+};
+
+static const char* sBtiNamesTobira[9] = {
+    "bg_tenkuu_tobira.bti",
+    "tenkuunotou_tobira.bti",
+    "koorinoshinden_tobira.bti",
+    "yaminosinden_tobira.bti",
+    "honounotou_tobira.bti",
+    "pyramid_tobira.bti",
+    "sabaku_sinden_l_tobira.bti",
+    "ana_tobira.bti",
+    "higasi_sinden_tobira.bti",
 };
 
 static const s32 sOffsets[9] = {
@@ -152,18 +152,14 @@ void TempleBTIDisplay_8049CB04::update() {
     }
 }
 
-// FIXME: 96.13%, missing/extra (193 vs 194 instrs). The target has `addi r4, r31, 0x0` (names[0] address) before the
-// first getBossArchiveResource_804032E8 call, which shifts the immediates' registers by one (r7/r6/r5 vs r8/r7/r6) in the SpriteParams init.
 void TempleBTIDisplay_8049CB04::draw() {
-    // Steering: the original keeps the table base in r31 across the three lookups.
-    const char* (*names)[9] = sBtiNames;
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f pos = mPos;
     params.field_0x1d = -1;
     params.field_0x24 = 1;
     params.field_0x21 = 1;
 
-    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', names[0][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', sBtiNames[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
 
     if (field_0x234 != 1) {
         mPos.y += 16.0f * (lbl_8049C3B8[0] + sOffsets[field_0x238]) + field_0x240;
@@ -172,7 +168,7 @@ void TempleBTIDisplay_8049CB04::draw() {
         } else {
             params.field_0x1d = 0;
         }
-        drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', names[2][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', sBtiNamesTobira[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
         mPos.y = pos.y;
     }
 
@@ -182,6 +178,6 @@ void TempleBTIDisplay_8049CB04::draw() {
         params.field_0x1d = 2;
     }
     mPos.y += 16.0f * ((f32)lbl_8049C3B8[1] + sFloatTable1[field_0x238]);
-    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', names[1][field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', sBtiNamesUe[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
     mPos.y = pos.y;
 }
