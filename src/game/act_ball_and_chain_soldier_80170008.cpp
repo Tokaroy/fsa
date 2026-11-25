@@ -29,12 +29,6 @@ inline bool isBoxOnScreen(f32 left, f32 top, f32 right, f32 bottom) {
     return visible;
 }
 
-// The original reaches mRandom.get_ufloat() through one more inline level (its union slot is
-// allocated after std::sqrtf's fpclassify slot); the name is ours.
-inline f32 randomFloat(f32 max) {
-    return gGameRoot_8053AAF8->mRandom.get_ufloat(max);
-}
-
 // 0x80171AF8.
 // FIXME(shotgun): 98.99 %, regalloc-only; behaviour clean.
 void BallAndChainSoldier_804A0810::init() {

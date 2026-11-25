@@ -425,10 +425,6 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
     return result;
 }
 
-static inline f32 getRandFX(f32 max) {
-    return max - 2.0f * max * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-}
-
 // 0x801A4FB4.
 s32 ActorBase_804A5770::fn_801A4FB4() {
     s32 kind = (field_0xb0 >> 12) & 0xF;
