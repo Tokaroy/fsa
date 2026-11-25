@@ -15,9 +15,9 @@ static const u64 lbl_80491470[3] = {
 };
 
 // The three rows' colours: the selected one is lit.
-static inline void setRowColors(PauseScreen_804B1DA8* self, s32 selected) {
+static inline void setRowColors(PauseScreen_804B1DA8* self) {
     for (s32 i = 0; i < 3; i++) {
-        if (i == selected) {
+        if (i == self->field_0x1c) {
             static_cast<J2DPicture*>(self->mScreen->search(lbl_80491470[i]))->setWhite(JUtility::TColor(0xFF, 0xED, 0xA0, 0xFF));
             static_cast<J2DPicture*>(self->mScreen->search(lbl_80491470[i]))->setBlack(JUtility::TColor(0x27, 0x10, 0, 0));
         } else {
@@ -161,20 +161,25 @@ s32 PauseScreen_804B1DA8::fn_80453B14() {
         if (field_0x1c > 0 && lbl_8053AD30->fn_80309A9C(0x8, -1)) {
             field_0x1c--;
             field_0x20 = 1;
-            setRowColors(this, field_0x1c);
+            setRowColors(this);
             gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         } else if (field_0x1c < 2 && lbl_8053AD30->fn_80309A9C(0x4, -1)) {
             field_0x1c++;
             field_0x20 = 1;
-            setRowColors(this, field_0x1c);
+            setRowColors(this);
             gAudioMgr_8053AF80->playSystemSound_80458880(0, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
-            field_0x1e = 0xA;
+            // the original tests the row here and stores the same state on both paths
+            if (field_0x1c == 0) {
+                field_0x1e = 0xA;
+            } else {
+                field_0x1e = 0xA;
+            }
             field_0x20 = 1;
             gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             field_0x1c = 0;
-            setRowColors(this, field_0x1c);
+            setRowColors(this);
             field_0x1e = 0xA;
             field_0x20 = 1;
             gAudioMgr_8053AF80->playSystemSound_80458880(0xB, -1);
@@ -277,7 +282,7 @@ s32 PauseScreen_804B1DA8::fn_80453B14() {
                 field_0xc->moveFromCentre_80402E08(0.0f, -480.0f);
                 field_0xc->field_0x22 = 0;
                 field_0x1c = 0;
-                setRowColors(this, field_0x1c);
+                setRowColors(this);
                 mScreen->search('Pkenc01')->move(field_0x24[field_0x1c], field_0x30[field_0x1c]);
                 mScreen->search('Pkenc02')->move(field_0x3c[field_0x1c], field_0x48[field_0x1c]);
             }
