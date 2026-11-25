@@ -15,6 +15,7 @@ BootLoader_804B0F50* lbl_8053AAF0;
 // the game pads, the heaps, the loader and the memory card, then runs the
 // frame loop forever.
 //
+// FIXME: 99.01 %, missing/extra; behaviour clean.
 // FIXME: one extra instruction: the target allocates the main heap to r30 and the
 // audio object to r31; we swap them and route the heap through r0 once.
 int main() {
