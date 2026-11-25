@@ -23,7 +23,7 @@ public:
     void fn_8034335C(s32 layer, const JGeometry::TVec3f* pos);
     // Inlined in update(): the two corners are copied once into this helper's by-value
     // parameters and again into fn_8043E398's.
-    void showOnHud(JGeometry::TVec3f a, JGeometry::TVec3f b) { lbl_8053AED0->fn_8043E398(a, b); }
+    void showOnHud_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) { lbl_8053AED0->fn_8043E398(a, b); }
 
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 mTimer;
