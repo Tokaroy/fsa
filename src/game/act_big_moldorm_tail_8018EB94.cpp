@@ -98,7 +98,7 @@ void BigMoldormTail_804A1FA0::vfunc_0x44() {
 }
 
 // FIXME(shotgun): 96.39 %, different; behaviour drift.
-// Load/store order of the history copies and f-registers after the bounce still differ.
+// The four indexed history copies add 0x2d0 with an extra addi; the original folds it into the load offsets.
 void BigMoldormTail_804A1FA0::update() {
     JGeometry::TVec3f savedPos = mPos;
     f32 z0 = mPos.z;
@@ -154,16 +154,12 @@ void BigMoldormTail_804A1FA0::update() {
         mPos.z = z0;
         field_0x2d0[0].set(mPos);
         if (hit) {
-            field_0x288[1].set(field_0x2d0[lbl_80539FE0[0]].x, field_0x2d0[lbl_80539FE0[0]].y,
-                                field_0x2d0[lbl_80539FE0[0]].z);
-            field_0x288[2].set(field_0x2d0[lbl_80539FE0[1]].x, field_0x2d0[lbl_80539FE0[1]].y,
-                                field_0x2d0[lbl_80539FE0[1]].z);
+            field_0x288[1].set(field_0x2d0[lbl_80539FE0[0]]);
+            field_0x288[2].set(field_0x2d0[lbl_80539FE0[1]]);
             field_0x288[0].set(field_0x2d0[0]);
         } else {
-            field_0x288[1].set(field_0x2d0[lbl_80539FD8[0]].x, field_0x2d0[lbl_80539FD8[0]].y,
-                                field_0x2d0[lbl_80539FD8[0]].z);
-            field_0x288[2].set(field_0x2d0[lbl_80539FD8[1]].x, field_0x2d0[lbl_80539FD8[1]].y,
-                                field_0x2d0[lbl_80539FD8[1]].z);
+            field_0x288[1].set(field_0x2d0[lbl_80539FD8[0]]);
+            field_0x288[2].set(field_0x2d0[lbl_80539FD8[1]]);
             field_0x288[0].set(field_0x2d0[0]);
         }
         if (mEmitters[1] == NULL) {
