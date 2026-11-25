@@ -67,7 +67,7 @@ void Armos_8049F260::init() {
 }
 
 
-// FIXME(shotgun): 95.40 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.38 %, missing/extra; behaviour near.
 // Still differs: the original tests `away` with cmplwi 1 and null-checks the collected actor twice.
 void Armos_8049F260::update() {
     JGeometry::TBox2f box = mBox;
@@ -400,7 +400,6 @@ void Armos_8049F260::update() {
     }
 }
 
-// FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
 void Armos_8049F260::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
