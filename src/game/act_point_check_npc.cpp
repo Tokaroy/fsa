@@ -18,6 +18,7 @@ void PointCheckNPC_804A81C8::init() {
 }
 
 // The original reloads mLayer_0x4 for spawnEmitter_8013CC50 after building pos (ours reuses the compare's load); the rest is registers and load order.
+// FIXME: 98.67 %, missing/extra; behaviour drift.
 void PointCheckNPC_804A81C8::update() {
     JGeometry::TVec2<f32> p(mPos.x + 4.0f, mPos.y + 4.0f);
     JGeometry::TBox2f box(mBox);
