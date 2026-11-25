@@ -171,23 +171,11 @@ void Lift_804A6F6C::fn_80256410() {
     mPos.y = mSpawnPos.y + 64.0f * JMath::sincosTable_.sinShort(field_0x23a);
 }
 
-// Stack slot order and f4/f5 regalloc around sqrt/sincos still differ.
-// FIXME: 99.17 %, operands; behaviour clean.
-void Lift_804A6F6C::update() {
-    if (mSpawnParam_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
-        fn_80256410();
-    }
-    for (s32 i = 0; i < 4; i++) {
-        if (!fn_802565BC(i)) {
-            continue;
-        }
-        if (mSpawnParam_0x90 >> 27 != 0 && isScreenFlagSet_0x34() != true) {
-            continue;
-        }
-        fn_8023DF68(i, &(mPos - mPrevPos));
-        if (getMode() >= 6) {
-            continue;
-        }
+// Inline: update's stack slots are in the reversed order of an inlined copy's locals.
+// f4/f5 around sqrt still differ.
+inline void Lift_804A6F6C::carryPlayer(s32 i) {
+    fn_8023DF68(i, &(mPos - mPrevPos));
+    if (getMode() < 6) {
         JGeometry::TVec3f d = mPos - *getPlayerPos_8023E724(i);
         d.z = 0.0f;
         s32 angle = JMath::atanTable_.atan2_(d.y, d.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
@@ -195,6 +183,17 @@ void Lift_804A6F6C::update() {
         s16 a = angle - 0x40;
         JGeometry::TVec3f v(len * JMath::sincosTable_.cosShort(a), len * JMath::sincosTable_.sinShort(a), 0.0f);
         fn_8023DFF4(i, &(v - d));
+    }
+}
+
+void Lift_804A6F6C::update() {
+    if (mSpawnParam_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
+        fn_80256410();
+    }
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_802565BC(i) && (mSpawnParam_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true)) {
+            carryPlayer(i);
+        }
     }
 }
 
