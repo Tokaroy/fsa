@@ -160,9 +160,9 @@ void Poe_8049F330::update() {
         field_0x230 = 1;
     case 1:
         addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x238[5]) + 20.0f, 0.3f, 1.0f);
-        field_0x238[5] += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+        field_0x238[5] += 0x200 + (s32)randomFloat(256.0f);
         if ((field_0x94 == 2 || field_0x94 == 6) && field_0x238[0] == 0) {
-            field_0x238[0] = (s32)(150.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 150;
+            field_0x238[0] = (s32)randomFloat(150.0f) + 150;
             field_0x238[4]++;
             field_0x238[4] &= 1;
             if (field_0x238[4] == 0) {
@@ -206,7 +206,7 @@ void Poe_8049F330::update() {
             field_0xb0 = 0;
         }
         if (field_0x238[1] == 0) {
-            field_0x238[1] = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
+            field_0x238[1] = (s32)randomFloat(60.0f) + 60;
             field_0x238[6] ^= 1;
         }
         findTargetPlayer_801EEC98(mSerial, &angle, &dir, NULL, NULL, 0, 0);
