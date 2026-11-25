@@ -155,7 +155,7 @@ Goal_804A7EB0::~Goal_804A7EB0() {
 }
 
 // 0x802A4A4C.
-// FIXME(shotgun): 97.06 %, different; behaviour near.
+// FIXME(shotgun): 98.10 %, different; behaviour near.
 // (states 0-2 only), missing/extra + reloc-name
 void Goal_804A7EB0::update() {
     JGeometry::TVec3f pos;
