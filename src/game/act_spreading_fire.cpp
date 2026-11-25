@@ -22,13 +22,9 @@ static const f32 lbl_8046D3B0[16] = {
 
 // The GameView bit that marks a 16-cell block: x and y coordinates packed.
 static inline s32 viewBitOf(s32 x, s32 y) {
-    return (x & 0x100) | ((y & 0x100) << 1) | (y & 0xF0) | ((x >> 4) & 0xF);
+    return ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
 }
 
-// FIXME: 95.68 %, missing/extra; behaviour near.
-// The original tests field_0x250 twice on the same flags (a bne to the
-// sprite-skip, then a second bne that is never taken before the view-bit test); no natural
-// form gives that dead branch, so the kill check is written as one condition.
 void SpreadingFire_804A8A50::init() {
     field_0x250 = (mSpawnParam_0x90 >> 6) & 0xF;
     mDir_0x98 = (mSpawnParam_0x90 >> 4) & 0x3;
@@ -65,10 +61,10 @@ void SpreadingFire_804A8A50::init() {
     } else if (field_0x274 >= 0x200) {
         field_0x274 = 0x1FF;
     }
-    mViewBit = (field_0x270 & 0x100) | ((field_0x274 & 0x100) << 1) | (field_0x274 & 0xF0) |
+    mViewBit = ((field_0x274 & 0x100) << 1) | (field_0x270 & 0x100) | (field_0x274 & 0xF0) |
                ((field_0x270 >> 4) & 0xF);
 
-    if (field_0x250 != 0 || !getGameView_802D6A9C()->fn_802D7384(mViewBit)) {
+    if (field_0x250 != 0 || (field_0x250 == 0 && !getGameView_802D6A9C()->fn_802D7384(mViewBit))) {
         mBox.i.x = -6.0f;
         mBox.i.y = -6.0f;
         mBox.f.x = 6.0f;
@@ -79,10 +75,7 @@ void SpreadingFire_804A8A50::init() {
         mMapBox_0x80.f.y = 8.0f;
 
         mTile = getRawTile_80226850(&mPos, mLayer_0x4);
-        if (mLayer_0x4 >= 8) {
-            field_0x240 = 3;
-            field_0x280 = 0;
-        } else {
+        if (mLayer_0x4 < 8) {
             field_0x240 = 0;
             if (field_0x250 == 3) {
                 mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19F, 0, 0, NULL, NULL, true, 1.0f);
@@ -97,23 +90,26 @@ void SpreadingFire_804A8A50::init() {
                 field_0x290 = 1;
                 field_0x294 = 10;
             }
-        }
 
-        s32 nibble = (mSpawnParam_0x90 >> 12) & 0xF;
-        if (nibble == 0) {
-            field_0x254 = 30;
+            s32 nibble = (mSpawnParam_0x90 >> 12) & 0xF;
+            if (nibble == 0) {
+                field_0x254 = 30;
+            } else {
+                field_0x254 = nibble * 2;
+                if (field_0x254 < 0x15) {
+                    field_0x27c = (s32)(1000.88f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 7;
+                }
+            }
+
+            field_0x278 = 0;
+            if (viewLayerFlag(mLayer_0x4) == 0) {
+                if (fn_801EE3C0(mTile) == true) {
+                    getGameView_802D6A9C()->fn_802D73CC(mViewBit, true);
+                }
+            }
         } else {
-            field_0x254 = nibble * 2;
-            if (field_0x254 < 0x15) {
-                field_0x27c = (s32)(1000.88f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 7;
-            }
-        }
-
-        field_0x278 = 0;
-        if (viewLayerFlag(mLayer_0x4) == 0) {
-            if (fn_801EE3C0(mTile) == true) {
-                getGameView_802D6A9C()->fn_802D73CC(mViewBit, true);
-            }
+            field_0x240 = 3;
+            field_0x280 = 0;
         }
     } else {
         mAlive = false;
@@ -137,10 +133,11 @@ SpreadingFire_804A8A50::~SpreadingFire_804A8A50() {
     getGameView_802D6A9C()->fn_802D73CC(mViewBit, false);
 }
 
-// FIXME: 94.63 %, missing/extra + reloc-name; behaviour drift.
-// The original copies mPos to a stack TVec3f (psq_st 0x24(r1)) and never reads
-// it, and it keeps one more register than we do (r29). Left out: the copy has no source use.
+// FIXME: 99.94 %, regalloc-only; behaviour drift.
+// The original copies mPos to a stack TVec3f (psq_st 0x24(r1)) and never reads it: `pos`.
 void SpreadingFire_804A8A50::update() {
+    JGeometry::TVec3f pos = mPos;
+    JGeometry::TVec3f next;
     s32 damage = mParamAtcp_0x114;
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         damage = 0;
@@ -197,15 +194,16 @@ void SpreadingFire_804A8A50::update() {
         if (field_0x254 <= 0x14 && (field_0x254 & 1) == 0) {
             if (field_0x278 < 8) {
                 s32 step = field_0x27c;
-                JGeometry::TVec3f tmp(mPos.x + lbl_8046D3B0[step], mPos.y + lbl_8046D3F0[step],
-                                      mPos.z);
+                next.x = mPos.x + lbl_8046D3B0[step];
+                next.y = mPos.y + lbl_8046D3F0[step];
+                next.z = mPos.z;
                 field_0x27c = step + 1;
                 field_0x278++;
-                u16 tile = getRawTile_80226850(&tmp, mLayer_0x4);
+                u16 tile = getRawTile_80226850(&next, mLayer_0x4);
                 if (fn_801EE3C0(tile) == true) {
                     if (field_0x250 != 5 && field_0x250 != 6) {
-                        field_0x270 = (s32)(tmp.x - field_0x25c.i.x);
-                        field_0x274 = (s32)(tmp.y - field_0x25c.i.y);
+                        field_0x270 = (s32)(next.x - field_0x25c.i.x);
+                        field_0x274 = (s32)(next.y - field_0x25c.i.y);
                         if (field_0x270 < 0) {
                             field_0x270 = 0;
                         } else if (field_0x270 >= 0x200) {
@@ -220,10 +218,10 @@ void SpreadingFire_804A8A50::update() {
                         if (!view->fn_802D7384(viewBitOf(field_0x270, field_0x274))) {
                             s32 owner = field_0x258;
                             if (owner == -1) {
-                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &tmp,
+                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &next,
                                                            (mDir_0x98 << 4) | 0xF, -1, -1);
                             } else {
-                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &tmp,
+                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &next,
                                                            owner | (mDir_0x98 << 4), -1, field_0x110);
                             }
                         }
@@ -273,13 +271,13 @@ void SpreadingFire_804A8A50::update() {
             field_0x284.y -= 16.0f;
             mPos.y -= 32.0f;
             if (getRawTile_80226850(&mPos, mLayer_0x4) != 0x3EB) {
+                mPos.y += 16.0f;
+                gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);
+                die_0x24();
                 break;
             }
             gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x3E0);
         }
-        mPos.y += 16.0f;
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);
-        die_0x24();
         break;
     case 7:
         field_0x254--;
