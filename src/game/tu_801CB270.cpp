@@ -733,12 +733,6 @@ static inline JGeometry::TVec2f cornerOffset(const JGeometry::TVec2f& corner, co
     return ret;
 }
 
-// A corner of the box from one x and one y edge, by value (the original keeps the temporary
-// and its returned copy on the stack).
-static inline JGeometry::TVec2f boxCorner(f32 x, f32 y) {
-    return JGeometry::TVec2f(x, y);
-}
-
 static inline u16 cornerAngle(const JGeometry::TVec2f& d) {
     return (s32)(JMath::atanTable_.atan2_(d.x, d.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
 }
@@ -786,7 +780,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         out->x += speed * JMASSin(angleArg);
         out->y += speed * JMASCos(angleArg);
     } else if (ua >= 0x4000 && ua <= 0x8000) {
-        u16 ca = cornerAngle(cornerOffset(boxCorner(box->f.x, box->i.y), p));
+        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->f.x, box->i.y), p));
         s16 a2 = 0x8000 - ua;
         if ((u32)(ca - ua) >> 31) { // sign bit of the difference
             out->x = p->x + JMAAbs(p->y - box->i.y) * edgeSlope(a2);
@@ -810,7 +804,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         out->x -= speed * JMASSin(a3);
         out->y -= speed * JMASCos(a3);
     } else {
-        u16 ca = cornerAngle(cornerOffset(boxCorner(box->i.x, box->f.y), p));
+        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->i.x, box->f.y), p));
         s16 a4 = 0x10000 - ua;
         if ((u32)(ca - ua) >> 31) {
             out->x = p->x - JMAAbs(box->f.y - p->y) * edgeSlope(a4);
