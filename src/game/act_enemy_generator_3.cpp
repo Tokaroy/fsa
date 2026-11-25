@@ -33,8 +33,9 @@ void EnemyGenerator3_804AA1D0::init() {
     mState = 0;
 }
 
-// Instruction order and the mLayer_0x4 register (r29 here, r30 in the
-// original) still differ.
+// The original compares findNextActorById_801F78F4's result before copying it
+// to the found register (cmpwi; mr), ours copies first; the mLayer_0x4
+// register (r29 here, r30 in the original) also differs.
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
     case 0:
@@ -50,9 +51,8 @@ void EnemyGenerator3_804AA1D0::update() {
             if (mMode == 1) {
                 s32 found = -1;
                 while (true) {
-                    s32 next = getActorManager_801F856C()->findNextActorById_801F78F4(mActorId, found);
-                    found = next;
-                    if (next < 0) {
+                    found = getActorManager_801F856C()->findNextActorById_801F78F4(mActorId, found);
+                    if (found < 0) {
                         break;
                     }
                     count++;
