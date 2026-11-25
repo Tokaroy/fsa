@@ -78,6 +78,10 @@ public:
     // Row of cls_80204638's slot table this thief registers in (0..9).
     u8 getSlotIndex() const { return field_0x34a; }
 
+    // True when the player field_0x338 is farther than field_0x34c tiles from mPos (states 2 and 6
+    // of updateState_0x90; the original materialises the byte).
+    u8 isPlayerOutOfRange() { return fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ? false : true; }
+
     /* 0x340 */ s32 field_0x340; // -1 at construction
     /* 0x344 */ u32 field_0x344;
     /* 0x348 */ u8 field_0x348;
