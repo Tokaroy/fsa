@@ -33,6 +33,13 @@ static const char* lbl_804AF7D8[6][3] = {
     {"w_kumo5.bmd", NULL, NULL},
 };
 
+// Unreferenced by the surviving code, but present in the original .rodata
+// between "w_kumo5.bmd" and fn_803A5380's strings: 0x14 bytes of halfwords
+// and eight words (element types are a guess), followed by an unreferenced
+// "enemy_both2_sob.bin" that is not reproduced here.
+static const s16 lbl_8047600C[10] = {0, 1, 2, 0, 1, 2, -1, 0, 0, 0};
+static const s32 lbl_80476020[8] = {1, 2, 1, 6, 3, 4, 5, 4};
+
 Title_804AF820* lbl_8053AD88;
 
 // Leaves the progressive-scan prompt: interlaced output, and the save region
@@ -115,8 +122,10 @@ inline void Title_804AF820::drawTitle(f32 blink) {
     }
 }
 
-// FIXME: 99.78. Code identical; string offsets and 0.0f's .sdata2 name differ
-// as in fn_803A5380.
+// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// Code identical; 0.0f's .sdata2 name differs (the original
+// pools 0.5f before every other literal of the unit), and later string offsets
+// are 0x14 short (the unreferenced "enemy_both2_sob.bin" is not reproduced).
 Title_804AF820::Title_804AF820() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053AD88 = this;
@@ -243,10 +252,9 @@ Title_804AF820::~Title_804AF820() {
     lbl_8053AD88 = NULL;
 }
 
-// FIXME: 99.78. Code identical; the string offsets differ by 0x48 (the
-// original .rodata has an unreferenced 0x34-byte table and
-// "enemy_both2_sob.bin" after "w_kumo5.bmd" that no surviving function of
-// the unit references, not even the draw fn_803A44D8) and 0.0f's .sdata2 name.
+// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// Code identical; 0.0f's .sdata2 name differs and the string
+// offsets are 0x14 short (unreferenced "enemy_both2_sob.bin" not reproduced).
 void Title_804AF820::fn_803A5380() {
     if (lbl_80529DEC.field_0x242 == 0) {
         lbl_80529DEC.field_0x242 = 1;
@@ -306,7 +314,8 @@ void Title_804AF820::fn_803A5380() {
     }
 }
 
-// FIXME: 99.25. Scheduling and registers only: in calcBlink the original keeps
+// FIXME: 99.25 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Scheduling and registers only: in calcBlink the original keeps
 // the hold time in r5 and twice the period in r4 (ours r3 / r5); in the cloud
 // loop it loads field_0x104[i] at the top of the body and keeps the emitter
 // manager in r29 and &info.mPrjMtx in r28 (ours swap them); the rest are
@@ -438,7 +447,8 @@ void Title_804AF820::fn_803A44D8() {
     }
 }
 
-// FIXME: 99.61. Scheduling only: the original adds 400 after `wait` +
+// FIXME: 99.62 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Scheduling only: the original adds 400 after `wait` +
 // getFrameMax() (ours folds getFrameMax() + 400 first); the rest are .sdata2
 // names (the original pool starts 0.5f, 120.0f, then 0.0f, 1.0f, the int
 // conversion double, 8.5f) and the jump table's name.
