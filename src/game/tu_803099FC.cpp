@@ -114,7 +114,7 @@ void cls_804AA8C8::pollInputs_8030A43C() {
                     OSSendMessage(&client.mQueue, (OSMessage)7, 1);
                     continue;
                 }
-                if (lbl_8053AAF0->mState >= 4 || lbl_8053AAF0->field_0x60 != 0) {
+                if (lbl_8053AAF0->isLoaded() || lbl_8053AAF0->field_0x60 != 0) {
                     lbl_8053AD34[i] = client.field_0xd6;
                     u32 keys = client.mKeys;
                     memcpy(client.mTransfer, &lbl_80506DE8[i], lbl_80541618[lbl_8053AD08] * 4);
