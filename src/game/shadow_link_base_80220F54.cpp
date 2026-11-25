@@ -82,9 +82,8 @@ void ShadowLinkBase_804A6A00::init() {
     mAnim.setKeyTables_801D2608(lbl_804A6990, 0x1C);
 }
 
-// FIXME: 96.07 %. missing/extra: ours has 2 fewer instrs (54 vs 56); common-subexpression reuses the mFlags loaded in r5 in cases 0 and 3 instead of reloading it
 void ShadowLinkBase_804A6A00::fn_802216E8(s32 limit) {
-    if (mFlags & CLS_804A6A00_FLAG_0x2000) {
+    if (checkFlag(CLS_804A6A00_FLAG_0x2000)) {
         return;
     }
     switch (field_0x2ac) {
