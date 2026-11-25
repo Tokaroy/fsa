@@ -85,11 +85,8 @@ void MgFishingScreen_804B1CC8::fn_8044A024() {
 }
 
 // Updates the digit pictures of the counters and shows or hides their panes.
-// FIXME: 91.22 %. Mostly register assignment (arg_mismatch): the target keeps
-// field_0x12 in r31 and its tens in r30, ours in r30 and r28. The lis/addi
-// loads of lbl_804B1CA0 sit at other points in our schedule, so those reloc
-// rows differ too.
 void MgFishingScreen_804B1CC8::fn_8044998C() {
+    const ResTIMG* res;
     for (s32 i = 0; i < 2; i++) {
         mPanes[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());
     }
@@ -106,9 +103,9 @@ void MgFishingScreen_804B1CC8::fn_8044998C() {
         if (field_0x10 >= 100) {
             field_0x10 = 99;
         }
-        s32 value = field_0x10;
-        s32 units = value - (value / 10) * 10;
-        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[value / 10]));
+        s32 tens = field_0x10 / 10;
+        s32 units = field_0x10 % 10;
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[tens]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[2]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[3]))->changeTexture(res, 0);
         res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[units]));
@@ -132,11 +129,11 @@ void MgFishingScreen_804B1CC8::fn_8044998C() {
         if (field_0x12 >= 100) {
             field_0x12 = 99;
         }
-        s32 a = field_0x11;
-        s32 b = field_0x12;
-        s32 bTens = b / 10;
-        s32 aUnits = a - (a / 10) * 10;
-        const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[a / 10]));
+        s32 aTens = field_0x11 / 10;
+        s32 aUnits = field_0x11 % 10;
+        s32 bTens = field_0x12 / 10;
+        s32 bUnits = field_0x12 % 10;
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[aTens]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[4]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[5]))->changeTexture(res, 0);
         res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[aUnits]));
@@ -145,7 +142,7 @@ void MgFishingScreen_804B1CC8::fn_8044998C() {
         res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[bTens]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[8]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[9]))->changeTexture(res, 0);
-        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[b % 10]));
+        res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1CA0[bUnits]));
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[10]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_80490C78[11]))->changeTexture(res, 0);
     }
