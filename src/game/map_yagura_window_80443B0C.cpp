@@ -252,16 +252,16 @@ void MapYaguraWindow_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
     s32 i = 0;
     s32 j = 0;
     s32 d10000 = value / 10000;
-    const char* p;
-    while ((p = text + i)[0] != 0) {
-        if (p[0] == 0x1A) {
+    while (text[i] != 0) {
+        const char* p = &text[i];
+        if (text[i] == 0x1A) {
             if (p[2] == 3) {
                 s8 c3 = p[3];
                 if ((c3 == 0 && p[4] == 3) || (c3 == 0 && p[4] == 4)) {
                     s32 rem = value;
                     if (value >= 10000) {
                         dst[j++] = d10000 + '0';
-                        rem = value % 10000;
+                        rem %= 10000;
                     }
                     if (value >= 1000) {
                         dst[j++] = (rem / 1000) + '0';
@@ -280,12 +280,13 @@ void MapYaguraWindow_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
             }
             i += p[1];
         } else {
-            dst[j++] = p[0];
+            dst[j++] = text[i];
             i++;
-            if (lbl_8053AD78->mFont->isLeadByte((u8)p[0])) {
-                dst[j++] = text[i++];
+            if (lbl_8053AD78->mFont->isLeadByte(p[0] & 0xFF)) {
+                dst[j++] = text[i];
+            i++;
             }
         }
     }
-    dst[j] = p[0];
+    dst[j] = text[i];
 }
