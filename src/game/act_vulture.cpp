@@ -63,7 +63,7 @@ void Vulture_804A4230::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 97.74 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.74 %, missing/extra; behaviour clean.
 // Ours loads field_0x2b0 into r4 and then copies it to r5 (one extra mr); the original
 // loads it straight into r5. Literal names differ (reloc-name).
 void Vulture_804A4230::fn_801C0634() {
