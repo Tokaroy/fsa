@@ -221,23 +221,25 @@ static const s32 lbl_8046D7F8[4] = {16, -16, 0, 0};
 void Door_804A8D88::update() {
     JGeometry::TVec2f pos(field_0x258.x, field_0x258.y);
     s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
-    switch (field_0x230) {
+    s32 state = field_0x230;
+    switch (state) {
     case 0:
     case 3: {
         if (!(field_0x234 == 5 || field_0x234 == 6 || field_0x234 == 7)) {
-            if (field_0x230 == 3) {
+            if (state == 3) {
                 s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
                 if (bit != -1) {
                     getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
                 }
             }
+            s32 layer = mLayer_0x4;
             u8 upper = 8;
-            if (mLayer_0x4 < 8) {
+            if (layer < 8) {
                 upper = 1;
             }
             switch (field_0x23c) {
             case 0: {
-                gBgRewrite_8053AC98->writeTilePair_8029DEBC(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D598[field_0x234][field_0x238][0], lbl_8046D598[field_0x234][field_0x238][1]);
+                gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, (field_0x238 >> 1) & 1, lbl_8046D598[field_0x234][field_0x238][0], lbl_8046D598[field_0x234][field_0x238][1]);
                 if (field_0x234 == 0 && field_0x230 == 3) {
                     if (field_0x238 == 0) {
                         spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x443, 0, 0, NULL, NULL, true, 1.0f);
@@ -262,7 +264,7 @@ void Door_804A8D88::update() {
             }
             case 1: {
                 gBgRewrite_8053AC98->writeFourTiles_8029DD50(
-                    mLayer_0x4, cell, (field_0x238 >> 1) & 1,
+                    layer, cell, (field_0x238 >> 1) & 1,
                     lbl_8046D628[field_0x234][field_0x238][0],
                     lbl_8046D628[field_0x234][field_0x238][1],
                     lbl_8046D628[field_0x234][field_0x238][2],
@@ -291,7 +293,7 @@ void Door_804A8D88::update() {
                 break;
             }
             case 2: {
-                gBgRewrite_8053AC98->writeTileRun_8029DB2C(mLayer_0x4, cell, (field_0x238 >> 1) & 1, lbl_8046D688[field_0x234][field_0x238][0], lbl_8046D688[field_0x234][field_0x238][1], lbl_8046D688[field_0x234][field_0x238][2], lbl_8046D688[field_0x234][field_0x238][3], lbl_8046D688[field_0x234][field_0x238][4], lbl_8046D688[field_0x234][field_0x238][5]);
+                gBgRewrite_8053AC98->writeTileRun_8029DB2C(layer, cell, (field_0x238 >> 1) & 1, lbl_8046D688[field_0x234][field_0x238][0], lbl_8046D688[field_0x234][field_0x238][1], lbl_8046D688[field_0x234][field_0x238][2], lbl_8046D688[field_0x234][field_0x238][3], lbl_8046D688[field_0x234][field_0x238][4], lbl_8046D688[field_0x234][field_0x238][5]);
                 if (field_0x234 == 0 && field_0x230 == 3) {
                     if (field_0x238 == 0) {
                         spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(48.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43B, 0, 0, NULL, NULL, true, 1.0f);
@@ -341,7 +343,7 @@ void Door_804A8D88::update() {
             } else {
                 field_0x230 = 6;
             }
-        } else if (field_0x230 == 3) {
+        } else if (state == 3) {
             if (field_0x234 == 5) {
                 gBgRewrite_8053AC98->fn_802A3948(&field_0x258, 0, mLayer_0x4, 0x9E);
                 if (mLayer_0x4 >= 8) {
@@ -714,7 +716,9 @@ void Door_804A8D88::update() {
             break;
         }
         gBgRewrite_8053AC98->fn_802A3948(&field_0x258, 0, mLayer_0x4, 0xBC);
-        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(16.0f + field_0x258.x, field_0x258.y, field_0x258.z), 0, mLayer_0x4, 0xBD);
+        s32 layer = mLayer_0x4;
+        JGeometry::TVec3f right(16.0f + field_0x258.x, field_0x258.y, field_0x258.z);
+        gBgRewrite_8053AC98->fn_802A3948(&right, 0, layer, 0xBD);
         spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 8.0f + field_0x258.y, 0.0f), 0xCD, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 8.0f + field_0x258.y, 0.0f), 0xCE, 0, 1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(16.0f + field_0x258.x, 8.0f + field_0x258.y, 0.0f), 0xCF, 0, 1, NULL, NULL, true, 1.0f);
