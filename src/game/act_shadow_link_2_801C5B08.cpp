@@ -22,12 +22,12 @@ void ShadowLink2_804A43E8::fn_801C6784() {
     }
 }
 
-// FIXME(shotgun): 99.14 %, scheduling+regalloc
+// FIXME(shotgun): 99.36 %, scheduling+regalloc + reloc-name; behaviour clean.
 // Called by fn_801C5B08 once field_0x338 holds the nearest player: picks the
 // attack state (0x22, 0x25, 0x26) when close, or turns away and switches to 0x1C.
 void ShadowLink2_804A43E8::fn_801C6260() {
     f32 dist = getPlayerDistSq_801D0DA0(field_0x338, &mPos);
-    bool near = fn_801D183C(1.0f);
+    bool near = fn_801D183C(64.0f);
     bool notTarget = !fn_801CAED4(field_0x338);
     if (field_0x597 == 0 && near && notTarget && (field_0x524.field_0x0 & 0x10) && dist <= 900.0f) {
         setState_801C3B7C(0x22);
@@ -92,7 +92,8 @@ void ShadowLink2_804A43E8::fn_801C6260() {
     }
 }
 
-// FIXME: 98.61 %. Same instructions except the copy of the angle temporary
+// FIXME: 99.23 %, missing/extra; behaviour clean.
+// Same instructions except the copy of the angle temporary
 // (the original keeps the (s16) result in r31 and copies it to r4 for
 // stepAngle_801CD930; ours computes it straight into r4) and the literal labels
 // (@NNN vs lbl_ for lbl_8053EE70, EE78, EE80: data split, not code).
@@ -168,7 +169,8 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     stepAngle_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
-// FIXME: 97.07 %. Register choice for the locals (the original holds the entry
+// FIXME: 98.06 %, missing/extra; behaviour drift.
+// Register choice for the locals (the original holds the entry
 // index in r26 and the rail index in r27, the player in r30, ours differs),
 // and the literal labels (@NNN vs lbl_ for lbl_8053EE6C, EE70, EE74, EE80,
 // EE88: data split).
@@ -219,10 +221,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         u8 entry = field_0x358.fn_80214244()->field_0x3;
         pos = mPos;
         u8 index = field_0x358.fn_80214244()->fn_800FE2E4(&pos, mLayer_0x4);
-        cls_800FE3EC* rail = field_0x358.fn_80214244();
-        if (entry < rail->field_0x2) {
-            rail->field_0x3 = entry;
-        }
+        field_0x358.fn_80214244()->setIndex(entry);
         getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), index);
         JGeometry::TVec3f target = railPos;
         f32 dx = target.x - mPos.x;
