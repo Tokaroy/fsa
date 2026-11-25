@@ -11,13 +11,29 @@
 
 BootLoader_804B0F50* lbl_8053AAF0;
 
+// The heaps, the audio manager, the loader thread and the boot loader (inlined into main).
+static inline void createHeaps() {
+    JKRSolidHeap* solidHeap = JKRSolidHeap::create(0x180000, JKRHeap::getRootHeap(), false);
+    JKRExpHeap* mainHeap = JKRExpHeap::create(0xFFFFFFFF, JKRHeap::getRootHeap(), false);
+    AudioMgr_8045A080* audio = new (mainHeap, 0) AudioMgr_8045A080();
+    mainHeap->becomeCurrentHeap();
+    lbl_80529DEC.mSolidHeap_0x4 = solidHeap;
+    lbl_80529DEC.mHeap = mainHeap;
+    lbl_80529DEC.mAudioMgr_0xc = audio;
+    JUTProcBar::getManager()->setVisible(false);
+    JUTProcBar::getManager()->setHeapBarVisible(false);
+
+    JKRExpHeap* threadHeap = JKRExpHeap::create(0x800, mainHeap, false);
+    fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, threadHeap, 0);
+    lbl_8053AAF0 = new (mainHeap, 0) BootLoader_804B0F50();
+}
+
 // The game's entry point (symbol "main", 0x801344C0): sets up the framework,
 // the game pads, the heaps, the loader and the memory card, then runs the
 // frame loop forever.
 //
 // FIXME: 99.01 %, missing/extra; behaviour clean.
-// FIXME: one extra instruction: the target allocates the main heap to r30 and the
-// audio object to r31; we swap them and route the heap through r0 once.
+// The save-region copy loop still has its source and destination registers swapped.
 int main() {
     JFWSystem::setMaxStdHeap(1);
     JFWSystem::setSysHeapSize(0x200000);
@@ -76,19 +92,7 @@ int main() {
     JFWDisplay::getManager()->clearAllXfb();
     lbl_8051C1A0.fn_803BA980();
 
-    JKRSolidHeap* solidHeap = JKRSolidHeap::create(0x180000, JKRHeap::getRootHeap(), false);
-    JKRExpHeap* mainHeap = JKRExpHeap::create(0xFFFFFFFF, JKRHeap::getRootHeap(), false);
-    AudioMgr_8045A080* audio = new (mainHeap, 0) AudioMgr_8045A080();
-    mainHeap->becomeCurrentHeap();
-    lbl_80529DEC.mSolidHeap_0x4 = solidHeap;
-    lbl_80529DEC.mHeap = mainHeap;
-    lbl_80529DEC.mAudioMgr_0xc = audio;
-    JUTProcBar::getManager()->setVisible(false);
-    JUTProcBar::getManager()->setHeapBarVisible(false);
-
-    JKRExpHeap* threadHeap = JKRExpHeap::create(0x800, mainHeap, false);
-    fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, threadHeap, 0);
-    lbl_8053AAF0 = new (mainHeap, 0) BootLoader_804B0F50();
+    createHeaps();
 
     bool flag = false;
     for (;;) {
