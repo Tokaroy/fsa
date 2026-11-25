@@ -142,12 +142,11 @@ static inline u32 checkInputs_8015A374() {
     return 0;
 }
 
-// FIXME: 98.86%. Same length. The loads of mLayer_0x4 around the by-value TVec3f copies passed to fn_8038BD08 are
-// scheduled differently, and our frame is 0x10 bytes smaller (the original keeps one more 12-byte local), so the stack
-// offsets differ.
+// Stack slots only: the original keeps the TVec3f copied into the found actor (case 0x2E) below the by-value
+// message positions (0x38), ours above them.
 void LiftableItem_804A01D0::update() {
     // The `== true` tests below are deliberate: the compiled code has more instructions without them.
-    JGeometry::TVec3f pos;
+
 
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x29c.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x29c.y, 0.3f, 1.0f);
@@ -168,23 +167,23 @@ void LiftableItem_804A01D0::update() {
                     if ((u32)((gGameRoot_8053AAF8->field_0x83 >> (field_0x274 * 2)) & 3) == 2) {
                         if (field_0x250 == field_0x24c) {
                             field_0x278 = getActorManager_801F856C()->spawnActor_801F9484('PEFF', mLayer_0x4, &mPos, (field_0x250 & 3) | 0x24, -1, -1);
-                            fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], mLayer_0x4, mPos, 0x21);
+                            fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], getField_0x4(), mPos, 0x21);
                         }
                     } else {
                         if (field_0x250 == field_0x24c) {
                             field_0x278 = getActorManager_801F856C()->spawnActor_801F9484('PEFF', mLayer_0x4, &mPos, (field_0x250 & 3) | 0x24, -1, -1);
-                            fn_8038BD08(field_0x24c, 0x284, mLayer_0x4, mPos, 0x21);
+                            fn_8038BD08(field_0x24c, 0x284, getField_0x4(), mPos, 0x21);
                         }
                     }
                 } else if (field_0x234 < 0x10) {
                     if (field_0x250 == field_0x24c) {
                         field_0x278 = getActorManager_801F856C()->spawnActor_801F9484('PEFF', mLayer_0x4, &mPos, (field_0x250 & 3) | 0x24, -1, -1);
-                        fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], mLayer_0x4, mPos, 1);
+                        fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], getField_0x4(), mPos, 1);
                     }
                 } else {
                     if (field_0x250 == field_0x24c) {
                         field_0x278 = getActorManager_801F856C()->spawnActor_801F9484('PEFF', mLayer_0x4, &mPos, (field_0x250 & 3) | 0x24, -1, -1);
-                        fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], mLayer_0x4, mPos, 0x21);
+                        fn_8038BD08(field_0x24c, lbl_80465E38[field_0x234], getField_0x4(), mPos, 0x21);
                     }
                 }
                 if (field_0x250 == field_0x24c) {
@@ -249,7 +248,7 @@ void LiftableItem_804A01D0::update() {
                         }
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x290);
                         if (actor != NULL) {
-                            pos = mPos;
+                            JGeometry::TVec3f pos = mPos;
                             actor->mPos = pos;
                         }
                         if (field_0x288 < 4) {
@@ -287,7 +286,7 @@ void LiftableItem_804A01D0::update() {
                                 mEmitter2b0 = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y - 12.0f, mPos.z), 0x562, 0, 1, NULL, NULL, true, 1.6f);
                                 mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y - 6.0f, mPos.z), 0x563, 0, 1, NULL, NULL, true, 1.2f);
                                 if (field_0x25c == 0) {
-                                    pos = mPos;
+                                    JGeometry::TVec3f pos = mPos;
                                     pos.y -= 32.0f;
                                     getActorManager_801F856C()->fn_801F6718(field_0x274, mLayer_0x4, &pos, field_0x234, 2);
                                 }
@@ -295,7 +294,7 @@ void LiftableItem_804A01D0::update() {
                                 mEmitter2b0 = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y - 6.0f, mPos.z), 0x562, 0, 1, NULL, NULL, true, 0.8f);
                                 mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x563, 0, 1, NULL, NULL, true, 0.6f);
                                 if (field_0x25c == 0) {
-                                    pos = mPos;
+                                    JGeometry::TVec3f pos = mPos;
                                     pos.y -= 16.0f;
                                     getActorManager_801F856C()->fn_801F6718(field_0x274, mLayer_0x4, &pos, field_0x234, 2);
                                 }
