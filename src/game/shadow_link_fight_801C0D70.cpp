@@ -62,7 +62,7 @@ void ShadowLinkFight_801C0D70::fn_801C1440(s32 serial) {
 }
 
 // 0x801C1374
-// FIXME: 94.22 %, missing/extra; behaviour drift.
+// FIXME: 99.41 %, regalloc-only; behaviour clean.
 // Only r3/r5 are swapped between hasGen and the field_0x8 reload.
 void ShadowLinkFight_801C0D70::fn_801C1374(bool flag) {
     bool hasGen = (s32)field_0x50 >= 0;
