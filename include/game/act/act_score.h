@@ -20,7 +20,6 @@ public:
     void fn_80391F58();
     void fn_80393228();
     void fn_80393514();
-    void putScoreDigit(const JGeometry::TVec3f& pos, s32 digit, f32 fade);
     void updateState1();
     void updateState2();
     /* 0x230 */ s32 mTimer;
