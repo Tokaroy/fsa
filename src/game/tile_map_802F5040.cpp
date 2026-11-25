@@ -85,23 +85,30 @@ struct SpriteObj_802F86CC {
 
 // A 6-byte entry of a "SOB " frame: the GBA OAM attributes 0-2 as stored
 // (little-endian halfwords, so each byte's fields from the high bits down).
+// The packed bytes are read with shifts and masks, not bit fields: bit-field
+// allocation order is the compiler's choice (MWCC fills a byte from its high
+// bits, clang from its low bits), and this layout is file data.
 struct SobObj_802F86CC {
     /* 0x0 */ u8 mY;
-    /* 0x1 */ u8 mShape : 2;
-    u8 mColor256 : 1;
-    u8 mMosaic : 1;
-    u8 mMode : 2;
-    u8 mAffine : 2;
+    /* 0x1 */ u8 mAttr0High; // shape:2 color256:1 mosaic:1 mode:2 affine:2
     /* 0x2 */ u8 mX;
-    /* 0x3 */ u8 mSize : 2;
-    u8 mVFlip : 1;
-    u8 mHFlip : 1;
-    u8 mAffineIndex : 3;
-    u8 : 1; // bit 8 of x: copied from mX's bit 7 instead (sign extension)
+    /* 0x3 */ u8 mAttr1High; // size:2 vflip:1 hflip:1 affineIndex:3, then bit 8
+                             // of x (copied from mX's bit 7 instead: sign extension)
     /* 0x4 */ u8 mTileLow;
-    /* 0x5 */ u8 mPalette : 4;
-    u8 mPriority : 2;
-    u8 mTileHigh : 2;
+    /* 0x5 */ u8 mAttr2High; // palette:4 priority:2 tileHigh:2
+
+    u32 shape() const { return (mAttr0High >> 6) & 3; }
+    u32 color256() const { return (mAttr0High >> 5) & 1; }
+    u32 mosaic() const { return (mAttr0High >> 4) & 1; }
+    u32 mode() const { return (mAttr0High >> 2) & 3; }
+    u32 affine() const { return mAttr0High & 3; }
+    u32 size() const { return (mAttr1High >> 6) & 3; }
+    u32 vflip() const { return (mAttr1High >> 5) & 1; }
+    u32 hflip() const { return (mAttr1High >> 4) & 1; }
+    u32 affineIndex() const { return (mAttr1High >> 1) & 7; }
+    u32 palette() const { return (mAttr2High >> 4) & 0xF; }
+    u32 priority() const { return (mAttr2High >> 2) & 3; }
+    u32 tileHigh() const { return mAttr2High & 3; }
 }; // Size: 0x6
 
 // One 5-bit colour channel times scale plus offset, clamped to 0-31
@@ -2341,26 +2348,26 @@ void TileMap_804AA858::drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void
     for (s32 i = count - 1; i >= 0; i--) {
         SobObj_802F86CC* entry = (SobObj_802F86CC*)(data + start) + i;
         oam->mY = entry->mY;
-        oam->mAffine = entry->mAffine;
-        oam->mMode = entry->mMode;
-        oam->mMosaic = entry->mMosaic;
-        oam->mColor256 = entry->mColor256;
-        oam->mShape = entry->mShape;
+        oam->mAffine = entry->affine();
+        oam->mMode = entry->mode();
+        oam->mMosaic = entry->mosaic();
+        oam->mColor256 = entry->color256();
+        oam->mShape = entry->shape();
         oam->mX = entry->mX | (entry->mX & 0x80) << 1;
         if (i != 0) {
             oam->mY += dy;
             oam->mX += dx;
         }
-        oam->mAffineIndex = entry->mAffineIndex;
-        oam->mHFlip = entry->mHFlip;
-        oam->mVFlip = entry->mVFlip;
-        oam->mSize = entry->mSize;
-        oam->mTile = entry->mTileLow | entry->mTileHigh << 8;
-        oam->mPriority = entry->mPriority;
+        oam->mAffineIndex = entry->affineIndex();
+        oam->mHFlip = entry->hflip();
+        oam->mVFlip = entry->vflip();
+        oam->mSize = entry->size();
+        oam->mTile = entry->mTileLow | entry->tileHigh() << 8;
+        oam->mPriority = entry->priority();
         if (outParams != NULL) {
-            oam->mPalette = outParams->field_0x0[entry->mPalette];
+            oam->mPalette = outParams->field_0x0[entry->palette()];
         } else {
-            oam->mPalette = entry->mPalette;
+            oam->mPalette = entry->palette();
         }
         oam->mAffineParam = 0;
         s32 priority = oam->mPriority;
