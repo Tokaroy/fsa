@@ -1510,11 +1510,6 @@ void Player_804A6F38::fn_80290D58() {
     field_0xcec = 0;
 }
 
-// FIXME: 99.99 %, operands; behaviour clean.
-// Order and stack slots only: the three offset vectors passed to
-// fn_80252BAC sit at 0x2C / 0x20 / 0x14 (original 0x14 / 0x2C / 0x20, as if the
-// kind-4 group's were declared last), and for kinds 0x17 / 0x18 the 0.0f is loaded
-// before from->y, mPos.y (stores x, z, y in the original).
 // Starts the transition `kind` from the current place to `to` on `layer` (see
 // docs/PLAYER.md, player_8028FBA0): refuses while a transition runs (0xCE8), the
 // player is down or held, or its GBA link is busy; requests the kind's leave
@@ -1596,10 +1591,7 @@ bool Player_804A6F38::startTransition_80290070(s32 layer, const JGeometry::TVec3
             return false;
         }
         if (requestState_80251AEC(0x1E)) {
-            // `*from - mPos`: libs Vec.h's TVec3::operator- is not const, so its body
-            // (copy, subtract, copy out; the original's two stack vectors) is spelled out.
-            JGeometry::TVec3f offset = JGeometry::TVec3f(*from) -= mPos;
-            fn_80252BAC(&offset);
+            fn_80252BAC(&(*from - mPos));
             if (fn_80240670()) {
                 layer = mLayer_0x3b4;
                 kind = 9;
