@@ -925,10 +925,7 @@ void GameMode_804B0688::fn_803DD8E8() {
 // field_0x98, then copies the save region to 0x80700000 (it survives the
 // reset, see main) and reboots into "/DOL/framework.dol".
 // FIXME: 93.94 %, missing/extra; behaviour drift.
-// The save-region copy loop: the original re-adds the index to
-// lbl_80529DEC's address for every eight bytes (add r4, r5, r12), ours steps a
-// source pointer (one instruction fewer); the same loop is unsolved in main
-// (tu_801344C0) and cls_804A8578::fn_802B1DE8.
+// Registers of the save-region copy loop differ only.
 void GameMode_804B0688::fn_803DD764() {
     field_0x7c += 10.0f;
     if (field_0x7c >= 255.0f) {
@@ -937,8 +934,9 @@ void GameMode_804B0688::fn_803DD764() {
             if (--field_0x98 <= 0) {
                 DVDFileInfo info;
                 if (DVDOpen("/DOL/framework.dol", &info) == TRUE) {
-                    for (int i = 0; i < 0x20; i++) {
-                        ((u8*)0x80700000)[i] = lbl_80529DEC.mSaveRegion.bytes[i];
+                    GameState_804B0FE0* state = &lbl_80529DEC;
+                    for (u32 i = 0; i < sizeof(state->mSaveRegion); i++) {
+                        ((u8*)0x80700000)[i] = state->mSaveRegion.bytes[i];
                     }
                     OSSetSaveRegion((void*)0x80700000, (void*)0x8070001F);
                     __PADDisableRecalibration(TRUE);
