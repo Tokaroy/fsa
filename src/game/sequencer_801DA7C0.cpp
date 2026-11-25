@@ -156,15 +156,15 @@ bool Sequencer_801DAA24::fn_801DA994(s32 a, s32 b) {
     return changed;
 }
 
-// FIXME(shotgun): 88.50 %, missing/extra. The original copies the value to the result register before the clamp tests.
 s32 Sequencer_801DAA24::fn_801DA96C() {
     s32 value = field_0x4;
+    s32 result = value;
     if (value > 0x2F) {
-        value = 0x2F;
+        result = 0x2F;
     } else if (value < 0) {
-        value = 0;
+        result = 0;
     }
-    return value;
+    return result;
 }
 
 const char* Sequencer_801DAA24::fn_801DA938() {
