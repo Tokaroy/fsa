@@ -20,6 +20,8 @@ public:
     // Mode 0's drawing: four pictures of the stack, each turned by one of
     // field_0x264 at field_0x238[i] (called by draw).
     void fn_80103348();
+    // Mode 1's drawing: the rubble picture (inlined into draw).
+    void drawRubble();
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 mMode; // mSpawnParam_0x90 & 0xF; init() branches on it
     /* 0x238 */ Vec field_0x238[3]; // copies of mPos (init)

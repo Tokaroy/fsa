@@ -136,11 +136,7 @@ void TowerCollapseEffect_8049CA40::draw() {
         fn_80103348();
         break;
     case 1:
-        if (field_0x230 == 2) {
-            SpriteParams_801F5AE0 params;
-            void* res = getBossArchiveResource_804032E8('TIMG', "gareki.bti");
-            drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
-        }
+        drawRubble();
         break;
     case 2:
         // Nothing draws mode 2; the empty case is part of the original's dispatch.
@@ -149,7 +145,7 @@ void TowerCollapseEffect_8049CA40::draw() {
 }
 
 // FIXME: 98.53 %, operands; behaviour drift.
-// FIXME: string pool order (kowareyuka_*.bti before gareki.bti) and setRotScaleMtx float regalloc.
+// FIXME: setRotScaleMtx float regalloc.
 void TowerCollapseEffect_8049CA40::fn_80103348() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -193,4 +189,14 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.set(savedPos);
+}
+
+// Mode 1's drawing. draw() inlines it; the linker dropped the out-of-line copy, whose
+// "gareki.bti" leads the unit's string pool.
+void TowerCollapseEffect_8049CA40::drawRubble() {
+    if (field_0x230 == 2) {
+        SpriteParams_801F5AE0 params;
+        void* res = getBossArchiveResource_804032E8('TIMG', "gareki.bti");
+        drawSpriteRes_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
+    }
 }
