@@ -575,7 +575,7 @@ void GameMode_804B0688::fn_803DEC44() {
 // State 2: slides the other entry out and the picked one up, fades the
 // entry panes out and the sub-menu panes in, then starts the movie and goes
 // to state 3.
-// FIXME: 96.35 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 97.47 %, different + reloc-name; behaviour near.
 // The original stores the first other entry through the
 // pointer (ours stores it straight to the stack slot) and sets up the tag
 // table base (lbl_804774C8, ours via the section) one instruction earlier;
@@ -926,7 +926,7 @@ void GameMode_804B0688::fn_803DD8E8() {
 // State 7: fades to black, waits for the sound to stop and the countdown
 // field_0x98, then copies the save region to 0x80700000 (it survives the
 // reset, see main) and reboots into "/DOL/framework.dol".
-// FIXME: 93.94 %, missing/extra; behaviour drift.
+// FIXME: 98.45 %, regalloc-only; behaviour clean.
 // Registers of the save-region copy loop differ only.
 void GameMode_804B0688::fn_803DD764() {
     field_0x7c += 10.0f;
