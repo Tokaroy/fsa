@@ -8,6 +8,7 @@
 #include "game/Player.h"
 #include "JSystem/JMath/JMath.h"
 #include <math.h>
+#include "std/math.h"
 #include "game/EmitterDelete.h"
 #include "game/act/act_fairy.h"
 #include "game/save_data_803B8C74.h"
@@ -28,7 +29,8 @@ void Fairy_804A03B8::vfunc_0x44() {
     }
 }
 
-// FIXME: 97.86 %. Apart from the float literals (`@NNN` against lbl_8053D6xx, a data split), the
+// FIXME: 98.05 %, scheduling+regalloc; behaviour clean.
+// Apart from the float literals (`@NNN` against lbl_8053D6xx, a data split), the
 // save-file block differs in registers: the original keeps the row pointer in r6, loads
 // lbl_80529DEC's count before the 0x339 argument and keeps the table base in r3/r5; ours
 // keeps the row in r5 and loads the count after li r4, 0x339.
@@ -112,7 +114,7 @@ void Fairy_804A03B8::init() {
 }
 
 // 0x8016088C.
-// FIXME(shotgun): 94.67 %, different + reloc-name
+// FIXME(shotgun): 99.16 %, missing/extra; behaviour clean.
 void Fairy_804A03B8::update() {
     if (field_0x268 == 0 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
@@ -170,9 +172,9 @@ void Fairy_804A03B8::update() {
                 mCounters[3] = (s32)(40.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 40;
                 field_0x24c = 0;
             }
-            JGeometry::TVec2f center(mPos.x, mPos.y);
             JGeometry::TBox2f box(mBox);
-            box.addPos(mPos.x, mPos.y);
+            JGeometry::TVec2f center(mPos.x, mPos.y);
+            box.addPos(center);
             bool strict = true;
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
                 strict = false;
@@ -240,9 +242,11 @@ void Fairy_804A03B8::update() {
         f32 targetY = mPos.y;
         if (serial < 0) {
             if (field_0x264 == getPlayerLayer_8023DE58(field_0x244)) {
-                targetX = getPlayerPos_8023E724(field_0x244)->x;
-                targetY = getPlayerPos_8023E724(field_0x244)->y;
-                field_0x284 = *getPlayerPos_8023E724(field_0x244);
+                const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(field_0x244);
+                targetX = playerPos->x;
+                targetY = playerPos->y;
+                playerPos = getPlayerPos_8023E724(field_0x244);
+                field_0x284.set(*playerPos);
             } else {
                 field_0x248 = 200;
                 targetX = field_0x284.x;
@@ -254,7 +258,7 @@ void Fairy_804A03B8::update() {
                 if (field_0x264 == target->mLayer_0x4) {
                     targetX = target->mPos.x;
                     targetY = target->mPos.y;
-                    field_0x284 = target->mPos;
+                    field_0x284.set(target->mPos);
                 } else {
                     field_0x248 = 200;
                     targetX = field_0x284.x;
@@ -264,7 +268,7 @@ void Fairy_804A03B8::update() {
         }
         field_0x26c = 5.0f;
         if (mCounters[2] == 0) {
-            field_0x274 = (s16)(JMath::atanTable_.atan2_(targetY - mPos.y, targetX - mPos.x) * 10430.378f);
+            field_0x274 = (s16)(10430.378f * JMath::atanTable_.atan2_(targetX - mPos.x, targetY - mPos.y));
             mCounters[2] = 4;
         }
         field_0x278 = field_0x26c * JMath::sincosTable_.sinShort(field_0x274);
@@ -289,7 +293,7 @@ void Fairy_804A03B8::update() {
                 if (field_0x25c >= 0) {
                     f32 targetY = getPlayerPos_8023E724(field_0x25c)->y;
                     addCalc2_801F71A4(&mPos.y, targetY, 0.3f, 2.0f);
-                    if (fabs(mPos.y - targetY) < 1.0f) {
+                    if (std::fabsf(mPos.y - targetY) < 1.0f) {
                         field_0x250 = 0;
                         field_0x248 = 1;
                     }
