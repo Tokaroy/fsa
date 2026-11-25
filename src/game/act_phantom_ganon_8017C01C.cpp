@@ -62,15 +62,14 @@ u8 fn_8017ECC0() {
     return result;
 }
 
-// FIXME: 94.25 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.75 %, reloc-name; behaviour clean.
 // The original keeps the constant 1 of mBlendBoxOn_0x840 in the result's register (ours loads it twice).
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->mBlendBoxOn_0x840 == 0) {
-        result = 1;
-        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBoxOn_0x840 = result = 1;
         camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
         camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
         camera->mBlendWeight_0x854 = value;
@@ -306,7 +305,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 98.20 %, missing/extra; behaviour near.
+// FIXME: 98.31 %, missing/extra; behaviour near.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
