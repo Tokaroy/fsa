@@ -93,10 +93,12 @@ s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* o
             }
         } else if (cur == field_0x2 - 1) {
             result = 3;
-            if (mode == 2) {
-                field_0x1 ^= 1;
-            } else if (mode != 1) {
-                advance = false;
+            if (mode != 1) {
+                if (mode == 2) {
+                    field_0x1 ^= 1;
+                } else {
+                    advance = false;
+                }
             }
         }
         if (advance) {
