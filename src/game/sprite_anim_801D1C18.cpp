@@ -37,7 +37,7 @@ inline void SpriteAnim_801D267C::calcCel() {
 inline void SpriteAnim_801D267C::setFrameInline(f32 frame) {
     frame = clamp<f32>(frame, 0.0f, mLength);
     if (frame == mLength) {
-        if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_LOOP) {
+        if (mFrameCtrl.mAttribute == J3DFrameCtrl::EMode_LOOP) {
             frame = 0.0f;
         } else {
             frame -= 0.001f;
@@ -47,9 +47,14 @@ inline void SpriteAnim_801D267C::setFrameInline(f32 frame) {
     calcCel();
 }
 
+// The mode-0 test is materialised as a byte (cntlzw; extrwi.) in isAnimEnd_801D208C.
+inline bool SpriteAnim_801D267C::isOneShot() {
+    return mFrameCtrl.mAttribute == J3DFrameCtrl::EMode_NONE ? true : false;
+}
+
 inline bool SpriteAnim_801D267C::isLoopEnd() {
     bool result = false;
-    if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_LOOP) {
+    if (mFrameCtrl.mAttribute == J3DFrameCtrl::EMode_LOOP) {
         if (mFrameCtrl.checkPass(mLength - 0.001f)) {
             result = true;
         }
@@ -60,7 +65,7 @@ inline bool SpriteAnim_801D267C::isLoopEnd() {
 inline bool SpriteAnim_801D267C::isStopped() {
     bool result = false;
     if (mFrameCtrl.checkState(J3DFrameCtrl::STATE_STOP_E) ||
-        (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_NONE && 0.0f == mFrameCtrl.getRate() &&
+        (mFrameCtrl.mAttribute == J3DFrameCtrl::EMode_NONE && 0.0f == mFrameCtrl.getRate() &&
          mFrameCtrl.getFrame() > mLength - 0.002f))
     {
         result = true;
@@ -136,16 +141,11 @@ bool SpriteAnim_801D267C::isLoopEnd_801D217C() {
     return isLoopEnd();
 }
 
-// FIXME: 94.42 %, different; behaviour drift.
-// The target tests the first attribute (== 0) through a
-// bool (cntlzw; extrwi.) and compares it again inside the inlined
-// isStopped with cmplwi; ours compares with cmplwi first and clrlwi. inside.
-// `!getAttribute()` gave the same code.
 bool SpriteAnim_801D267C::isAnimEnd_801D208C() {
     bool result = false;
-    if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_NONE) {
+    if (isOneShot()) {
         result = isStopped();
-    } else if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_LOOP) {
+    } else if (mFrameCtrl.mAttribute == J3DFrameCtrl::EMode_LOOP) {
         result = isLoopEnd();
     }
     return result;
