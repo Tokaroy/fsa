@@ -216,12 +216,51 @@ bool Frostare_804A4C58::vfunc_0x58() {
 
 extern const u8 lbl_8053F1C8; // hits before the knock-back state (tu_801D8400's .sdata)
 
-// FIXME(shotgun): 92.43 %, missing/extra; behaviour near.
+// Whether a sword beam or fire actor comes at the boss from a side that counts; state 0x11 always counts.
+static inline bool actorTouches(Frostare_804A4C58* boss, ActorBase_804A5770* other) {
+    switch (other->mActorId) {
+    case 'SWBM':
+    case 'FIRE':
+        break;
+    default:
+        return false;
+    }
+    if (boss->mState == 0x11) {
+        return true;
+    }
+    bool touched = false;
+    if (!(other->mVel_0x3c.y > 0.0f)) {
+        switch (boss->mState) {
+        case 0xC:
+            touched = true;
+            break;
+        case 0xB:
+        case 0xD:
+        case 0xE:
+            if (other->mVel_0x3c.y < 0.0f) {
+                touched = true;
+            } else if (boss->mFlags & 0x2000) {
+                if (other->mVel_0x3c.x < 0.0) {
+                    touched = true;
+                }
+            } else if (other->mVel_0x3c.x > 0.0) {
+                touched = true;
+            }
+            break;
+        }
+    }
+    return touched;
+}
+
 u8 Frostare_804A4C58::checkHitByActor_0x60() {
     u8 hit = false;
     bool active = false;
-    if (mState != 5 && mState >= 4 && mState < 8) {
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
         active = true;
+        break;
     }
     if (active) {
         JGeometry::TBox2f saved = mBox;
@@ -239,39 +278,12 @@ u8 Frostare_804A4C58::checkHitByActor_0x60() {
         s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            bool touched = false;
-            switch (other->mActorId) {
-            case 'SWBM':
-            case 'FIRE':
-                if (mState == 0x11) {
-                    touched = true;
-                } else if (!(other->mVel_0x3c.y > 0.0f)) {
-                    switch (mState) {
-                    case 0xC:
-                        touched = true;
-                        break;
-                    case 0xB:
-                    case 0xD:
-                    case 0xE:
-                        if (other->mVel_0x3c.y < 0.0f) {
-                            touched = true;
-                        } else if (mFlags & 0x2000) {
-                            if (other->mVel_0x3c.x < 0.0) {
-                                touched = true;
-                            }
-                        } else if (other->mVel_0x3c.x > 0.0) {
-                            touched = true;
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
-            if (touched) {
+            if (actorTouches(this, other)) {
                 s32 life = mLife;
-                JGeometry::TVec3f from = mPos - other->mVel_0x3c;
+                JGeometry::TVec3f from = mPos;
+                from.sub(other->mVel_0x3c);
                 if (takeHit_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
-                    if (mLife != life) {
+                    if (life != mLife) {
                         hit = true;
                         if (mState != 0x11) {
                             mLife = life;
@@ -344,12 +356,15 @@ static inline bool playerTouches(Frostare_804A4C58* boss, s32 i) {
     return touched;
 }
 
-// FIXME(shotgun): 96.60 %, different; behaviour near.
 u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
     u8 hit = false;
     bool active = false;
-    if (mState == 5 || (mState >= 4 && mState < 8)) {
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
         active = true;
+        break;
     }
     s32 outFlag;
     if (active) {
@@ -358,12 +373,13 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
         mBox.i.y = -16.0f;
         mBox.f.x = 40.0f;
         mBox.f.y = 50.0f;
-        if (findOverlappingPlayer_801F285C(NULL, &outFlag, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             setState_801D9C58(5);
         }
         mBox.set(saved);
     }
-    if (mState == 0x11) {
+    switch (mState) {
+    case 0x11: {
         JGeometry::TBox2f saved = mBox;
         mBox.i.x = -20.0f;
         mBox.i.y = -26.0f;
@@ -428,7 +444,12 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                 }
             }
         }
-    } else if (mState >= 0xB && mState < 0xF) {
+        break;
+    }
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0xE:
         if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
             bool sound = false;
             JGeometry::TVec2f where;
@@ -440,8 +461,7 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                             hit = true;
                         }
                     } else {
-                        JGeometry::TVec2f p(mPos.x, mPos.y);
-                        fn_80237948(i, &p);
+                        fn_80237948(i, (const JGeometry::TVec2f*)&mPos);
                         if (outFlag == 1 && field_0x1dc.startTimer_801EAC20(i)) {
                             JGeometry::TVec3f at(where.x, where.y, 0.0f);
                             fn_801CB538(mLayer_0x4, &at, 0, 0);
@@ -469,6 +489,7 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                 }
             }
         }
+        break;
     }
     return hit;
 }
