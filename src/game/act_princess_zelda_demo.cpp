@@ -218,7 +218,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 98.01 %, missing/extra; behaviour drift.
+// FIXME: 98.91 %, different; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -264,6 +264,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
             case 2:
                 enterDemoState_8010E2D4(2);
                 break;
+            case 3:
+                break;
             }
             field_0x238 = 2;
         }
@@ -285,6 +287,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                 case 2:
                     enterDemoState_8010E2D4(0xD);
                     break;
+                case 3:
+                    break;
                 }
                 field_0x238 = 0xD;
                 switch (field_0x234) {
@@ -294,6 +298,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     break;
                 case 2:
                     enterDemoState_8010E2D4(0x3E);
+                    break;
+                case 3:
                     break;
                 }
                 field_0x238 = 0x3E;
@@ -306,6 +312,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     break;
                 case 2:
                     enterDemoState_8010E2D4(1);
+                    break;
+                case 3:
                     break;
                 }
                 field_0x238 = 1;
@@ -1058,7 +1066,7 @@ void PrincessZeldaDemo_8049D208::setDemoState_8010F478(s32 arg) {
 void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
-// FIXME: 99.87 %, operands; behaviour drift.
+// FIXME: 99.85 %, operands; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
     case 3:
@@ -1133,9 +1141,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         mAnim0.startAnim_801D22DC(3, 2, false);
         mAnim0.setFrame_801D1F14(0.0f);
         mAnim0.mFrameCtrl.setRate(0.5f);
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 240.0f, d.y / 240.0f, d.z / 240.0f);
+        startDrift(start, target, 240.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1154,9 +1160,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         for (int i = 0; i < 4; i++) {
             fn_80230498(i, &target, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 110.0f, d.y / 110.0f, d.z / 110.0f);
+        startDrift(start, target, 110.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1174,9 +1178,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         JGeometry::TVec3f start = mPos;
         start.y += 48.0f;
         JGeometry::TVec3f* target = getPlayerPos_8023E724(0);
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - *target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+        startDrift(start, *target, 60.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1460,6 +1462,13 @@ void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
+// Starts the drift from `start`: field_0x2e8 is the step that covers the way to `target` in `frames` frames.
+void PrincessZeldaDemo_8049D208::startDrift(JGeometry::TVec3f& start, JGeometry::TVec3f& target, f32 frames) {
+    field_0x2dc = start;
+    JGeometry::TVec3f d = start - target;
+    field_0x2e8 = JGeometry::TVec3f(d.x / frames, d.y / frames, d.z / frames);
+}
+
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void PrincessZeldaDemo_8049D208::standBelow(const JGeometry::TVec3f& target) {
     JGeometry::TVec3f pos = target;
@@ -1479,7 +1488,12 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
     s32 doneX = moveToward_801CD950(&mPos.x, field_0x27c.x, mVel_0x3c.x);
     s32 doneY = moveToward_801CD950(&mPos.y, field_0x27c.y, mVel_0x3c.y);
     moveToward_801CD950(&field_0x270, 0.05f, -0.005f);
-    bool arrived = doneX == 0 && doneY == 0;
+    bool arrived;
+    if (doneX == 0 && doneY == 0) {
+        arrived = true;
+    } else {
+        arrived = false;
+    }
     if (arrived) {
         switch (field_0x234) {
         case 0:
@@ -1488,6 +1502,8 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
             break;
         case 2:
             enterDemoState_8010E2D4(0x24);
+            break;
+        case 3:
             break;
         }
         field_0x238 = 0x24;
