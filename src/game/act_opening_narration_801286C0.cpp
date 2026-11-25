@@ -78,7 +78,7 @@ void OpeningNarration_8049E500::update() {
         moveToward_801CD950(&field_0x238, 1640.0f, 0.4f);
         if (fn_80119DD0()->field_0x4 >= 0xB3) {
             fn_8011921C()->fn_801183BC();
-            fn_80119DD0()->setField_0x1(1);
+            fn_80119DD0()->field_0x1 = 1;
         }
         break;
     case 4:
@@ -165,20 +165,20 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 0, 0, 0);
-        fn_80119DD0()->setField_0x1(1);
+        fn_80119DD0()->field_0x1 = 1;
         break;
     case 1:
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100002C, false, 0);
         fn_8011921C()->fn_80118454();
-        fn_80119DD0()->setField_0x1(0);
+        fn_80119DD0()->field_0x1 = 0;
         break;
     case 3:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 1, 0, 0, 0, 0);
-        fn_80119DD0()->setField_0x1(0);
+        fn_80119DD0()->field_0x1 = 0;
         break;
     case 4: {
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
-        fn_80119DD0()->setField_0x1(0);
+        fn_80119DD0()->field_0x1 = 0;
         JGeometry::TVec3f pos;
         setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33C, 1, 2, NULL, NULL, true, 1.0f);
