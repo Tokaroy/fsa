@@ -11,11 +11,9 @@ s32 lbl_804D4768[0x50];
 s32 lbl_8053ACB0;
 
 // FIXME: 96.17 %, missing/extra + reloc-name; behaviour clean.
-// Structurally close: the target reads field_0x234 before the getGameView
-// call of the tile lookup (field_0x238 after it, as if the column came through an inlined
-// accessor) and copies the tile byte from r0 to r9 after the 0xFF test; the format string
-// waits for the unit's .rodata split (lbl_8046E9F8). The archive type is 'B   ' plus the
-// stage name's chars less ' ', added after the sprintf (GameView spawnScreenActors_802D8328's form).
+// The column (field_0x234) is read before the view is fetched and the 0xFF test is on the
+// screen's byte before it becomes the map number. The archive type is 'B   ' plus the stage
+// name's chars less ' ', added after the sprintf (GameView spawnScreenActors_802D8328's form).
 void EnemyGenerator2_804A9BC8::init() {
     for (int i = 0; i < 0x50; i++) {
         lbl_804D4768[i] = -1;
@@ -27,8 +25,10 @@ void EnemyGenerator2_804A9BC8::init() {
     s32 stage = getGameView_802D6A9C()->mStage_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const char* name = getGameView_802D6A9C()->fn_802D9C7C(stage, view->mLevel_0x8);
-    s32 tile = getGameView_802D6A9C()->field_0x60[field_0x238][field_0x234];
-    if (tile == 0xFF) {
+    s32 col = field_0x234;
+    s32 screen = getGameView_802D6A9C()->field_0x60[field_0x238][col];
+    s32 tile = screen;
+    if (screen == 0xFF) {
         tile = 0;
     }
     char buf[0x20];
