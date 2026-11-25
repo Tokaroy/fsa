@@ -197,8 +197,10 @@ void RotatingSkull_804A8588::draw() {
 // FIXME(shotgun): 79.50 %, missing/extra; behaviour clean.
 void RotatingSkull_804A8588::fn_802B21EC() {
     f32 sign = 1.0f;
-    JGeometry::TVec3f hitB(0.0f, 0.0f, 0.0f);
-    JGeometry::TVec3f hitA(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f hitA;
+    JGeometry::TVec3f hitB;
+    hitA.zero();
+    hitB.zero();
     JGeometry::TVec3f savedPos(mPos);
     JGeometry::TVec3f savedVel(mVel_0x3c);
     JGeometry::TVec3f savedVel2(field_0x270);
@@ -234,15 +236,17 @@ void RotatingSkull_804A8588::fn_802B21EC() {
             mVel_0x3c.y = 0.0f;
             field_0x270.x = 0.0f;
             JGeometry::TVec3f prev(mPos);
-            mPos += mVel_0x3c * 3.0f + field_0x270;
-            JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
-            if (sweepMapBox_801F2618(&hitC, false)) {
-                mPos = prev;
-            } else {
+            JGeometry::TVec3f step(mVel_0x3c);
+            step *= 3.0f;
+            step += field_0x270;
+            mPos += step;
+            if (!sweepMapBox_801F2618(NULL, false)) {
                 mPos = savedPos;
                 mVel_0x3c = savedVel;
                 field_0x270 = savedVel2;
                 mPos += mVel_0x3c;
+            } else {
+                mPos = prev;
             }
         }
     } else if (field_0x270.y != 0.0f) {
@@ -274,15 +278,17 @@ void RotatingSkull_804A8588::fn_802B21EC() {
             mVel_0x3c.x = 0.0f;
             field_0x270.y = 0.0f;
             JGeometry::TVec3f prev(mPos);
-            mPos += mVel_0x3c * 3.0f + field_0x270;
-            JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
-            if (sweepMapBox_801F2618(&hitC, false)) {
-                mPos = prev;
-            } else {
+            JGeometry::TVec3f step(mVel_0x3c);
+            step *= 3.0f;
+            step += field_0x270;
+            mPos += step;
+            if (!sweepMapBox_801F2618(NULL, false)) {
                 mPos = savedPos;
                 mVel_0x3c = savedVel;
                 field_0x270 = savedVel2;
                 mPos += mVel_0x3c;
+            } else {
+                mPos = prev;
             }
         }
     }
