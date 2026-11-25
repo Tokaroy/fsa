@@ -13,15 +13,13 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
-// FIXME(shotgun): 95.51 %, missing/extra; behaviour drift.
-// (the unrolled field_0x24 clear starts with a loop-entry test)
 cls_804AFAB0::cls_804AFAB0() {
     field_0x28c = -1;
     field_0x290 = -1;
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADA8 = this;
     gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "rock_24_20_4i_e.bfn");
-    for (s32 i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++) {
         field_0x24[i] = NULL;
     }
     const ResTIMG* black = (const ResTIMG*)getMain2DResource_804030C4('TIMG', "kk_black.bti");
@@ -32,7 +30,7 @@ cls_804AFAB0::cls_804AFAB0() {
     field_0xec.z = 0.0f;
     field_0x1c = new PlayerSoundObj_804B20F8(0, NULL, NULL, 8);
     field_0x20 = new ActorSoundObj_804578F4(&field_0xec, NULL, 8);
-    for (s32 i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         field_0xf8[i].x = 0.0f;
         field_0xf8[i].y = 0.0f;
         field_0xf8[i].z = 0.0f;
