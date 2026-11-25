@@ -200,20 +200,23 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 
 }
 
 // FIXME(shotgun): 80.59 %, missing/extra; behaviour clean.
-// (the original copies the target point through a stack temp and keeps the sum/difference in registers)
+// (only stack slots differ: the original's target point is the by-value result of an inlined getter - the body of
+// getRailPointPos_800FE294 - copied into dest, so its temporary sits below dir and dest)
 // 0x800FD998
 JGeometry::TVec3f cls_800FE3EC::fn_800FD998(JGeometry::TVec3f pos, s32 step, s32 steps, u8 index) {
+    JGeometry::TVec3f diff;
+    JGeometry::TVec3f prev;
+    JGeometry::TVec3f mid;
     JGeometry::TVec3f target;
     if (index == 0xFF) {
         target = field_0x4[field_0x3]->mPos;
     } else {
         target = field_0x4[index]->mPos;
     }
-    JGeometry::TVec3f mid;
-    mid.add(pos, target);
+    JGeometry::TVec3f dest = target;
+    mid.add(pos, dest);
     mid.scale(0.5f);
-    JGeometry::TVec3f diff;
-    diff.sub(target, pos);
+    diff.sub(dest, pos);
     f32 radius = 0.5f * diff.length();
     if (steps == 0) {
         return diff;
@@ -229,13 +232,11 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FD998(JGeometry::TVec3f pos, s32 step, s32
     const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
     f32 cosNow = radius * sincos.cosShort(step * angle);
     f32 cosPrev = radius * sincos.cosShort((step - 1) * angle);
-    JGeometry::TVec3f now = dir;
-    now.scale(cosNow);
-    JGeometry::TVec3f prev = dir;
+    diff.set(dir);
+    prev.set(dir);
+    diff.scale(cosNow);
     prev.scale(cosPrev);
-    JGeometry::TVec3f result;
-    result.sub(now, prev);
-    return result;
+    return diff - prev;
 }
 
 u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
