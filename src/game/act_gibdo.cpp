@@ -105,10 +105,10 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
         switch (kind) {
         case 0:
             switch (dir) {
+            case 2:
+                break;
             case 3:
                 anim = 9;
-                break;
-            case 2:
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 8 : 9;
@@ -117,11 +117,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 1:
             switch (dir) {
-            case 3:
-                anim = 11;
-                break;
             case 2:
                 anim = 10;
+                break;
+            case 3:
+                anim = 11;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 10 : 11;
@@ -130,11 +130,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 2:
             switch (dir) {
-            case 1:
-                anim = 13;
-                break;
             case 0:
                 anim = 12;
+                break;
+            case 1:
+                anim = 13;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 12 : 13;
@@ -143,11 +143,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 3:
             switch (dir) {
-            case 1:
-                anim = 15;
-                break;
             case 0:
                 anim = 14;
+                break;
+            case 1:
+                anim = 15;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 14 : 15;
