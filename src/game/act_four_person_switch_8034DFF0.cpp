@@ -35,7 +35,7 @@ void FourPersonSwitch_804AC9A8::init() {
 }
 
 // 0x8034E49C.
-// FIXME(shotgun): 90.40 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.62 %, scheduling+regalloc; behaviour clean.
 void FourPersonSwitch_804AC9A8::update() {
     JGeometry::TBox2f box(mBox.i.x + mPos.x, mBox.i.y + mPos.y + -2.5f, mBox.f.x + mPos.x,
                           mBox.f.y + mPos.y + -2.5f);
