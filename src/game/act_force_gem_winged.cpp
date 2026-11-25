@@ -154,7 +154,7 @@ void WingedForceGem_804AB098::init() {
     }
 }
 
-// FIXME(shotgun): 98.44 %, operands; behaviour near.
+// FIXME(shotgun): 99.68 %, scheduling+regalloc; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
         if (isScreenFlagSet_0x34() == 1) {
