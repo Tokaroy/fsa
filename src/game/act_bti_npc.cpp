@@ -236,7 +236,7 @@ void BTINPC_804A927C::update() {
     }
 }
 
-// FIXME: 93.21 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 97.59 %, scheduling+regalloc; behaviour clean.
 // FIXME: register choice and order in the inlined setRotScaleMtxS16 differ.
 void BTINPC_804A927C::draw() {
     if (field_0x230 == 1) {
