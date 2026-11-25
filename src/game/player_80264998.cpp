@@ -74,9 +74,8 @@ inline void Player_804A6F38::setStandingFrame_80268194() {
     }
 }
 
-// FIXME: 96.69. Case 4 of the switch gets its own copy of the closing
-// `mCel_0x3c4 += mPose_0x3fb` in the original (cases 0-3 and the default
-// share the other); ours shares one copy for all.
+// Case 4 has its own copy of the closing `mCel_0x3c4 += mPose_0x3fb` in the
+// original (b past the shared one at 0x80268168).
 void Player_804A6F38::fn_80267ECC() {
     if (mPose_0x3fb >= 8) {
         setStandingFrame_80268194();
@@ -97,7 +96,8 @@ void Player_804A6F38::fn_80267ECC() {
         break;
     case 4:
         setFacingFrame(this, 0x262, 0x268, 0x26E, 0x274);
-        break;
+        mCel_0x3c4 += mPose_0x3fb;
+        return;
     }
     mCel_0x3c4 += mPose_0x3fb;
 }
@@ -765,14 +765,14 @@ void Player_804A6F38::fn_80265AE4() {
     }
 }
 
-// FIXME: 99.74. Stack slots and registers only: the temporaries of the
-// position sums sit in other slots (e.g. 0x30 vs 0x3C), the view offset add
-// and the marker frame's index * 3 use other registers.
+// Registers only: the view offset add, the marker frame's index * 3 and the
+// shadow colour stores use other registers.
 // The player's draw (fn_8023F2BC, every player each frame): the shadow, the
 // GBA-layer marker above the player, the body sprite (frame mCel_0x3c4 of
 // "player_sob.bin") with its tint and scale, the height shadow on the GBA
 // layers, and the floor overlays (frames mFloorCel_0x3c8 / mFloorCel_0x3ca of
 // "enemy_both2_sob.bin").
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_80264998() {
     if (!mActive) {
         return;
@@ -958,11 +958,13 @@ void Player_804A6F38::fn_80264998() {
     if (frame == 0x121) {
         return;
     }
-    // The body is drawn at whole units. The original keeps the sum in the
-    // temporary itself (no named copy), as a reference bound to it does.
-    const JGeometry::TVec3f& bodyPos = mPos + mDrawOffset_0x2b8;
-    JGeometry::TVec3f drawPos(bodyPos.x, bodyPos.y, bodyPos.z);
-    drawPos.set((s32)drawPos.x, (s32)drawPos.y, (s32)drawPos.z);
+    // The body is drawn at whole units: each component is truncated on its
+    // own (the conversion slots interleave x, y, z).
+    JGeometry::TVec3f drawPos;
+    drawPos.set(mPos + mDrawOffset_0x2b8);
+    drawPos.x = (s32)drawPos.x;
+    drawPos.y = (s32)drawPos.y;
+    drawPos.z = (s32)drawPos.z;
     if (mLayer_0x3b4 < 8) {
         drawSobOnTv(mLayer_0x3b4, "player_sob.bin", drawPos, frame, &bodyParams);
     }
