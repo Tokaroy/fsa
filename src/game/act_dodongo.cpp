@@ -260,6 +260,7 @@ void Dodongo_804A3334::init() {
 }
 
 
+// FIXME: 99.93 %, scheduling+regalloc; behaviour near.
 void Dodongo_804A3334::fn_801ACFF4() {
     JGeometry::TVec3f pos;
     f32 posX = mPos.x;
@@ -701,7 +702,8 @@ void Dodongo_804A3334::fn_801ACFF4() {
     }
 }
 
-// FIXME: 97.05 %. Register allocation (f30/f31, r29/r30).
+// FIXME: 99.27 %, regalloc-only; behaviour clean.
+// Register allocation (f30/f31, r29/r30).
 void Dodongo_804A3334::fn_801ACCF0() {
     f32 scale = 1.0f;
     if (field_0x294 == 1) {
