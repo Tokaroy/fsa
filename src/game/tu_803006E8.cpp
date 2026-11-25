@@ -130,8 +130,7 @@ static inline s32 exchangeInitialPacket_80300E1C(GbaClient_803007D0* client, u32
 // FIXME(shotgun): 87.90 %, missing/extra + reloc-name; behaviour drift.
 // What still differs: the original leaves the poll loop from inside the switch without the two
 // flags (nextMsg, sleepBeforeRetry): one sleep block ahead of the loop head and one failure tail
-// inside case 5, both jumped to from every case. It also inlines fn_803006E8 where we call it
-// (auto-inlining does not take it; only an explicit `inline` does, which drops its own copy).
+// inside case 5, both jumped to from every case.
 void* fn_80300E1C(void* arg) {
     GbaClient_803007D0* client = static_cast<GbaClient_803007D0*>(arg);
     OSMessage msg;
@@ -577,40 +576,33 @@ void fn_803007A0() {
     lbl_8053ACB8->unmount();
 }
 
+// One bit into the check value.
+static inline void crcBit_803006E8(u32& crc, u32 bit) {
+    crc <<= 1;
+    if (bit) {
+        if (crc & 0x100) {
+            crc ^= 0xCC;
+        } else {
+            crc += 1;
+        }
+    } else if (crc & 0x100) {
+        crc ^= 0xCD;
+    }
+}
+
 // The 8-bit check value of a 16-bit word (a CRC over two bytes, then eight clock-out steps).
 u8 fn_803006E8(u32 data) {
     u32 crc = 0;
     for (u32 mask = 0x80; mask != 0; mask >>= 1) {
-        crc <<= 1;
-        if (data & mask) {
-            if (crc & 0x100) {
-                crc ^= 0xCC;
-            } else {
-                crc += 1;
-            }
-        } else if (crc & 0x100) {
-            crc ^= 0xCD;
-        }
+        crcBit_803006E8(crc, data & mask);
     }
     data >>= 8;
     for (u32 mask = 0x80; mask != 0; mask >>= 1) {
-        crc <<= 1;
-        if (data & mask) {
-            if (crc & 0x100) {
-                crc ^= 0xCC;
-            } else {
-                crc += 1;
-            }
-        } else if (crc & 0x100) {
-            crc ^= 0xCD;
-        }
+        crcBit_803006E8(crc, data & mask);
     }
     u32 i = 0;
     do {
-        crc <<= 1;
-        if (crc & 0x100) {
-            crc ^= 0xCD;
-        }
+        crcBit_803006E8(crc, 0);
         i++;
     } while (i < 8);
     return crc;
