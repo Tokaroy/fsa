@@ -21,13 +21,11 @@ static inline ActorBase_804A5770* getActorWithId(s32 i, u32 id) {
 
 // The serial of a log whose box overlaps this actor's and that is not
 // raised (z <= 0), or -1.
-// FIXME: update() is 90.6 %: the target hoists the first search's
-// serial = -1 to the top of update(), checks the slot's actor for NULL a
-// second time without a branch for the NULL result, and keeps the boxes at
-// 0x34/0x44 (ours 0x28/0x38); otherwise the same.
+// update() still differs: the target hoists the first
+// search's serial = -1 to the top of update(); the boxes sit at 0x34/0x44.
 inline s32 LogMonitorNpc_804AD278::findLog() {
+    s32 end = getActorManager_801F856C()->getActorEnd();
     s32 serial = -1;
-    s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* log = getActorWithId(i, ACTOR_MRTA);
         if (log != NULL) {
@@ -62,6 +60,7 @@ void LogMonitorNpc_804AD278::init() {
     field_0x230 = 0;
 }
 
+// FIXME: 93.70 %, missing/extra; behaviour clean.
 void LogMonitorNpc_804AD278::update() {
     switch (mMode) {
     case 0:
