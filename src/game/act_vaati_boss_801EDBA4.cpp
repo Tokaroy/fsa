@@ -16,7 +16,7 @@ static const char* lbl_804A5760[] = {"e_gufu_1.bti", "e_gufu_2.bti", "e_gufu_3.b
 // (0.001f - x >= 0), written with __fsel. Ours rounds the fsel result (one frsp)
 // before storing it to mtx[2][2]; the target stores it unrounded. The rest
 // differs in registers and order only.
-// FIXME: 48.94 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 67.65 %, missing/extra; behaviour near.
 void VaatiBoss_804A4958::fn_801EDD0C() {
     void* res = getBossArchiveResource_804032E8('TIMG', lbl_804A5760[mAnim.mCel]);
     SpriteParams_801F5AE0 params;
