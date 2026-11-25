@@ -69,8 +69,7 @@ u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
     s32 result = 0;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->mBlendBoxOn_0x840 == 0) {
-        result = 1;
-        camera->mBlendBoxOn_0x840 = 1;
+        camera->mBlendBoxOn_0x840 = result = 1;
         camera->mBlendBox_0x844.i.x = camera->mBlendBox_0x844.f.x = pos->x;
         camera->mBlendBox_0x844.i.y = camera->mBlendBox_0x844.f.y = pos->y;
         camera->mBlendWeight_0x854 = value;
