@@ -67,16 +67,12 @@ void Armos_8049F260::init() {
 }
 
 
-// FIXME(shotgun): 95.40 %, missing/extra; behaviour drift.
-// (partial: states 3 tail, 4, 5 not written)
-// FIXME(shotgun): state 3 from the branch at 0x80141938 (moving, grid-snapping step), states 4 and 5
-// (0x80141FF0, 0x80142024) are not written yet.
+// FIXME(shotgun): 99.38 %, missing/extra; behaviour near.
+// Still differs: the original tests `away` with cmplwi 1 and null-checks the collected actor twice.
 void Armos_8049F260::update() {
     JGeometry::TBox2f box = mBox;
-    box.i.x += mPos.x;
-    box.i.y += mPos.y;
-    box.f.x += mPos.x;
-    box.f.y += mPos.y;
+    JGeometry::TVec2f mid;
+    box.addPos(mPos.x, mPos.y);
     if (updateHitReaction_801F3D94(true) != 0) {
         sweepMapBox_801F2618(NULL, false);
         return;
@@ -100,7 +96,7 @@ void Armos_8049F260::update() {
                 if (player < 0) {
                     continue;
                 }
-                JGeometry::TVec2f mid(0.5f * (box.i.x - box.f.x) + box.f.x, 0.5f * (box.i.y - box.f.y) + box.f.y);
+                mid.set(0.5f * (box.i.x - box.f.x) + box.f.x, 0.5f * (box.i.y - box.f.y) + box.f.y);
                 if (fn_80237948(player, &mid)) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
@@ -125,7 +121,11 @@ void Armos_8049F260::update() {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (!isPlayerActive_8023F264(i)) {
+                continue;
+            }
+            s32 layer = mLayer_0x4;
+            if (layer == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 JGeometry::TVec3f d;
                 d.sub(*playerPos, mPos);
@@ -173,7 +173,8 @@ void Armos_8049F260::update() {
         mVel_0x3c.z += -0.2f;
         mPos += mVel_0x3c;
         if (mPos.z <= 0.0f) {
-            JGeometry::TVec3f p = mPos;
+            JGeometry::TVec3f p;
+            p.set(mPos);
             p.y += 8.0f;
             if (field_0x304 != 0) {
                 if (field_0x94 == 3 || field_0x94 == 4) {
@@ -197,7 +198,7 @@ void Armos_8049F260::update() {
                 }
                 if (away) {
                     field_0x304 = 0;
-                    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                    mVel_0x3c.zero();
                     box = mBox;
                     box.i.x += mPos.x;
                     box.i.y += mPos.y;
@@ -222,7 +223,8 @@ void Armos_8049F260::update() {
     case 3: {
         fn_8020D58C()->addBox(mSerial);
         fn_801EF510();
-        if (field_0x94 == 6 || field_0x94 == 7) {
+        s32 type = field_0x94;
+        if (type == 6 || type == 7) {
             box = mBox;
             box.i.x += mPos.x;
             box.i.y += mPos.y;
@@ -259,7 +261,7 @@ void Armos_8049F260::update() {
             fn_80239914(&moved, mLayer_0x4, mSerial);
             mPrevPos = mPos;
             field_0x300 = 8;
-            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.zero();
         } else {
             JGeometry::TVec3f savedPos = mPos;
             JGeometry::TVec3f savedVel = mVel_0x3c;
@@ -269,13 +271,14 @@ void Armos_8049F260::update() {
             } else if (field_0x310 >= 0) {
                 mVel_0x3c.scale(8.0f);
             } else {
-                mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                mVel_0x3c.zero();
             }
             mPos.x += mVel_0x3c.x;
             mPos.y += mVel_0x3c.y;
-            mVel_0x3c = savedVel;
+            mVel_0x3c.set(savedVel);
+            mid.set(0.5f * (box.i.x - box.f.x) + box.f.x, 0.5f * (box.i.y - box.f.y) + box.f.y);
             if (fn_802265DC(&mPos, mLayer_0x4, false) == 1 || getRawTile_80226850(&mPos, mLayer_0x4) == 0x8F) {
-                mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                mVel_0x3c.zero();
             } else if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 ActorBase_804A5770* actors[1024];
                 s32 count = getActorManager_801F856C()->collectActorsById_801F7818('AMOS', mLayer_0x4, actors, -1);
@@ -285,13 +288,13 @@ void Armos_8049F260::update() {
                         f32 dy = actor->mPos.y - mPos.y;
                         f32 dx = actor->mPos.x - mPos.x;
                         if (std::sqrtf(dx * dx + dy * dy) < 8.0f) {
-                            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+                            mVel_0x3c.zero();
                             break;
                         }
                     }
                 }
             }
-            mPos = savedPos;
+            mPos.set(savedPos);
             mPos += mVel_0x3c;
         }
         if (field_0x30c < 2 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
@@ -366,7 +369,8 @@ void Armos_8049F260::update() {
         mPos += mVel_0x3c;
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            JGeometry::TVec3f p = mPos;
+            JGeometry::TVec3f p;
+            p.set(mPos);
             p.y += 8.0f;
             if (field_0x304 != 0) {
                 spawnEmitter_8013CC50(mLayer_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
@@ -396,7 +400,6 @@ void Armos_8049F260::update() {
     }
 }
 
-// FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
 void Armos_8049F260::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -406,19 +409,21 @@ void Armos_8049F260::draw() {
     params.field_0x20 = 0;
     s32 flags = 0;
     s32 mode = 0;
+    f32 scale = 1.0f;
     if (field_0x31c != 0) {
         mode = 1;
         flags = 3;
+        scale = 1.0f;
     }
-    mtx[0][0] = 1.0f;
+    mtx[0][0] = scale;
     mtx[0][1] = 0.0f;
     mtx[0][2] = 0.0f;
     mtx[1][0] = 0.0f;
-    mtx[1][1] = 1.0f;
+    mtx[1][1] = scale;
     mtx[1][2] = 0.0f;
     mtx[2][0] = 0.0f;
     mtx[2][1] = 0.0f;
-    mtx[2][2] = 1.0f;
+    mtx[2][2] = scale;
     params.mMtx = mtx;
     if (field_0x94 == 3 || field_0x94 == 4 || field_0x94 == 5 || field_0x94 == 7) {
         drawSpriteScaled_801F02BC("enemy_gc_sob.bin", field_0x318 + 0x444, &params, 3, mode, false, 1.0f, 1.0f);
