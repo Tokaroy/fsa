@@ -594,7 +594,7 @@ void PrincessZelda_8049CEE0::stepSpeed(f32 dist) {
     }
 }
 
-// FIXME: 99.92 %, operands; behaviour drift.
+// FIXME: 99.98 %, operands; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
 bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
     s32 limtSerial;
