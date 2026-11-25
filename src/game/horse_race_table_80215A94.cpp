@@ -245,6 +245,7 @@ void HorseRaceTable_80215E48::fn_80215B6C(s32 index) {
 
 // const: the original loads mCount again for the second loop, once, ahead of it.
 // Registers r4-r6 still differ.
+// FIXME: 98.80 %, regalloc-only; behaviour clean.
 s32 HorseRaceTable_80215E48::fn_80215A94() const {
     s32 result = -1;
     if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
