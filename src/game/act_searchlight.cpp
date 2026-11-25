@@ -323,8 +323,10 @@ void Searchlight_804A0FF8::draw() {
         drawSprite_801F06F0("enemy_gc_sob.bin", 0x431, &params, -1, 1.0f, 1.0f);
         drawSpriteScaled_801F02BC("enemy_gc_sob.bin", 0x431, &params, -1, 0, false, 1.0f, 1.0f);
     } else {
-        gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, JUtility::TColor(0x3F3F1F7F), 0.7f * field_0x344);
-        gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, JUtility::TColor(0x3F3F1F3F), field_0x344);
+        JUtility::TColor outerColor(0x3F3F1F7F);
+        gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, outerColor, 0.7f * field_0x344);
+        JUtility::TColor innerColor(0x3F3F1F3F);
+        gGameRoot2_8053AB10->field_0x2c->fn_80158624(&field_0x34c, &mPos, innerColor, field_0x344);
     }
 }
 
