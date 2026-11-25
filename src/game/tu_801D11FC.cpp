@@ -74,7 +74,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 // 0x801D12CC.
 // The pos push in the else branch reloads mPath.mCount; the original reuses
 // the count loaded for the full check.
-// FIXME: 89.15 %, missing/extra; behaviour drift.
+// FIXME: 99.57 %, missing/extra; behaviour near.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
     if (field_0x338 >= 0 && canTargetPlayer_801D0B44(field_0x338)) {
