@@ -27,7 +27,7 @@ public:
     /* 0x58 */ virtual s32 vfunc_0x58();
     // Slot 0x5C, overriding DemoActorBase_8049D140::vfunc_0x5C (0x801162B8, game/act_vaati_demo.cpp,
     // was fn_801162B8): 1 when field_0x230 is 11, else 0.
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
 
     // Mangled fn_80115A7C__22VaatiCutscene_8049D940Fv (0x80115A7C, game/act_vaati_demo.cpp,
     // was fn_80115A7C). Called by update; returns true.

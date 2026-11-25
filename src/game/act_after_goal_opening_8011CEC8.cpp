@@ -96,7 +96,7 @@ s32 AfterGoalOpening_8049DD68::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 AfterGoalOpening_8049DD68::vfunc_0x5C() {
+u8 AfterGoalOpening_8049DD68::vfunc_0x5C() {
     return field_0x234 == 9;
 }
 

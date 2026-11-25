@@ -551,7 +551,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
     field_0x240 = arg;
 }
 
-s32 CrystalCutscene5464_804AE088::vfunc_0x5C() {
+u8 CrystalCutscene5464_804AE088::vfunc_0x5C() {
     s32 s = field_0x240;
     if (s == 0x11 || s == 0x26)
         return 1;

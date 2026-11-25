@@ -278,7 +278,7 @@ void GreatFairy_8049EB8C::vfunc_0x54() {
     }
 }
 
-s32 GreatFairy_8049EB8C::vfunc_0x5C() {
+u8 GreatFairy_8049EB8C::vfunc_0x5C() {
     switch (field_0x234) {
     case 21:
     case 25:

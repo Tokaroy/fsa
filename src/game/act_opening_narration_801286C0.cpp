@@ -147,7 +147,7 @@ s32 OpeningNarration_8049E500::vfunc_0x58() {
     return field_0x230;
 }
 
-s32 OpeningNarration_8049E500::vfunc_0x5C() {
+u8 OpeningNarration_8049E500::vfunc_0x5C() {
     return field_0x230 == 10;
 }
 

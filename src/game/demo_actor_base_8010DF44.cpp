@@ -24,7 +24,7 @@ void DemoActorBase_8049D140::draw() {
     ActorBase_804A5770::draw();
 }
 
-s32 DemoActorBase_8049D140::vfunc_0x5C() {
+u8 DemoActorBase_8049D140::vfunc_0x5C() {
     return 0;
 }
 

@@ -36,7 +36,7 @@ public:
 
     // Slot 0x5C, overriding DemoActorBase_8049D140::vfunc_0x5C (game/demo_actor_base_8010DF44.cpp).
     // 1 when field_0x234 is 12, else 0.
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
 
     // Not in the binary: plain functions that fn_80117074 and update inline.
     void spawnPlayerEffects();

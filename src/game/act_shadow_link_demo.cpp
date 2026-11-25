@@ -307,7 +307,7 @@ s32 ShadowLinkCutscene_8049DB90::vfunc_0x58() {
     return field_0x238;
 }
 
-s32 ShadowLinkCutscene_8049DB90::vfunc_0x5C() {
+u8 ShadowLinkCutscene_8049DB90::vfunc_0x5C() {
     switch (field_0x238) {
     case 12:
     case 21:

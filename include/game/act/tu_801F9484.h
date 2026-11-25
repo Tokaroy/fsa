@@ -818,7 +818,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x58 */ virtual s32 vfunc_0x58();
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
     /* 0x60 */ virtual void vfunc_0x60(s32 arg);
 
     void fn_8036AC58(s32 arg);
