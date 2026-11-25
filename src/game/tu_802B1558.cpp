@@ -120,7 +120,7 @@ inline void cls_804A8578::setPort(s32 port) {
     }
 }
 
-// FIXME(shotgun): 96.81 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.80 %, regalloc-only; behaviour clean.
 // 0x802B1610
 void cls_804A8578::fn_802B1610(s32 port, void* arg) {
     if (lbl_80529DEC.mSaveRegion.f.field_0x9 != 0) {
