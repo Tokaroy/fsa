@@ -75,14 +75,6 @@ s32 getPlayerLeader_8022F3DC(s32 player);
 s32 fn_8022D7F8(s32 player);
 bool fn_8022D75C(s32 player);
 
-GameRoot_8049EF20* fn_8023F9B0() {
-    return gGameRoot_8053AAF8;
-}
-
-bool GameRoot_8049EF20::fn_8023F98C(s32 player) {
-    return isPlayerBitSet(this, player);
-}
-
 PlayerManager_804A6F28::PlayerManager_804A6F28() {
     gPlayerManager_8053AC90 = this;
     for (s32 i = 0; i < 4; i++) {
@@ -2107,17 +2099,11 @@ void fn_80235FE8(s32 player) {
     }
 }
 
-// FIXME: 96.55 %. The original tests the mPlayerMask bit through an inline chain
-// whose deeper copies MWCC calls out of line as the recursion is inlined: level 2
-// calls fn_8023F9B0 (the game-root getter) and inlines GameRoot::fn_8023F98C, level 3
-// calls both, level 4 calls fn_8018A614 (the one-argument form, act_phantom_ganon_2);
-// here isPlayerBitSet loads gGameRoot_8053AAF8 directly (one instruction more at
-// level 2, and isPlayerBitSet's own copy and isPlayerActive_8023F264 at the deepest level).
 // fn_80270360(serial) on the player when it takes part (mPlayerMask), else, while it
 // follows one (hasPlayerLeader_8022F514), on its leader (getPlayerLeader_8022F3DC), recursively.
 void fn_80235B68(s32 player, s32 serial) {
     if (gPlayerManager_8053AC90 != NULL && isPlayerActive_8023F264(player)) {
-        if (isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+        if (fn_8018A614(player)) {
             gPlayerManager_8053AC90->mPlayers[player]->fn_80270360(serial);
         } else if (hasPlayerLeader_8022F514(player)) {
             fn_80235B68(getPlayerLeader_8022F3DC(player), serial);
