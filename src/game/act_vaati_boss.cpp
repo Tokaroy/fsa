@@ -439,7 +439,7 @@ static inline s32 pickTarget(VaatiBoss_804A4958* boss) {
     return chosen;
 }
 
-// FIXME(shotgun): 99.46 %, different; behaviour drift.
+// FIXME(shotgun): 99.72 %, regalloc-only; behaviour drift.
 void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
