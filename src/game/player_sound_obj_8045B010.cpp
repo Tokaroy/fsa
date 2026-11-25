@@ -12,6 +12,7 @@ PlayerSoundObj_804B20F8::PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos
 
 // The original reads the group byte once into r31 and does clrlwi before each compare; ours
 // compares r31 directly.
+// FIXME: 98.11 %, missing/extra; behaviour drift.
 JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     u8 type = id.mId.mBytes.mGroupId;
     JAISeMgr* seMgr = gAudioMgr_8053AF80->field_0x34;
