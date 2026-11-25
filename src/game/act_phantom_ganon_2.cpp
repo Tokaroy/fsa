@@ -174,7 +174,8 @@ u16 ActorBase_804A5770::fn_8018A590() const {
 }
 
 // FIXME(shotgun): 92.10 %, missing/extra + reloc-name; behaviour near.
-// Constants and the stmw prologue are scheduled differently; the tables are extern.
+// The case 10 loop indexes lbl_804A19F0 differently: the original keeps two more saved
+// registers (stmw r26). The literals differ in name only.
 void PhantomGanon2_804A1A98::init() {
     field_0x94 = (mSpawnParam_0x90 >> 4) & 0xF;
     mSpawnParam_0x90 &= 0xF;
@@ -289,7 +290,7 @@ void PhantomGanon2_804A1A98::init() {
         }
         // fall through
     case 11:
-        field_0x2c8.set(0.0f, 0.0f, 0.0f);
+        field_0x2c8.zero();
         field_0x2ee = 2;
         mBox.i.x = -7.0f;
         mBox.i.y = -7.0f;
@@ -317,7 +318,7 @@ void PhantomGanon2_804A1A98::init() {
         mMapBox_0x80.i.y = -2.0f;
         mMapBox_0x80.f.x = 2.0f;
         mMapBox_0x80.f.y = 2.0f;
-        mParamAtcn_0x118 = 0;
+        mParamAtcn_0x118 = 2;
         field_0x230 = 30;
         break;
     }
