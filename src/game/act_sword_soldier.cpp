@@ -478,6 +478,7 @@ BOOL SwordSoldier_8049FCA0::vfunc_0x54() {
     return FALSE;
 }
 
+// FIXME: 99.37 %, missing/extra; behaviour drift.
 // FIXME(shotgun): missing/extra; fn_801546E8 is MWCC's local TVec2(x, y) template ctor (no default ctor first in the original),
 // but ours emits it right after update(), not at 0x801546E8; getTileAt_80226998 takes a TVec2f here.
 void SwordSoldier_8049FCA0::update() {
@@ -1676,7 +1677,7 @@ void SwordSoldier_8049FCA0::update() {
     }
 }
 
-// FIXME(shotgun): 96.05 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.35 %, scheduling+regalloc; behaviour clean.
 void SwordSoldier_8049FCA0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
