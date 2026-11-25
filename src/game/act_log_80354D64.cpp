@@ -102,8 +102,7 @@ void Log_804ACD70::update() {
     switch (field_0x230) {
     case 0: {
         fn_80239914(&box, mLayer_0x4, mSerial);
-        CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, mLayer_0x4, mSerial);
+        fn_8020D58C()->addBox(&box, mLayer_0x4, mSerial);
         fn_80354FE8();
         if (isMotionless() == false) {
             mPos.add(mVel_0x3c);
@@ -228,7 +227,7 @@ void Log_804ACD70::update() {
             pushers[0].add(pushers[3]);
             pushers[0].scale(0.25f);
             if (pushers[0].z > 0.0f) {
-                mPos.set(pushers[0].x, pushers[0].y, pushers[0].z);
+                mPos.set(pushers[0]);
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             }
         } else {
