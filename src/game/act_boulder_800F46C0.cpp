@@ -102,7 +102,9 @@ void Boulder_8049C4C0::init() {
     }
 }
 
-// FIXME(shotgun): 98.56 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.17 %, operands + reloc-name; behaviour clean.
+// still differs: two vector stack slots are swapped and 8.0f is pooled before -0.5f; both go away when the k loop
+// is a plain function defined below this one (single call site, so not written that way).
 void Boulder_8049C4C0::fn_800F5E08() {
     if (field_0x240 != 0) {
         field_0x244++;
@@ -119,7 +121,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
@@ -202,7 +204,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
 }
 
-// FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.52 %, missing/extra; behaviour clean.
 void Boulder_8049C4C0::fn_800F555C() {
     JGeometry::TBox2f box(mPos.x - 16.0f, mPos.y - 16.0f, mPos.x + 16.0f, mPos.y + 16.0f);
     s32 anyPlayer = 0;
@@ -263,7 +265,7 @@ void Boulder_8049C4C0::fn_800F555C() {
             }
             fn_80238E08(mSerial);
             for (s32 i = 0; i < 4; i++) {
-                if (mSerial == fn_80238CB4(i)) {
+                if (fn_80238CB4(i) == getSerial()) {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -317,22 +319,6 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
         if (field_0x232 == -1 && mVel_0x3c.z == 0.0f) {
             switch (field_0x234) {
-            case 1:
-                switch (field_0x233) {
-                case 0:
-                    field_0x232 = 3;
-                    break;
-                case 1:
-                    field_0x232 = 2;
-                    break;
-                case 2:
-                    field_0x232 = 0;
-                    break;
-                case 3:
-                    field_0x232 = 1;
-                    break;
-                }
-                break;
             default:
                 switch (field_0x233) {
                 case 0:
@@ -349,11 +335,27 @@ void Boulder_8049C4C0::fn_800F555C() {
                     break;
                 }
                 break;
+            case 1:
+                switch (field_0x233) {
+                case 0:
+                    field_0x232 = 3;
+                    break;
+                case 1:
+                    field_0x232 = 2;
+                    break;
+                case 2:
+                    field_0x232 = 0;
+                    break;
+                case 3:
+                    field_0x232 = 1;
+                    break;
+                }
+                break;
             }
         }
     } else {
         for (s32 i = 0; i < 4; i++) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
@@ -472,7 +474,7 @@ bool Boulder_8049C4C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, false);
 }
 
-// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.51 %, regalloc-only; behaviour clean.
 void Boulder_8049C4C0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
