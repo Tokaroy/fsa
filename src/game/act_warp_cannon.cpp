@@ -45,7 +45,7 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 99.76 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.77 %, regalloc-only + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
@@ -225,13 +225,13 @@ void WarpCannon_8049EAE0::movePlayers() {
     }
 }
 
-// States 4 and 5: the players fly off, accelerating towards y = 1000.
+// States 4 and 5: the players fly off, accelerating towards z = 1000.
 // R2 pool helper (inlined at 2 call sites); was flyPlayers.
 void WarpCannon_8049EAE0::pool_8053CCD0() {
     moveToward_801CD950(&field_0x27c, -10.0f, -0.002f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        moveToward_801CD950(&pos.y, 1000.0f, field_0x27c);
+        moveToward_801CD950(&pos.z, 1000.0f, field_0x27c);
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
     }
 }
@@ -257,14 +257,14 @@ void WarpCannon_8049EAE0::liftPlayers() {
     }
 }
 
-// State 7: the players come down towards y = 0. True once one has arrived.
+// State 7: the players come down towards z = 0. True once one has arrived.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::landPlayers() {
     bool all = false;
     moveToward_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        if (moveToward_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
+        if (moveToward_801CD950(&pos.z, 0.0f, field_0x27c) == 0) {
             all = true;
         }
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
