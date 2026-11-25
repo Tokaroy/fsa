@@ -13,6 +13,7 @@
 // Still differs: the original copies the loop counter's zero from the
 // best/numUsable zero (mr), widens the u8 `sel` and `player` a second time
 // (clrlwi) and copies `player` once more for the search loop; registers follow.
+// FIXME: 96.68 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801D3320() {
     // Declared up front: the original's stack slots follow this order.
     u8 usable[0x30];
