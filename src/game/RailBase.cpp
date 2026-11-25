@@ -121,7 +121,7 @@ s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* o
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 87.20 %, missing/extra; behaviour near.
+// FIXME(shotgun): 91.92 %, missing/extra; behaviour near.
 // 0x800FDEA0
 s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer,
                               u16* outAngle, s32 arg) {
@@ -137,8 +137,10 @@ s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeo
         outStep->y = dy;
         return 4;
     }
+    // still differs: the original has one more (dead) branch after `angle = current + arg`
+    s32 newAngle;
     if (outStep->x == 0.0f && outStep->y == 0.0f && !((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1)) {
-        // keep the angle to the point
+        newAngle = angle;
     } else {
         s32 current = (s32)(JMath::atanTable_.atan2_(outStep->x, outStep->y) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -150,11 +152,12 @@ s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeo
         } else if (diff < -(s16)arg) {
             angle = current - arg;
         }
+        newAngle = angle;
     }
-    outStep->x = speed * JMASinShort(angle);
-    outStep->y = speed * JMACosShort(angle);
+    outStep->x = speed * JMASinShort(newAngle);
+    outStep->y = speed * JMACosShort(newAngle);
     if (outAngle != NULL) {
-        *outAngle = angle;
+        *outAngle = newAngle;
     }
     return result;
 }
@@ -196,21 +199,24 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 
     return diff;
 }
 
-// FIXME(shotgun): 80.59 %, missing/extra; behaviour clean.
-// (the original copies the target point through a stack temp and keeps the sum/difference in registers)
+// FIXME(shotgun): 99.88 %, operands; behaviour clean.
+// (only stack slots differ: the original's target point is the by-value result of an inlined getter - the body of
+// getRailPointPos_800FE294 - copied into dest, so its temporary sits below dir and dest)
 // 0x800FD998
 JGeometry::TVec3f cls_800FE3EC::fn_800FD998(JGeometry::TVec3f pos, s32 step, s32 steps, u8 index) {
+    JGeometry::TVec3f diff;
+    JGeometry::TVec3f prev;
+    JGeometry::TVec3f mid;
     JGeometry::TVec3f target;
     if (index == 0xFF) {
         target = field_0x4[field_0x3]->mPos;
     } else {
         target = field_0x4[index]->mPos;
     }
-    JGeometry::TVec3f mid;
-    mid.add(pos, target);
+    JGeometry::TVec3f dest = target;
+    mid.add(pos, dest);
     mid.scale(0.5f);
-    JGeometry::TVec3f diff;
-    diff.sub(target, pos);
+    diff.sub(dest, pos);
     f32 radius = 0.5f * diff.length();
     if (steps == 0) {
         return diff;
@@ -226,13 +232,11 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FD998(JGeometry::TVec3f pos, s32 step, s32
     const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
     f32 cosNow = radius * sincos.cosShort(step * angle);
     f32 cosPrev = radius * sincos.cosShort((step - 1) * angle);
-    JGeometry::TVec3f now = dir;
-    now.scale(cosNow);
-    JGeometry::TVec3f prev = dir;
+    diff.set(dir);
+    prev.set(dir);
+    diff.scale(cosNow);
     prev.scale(cosPrev);
-    JGeometry::TVec3f result;
-    result.sub(now, prev);
-    return result;
+    return diff - prev;
 }
 
 u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
