@@ -104,7 +104,7 @@ void PlayerEffect_804A6E20::init() {
 }
 
 // 0x80229F1C.
-// FIXME: 98.68 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.98 %, regalloc-only; behaviour drift.
 void PlayerEffect_804A6E20::update() {
     field_0x230++;
     switch (getKind()) {
@@ -338,7 +338,6 @@ static inline void drawShadow_802297FC(s32 layer, const JGeometry::TVec3f* pos, 
 }
 
 // 0x802297FC.
-// FIXME: 99.78 %, reloc-name; behaviour drift.
 void PlayerEffect_804A6E20::draw() {
     SpriteParams_801F5AE0 params;
     switch ((mSpawnParam_0x90 >> 2) & 0x3F) {
