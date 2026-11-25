@@ -54,7 +54,8 @@ cls_804A46F4::cls_804A46F4() : mPathCount(0) {
 }
 
 // 0x801D183C.
-// FIXME: 99.2 %, scheduling+regalloc: the original keeps the result in r30
+// FIXME: 99.24 %, scheduling+regalloc; behaviour clean.
+// the original keeps the result in r30
 // and the player index in r31; ours has them the other way round.
 bool cls_804A46F4::fn_801D183C(f32 range) {
     bool result = false;
@@ -85,6 +86,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 // the source index recomputed per element (addi/slwi/add) and a walking store
 // pointer (stfsu); ours strength reduces both to one pointer. The pos push in
 // the else branch reloads mPathCount, the original does not.
+// FIXME: 89.15 %, missing/extra; behaviour drift.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
     if (field_0x338 >= 0 && canTargetPlayer_801D0B44(field_0x338)) {
@@ -179,7 +181,8 @@ bool cls_804A46F4::fn_801D12CC() {
 
 // 0x801D11FC: turns field_0x33c by 0x5B0 whichever way is nearer the angle
 // of mMapHitDir.
-// FIXME: 96.2 %, regalloc only: the original keeps field_0x33c in r5 and
+// FIXME: 98.08 %, regalloc-only; behaviour clean.
+// regalloc only: the original keeps field_0x33c in r5 and
 // the left angle in r5 (lis r3 0x4330 for the int-to-float constant, f0 for
 // the 1/32768 scale); ours uses r3/r4/r5 and r0 for the constant.
 void cls_804A46F4::fn_801D11FC() {
