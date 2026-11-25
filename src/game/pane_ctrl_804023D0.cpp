@@ -353,12 +353,11 @@ s32 fn_8040305C(s32 index) {
 }
 
 // FIXME: 79.90 %, missing/extra; behaviour near.
-// FIXME(shotgun): missing/extra (the original also keeps a second unread stack copy of pos and rounds z with frsp)
 void fn_80402FBC(s32 player, JGeometry::TVec3f pos) {
     s32 i = fn_8022F340(player);
-    JGeometry::TVec3f copy = pos;
-    lbl_80529DEC.field_0x1c4[i].set(copy);
-    lbl_80529DEC.field_0x236 |= 1 << fn_8022F340(player);
+    lbl_80529DEC.setField_0x1c4(i, pos);
+    u8 bit = 1 << fn_8022F340(player);
+    lbl_80529DEC.field_0x236 |= bit;
 }
 
 void PaneCtrl_804AF86C::setPane_80402F04(J2DPane* pane) {

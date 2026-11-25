@@ -36,11 +36,8 @@ void GBAAppear_804B16E0::init() {
     mUpdateWhilePaused_0x11f = 1;
 }
 
-// FIXME: ~86%. The original's frame is 0x80: it makes two extra by-value TVec3f stack copies
-// (slots 0x14 and 0x2C, psq_st of pos; its member-wise store into field_0x1c4[i] reads x/y from
-// the first) and two more for the fn_8043E7CC argument (0x20 and 0x8); and the pos copy
-// (psq_l / psq_st into the local before the call) is scheduled before the camera load
-// (lwz gGameRoot2_8053AB10 -> 0x24) there, after the z load (lfs 0x1CC) here.
+// Only the stack slots of the by-value copies still differ.
+// FIXME: 99.94 %, operands; behaviour clean.
 void GBAAppear_804B16E0::update() {
     JGeometry::TVec3f* player = getPlayerPos_8023E724(0);
     mPos.x = player->x;
@@ -51,7 +48,7 @@ void GBAAppear_804B16E0::update() {
         if (lbl_80529DEC.field_0x236 & bit) {
             JGeometry::TVec3f pos = lbl_80529DEC.field_0x1c4[i];
             JGeometry::TVec3f screen;
-            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&pos, false, false, &screen);
+            gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(&lbl_80529DEC.field_0x1c4[i], false, false, &screen);
             if (mState[i] == 0xFF) {
                 if (screen.y > 0.5f * (s32)JUTGetVideoManager()->getEfbHeight()) {
                     mState[i] = 0;
@@ -69,9 +66,7 @@ void GBAAppear_804B16E0::update() {
                     pos.y -= lbl_8050DB0C.field_0x30[1];
                 }
             }
-            lbl_80529DEC.field_0x1c4[i].x = pos.x;
-            lbl_80529DEC.field_0x1c4[i].y = pos.y;
-            lbl_80529DEC.field_0x1c4[i].z = pos.z;
+            lbl_80529DEC.setField_0x1c4(i, pos);
             if (mLayer_0x4 < 8) {
                 gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&lbl_80529DEC.field_0x1c4[i]);
             }
@@ -83,14 +78,17 @@ void GBAAppear_804B16E0::update() {
             } else {
                 setEmitterPos_8013CB44(mEmitters[i], &lbl_80529DEC.field_0x1c4[i], 1, 1, true);
             }
-            lbl_8053AED0->fn_8043E7CC(lbl_80529DEC.field_0x1c4[i]);
+            // As in act_arrow_marker: a named copy before the by-value call.
+            JGeometry::TVec3f hudPos = lbl_80529DEC.field_0x1c4[i];
+            lbl_8053AED0->fn_8043E7CC(hudPos);
         } else {
             deleteEmitter(&mEmitters[i]);
         }
     }
 }
 
-// FIXME: 96.7%. The original also computes `addi r4, r27, 0x1c4` (the position argument) later,
+// FIXME: 96.74 %, scheduling+regalloc; behaviour clean.
+// The original also computes `addi r4, r27, 0x1c4` (the position argument) later,
 // after the params stores, not before the camera/params setup as here. regalloc-only: the original keeps the scale in f29, cos x / cos y / cos z in
 // f31 / f30 / f3 and sin x / y / z in f28 / f27 / f26; ours has the scale in f31 and the sines
 // and cosines in other registers (the same shape as act_hardhat_beetle's setRotScaleMtx draw).
