@@ -39,7 +39,6 @@ void RecoveryHeart_8049F4F0::vfunc_0x40() {
     field_0x230 = 4;
 }
 
-// FIXME: 99.89 %, operands; behaviour clean.
 void RecoveryHeart_8049F4F0::update() {
     JGeometry::TVec2f basePos(mPos.x, mPos.y);
     JGeometry::TBox2f box;
