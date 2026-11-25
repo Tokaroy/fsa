@@ -72,7 +72,7 @@ void RockDroppedIntoTheRiver11_804AE7D8::init() {
     }
 }
 
-// FIXME: 99.27 %, missing/extra; behaviour clean.
+// FIXME: 99.49 %, regalloc-only; behaviour clean.
 // Float registers of the box sums differ (here and in
 // touchesPlayer, whose layer, counter and sums sit in r30/f27-f30 instead of
 // r28/f27-f30 in another order).
