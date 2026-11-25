@@ -12,7 +12,7 @@
 #include "game/SpriteParams.h"
 #include "game/act/act_fish.h"
 
-// FIXME: 97.32 %, different + reloc-name; behaviour clean.
+// FIXME: 97.53 %, scheduling+regalloc + reloc-name; behaviour clean.
 // FIXME(shotgun): different + reloc-name (register order and literal placement in the spawn loop)
 void Fish_804AC658::init() {
     u32 param = mSpawnParam_0x90;
