@@ -498,14 +498,14 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             fn_8038470C(0, 0x35B);
         } else {
             fn_8038938C(0, field_0x26c);
-            if (lbl_8050EC80.getCurrentFile().field_0x14 < (u16)field_0x26c) {
-                lbl_8050EC80.getCurrentFile().field_0x14 = field_0x26c;
+            if (lbl_8050EC80.getCurrentFile().field_0x14[0] < (u16)field_0x26c) {
+                lbl_8050EC80.getCurrentFile().field_0x14[0] = field_0x26c;
                 fn_8038470C(0, 0x357);
             } else {
                 fn_8038470C(0, 0x358);
             }
-            if (lbl_8050EC80.getCurrentFile().field_0x16 < (u16)field_0x31c) {
-                lbl_8050EC80.getCurrentFile().field_0x16 = field_0x31c;
+            if (lbl_8050EC80.getCurrentFile().field_0x14[1] < (u16)field_0x31c) {
+                lbl_8050EC80.getCurrentFile().field_0x14[1] = field_0x31c;
             }
         }
         field_0x24c[3] = 0;

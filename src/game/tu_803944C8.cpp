@@ -243,11 +243,11 @@ s32 cls_804AF5A0::fn_803A3050() {
 }
 
 u16 fn_803A3034() {
-    return lbl_8050EC80.getCurrentFile().field_0x14;
+    return lbl_8050EC80.getCurrentFile().field_0x14[0];
 }
 
 u16 fn_803A3018() {
-    return lbl_8050EC80.getCurrentFile().field_0x16;
+    return lbl_8050EC80.getCurrentFile().field_0x14[1];
 }
 
 u8 fn_803A300C() {
@@ -2060,14 +2060,14 @@ bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x30006:
             if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
-                fn_8039C9A0(lbl_8050EC80.getCurrentFile().field_0x14);
-                appendCountedNoun_8039C630(4, lbl_8050EC80.getCurrentFile().field_0x14);
+                fn_8039C9A0(lbl_8050EC80.getCurrentFile().field_0x14[0]);
+                appendCountedNoun_8039C630(4, lbl_8050EC80.getCurrentFile().field_0x14[0]);
             }
             return true;
         case 0x30007:
             if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
-                fn_8039C9A0(lbl_8050EC80.getCurrentFile().field_0x16);
-                appendCountedNoun_8039C630(4, lbl_8050EC80.getCurrentFile().field_0x16);
+                fn_8039C9A0(lbl_8050EC80.getCurrentFile().field_0x14[1]);
+                appendCountedNoun_8039C630(4, lbl_8050EC80.getCurrentFile().field_0x14[1]);
             }
             return true;
         case 0x30008:
@@ -2347,14 +2347,14 @@ bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x30006:
             if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
-                fn_8039C258(lbl_8050EC80.getCurrentFile().field_0x14);
-                fn_8039B3EC(4, lbl_8050EC80.getCurrentFile().field_0x14);
+                fn_8039C258(lbl_8050EC80.getCurrentFile().field_0x14[0]);
+                fn_8039B3EC(4, lbl_8050EC80.getCurrentFile().field_0x14[0]);
             }
             return true;
         case 0x30007:
             if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
-                fn_8039C258(lbl_8050EC80.getCurrentFile().field_0x16);
-                fn_8039B3EC(4, lbl_8050EC80.getCurrentFile().field_0x16);
+                fn_8039C258(lbl_8050EC80.getCurrentFile().field_0x14[1]);
+                fn_8039B3EC(4, lbl_8050EC80.getCurrentFile().field_0x14[1]);
             }
             return true;
         case 0x30008:
@@ -3180,12 +3180,12 @@ bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
                     lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58);
         return true;
     case 0x30006:
-        fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x14);
-        fn_80398700(4, lbl_8050EC80.getCurrentFile().field_0x14);
+        fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x14[0]);
+        fn_80398700(4, lbl_8050EC80.getCurrentFile().field_0x14[0]);
         return true;
     case 0x30007:
-        fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x16);
-        fn_80398700(4, lbl_8050EC80.getCurrentFile().field_0x16);
+        fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x14[1]);
+        fn_80398700(4, lbl_8050EC80.getCurrentFile().field_0x14[1]);
         return true;
     case 0x30008:
         fn_80398A34(lbl_8053AD78->field_0x10c);

@@ -223,9 +223,9 @@ inline void GameView_804A9950::restartTimeLimit() {
     fn_802D752C(0);
     u8 enabled;
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        enabled = lbl_8050EC80.getCurrentFile().field_0x5c;
+        enabled = lbl_8050EC80.getCurrentFile().field_0x5c[0];
     } else {
-        enabled = lbl_8050EC80.getCurrentFile().field_0x5d;
+        enabled = lbl_8050EC80.getCurrentFile().field_0x5c[1];
     }
     fn_802D7440(enabled == 1);
 }
@@ -1672,9 +1672,9 @@ void GameView_804A9950::fn_802D7440(u8 flag) {
     if (flag == 1) {
         u8 enabled;
         if (gGameRoot_8053AAF8->field_0x7f != 0) {
-            enabled = lbl_8050EC80.getCurrentFile().field_0x5c;
+            enabled = lbl_8050EC80.getCurrentFile().field_0x5c[0];
         } else {
-            enabled = lbl_8050EC80.getCurrentFile().field_0x5d;
+            enabled = lbl_8050EC80.getCurrentFile().field_0x5c[1];
         }
         if (enabled != 1) {
             getGameView_802D6A9C()->field_0x131f0 = 0;

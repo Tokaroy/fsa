@@ -689,7 +689,7 @@ void AdventureHud_804B13D4::fn_8041F720() {
                 continue;
             }
             Vec screen;
-            if (field_0x21a[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
+            if (field_0x21a[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68[0] != 0) {
                 gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
                 f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
                 f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
@@ -1390,7 +1390,7 @@ void AdventureHud_804B13D4::fn_8041C67C() {
             field_0x4->search(lbl_8048DE80[i])->show();
             field_0x4->search(lbl_8048DEA0[i])->hide();
             field_0x4->search(lbl_8048DEE0[i])->show();
-            if (lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x68[0] != 0) {
                 field_0x4->search(lbl_8048DF00[i])->show();
             } else {
                 field_0x4->search(lbl_8048DF00[i])->hide();
@@ -1498,7 +1498,7 @@ void AdventureHud_804B13D4::fn_8041B69C() {
         rank[i] = 0;
         done[i] = 0;
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            if (lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x68[0] != 0) {
                 field_0x18->search(lbl_8048DE00[i])->show();
             } else {
                 field_0x18->search(lbl_8048DE00[i])->hide();
