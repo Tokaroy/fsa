@@ -978,7 +978,12 @@ void Cucco_804AB8C0::update() {
     case 3:
         if (!field_0xc4) {
             switch (field_0x290) {
-            // The original dispatches 0..8 through a jump table (0, 1, 4-7 and above 8 come here).
+            case 0:
+            case 1:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
             default: {
                 field_0x23c = 0x12;
                 field_0x2b8.x = mVel_0x3c.x;
