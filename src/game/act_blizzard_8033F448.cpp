@@ -21,6 +21,7 @@ void Blizzard_804AC388::init() {
     field_0x23c = false;
 }
 
+// FIXME: 99.13 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only. The spawned flag is r28 and the second and third loop
 // counter r29 in the original, the reverse here.
 void Blizzard_804AC388::update() {
