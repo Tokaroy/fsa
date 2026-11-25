@@ -33,6 +33,7 @@ void EnemyGenerator3_804AA1D0::init() {
     mState = 0;
 }
 
+// The mLayer_0x4 register differs (r29 here, r30 in the original).
 // FIXME: 99.10 %, missing/extra; behaviour drift.
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
@@ -68,9 +69,9 @@ void EnemyGenerator3_804AA1D0::update() {
             } else {
                 spawnEmitter_8013CC50(layer, &mPos, 0x35c, 1, 1, NULL, NULL, true, 1.0f);
             }
-            mState = 2;
-            mTimer = 2;
         }
+        mState = 2;
+        mTimer = 2;
         break;
     case 2:
         mTimer--;
