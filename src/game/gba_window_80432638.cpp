@@ -154,7 +154,6 @@ void GbaWindow_804B1668::fn_80433718() {
     }
 }
 
-// FIXME(shotgun): 99.41 %, missing/extra; behaviour clean.
 void GbaWindow_804B1668::fn_80432AF8() {
     field_0x90++;
     field_0x94++;
