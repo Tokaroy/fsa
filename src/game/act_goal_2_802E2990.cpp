@@ -208,8 +208,9 @@ void Goal2_804A9C20::init() {
     field_0x238 = mSpawnParam_0x90 & 0x1F;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x244 = (mSpawnParam_0x90 >> 7) & 1;
+    s32 i;
     field_0x23c = gGameRoot_8053AAF8->getPlayerCount_80138A30();
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         mEmitters2c8[i] = NULL;
         mEmitters2d8[i] = NULL;
     }
@@ -217,7 +218,7 @@ void Goal2_804A9C20::init() {
     mEmitter2ec = NULL;
     field_0x2f4 = 0xFF;
     if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x240)) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x258[i].x = mPos.x + lbl_8046EA10[field_0x238][i];
             field_0x258[i].y = mPos.y + lbl_8046EA70[field_0x238][i];
             field_0x258[i].z = 0.0f;
@@ -228,7 +229,7 @@ void Goal2_804A9C20::init() {
                                                     true, 1.0f);
         }
         if (field_0x238 != 5) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x2b8[i] = lbl_8046EB90[field_0x238][i];
                 if (lbl_8046EB90[field_0x238][i] != 0) {
                     JGeometry::TVec3f pos(field_0x258[i].x + lbl_8046EAD0[field_0x238][i],
