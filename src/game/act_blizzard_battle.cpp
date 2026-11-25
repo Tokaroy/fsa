@@ -82,7 +82,8 @@ BlizzardBattle_8049E7F0::~BlizzardBattle_8049E7F0() {
     mEmitter = NULL;
 }
 
-// FIXME: 99.41 %. Regalloc only: the centre's x and y go to f0/f2 in the original
+// FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
+// Regalloc only: the centre's x and y go to f0/f2 in the original
 // (we use f3/f0), and the 0.5f literal's relocation is named differently.
 void BlizzardBattle_8049E7F0::init() {
     ActorBase_804A5770::init();
@@ -100,6 +101,7 @@ void BlizzardBattle_8049E7F0::init() {
 
 // Same instructions as the original; register numbers and the order of a few
 // loads/stores still differ (spawnPuff's position, the frame limit compare).
+// FIXME: 98.46 %, scheduling+regalloc; behaviour clean.
 void BlizzardBattle_8049E7F0::update() {
     ActorBase_804A5770::update();
     switch (field_0x234) {
