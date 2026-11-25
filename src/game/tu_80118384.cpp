@@ -384,24 +384,23 @@ static inline ActorBase_804A5770** copyBackward(ActorBase_804A5770** first, Acto
 
 // FIXME: 95.09 %, missing/extra; behaviour clean.
 ActorBase_804A5770** ActorVector::Insert_raw(ActorBase_804A5770** pos, u32 count) {
+    ActorBase_804A5770** const pFirst = pos;
     if (count == 0) {
         return pos;
     }
     u32 size = mBegin == NULL ? 0 : mEnd - mBegin;
     if (count + size <= mCapacity) {
-        ActorBase_804A5770** newEnd = pos + count;
+        ActorBase_804A5770** newEnd = pFirst + count;
         if (newEnd < mEnd) {
             ActorBase_804A5770** tail = mEnd - count;
-            copyForward(tail, mEnd, mEnd);
-            copyBackward(pos, tail, mEnd);
-            for (ActorBase_804A5770** it = pos; it != newEnd; it++) {
-            }
+            uninitializedCopy(tail, mEnd, mEnd);
+            copyBackward(pFirst, tail, mEnd);
+            DestroyElement_(pFirst, newEnd);
             mEnd += count;
             return pos;
         }
-        copyForward(pos, mEnd, newEnd);
-        for (ActorBase_804A5770** it = pos; it != mEnd; it++) {
-        }
+        uninitializedCopy(pFirst, mEnd, newEnd);
+        DestroyElement_(pFirst, mEnd);
         mEnd += count;
         return pos;
     }
@@ -414,10 +413,9 @@ ActorBase_804A5770** ActorVector::Insert_raw(ActorBase_804A5770** pos, u32 count
         return mEnd;
     }
     ActorVectorDealloc guard(mAllocator, data);
-    ActorBase_804A5770** gap = copyForward(mBegin, pos, data);
-    copyForward(pos, mEnd, gap + count);
-    for (ActorBase_804A5770** it = mBegin; it != mEnd; it++) {
-    }
+    ActorBase_804A5770** const gap = uninitializedCopy(mBegin, pFirst, data);
+    uninitializedCopy(pFirst, mEnd, gap + count);
+    DestroyElement_(mBegin, mEnd);
     guard.set(mBegin);
     mEnd = data + (count + (mEnd - mBegin));
     mBegin = data;
