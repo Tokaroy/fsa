@@ -95,7 +95,8 @@ void Stalfos_804A0CD8::init() {
     field_0x230 = 0;
 }
 
-// FIXME: 99.70%, scheduling+regalloc. The two mPos.z == 0.0f style float compares load
+// FIXME: 99.70 %, scheduling+regalloc; behaviour near.
+// The two mPos.z == 0.0f style float compares load
 // the 0.0f literal before/after the field (0x1A0, 0x4B0), one add has swapped operands
 // (0x8BC) and r28/r30 are swapped around the angleToDir_801F681C call (0x970).
 void Stalfos_804A0CD8::update() {
