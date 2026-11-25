@@ -94,7 +94,7 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
 }
 
 // 0x80334A04.
-// FIXME(shotgun): 84.07 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.50 %, missing/extra + reloc-name; behaviour drift.
 void IronBallHoming_804AB9C0::update() {
     u16 angle = 0;
     s32 player;
