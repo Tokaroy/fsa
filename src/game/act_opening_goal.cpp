@@ -161,7 +161,7 @@ s32 GoalOpening_8049DB30::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 GoalOpening_8049DB30::vfunc_0x5C() {
+u8 GoalOpening_8049DB30::vfunc_0x5C() {
     return field_0x234 != 3;
 }
 

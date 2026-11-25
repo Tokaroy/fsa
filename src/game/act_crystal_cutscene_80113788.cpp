@@ -524,7 +524,7 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
 }
 
 // 0x80113E98.
-s32 CrystalCutscene_8049D83C::vfunc_0x5C() {
+u8 CrystalCutscene_8049D83C::vfunc_0x5C() {
     switch (field_0x23c) {
     case 0xA:
     case 0x11:

@@ -282,7 +282,7 @@ s32 FourSwordCutscene_8049DA0C::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 FourSwordCutscene_8049DA0C::vfunc_0x5C() {
+u8 FourSwordCutscene_8049DA0C::vfunc_0x5C() {
     switch (field_0x234) {
     case 12:
         return 1;

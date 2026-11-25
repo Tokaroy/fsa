@@ -26,7 +26,7 @@ public:
     void pool_8053C628();
     /* 0x54 */ virtual void vfunc_0x54(); // checks the Maiden's state against the compare table and calls fn_80112654
     /* 0x58 */ virtual s32 vfunc_0x58();
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231[3];

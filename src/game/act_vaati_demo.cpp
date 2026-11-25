@@ -220,7 +220,7 @@ s32 VaatiCutscene_8049D940::vfunc_0x58() {
     return field_0x230;
 }
 
-s32 VaatiCutscene_8049D940::vfunc_0x5C() {
+u8 VaatiCutscene_8049D940::vfunc_0x5C() {
     switch (field_0x230) {
     case 11:
         return 1;

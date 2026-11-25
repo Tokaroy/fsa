@@ -15,7 +15,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x58 */ virtual s32 vfunc_0x58();
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
     // 0x8011CF48: per-state camera centre / zoom, fed to the camera each frame.
     void fn_8011CF48();
     // 0x8011D1B8: enters a state (0-9) and stores it in field_0x234.

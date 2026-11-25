@@ -25,7 +25,7 @@ public:
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x58 */ virtual s32 vfunc_0x58();
     // 0x8010FA54: 1 while the demo state (field_0x238) is 0x2F, 0x3D or 0x3E.
-    /* 0x5C */ virtual s32 vfunc_0x5C();
+    /* 0x5C */ virtual u8 vfunc_0x5C();
 
     void enterDemoState_8010E2D4(s32 arg);
     void setDemoState_8010F478(s32 arg);
