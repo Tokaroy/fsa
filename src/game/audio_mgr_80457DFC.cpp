@@ -435,7 +435,7 @@ inline void AudioMgr_8045A080::startPendingMusic() {
 }
 
 // 0x80459674
-// FIXME(shotgun): 99.38 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.93 %, regalloc-only + reloc-name; behaviour drift.
 void AudioMgr_8045A080::fn_80459674() {
     if (field_0x6b != 0) {
         field_0x6b--;
