@@ -159,9 +159,19 @@ void CrystalCutscene_8049D83C::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
+// Inlined by update (case 5): the stage flag 3 is set and the 0x1000 input is pressed.
+inline bool CrystalCutscene_8049D83C::isSkipPressed() {
+    if (!isStageFlagSet(field_0x238, 3)) {
+        return false;
+    }
+    if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+        return true;
+    }
+    return false;
+}
+
 // 0x80114C98.
-// FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
-// (case 5: the original keeps the flag test and the input test in a bool temporary)
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour drift.
 void CrystalCutscene_8049D83C::update() {
     DemoActorBase_8049D140::update();
     updateCameraFocus();
@@ -214,7 +224,7 @@ void CrystalCutscene_8049D83C::update() {
             fn_8011921C()->fn_801183BC();
             break;
         }
-        if (isStageFlagSet(field_0x238, 3) && lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+        if (isSkipPressed()) {
             fn_80387494(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -337,7 +347,7 @@ void CrystalCutscene_8049D83C::vfunc_0x54() {
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.93 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 98.07 %, scheduling+regalloc; behaviour drift.
 void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -539,15 +549,14 @@ u8 CrystalCutscene_8049D83C::vfunc_0x5C() {
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
 // FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
-static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
-    if (layer >= 8) {
-        return;
+static inline void drawSob_80113B54(ActorBase_804A5770* actor, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
+    const JGeometry::TVec3f* pos = &actor->mPos;
+    if (actor->mLayer_0x4 < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
     }
-    void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
 }
 
-// FIXME: 96.91 %, missing/extra; behaviour clean.
 void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -555,14 +564,13 @@ void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
         drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
+        drawSob_80113B54(this, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
         drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
+        drawSob_80113B54(this, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }
 
-// FIXME(shotgun): 99.68 %, same-text; behaviour clean.
 void CrystalCutscene_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
