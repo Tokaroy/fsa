@@ -335,10 +335,11 @@ void SpiralStaircase_804A7A68::update() {
                                        16.0f * offsetY(mSpawnParam_0x90) + field_0x238[0].y));
             break;
         }
-        if (field4(mSpawnParam_0x90) == -8) {
+        u32 param = mSpawnParam_0x90;
+        if (field4(param) == -8) {
             lbl_8053AED0->fn_8043A608();
-        } else if (field4(mSpawnParam_0x90) != 0) {
-            lbl_8053AED0->fn_8043ABCC(field4(mSpawnParam_0x90), 0);
+        } else if (field4(param) != 0) {
+            lbl_8053AED0->fn_8043ABCC(field4(param), 0);
         }
         gGameRoot_8053AAF8->fn_80136798(0x13, 0);
         field_0x230 = 3;
