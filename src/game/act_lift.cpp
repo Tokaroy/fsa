@@ -186,6 +186,7 @@ inline void Lift_804A6F6C::carryPlayer(s32 i) {
     }
 }
 
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::update() {
     if (mSpawnParam_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
         fn_80256410();
