@@ -87,10 +87,11 @@ void StrangeBlock_804AC2D8::init() {
 
 inline void StrangeBlock_804AC2D8::checkTalk() {
     JGeometry::TBox2f talkBox(mBox);
-    talkBox.i.x += mPos.x;
-    talkBox.i.y += mPos.y;
-    talkBox.f.x += mPos.x;
-    talkBox.f.y += mPos.y;
+    const JGeometry::TVec3f* pos = getPos();
+    talkBox.i.x += pos->x;
+    talkBox.i.y += pos->y;
+    talkBox.f.x += pos->x;
+    talkBox.f.y += pos->y;
     if (field_0x25c == 0 || field_0x25c == 2) {
         fn_8022FEB8(&talkBox, mLayer_0x4, mSerial, true, false);
         field_0x258 = fn_8022FD8C(mSerial);
