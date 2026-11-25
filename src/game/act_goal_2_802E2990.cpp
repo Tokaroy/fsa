@@ -11,63 +11,52 @@
 #include "game/GameState.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-struct GoalTables_8046EA10 {
-    f32 x1[6][4];
-    f32 y1[6][4];
-    f32 x2[6][4];
-    f32 y2[6][4];
-    u16 id[6][4];
-    f32 hurtDefault[4][4][4];
-    f32 attackDefault[4][4][4];
-    f32 hurtMode1[4][3][4];
-    f32 attackMode1[4][3][4];
-    f32 hurtMode4[3][3][4];
-    f32 attackMode4[3][3][4];
-    f32 focus[6][2];
-};
-
-static const GoalTables_8046EA10 lbl_8046EA10 = {
-{
+static const f32 lbl_8046EA10[6][4] = {
     { 0.0f, 64.0f, 0.0f, 64.0f },
     { 0.0f, -48.0f, 48.0f, 0.0f },
     { 0.0f, 32.0f, 64.0f, 96.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 48.0f, 112.0f, 160.0f },
     { 0.0f, 160.0f, 0.0f, 160.0f },
-},
-{
+};
+
+static const f32 lbl_8046EA70[6][4] = {
     { 0.0f, 0.0f, 64.0f, 64.0f },
     { 0.0f, 48.0f, 48.0f, 96.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 32.0f, 64.0f, 96.0f },
     { 0.0f, 48.0f, 48.0f, 0.0f },
     { 0.0f, 0.0f, 96.0f, 96.0f },
-},
-{
+};
+
+static const f32 lbl_8046EAD0[6][4] = {
     { 32.0f, 0.0f, 0.0f, -32.0f },
     { -24.0f, 24.0f, -24.0f, 24.0f },
     { 16.0f, 16.0f, 16.0f, -16.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 24.0f, 32.0f, 24.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
-},
-{
+};
+
+static const f32 lbl_8046EB30[6][4] = {
     { 0.0f, 32.0f, -32.0f, 0.0f },
     { 24.0f, 24.0f, -24.0f, -24.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 16.0f, 16.0f, 16.0f, 0.0f },
     { 24.0f, 0.0f, -24.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f },
-},
-{
+};
+
+static const u16 lbl_8046EB90[6][4] = {
     { 0x10D, 0x10F, 0x10F, 0x10D },
     { 0x10C, 0x10B, 0x10B, 0x10C },
     { 0x10E, 0x10E, 0x10E, 0 },
     { 0x110, 0x110, 0x110, 0 },
     { 0x10B, 0x10D, 0x10C, 0 },
     { 0x106, 0x107, 0x108, 0x109 },
-},
-{
+};
+
+static const f32 lbl_8046EBC0[4][4][4] = {
     {
         { -0.0f, -8.0f, 64.0f, 8.0f },
         { -8.0f, -0.0f, 8.0f, 64.0f },
@@ -92,8 +81,9 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { -8.0f, -0.0f, 8.0f, 32.0f },
         { -8.0f, -0.0f, 8.0f, 32.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046ECC0[4][4][4] = {
     {
         { -0.0f, -7.0f, 64.0f, 7.0f },
         { -7.0f, -0.0f, 7.0f, 64.0f },
@@ -118,8 +108,9 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { -7.0f, -0.0f, 7.0f, 32.0f },
         { -7.0f, -0.0f, 7.0f, 32.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046EDC0[4][3][4] = {
     {
         { -16.0f, 6.0f, -6.0f, 16.0f },
         { -26.0f, 18.0f, -16.0f, 28.0f },
@@ -140,8 +131,9 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { 16.0f, -36.0f, 26.0f, -26.0f },
         { 26.0f, -46.0f, 36.0f, -36.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046EE80[4][3][4] = {
     {
         { -15.0f, 7.0f, -7.0f, 15.0f },
         { -25.0f, 19.0f, -17.0f, 27.0f },
@@ -162,8 +154,9 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { 17.0f, -35.0f, 25.0f, -27.0f },
         { 27.0f, -45.0f, 35.0f, -37.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046EF40[3][3][4] = {
     {
         { 10.0f, 0.0f, 20.0f, 10.0f },
         { 20.0f, 12.0f, 30.0f, 22.0f },
@@ -179,8 +172,9 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { 16.0f, -36.0f, 26.0f, -26.0f },
         { 26.0f, -46.0f, 36.0f, -36.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046EFD0[3][3][4] = {
     {
         { 11.0f, 1.0f, 19.0f, 9.0f },
         { 21.0f, 13.0f, 29.0f, 21.0f },
@@ -196,16 +190,17 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
         { 17.0f, -35.0f, 25.0f, -27.0f },
         { 27.0f, -45.0f, 35.0f, -37.0f },
     },
-},
-{
+};
+
+static const f32 lbl_8046F060[6][2] = {
     { 32.0f, 32.0f },
     { 0.0f, 48.0f },
     { 48.0f, 0.0f },
     { 0.0f, 48.0f },
     { 80.0f, 24.0f },
     { 80.0f, 32.0f },
-},
 };
+
 
 // 0x802E3B2C.
 // FIXME(shotgun): 84.33 %, missing/extra; behaviour drift.
@@ -223,8 +218,8 @@ void Goal2_804A9C20::init() {
     field_0x2f4 = 0xFF;
     if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x240)) {
         for (s32 i = 0; i < 4; i++) {
-            field_0x258[i].x = mPos.x + lbl_8046EA10.x1[field_0x238][i];
-            field_0x258[i].y = mPos.y + lbl_8046EA10.y1[field_0x238][i];
+            field_0x258[i].x = mPos.x + lbl_8046EA10[field_0x238][i];
+            field_0x258[i].y = mPos.y + lbl_8046EA70[field_0x238][i];
             field_0x258[i].z = 0.0f;
             field_0x298[i] = 0;
             field_0x2a8[i] = 0;
@@ -234,12 +229,12 @@ void Goal2_804A9C20::init() {
         }
         if (field_0x238 != 5) {
             for (s32 i = 0; i < 4; i++) {
-                field_0x2b8[i] = lbl_8046EA10.id[field_0x238][i];
-                if (lbl_8046EA10.id[field_0x238][i] != 0) {
-                    JGeometry::TVec3f pos(field_0x258[i].x + lbl_8046EA10.x2[field_0x238][i],
-                                          field_0x258[i].y + lbl_8046EA10.y2[field_0x238][i],
+                field_0x2b8[i] = lbl_8046EB90[field_0x238][i];
+                if (lbl_8046EB90[field_0x238][i] != 0) {
+                    JGeometry::TVec3f pos(field_0x258[i].x + lbl_8046EAD0[field_0x238][i],
+                                          field_0x258[i].y + lbl_8046EB30[field_0x238][i],
                                           field_0x258[i].z);
-                    mEmitters2d8[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8046EA10.id[field_0x238][i],
+                    mEmitters2d8[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8046EB90[field_0x238][i],
                                                             1, 1, NULL, NULL, true, 1.0f);
                 }
             }
@@ -387,18 +382,18 @@ void Goal2_804A9C20::update() {
                     case 2:
                     case 3:
                     default:
-                        mBox.set(lbl_8046EA10.hurtDefault[field_0x238][i][0],
-                                 lbl_8046EA10.hurtDefault[field_0x238][i][1],
-                                 lbl_8046EA10.hurtDefault[field_0x238][i][2],
-                                 lbl_8046EA10.hurtDefault[field_0x238][i][3]);
+                        mBox.set(lbl_8046EBC0[field_0x238][i][0],
+                                 lbl_8046EBC0[field_0x238][i][1],
+                                 lbl_8046EBC0[field_0x238][i][2],
+                                 lbl_8046EBC0[field_0x238][i][3]);
                         area.set(mBox);
                         xy.set(mPos.x, mPos.y);
                         area.addPos(xy);
                         if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
-                            mMapBox_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i][0],
-                                           lbl_8046EA10.attackDefault[field_0x238][i][1],
-                                           lbl_8046EA10.attackDefault[field_0x238][i][2],
-                                           lbl_8046EA10.attackDefault[field_0x238][i][3]);
+                            mMapBox_0x80.set(lbl_8046ECC0[field_0x238][i][0],
+                                           lbl_8046ECC0[field_0x238][i][1],
+                                           lbl_8046ECC0[field_0x238][i][2],
+                                           lbl_8046ECC0[field_0x238][i][3]);
                             area.set(mMapBox_0x80);
                             xy.set(mPos.x, mPos.y);
                             area.addPos(xy);
@@ -407,18 +402,18 @@ void Goal2_804A9C20::update() {
                         break;
                     case 1:
                         for (s32 j = 0; j < 3; j++) {
-                            mBox.set(lbl_8046EA10.hurtMode1[i][j][0],
-                                     lbl_8046EA10.hurtMode1[i][j][1],
-                                     lbl_8046EA10.hurtMode1[i][j][2],
-                                     lbl_8046EA10.hurtMode1[i][j][3]);
+                            mBox.set(lbl_8046EDC0[i][j][0],
+                                     lbl_8046EDC0[i][j][1],
+                                     lbl_8046EDC0[i][j][2],
+                                     lbl_8046EDC0[i][j][3]);
                             area.set(mBox);
                             xy.set(mPos.x, mPos.y);
                             area.addPos(xy);
                             if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 0x1A)) {
-                                mMapBox_0x80.set(lbl_8046EA10.attackMode1[i][j][0],
-                                               lbl_8046EA10.attackMode1[i][j][1],
-                                               lbl_8046EA10.attackMode1[i][j][2],
-                                               lbl_8046EA10.attackMode1[i][j][3]);
+                                mMapBox_0x80.set(lbl_8046EE80[i][j][0],
+                                               lbl_8046EE80[i][j][1],
+                                               lbl_8046EE80[i][j][2],
+                                               lbl_8046EE80[i][j][3]);
                                 area.set(mMapBox_0x80);
                                 xy.set(mPos.x, mPos.y);
                                 area.addPos(xy);
@@ -430,18 +425,18 @@ void Goal2_804A9C20::update() {
                         if (i < 3) {
                             if (i != 1) {
                                 for (s32 j = 0; j < 3; j++) {
-                                    mBox.set(lbl_8046EA10.hurtMode4[i][j][0],
-                                             lbl_8046EA10.hurtMode4[i][j][1],
-                                             lbl_8046EA10.hurtMode4[i][j][2],
-                                             lbl_8046EA10.hurtMode4[i][j][3]);
+                                    mBox.set(lbl_8046EF40[i][j][0],
+                                             lbl_8046EF40[i][j][1],
+                                             lbl_8046EF40[i][j][2],
+                                             lbl_8046EF40[i][j][3]);
                                     area.set(mBox);
                                     xy.set(mPos.x, mPos.y);
                                     area.addPos(xy);
                                     if (!damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4)) {
-                                        mMapBox_0x80.set(lbl_8046EA10.attackMode4[i][j][0],
-                                                       lbl_8046EA10.attackMode4[i][j][1],
-                                                       lbl_8046EA10.attackMode4[i][j][2],
-                                                       lbl_8046EA10.attackMode4[i][j][3]);
+                                        mMapBox_0x80.set(lbl_8046EFD0[i][j][0],
+                                                       lbl_8046EFD0[i][j][1],
+                                                       lbl_8046EFD0[i][j][2],
+                                                       lbl_8046EFD0[i][j][3]);
                                         area.set(mMapBox_0x80);
                                         xy.set(mPos.x, mPos.y);
                                         area.addPos(xy);
@@ -552,8 +547,8 @@ void Goal2_804A9C20::update() {
     mPos.x = savedX;
     mPos.y = savedY;
     mPos.z = savedZ;
-    JGeometry::TVec3f focus(mPos.x + lbl_8046EA10.focus[field_0x238][0],
-                            mPos.y + lbl_8046EA10.focus[field_0x238][1], mPos.z);
+    JGeometry::TVec3f focus(mPos.x + lbl_8046F060[field_0x238][0],
+                            mPos.y + lbl_8046F060[field_0x238][1], mPos.z);
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     if (mEmitter2e8 != NULL) {
         mEmitter2e8->setGlobalAlpha(field_0x2f4);
