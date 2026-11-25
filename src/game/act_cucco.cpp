@@ -709,7 +709,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// FIXME(shotgun): 98.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.57 %, missing/extra + reloc-name; behaviour drift.
 void Cucco_804AB8C0::update() {
     if (field_0x230 == 2) {
         if (fn_8022F9E4(field_0x25c, mSerial, false, false) == 1) {
