@@ -116,7 +116,8 @@ void ShadowLinkBase_804A6A00::fn_80221670() {
     // pos reference: steers the register allocation (without it 81 %)
     const JGeometry::TVec3f& pos = mPos;
     JGeometry::TBox2f* box = layerBox(mLayer_0x4);
-    fn_801CBB98(box, &pos, dirToAngle_801F6874(field_0x2a8), 48.0f, &field_0x2b0);
+    s16 angle = dirToAngle_801F6874(field_0x2a8);
+    fn_801CBB98(box, &pos, angle, 48.0f, &field_0x2b0);
 }
 
 void ShadowLinkBase_804A6A00::fn_8022149C(s32 state) {
