@@ -325,11 +325,6 @@ void cls_801192AC::fn_801190E4() {
     mActors.reserve(20);
 }
 
-// FIXME(shotgun): 99.66 %, different; behaviour drift.
-// The per-frame pass: clears the four player bits of lbl_8053AED0's 0xDD; with field_0x2
-// raises the flag at field_0x30's 0x284 (0.05f at 0x28C); unless paused (field_0x1) runs each
-// listed actor's vfunc_0x54 and, when all their vfunc_0x5C say done and field_0x4 < 0xE,
-// resets (fn_801184F0 with the fade); counts field_0x8 up.
 void cls_801192AC::fn_80118E20() {
     if (field_0x0 == 0) {
         return;
@@ -382,7 +377,6 @@ static inline ActorBase_804A5770** copyBackward(ActorBase_804A5770** first, Acto
     return result;
 }
 
-// FIXME: 95.09 %, missing/extra; behaviour clean.
 ActorBase_804A5770** ActorVector::Insert_raw(ActorBase_804A5770** pos, u32 count) {
     ActorBase_804A5770** const pFirst = pos;
     if (count == 0) {
