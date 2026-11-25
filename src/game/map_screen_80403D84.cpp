@@ -2605,7 +2605,7 @@ void MapScreen_804B1288::fn_80408114() {
     }
 }
 
-// FIXME(shotgun): 99.67 %, operands; behaviour clean.
+// FIXME(shotgun): 99.99 %, regalloc-only; behaviour clean.
 // regalloc
 void MapScreen_804B1288::fn_8040732C() {
     s32 picked = -1;
