@@ -456,7 +456,6 @@ void SlingshotSeed_804AB3A8::update() {
 }
 
 // 0x803239A0.
-// FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
 void SlingshotSeed_804AB3A8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x10.a = (u8)(s32)field_0x234;
