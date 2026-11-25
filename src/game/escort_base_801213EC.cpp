@@ -331,7 +331,7 @@ static inline s32 findArrivedSlot(s32 player) {
     return -1;
 }
 
-// FIXME: 97.93 %, missing/extra; behaviour clean.
+// FIXME: 99.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     if (player < 0) {
         return;
@@ -743,7 +743,7 @@ void EscortBase_8049E0C8::fn_80122548() {
     }
 }
 
-// FIXME(shotgun): 96.87 %, different; behaviour drift.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80122148() {
     if (fn_8012285C() >= 0) {
         if (isPlayerHidden(fn_8012285C()) || !fn_8023BCD4(fn_8012285C())) {
