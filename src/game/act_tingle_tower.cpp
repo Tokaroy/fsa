@@ -349,6 +349,21 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315C84() {
 
 void TinglesTowerTingleAndSign_804AAD60::fn_80315C80() {}
 
+// How many other players in the mask have a higher fn_80236228 value than player p.
+// A helper of its own: the original starts the loop counter as a copy of the zeroed count.
+static inline s32 getRank(s32 p) {
+    s32 score = fn_80236228(p);
+    s32 rank = 0;
+    for (s32 i = 0; i < 4; i++) {
+        if (i != p && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
+            if (score < fn_80236228(i)) {
+                rank++;
+            }
+        }
+    }
+    return rank;
+}
+
 // FIXME(shotgun): 98.10 %, different; behaviour clean.
 void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
@@ -378,18 +393,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
         case 2:
         case 3:
         case 4: {
-            s32 rank;
-            s32 i;
-            s32 p = field_0x244[4 - field_0x238];
-            s32 score = fn_80236228(p);
-            rank = 0;
-            for (i = 0; i < 4; i++) {
-                if (i != p && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
-                    if (score < fn_80236228(i)) {
-                        rank++;
-                    }
-                }
-            }
+            s32 rank = getRank(field_0x244[4 - field_0x238]);
             fn_803894BC(field_0x254, rank + 1);
             fn_8038938C(field_0x254, fn_80236228(field_0x244[4 - field_0x238]));
             if (rank != 0) {
