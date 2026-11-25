@@ -312,33 +312,33 @@ void OshinUnidentified_804AB528::draw() {
     if (field_0x25c == 0.0f) {
         return;
     }
-    if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) {
+    if (getGameView_802D6A9C()->mStage_0x4 != 7 || getGameView_802D6A9C()->mLevel_0x8 != 2) {
+        SpriteParams_801F5AE0 params;
+        Mtx mtx;
+        PSMTXIdentity(mtx);
+        f32 scale = (f32)(field_0x240 + 1) * field_0x25c;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][2] = 0.0f;
+        mtx[0][0] = scale;
+        mtx[1][1] = scale;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = scale;
+        params.mMtx = mtx;
+        s32 frame = field_0x234 + 0x141;
+        if (mLayer_0x4 < 8) {
+            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        }
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234 + 0x141, field_0x240 != 0, 2, -1, false, 0, 0);
+    } else {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804AB518[field_0x250]);
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, NULL);
         }
-        return;
     }
-    SpriteParams_801F5AE0 params;
-    Mtx mtx;
-    PSMTXIdentity(mtx);
-    f32 scale = (f32)(field_0x240 + 1) * field_0x25c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][2] = 0.0f;
-    mtx[0][0] = scale;
-    mtx[1][1] = scale;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = scale;
-    params.mMtx = mtx;
-    s32 frame = field_0x234 + 0x141;
-    if (mLayer_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
-    }
-    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
 }
 
 OshinUnidentified_804AB528::~OshinUnidentified_804AB528() {}
