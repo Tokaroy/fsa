@@ -110,7 +110,8 @@ void ShadowLinkBase_804A6A00::fn_802216E8(s32 limit) {
     }
 }
 
-// FIXME: 96.83 %. Argument/register order only: fn_801CBB98 is now declared once (shared
+// FIXME: 98.83 %, regalloc-only; behaviour clean.
+// Argument/register order only: fn_801CBB98 is now declared once (shared
 // EnemyBase.h signature: angle before distance), which moves the dirToAngle_801F6874 call and swaps r30/r31.
 void ShadowLinkBase_804A6A00::fn_80221670() {
     // pos reference: steers the register allocation (without it 81 %)
