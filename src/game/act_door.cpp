@@ -226,7 +226,7 @@ void Door_804A8D88::update() {
     switch (field_0x230) {
     case 0:
     case 3: {
-        if (field_0x234 != 5 && field_0x234 != 6 && field_0x234 != 7) {
+        if (!(field_0x234 == 5 || field_0x234 == 6 || field_0x234 == 7)) {
             if (field_0x230 == 3) {
                 s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
                 if (bit != -1) {
