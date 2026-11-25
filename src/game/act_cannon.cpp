@@ -150,10 +150,10 @@ void Cannon_8049CCF0::update() {
             JGeometry::TBox2f box;
             JGeometry::TVec2f out;
             out.set(0.0f, 0.0f);
-            box.set(mBox2);
             JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
+            box.set(mBox2);
             box.addPos(p);
-            bool hit = false;
+            bool hit;
             if (fn_8023AA18(&box, mLayer_0x4, &out) >= 0) {
                 hit = true;
             } else {
@@ -171,6 +171,8 @@ void Cannon_8049CCF0::update() {
                         if (player >= 0) {
                             fn_801CC640(player, NULL, NULL);
                             hit = true;
+                        } else {
+                            hit = false;
                         }
                     }
                 }
@@ -260,6 +262,7 @@ void pool_8053C2F8(Cannon_8049CCF0* c) {
         speed = 1.0f;
         rate = 4.0f;
         break;
+    case 0:
     default:
         speed = 0.5f;
         rate = 2.0f;
@@ -325,7 +328,7 @@ void updateRise(Cannon_8049CCF0* self) {
 void updateRecoil(Cannon_8049CCF0* self) {
     static s32 lbl_8053AA70 = 0;
     static f32 lbl_8053AA78 = 0.0f;
-    lbl_8053AA78 = lbl_8053AA78 + 0.1f;
+    lbl_8053AA78 += 0.1f;
     if (lbl_8053AA78 >= 1.0f) {
         lbl_8053AA78 = 1.0f;
     }
@@ -344,13 +347,13 @@ void updateRecoil(Cannon_8049CCF0* self) {
         self->mPos.y = self->mHomePos.y;
     }
     {
-        bool done = false;
-        if (lbl_8053AA78 >= 1.0f) {
-            if (lbl_8053AA70 >= 30) {
-                lbl_8053AA70 = 0;
-                lbl_8053AA78 = 0.0f;
-                done = true;
-            }
+        bool done;
+        if (lbl_8053AA78 >= 1.0f && lbl_8053AA70 >= 30) {
+            lbl_8053AA70 = 0;
+            lbl_8053AA78 = 0.0f;
+            done = true;
+        } else {
+            done = false;
         }
         if (done) {
             self->field_0x270 = 0;
