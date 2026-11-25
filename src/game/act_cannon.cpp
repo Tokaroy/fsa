@@ -81,7 +81,7 @@ void updateRise(Cannon_8049CCF0* self);
 
 void pool_8053C2F4(Cannon_8049CCF0* self);
 
-// FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.95 %, operands; behaviour drift.
 void Cannon_8049CCF0::update() {
     if (getScreenFlagBit_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
@@ -210,7 +210,6 @@ void Cannon_8049CCF0::draw() {
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }
 
-// FIXME: 98.39 %, missing/extra; behaviour clean.
 bool Cannon_8049CCF0::fn_80107360() {
     if (field_0x274 != 2) {
         return false;
