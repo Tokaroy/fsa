@@ -68,27 +68,18 @@ Tingle_804B0478::~Tingle_804B0478() {
     }
 }
 
-// Indexed by update's states 7 to 10 (see the sub-tables there); owned by this unit
-// (.data 0x804B03E8, 0x90 bytes) but not written here yet.
-struct {
-    s32 a[3];
-    s32 b[3];
-    s32 c[8];
-    s32 d[9];
-    s32 e[10];
-    u16 f[6];
-} lbl_804B03E8 = {
-    {10, 11, 12},
-    {13, 14, 15},
-    {16, 17, 18, 19, 20, 21, 22, 23},
-    {0, 2, 3, 4, 5, 6, 7, 8, 9},
-    {0x20, 2, 2, 2, 2, 2, 2, 2, 2, 0x20},
-    {0x3A7, 0x3A8, 0x3A9, 0x3AA, 0x3AB, 0},
-};
+// Frame tables of update's states 7 to 10.
+s32 lbl_804B03E8[3] = {10, 11, 12};
+s32 lbl_804B03F4[3] = {13, 14, 15};
+s32 lbl_804B0400[8] = {16, 17, 18, 19, 20, 21, 22, 23};
+s32 lbl_804B0420[9] = {0, 2, 3, 4, 5, 6, 7, 8, 9};
+s32 lbl_804B0444[10] = {0x20, 2, 2, 2, 2, 2, 2, 2, 2, 0x20};
+u16 lbl_804B046C[6] = {0x3A7, 0x3A8, 0x3A9, 0x3AA, 0x3AB, 0};
 s32 lbl_8053A210[2] = {0, 1}; // state 5
 
 // FIXME(shotgun): 94.67 %, missing/extra; behaviour drift.
 void Tingle_804B0478::update() {
+    s32 i;
     switch (mState) {
     case 0:
         if (field_0x240 < 60) {
@@ -117,11 +108,14 @@ void Tingle_804B0478::update() {
         break;
     case 1: {
         gGameRoot2_8053AB10->field_0x24->mSkipUpdate_0x17d = 1;
-        for (s32 i = 0; i < 4; i++) {
-            addCalc2_801F71A4(&field_0x260[i].y, getPlayerPos_8023E724(i)->y, 0.3f, 1.0f);
+        // the original nests two loops over the same counter
+        for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
+                addCalc2_801F71A4(&field_0x260[i].y, getPlayerPos_8023E724(i)->y, 0.3f, 1.0f);
+            }
         }
         if (field_0x238 == 0) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (getPlayerLayer_8023DE58(i) >= 8) {
                     const JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
                     field_0x260[i].x = p->x;
@@ -230,7 +224,7 @@ void Tingle_804B0478::update() {
     case 7:
         field_0x244++;
         if (field_0x234 == 0) {
-            field_0x24c = lbl_804B03E8.a[field_0x240];
+            field_0x24c = lbl_804B03E8[field_0x240];
             field_0x240++;
             field_0x234 = 2;
             if (field_0x240 > 2) {
@@ -242,7 +236,7 @@ void Tingle_804B0478::update() {
     case 8:
         field_0x244++;
         if (field_0x234 == 0) {
-            field_0x24c = lbl_804B03E8.b[field_0x240];
+            field_0x24c = lbl_804B03F4[field_0x240];
             field_0x240++;
             field_0x234 = 2;
             if (field_0x240 > 2) {
@@ -257,7 +251,7 @@ void Tingle_804B0478::update() {
     case 9:
         field_0x244++;
         if (field_0x234 == 0) {
-            field_0x24c = lbl_804B03E8.c[field_0x240];
+            field_0x24c = lbl_804B0400[field_0x240];
             field_0x240++;
             field_0x234 = 2;
             if (field_0x240 > 7) {
@@ -272,8 +266,8 @@ void Tingle_804B0478::update() {
         break;
     case 10:
         if (field_0x234 == 0) {
-            field_0x24c = lbl_804B03E8.d[field_0x240];
-            field_0x234 = lbl_804B03E8.e[field_0x240];
+            field_0x24c = lbl_804B0420[field_0x240];
+            field_0x234 = lbl_804B0444[field_0x240];
             field_0x240++;
             if (field_0x240 > 9) {
                 mAlive = false;
