@@ -389,6 +389,25 @@ def structural_status(wt=None):
 
 STATUS = {}  # refreshed per unit pick by the worker in --goal structural
 
+def live_fns():
+    """{unit source (game/X.cpp): {function}}: functions below 100 % the browser port runs
+    (g2-logs/port_live_fns.tsv from tools/port_diag.py --tsv); --goal structural takes their
+    units first. Empty when the file is missing."""
+    global _LIVE
+    if _LIVE is None:
+        _LIVE = {}
+        try:
+            for line in (LOGS / "port_live_fns.tsv").read_text().splitlines()[1:]:
+                p = line.split("\t")
+                if len(p) > 6:
+                    _LIVE.setdefault(p[5] + ".cpp", set()).add(p[6])
+        except OSError:
+            pass
+    return _LIVE
+
+
+_LIVE = None
+
 
 def struct_close(e):
     """tools/structural.py's "close": missing/extra (with only done extras) by <= 4 instructions at >= 85 %;
@@ -1637,9 +1656,10 @@ def cmd_worker(args):
                     continue
             else:
                 el = eligible(fns, unit, tier, lanes, args.min_size, args.max_size, hist)
-            if el and GOAL == "structural":  # most close functions first, then most open bytes
+            if el and GOAL == "structural":  # units the port runs first, then most close functions, then most open bytes
                 nc = sum(STATUS.get((unit, n)) == "close" for n in el)
-                pool.append((-nc, -sum(fns[n]["size"] for n in el), unit))
+                live = sum(1 for n in el if n in live_fns().get(unit, ()))
+                pool.append((-live, -nc, -sum(fns[n]["size"] for n in el), unit))
             elif el:  # units with unwritten code first (most bytes), then the ones with most open functions
                 wb = sum(fns[n]["size"] for n in el if lane_of(fns[n]) == "write")
                 pool.append((-wb, -len(el), unit))
