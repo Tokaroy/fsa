@@ -198,9 +198,7 @@ void Searchlight_804A0FF8::update() {
                     if (field_0x328 == 0) {
                         for (s32 i = 0; i < 20; i++) {
                             JGeometry::TVec3f pos;
-                            pos.x = mPos.x;
-                            pos.y = mPos.y;
-                            pos.z = mPos.z;
+                            pos.set(mPos);
                             pos.x += 80.0f * JMath::sincosTable_.sinShort((i + 1) * 0xC30);
                             pos.y += 80.0f * JMath::sincosTable_.cosShort((i + 1) * 0xC30);
                             if (getActorManager_801F856C()->spawnActor_801F9484('POOH', mLayer_0x4, &pos, 0, -1, -1) >= 0) {
