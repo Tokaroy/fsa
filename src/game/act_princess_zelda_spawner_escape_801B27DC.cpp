@@ -68,7 +68,7 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 }
 
 // 0x801B29EC.
-// FIXME(shotgun): 99.25 %, different; behaviour near.
+// FIXME(shotgun): 99.43 %, different; behaviour near.
 // Still differs: the actor loop's second zero is a register copy (mr) in the original; the life-meter stores
 // load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8 inlined in the original; it needs to be a
 // header inline), and registers and stack slots.
