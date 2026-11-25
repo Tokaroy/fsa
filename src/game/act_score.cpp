@@ -114,7 +114,7 @@ static const u8 lbl_80543178[4] = {0x28, 0x50, 0xFF, 0xFF};
 // Force Gem / fairy sounds by tens digit.
 static const u32 sScoreSounds[10] = {0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C};
 
-// FIXME(shotgun): 99.69 %, operands; behaviour drift.
+// FIXME(shotgun): 99.72 %, regalloc-only; behaviour drift.
 void Score_804AF4C0::fn_80393514() {
     if (mTimer == 90) {
         // The original copies this 12-entry table (rodata 0x80475738) to the stack and passes entry 0.
@@ -167,7 +167,8 @@ void Score_804AF4C0::fn_80393514() {
                 if (serial >= 0) {
                     ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (gem != NULL) {
-                        gem->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
+                        JGeometry::TVec3f vel(0.0f, 0.0f, -1.0f);
+                        gem->mVel_0x3c = vel;
                     }
                 }
             }
@@ -242,36 +243,29 @@ void Score_804AF4C0::updateState2() {
 }
 
 #pragma auto_inline off
-// Draws one digit of the gem value at x, in the gem-yellow colour.
-static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
+// Draws one digit of the gem value at pos, in the gem-yellow colour.
+static void putScoreDigit(const Score_804AF4C0* self, const JGeometry::TVec3f& pos, s32 digit, f32 fade);
 
 // Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
-static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
-    if (self->mLayer_0x4 < 8) {
-        JGeometry::TVec3f pos = JGeometry::TVec3f(self->mPos);
-        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
-    }
-}
-
 #define SCORE_2(a, b) \
-    pool_80543188(this, fade, mPos.x - 5.0f, a); \
-    pool_80543188(this, fade, mPos.x + 5.0f, b)
+    putScoreDigit(this, JGeometry::TVec3f(mPos.x - 5.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(this, JGeometry::TVec3f(5.0f + mPos.x, mPos.y, mPos.z), b, fade)
 #define SCORE_3(a, b, c) \
-    pool_80543188(this, fade, mPos.x - 10.0f, a); \
-    putScoreDigitMid(this, fade, b); \
-    pool_80543188(this, fade, mPos.x + 10.0f, c)
+    putScoreDigit(this, JGeometry::TVec3f(mPos.x - 10.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(this, mPos, b, fade); \
+    putScoreDigit(this, JGeometry::TVec3f(10.0f + mPos.x, mPos.y, mPos.z), c, fade)
 #define SCORE_4(a, b, c, d) \
-    pool_80543188(this, fade, mPos.x - 5.0f - 10.0f, a); \
-    pool_80543188(this, fade, mPos.x - 5.0f, b); \
-    pool_80543188(this, fade, mPos.x + 5.0f, c); \
-    pool_80543188(this, fade, 10.0f + (mPos.x + 5.0f), d)
+    putScoreDigit(this, JGeometry::TVec3f(mPos.x - 5.0f - 10.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(this, JGeometry::TVec3f(mPos.x - 5.0f, mPos.y, mPos.z), b, fade); \
+    putScoreDigit(this, JGeometry::TVec3f(5.0f + mPos.x, mPos.y, mPos.z), c, fade); \
+    putScoreDigit(this, JGeometry::TVec3f(10.0f + (5.0f + mPos.x), mPos.y, mPos.z), d, fade)
 
-// FIXME: 96.72 %, operands; behaviour drift.
+// FIXME: 98.60 %, scheduling+regalloc; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     switch (mValue) {
-    case 0: putScoreDigitMid(this, fade, 1); break;
-    case 1: putScoreDigitMid(this, fade, 5); break;
+    case 0: putScoreDigit(this, mPos, 1, fade); break;
+    case 1: putScoreDigit(this, mPos, 5, fade); break;
     case 2: SCORE_2(2, 0); break;
     case 3: SCORE_2(5, 0); break;
     case 4: SCORE_3(1, 0, 0); break;
@@ -317,15 +311,11 @@ void Score_804AF4C0::fn_80391D44() {
 }
 #pragma auto_inline reset
 
-// R2 pool helper (inlined at 8 call sites); was putScoreDigit.
-static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
-    Vec v;
-    v.x = x;
-    v.y = self->mPos.y;
-    v.z = self->mPos.z;
+// Inlined at every call site in the original, which has no out-of-line copy (this build
+// still emits a local one, as the earlier pool helper did).
+static void putScoreDigit(const Score_804AF4C0* self, const JGeometry::TVec3f& pos, s32 digit, f32 fade) {
     if (self->mLayer_0x4 < 8) {
-        JGeometry::TVec3f pos = JGeometry::TVec3f(v);
-        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
+        putTimeDigit(0.3f, digit, pos, JUtility::TColor(255, 0xD2, 0, fade));
     }
 }
 
