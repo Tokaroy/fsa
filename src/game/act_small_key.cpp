@@ -197,19 +197,7 @@ void SmallKey_804A8CD8::update() {
             field_0x240 = 4;
             getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x3C00, -1, -1);
             fn_801F355C();
-            u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (getField_0x4() & 0xFF);
-            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
-                value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
-            } else {
-                value = field_0x2aa << 8;
-            }
-            JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
-            s32 layer = field_0x238;
-            JGeometry::TVec2f pos(mPos.x, mPos.y);
-            getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+            registerWithView();
         }
         break;
     case 2:
@@ -437,19 +425,7 @@ void SmallKey_804A8CD8::update() {
                 s32 layer = field_0x238;
                 getGameView_802D6A9C()->fn_802D6C10(pos, layer);
             }
-            u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (getField_0x4() & 0xFF);
-            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
-                value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
-            } else {
-                value = field_0x2aa << 8;
-            }
-            JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
-            s32 layer = field_0x238;
-            JGeometry::TVec2f pos(mPos.x, mPos.y);
-            getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+            registerWithView();
         }
     }
 }
@@ -886,6 +862,23 @@ bool SmallKey_804A8CD8::inl_802C2C30(u16 tile) {
 // Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
 // Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 37-line definition): split out only where the .sdata2 order needs it.
+// Not in the binary: update inlines it twice (case 1 and the 11400-frame timeout).
+void SmallKey_804A8CD8::registerWithView() {
+    s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+                (getField_0x4() & 0xFF);
+    if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
+        s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+        s32 col = getGameView_802D6A9C()->mScreenX_0x14;
+        value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
+    } else {
+        value = field_0x2aa << 8;
+    }
+    JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
+    s32 layer = field_0x238;
+    JGeometry::TVec2f pos(mPos.x, mPos.y);
+    getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+}
+
 bool SmallKey_804A8CD8::dropAtPlayer() {
     if (!field_0x2b0) {
         return true;

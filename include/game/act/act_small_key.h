@@ -25,6 +25,8 @@ public:
     void fn_802C2C30();
     // Not in the binary: plain functions that update and fn_802C2C30 inline.
     bool dropAtPlayer();
+    // The key's registration with the view (fn_802D6D70) as update does it, twice.
+    void registerWithView();
     bool bounceOffTile();
     bool inl_802C2C30(u16 tile);
     // 0x802C1674 / 0x802C1778 (act_small_key's range, not written yet): no
