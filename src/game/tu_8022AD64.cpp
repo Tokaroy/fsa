@@ -648,7 +648,8 @@ u16 fn_8023D21C(s32 player, s32 viewer) {
 // The screen y (y - z) of player `player` in its layer's view box, relative to
 // `viewer`'s fn_8023CD74; 0xE0 outside [-0x30, 0xD0) or without either player, 0
 // without the manager.
-// FIXME: 99.84 %, regalloc only: the box lives in r30 and the first position in r31
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
+// regalloc only: the box lives in r30 and the first position in r31
 // in the original (swapped in ours).
 u16 fn_8023CEAC(s32 player, s32 viewer) {
     if (gPlayerManager_8053AC90 == NULL) {
@@ -1544,6 +1545,7 @@ s32 fn_8023885C(s32 serial) {
 // The original returns `clrlwi r3, hit, 24`, ours `mr`: a u8 return gives the
 // clrlwi but breaks the bool wrappers fn_80271038 / fn_80271068 / fn_80271098 /
 // hitOwnGroup_80272160.
+// FIXME: 99.70 %, different; behaviour near.
 bool hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
@@ -2596,7 +2598,8 @@ void fn_80233BA0(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src) {
 // inline budget it also calls the unit's small queries out of line.
 // The three pushes of j by -dir pass the address of negated(dir)'s value (the
 // original's two stack TVec3fs: the negation, then the copy, z through frsp).
-// FIXME: 99.40 %. Float registers and load order only: the moves of boxA / boxB
+// FIXME: 99.40 %, scheduling+regalloc; behaviour clean.
+// Float registers and load order only: the moves of boxA / boxB
 // by their view corner (addPos) load i.y before i.x in ours (x first in the
 // original); the rest is float register numbering.
 void fn_80232A0C() {
