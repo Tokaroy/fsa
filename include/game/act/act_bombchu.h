@@ -23,6 +23,7 @@ public:
 
     s32 kind() const;  // inline, act_bombchu.cpp
     s32 hitPlayers();  // inline, act_bombchu.cpp
+    void stepFrame();  // inline, act_bombchu.cpp
     void faceMoveDirection();
     void fn_8032506C();
 
