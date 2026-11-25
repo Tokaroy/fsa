@@ -65,7 +65,7 @@ void TwoPersonLiftableRock_804AC950::init() {
     field_0x380[2] = 0;
 }
 
-// FIXME: 99.13 %, regalloc-only; behaviour clean.
+// FIXME: 99.33 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): float register assignment differs
 void TwoPersonLiftableRock_804AC950::vfunc_0x10() {
     s32 tile = getRawTile_80226850(&mPos, mLayer_0x4);
@@ -112,7 +112,7 @@ void TwoPersonLiftableRock_804AC950::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 94.59 %, different; behaviour near.
+// FIXME(shotgun): 99.42 %, scheduling+regalloc; behaviour clean.
 void TwoPersonLiftableRock_804AC950::update() {
     JGeometry::TBox2f box(mMapBox_0x80);
     f32 x0 = -16.0f;
