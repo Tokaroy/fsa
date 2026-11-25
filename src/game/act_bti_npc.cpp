@@ -230,7 +230,8 @@ void BTINPC_804A927C::update() {
     }
 }
 
-// FIXME: 91.39%, missing/extra + reloc-name: ours has 2 more instrs (477 vs 475). The original hoists lbl_804A90F0's base into r29 (and the unit's string-literal base into r30) and schedules setRotScaleMtxS16's sincosTable_ products differently.
+// FIXME: 93.21 %, missing/extra + reloc-name; behaviour near.
+// FIXME: the original hoists lbl_804A90F0's base into r29 (and the string-literal base into r30); register choice and order in the inlined setRotScaleMtxS16 also differ.
 void BTINPC_804A927C::draw() {
     if (field_0x230 == 1) {
         Mtx mtx;
@@ -240,7 +241,7 @@ void BTINPC_804A927C::draw() {
         params.field_0x24 = 1;
         if (field_0x234 >= 0x1B && field_0x234 <= 0x1E) {
             PSMTXIdentity(mtx);
-            setRotScaleMtxS16(mtx, 0, 0, field_0x248, field_0x24c, field_0x250, field_0x254);
+            setRotScaleMtxS16(mtx, 0, field_0x248, 0, field_0x24c, field_0x250, field_0x254);
             params.mMtx = mtx;
         } else if (field_0x234 == 0x15) {
             params.field_0x2d = 1;
