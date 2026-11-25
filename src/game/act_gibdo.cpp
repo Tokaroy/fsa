@@ -51,7 +51,7 @@ void Gibdo_804A3BF8::init() {
     mAnim.setRandomFrame_801D1D60();
 }
 
-// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.58 %, missing/extra; behaviour drift.
 // the original keeps fewer values live (saves r30-r31 only)
 // and its jump table is named jumptable_804A3D24.
 void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
@@ -105,10 +105,10 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
         switch (kind) {
         case 0:
             switch (dir) {
+            case 2:
+                break;
             case 3:
                 anim = 9;
-                break;
-            case 2:
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 8 : 9;
@@ -117,11 +117,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 1:
             switch (dir) {
-            case 3:
-                anim = 11;
-                break;
             case 2:
                 anim = 10;
+                break;
+            case 3:
+                anim = 11;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 10 : 11;
@@ -130,11 +130,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 2:
             switch (dir) {
-            case 1:
-                anim = 13;
-                break;
             case 0:
                 anim = 12;
+                break;
+            case 1:
+                anim = 13;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 12 : 13;
@@ -143,11 +143,11 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             break;
         case 3:
             switch (dir) {
-            case 1:
-                anim = 15;
-                break;
             case 0:
                 anim = 14;
+                break;
+            case 1:
+                anim = 15;
                 break;
             default:
                 anim = gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f ? 14 : 15;
@@ -191,7 +191,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
     mState = mode;
 }
 
-// FIXME: 96.86 %, missing/extra; behaviour drift.
+// FIXME: 98.96 %, scheduling+regalloc; behaviour drift.
 // The original reloads mFlags before clearing 0x8000 (lwz after
 // the timer compare); ours reuses the first load. The two jump tables
 // (jumptable_804A3C9C, jumptable_804A3CE4) and the 120.0f / 0.1f literals are
@@ -199,7 +199,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
 void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
-        if (mFlags & 0x8000) {
+        if (checkFlag(0x8000)) {
             if (mStateTimer >= 5) {
                 mFlags &= ~0x8000;
             }
@@ -220,7 +220,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 fn_801B9DD4(1);
             } else {
                 bool turn = false;
-                if (mFlags & 0x2000) {
+                if (checkFlag(0x2000)) {
                     mFlags &= ~0x2000;
                     turn = true;
                 }
@@ -237,7 +237,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
     case 1:
         if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             bool turn = false;
-            if (mFlags & 0x2000) {
+            if (checkFlag(0x2000)) {
                 mFlags &= ~0x2000;
                 turn = true;
             }
@@ -279,10 +279,10 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 dir = 3;
                 break;
             }
-            if (mDir_0x98 == dir) {
-                fn_801B9DD4(0);
-            } else {
+            if (dir != mDir_0x98) {
                 fn_801B9DD4(2);
+            } else {
+                fn_801B9DD4(0);
             }
         }
         break;
@@ -302,7 +302,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         break;
     }
 
-    if (mState != 0 || (mFlags & 0x8000)) {
+    if (mState != 0 || checkFlag(0x8000)) {
         mTargetSpeed = 0.0f;
     } else {
         switch (mAnim.mCel) {
