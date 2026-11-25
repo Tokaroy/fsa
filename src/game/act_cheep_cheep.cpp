@@ -7,7 +7,8 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME: 98.19%. scheduling+regalloc: the 0x19660d constant and li 0 use swapped registers (r5/r6), and fcmpu cr0, f1, f0 loads 0.0f into f1 instead of f0.
+// FIXME: 98.19 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the 0x19660d constant and li 0 use swapped registers (r5/r6), and fcmpu cr0, f1, f0 loads 0.0f into f1 instead of f0.
 void CheepCheep_804A11B8::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -71,6 +72,7 @@ bool CheepCheep_804A11B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos
     return false;
 }
 
+// FIXME: 99.83 %, operands; behaviour clean.
 // FIXME: operands: in case 1 the constant loads (0.3f, 1.0f, 16.0f, 96.0f) and the get_ufloat_1 temporaries use other float registers; the stack slots of the get_ufloat_1 conversion temporary (sp+0x8) and the std::sqrtf one (sp+0xC) are swapped.
 void CheepCheep_804A11B8::update() {
     JGeometry::TVec3f hitVec;
