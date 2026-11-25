@@ -478,6 +478,7 @@ BOOL SwordSoldier_8049FCA0::vfunc_0x54() {
     return FALSE;
 }
 
+// FIXME: 99.37 %, missing/extra; behaviour drift.
 // FIXME(shotgun): missing/extra; fn_801546E8 is MWCC's local TVec2(x, y) template ctor (no default ctor first in the original),
 // but ours emits it right after update(), not at 0x801546E8; getTileAt_80226998 takes a TVec2f here.
 void SwordSoldier_8049FCA0::update() {
@@ -1676,7 +1677,7 @@ void SwordSoldier_8049FCA0::update() {
     }
 }
 
-// FIXME(shotgun): 96.05 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.35 %, scheduling+regalloc; behaviour clean.
 void SwordSoldier_8049FCA0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1708,20 +1709,12 @@ void SwordSoldier_8049FCA0::draw() {
         }
     }
     if (mSpawnParam_0x90 == 6 || field_0x288 == 3) {
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54);
         params.mMtx = mtx;
         flags = 3;
     }
     if (mState == 8) {
-        bool blink = false;
+        u8 blink = false;
         s32 t = field_0x248;
         if (t < 100) {
             if (t < 50) {
@@ -1734,20 +1727,12 @@ void SwordSoldier_8049FCA0::draw() {
                 }
             }
         }
-        if (blink) {
+        if (blink == 1) {
             params.field_0x14.r = 0x50;
         }
     }
     if (mState == 9) {
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54);
         params.mMtx = mtx;
     }
     s32 far = 0;
@@ -1756,10 +1741,10 @@ void SwordSoldier_8049FCA0::draw() {
     }
     if (field_0x288 == 1 || field_0x288 == 3) {
         drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x274 + 0xA8, &params, flags, far, false, 1.0f, 1.0f);
-    } else if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3 || mSpawnParam_0x90 == 1) {
-        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x274 + 0x1F4, &params, flags, far, false, 1.0f, 1.0f);
-    } else {
+    } else if (!(mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3 || mSpawnParam_0x90 == 1)) {
         drawSpriteScaled_801F02BC("enemy_both_sob.bin", field_0x274 + 0x8F, &params, flags, far, false, 1.0f, 1.0f);
+    } else {
+        drawSpriteScaled_801F02BC("enemy_both2_sob.bin", field_0x274 + 0x1F4, &params, flags, far, false, 1.0f, 1.0f);
     }
 }
 

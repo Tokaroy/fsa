@@ -34,4 +34,22 @@ inline void setRotScaleMtx(Mtx m, const JGeometry::TVec3f& rot, f32 scale) {
     m[2][2] = scale * (cx * cy);
 }
 
+// The diagonal scale matrix of `scale` into the 3x3 part of `m` (the three
+// components read first, z y x, then the nine stores); the translation column
+// is the caller's.
+inline void setScaleMtx(Mtx m, const JGeometry::TVec3f& scale) {
+    f32 x = scale.x;
+    f32 y = scale.y;
+    f32 z = scale.z;
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
 #endif
