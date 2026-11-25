@@ -33,9 +33,10 @@ void Tingle_804B0478::init() {
     mEmitters[3] = NULL;
     field_0x251 = 0;
     mUpdateWhilePaused_0x11f = 1;
-    if ((s32)mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 0) {
         s32 player = getRepresentativePlayer_8022EA0C(0);
         if (player >= 0) {
+            getPlayerLayer_8023DE58(player); // the original discards this first result
             const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
             mPos.x = p->x;
             mPos.y = p->y;
@@ -54,7 +55,7 @@ void Tingle_804B0478::init() {
     field_0x254.x = mPos.x;
     field_0x254.y = mPos.y;
     field_0x254.z = mPos.z;
-    if (mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 0) {
         field_0x248 = 1;
         mState = 0;
     } else {
