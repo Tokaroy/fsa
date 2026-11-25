@@ -71,7 +71,17 @@ static inline bool hop(ShadowLinkCutscene_8049DB90* self, s32 t, f32 base, f32 v
     return false;
 }
 
-// FIXME: 99.71 %, operands; behaviour drift.
+// State 11 of update. Taken as inlined from the stack layout: its pos has the lowest slot, below
+// those of the later states 22 and 20.
+inline void ShadowLinkCutscene_8049DB90::moveToPlayer() {
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
+        pos.add(field_0x26c);
+        fn_802303FC(i, &pos, 0xFF);
+    }
+}
+
+// Only register numbers differ.
 void ShadowLinkCutscene_8049DB90::update() {
     DemoActorBase_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
@@ -91,11 +101,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         hopDown();
         break;
     case 11:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
-            pos.add(field_0x26c);
-            fn_802303FC(i, &pos, 0xFF);
-        }
+        moveToPlayer();
         break;
     case 16:
         mPos.y -= 0.3f;

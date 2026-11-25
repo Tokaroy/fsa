@@ -25,6 +25,8 @@ public:
     // Not in the binary: plain functions that update and setState_8011B878 inline.
     void hopDown();
     void spawnFlash();
+    // Not in the binary: update inlines it.
+    void moveToPlayer();
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor
     /* 0x231 */ bool field_0x231; // cleared by the constructor
