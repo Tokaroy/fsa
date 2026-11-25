@@ -9,11 +9,8 @@
 #include "JSystem/JUtility/JUTGamePad.h"
 
 // FIXME: 96.62 %, different; behaviour clean.
-// The loop: the original keeps the index in r30 and a byte
-// offset (mr r28, r30 after the end load, stepped by 4) for mActors[i]; ours
-// keeps the index in r28 and the offset in r30 whatever the declaration order
-// (tried: index before/after the end load, actor hoisted). The 30.0f literal is
-// lbl_8054075C in the original and an anonymous literal here (data split).
+// Registers only: count/index/end sit in r28/r30/r29 in the original. The
+// 30.0f literal is lbl_8054075C in the original (data split).
 void UnknownFORM_804A7BE8::init() {
     if (hasPlayerLeader_8022F514(mSpawnParam_0x90 & 3)) {
         mAlive = false;
@@ -31,8 +28,9 @@ void UnknownFORM_804A7BE8::init() {
     playSe_801F0D20(0x45);
     field_0x248 = mSpawnParam_0x90 & 3;
 
+    s32 i;
     s32 count = 3;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (hasPlayerLeader_8022F514(i)) {
             count--;
         }
@@ -63,7 +61,7 @@ void UnknownFORM_804A7BE8::init() {
     field_0x254 = NULL;
     ActorBase_804A5770* actor;
     s32 actorEnd = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < actorEnd; i++) {
+    for (i = 0; i < actorEnd; i++) {
         actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == 'FGAL' && actor->mAlive == true) {
             field_0x254 = static_cast<FourGirlsControl_804AE4B0*>(actor);
