@@ -245,15 +245,6 @@ void Snowball_8049D020::update() {
     mSprite.update_801D1C18();
 }
 
-static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, const char* name,
-                              s32 frame, SpriteParams_801F5AE0* params) {
-    if (layer < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
-    }
-}
-
-// One instruction short: &mPos stays folded into r31+0xc instead of moving to r30 before the layer check.
 // FIXME: 99.17 %, missing/extra; behaviour clean.
 void Snowball_8049D020::draw() {
     ActorBase_804A5770::draw();
@@ -271,7 +262,12 @@ void Snowball_8049D020::draw() {
     }
     params.field_0x10.a = 0x80;
     drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
-    drawSprite(mLayer_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
+    JGeometry::TVec3f* pos = &mPos;
+    s32 frame = mSprite.mCel + 0x165;
+    if (mLayer_0x4 < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, &params2, 1.0f, 1.0f);
+    }
 }
 
 // -v by value, as a unary TVec3 operator- would give it.
