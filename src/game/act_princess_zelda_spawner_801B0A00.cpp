@@ -144,16 +144,16 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
     switch (field_0x250) {
     case 0:
         field_0x24c = mDir_0x98 << 3;
-    // fall through
+        break;
     case 1:
         field_0x24c = (mDir_0x98 << 3) + field_0x240;
         field_0x234 = 5;
         field_0x240++;
         field_0x240 &= 7;
-    // fall through
+        break;
     case 2:
         field_0x24c = 2;
-    // fall through
+        break;
     case 3:
         field_0x24c = lbl_804A35A0[field_0x240];
         field_0x234 = 8;
@@ -167,7 +167,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
         field_0x240 = 0;
         field_0x250 = 4;
         field_0x254 = field_0x250;
-    // fall through
+        break;
     case 4:
         switch (mDir_0x98) {
         case 0:
