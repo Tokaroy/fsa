@@ -1442,6 +1442,8 @@ struct cls_80204638 {
     // 0x802046FC: records `pos` as the next entry; with earlier ones, the nearest is
     // pushed away through fn_801CB85C first. `vel` is passed on the same way.
     bool fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos);
+    // Inlined in fn_802046FC: index of the recorded entry nearest to `pos` (2D).
+    s32 getNearest(const JGeometry::TVec3f* pos) const;
     // 0x80204834: clears mAlive of every actor in the table.
     void fn_80204834();
     // 0x802048F4: drops the layer-0 actors in the table that left the view box.

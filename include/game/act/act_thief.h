@@ -75,6 +75,9 @@ public:
     // 0x8020FADC: called from act_thief's update.
     void fn_8020FADC();
 
+    // Row of cls_80204638's slot table this thief registers in (0..9).
+    u8 getSlotIndex() const { return field_0x34a; }
+
     /* 0x340 */ s32 field_0x340; // -1 at construction
     /* 0x344 */ u32 field_0x344;
     /* 0x348 */ u8 field_0x348;

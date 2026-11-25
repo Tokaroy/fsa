@@ -24,9 +24,8 @@ void cls_80204638::fn_80204ABC(bool reset) {
     }
 }
 
-// FIXME(shotgun): 98.46 %, different; behaviour near.
 void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
-    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->field_0x34a];
+    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == NULL) {
         slot[0] = actor;
         if (slot[1] != NULL && slot[1]->fn_80204D44()) {
@@ -40,9 +39,8 @@ void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
     }
 }
 
-// FIXME(shotgun): 96.25 %, different; behaviour near.
 void cls_80204638::fn_802049E0(ActorBase_804A5770* actor) {
-    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->field_0x34a];
+    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == actor) {
         slot[0] = NULL;
     } else if (slot[1] == actor) {
@@ -81,7 +79,24 @@ void cls_80204638::fn_80204834() {
     }
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour drift.
+inline s32 cls_80204638::getNearest(const JGeometry::TVec3f* pos) const {
+    s32 nearest = 0;
+    if (mCount > 1) {
+        f32 best = FLT_MAX;
+        for (s32 i = 0; i < mCount; i++) {
+            f32 dy = mPositions[i].y - pos->y;
+            f32 dx = mPositions[i].x - pos->x;
+            f32 dist = square(dx) + square(dy);
+            if (dist < best) {
+                best = dist;
+                nearest = i;
+            }
+        }
+    }
+    return nearest;
+}
+
+// FIXME(shotgun): 99.17 %, regalloc-only; behaviour clean.
 bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
     if (mCount >= 10) {
         return false;
@@ -89,19 +104,7 @@ bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
     bool moved = false;
     if (mCount >= 1) {
         JGeometry::TVec2f p(pos->x, pos->y);
-        s32 nearest = 0;
-        if (mCount > 1) {
-            f32 best = FLT_MAX;
-            for (s32 i = 0; i < mCount; i++) {
-                f32 dy = mPositions[i].y - pos->y;
-                f32 dx = mPositions[i].x - pos->x;
-                f32 dist = square(dx) + square(dy);
-                if (dist < best) {
-                    best = dist;
-                    nearest = i;
-                }
-            }
-        }
+        s32 nearest = getNearest(pos);
         moved = fn_801CB85C((const JGeometry::TVec2f*)&mPositions[nearest], (const JGeometry::TVec2f*)vel, &p, 20.0f, 0.5f);
         if (moved) {
             pos->x = p.x;
