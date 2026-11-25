@@ -362,7 +362,7 @@ void Floormaster_804A6004::fn_8020EB08() {
 
 // case 7 swaps the pos/vec stack slots;
 // setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
-// FIXME: 98.13 %, different; behaviour drift.
+// FIXME: 98.75 %, different; behaviour drift.
 void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     fn_8020EB08();
     switch (mState) {
