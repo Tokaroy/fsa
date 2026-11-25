@@ -48,9 +48,19 @@ void GoalOpening_8049DB30::init() {
     getGameView_802D6A9C()->fn_802D7440(false);
 }
 
-// FIXME: 99.25 %, missing/extra; behaviour clean.
-// Ours loads the 1 of the player-bit shift into r0 and a second 1 for the flag;
-// the original shares one li r5, 1 for both.
+// Whether `player` is a player index whose mPlayerMask bit is set. Inlined into
+// update(): the original builds the bool result (sharing its 1 with the bit shift)
+// and then tests it.
+static inline bool isActivePlayer(s32 player) {
+    if (player < 0) {
+        return false;
+    }
+    if (!fn_8018A614(player)) {
+        return false;
+    }
+    return true;
+}
+
 void GoalOpening_8049DB30::update() {
     DemoActorBase_8049D140::update();
     GameRootSub20_801902C0* sub20 = fn_801902C0();
@@ -82,17 +92,8 @@ void GoalOpening_8049DB30::update() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            bool flag;
             s32 player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
-            if (player < 0) {
-                flag = false;
-            } else {
-                flag = true;
-                if (!fn_8018A614(player)) {
-                    flag = false;
-                }
-            }
-            if (flag) {
+            if (isActivePlayer(player)) {
                 fn_8011921C()->fn_8011888C(this);
                 fn_8011921C()->fn_801186B0(0xE);
                 fn_80119DD0()->startFade_80119998(0xB4, 0, 2, 0, 1, 0x3C, 0);
