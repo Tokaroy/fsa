@@ -169,7 +169,7 @@ void ShadowLinkGenerator_804A4310::update() {
                     deleteEmitter(&mEmitters2[i]);
                 }
             } else {
-                s32 alpha = (s32)(0.008333334f * (f32)field_0x2ac * 255.0f);
+                f32 alpha = 255.0f * (0.008333334f * (f32)field_0x2ac);
                 for (s32 i = 0; i < 5; i++) {
                     if (mEmitters2[i] != NULL) {
                         mEmitters2[i]->setGlobalAlpha(alpha);
@@ -219,8 +219,12 @@ void ShadowLinkGenerator_804A4310::update() {
             }
         }
     }
-    if (mState >= 4 && mState < 7) {
+    switch (mState) {
+    case 4:
+    case 5:
+    case 6:
         startSound_801F0E34(0x5004A, 0);
+        break;
     }
     mLife = mLifeBackup;
 }
