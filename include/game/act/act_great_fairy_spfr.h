@@ -28,6 +28,11 @@ public:
     s32 talkTo();
     void placeAtBarrier();
     void spawnSoldier();
+    // The emitter 0x184 at a copy of the position (init, update and setState_80132454 inline it).
+    void spawnAuraEmitter() {
+        JGeometry::TVec3f pos = mPos;
+        field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+    }
 
     /* 0x230 */ u8 field_0x230; // set to 0 by the constructor, not yet known
     /* 0x234 */ s32 field_0x234; // state: fn_801321E4 switches on it
