@@ -145,10 +145,12 @@ static inline void armFlag() {
     }
 }
 
-static inline void stopEmitter(JPABaseEmitter*& emitter) {
-    if (emitter != NULL) {
+static inline void stopEmitter(JPABaseEmitter*& slot) {
+    if (slot != NULL) {
+        JPABaseEmitter* emitter = slot;
         emitter->stopCreateParticle();
-        emitter = NULL;
+        emitter->mMaxFrame = 1;
+        slot = NULL;
     }
 }
 
@@ -245,8 +247,8 @@ void GiantGeneratorEffect_804AA350::update() {
             notifySlr4(field_0x260[0], 0);
             notifySlr4(field_0x260[1], 0);
             field_0x24c++;
-            startSound_801F0E34(0x5005B, 0);
         }
+        startSound_801F0E34(0x5005B, 0);
         break;
     case 7:
         if (field_0x279) {
