@@ -265,7 +265,7 @@ void Boulder_8049C4C0::fn_800F555C() {
             }
             fn_80238E08(mSerial);
             for (s32 i = 0; i < 4; i++) {
-                if (mSerial == fn_80238CB4(i)) {
+                if (fn_80238CB4(i) == getSerial()) {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -319,22 +319,6 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
         if (field_0x232 == -1 && mVel_0x3c.z == 0.0f) {
             switch (field_0x234) {
-            case 1:
-                switch (field_0x233) {
-                case 0:
-                    field_0x232 = 3;
-                    break;
-                case 1:
-                    field_0x232 = 2;
-                    break;
-                case 2:
-                    field_0x232 = 0;
-                    break;
-                case 3:
-                    field_0x232 = 1;
-                    break;
-                }
-                break;
             default:
                 switch (field_0x233) {
                 case 0:
@@ -348,6 +332,22 @@ void Boulder_8049C4C0::fn_800F555C() {
                     break;
                 case 3:
                     field_0x232 = 0;
+                    break;
+                }
+                break;
+            case 1:
+                switch (field_0x233) {
+                case 0:
+                    field_0x232 = 3;
+                    break;
+                case 1:
+                    field_0x232 = 2;
+                    break;
+                case 2:
+                    field_0x232 = 0;
+                    break;
+                case 3:
+                    field_0x232 = 1;
                     break;
                 }
                 break;
