@@ -97,3 +97,12 @@ the SDK's OS/PPCArch/OSCache/OSContext code). Clang rejects those, so they
 fail loudly; the port replaces that layer anyway. MWCC intrinsics
 (`__fres`, `__frsqrte`, `__fabsf`, `__cntlzw`, `__rlwimi`) need shims in the
 port.
+
+## Integer division by a data-derived count
+
+PowerPC's `divw` gives 0 for a zero divisor and the game relies on it; most
+other CPUs trap. Where a divisor comes from game data and can be zero, divide
+with `gc_div_s32(a, b)` from `libs/sdk/include/portable/Divide.h`: the plain
+division under MWCC (same code), 0 for a zero divisor elsewhere. First case:
+`JPAVolumeSphere` (fixed-interval sphere emissions start with
+`mVolumeAngleMax - 1 == 0`; it crashed the browser port's staff roll).
