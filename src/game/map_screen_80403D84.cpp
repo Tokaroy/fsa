@@ -2000,7 +2000,7 @@ void MapScreen_804B1288::fn_8040B388() {
 }
 
 
-// FIXME(shotgun): 99.69 %, different; behaviour near.
+// FIXME(shotgun): 99.87 %, scheduling+regalloc; behaviour clean.
 // pool literals + regalloc
 void MapScreen_804B1288::fn_80409FDC() {
     f32 x = 0.0f;
@@ -2031,8 +2031,8 @@ void MapScreen_804B1288::fn_80409FDC() {
         if (mCursorX_0x394 == x) {
             field_0x360 = 0x10;
         } else {
-            u16 angle = JMath::atanTable_.atan2_(-dx, -dy) *
-                        (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+            u32 angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                              (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
             if (angle < 0x2000 || angle >= 0xE000) {
                 field_0x360 = 0x18;
             } else if (angle >= 0x2000 && angle < 0x6000) {
@@ -2090,10 +2090,13 @@ void MapScreen_804B1288::fn_80409FDC() {
             gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             if (field_0x663) {
-                for (int i = 0; i < 2; i++) {
-                    if (mCursorEmitters_0x308[i] != NULL) {
-                        mCursorEmitters_0x308[i]->becomeInvalidEmitter();
-                        mCursorEmitters_0x308[i] = NULL;
+                // the original re-tests the flag here (beq / bne pair at 8040AAE8)
+                if (!field_0x663) {
+                    for (int i = 0; i < 2; i++) {
+                        if (mCursorEmitters_0x308[i] != NULL) {
+                            mCursorEmitters_0x308[i]->becomeInvalidEmitter();
+                            mCursorEmitters_0x308[i] = NULL;
+                        }
                     }
                 }
                 field_0x663 = 0;
@@ -2726,20 +2729,19 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
-// FIXME(shotgun): 96.30 %, different; behaviour near.
+// FIXME(shotgun): 96.50 %, scheduling+regalloc; behaviour clean.
 // setRotScaleMtx's six sin / cos results land in
 // other saved FPRs (target sx f28, sy f27, sz f26, cx f31, cy f30, scale f29) and its
-// products are scheduled differently (unproven inline, see game/RotMatrix.h); and the
-// else branch of the stage choice reloads mStage_0x340 where the original copies the
-// compared register (mr r30, r3).
+// products are scheduled differently (unproven inline, see game/RotMatrix.h).
 void MapScreen_804B1288::fn_804069E8() {
     SpriteParams_801F5AE0 params;
     s32 picked = -1;
+    s32 curStage = mStage_0x340;
     s32 stage;
-    if (mStage_0x340 == 10 && mLevel_0x348 == 2) {
+    if (curStage == 10 && mLevel_0x348 == 2) {
         stage = lbl_80529DEC.field_0x120;
     } else {
-        stage = mStage_0x340;
+        stage = curStage;
     }
     Mtx mtx;
     JGeometry::TVec3f rot(0.0f, 0.0f, 0.0f);
