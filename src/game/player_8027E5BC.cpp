@@ -922,7 +922,7 @@ void Player_804A6F38::fn_80283848() {
     }
 }
 
-// FIXME: 99.25 %, missing/extra; behaviour near.
+// FIXME: 99.08 %, missing/extra; behaviour clean.
 // The distance moved: the original also stores the TVec2f to the stack (0x8 / 0xC); ours keeps it in registers.
 // Update of state 0x4A (the 0x4B movement on view-flag-free layers): down (0x33) without life; a
 // follower with 0x1215 takes its leader's layer and position (0x4B on view-flag layers). On the
