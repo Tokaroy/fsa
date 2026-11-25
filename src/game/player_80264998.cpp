@@ -772,6 +772,7 @@ void Player_804A6F38::fn_80265AE4() {
 // "player_sob.bin") with its tint and scale, the height shadow on the GBA
 // layers, and the floor overlays (frames mFloorCel_0x3c8 / mFloorCel_0x3ca of
 // "enemy_both2_sob.bin").
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_80264998() {
     if (!mActive) {
         return;
