@@ -41,6 +41,11 @@ public:
 // Data of game/pause_screen_80453AF8.cpp.
 extern PauseScreen_804B1DA8* lbl_8053AF48;
 
+// Header inline: fn_80453B14 on the screen at lbl_8053AF48 (see fn_8044F680_lbl_8053AF40).
+inline s32 fn_80453B14_lbl_8053AF48() {
+    return lbl_8053AF48->fn_80453B14();
+}
+
 // 0x80453AF8 (game/pause_screen_80453AF8.cpp): 9 without lbl_8053AF48, else its
 // field_0x58.
 s32 fn_80453AF8();
