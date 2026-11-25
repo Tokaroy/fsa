@@ -94,7 +94,11 @@ void ZoraEscortGoalList_80128460::fn_80128074() {
 
 const JGeometry::TVec3f* ZoraEscortGoalList_80128460::fn_80127F90() {
     if (mCount <= 1) {
+#ifdef __MWERKS__
         JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
+#else  // frame locals' addresses are only still valid on the GameCube (see center below)
+        static const JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
+#endif
         return &zero;
     }
     JGeometry::TVec3f pos[2];
@@ -104,7 +108,14 @@ const JGeometry::TVec3f* ZoraEscortGoalList_80128460::fn_80127F90() {
             pos[i] = actor->mPos;
         }
     }
+    // The original returns the address of this frame local; the caller (ZoraEscortGoal setState 13)
+    // copies it at once. Other compilers may drop the stores, so they get static storage.
+#ifdef __MWERKS__
     JGeometry::TVec3f center((pos[0].x + pos[1].x) / 2, (pos[0].y + pos[1].y) / 2, 0.0f);
+#else
+    static JGeometry::TVec3f center;
+    center.set((pos[0].x + pos[1].x) / 2, (pos[0].y + pos[1].y) / 2, 0.0f);
+#endif
     return &center;
 }
 

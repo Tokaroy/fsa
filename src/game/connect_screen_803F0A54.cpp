@@ -875,7 +875,7 @@ void ConnectScreen_804B0F10::fn_803FB9E4() {
     // mPnopbY_0x124[1..3], the last one being field_0x130[0]).
     mScreen->search('Pnopb08')->move(mPnopbX_0x118[0] + field_0x130[0], mPnopbY_0x124[1]);
     mScreen->search('Pnopb12')->move(mPnopbX_0x118[1] + field_0x130[1], mPnopbY_0x124[2]);
-    mScreen->search('Pnopb16')->move(mPnopbX_0x118[2] + field_0x130[2], mPnopbY_0x124[3]);
+    mScreen->search('Pnopb16')->move(mPnopbX_0x118[2] + field_0x130[2], field_0x130[0]);
     mScreen->search('Ndata02')->move(mNdata02X_0x13c + field_0x144, mNdata02Y_0x140);
     mScreen->search('Ndata05')->move(mNdata05X_0x148 + field_0x158, mNdata05Y_0x14c);
     mScreen->search('Ndata07')->move(mNdata07X_0x150 + field_0x158, mNdata07Y_0x154);
@@ -1062,7 +1062,7 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
     mButtonGuidePane_0x74->moveFromCentre_80402E08(0.0f, field_0x114);
     mScreen->search('Pnopb08')->move(mPnopbX_0x118[0] + field_0x130[0], mPnopbY_0x124[1]);
     mScreen->search('Pnopb12')->move(mPnopbX_0x118[1] + field_0x130[1], mPnopbY_0x124[2]);
-    mScreen->search('Pnopb16')->move(mPnopbX_0x118[2] + field_0x130[2], mPnopbY_0x124[3]);
+    mScreen->search('Pnopb16')->move(mPnopbX_0x118[2] + field_0x130[2], field_0x130[0]);
     mScreen->search('Ndata02')->move(mNdata02X_0x13c + field_0x144, mNdata02Y_0x140);
     mScreen->search('Ndata05')->move(mNdata05X_0x148 + field_0x158, mNdata05Y_0x14c);
     mScreen->search('Ndata07')->move(mNdata07X_0x150 + field_0x158, mNdata07Y_0x154);

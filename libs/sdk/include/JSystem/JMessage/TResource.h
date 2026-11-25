@@ -99,7 +99,7 @@ struct TResourceContainer {
 
 	int parseCharacter(int string) const { return isLeadByte(string); }
 	TResource* getResource_groupID(u16 groupID) { return mContainer.Get_groupID(groupID); }
-	TResource* getResource_groupID(u16 groupID) const { return getResource_groupID(groupID); }
+	TResource* getResource_groupID(u16 groupID) const { return const_cast<TResourceContainer*>(this)->getResource_groupID(groupID); }
 
 	bool isResourceContained_color() const { return mColor.mHeader.getRaw() != nullptr; }
 	bool isEncodingSettable(u8 e) const { return mEncoding == e || mEncoding == 0; }

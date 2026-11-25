@@ -3780,14 +3780,23 @@ void fn_8022E088(s32 player, s32 index, JGeometry::TVec3f* out) {
 }
 
 // The fallbacks return the address of a zeroed local (the original does: stfs 0.0f twice to
-// the frame, addi r3, r1).
+// the frame, addi r3, r1); its only caller (player_8023FBF0) reads x, y at once. Other compilers
+// may drop the stores, so they get static storage (found by the browser port).
 const JGeometry::TVec2f* fn_8022DFD4(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
+#ifdef __MWERKS__
         JGeometry::TVec2f zero(0.0f, 0.0f);
+#else  // a frame local's address is only still valid on the GameCube (the caller reads it at once)
+        static const JGeometry::TVec2f zero(0.0f, 0.0f);
+#endif
         return &zero;
     }
     if (!isPlayerActive_8023F264(player)) {
+#ifdef __MWERKS__
         JGeometry::TVec2f zero(0.0f, 0.0f);
+#else  // a frame local's address is only still valid on the GameCube (the caller reads it at once)
+        static const JGeometry::TVec2f zero(0.0f, 0.0f);
+#endif
         return &zero;
     }
     return gPlayerManager_8053AC90->mPlayers[player]->fn_802422C4();
