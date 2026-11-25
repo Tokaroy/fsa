@@ -116,7 +116,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
     field_0x3041 = 0;
 }
 
-// FIXME(shotgun): 96.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.11 %, scheduling+regalloc; behaviour clean.
 // The per-frame update pass. Clears the per-frame serial list (mPushSerials_0x201c), steps the
 // collision box lists, then updates each live actor: with GameView's isInTransition_802DCD0C only those
 // flagged for it (0x11E / 0xC4 / 0xCC); otherwise all of them unless paused (0x11F keeps them
@@ -149,7 +149,7 @@ void ActorManager_804A5800::fn_801F871C() {
         getShadowLinkFight_801C0D70()->fn_801C0DCC();
     }
     if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-        for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+        for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
             if (mActors[i] == NULL) {
                 continue;
             }
@@ -177,7 +177,7 @@ void ActorManager_804A5800::fn_801F871C() {
         }
         mSharedSound_0x200c->fn_80456154();
     } else {
-        for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+        for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
             if (mActors[i] == NULL) {
                 continue;
             }
@@ -197,10 +197,10 @@ void ActorManager_804A5800::fn_801F871C() {
                 }
                 if (!skip) {
                     u32 id;
-                    if (!limited || (id = mActors[i]->mActorId) == 'FORM' || id == 'ALCE' ||
+                    if (!limited || (limited && ((id = mActors[i]->mActorId) == 'FORM' || id == 'ALCE' ||
                         id == 'IMUP' || id == 'SWEV' || id == 'SEV2' || id == 'LTEV' ||
                         id == 'PRTC' || id == 'STPN' || id == 'TUGF' || id == 'TUTL' ||
-                        id == 'TUTM' || id == 'PEFF' || id == 'SWDL')
+                        id == 'TUTM' || id == 'PEFF' || id == 'SWDL')))
                     {
                         mActors[i]->fn_801F32F4();
                         mActors[i]->field_0x1dc.fn_801EAB0C();
@@ -794,7 +794,7 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     }
 }
 
-// FIXME(shotgun): 84.87 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.79 %, different; behaviour clean.
 // The pairwise push pass over the actors fn_801F871C listed in mPushSerials_0x201c: each pair on the
 // same layer whose boxes overlap (and the second's 0xBC is not lower) records the other's
 // serial in field_0x9c. Kind 2 (0xB8) only records it; the others are pushed out of the overlap
@@ -836,14 +836,14 @@ void ActorManager_804A5800::fn_801F6A4C() {
                 continue;
             }
             s32 tries = 0;
-            while (JGeometry::TBox2f(boxA).intersect(boxB) && tries < 8) {
+            while (boxesOverlap(boxA, boxB) && tries < 8) {
                 a->field_0x9c = b->mSerial;
                 JGeometry::TVec3f pos = a->mPos;
                 f32 dx = a->mPos.x - b->mPos.x;
                 f32 dy = a->mPos.y - b->mPos.y;
-                boxA = a->mBox;
-                s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) +
-                            (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                boxA.set(a->mBox);
+                s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                angle += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 pos.x += JMath::sincosTable_.sinShort(angle);
                 pos.y += JMath::sincosTable_.cosShort(angle);
                 if (b->mActorId == 'BOYO') {
