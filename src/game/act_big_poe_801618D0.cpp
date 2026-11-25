@@ -129,7 +129,7 @@ void BigPoe_804A0440::init() {
 }
 
 // 0x80162628.
-// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.06 %, missing/extra; behaviour near.
 void BigPoe_804A0440::update() {
     mLife = 10000;
     f32 x0 = -30.0f;
@@ -650,8 +650,6 @@ void BigPoe_804A0440::die_0x24() {
 }
 
 // 0x801618D0.
-// FIXME(shotgun): 99.96 %, same-text; behaviour near.
-// (the texture names sit after the extern colour table: +0x20 here, +0x60 in the original)
 void BigPoe_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
     JUTTexture tex0(static_cast<const ResTIMG*>(getBossArchiveResource_804032E8('BPOH', "obake_sirokuro.bti")), 0);
     JUTTexture tex1(static_cast<const ResTIMG*>(getBossArchiveResource_804032E8('BPOH', "obake_ci.bti")), 0);
