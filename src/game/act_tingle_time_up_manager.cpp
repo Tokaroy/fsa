@@ -16,7 +16,8 @@
 #include "game/act/act_tingle_time_up_803536C4.h"
 #include "game/act/act_tingle_time_up_manager.h"
 
-// FIXME: 99.8 %. Epilogue reloads r0 and r31 in the other order.
+// FIXME: 99.85 %, scheduling; behaviour clean.
+// Epilogue reloads r0 and r31 in the other order.
 void TingleTimeUpManager_804ACBF0::init() {
     mTimer = 0;
     field_0x238 = 0;
@@ -36,6 +37,7 @@ void TingleTimeUpManager_804ACBF0::init() {
     field_0x260 = 0.0f;
 }
 
+// FIXME: 97.98 %, different; behaviour drift.
 // FIXME: `this` is kept in r30 instead of r28, and state 2's loop sets its
 // i*4 offset with li 0 where the original copies i (mr) after loading the count.
 void TingleTimeUpManager_804ACBF0::update() {
