@@ -604,6 +604,15 @@ bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer);
 // game/tu_801CB270.cpp (0x801CCB1C; callers test it with clrlwi.): whether the tiles at a point
 // (x, y - z) and 16 below it are both code 2 on `layer`.
 bool fn_801CCB1C(const JGeometry::TVec3f* pos, s32 layer);
+// fn_801CCB1C on a point passed by reference, as 0 or 1 (EnemyBase_804A4808::fn_801CF144 passes
+// a temporary: the layer is loaded before the temporary's address is formed).
+inline bool isMapBlocked_801CCB1C(const JGeometry::TVec3f& pos, s32 layer) {
+    bool blocked = false;
+    if (fn_801CCB1C(&pos, layer)) {
+        blocked = true;
+    }
+    return blocked;
+}
 
 // Random helpers on gGameRoot_8053AAF8->mRandom, defined in game units.
 class ActorBase_804A5770;
