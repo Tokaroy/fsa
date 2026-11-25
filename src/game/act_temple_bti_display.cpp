@@ -18,7 +18,7 @@ static const char* sBtiNames[9] = {
     "higasi_sinden.bti",
 };
 
-static const char* sBtiNamesUe[9] = {
+static const char* lbl_8049CABC[9] = {
     "bg_tenkuu_ue.bti",
     "tenkuunotou_ue.bti",
     "koorinoshinden_kabuse.bti",
@@ -30,7 +30,7 @@ static const char* sBtiNamesUe[9] = {
     "higasi_sinden_ue.bti",
 };
 
-static const char* sBtiNamesTobira[9] = {
+static const char* lbl_8049CAE0[9] = {
     "bg_tenkuu_tobira.bti",
     "tenkuunotou_tobira.bti",
     "koorinoshinden_tobira.bti",
@@ -168,7 +168,7 @@ void TempleBTIDisplay_8049CB04::draw() {
         } else {
             params.field_0x1d = 0;
         }
-        drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', sBtiNamesTobira[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+        drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', lbl_8049CAE0[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
         mPos.y = pos.y;
     }
 
@@ -178,6 +178,6 @@ void TempleBTIDisplay_8049CB04::draw() {
         params.field_0x1d = 2;
     }
     mPos.y += 16.0f * ((f32)lbl_8049C3B8[1] + sFloatTable1[field_0x238]);
-    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', sBtiNamesUe[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
+    drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('TIMG', lbl_8049CABC[field_0x238]), &params, -1, 0.0f, 0.0f, 0.0f);
     mPos.y = pos.y;
 }
