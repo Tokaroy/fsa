@@ -9,14 +9,20 @@
 #include "game/Message.h"
 #include "game/Map.h"
 
-// The (x, y) offsets of the tiles state 5 rewrites: 9 pairs, then 12, then 16.
-const f32 lbl_8046ACC8[37][2] = {
+// The (x, y) offsets of the tiles state 5 rewrites: 9 pairs, 12 and 16.
+static const f32 lbl_8046ACC8[9][2] = {
     {0.0f, 0.0f}, {-16.0f, -16.0f}, {0.0f, -16.0f}, {16.0f, -16.0f},
     {-16.0f, 0.0f}, {16.0f, 0.0f}, {-16.0f, 16.0f}, {0.0f, 16.0f},
     {16.0f, 16.0f},
+};
+
+static const f32 lbl_8046AD10[12][2] = {
     {-16.0f, -32.0f}, {0.0f, -32.0f}, {16.0f, -32.0f}, {-32.0f, -16.0f},
     {-32.0f, 0.0f}, {-32.0f, 16.0f}, {32.0f, -16.0f}, {32.0f, 0.0f},
     {32.0f, 16.0f}, {-16.0f, 32.0f}, {0.0f, 32.0f}, {16.0f, 32.0f},
+};
+
+static const f32 lbl_8046AD70[16][2] = {
     {-16.0f, -48.0f}, {0.0f, -48.0f}, {16.0f, -48.0f}, {-48.0f, -16.0f},
     {-48.0f, 0.0f}, {-48.0f, 16.0f}, {48.0f, -16.0f}, {48.0f, 0.0f},
     {48.0f, 16.0f}, {-16.0f, 48.0f}, {0.0f, 48.0f}, {16.0f, 48.0f},
@@ -172,22 +178,22 @@ void PlayerEffect_804A6E20::update() {
         if (field_0x230 == 1) {
             for (s32 i = 0; i < 9; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[0 + i][0];
-                pos.y += lbl_8046ACC8[0 + i][1];
+                pos.x += lbl_8046ACC8[i][0];
+                pos.y += lbl_8046ACC8[i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
         } else if (field_0x230 == 11) {
             for (s32 i = 0; i < 12; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[9 + i][0];
-                pos.y += lbl_8046ACC8[9 + i][1];
+                pos.x += lbl_8046AD10[i][0];
+                pos.y += lbl_8046AD10[i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
         } else if (field_0x230 == 21) {
             for (s32 i = 0; i < 16; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[21 + i][0];
-                pos.y += lbl_8046ACC8[21 + i][1];
+                pos.x += lbl_8046AD70[i][0];
+                pos.y += lbl_8046AD70[i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
             mAlive = false;
