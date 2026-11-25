@@ -128,7 +128,26 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
     }
 }
 
-// FIXME(shotgun): 97.73 %, different; behaviour near.
+// Turns toward the player who is being talked to when that player is close.
+inline void ZoraFishHerding_804A2E30::faceTalkingPlayer_801A68DC() {
+    JGeometry::TVec3f delta;
+    f32 dist;
+    getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
+    if (dist < 100.0f) {
+        u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
+        if (angle < 0x2000 || angle >= 0xE000) {
+            mDir_0x98 = 3;
+        } else if (angle >= 0x2000 && angle < 0x6000) {
+            mDir_0x98 = 1;
+        } else if (angle >= 0x6000 && angle <= 0xA000) {
+            mDir_0x98 = 2;
+        } else {
+            mDir_0x98 = 0;
+        }
+    }
+}
+
+// FIXME(shotgun): 99.91 %, regalloc-only; behaviour near.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
     f32 nearDist;
@@ -212,22 +231,8 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x268 = fn_8022FD8C(mSerial);
         if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
             u32 msg = mKind == 0 ? 0x41A : 0x422;
-            if (talk(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
-                JGeometry::TVec3f delta;
-                f32 dist;
-                getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
-                if (dist < 100.0f) {
-                    u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
-                    if (angle < 0x2000 || angle >= 0xE000) {
-                        mDir_0x98 = 3;
-                    } else if (angle >= 0x2000 && angle < 0x6000) {
-                        mDir_0x98 = 1;
-                    } else if (angle >= 0x6000 && angle <= 0xA000) {
-                        mDir_0x98 = 2;
-                    } else {
-                        mDir_0x98 = 0;
-                    }
-                }
+            if (openMessage_8038AD24(field_0x268, msg, getSerial(), getField_0x4(), msgPos, 0x100)) {
+                faceTalkingPlayer_801A68DC();
                 mState = 2;
             }
         }
@@ -325,8 +330,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                     if (dist > 24.0f) {
                         field_0x26c = -1;
                     } else {
-                        JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                        fish->mVel_0x3c = zero;
+                        fish->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
                     }
                 }
             }
@@ -350,8 +354,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                     fish->mAlive = false;
                     field_0x26c = -1;
                 } else {
-                    JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                    fish->mVel_0x3c = zero;
+                    fish->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
                     dropPos.set(fish->mPos);
                     addCalc2_801F71A4(&dropPos.x, mPos.x, 0.3f, 1.0f);
                     addCalc2_801F71A4(&dropPos.y, mPos.y, 0.3f, 1.0f);
@@ -374,7 +377,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x244 = 51;
             fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                talk(getRepresentativePlayer_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
+                openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x41D, getSerial(), getField_0x4(), msgPos, 0x102);
                 mState = 6;
             }
         }
@@ -416,7 +419,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                     }
                 }
                 if (spotCount > 0) {
-                    s32 pick = (s32)((f32)spotCount * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                    s32 pick = gGameRoot_8053AAF8->mRandom.get_ufloat(spotCount);
                     dropPos.set(spots[pick].x, spots[pick].y, spots[pick].z);
                 }
                 u32 arg = 0x80000;
@@ -494,22 +497,8 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x268 = fn_8022FD8C(mSerial);
             if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
                 u32 msg = field_0x25c >= 10 ? 0x41F : 0x421;
-                if (talk(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
-                    JGeometry::TVec3f delta;
-                    f32 dist;
-                    getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
-                    if (dist < 100.0f) {
-                        u16 angle = (s32)(JMath::atanTable_.atan2_(-delta.x, -delta.y) * 10430.378f);
-                        if (angle < 0x2000 || angle >= 0xE000) {
-                            mDir_0x98 = 3;
-                        } else if (angle >= 0x2000 && angle < 0x6000) {
-                            mDir_0x98 = 1;
-                        } else if (angle >= 0x6000 && angle <= 0xA000) {
-                            mDir_0x98 = 2;
-                        } else {
-                            mDir_0x98 = 0;
-                        }
-                    }
+                if (openMessage_8038AD24(field_0x268, msg, getSerial(), getField_0x4(), msgPos, 0x100)) {
+                    faceTalkingPlayer_801A68DC();
                     mState = 11;
                 }
             }
