@@ -129,8 +129,7 @@ void Door_804A8D88::init() {
         field_0x230 = 2;
         break;
     }
-    field_0x264.x = mPos.x;
-    field_0x264.y = mPos.y;
+    field_0x264.set(mPos.x, mPos.y);
     field_0x26c.i.x = mBox.i.x;
     field_0x26c.i.y = mBox.i.y;
     field_0x26c.f.x = mBox.f.x;
@@ -152,13 +151,13 @@ void Door_804A8D88::init() {
     if ((field_0x234 >= 1 && field_0x234 <= 4) || field_0x234 == 8) {
         s32 layer = mLayer_0x4;
         if (layer < 8) {
-            if (getGameView_802D6A9C()->fn_802D49A8(layer, (u16)field_0x244)) {
+            if (getGameView_802D6A9C()->fn_802D49A8(layer, (u16)field_0x244) == true) {
                 field_0x230 = 3;
                 update();
                 field_0x230 = 5;
             }
         } else {
-            if (getGameView_802D6A9C()->fn_802D4ADC(layer, (u16)field_0x244)) {
+            if (getGameView_802D6A9C()->fn_802D4ADC(layer, (u16)field_0x244) == true) {
                 field_0x230 = 3;
                 update();
                 field_0x230 = 5;
