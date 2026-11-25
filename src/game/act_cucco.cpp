@@ -181,15 +181,16 @@ void Cucco_804AB8C0::init() {
 
 // FIXME(shotgun): 90.19 %, missing/extra; behaviour clean.
 void Cucco_804AB8C0::vfunc_0x10() {
+    s32 next;
     s32 serial = -1;
     if (field_0x16c == -1) {
         return;
     }
     while (true) {
         // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
-        s32 next = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_NIWA, serial);
+        next = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_NIWA, serial);
         serial = next;
-        if (serial < 0) {
+        if (next < 0) {
             return;
         }
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(next);
