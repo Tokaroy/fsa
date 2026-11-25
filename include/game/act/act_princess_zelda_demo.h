@@ -48,8 +48,7 @@ public:
     void pool_8053C590();
     void inl_8011093C(s32 dir);
     s32 startTalk(u32 msg, bool talkFlag);
-    void carryPlayersDown();
-    void carryPlayersUp();
+    void inl_80110E9C();
 
     /* 0x230 */ u8 field_0x230; // set to 0 by the ctor
     /* 0x231 */ u8 field_0x231; // set to 0 by the ctor

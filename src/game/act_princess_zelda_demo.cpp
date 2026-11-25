@@ -347,24 +347,24 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         break;
     case 11:
         moveToward_801CD950(&mPos.y, getPlayerPos_8023E724(0)->y - 300.0f, 0.7f);
-        carryPlayersDown();
+        inl_80110E9C();
         break;
     case 12:
         moveToward_801CD950(&mPos.y, getPlayerPos_8023E724(0)->y - 300.0f, 0.7f);
-        carryPlayersDown();
+        inl_80110E9C();
         break;
     case 14:
         if (fn_8011921C()->field_0x8 >= 30) {
-            carryPlayersDown();
+            inl_80110E9C();
             mPos += field_0x2e8;
         }
         break;
     case 15:
-        carryPlayersDown();
+        inl_80110E9C();
         mPos += field_0x2e8;
         break;
     case 16:
-        carryPlayersDown();
+        inl_80110E9C();
         mPos += field_0x2e8;
         if (mPos.y <= mSpawnPos.y) {
             mPos.y = mSpawnPos.y;
@@ -380,7 +380,16 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         }
         break;
     case 18:
-        carryPlayersUp();
+        for (s32 i = 0; i < 4; i++) {
+            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+            if (pos.y >= field_0x2dc.y) {
+                pos.y = field_0x2dc.y;
+                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
+            } else {
+                pos += field_0x2e8;
+                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
+            }
+        }
         break;
     case 21:
         if (mAnim0.isAnimEnd_801D208C()) {
@@ -1358,26 +1367,13 @@ void PrincessZeldaDemo_8049D208::inl_8011093C(s32 dir) {
     }
 }
 
-// Offsets the four players' positions by field_0x2e8; one whose y has come down to field_0x2dc.y
-// is held there. The original's stack layout puts this loop's locals after startTalk's (an inline).
-inline void PrincessZeldaDemo_8049D208::carryPlayersDown() {
+// R2 helper (inlined at 5 call sites). Adds field_0x2e8 to each of the four players' positions;
+// one whose y has come down to field_0x2dc.y is held there. In the original each copy's local sits
+// below startTalk's on the stack.
+inline void PrincessZeldaDemo_8049D208::inl_80110E9C() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
         if (pos.y <= field_0x2dc.y) {
-            pos.y = field_0x2dc.y;
-            fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-        } else {
-            pos += field_0x2e8;
-            fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-        }
-    }
-}
-
-// The same, for players whose y goes up to field_0x2dc.y.
-inline void PrincessZeldaDemo_8049D208::carryPlayersUp() {
-    for (s32 i = 0; i < 4; i++) {
-        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-        if (pos.y >= field_0x2dc.y) {
             pos.y = field_0x2dc.y;
             fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
         } else {
