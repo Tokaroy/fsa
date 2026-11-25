@@ -25,6 +25,7 @@
 #include <dolphin/mtx.h>
 #include <dolphin/thp.h>
 #include <string.h>
+#include "portable/BigEndian.h"
 #include "JSystem/JAudio/System/JASDriver.h"
 #include "JSystem/JFramework/JFWDisplay.h"
 #include "JSystem/JKernel/JKRHeap.h"
@@ -304,6 +305,19 @@ static u8 THPStatistics[1120];
 
 static THPPlayer ActivePlayer;
 
+#ifndef __MWERKS__
+// THP files are big-endian, and THPPlayerOpen memcpy's the header and info
+// records out of the file as they are. A host of another byte order swaps
+// their 32-bit words in place after each copy (on the GameCube the copy is
+// already right, so this compiles to nothing there). See docs/PORTABLE.md.
+static void THPSwapWords(void* p, u32 count) {
+    u32* w = (u32*)p;
+    for (u32 i = 0; i < count; i++) {
+        w[i] = be_read_u32(&w[i]);
+    }
+}
+#endif
+
 // --- THPRead ---------------------------------------------------------------
 
 THPReadThread_804B15F4* THPReadThread_804B15F4::sInstance;
@@ -363,7 +377,7 @@ void THPReadThread_804B15F4::cancel() {
 // The size of the next frame is stored at the start of each frame (tww
 // d_a_movie_player.cpp has the same helper as daMP_NEXT_READ_SIZE).
 inline s32 NEXT_READ_SIZE(THPReadBuffer* buf) {
-    return *(s32*)buf->ptr;
+    return be_read_s32(buf->ptr);
 }
 
 void* THPReadThread_804B15F4::reader(void* arg) {
@@ -480,7 +494,7 @@ void THPVideoDecodeThread_804B15E8::videoDecode(THPReadBuffer* readBuffer) {
             OSRestoreInterrupts(enabled);
         }
 
-        tile += *tileOffsets;
+        tile += be_read_u32(tileOffsets);
         tileOffsets++;
     }
 
@@ -539,10 +553,10 @@ void* THPVideoDecodeThread_804B15E8::videoDecoderForOnMemory(void* arg) {
                     if ((ActivePlayer.playFlag & 1) == 0) {
                         break;
                     }
-                    readSize = *(s32*)readBuffer.ptr;
+                    readSize = be_read_s32(readBuffer.ptr);
                     readBuffer.ptr = ActivePlayer.movieData;
                 } else {
-                    s32 size = *(s32*)readBuffer.ptr;
+                    s32 size = be_read_s32(readBuffer.ptr);
                     readBuffer.ptr += readSize;
                     readSize = size;
                 }
@@ -556,13 +570,13 @@ void* THPVideoDecodeThread_804B15E8::videoDecoderForOnMemory(void* arg) {
         s32 remaining = (frame + ActivePlayer.initReadFrame) % ActivePlayer.header.numFrames;
         if (remaining == ActivePlayer.header.numFrames - 1) {
             if (ActivePlayer.playFlag & 1) {
-                readSize = *(s32*)readBuffer.ptr;
+                readSize = be_read_s32(readBuffer.ptr);
                 readBuffer.ptr = ActivePlayer.movieData;
             } else {
                 OSSuspendThread(&mThread);
             }
         } else {
-            s32 size = *(s32*)readBuffer.ptr;
+            s32 size = be_read_s32(readBuffer.ptr);
             readBuffer.ptr += readSize;
             readSize = size;
         }
@@ -651,13 +665,13 @@ void THPAudioDecodeThread_804B15DC::audioDecode(THPReadBuffer* readBuffer) {
         switch (ActivePlayer.compInfo.frameComp[i]) {
         case 1:
             audioBuf->validSample = THPAudioDecode(audioBuf->buffer,
-                                                   audioData + *offsets * ActivePlayer.curAudioTrack, 0);
+                                                   audioData + be_read_u32(offsets) * ActivePlayer.curAudioTrack, 0);
             audioBuf->curPtr = audioBuf->buffer;
             PushDecodedAudioBuffer(audioBuf);
             return;
         }
 
-        audioData += *offsets;
+        audioData += be_read_u32(offsets);
         offsets++;
     }
 }
@@ -690,13 +704,13 @@ void* THPAudioDecodeThread_804B15DC::audioDecoderForOnMemory(void* arg) {
         remaining = (frame + ActivePlayer.initReadFrame) % ActivePlayer.header.numFrames;
         if (remaining == ActivePlayer.header.numFrames - 1) {
             if (ActivePlayer.playFlag & 1) {
-                readSize = *(s32*)readBuffer.ptr;
+                readSize = be_read_s32(readBuffer.ptr);
                 readBuffer.ptr = ActivePlayer.movieData;
             } else {
                 OSSuspendThread(&mThread);
             }
         } else {
-            size = *(s32*)readBuffer.ptr;
+            size = be_read_s32(readBuffer.ptr);
             readBuffer.ptr += readSize;
             readSize = size;
         }
@@ -863,6 +877,15 @@ void THPGXYuv2RgbDraw(u8* y_data, u8* u_data, u8* v_data, s16 x, s16 y, s16 text
 // --- THPPlayer -------------------------------------------------------------
 
 static u32 WorkBuffer[16] ATTRIBUTE_ALIGN(32);
+
+// A big-endian word of WorkBuffer as read from the file. MWCC gets the plain
+// element: a load through be_read_u32's pointer cast loses the lwzu that
+// THPPlayerPrepare's two reads share.
+#ifdef __MWERKS__
+#define WORK_BUFFER_WORD(i) (WorkBuffer[i])
+#else
+#define WORK_BUFFER_WORD(i) be_read_u32(&WorkBuffer[i])
+#endif
 static OSMessageQueue PrepareReadyQueue;
 static OSMessageQueue UsedTextureSetQueue;
 static OSMessage UsedTextureSetMessage[THP_TEXTURE_SET_COUNT];
@@ -1064,6 +1087,9 @@ static bool THPPlayerOpen(const char* fileName, BOOL onMemory) {
     }
 
     memcpy(&ActivePlayer.header, WorkBuffer, sizeof(THPHeader));
+#ifndef __MWERKS__
+    THPSwapWords(&ActivePlayer.header.version, (sizeof(THPHeader) - 4) / 4); // after the magic
+#endif
 
     if (strcmp(ActivePlayer.header.magic, "THP") != 0) {
         DVDClose(&ActivePlayer.fileInfo);
@@ -1082,6 +1108,9 @@ static bool THPPlayerOpen(const char* fileName, BOOL onMemory) {
     }
 
     memcpy(&ActivePlayer.compInfo, WorkBuffer, sizeof(THPFrameCompInfo));
+#ifndef __MWERKS__
+    THPSwapWords(&ActivePlayer.compInfo.numComponents, 1); // frameComp is bytes
+#endif
     offset += sizeof(THPFrameCompInfo);
     ActivePlayer.audioExist = FALSE;
 
@@ -1093,6 +1122,9 @@ static bool THPPlayerOpen(const char* fileName, BOOL onMemory) {
                 return FALSE;
             }
             memcpy(&ActivePlayer.videoInfo, WorkBuffer, sizeof(THPVideoInfo));
+#ifndef __MWERKS__
+            THPSwapWords(&ActivePlayer.videoInfo, sizeof(THPVideoInfo) / 4);
+#endif
             offset += sizeof(THPVideoInfo);
             break;
         case 1:
@@ -1101,6 +1133,9 @@ static bool THPPlayerOpen(const char* fileName, BOOL onMemory) {
                 return FALSE;
             }
             memcpy(&ActivePlayer.audioInfo, WorkBuffer, sizeof(THPAudioInfo));
+#ifndef __MWERKS__
+            THPSwapWords(&ActivePlayer.audioInfo, sizeof(THPAudioInfo) / 4);
+#endif
             offset += sizeof(THPAudioInfo);
             ActivePlayer.audioExist = TRUE;
             break;
@@ -1345,8 +1380,8 @@ static bool THPPlayerPrepare(s32 frame, u8 flag, s32 audioTrack) {
 
             if (ActivePlayer.header.numFrames > frame) {
                 ActivePlayer.initReadFrame = frame;
-                ActivePlayer.initOffset = ActivePlayer.header.movieDataOffsets + WorkBuffer[0];
-                ActivePlayer.initReadSize = WorkBuffer[1] - WorkBuffer[0];
+                ActivePlayer.initOffset = ActivePlayer.header.movieDataOffsets + WORK_BUFFER_WORD(0);
+                ActivePlayer.initReadSize = WORK_BUFFER_WORD(1) - WORK_BUFFER_WORD(0);
             } else {
                 return FALSE;
             }
