@@ -62,7 +62,7 @@ u8 fn_8017ECC0() {
     return result;
 }
 
-// FIXME: 94.25 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.75 %, reloc-name; behaviour clean.
 // The original keeps the constant 1 of mBlendBoxOn_0x840 in the result's register (ours loads it twice).
 // Fixes the camera on pos (both corners of its box) with `value`, once.
 u8 fn_8017EC70(const JGeometry::TVec3f* pos, f32 value) {
@@ -305,7 +305,7 @@ PhantomGanon_804A1318::~PhantomGanon_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
-// FIXME: 98.20 %, missing/extra; behaviour near.
+// FIXME: 98.31 %, missing/extra; behaviour near.
 void PhantomGanon_804A1318::update() {
     // The original calls the TBox2 copy ctor out of line here (0x801546F4); ours inlines it.
     JGeometry::TBox2f box(mBox);
