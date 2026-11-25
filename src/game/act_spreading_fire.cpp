@@ -133,7 +133,7 @@ SpreadingFire_804A8A50::~SpreadingFire_804A8A50() {
     getGameView_802D6A9C()->fn_802D73CC(mViewBit, false);
 }
 
-// FIXME: 94.63 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.94 %, regalloc-only; behaviour drift.
 // The original copies mPos to a stack TVec3f (psq_st 0x24(r1)) and never reads it: `pos`.
 void SpreadingFire_804A8A50::update() {
     JGeometry::TVec3f pos = mPos;
