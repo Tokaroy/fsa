@@ -175,10 +175,10 @@ public:
     void fn_80307B58(s32 player, bool flag);
     void fn_8030801C(s32 player);
     void fillRecordHeader_803085A4(s32 player);
+    // 0x80304D64: ages and frees the sprite lists' entries (fn_80304FB0 passes this).
+    void fn_80304D64();
 };
-// game/tu_80301CD0.cpp: fn_80304FB0 ages and frees the sprite lists' entries (0x80304D64) and resets a
-// player's GBA link state and transfer queue (0x80303CE4).
-void fn_80304D64();
+// game/tu_80301CD0.cpp: resets a player's GBA link state and transfer queue (0x80303CE4).
 void fn_80303CE4(s32 player);
 class DvdMountMemArchiveCommand_804B0FC0;
 class J2DTextBox;
