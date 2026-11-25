@@ -1076,6 +1076,7 @@ void cls_804AA8B8::fn_80304FB0() {
                         }
                     }
                     break;
+                case 3:
                 default:
                     if (lbl_8053ACF0[player] == 0) {
                         lbl_8053ACE8[player] = 0;
@@ -1351,7 +1352,7 @@ void cls_804AA8B8::fn_80304FB0() {
     fn_80304D64();
 }
 
-void fn_80304D64() {
+void cls_804AA8B8::fn_80304D64() {
     cls_803099FC* entry;
     for (int player = 0; player < 4; player++) {
         entry = lbl_80504A38[player];
