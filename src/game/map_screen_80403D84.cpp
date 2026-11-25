@@ -288,7 +288,7 @@ inline void MapScreen_804B1288::setStageName() {
 
 // Not auto-inlined: the constructor calls fn_804149C0 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-bool fn_804149C0() {
+BOOL fn_804149C0() {
     return lbl_8050EC80.getCurrentFile().field_0x67 & 1;
 }
 #pragma auto_inline reset
@@ -297,7 +297,7 @@ void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src) {
     *dst = *src;
 }
 
-// FIXME(shotgun): 97.80 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.00 %, missing/extra + reloc-name; behaviour drift.
 MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053ADF8 = this;
     lbl_80529DEC.field_0x23e[1] = 0;
@@ -365,8 +365,8 @@ MapScreen_804B1288::MapScreen_804B1288() {
     for (s32 i = 0; i < 8; i++) {
         getMessageText_803832BC(mStageNames_0x474[i], lbl_8048C1F8[i], 0, NULL, NULL);
     }
-    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt02'))->setFont(lbl_8053AD78->getFont());
-    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmt01'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmmt02'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmmt01'))->setFont(lbl_8053AD78->getFont());
     field_0x404 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.x - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.x;
     field_0x408 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.y - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.y;
     mMapAreaScreen_0x10->search('Plvcu')->setAlpha(0);
@@ -457,9 +457,9 @@ MapScreen_804B1288::MapScreen_804B1288() {
     mMessageWindowPanes_0x240[11]->setPane_80402F04(mMessageWindowScreen_0x18->search('Pmmtp'));
     static_cast<J2DPicture*>(mMessageWindowPanes_0x240[11]->mPane)->setBlackWhite(JUtility::TColor(0), JUtility::TColor(0));
     mMessageTextPanes_0x270[0] = new PaneCtrl_804AF86C;
-    mMessageTextPanes_0x270[0]->setPane_80402F04(mMessageWindowScreen_0x18->search('Tmt01'));
+    mMessageTextPanes_0x270[0]->setPane_80402F04(mMessageWindowScreen_0x18->search('Tmmt01'));
     mMessageTextPanes_0x270[1] = new PaneCtrl_804AF86C;
-    mMessageTextPanes_0x270[1]->setPane_80402F04(mMessageWindowScreen_0x18->search('Tmt02'));
+    mMessageTextPanes_0x270[1]->setPane_80402F04(mMessageWindowScreen_0x18->search('Tmmt02'));
     mMessageTimer_0x42a = 0;
     field_0x42c = 0;
     mMessageState_0x659 = 0;
