@@ -406,19 +406,21 @@ void Armos_8049F260::draw() {
     params.field_0x20 = 0;
     s32 flags = 0;
     s32 mode = 0;
+    f32 scale = 1.0f;
     if (field_0x31c != 0) {
         mode = 1;
         flags = 3;
+        scale = 1.0f;
     }
-    mtx[0][0] = 1.0f;
+    mtx[0][0] = scale;
     mtx[0][1] = 0.0f;
     mtx[0][2] = 0.0f;
     mtx[1][0] = 0.0f;
-    mtx[1][1] = 1.0f;
+    mtx[1][1] = scale;
     mtx[1][2] = 0.0f;
     mtx[2][0] = 0.0f;
     mtx[2][1] = 0.0f;
-    mtx[2][2] = 1.0f;
+    mtx[2][2] = scale;
     params.mMtx = mtx;
     if (field_0x94 == 3 || field_0x94 == 4 || field_0x94 == 5 || field_0x94 == 7) {
         drawSpriteScaled_801F02BC("enemy_gc_sob.bin", field_0x318 + 0x444, &params, 3, mode, false, 1.0f, 1.0f);
