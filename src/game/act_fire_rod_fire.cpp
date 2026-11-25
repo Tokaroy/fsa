@@ -238,7 +238,7 @@ void FireRodFire_804A89F0::update() {
     case 0: {
         if (field_0x278 != mLayer_0x4) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                if (mLayer_0x4 < 8) {
+                if (8 > mLayer_0x4) {
                     JGeometry::TVec3f pos = mPos;
                     switch (mDir_0x98) {
                     case 0:
@@ -325,7 +325,7 @@ void FireRodFire_804A89F0::update() {
             mPos += mVel_0x3c;
         }
         field_0x248 = mPos;
-        if (field_0x264 != 2 && (field_0x264 < 3 || field_0x264 > 5)) {
+        if (!(field_0x264 == 2 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5)) {
             s32 dmg = mParamAtcp_0x114;
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
                 dmg = 0;
