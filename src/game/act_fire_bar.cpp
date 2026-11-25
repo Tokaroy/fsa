@@ -19,6 +19,7 @@ FireBarManager_804A3F90::FireBarManager_804A3F90() {
 
 // Same instructions; saved registers are numbered differently and a few
 // instructions around the sin/cos table load are ordered differently.
+// FIXME: 96.95 %, scheduling+regalloc; behaviour clean.
 void FireBarManager_804A3F90::init() {
     EnemyBase_804A4808::init();
     if (!((mSpawnParam_0x90 >> 17) & 1)) {
@@ -85,7 +86,8 @@ void FireBarManager_804A3F90::init() {
     }
 }
 
-// FIXME: 93.6%. Same instructions; `mr r31, r3` is scheduled before the first
+// FIXME: 93.61 %, scheduling+regalloc; behaviour clean.
+// Same instructions; `mr r31, r3` is scheduled before the first
 // loads of mFlagBit/mSpeed instead of after, the second getSpeed() inline gets
 // r30/r29 for bit/speed (target r29/r30), and the sin/cos table base and angle
 // take r3/r4 swapped (target angle in r3, base in r4).
