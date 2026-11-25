@@ -265,8 +265,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
 }
 
 // FIXME: 98.28 %, missing/extra; behaviour clean.
-// FIXME: serial/key swapped between r28/r29 (coalescing mr r28, r29),
-// f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
+// FIXME: f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
     JGeometry::TVec2<f32> myPos(mPos.x, mPos.y);
     mBox.set(-20.0f, -20.0f, 20.0f, 20.0f);
@@ -274,14 +273,16 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
     myBox.set(mBox);
     myBox.addPos(myPos);
 
+    s32 found;
+    SmallKey_804A8CD8* key;
     s32 serial = -1;
     for (;;) {
-        s32 found = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_KEY0, serial);
+        found = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_KEY0, serial);
         serial = found;
         if (found < 0) {
             return false;
         }
-        SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
+        key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
         if (key == NULL) {
             continue;
         }
