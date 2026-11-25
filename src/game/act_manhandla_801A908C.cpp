@@ -331,8 +331,9 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         }
         s32 stepAngle = 0;
         for (int i = 0; i < 4; i++) {
-            if (field_0x270[i] != 0) {
-                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[i]));
+            s32 serial = field_0x270[i];
+            if (serial != 0) {
+                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != 0) {
                     if (field_0x26c == 1) {
                         child->field_0x26c = 1;
@@ -426,12 +427,15 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         if (field_0x234[0] == 0) {
             if (field_0x244 > 3) {
                 die_0x24();
-            } else if (field_0x270[field_0x244] >= 0) {
-                ActorBase_804A5770* child = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[field_0x244]);
-                if (child != 0) {
-                    child->die_0x24();
-                    field_0x234[0] = 10;
-                    field_0x244++;
+            } else {
+                s32 serial = field_0x270[field_0x244];
+                if (serial >= 0) {
+                    ActorBase_804A5770* child = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    if (child != 0) {
+                        child->die_0x24();
+                        field_0x234[0] = 10;
+                        field_0x244++;
+                    }
                 }
             }
         }
