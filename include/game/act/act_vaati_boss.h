@@ -19,6 +19,7 @@ struct cls_801D6A88 {
     cls_801D6A88();
     void fn_801D789C();
     // Counts field_0x4 down to 0 (the caller tests it again: fn_801E5754).
+    bool isSet() const { return field_0x0 != 0; }
     bool isField_0x4Positive() const { return field_0x4 > 0; }
     void decField_0x4() {
         if (field_0x4 > 0) {
