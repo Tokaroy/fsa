@@ -227,28 +227,27 @@ void UnknownFORM_804A7BE8::update() {
     }
 }
 
-// Keeps x inside [lo, hi): below lo it becomes lo, from hi up it becomes hi.
-static inline void clampX(f32& x, f32 lo, f32 hi) {
-    if (x < lo) {
-        x = lo;
-    } else if (x >= hi) {
-        x = hi;
-    }
-}
-
 // FIXME(shotgun): 88.81 %, different + reloc-name; behaviour clean.
 void UnknownFORM_804A7BE8::draw() {
-    JGeometry::TBox2f box;
     JGeometry::TVec3f pos(mPos);
+    JGeometry::TBox2f box;
     if (mLayer_0x4 == 0) {
         box = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
         if (pos.y - pos.z < 28.0f + box.i.y) {
             pos.y += 52.0f;
         }
         if (field_0x24c) {
-            clampX(pos.x, 68.0f + box.i.x, box.f.x - 60.0f);
+            if (pos.x < 68.0f + box.i.x) {
+                pos.x = 68.0f + box.i.x;
+            } else if (pos.x >= box.f.x - 60.0f) {
+                pos.x = box.f.x - 60.0f;
+            }
         } else {
-            clampX(pos.x, 52.0f + box.i.x, box.f.x - 44.0f);
+            if (pos.x < 52.0f + box.i.x) {
+                pos.x = 52.0f + box.i.x;
+            } else if (pos.x >= box.f.x - 44.0f) {
+                pos.x = box.f.x - 44.0f;
+            }
         }
     } else {
         fn_8022B8EC(field_0x248, &box);
@@ -257,15 +256,31 @@ void UnknownFORM_804A7BE8::draw() {
         }
         if (field_0x24c) {
             if (fn_8022C8EC(mSpawnParam_0x90 & 3)) {
-                clampX(pos.x, 52.0f + box.i.x, box.f.x - 52.0f);
+                if (pos.x < 52.0f + box.i.x) {
+                    pos.x = 52.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 52.0f) {
+                    pos.x = box.f.x - 52.0f;
+                }
             } else {
-                clampX(pos.x, 80.0f + box.i.x, box.f.x - 80.0f);
+                if (pos.x < 80.0f + box.i.x) {
+                    pos.x = 80.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 80.0f) {
+                    pos.x = box.f.x - 80.0f;
+                }
             }
         } else {
             if (fn_8022C8EC(mSpawnParam_0x90 & 3)) {
-                clampX(pos.x, 36.0f + box.i.x, box.f.x - 36.0f);
+                if (pos.x < 36.0f + box.i.x) {
+                    pos.x = 36.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 36.0f) {
+                    pos.x = box.f.x - 36.0f;
+                }
             } else {
-                clampX(pos.x, 66.0f + box.i.x, box.f.x - 66.0f);
+                if (pos.x < 66.0f + box.i.x) {
+                    pos.x = 66.0f + box.i.x;
+                } else if (pos.x >= box.f.x - 66.0f) {
+                    pos.x = box.f.x - 66.0f;
+                }
             }
         }
     }
