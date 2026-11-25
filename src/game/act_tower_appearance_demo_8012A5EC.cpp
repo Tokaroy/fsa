@@ -298,7 +298,7 @@ inline void TowerAppearanceDemo_8049E770::spawnEmitters() {
     }
 }
 
-// FIXME(shotgun): 98.79 %, operands; behaviour drift.
+// FIXME(shotgun): 98.89 %, operands; behaviour drift.
 void TowerAppearanceDemo_8049E770::fn_8012B218() {
     static JGeometry::TVec3f lbl_804BD7C0[4] = {
         JGeometry::TVec3f(-113.0f, 382.0f, 50.0f),
@@ -337,8 +337,7 @@ void TowerAppearanceDemo_8049E770::fn_8012B218() {
             for (s32 i = 0; i < 4; i++) {
                 field_0x2f8[i].zero();
                 field_0x2f8[i].z = -0.2f;
-                JGeometry::TVec3f base(field_0x3f8, field_0x3f4, 0.0f);
-                field_0x2c8[i] = lbl_804BD7C0[i] + base;
+                field_0x2c8[i] = lbl_804BD7C0[i] + JGeometry::TVec3f(field_0x3f8, field_0x3f4, 0.0f);
             }
             field_0x234++;
             field_0x250 = 60;
@@ -366,16 +365,10 @@ void TowerAppearanceDemo_8049E770::fn_8012B218() {
                         field_0x328[2][i] = NULL;
                     }
                 }
-                s32 id0 = 0x3B4;
-                s32 id1 = 0x3B5;
-                s32 id2 = 0x3B6;
                 for (s32 i = 0; i < 4; i++) {
-                    field_0x358[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-                    field_0x358[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-                    field_0x358[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
-                    id0 += 3;
-                    id1 += 3;
-                    id2 += 3;
+                    field_0x358[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3B4 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x358[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3B4 + i * 3 + 1, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x358[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3B4 + i * 3 + 2, 0, 0, NULL, NULL, true, 1.0f);
                 }
             }
         }
@@ -398,19 +391,10 @@ void TowerAppearanceDemo_8049E770::fn_8012B218() {
                     field_0x358[2][i] = NULL;
                 }
             }
-            s32 id0 = 0x461;
-            s32 id1 = 0x462;
-            s32 id2 = 0x463;
             for (s32 i = 0; i < 4; i++) {
-                JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &p0, id0, 1, 2, NULL, NULL, true, 1.0f);
-                JGeometry::TVec3f p1(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &p1, id1, 1, 2, NULL, NULL, true, 1.0f);
-                JGeometry::TVec3f p2(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &p2, id2, 1, 2, NULL, NULL, true, 1.0f);
-                id0 += 3;
-                id1 += 3;
-                id2 += 3;
+                field_0x388[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x461 + i * 3, 1, 2, NULL, NULL, true, 1.0f);
+                field_0x388[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x461 + i * 3 + 1, 1, 2, NULL, NULL, true, 1.0f);
+                field_0x388[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x461 + i * 3 + 2, 1, 2, NULL, NULL, true, 1.0f);
             }
         } else if (field_0x250 == 30) {
             field_0x2c0 = 10;
@@ -420,8 +404,8 @@ void TowerAppearanceDemo_8049E770::fn_8012B218() {
             const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
             JGeometry::TVec3f msgPos;
             msgPos.z = 0.0f;
-            msgPos.y = (s32)rm->efbHeight * 0.5f;
             msgPos.x = (s32)rm->fbWidth * 0.5f;
+            msgPos.y = (s32)rm->efbHeight * 0.5f;
             msgPos.y += -16.0f;
             fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
             if (!talk(mLayer_0x4, msgPos)) {
@@ -477,18 +461,14 @@ void TowerAppearanceDemo_8049E770::fn_8012B02C() {
     }
 }
 
-// FIXME(shotgun): 97.13 %, different; behaviour clean.
+// FIXME(shotgun): 99.81 %, operands; behaviour clean.
 void TowerAppearanceDemo_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
-            JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &p0, 0x460, 0, -1, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p1(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &p1, 0x46F, 0, 0, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p2(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &p2, 0x470, 0, 1, NULL, NULL, true, 1.0f);
-            JGeometry::TVec3f p3(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &p3, 0x46E, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x460, 0, -1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x46F, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x470, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(field_0x3f8, field_0x3f4 + 192.0f, 0.0f), 0x46E, 0, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x471, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x472, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x50063, 0);
@@ -574,12 +554,12 @@ void TowerAppearanceDemo_8049E770::fn_8012AA84() {
         fn_8011921C()->fn_80118454();
         field_0x230++;
     }
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 posY = field_0x238.y;
     f32 halfH = field_0x248;
     f32 posX = field_0x238.x;
     f32 y1 = posY + halfH;
     f32 y0 = posY - halfH;
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->mBlendBoxOn_0x840 == 0) {
         cam->mBlendBoxOn_0x840 = 1;
@@ -627,7 +607,7 @@ void TowerAppearanceDemo_8049E770::fn_8012A8C0() {
     }
 }
 
-// FIXME(shotgun): 99.53 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.61 %, regalloc-only; behaviour drift.
 bool TowerAppearanceDemo_8049E770::fn_8012A5EC() {
     switch (field_0x230) {
     case 0:
