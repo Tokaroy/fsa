@@ -1804,7 +1804,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
     }
 }
 
-// FIXME: 98.32 %, different; behaviour near.
+// FIXME: 99.13 %, scheduling+regalloc; behaviour clean.
 // (try.py: different, same length; registers shift from it).
 // As fn_803C2E24: the original keeps &others in r27 from the fill loop on
 // (`mr r3, r27`, a separate fill pointer) and walks it in the row loop.
