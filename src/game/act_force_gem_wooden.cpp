@@ -162,7 +162,8 @@ void WoodenForceGem_804AB1F0::update() {
     }
 }
 
-// FIXME: 98.60 %. Register allocation and scheduling only: the scale (field_0x240,
+// FIXME: 98.60 %, scheduling+regalloc; behaviour clean.
+// Register allocation and scheduling only: the scale (field_0x240,
 // or field_0x238 * field_0x240 in the branch) and the sine results sit in other
 // saved registers than the original's, and the products take another operand order.
 void WoodenForceGem_804AB1F0::draw() {
