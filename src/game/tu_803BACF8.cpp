@@ -77,7 +77,7 @@ static inline bool isCardStatusValid(CARDFileInfo* file) {
     return true;
 }
 
-// FIXME: 82.26 %, missing/extra; behaviour near.
+// FIXME: 92.47 %, missing/extra; behaviour near.
 s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 bodySize) {
     snprintf((char*)(lbl_805222C0 + 0x1C00), 0x20, "Four Swords Adventures");
     OSCalendarTime cal;
@@ -182,7 +182,7 @@ s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 body
 // Reads both save images, repairs each file of the first from the second (or
 // clears it) when its checksum fails, writes the images back when it took a copy,
 // clamps every file's counters, and hands the save data and bodies out.
-// FIXME: 71.06 %, missing/extra; behaviour drift.
+// FIXME: 93.77 %, missing/extra; behaviour near.
 s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 bodySize) {
     SaveSector_803BACF8* img1 = &lbl_8051E2C0;
     SaveSector_803BACF8* img2 = &lbl_805202C0;
@@ -423,6 +423,7 @@ s32 fn_803BAE68(CARDFileInfo* file) {
 }
 
 // True when the checksum words of the save file match its first 0xC0 bytes.
+// FIXME: 94.36 %, regalloc-only; behaviour clean.
 bool isSaveChecksumValid_803BADAC(SaveFile_803B950C* file) {
     u32 inverse = 0;
     u32 sum = 0;
@@ -435,6 +436,7 @@ bool isSaveChecksumValid_803BADAC(SaveFile_803B950C* file) {
 }
 
 // Writes the checksum words of files[file].
+// FIXME: 94.78 %, regalloc-only; behaviour clean.
 void writeSaveChecksum_803BACF8(SaveFile_803B950C* files, u8 file) {
     SaveFile_803B950C* f = &files[file];
     u32 inverse = 0;
