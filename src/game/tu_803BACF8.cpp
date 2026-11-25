@@ -28,11 +28,10 @@ struct SaveSector_803BACF8 {
         const u16* halfwords = (const u16*)this;
         u32 sum = 0;
         u16 inv = 0;
-        for (int i = 0; i < 0xFFE; i += 2) {
-            sum += halfwords[i];
-            inv += ~halfwords[i];
-            sum += halfwords[i + 1];
-            inv += ~halfwords[i + 1];
+        for (u32 i = 0; i < 0x1FFC; i += 2) {
+            sum += *halfwords;
+            inv += ~*halfwords;
+            halfwords++;
         }
         return (sum << 16) | inv;
     }
@@ -53,25 +52,28 @@ SaveFileBody_803B950C lbl_80526020[3] ATTRIBUTE_ALIGN(32);
 static inline bool isCardStatusValid(CARDFileInfo* file) {
     CARDStat stat;
     CARDGetStatus(lbl_8051C1A0.field_0x1ff4, file->fileNo, &stat);
-    return stat.iconAddr == 0 && stat.commentAddr == 0x1C00 &&
-           CARDGetBannerFormat(&stat) == CARD_STAT_BANNER_C8 &&
-           CARDGetIconAnim(&stat) == CARD_STAT_ANIM_LOOP &&
-           CARDGetIconFormat(&stat, 0) == CARD_STAT_ICON_C8 &&
-           CARDGetIconFormat(&stat, 1) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 2) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 3) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 4) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 5) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 6) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 7) == CARD_STAT_ICON_NONE &&
-           CARDGetIconSpeed(&stat, 0) == CARD_STAT_SPEED_SLOW &&
-           CARDGetIconSpeed(&stat, 1) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 2) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 3) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 4) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 5) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 6) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 7) == CARD_STAT_SPEED_END;
+    if (stat.iconAddr != 0 || stat.commentAddr != 0x1C00 ||
+    CARDGetBannerFormat(&stat) != CARD_STAT_BANNER_C8 ||
+        CARDGetIconAnim(&stat) != CARD_STAT_ANIM_LOOP ||
+        CARDGetIconFormat(&stat, 0) != CARD_STAT_ICON_C8 ||
+        CARDGetIconFormat(&stat, 1) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 2) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 3) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 4) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 5) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 6) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 7) != CARD_STAT_ICON_NONE ||
+        CARDGetIconSpeed(&stat, 0) != CARD_STAT_SPEED_SLOW ||
+        CARDGetIconSpeed(&stat, 1) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 2) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 3) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 4) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 5) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 6) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 7) != CARD_STAT_SPEED_END) {
+        return false;
+    }
+    return true;
 }
 
 // FIXME: 82.26 %, missing/extra; behaviour near.
