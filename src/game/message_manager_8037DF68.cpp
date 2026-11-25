@@ -10,6 +10,7 @@
 #include "game/act/act_small_key.h"
 #include <stdio.h>
 #include <string.h>
+#include "portable/BigEndian.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/JUtility/JUTFont.h"
 #include "JSystem/JUtility/JUTVideo.h"
@@ -46,7 +47,7 @@ u8 getMessageWindowState_8037F1E4(s32 player);
 bool fn_8037EC98(s32 player, u16 flags);
 
 static inline s32 operand(const char* p, s32 offset) {
-    return *(const s32*)(p + offset);
+    return be_read_s32(p + offset);
 }
 
 // The text of INF1 entry `msg`: the DAT1 block starts after the INF1 block and its 8-byte header.
@@ -1281,7 +1282,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x23: {
             u32 kind = (u8)p[5];
-            s32 bit = *(const u16*)(p + 6);
+            s32 bit = be_read_u16(p + 6);
             u32 yes = operand(p, 8);
             u32 no = operand(p, 12);
             u8 which;
