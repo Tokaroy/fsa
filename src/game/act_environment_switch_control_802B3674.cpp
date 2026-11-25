@@ -283,7 +283,7 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x10() {
     field_0x2e8 = field_0x308;
     deleteEmitter(&field_0x234);
     deleteEmitter(&field_0x238);
-    u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+    JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
     fn_8013A884(&color);
 }
 
@@ -402,7 +402,7 @@ void EnvironmentSwitchControl_804A8638::update() {
     switch (field_0x2d8) {
     case 0: {
         fn_80128C58((u8)field_0x310);
-        u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+        JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
         fn_8013A884(&color);
         break;
     }
@@ -416,7 +416,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             break;
         case 9: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -433,7 +433,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             break;
         case 9: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -459,7 +459,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             break;
         case 9: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -537,7 +537,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             break;
         }
         fn_80128C58((u8)field_0x310);
-        u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+        JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
         fn_8013A884(&color);
         break;
     }
@@ -551,7 +551,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             break;
         case 9: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -609,7 +609,7 @@ void EnvironmentSwitchControl_804A8638::update() {
                 }
             }
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -622,7 +622,7 @@ void EnvironmentSwitchControl_804A8638::update() {
     case 14:
     case 15: {
         fn_80128C58((u8)field_0x310);
-        u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+        JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
         fn_8013A884(&color);
         break;
     }
@@ -636,7 +636,7 @@ void EnvironmentSwitchControl_804A8638::update() {
                 field_0x240 = 1;
             }
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -650,7 +650,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         case 9:
         default: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -670,7 +670,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         case 9:
         default: {
             fn_80128C58((u8)field_0x310);
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -781,7 +781,7 @@ void EnvironmentSwitchControl_804A8638::update() {
             if (changed == 0) {
                 field_0x244 = 1;
             }
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -873,7 +873,7 @@ void EnvironmentSwitchControl_804A8638::update() {
                 }
                 gGameRoot_8053AAF8->startStageMusic_80138B7C();
             }
-            u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+            JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);
             break;
         }
@@ -895,7 +895,7 @@ void EnvironmentSwitchControl_804A8638::update() {
         setEmitterPos_8013CB44(field_0x234, &field_0x254, 1, 1, true);
         field_0x238->setRate(field_0x2c0[1]);
         setEmitterPos_8013CB44(field_0x238, &field_0x254, 1, 1, true);
-        u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+        JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
         fn_8013A884(&color);
         vfunc_0x60();
         break;
@@ -998,7 +998,7 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x58() {
         field_0x240 = 9;
     }
     fn_80128C58((u8)field_0x310);
-    u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+    JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
     fn_8013A884(&color);
 }
 
@@ -1027,7 +1027,7 @@ void EnvironmentSwitchControl_804A8638::vfunc_0x5C() {
         field_0x240 = 9;
     }
     fn_80128C58((u8)field_0x310);
-    u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
+    JUtility::TColor color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
     fn_8013A884(&color);
 }
 
