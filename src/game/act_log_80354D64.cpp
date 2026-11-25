@@ -92,7 +92,7 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 96.46 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 97.58 %, scheduling+regalloc; behaviour clean.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(mMapBox_0x80);
     box.i.x += mPos.x;
@@ -266,7 +266,6 @@ void Log_804ACD70::update() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, same-text; behaviour clean.
 void Log_804ACD70::draw() {
     const char* name;
     SpriteParams_801F5AE0 params;
