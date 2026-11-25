@@ -53,6 +53,7 @@ void WarpPillar_804AC0A8::init() {
 
 // Register allocation and stack slots still differ (box edges, loop counters),
 // and the bubble-sort swap goes through a stack temporary in the original.
+// FIXME: 98.64 %, missing/extra; behaviour clean.
 void WarpPillar_804AC0A8::update() {
     f32 top = mPos.y + mBox.i.y;
     f32 bottom = mPos.y + mBox.f.y;
