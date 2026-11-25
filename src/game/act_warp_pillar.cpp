@@ -51,12 +51,9 @@ void WarpPillar_804AC0A8::init() {
     mBox.f.y = 15.0f;
 }
 
-// FIXME: 95.66 %, missing/extra; behaviour near.
-// Register allocation differs (this in r28 and the loop
-// counter in r27 in the original), `order` is copied from a .rodata table
-// instead of stored with li 0-3, the bubble-sort swap goes through a stack
-// temporary in the original, the owner test branches the other way, and the
-// stack slots of order, pos and a/b differ.
+// Register allocation and stack slots still differ (box edges, loop counters),
+// and the bubble-sort swap goes through a stack temporary in the original.
+// FIXME: 98.64 %, missing/extra; behaviour clean.
 void WarpPillar_804AC0A8::update() {
     f32 top = mPos.y + mBox.i.y;
     f32 bottom = mPos.y + mBox.f.y;
@@ -109,8 +106,7 @@ void WarpPillar_804AC0A8::update() {
             if (field_0x25c[i]) {
                 field_0x234++;
                 if (mEmitter26c[i] == NULL) {
-                    JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
-                    mEmitter26c[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_805420A0[i], 1, 2, NULL, NULL, true, 1.0f);
+                    mEmitter26c[i] = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, 16.0f + mPos.y, mPos.z), lbl_805420A0[i], 1, 2, NULL, NULL, true, 1.0f);
                 }
             } else if (mEmitter26c[i] != NULL) {
                 mEmitter26c[i]->becomeInvalidEmitter();
@@ -145,11 +141,10 @@ void WarpPillar_804AC0A8::update() {
             }
             for (s32 n = 4; n > 0; n--) {
                 for (s32 j = 1; j < n; j++) {
-                    JGeometry::TVec3f a(*getPlayerPos_8023E724(order[j - 1]));
-                    JGeometry::TVec3f b(*getPlayerPos_8023E724(order[j]));
-                    if (a.x > b.x) {
-                        s32 tmp = order[j - 1];
-                        order[j - 1] = order[j];
+                    if (JGeometry::TVec3f(*getPlayerPos_8023E724(order[j - 1])).x > JGeometry::TVec3f(*getPlayerPos_8023E724(order[j])).x) {
+                        s32 prev = j - 1;
+                        s32 tmp = order[prev];
+                        order[prev] = order[j];
                         order[j] = tmp;
                     }
                 }
@@ -161,15 +156,12 @@ void WarpPillar_804AC0A8::update() {
             field_0x230 = 2;
         } else {
             for (s32 i = 0; i < 4; i++) {
-                s32 owner = i;
-                if (hasPlayerLeader_8022F514(i)) {
-                    owner = getPlayerLeader_8022F3DC(i);
-                }
+                s32 owner = !hasPlayerLeader_8022F514(i) ? i : getPlayerLeader_8022F3DC(i);
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
                 if (field_0x260[owner]) {
                     JGeometry::TVec3f other(*getPlayerPos_8023E724(owner));
-                    f32 dx = pos.x - other.x;
                     s32 n = fn_8022E8D4(i);
+                    f32 dx = pos.x - other.x;
                     if (dx < 16.0f * n && dx > -16.0f * n) {
                         if (other.x > mPos.x) {
                             pos.x -= n;
