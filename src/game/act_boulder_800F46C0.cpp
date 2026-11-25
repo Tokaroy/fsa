@@ -204,7 +204,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
 }
 
-// FIXME(shotgun): 98.52 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.47 %, missing/extra; behaviour clean.
 void Boulder_8049C4C0::fn_800F555C() {
     JGeometry::TBox2f box(mPos.x - 16.0f, mPos.y - 16.0f, mPos.x + 16.0f, mPos.y + 16.0f);
     s32 anyPlayer = 0;
