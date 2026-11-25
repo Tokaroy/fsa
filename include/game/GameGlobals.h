@@ -1540,6 +1540,8 @@ public:
     void fn_803FF2C4();
     void fn_803FF420();
     void fn_803FFAA8();
+    // main (0x8013495C) materialises this test as a byte after fn_803FFAA8.
+    u8 isLoaded() const { return mState >= 4 ? true : false; }
 
     /* 0x04 */ cls_804AA8C8* field_0x4;
     /* 0x08 */ cls_804AA8B8* field_0x8;

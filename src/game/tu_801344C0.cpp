@@ -15,21 +15,18 @@ BootLoader_804B0F50* lbl_8053AAF0;
 // the game pads, the heaps, the loader and the memory card, then runs the
 // frame loop forever.
 //
-// FIXME: 94%. (A nested 4x8 copy loop reaches 96% but only steers the unroll; rejected.) (1) The target allocates the main heap to r30 and the audio
-// object to r31 (we swap them, and route the heap through r0 once); (2) the
-// prologue's constants (1, 0x200000, 0x40000) use other volatiles, and the
-// save-region copy loop strength-reduces to two running pointers where the
-// target keeps one index (r7) added to the state's base and 0x80700000; (3) after
-// fn_803FFAA8 the target materialises mState >= 4 as a value (li 4; subi;
-// orc; srwi 1; subf; srwi. 31) where we emit cmplwi 4 / blt.
+// FIXME: 99.01 %, missing/extra; behaviour clean.
+// FIXME: one extra instruction: the target allocates the main heap to r30 and the
+// audio object to r31; we swap them and route the heap through r0 once.
 int main() {
     JFWSystem::setMaxStdHeap(1);
     JFWSystem::setSysHeapSize(0x200000);
     JFWSystem::setFifoBufSize(0x40000);
 
     // The save region survives a reset; it is checked and preset here.
-    for (int i = 0; i < 0x20; i++) {
-        lbl_80529DEC.mSaveRegion.bytes[i] = ((u8*)0x80700000)[i];
+    GameState_804B0FE0* state = &lbl_80529DEC;
+    for (u32 i = 0; i < sizeof(state->mSaveRegion); i++) {
+        state->mSaveRegion.bytes[i] = ((u8*)0x80700000)[i];
     }
     OSSetSaveRegion((void*)0x80700000, (void*)0x8070001F);
     if (lbl_80529DEC.mSaveRegion.f.magic0 != 0xA759 || lbl_80529DEC.mSaveRegion.f.magic1 != 0xDC96) {
@@ -130,7 +127,7 @@ int main() {
         lbl_8053AAF0->fn_803FF420();
         JFWDisplay::getManager()->endRender();
         lbl_8053AAF0->fn_803FFAA8();
-        if (lbl_8053AAF0->mState >= 4) {
+        if (lbl_8053AAF0->isLoaded()) {
             lbl_8053AAF0->fn_803FF2C4();
             gGameRoot_8053AAF8 = new GameRoot_8049EF20();
             gGameRoot_8053AAF8->resetGameState_80138C9C();
