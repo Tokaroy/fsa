@@ -402,8 +402,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
         dir = angleToDir_801F681C(pool_8053C9F0(-dx, -dy));
-        JGeometry::TVec3f moved = mPos - mPrevPos;
-        if (PSVECMag(&moved) >= 1.0f) {
+        if (PSVECMag(&(mPos - mPrevPos)) >= 1.0f) {
             field_0x380 = 0.5f;
             field_0x37c = 0.5f;
         }
@@ -412,33 +411,9 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         mPos = *getPlayerPos_8023E724(fn_8012285C());
     }
     if (field_0x380 <= 0.0f) {
-        if (dir >= 0) {
-            field_0x364[4]++;
-            if (field_0x364[4] >= 10) {
-                field_0x364[4] = 10;
-            }
-            if (field_0x364[4] >= 10) {
-                field_0x364[4] = 0;
-                mDir_0x98 = dir;
-                if (dir + 5 != mAnim.mAnim) {
-                    mAnim.startAnim_801D22DC(dir + 5, 2, false);
-                    mAnim.setFrame_801D1F14(0.0f);
-                }
-            }
-        }
-    } else if (dir >= 0) {
-        field_0x364[4]++;
-        if (field_0x364[4] >= 10) {
-            field_0x364[4] = 10;
-        }
-        if (field_0x364[4] >= 10) {
-            field_0x364[4] = 0;
-            mDir_0x98 = dir;
-            if (dir != mAnim.mAnim) {
-                mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.setFrame_801D1F14(0.0f);
-            }
-        }
+        fn_80122730(dir, true, true);
+    } else {
+        fn_80122730(dir, false, true);
     }
 }
 
