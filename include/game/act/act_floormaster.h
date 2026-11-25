@@ -22,12 +22,12 @@ public:
     /* 0x94 */ virtual void updateAnim_0x94();
     /* 0xA0 */ virtual void vfunc_0xA0();
     void setEmitterColor();
+    bool canGrabPlayer();
     void onHit();
     void fn_8020EB08();
     void setState_8020ED5C(s32 state);
     inline void updateGrabbedPlayer_8020EB08();
-    /* 0x2A8 */ f32 field_0x2a8;
-    /* 0x2AC */ f32 field_0x2ac;
+    /* 0x2A8 */ JGeometry::TVec2f field_0x2a8;
     /* 0x2B0 */ JPABaseEmitter* mEmitter2b0; // released by the destructor
     /* 0x2B4 */ f32 field_0x2b4;
     /* 0x2B8 */ s32 field_0x2b8;
