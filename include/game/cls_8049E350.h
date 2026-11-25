@@ -26,6 +26,7 @@ public:
     void fn_80125C58(bool flag);
     // Not in the binary (inlined into update and fn_80125C58).
     bool talkTo(s32 player, u16 msg);
+    s32 checkTalk(u16 msg);
     void startSignAnim();
     // The state switch of init() and update() (defined inline in act_escorted_woman_arrival_point_80125B58.cpp).
     void enterState();

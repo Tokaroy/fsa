@@ -85,7 +85,10 @@ inline void EscortedWomanArrivalPoint_8049E350::enterState() {
 void EscortedWomanArrivalPoint_8049E350::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
-    box.addPos(mPos.x, mPos.y);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
     switch (field_0x234) {
     case 0:
         if (getScreenFlagBit_0x3C() > 0 && isScreenFlagSet_0x34()) {
@@ -107,18 +110,7 @@ void EscortedWomanArrivalPoint_8049E350::update() {
             msg = 0x4BF;
             break;
         }
-        JGeometry::TBox2f talkBox(mBox);
-        talkBox.addPos(mPos.x, mPos.y);
-        fn_8022FEB8(&talkBox, mLayer_0x4, mSerial, true, false);
-        s32 player = fn_8022FD8C(mSerial);
-        if (player < 0) {
-            player = -1;
-        } else if (!fn_802300EC(player)) {
-            player = -1;
-        } else if (talkTo(player, msg)) {
-        } else {
-            player = -1;
-        }
+        s32 player = checkTalk(msg);
         if (player >= 0) {
             field_0x23c = player;
             field_0x234 = 2;
@@ -212,6 +204,30 @@ bool EscortedWomanArrivalPoint_8049E350::talkTo(s32 player, u16 msg) {
     JGeometry::TVec3f pos(mPos);
     pos.y -= 64.0f;
     return openMessage_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28);
+}
+
+// Offers the talk prompt in the actor's box and opens `msg` for the player who
+// takes it; returns that player, or -1.
+inline s32 EscortedWomanArrivalPoint_8049E350::checkTalk(u16 msg) {
+    JGeometry::TBox2f box(mBox);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0) {
+        return -1;
+    }
+    if (!fn_802300EC(player)) {
+        return -1;
+    }
+    JGeometry::TVec3f pos(mPos);
+    pos.y -= 64.0f;
+    if (openMessage_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28)) {
+        return player;
+    }
+    return -1;
 }
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
