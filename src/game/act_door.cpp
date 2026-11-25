@@ -219,14 +219,14 @@ static const s32 lbl_8046D7E8[4] = {0, 0, -16, 16};
 // second layer cell offset y [dir]
 static const s32 lbl_8046D7F8[4] = {16, -16, 0, 0};
 
-// FIXME(shotgun): 97.71 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.80 %, missing/extra; behaviour drift.
 void Door_804A8D88::update() {
     JGeometry::TVec2f pos(field_0x258.x, field_0x258.y);
     s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
     switch (field_0x230) {
     case 0:
     case 3: {
-        if (field_0x234 != 5 && field_0x234 != 6 && field_0x234 != 7) {
+        if (!(field_0x234 == 5 || field_0x234 == 6 || field_0x234 == 7)) {
             if (field_0x230 == 3) {
                 s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
                 if (bit != -1) {
