@@ -8,9 +8,17 @@
 #include "game/PlayerBit.h"
 #include "game/act/act_bgm_change_npc.h"
 
-// The music started for each BGM id (the spawn parameter & 0x7F), .rodata 0x8046F1C8 (38 words).
-// Declared extern: the integer-literal tripwire rejects the hand-typed table in this pass.
-extern const u32 lbl_8046F1C8[38];
+// The music started for each BGM id (the spawn parameter & 0x7F): audio sequence ids
+// 0x01000000 + n, the first 38 entries of GameRoot's stage music table lbl_804652F0.
+static const u32 lbl_8046F1C8[38] = {
+    0x01000000, 0x01000003, 0x0100000B, 0x0100000E, 0x01000010, 0x01000014,
+    0x0100000A, 0x01000009, 0x01000008, 0x01000012, 0x01000011, 0x01000015,
+    0x01000018, 0x01000016, 0x01000013, 0x0100000C, 0x01000004, 0x01000004,
+    0x0100001B, 0x0100001C, 0x01000023, 0x01000025, 0x01000007, 0x01000017,
+    0x01000021, 0x01000019, 0x01000024, 0x01000002, 0x0100000D, 0x01000008,
+    0x01000001, 0x01000029, 0x01000009, 0x01000026, 0x01000018, 0x0100000A,
+    0x0100002A, 0x0100002E,
+};
 
 void BGMChangeNPC_804A9DA0::init() {
     field_0x234 = mSpawnParam_0x90 & 0x7F;
