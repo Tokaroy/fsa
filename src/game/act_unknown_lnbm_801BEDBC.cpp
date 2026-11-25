@@ -82,9 +82,7 @@ void UnknownLNBM_804A4188::onFirstUpdate_0x54() {
     moveEmitter();
 }
 
-// FIXME: 98.3 %. Scheduling only: the target loads mFlags again for the ENEMY_FLAG_STARTED test
-// (lwz r0; this code reuses the first load in r3), keeps layer in r29 (this code r30), mPos.x of
-// the view test in f2 (f3 here) and loads the probe operands in the order y, dy, x, dx.
+// The target loads mPos.x again for the first blockedAt probe (ours reuses the view test's load).
 void UnknownLNBM_804A4188::update() {
     if (mFlags & FLAG_BURST) {
         releaseEmitter_801EE434(mEmitter2a8);
@@ -96,7 +94,7 @@ void UnknownLNBM_804A4188::update() {
     if (mStateTimer < 0) {
         mStateTimer = 0;
     }
-    if (!(mFlags & ENEMY_FLAG_STARTED)) {
+    if (!checkFlag(ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
         onFirstUpdate_0x54();
         return;
