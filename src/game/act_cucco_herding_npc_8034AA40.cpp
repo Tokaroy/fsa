@@ -90,7 +90,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     markRandomCucco(serials, count);
 }
 
-// FIXME(shotgun): 96.34 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
 // The original reuses the loaded field_0x230 (case 5 test) and c->field_0x25c (the field_0x284
 // store); ours loads each again. At the openMessage_8038AD24 calls the original also orders the
 // argument loads differently around the by-value position copy.
