@@ -636,7 +636,7 @@ void GameRootSub24_8016A3AC::fn_8016D284() {
     }
 }
 
-// FIXME: 81.17 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 86.30 %, different + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016CB14() {
     if (field_0x1c7) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
