@@ -122,7 +122,8 @@ inline void Title_804AF820::drawTitle(f32 blink) {
     }
 }
 
-// FIXME: 99.81. Code identical; 0.0f's .sdata2 name differs (the original
+// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// Code identical; 0.0f's .sdata2 name differs (the original
 // pools 0.5f before every other literal of the unit), and later string offsets
 // are 0x14 short (the unreferenced "enemy_both2_sob.bin" is not reproduced).
 Title_804AF820::Title_804AF820() {
@@ -251,7 +252,8 @@ Title_804AF820::~Title_804AF820() {
     lbl_8053AD88 = NULL;
 }
 
-// FIXME: 99.78. Code identical; 0.0f's .sdata2 name differs and the string
+// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// Code identical; 0.0f's .sdata2 name differs and the string
 // offsets are 0x14 short (unreferenced "enemy_both2_sob.bin" not reproduced).
 void Title_804AF820::fn_803A5380() {
     if (lbl_80529DEC.field_0x242 == 0) {
@@ -312,7 +314,8 @@ void Title_804AF820::fn_803A5380() {
     }
 }
 
-// FIXME: 99.25. Scheduling and registers only: in calcBlink the original keeps
+// FIXME: 99.25 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Scheduling and registers only: in calcBlink the original keeps
 // the hold time in r5 and twice the period in r4 (ours r3 / r5); in the cloud
 // loop it loads field_0x104[i] at the top of the body and keeps the emitter
 // manager in r29 and &info.mPrjMtx in r28 (ours swap them); the rest are
@@ -444,7 +447,8 @@ void Title_804AF820::fn_803A44D8() {
     }
 }
 
-// FIXME: 99.61. Scheduling only: the original adds 400 after `wait` +
+// FIXME: 99.62 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Scheduling only: the original adds 400 after `wait` +
 // getFrameMax() (ours folds getFrameMax() + 400 first); the rest are .sdata2
 // names (the original pool starts 0.5f, 120.0f, then 0.0f, 1.0f, the int
 // conversion double, 8.5f) and the jump table's name.
