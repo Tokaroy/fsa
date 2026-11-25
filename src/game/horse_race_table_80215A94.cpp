@@ -249,8 +249,7 @@ s32 HorseRaceTable_80215E48::fn_80215A94() {
     if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
         s32 count = mCount;
         for (s32 i = 0; i < count; i++) {
-            bool finished = fn_80215E48(i) >= 0;
-            if (!finished && isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i))) {
+            if (!hasKey(i) && isUpperLayer_801CD2F8(getPlayerLayer_8023DE58(i))) {
                 result = i;
                 break;
             }

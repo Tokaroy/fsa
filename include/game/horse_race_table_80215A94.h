@@ -56,6 +56,8 @@ struct HorseRaceTable_80215E48 {
     HorseRaceTable_80215E48();
     // Entry `index`'s mKey.
     s32 fn_80215E48(s32 index);
+    // True once entry `index` has a key (its mKey is no longer negative).
+    u8 hasKey(s32 index) { return fn_80215E48(index) >= 0 ? true : false; }
     // Once entry `index`'s stopwatch has stopped (and not at its 2 minute
     // limit), copies its seconds and centis into the save row and calls
     // fn_802D7844(1, mId) on the view.
