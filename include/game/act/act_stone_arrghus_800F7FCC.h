@@ -122,6 +122,6 @@ public:
 }; // Size: 0x2B8
 
 // game/act_stone_arrghus_800F7FCC.cpp (0x800F82CC): moves `cur` toward `target` by `step`; true when it arrived.
-s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step);
+s8 fn_800F82CC(JGeometry::TVec3f* cur, Vec target, f32 step);
 
 #endif
