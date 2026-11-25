@@ -14,7 +14,7 @@ PlayerSoundObj_804B20F8::PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos
 // compares r31 directly.
 // FIXME: 98.11 %, missing/extra; behaviour drift.
 JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
-    u8 type = id.mId.mBytes.mGroupId;
+    const u8 type = id.mId.mBytes.mGroupId;
     JAISeMgr* seMgr = gAudioMgr_8053AF80->field_0x34;
     switch ((s32)id) {
     case 0x20037:
