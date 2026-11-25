@@ -173,7 +173,7 @@ u16 ActorBase_804A5770::fn_8018A590() const {
     return field_0x94;
 }
 
-// FIXME(shotgun): 92.10 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.12 %, missing/extra + reloc-name; behaviour near.
 // The case 10 loop indexes lbl_804A19F0 differently: the original keeps two more saved
 // registers (stmw r26). The literals differ in name only.
 void PhantomGanon2_804A1A98::init() {
