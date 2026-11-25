@@ -32,7 +32,7 @@ static inline void createHeaps() {
 // the game pads, the heaps, the loader and the memory card, then runs the
 // frame loop forever.
 //
-// FIXME: 99.01 %, missing/extra; behaviour clean.
+// FIXME: 99.45 %, regalloc-only; behaviour clean.
 // The save-region copy loop still has its source and destination registers swapped.
 int main() {
     JFWSystem::setMaxStdHeap(1);
