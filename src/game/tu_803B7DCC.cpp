@@ -13,7 +13,6 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
-// FIXME(shotgun): 95.51 %, missing/extra; behaviour drift.
 cls_804AFAB0::cls_804AFAB0() {
     field_0x28c = -1;
     field_0x290 = -1;
