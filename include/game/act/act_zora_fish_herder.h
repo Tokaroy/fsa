@@ -22,7 +22,7 @@ public:
     void fn_801A7C48();
     // openMessage_8038AD24 takes the position by value. The original loads the serial and
     // layer before that copy, so they are parameters here.
-    bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
+    bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
         return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
     }
     void setAnimMode(s32 mode) {

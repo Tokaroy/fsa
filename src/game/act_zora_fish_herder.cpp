@@ -212,7 +212,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x268 = fn_8022FD8C(mSerial);
         if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
             u32 msg = mKind == 0 ? 0x41A : 0x422;
-            if (talk(field_0x268, msg, mLayer_0x4, mSerial, msgPos, 0x100)) {
+            if (talk(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                 JGeometry::TVec3f delta;
                 f32 dist;
                 getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
@@ -374,7 +374,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x244 = 51;
             fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                talk(getRepresentativePlayer_8022EA0C(0), 0x41D, mLayer_0x4, mSerial, msgPos, 0x102);
+                talk(getRepresentativePlayer_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
                 mState = 6;
             }
         }
@@ -494,7 +494,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x268 = fn_8022FD8C(mSerial);
             if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
                 u32 msg = field_0x25c >= 10 ? 0x41F : 0x421;
-                if (talk(field_0x268, msg, mLayer_0x4, mSerial, msgPos, 0x100)) {
+                if (talk(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
                     JGeometry::TVec3f delta;
                     f32 dist;
                     getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
