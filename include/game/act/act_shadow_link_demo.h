@@ -26,7 +26,7 @@ public:
     void hopDown();
     void spawnFlash();
     // Not in the binary: update inlines it.
-    void moveToPlayer();
+    void movePlayers_8011C4A8();
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor
     /* 0x231 */ bool field_0x231; // cleared by the constructor

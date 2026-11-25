@@ -73,7 +73,7 @@ static inline bool hop(ShadowLinkCutscene_8049DB90* self, s32 t, f32 base, f32 v
 
 // State 11 of update. Taken as inlined from the stack layout: its pos has the lowest slot, below
 // those of the later states 22 and 20.
-inline void ShadowLinkCutscene_8049DB90::moveToPlayer() {
+inline void ShadowLinkCutscene_8049DB90::movePlayers_8011C4A8() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
         pos.add(field_0x26c);
@@ -101,7 +101,7 @@ void ShadowLinkCutscene_8049DB90::update() {
         hopDown();
         break;
     case 11:
-        moveToPlayer();
+        movePlayers_8011C4A8();
         break;
     case 16:
         mPos.y -= 0.3f;
