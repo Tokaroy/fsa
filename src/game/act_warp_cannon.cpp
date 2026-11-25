@@ -45,7 +45,7 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 99.76 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.77 %, regalloc-only + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
