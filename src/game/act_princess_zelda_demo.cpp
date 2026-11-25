@@ -218,7 +218,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 99.29 %, different; behaviour drift.
+// FIXME: 99.41 %, scheduling+regalloc; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -380,16 +380,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         }
         break;
     case 18:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            if (pos.y >= field_0x2dc.y) {
-                pos.y = field_0x2dc.y;
-                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            } else {
-                pos += field_0x2e8;
-                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-            }
-        }
+        inl_80111880();
         break;
     case 21:
         if (mAnim0.isAnimEnd_801D208C()) {
@@ -1374,6 +1365,20 @@ inline void PrincessZeldaDemo_8049D208::inl_80110E9C() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
         if (pos.y <= field_0x2dc.y) {
+            pos.y = field_0x2dc.y;
+            fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
+        } else {
+            pos += field_0x2e8;
+            fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
+        }
+    }
+}
+
+// State 18: inl_80110E9C the other way round: a player whose y has come up to field_0x2dc.y is held there.
+inline void PrincessZeldaDemo_8049D208::inl_80111880() {
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        if (pos.y >= field_0x2dc.y) {
             pos.y = field_0x2dc.y;
             fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
         } else {
