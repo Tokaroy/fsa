@@ -32,7 +32,7 @@ void FallingFloor_804A9078::init() {
 
 // 0x802CCF14. FLYK: a floor tile that crumbles once a player stands on it (state 0 / 5), then
 // falls away and is replaced by the pit tile; state 8 only restores the tile under a player.
-// FIXME(shotgun): 99.34 %, different; behaviour drift.
+// FIXME(shotgun): 99.78 %, regalloc-only; behaviour drift.
 void FallingFloor_804A9078::update() {
     JGeometry::TVec2f pos2d;
     pos2d.set(mPos.x, mPos.y);
@@ -217,14 +217,13 @@ void FallingFloor_804A9078::update() {
         break;
     case 8:
         if (under >= 0 && fn_80235448(under)) {
-            JGeometry::TVec2f p;
-            p.x = mPos.x;
-            p.y = mPos.y;
+            JGeometry::TVec2f p(mPos.x, mPos.y);
             if (getTileAt_80226998(p, mLayer_0x4) == 1) {
                 gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);
                 startSound_801F0E34(0x50045, 0);
-                if (mLayer_0x4 >= 8) {
-                    getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4, &mPos, 0, -1, -1);
+                s32 layer = mLayer_0x4;
+                if (layer >= 8) {
+                    getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0, -1, -1);
                 } else {
                     startSound_801F0E34(0x30075, 0);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x24A, 1, 0, NULL, NULL, true, 1.0f);
