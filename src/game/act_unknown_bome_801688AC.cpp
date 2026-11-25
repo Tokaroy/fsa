@@ -12,7 +12,8 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
+// Angle per variant (s16 units).
+s32 lbl_804A0718[8] = {0x4000, 0xC000, 0, 0x8000, 0x2000, 0xE000, 0x6000, 0xA000};
 
 // Scans from the 8-pixel grid cell of pos along each axis for a wall tile
 // (tile codes 8-15 with bit 0 set), at most 64 steps, and stores the four edges in out;

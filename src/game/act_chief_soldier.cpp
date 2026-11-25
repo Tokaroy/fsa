@@ -12,38 +12,52 @@
 #include "game/act/tu_801F9484.h"
 #include "JSystem/JMath/JMath.h"
 
-// Tables of the SLR4 actor (.data 0x804A08C0.., not written as source here): per heading
-// (mDir_0x98) hit-box offsets and animation timings / frames (.data 0x804A08C0 pairs, 0x20 frames,
-// 0x70 / 0x80 / 0x180 timings, 0x120 frames), boxes and life values.
-extern const f32 lbl_804A08C0[][2];
-extern const s32 lbl_804A08E0[][4];
-extern const s32 lbl_804A0930[];
-extern const s32 lbl_804A0940[];
-extern const s32 lbl_804A09E0[][6];
-extern const s32 lbl_804A0A40[];
-extern const f32 lbl_804A0A58[][4];
-extern const f32 lbl_804A0AD8[][2];
-extern const s32 lbl_804A0AF8[];
-extern const f32 lbl_804A0B10[][4];
-
-// Indexed by spawn kind / 2 (.sdata, 8 bytes).
-u8 lbl_80539F78[8] = { 1, 2, 3, 0, 0, 0, 0, 0 };
-
-// Starts with the per-heading (mDir_0x98) frame shown when the chief bumps into a wall.
-s32 lbl_804A0920[78] = {
-    6, 9, 3, 0, 8, 12, 8, 12,
+// Tables of the SLR4 actor, per heading (mDir_0x98) unless noted.
+// Hit-box offsets.
+static f32 lbl_804A08C0[4][2] = {{-20.0f, -44.0f}, {20.0f, -46.0f}, {4.0f, -42.0f}, {-8.0f, -10.0f}};
+// Animation frames.
+static s32 lbl_804A08E0[4][4] = {{0, 1, 0, 2}, {3, 4, 3, 5}, {6, 7, 6, 8}, {9, 10, 9, 11}};
+// The frame shown when the chief bumps into a wall.
+static s32 lbl_804A0920[4] = {6, 9, 3, 0};
+// Animation timings.
+static s32 lbl_804A0930[4] = {8, 12, 8, 12};
+static s32 lbl_804A0940[40] = {
     12, 13, 14, 13, 12, 15, 16, 15,
     17, 18, 19, 18, 17, 20, 21, 20,
     22, 23, 24, 23, 22, 25, 26, 25,
     27, 28, 29, 28, 27, 30, 31, 30,
     15, 5, 5, 3, 15, 5, 5, 3,
-    33, 32, 33, 34, 35, 36, 38, 37,
-    38, 39, 40, 41, 43, 42, 43, 44,
-    45, 46, 49, 47, 48, 49, 50, 51,
-    3, 30, 2, 2, 2, 5,
+};
+static s32 lbl_804A09E0[4][6] = {
+    {33, 32, 33, 34, 35, 36},
+    {38, 37, 38, 39, 40, 41},
+    {43, 42, 43, 44, 45, 46},
+    {49, 47, 48, 49, 50, 51},
+};
+static s32 lbl_804A0A40[6] = {3, 30, 2, 2, 2, 5};
+// Boxes.
+static f32 lbl_804A0A58[8][4] = {
+    {-14.0f, -14.0f, 14.0f, 20.0f},
+    {-14.0f, -20.0f, 14.0f, 14.0f},
+    {-14.0f, -14.0f, 14.0f, 20.0f},
+    {-14.0f, -20.0f, 14.0f, 14.0f},
+};
+static f32 lbl_804A0AD8[4][2] = {{16.0f, -7.0f}, {-22.0f, -7.0f}, {-12.0f, 8.0f}, {12.0f, -24.0f}};
+// Life by spawn kind.
+static s32 lbl_804A0AF8[6] = {12, 12, 20, 20, 25, 25};
+static f32 lbl_804A0B10[8][4] = {
+    {-8.0f, -4.0f, 8.0f, 4.0f},
+    {-8.0f, -4.0f, 8.0f, 4.0f},
+    {-4.0f, -8.0f, 4.0f, 8.0f},
+    {-4.0f, -8.0f, 4.0f, 8.0f},
+    {-6.0f, -20.0f, 52.0f, -4.0f},
+    {-64.0f, -22.0f, -4.0f, -6.0f},
+    {-32.0f, -24.0f, -16.0f, 32.0f},
+    {16.0f, -72.0f, 34.0f, -14.0f},
 };
 
-
+// Indexed by spawn kind / 2 (.sdata, 8 bytes).
+u8 lbl_80539F78[8] = { 1, 2, 3, 0, 0, 0, 0, 0 };
 
 // Sets the 3x3 part of m to a uniform scale; the translation column is the caller's.
 static inline void setScaleMtx(Mtx m, f32 s) {
