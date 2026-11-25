@@ -26,7 +26,7 @@ PrincessZeldaSpawnerEscape_804A3698::~PrincessZeldaSpawnerEscape_804A3698() {
 }
 
 // 0x801B3B7C.
-// FIXME(shotgun): 97.48 %, different; behaviour near.
+// FIXME(shotgun): 97.52 %, scheduling+regalloc; behaviour clean.
 void PrincessZeldaSpawnerEscape_804A3698::init() {
     lbl_8053ABF0 = 0;
     mMapBox_0x80.set(-4.0f, -8.0f, 4.0f, 8.0f);
@@ -68,7 +68,7 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 }
 
 // 0x801B29EC.
-// FIXME(shotgun): 92.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.19 %, different; behaviour near.
 // Still differs: the life-meter stores load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8
 // inlined in the original), state 8 loads mLayer_0x4 before getPlayerLayer_8023DE58, and registers.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
