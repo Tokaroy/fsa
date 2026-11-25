@@ -1058,6 +1058,8 @@ void PrincessZeldaDemo_8049D208::setDemoState_8010F478(s32 arg) {
 void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
+// Stack slots only: the original keeps case 5's message vector and case 14's `pos` in this function's own
+// frame area (as if spelled out here), and case 33's box below its `pos`.
 // FIXME: 99.87 %, operands; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
@@ -1133,9 +1135,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         mAnim0.startAnim_801D22DC(3, 2, false);
         mAnim0.setFrame_801D1F14(0.0f);
         mAnim0.mFrameCtrl.setRate(0.5f);
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 240.0f, d.y / 240.0f, d.z / 240.0f);
+        startDrift(start, target, 240.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1154,9 +1154,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         for (int i = 0; i < 4; i++) {
             fn_80230498(i, &target, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 110.0f, d.y / 110.0f, d.z / 110.0f);
+        startDrift(start, target, 110.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1174,9 +1172,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         JGeometry::TVec3f start = mPos;
         start.y += 48.0f;
         JGeometry::TVec3f* target = getPlayerPos_8023E724(0);
-        field_0x2dc = start;
-        JGeometry::TVec3f d = start - *target;
-        field_0x2e8 = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+        startDrift(start, *target, 60.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.setFrame_801D1F14(0.0f);
         break;
@@ -1255,9 +1251,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
-        JGeometry::TVec3f pos;
-        pool_8053C58C(pos, getGameView_802D6A9C()->mVisibleBox);
-        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xC5, 0, 0, NULL, NULL, true, 1.0f);
+        spawnAtViewCenter();
         break;
     }
     case 34:
@@ -1452,12 +1446,26 @@ void PrincessZeldaDemo_8049D208::pool_8053C590() {
     startSound_801F0E34(0x400B5, 0);
 }
 
+// Effect 0xC5 in the middle of the screen.
+void PrincessZeldaDemo_8049D208::spawnAtViewCenter() {
+    JGeometry::TVec3f pos;
+    pool_8053C58C(pos, getGameView_802D6A9C()->mVisibleBox);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xC5, 0, 0, NULL, NULL, true, 1.0f);
+}
+
 // The centre of the camera's visible box, at z 0.
 // R2 pool helper (body identical to setCenter in act_four_sword_demo, act_blizzard_battle, act_wind_environment); was setCenter.
 void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     pos.y = box.f.y + 0.5f * (box.i.y - box.f.y);
     pos.z = 0.0f;
+}
+
+// Starts the drift from `start`: field_0x2e8 is the step that covers the way to `target` in `frames` frames.
+void PrincessZeldaDemo_8049D208::startDrift(JGeometry::TVec3f& start, JGeometry::TVec3f& target, f32 frames) {
+    field_0x2dc = start;
+    JGeometry::TVec3f d = start - target;
+    field_0x2e8 = JGeometry::TVec3f(d.x / frames, d.y / frames, d.z / frames);
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
