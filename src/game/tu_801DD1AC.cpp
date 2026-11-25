@@ -216,12 +216,52 @@ bool Frostare_804A4C58::vfunc_0x58() {
 
 extern const u8 lbl_8053F1C8; // hits before the knock-back state (tu_801D8400's .sdata)
 
+// Whether a sword beam or fire actor comes at the boss from a side that counts; state 0x11 always counts.
+static inline bool actorTouches(Frostare_804A4C58* boss, ActorBase_804A5770* other) {
+    switch (other->mActorId) {
+    case 'SWBM':
+    case 'FIRE':
+        break;
+    default:
+        return false;
+    }
+    if (boss->mState == 0x11) {
+        return true;
+    }
+    bool touched = false;
+    if (!(other->mVel_0x3c.y > 0.0f)) {
+        switch (boss->mState) {
+        case 0xC:
+            touched = true;
+            break;
+        case 0xB:
+        case 0xD:
+        case 0xE:
+            if (other->mVel_0x3c.y < 0.0f) {
+                touched = true;
+            } else if (boss->mFlags & 0x2000) {
+                if (other->mVel_0x3c.x < 0.0) {
+                    touched = true;
+                }
+            } else if (other->mVel_0x3c.x > 0.0) {
+                touched = true;
+            }
+            break;
+        }
+    }
+    return touched;
+}
+
 // FIXME(shotgun): 92.43 %, missing/extra; behaviour near.
 u8 Frostare_804A4C58::checkHitByActor_0x60() {
     u8 hit = false;
     bool active = false;
-    if (mState != 5 && mState >= 4 && mState < 8) {
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
         active = true;
+        break;
     }
     if (active) {
         JGeometry::TBox2f saved = mBox;
@@ -239,39 +279,12 @@ u8 Frostare_804A4C58::checkHitByActor_0x60() {
         s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            bool touched = false;
-            switch (other->mActorId) {
-            case 'SWBM':
-            case 'FIRE':
-                if (mState == 0x11) {
-                    touched = true;
-                } else if (!(other->mVel_0x3c.y > 0.0f)) {
-                    switch (mState) {
-                    case 0xC:
-                        touched = true;
-                        break;
-                    case 0xB:
-                    case 0xD:
-                    case 0xE:
-                        if (other->mVel_0x3c.y < 0.0f) {
-                            touched = true;
-                        } else if (mFlags & 0x2000) {
-                            if (other->mVel_0x3c.x < 0.0) {
-                                touched = true;
-                            }
-                        } else if (other->mVel_0x3c.x > 0.0) {
-                            touched = true;
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
-            if (touched) {
+            if (actorTouches(this, other)) {
                 s32 life = mLife;
-                JGeometry::TVec3f from = mPos - other->mVel_0x3c;
+                JGeometry::TVec3f from = mPos;
+                from.sub(other->mVel_0x3c);
                 if (takeHit_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
-                    if (mLife != life) {
+                    if (life != mLife) {
                         hit = true;
                         if (mState != 0x11) {
                             mLife = life;
