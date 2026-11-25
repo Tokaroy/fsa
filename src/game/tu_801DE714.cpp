@@ -814,7 +814,57 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 99.28 %, different; behaviour clean.
+// The height it hovers at: higher with flag 0x20000 or while a remembered actor exists.
+static inline f32 hoverHeight(cls_804A51E4* a) {
+    f32 height = 5.0f;
+    if (a->mFlags & 0x20000) {
+        height = 20.0f;
+    } else {
+        s32 serial = a->field_0x2ac;
+        if (serial >= 0 && actorBySerial(serial) != NULL) {
+            height = 20.0f;
+        } else {
+            serial = a->field_0x2b0;
+            if (serial >= 0 && actorBySerial(serial) != NULL) {
+                height = 20.0f;
+            }
+        }
+    }
+    return height;
+}
+
+// Whether it is in state 3 and has got to the found actor, at its hover height.
+static inline bool reachedTarget(cls_804A51E4* a) {
+    s32 serial = a->field_0x2ac;
+    bool arrived = false;
+    ActorBase_804A5770* found = NULL;
+    if (serial >= 0) {
+        found = actorBySerial(serial);
+    }
+    if (found == NULL) {
+        serial = a->field_0x2b0;
+        if (serial >= 0) {
+            found = actorBySerial(serial);
+        }
+    }
+    if (found == NULL) {
+        serial = a->field_0x2b4;
+        if (serial >= 0) {
+            found = actorBySerial(serial);
+        }
+    }
+    if (a->mState == 3 && found != NULL && a->field_0x2ac == -1) {
+        if (__fabsf(found->mPos.x - a->mPos.x) < 10.0f && __fabsf(found->mPos.y - a->mPos.y) < 10.0f) {
+            f32 height = hoverHeight(a);
+            if (__fabsf(height - a->mPos.z) < 0.1f) {
+                arrived = true;
+            }
+        }
+    }
+    return arrived;
+}
+
+// Registers and the order of findTargets' argument loads still differ.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -864,46 +914,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
         }
         return;
     }
-    bool arrived = false;
-    ActorBase_804A5770* found = NULL;
-    s32 serial = field_0x2ac;
-    if (serial >= 0) {
-        found = actorBySerial(serial);
-    }
-    if (found == NULL) {
-        serial = field_0x2b0;
-        if (serial >= 0) {
-            found = actorBySerial(serial);
-        }
-    }
-    if (found == NULL) {
-        serial = field_0x2b4;
-        if (serial >= 0) {
-            found = actorBySerial(serial);
-        }
-    }
-    if (mState == 3 && found != NULL && field_0x2ac == -1) {
-        if (__fabsf(found->mPos.x - mPos.x) < 10.0f && __fabsf(found->mPos.y - mPos.y) < 10.0f) {
-            f32 height = 5.0f;
-            if (mFlags & 0x20000) {
-                height = 20.0f;
-            } else {
-                serial = field_0x2ac;
-                if (serial >= 0 && actorBySerial(serial) != NULL) {
-                    height = 20.0f;
-                } else {
-                    serial = field_0x2b0;
-                    if (serial >= 0 && actorBySerial(serial) != NULL) {
-                        height = 20.0f;
-                    }
-                }
-            }
-            if (__fabsf(height - mPos.z) < 0.1f) {
-                arrived = true;
-            }
-        }
-    }
-    if (arrived) {
+    if (reachedTarget(this)) {
         if (!fn_801CCF7C()) {
             startSound_801F0E34(0x50019, 0);
         }
@@ -1038,20 +1049,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2: {
-        f32 height = 5.0f;
-        if (mFlags & 0x20000) {
-            height = 20.0f;
-        } else {
-            s32 s = field_0x2ac;
-            if (s >= 0 && actorBySerial(s) != NULL) {
-                height = 20.0f;
-            } else {
-                s = field_0x2b0;
-                if (s >= 0 && actorBySerial(s) != NULL) {
-                    height = 20.0f;
-                }
-            }
-        }
+        f32 height = hoverHeight(this);
         if (mPos.z <= height) {
             mPos.z = height;
             setState_801E1594(3);
@@ -1177,20 +1175,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         }
         break;
     case 18: {
-        f32 height = 5.0f;
-        if (mFlags & 0x20000) {
-            height = 20.0f;
-        } else {
-            s32 s = field_0x2ac;
-            if (s >= 0 && actorBySerial(s) != NULL) {
-                height = 20.0f;
-            } else {
-                s = field_0x2b0;
-                if (s >= 0 && actorBySerial(s) != NULL) {
-                    height = 20.0f;
-                }
-            }
-        }
+        f32 height = hoverHeight(this);
         if (mPos.z <= height) {
             mPos.z = height;
             fn_80237524(field_0x2a8, 0x180);
