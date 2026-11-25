@@ -290,7 +290,7 @@ Bomb_8049F784::~Bomb_8049F784() {
     }
 }
 
-// FIXME(shotgun): 97.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.95 %, scheduling+regalloc; behaviour near.
 void Bomb_8049F784::update() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f pos(mPos.x, mPos.y);
