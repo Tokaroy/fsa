@@ -56,9 +56,7 @@ void FourSwitchMonitor_804A80A0::init() {
 // of `gGameRoot_8053AAF8->field_0x7e == 1` (two identical loops; `li r0, 0` before the
 // test), and ours runs it once, so the registers and block layout after it differ.
 // The switch table is `jumptable_804A80F4` in the original but a compiler-made
-// `@NNN` here (reloc-name, a data-naming issue). `(field_0x83 & 3) == 1` is an
-// unsigned compare (cmplwi) in the original, signed here: field_0x83's type is
-// not known yet.
+// `@NNN` here (reloc-name, a data-naming issue).
 void FourSwitchMonitor_804A80A0::update() {
     s32 count = 0;
     s32 flags[4];
@@ -175,7 +173,8 @@ void FourSwitchMonitor_804A80A0::update() {
                 field_0x230 = 4;
                 field_0x23c = 10;
                 if (field_0x234 == 4) {
-                    if ((gGameRoot_8053AAF8->field_0x83 & 3) == 1) {
+                    u32 mode = gGameRoot_8053AAF8->field_0x83 & 3;
+                    if (mode == 1) {
                         field_0x23c = 0x78;
                         field_0x240 = 0x3C;
                         for (s32 k = 0; k < 4; k++) {
