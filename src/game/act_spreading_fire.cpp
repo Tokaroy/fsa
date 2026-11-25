@@ -25,10 +25,6 @@ static inline s32 viewBitOf(s32 x, s32 y) {
     return (x & 0x100) | ((y & 0x100) << 1) | (y & 0xF0) | ((x >> 4) & 0xF);
 }
 
-// FIXME: 95.68 %, missing/extra; behaviour near.
-// The original tests field_0x250 twice on the same flags (a bne to the
-// sprite-skip, then a second bne that is never taken before the view-bit test); no natural
-// form gives that dead branch, so the kill check is written as one condition.
 void SpreadingFire_804A8A50::init() {
     field_0x250 = (mSpawnParam_0x90 >> 6) & 0xF;
     mDir_0x98 = (mSpawnParam_0x90 >> 4) & 0x3;
@@ -65,10 +61,10 @@ void SpreadingFire_804A8A50::init() {
     } else if (field_0x274 >= 0x200) {
         field_0x274 = 0x1FF;
     }
-    mViewBit = (field_0x270 & 0x100) | ((field_0x274 & 0x100) << 1) | (field_0x274 & 0xF0) |
+    mViewBit = ((field_0x274 & 0x100) << 1) | (field_0x270 & 0x100) | (field_0x274 & 0xF0) |
                ((field_0x270 >> 4) & 0xF);
 
-    if (field_0x250 != 0 || !getGameView_802D6A9C()->fn_802D7384(mViewBit)) {
+    if (field_0x250 != 0 || (field_0x250 == 0 && !getGameView_802D6A9C()->fn_802D7384(mViewBit))) {
         mBox.i.x = -6.0f;
         mBox.i.y = -6.0f;
         mBox.f.x = 6.0f;
@@ -79,10 +75,7 @@ void SpreadingFire_804A8A50::init() {
         mMapBox_0x80.f.y = 8.0f;
 
         mTile = getRawTile_80226850(&mPos, mLayer_0x4);
-        if (mLayer_0x4 >= 8) {
-            field_0x240 = 3;
-            field_0x280 = 0;
-        } else {
+        if (mLayer_0x4 < 8) {
             field_0x240 = 0;
             if (field_0x250 == 3) {
                 mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19F, 0, 0, NULL, NULL, true, 1.0f);
@@ -97,23 +90,26 @@ void SpreadingFire_804A8A50::init() {
                 field_0x290 = 1;
                 field_0x294 = 10;
             }
-        }
 
-        s32 nibble = (mSpawnParam_0x90 >> 12) & 0xF;
-        if (nibble == 0) {
-            field_0x254 = 30;
+            s32 nibble = (mSpawnParam_0x90 >> 12) & 0xF;
+            if (nibble == 0) {
+                field_0x254 = 30;
+            } else {
+                field_0x254 = nibble * 2;
+                if (field_0x254 < 0x15) {
+                    field_0x27c = (s32)(1000.88f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 7;
+                }
+            }
+
+            field_0x278 = 0;
+            if (viewLayerFlag(mLayer_0x4) == 0) {
+                if (fn_801EE3C0(mTile) == true) {
+                    getGameView_802D6A9C()->fn_802D73CC(mViewBit, true);
+                }
+            }
         } else {
-            field_0x254 = nibble * 2;
-            if (field_0x254 < 0x15) {
-                field_0x27c = (s32)(1000.88f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 7;
-            }
-        }
-
-        field_0x278 = 0;
-        if (viewLayerFlag(mLayer_0x4) == 0) {
-            if (fn_801EE3C0(mTile) == true) {
-                getGameView_802D6A9C()->fn_802D73CC(mViewBit, true);
-            }
+            field_0x240 = 3;
+            field_0x280 = 0;
         }
     } else {
         mAlive = false;
