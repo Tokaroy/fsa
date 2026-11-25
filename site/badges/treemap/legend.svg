@@ -3,7 +3,7 @@
 <style>text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; } .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace; }  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }</style>
 <rect x="3.5" y="3.5" width="953" height="61" rx="8" fill="#161a34" stroke="#262b4e"/>
 <path d="M21.5 11L27 16.5L21.5 22L16 16.5Z" fill="#4aa75c"/>
-<text x="33" y="21" font-size="12.5" fill="#b4b9d8">Player 71.9 %</text>
+<text x="33" y="21" font-size="12.5" fill="#b4b9d8">Player 72.0 %</text>
 <path d="M142.3 11L147.8 16.5L142.3 22L136.8 16.5Z" fill="#c52607"/>
 <text x="153.8" y="21" font-size="12.5" fill="#b4b9d8">Enemies 42.0 %</text>
 <path d="M269.7 11L275.2 16.5L269.7 22L264.2 16.5Z" fill="#a96087"/>
@@ -17,7 +17,7 @@
 <path d="M21.5 31L27 36.5L21.5 42L16 36.5Z" fill="#269ac2"/>
 <text x="33" y="41" font-size="12.5" fill="#b4b9d8">Game core 73.7 %</text>
 <path d="M162.1 31L167.6 36.5L162.1 42L156.6 36.5Z" fill="#608c3d"/>
-<text x="173.6" y="41" font-size="12.5" fill="#b4b9d8">Media &amp; link 53.5 %</text>
+<text x="173.6" y="41" font-size="12.5" fill="#b4b9d8">Media &amp; link 56.1 %</text>
 <g fill="#d29a2e"><path d="M322.5 31L328 42L317 42Z"/></g>
 <text x="334" y="41" font-size="12.5" fill="#b4b9d8">Libraries 97.7 %</text>
 <text x="16" y="57" font-size="11.5" fill="#7c82a8">area = bytes of code · fill = matched code · top row the game code by category, bottom row the libraries · click a block to explore it on the site ↗</text>
