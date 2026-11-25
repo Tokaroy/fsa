@@ -17,7 +17,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     // Not written yet (0x80341D08): drawn with a loaded resource at mPos + (offsetX, offsetY, offsetZ).
-    /* 0x54 */ virtual void vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 offsetX,
+    /* 0x54 */ virtual void vfunc_0x54(void* res, const SpriteParams_801F5AE0* params, s32 flags, f32 offsetX,
                                        f32 offsetY, f32 offsetZ);
 
     void fn_8034335C(s32 layer, const JGeometry::TVec3f* pos);

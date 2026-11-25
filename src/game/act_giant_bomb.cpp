@@ -383,8 +383,8 @@ void GiantBomb_804AC588::draw() {
 }
 
 // FIXME(shotgun): 53.42 %, missing/extra; behaviour clean.
-// (the SpriteParams copy is field-wise in the original, one block per branch)
-void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 offsetX, f32 offsetY,
+// (params is a pointer to const: the copies load every field before storing; registers and order of the fade differ)
+void GiantBomb_804AC588::vfunc_0x54(void* res, const SpriteParams_801F5AE0* params, s32 flags, f32 offsetX, f32 offsetY,
                                     f32 offsetZ) {
     if (mLayer_0x4 != 0) {
         return;

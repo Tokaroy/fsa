@@ -1985,7 +1985,7 @@ inline f32 getShadowScale(s32 kind) {
 // shadow on the tiles in lbl_8053F730 (the last one only unless
 // fn_802DEB58()). Its alpha fades with height; bit 0x400 multiplies it by
 // params' alpha.
-void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
+void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, const SpriteParams_801F5AE0* params, s32 flags,
                  const char* name, s32 frame, void* res) {
     if (flags != -1 && layer < 8 && !viewLayerFlag(layer)) {
         s32 kind = flags & 0x3FF;
