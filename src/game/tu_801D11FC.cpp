@@ -72,8 +72,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 }
 
 // 0x801D12CC.
-// The pos push in the else branch reloads mPath.mCount; the original reuses
-// the count loaded for the full check.
+// dx/dy of the arrival check sit in swapped float registers (f3/f4).
 // FIXME: 99.57 %, missing/extra; behaviour near.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
@@ -138,7 +137,8 @@ bool cls_804A46F4::fn_801D12CC() {
                 }
             }
             if (far || clear) {
-                if (mPath.mCount >= 16) {
+                s32 count = mPath.mCount;
+                if (count >= 16) {
                     mPath.mCount = 0;
                     return false;
                 }
