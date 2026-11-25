@@ -113,7 +113,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
             setPlayerFacing_80230BF4(i, 3);
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0, -0x80, -0x80, true);
         }
-        fn_8011921C()->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100001B, false, 0);
         break;
     case 2:
@@ -140,6 +140,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
             }
             fn_80230498(i, pos, 0x3F, 0, -0x80, -0x80, true);
         }
+        JGeometry::TVec3f spawnPos;
         cls_801192AC* area = fn_8011921C();
         ActorBase_804A5770** it = area->fn_8011871C(area->mActors.mBegin, ACTOR_DMLK);
         JGeometry::TVec3f zero;
@@ -150,7 +151,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
         } else {
             pos = &(*it)->mSpawnPos;
         }
-        JGeometry::TVec3f spawnPos = *pos;
+        spawnPos = *pos;
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x33F, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x340, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x341, 0, 0, NULL, NULL, true, 1.0f);
