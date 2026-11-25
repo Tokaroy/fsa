@@ -6,6 +6,7 @@
 #include "game/GameGlobals.h"
 #include "game/Map.h"
 #include "game/SpriteParams.h"
+#include "game/RotMatrix.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // Sprite frame tables of the actor: (frame, duration) pairs ending in -1.
@@ -144,7 +145,6 @@ void Antlion_804A6340::fn_80213774(int mode) {
     }
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour drift.
 void Antlion_804A6340::updateState_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
@@ -245,8 +245,9 @@ void Antlion_804A6340::updateAnim_0x94() {
     }
 }
 
-// FIXME(shotgun): 95.81 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
 void Antlion_804A6340::draw() {
+    // The original materialises isZero()'s bool (mfcr; extrwi.) before testing it.
     if (field_0x54.isZero()) {
         return;
     }
@@ -260,15 +261,7 @@ void Antlion_804A6340::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54);
         params.mMtx = mtx;
         if (mFlags & 0x2000) {
             if (mLayer_0x4 < 8) {
