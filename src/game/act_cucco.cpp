@@ -179,7 +179,7 @@ void Cucco_804AB8C0::init() {
     }
 }
 
-// FIXME(shotgun): 90.19 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 97.88 %, missing/extra; behaviour clean.
 void Cucco_804AB8C0::vfunc_0x10() {
     s32 serial = -1;
     if (field_0x16c == -1) {
@@ -189,7 +189,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
         // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
         s32 next = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_NIWA, serial);
         serial = next;
-        if (serial < 0) {
+        if (next < 0) {
             return;
         }
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(next);
@@ -709,7 +709,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// FIXME(shotgun): 98.34 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.89 %, missing/extra + reloc-name; behaviour drift.
 void Cucco_804AB8C0::update() {
     if (field_0x230 == 2) {
         if (fn_8022F9E4(field_0x25c, mSerial, false, false) == 1) {
@@ -977,7 +977,12 @@ void Cucco_804AB8C0::update() {
     case 3:
         if (!field_0xc4) {
             switch (field_0x290) {
-            // The original dispatches 0..8 through a jump table (0, 1, 4-7 and above 8 come here).
+            case 0:
+            case 1:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
             default: {
                 field_0x23c = 0x12;
                 field_0x2b8.x = mVel_0x3c.x;
