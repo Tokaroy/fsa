@@ -67,7 +67,7 @@ Frostare_804A4C58::~Frostare_804A4C58() {
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 69.16 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.21 %, regalloc-only; behaviour clean.
 void Frostare_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -138,7 +138,6 @@ void Frostare_804A4C58::onFirstUpdate_0x54() {
     gAudioMgr_8053AF80->stopBgm_80458F9C(60);
 }
 
-// FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
 void Frostare_804A4C58::setState_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
@@ -279,7 +278,7 @@ void Frostare_804A4C58::setState_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
 void Frostare_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -361,7 +360,7 @@ static inline s32 findTarget_801D95F4(Frostare_804A4C58* self) {
     return target;
 }
 
-// FIXME(shotgun): 99.09 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.45 %, regalloc-only; behaviour clean.
 bool Frostare_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
@@ -406,7 +405,7 @@ bool Frostare_804A4C58::fn_801D95F4() {
 }
 
 // Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
-// FIXME: 99.70 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME: 99.80 %, regalloc-only; behaviour drift.
 void Frostare_804A4C58::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
