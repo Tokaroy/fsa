@@ -133,16 +133,15 @@ inline u8 UnknownENDM_804AA0FC::tickTimer() {
     if (field_0x27c != 0) {
         field_0x27c--;
     }
-    return field_0x27c == 0 ? true : false;
+    return !field_0x27c ? true : false;
 }
 
 static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
     return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
 }
 
-// Still differs: three of the four tickTimer() tests fold to cmpwi (the original keeps the byte);
-// cases 0 and 7 lay their shared block out first and branch back to it.
-// FIXME: 93.97 %, missing/extra + reloc-name; behaviour drift.
+// Still differs: cases 0 and 7 lay their shared block out first and branch back to it.
+// FIXME: 94.42 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -367,8 +366,8 @@ void UnknownENDM_804AA0FC::update() {
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
-                JGeometry::TBox2f view;
                 JGeometry::TVec3f owlPos(owl->mPos);
+                JGeometry::TBox2f view;
                 view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
                 if ((owl->mSpawnParam_0x90 & 7) == 0) {
                     view.i.x -= 16.0f;
