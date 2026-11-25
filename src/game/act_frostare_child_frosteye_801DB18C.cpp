@@ -1,4 +1,5 @@
 #include "game/GameAudio.h"
+#include "game/GameMath.h"
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 #include "JSystem/JMath/JMath.h"
@@ -77,7 +78,7 @@ void FrostareChildFrosteye_804A4EE8::init() {
     }
 }
 
-// FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 85.21 %, missing/extra; behaviour near.
 void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
     if (randInt_801CD664(2) == 0) {
         mFlags &= ~0x2000;
@@ -89,7 +90,8 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
     mAngle = randInt_801CD664(0x10000);
     if (field_0x16c == -1) {
         JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
-        if (!v.isZero()) {
+        // The original materialises this compare as a bool (mfcr; extrwi.) before testing it.
+        if (!(square(v.x) + square(v.y) <= JGeometry::TUtilf::epsilon())) {
             f32 rx;
             f32 ry;
             if (v.x < 0.0f) {
@@ -111,8 +113,7 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB9CC() {
                 mFlags ^= 0x2000;
             }
             mAngle = (s32)(JMath::atanTable_.atan2_(rx, ry) * 10430.378f);
-            JGeometry::TVec2f v2(field_0x2b4, field_0x2b8);
-            mAngleSpeed = (s32)(0.015915494f * (65536.0f * v2.length()));
+            mAngleSpeed = (s32)(0.015915494f * (65536.0f * JGeometry::TUtilf::sqrt(square(field_0x2b4) + square(field_0x2b8))));
         }
     }
     mSearchPos.x = mPos.x;
