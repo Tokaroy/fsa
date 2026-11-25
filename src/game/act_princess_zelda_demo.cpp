@@ -1066,8 +1066,6 @@ void PrincessZeldaDemo_8049D208::setDemoState_8010F478(s32 arg) {
 void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
-// Stack slots only: the original keeps case 5's message vector and case 14's `pos` in this function's own
-// frame area (as if spelled out here), and case 33's box below its `pos`.
 // FIXME: 99.87 %, operands; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
@@ -1259,7 +1257,9 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
-        spawnAtViewCenter();
+        JGeometry::TVec3f pos;
+        pool_8053C58C(pos, getGameView_802D6A9C()->mVisibleBox);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xC5, 0, 0, NULL, NULL, true, 1.0f);
         break;
     }
     case 34:
@@ -1452,13 +1452,6 @@ void PrincessZeldaDemo_8049D208::pool_8053C590() {
     pos.y += -16.0f;
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x400B5, 0);
-}
-
-// Effect 0xC5 in the middle of the screen.
-void PrincessZeldaDemo_8049D208::spawnAtViewCenter() {
-    JGeometry::TVec3f pos;
-    pool_8053C58C(pos, getGameView_802D6A9C()->mVisibleBox);
-    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xC5, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // The centre of the camera's visible box, at z 0.
