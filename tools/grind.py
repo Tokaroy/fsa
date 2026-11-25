@@ -392,6 +392,28 @@ STATUS = {}  # refreshed per unit pick by the worker in --goal structural
 PORT_TRACES = Path("/bigdata/agent-tom/projects/fsaport/logs/fntrace-answers")
 
 
+PORT_COVERAGE = Path("/bigdata/agent-tom/projects/fsaport/logs/coverage/merged.tsv")
+_COV = None
+def port_coverage(fn):
+    """The port's branch coverage of fn over the harness scripts (clang source coverage of its build
+    of our C): one line, or None when the function isn't in the table."""
+    global _COV
+    if _COV is None:
+        _COV = {}
+        try:
+            for line in PORT_COVERAGE.read_text(errors="replace").splitlines()[1:]:
+                c = line.split("\t")
+                if len(c) >= 7: _COV[c[0]] = c
+        except OSError:
+            pass
+    c = _COV.get(fn)
+    if not c: return None
+    if c[4] in ("", "0"):
+        return "never entered in the port's scripted runs (opening, castle, stages 1-2): no runtime evidence for it"
+    unt = c[3][:300] + ("..." if len(c[3]) > 300 else "")
+    return (f"entered {c[4]}x; blocks {c[1]}/{c[2]}, branches {c[5]}/{c[6]} covered"
+            + (f"; never ran (line or line(T/F)): {unt}" if unt else "; every path ran"))
+
 def port_trace(fn, limit=40):
     """The port's runtime trace summary of `fn` (fsaport tools/fntrace_run.py answers, one .md per
     function, file name = mangled name with <>/ as _), first `limit` lines; [] when there is none."""
@@ -777,6 +799,10 @@ def build_packet(wt, unit, fn, ev, note=None):
            f"Commands: `python3 tools/try.py {unit} '{fn}'`   `python3 tools/grind.py check`", ""]
     if note:
         out += [f"A reviewer rejected an earlier change to this function: {note} Don't repeat that.", ""]
+    cov = port_coverage(fn)
+    if cov:
+        out += [f"Port coverage of this function: {cov}. Paths that ran are checked against the original's "
+                "behaviour; take extra care on the ones that never ran.", ""]
     trace = port_trace(fn)
     if trace:
         out += ["== Runtime trace from the browser port (real argument/return values, which fields it wrote, "
