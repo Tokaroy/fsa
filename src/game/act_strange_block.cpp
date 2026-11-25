@@ -87,16 +87,17 @@ void StrangeBlock_804AC2D8::init() {
 
 inline void StrangeBlock_804AC2D8::checkTalk() {
     JGeometry::TBox2f talkBox(mBox);
-    talkBox.i.x += mPos.x;
-    talkBox.i.y += mPos.y;
-    talkBox.f.x += mPos.x;
-    talkBox.f.y += mPos.y;
+    const JGeometry::TVec3f* pos = getPos();
+    talkBox.i.x += pos->x;
+    talkBox.i.y += pos->y;
+    talkBox.f.x += pos->x;
+    talkBox.f.y += pos->y;
     if (field_0x25c == 0 || field_0x25c == 2) {
         fn_8022FEB8(&talkBox, mLayer_0x4, mSerial, true, false);
         field_0x258 = fn_8022FD8C(mSerial);
         if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f &&
             fn_802300EC(field_0x258)) {
-            if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+            if (openMessageById_8038C678(field_0x258, field_0x268, getSerial(), getField_0x4(), mPos, 0)) {
                 field_0x234 = 1;
                 field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                 field_0x254 = field_0x254 ^ 1;
@@ -107,7 +108,6 @@ inline void StrangeBlock_804AC2D8::checkTalk() {
 
 // 0x8033DA78. States of field_0x234: 0 the block waits to be pushed or slides, 1 a player's
 // message is open, then back to 0.
-// FIXME(shotgun): 97.67 %, different; behaviour near.
 void StrangeBlock_804AC2D8::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -203,15 +203,16 @@ void StrangeBlock_804AC2D8::update() {
 
 // 0x8033D4CC. Called when the block is idle: pushes it one step when a player has been
 // shoving it long enough, or lets it slide back to its spawn position.
-// FIXME: 98.51 %, different; behaviour clean.
+// FIXME: 99.97 %, operands; behaviour clean.
 // FIXME(shotgun): stack slot order and literal pool names differ.
 void StrangeBlock_804AC2D8::fn_8033D4CC() {
     s32 pushers = fn_80239108(mSerial);
     if (pushers >= field_0x260) {
         if (PSVECDistance(&mPos, &mSpawnPos) < (f32)(field_0x260 << 4) - 0.1f) {
             s32 dir = fn_80238BC4(mSerial);
+            JGeometry::TVec3f step(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
             JGeometry::TVec3f saved = mPos;
-            mPos += JGeometry::TVec3f(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
+            mPos += step;
             if (sweepMapBox_801F2618(NULL, false)) {
                 mPos = saved;
                 return;
@@ -316,7 +317,7 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x258 = fn_8022FD8C(mSerial);
             if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f && fn_802300EC(field_0x258)) {
-                if (openMessageById_8038C678(field_0x258, field_0x268, mSerial, mLayer_0x4, mPos, 0)) {
+                if (openMessageById_8038C678(field_0x258, field_0x268, getSerial(), getField_0x4(), mPos, 0)) {
                     field_0x234 = 1;
                     field_0x254 = getPlayerFacing_80230CFC(field_0x258);
                     field_0x254 = field_0x254 ^ 1;
@@ -408,7 +409,6 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
 }
 
 // 0x8033CD44.
-// FIXME(shotgun): 99.89 %, same-text; behaviour clean.
 void StrangeBlock_804AC2D8::draw() {
     s32 frame;
     switch (field_0x25c) {
