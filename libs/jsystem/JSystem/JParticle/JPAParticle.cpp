@@ -95,8 +95,8 @@ void JPABaseParticle::init_p(JPAEmitterWorkData *workData)
 
     if (extraShape) {
         if (extraShape->isEnableRotateAnm()) {
-            mRotateAngle = extraShape->getRotateInitAngle() + (extraShape->getRotateRndmAngle() * emitter->getRandZH());
-            mRotateSpeed = extraShape->getRotateInitSpeed() * (1.0f + extraShape->getRotateRndmSpeed() * emitter->getRandZP());
+            mRotateAngle = (u16)(s32)(extraShape->getRotateInitAngle() + (extraShape->getRotateRndmAngle() * emitter->getRandZH()));
+            mRotateSpeed = (s16)(s32)(extraShape->getRotateInitSpeed() * (1.0f + extraShape->getRotateRndmSpeed() * emitter->getRandZP()));
 
             mRotateSpeed = (emitter->getRandZP() < extraShape->getRotateDirection()) ? mRotateSpeed : (s16)-mRotateSpeed;
 

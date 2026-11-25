@@ -8,11 +8,13 @@
 // they stay macros there so the code MWCC generates is exactly that load. A
 // portable build assembles the bytes, so host byte order and alignment don't
 // matter. See docs/PORTABLE.md.
+// The MWCC casts carry no const: a load through a const-qualified cast moved
+// registers in THPAudioDecode (the lYn1/lYn2 reads), the plain cast doesn't.
 #ifdef __MWERKS__
-#define be_read_s32(p) (*(const s32*)(p))
-#define be_read_u32(p) (*(const u32*)(p))
-#define be_read_s16(p) (*(const s16*)(p))
-#define be_read_u16(p) (*(const u16*)(p))
+#define be_read_s32(p) (*(s32*)(p))
+#define be_read_u32(p) (*(u32*)(p))
+#define be_read_s16(p) (*(s16*)(p))
+#define be_read_u16(p) (*(u16*)(p))
 #else
 static inline u32 be_read_u32(const void* p)
 {
