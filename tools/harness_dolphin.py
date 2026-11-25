@@ -215,6 +215,9 @@ def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, scrip
         lines.append(f'tick {tick}')
     lines.append(f'hook {find_hook(dol_path, syms):08X}')
     lines.append(f'pads {sym(syms, "mPadStatus__10JUTGamePad"):08X}')
+    # The `set` key seed_on_stage is applied here (createModeScreen_80135020(7), before the stage's
+    # actors spawn), as the port does.
+    lines.append(f'stagehook {sym(syms, "createModeScreen_80135020__17GameRoot_8049EF20Fl"):08X}')
     for key, p in zip(('scene_mode', 'scene_stage', 'scene_level'), SCENE):
         lines.append(f'{key} {path_text(syms, p)}')
     for name, typ, guard, p in GLOBALS:
