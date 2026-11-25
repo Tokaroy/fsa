@@ -77,6 +77,7 @@ void ShopItem_8049CDC0::init() {
     mAnim.setFrame_801D1F14(0.0f);
 }
 
+// FIXME: 99.84 %, scheduling+regalloc; behaviour drift.
 void ShopItem_8049CDC0::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box = mBox;
