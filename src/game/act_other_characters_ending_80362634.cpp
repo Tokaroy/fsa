@@ -1099,9 +1099,9 @@ void OtherCharactersEnding_804ADF28::fn_80363F7C() {
 
 // FIXME(shotgun): 98.47 %, different; behaviour near.
 void OtherCharactersEnding_804ADF28::fn_80363880() {
-    s32 slot = field_0x24c;
-    if (slot >= 0) {
-        ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+    s32 i = field_0x24c;
+    if (i >= 0) {
+        ActorBase_804A5770* owl = getActorManager_801F856C()->getActor(i);
         if (owl != NULL) {
             JGeometry::TVec3f target = owl->mPos;
             if (PSVECDistance(&mPos, &target) >= 100.0f) {
@@ -1137,9 +1137,9 @@ void OtherCharactersEnding_804ADF28::fn_80363880() {
             field_0x248 = 0x20;
         }
     } else {
-        s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
-            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
+        s32 end = getActorManager_801F856C()->getActorEnd();
+        for (i = 0; i < end; i++) {
+            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->getActor(i));
             if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true && actor->field_0x278 == 0) {
                 pool_80542B4C(i, actor);
                 break;
