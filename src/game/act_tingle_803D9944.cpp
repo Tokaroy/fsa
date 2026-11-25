@@ -9,7 +9,6 @@
 #include "game/PlayerBit.h"
 #include "game/act/act_tingle_803D9944.h"
 
-// FIXME(shotgun): 97.43 %, missing/extra + reloc-name; behaviour drift.
 void Tingle_804B0478::init() {
     mBox.i.x = -1280.0f;
     mBox.i.y = -1280.0f;
@@ -78,7 +77,7 @@ s32 lbl_804B0444[10] = {0x20, 2, 2, 2, 2, 2, 2, 2, 2, 0x20};
 u16 lbl_804B046C[6] = {0x3A7, 0x3A8, 0x3A9, 0x3AA, 0x3AB, 0};
 s32 lbl_8053A210[2] = {0, 1}; // state 5
 
-// FIXME(shotgun): 94.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.10 %, missing/extra; behaviour drift.
 void Tingle_804B0478::update() {
     s32 i;
     switch (mState) {
@@ -287,7 +286,7 @@ void Tingle_804B0478::update() {
     }
 }
 
-// FIXME(shotgun): 93.18 %, different; behaviour drift.
+// FIXME(shotgun): 93.86 %, scheduling+regalloc; behaviour clean.
 void Tingle_804B0478::draw() {
     if (field_0x248 != 0) {
         return;
