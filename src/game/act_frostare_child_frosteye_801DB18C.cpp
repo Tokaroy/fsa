@@ -8,7 +8,6 @@
 
 static const s16 lbl_80469A98[] = { 7, 5, 8, 5, -1, -1 };
 static const s16* lbl_8053A148[] = { lbl_80469A98, NULL };
-extern const char lbl_80469AA4[]; // "enemy_both_sob.bin"
 
 FrostareChildFrosteye_804A4EE8::FrostareChildFrosteye_804A4EE8() {
     mTargetPlayer = -1;
@@ -330,6 +329,6 @@ void FrostareChildFrosteye_804A4EE8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 1;
     params.field_0x1d = 0;
-    drawSpriteScaled_801F02BC(lbl_80469AA4, mAnim.mCel + 0xE3, &params, -1, 0, false, 1.0f, 1.0f);
+    drawSpriteScaled_801F02BC("enemy_both_sob.bin", mAnim.mCel + 0xE3, &params, -1, 0, false, 1.0f, 1.0f);
 }
 

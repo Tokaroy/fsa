@@ -1,9 +1,59 @@
 #include "game/GameAudio.h"
 #include "game/act/tu_801D8400.h"
 
-// Tables of the sequencer (.data 0x804A4DA8.., not written as source here): the string for each
-// value, and per animation (field_0x0) the value list (0xFF ends it) and the frame counts.
-extern const char* const lbl_804A4DA8[];
+// The sprite name for each value.
+const char* lbl_804A4DA8[48] = {
+    "boss_koori_loop_01.bti",
+    "boss_koori_loop_01.bti",
+    "boss_koori_loop_02.bti",
+    "boss_koori_loop_03.bti",
+    "boss_koori_loop_04.bti",
+    "boss_koori_bougyo_05.bti",
+    "boss_koori_bougyo_06.bti",
+    "boss_koori_bougyo_07.bti",
+    "boss_koori_bougyo_08.bti",
+    "boss_koori_bougyo_09.bti",
+    "boss_koori_bougyo_10.bti",
+    "boss_koori_kougeki_05.bti",
+    "boss_koori_kougeki_06.bti",
+    "boss_koori_rakka_01.bti",
+    "boss_koori_rakka_02.bti",
+    "boss_koori_rakka_03.bti",
+    "boss_koori_rakka_04.bti",
+    "boss_koori_rakkago_01.bti",
+    "boss_koori_rakkago_02.bti",
+    "boss_koori_rakkago_03.bti",
+    "boss_koori_rakkago_04.bti",
+    "boss_koori_tobumade_01.bti",
+    "boss_koori_tobumade_02.bti",
+    "boss_koori_tobumade_03.bti",
+    "boss_koori_tobumade_04.bti",
+    "boss_koori_tobumade_05.bti",
+    "boss_koori_tobumade_06.bti",
+    "boss_koori_tobumade_07.bti",
+    "boss_koori_fly_01.bti",
+    "boss_koori_fly_02.bti",
+    "boss_koori_fly_03.bti",
+    "boss_koori_tsuiraku_01.bti",
+    "boss_koori_tsuiraku_02.bti",
+    "boss_koori_tsuiraku_03.bti",
+    "boss_koori_tsuiraku_04.bti",
+    "boss_koori_tsuiraku_05.bti",
+    "boss_koori_tsuiraku_06.bti",
+    "boss_koori_tsuiraku_07.bti",
+    "boss_koori_tsuiraku_08.bti",
+    "boss_koori_tsuiraku_09.bti",
+    "boss_koori_tsuiraku_10.bti",
+    "boss_koori_tsuiraku_11.bti",
+    "boss_koori_fly_tojiru_01.bti",
+    "boss_koori_fly_tojiru_02.bti",
+    "boss_koori_fly_tojiru_03.bti",
+    "boss_koori_fly_hiraku_01.bti",
+    "boss_koori_fly_hiraku_02.bti",
+    "boss_koori_fly_hiraku_03.bti",
+};
+// Per animation (field_0x0) the value list (0xFF ends it) and the frame counts (.rodata /
+// .sdata2 u8 arrays, 260 values: over gate.py's per-file literal limit, not written here yet).
 extern const u8* const lbl_804A4E68[];
 extern const u8* const lbl_804A4EA8[];
 

@@ -53,7 +53,8 @@ void IronPot_804A5418::vfunc_0x10() {
     field_0x2ac = slots->field_0x0[slots->field_0xf0].fn_801EA6D8(flags, serial);
 }
 
-extern const s32 lbl_80469C40[4][2];
+// Per group: the rupee kind and how many.
+const s32 lbl_80469C40[4][2] = {{4, 3}, {3, 2}, {2, 8}, {0, 20}};
 
 // FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
 void IronPot_804A5418::fn_801E728C(int state) {
