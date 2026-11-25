@@ -12,17 +12,12 @@
 
 // The 'ZLD4' actor, PrincessZeldaSpawnerEscape_804A3698.
 
-// update indexes it.
-struct Tables_804A3660 {
-    /* 0x00 */ s32 mDirs[4];   // the turn order of states 0xD and 0xE
-    /* 0x10 */ s32 mFrames[5]; // states 0xF-0x13: field_0x320 by field_0x30c
-    /* 0x24 */ s32 mTimes[5];  // and field_0x300
-}; // Size: 0x38
-static Tables_804A3660 lbl_804A3660 = {
-    {0, 2, 1, 3},
-    {0x20, 0x21, 0x22, 0x23, 0x24},
-    {3, 5, 6, 7, 30},
-};
+// The turn order of states 0xD and 0xE.
+static s32 lbl_804A3660[4] = {0, 2, 1, 3};
+// States 0xF-0x13: field_0x320 by field_0x30c.
+static s32 lbl_804A3670[5] = {0x20, 0x21, 0x22, 0x23, 0x24};
+// States 0xF-0x13: field_0x300 by field_0x30c.
+static s32 lbl_804A3684[5] = {3, 5, 6, 7, 30};
 
 // 0x801B3CD0.
 PrincessZeldaSpawnerEscape_804A3698::~PrincessZeldaSpawnerEscape_804A3698() {
@@ -74,6 +69,8 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 
 // 0x801B29EC.
 // FIXME(shotgun): 92.69 %, missing/extra + reloc-name; behaviour drift.
+// Still differs: the life-meter stores load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8
+// inlined in the original), state 8 loads mLayer_0x4 before getPlayerLayer_8023DE58, and registers.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -83,7 +80,9 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
     } else {
         src = &view->field_0xdc;
     }
-    JGeometry::TBox2f box = *src;
+    JGeometry::TVec3f target;
+    JGeometry::TBox2f box;
+    box = *src;
     JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
     s32 railLayer = mLayer_0x4;
     getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 1.0f, 0.0f, false);
@@ -138,9 +137,9 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                         field_0x304 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
                         if (field_0x2f8 != 6) {
                             startSound_801F0E34(0x400B5, 0);
-                            JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-                            pos.y = mPos.y - 16.0f;
-                            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
+                            target.set(mPos);
+                            target.y -= 16.0f;
+                            spawnEmitter_8013CC50(mLayer_0x4, &target, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
                         }
                         dir = mDir_0x98;
                         field_0x334 = 0.0f;
@@ -269,26 +268,26 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         }
         obj = static_cast<PrincessZeldaMotionObjectSpawner_804A375C*>(
             getActorManager_801F856C()->findActorBySerial_801F666C(serial));
-        if (obj == NULL) {
-            field_0x2f8 = 0;
-            break;
-        }
-        JGeometry::TVec3f target = obj->mPos;
-        target.x = obj->mPos.x + 8.0f;
-        if (std::fabsf(mPos.x - target.x) > 0.1f) {
-            addCalc2_801F71A4(&mPos.x, target.x, 0.2f, 0.6f);
-            mDir_0x98 = 0;
-            if (mPos.x > target.x) {
-                mDir_0x98 = 1;
+        if (obj != NULL) {
+            target.set(obj->mPos);
+            target.x += 8.0f;
+            if (std::fabsf(mPos.x - target.x) > 0.1f) {
+                addCalc2_801F71A4(&mPos.x, target.x, 0.2f, 0.6f);
+                mDir_0x98 = 0;
+                if (mPos.x > target.x) {
+                    mDir_0x98 = 1;
+                }
+                field_0x304 = 20;
+                break;
             }
-            field_0x304 = 20;
-            break;
-        }
-        mPos.x = target.x;
-        mDir_0x98 = 3;
-        field_0x338 = 0.5f;
-        if (field_0x304 == 0 && wall.y < 0.0f) {
-            obj->mAlive = false;
+            mPos.x = target.x;
+            mDir_0x98 = 3;
+            field_0x338 = 0.5f;
+            if (field_0x304 == 0 && wall.y < 0.0f) {
+                obj->mAlive = false;
+                field_0x2f8 = 0;
+            }
+        } else {
             field_0x2f8 = 0;
         }
         break;
@@ -386,8 +385,8 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         if (obj == NULL) {
             break;
         }
-        JGeometry::TVec3f target = obj->mPos;
-        target.x = obj->mPos.x + 8.0f;
+        target.set(obj->mPos);
+        target.x += 8.0f;
         if (std::fabsf(mPos.x - target.x) > 0.1f) {
             addCalc2_801F71A4(&mPos.x, target.x, 0.2f, 0.6f);
             mDir_0x98 = 0;
@@ -462,7 +461,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         field_0x308 = 0;
         startSound_801F0E34(0x400B7, 0);
         for (s32 i = 0; i < 4; i++) {
-            if (mDir_0x98 == lbl_804A3660.mDirs[i]) {
+            if (mDir_0x98 == lbl_804A3660[i]) {
                 field_0x30c = i;
                 field_0x300 = 8;
                 field_0x2f8 = 0xE;
@@ -475,7 +474,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
             field_0x30c++;
             field_0x30c &= 3;
             field_0x300 = 8;
-            mDir_0x98 = lbl_804A3660.mDirs[field_0x30c];
+            mDir_0x98 = lbl_804A3660[field_0x30c];
             field_0x310++;
             if (field_0x310 >= 12 && mDir_0x98 == 0) {
                 field_0x2f8 = 0xF;
@@ -486,8 +485,8 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         break;
     case 0xF:
         field_0x30c = 0;
-        field_0x300 = lbl_804A3660.mTimes[field_0x30c];
-        field_0x320 = lbl_804A3660.mFrames[field_0x30c];
+        field_0x300 = lbl_804A3684[field_0x30c];
+        field_0x320 = lbl_804A3670[field_0x30c];
         field_0x2f8 = 0x10;
     case 0x10:
         if (field_0x300 == 0) {
@@ -497,8 +496,8 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                 lbl_8053ABF0 = 1;
                 field_0x2f8 = 0x11;
             } else {
-                field_0x300 = lbl_804A3660.mTimes[field_0x30c];
-                field_0x320 = lbl_804A3660.mFrames[field_0x30c];
+                field_0x300 = lbl_804A3684[field_0x30c];
+                field_0x320 = lbl_804A3670[field_0x30c];
             }
         }
         break;
@@ -511,8 +510,8 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         break;
     case 0x12:
         field_0x30c = 4;
-        field_0x300 = lbl_804A3660.mTimes[field_0x30c];
-        field_0x320 = lbl_804A3660.mFrames[field_0x30c];
+        field_0x300 = lbl_804A3684[field_0x30c];
+        field_0x320 = lbl_804A3670[field_0x30c];
         field_0x2f8 = 0x13;
     case 0x13:
         if (field_0x300 == 0) {
@@ -525,8 +524,8 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                 field_0x328 = 5;
                 field_0x2f8 = 1;
             } else {
-                field_0x300 = lbl_804A3660.mTimes[field_0x30c];
-                field_0x320 = lbl_804A3660.mFrames[field_0x30c];
+                field_0x300 = lbl_804A3684[field_0x30c];
+                field_0x320 = lbl_804A3670[field_0x30c];
             }
         }
         break;
