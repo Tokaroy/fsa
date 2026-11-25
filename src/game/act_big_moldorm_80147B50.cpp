@@ -732,10 +732,8 @@ void BigMoldorm_8049F6C8::update() {
             break;
         }
         pos.set(field_0x2c0[field_0x264]);
-        f32 offset = 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        pos.x += 8.0f - offset;
-        offset = 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        pos.y += 8.0f - offset;
+        pos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        pos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x68, 2, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x69, 2, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30001, 0);
