@@ -14,6 +14,8 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
 
+    bool startChase_inline();
+
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 mDir;  // draw: 2 frames per step
     /* 0x235 */ u8 mStep; // draw: index into lbl_80539E68
