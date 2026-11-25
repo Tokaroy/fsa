@@ -149,7 +149,7 @@ void ActorManager_804A5800::fn_801F871C() {
         getShadowLinkFight_801C0D70()->fn_801C0DCC();
     }
     if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-        for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+        for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
             if (mActors[i] == NULL) {
                 continue;
             }
@@ -177,7 +177,7 @@ void ActorManager_804A5800::fn_801F871C() {
         }
         mSharedSound_0x200c->fn_80456154();
     } else {
-        for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+        for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
             if (mActors[i] == NULL) {
                 continue;
             }
@@ -197,10 +197,10 @@ void ActorManager_804A5800::fn_801F871C() {
                 }
                 if (!skip) {
                     u32 id;
-                    if (!limited || (id = mActors[i]->mActorId) == 'FORM' || id == 'ALCE' ||
+                    if (!limited || (limited && ((id = mActors[i]->mActorId) == 'FORM' || id == 'ALCE' ||
                         id == 'IMUP' || id == 'SWEV' || id == 'SEV2' || id == 'LTEV' ||
                         id == 'PRTC' || id == 'STPN' || id == 'TUGF' || id == 'TUTL' ||
-                        id == 'TUTM' || id == 'PEFF' || id == 'SWDL')
+                        id == 'TUTM' || id == 'PEFF' || id == 'SWDL')))
                     {
                         mActors[i]->fn_801F32F4();
                         mActors[i]->field_0x1dc.fn_801EAB0C();
