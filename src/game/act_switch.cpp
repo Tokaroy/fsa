@@ -66,7 +66,8 @@ void Switch_804A7F38::init() {
     field_0x260 = -1;
 }
 
-// FIXME: 99.69 %. Regalloc only: target->ours r30->r31, r4->r5, r5->r4, r31->r30.
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
+// Regalloc only: target->ours r30->r31, r4->r5, r5->r4, r31->r30.
 void Switch_804A7F38::vfunc_0x10() {
     if (mState == 1) {
         if (isScreenFlagSet_0x34()) {
@@ -135,6 +136,7 @@ void Switch_804A7F38::vfunc_0x10() {
 }
 
 // Registers only: the target keeps the serial of the block found in r27 where ours uses r28.
+// FIXME: 99.73 %, regalloc-only; behaviour drift.
 void Switch_804A7F38::update() {
     JGeometry::TVec3f playerPos;
     // y is read before x only to keep the original's load order.
