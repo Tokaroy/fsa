@@ -54,7 +54,7 @@ void ChainChomp_804A18E0::init() {
 }
 
 // 0x80184FC0.
-// FIXME(shotgun): 98.25 %, different; behaviour near.
+// FIXME(shotgun): 99.13 %, different; behaviour near.
 void ChainChomp_804A18E0::update() {
     f32 box80_ix = mMapBox_0x80.i.x;
     f32 box80_iy = mMapBox_0x80.i.y;
