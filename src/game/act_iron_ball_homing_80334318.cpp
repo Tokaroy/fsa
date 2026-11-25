@@ -94,7 +94,7 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
 }
 
 // 0x80334A04.
-// FIXME(shotgun): 84.07 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.50 %, missing/extra + reloc-name; behaviour drift.
 void IronBallHoming_804AB9C0::update() {
     u16 angle = 0;
     s32 player;
@@ -121,9 +121,7 @@ void IronBallHoming_804AB9C0::update() {
             hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
         }
         if (hit) {
-            mVel_0x3c.x = -mVel_0x3c.x;
-            mVel_0x3c.y = -mVel_0x3c.y;
-            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.set(-mVel_0x3c.x, -mVel_0x3c.y, 0.0f);
             field_0x244 = 20;
             field_0x230 = 3;
         }
