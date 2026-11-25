@@ -140,7 +140,9 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
     return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
 }
 
-// FIXME(shotgun): 86.76 %, missing/extra + reloc-name; behaviour drift.
+// Still differs: three of the four tickTimer() tests fold to cmpwi (the original keeps the byte);
+// cases 0 and 7 lay their shared block out first and branch back to it.
+// FIXME: 93.97 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -365,8 +367,9 @@ void UnknownENDM_804AA0FC::update() {
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
-                JGeometry::TVec3f owlPos = owl->mPos;
-                JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
+                JGeometry::TBox2f view;
+                JGeometry::TVec3f owlPos(owl->mPos);
+                view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
                 if ((owl->mSpawnParam_0x90 & 7) == 0) {
                     view.i.x -= 16.0f;
                     view.i.y -= 16.0f;
@@ -499,8 +502,8 @@ bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
 }
 
 // Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
-// Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
-// FIXME: 91.37 %, missing/extra; behaviour drift.
+// Still differs: register choice and instruction order only.
+// FIXME: 99.06 %, scheduling+regalloc; behaviour clean.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
     f32 ty = field_0x244.y;
     f32 tx = field_0x244.x;
@@ -538,9 +541,9 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
 void UnknownENDM_804AA0FC::pool_805412F8() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus(pos);
-    focus += offset;
-    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
+    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TBox2f view;
+    view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
     f32 halfW = view.getWidth() * 0.5f;
     f32 halfH = view.getHeight() * 0.5f;
     if (focus.x + halfW >= field_0x268) {
