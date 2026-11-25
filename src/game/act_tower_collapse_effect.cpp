@@ -37,8 +37,6 @@ TowerCollapseEffect_8049CA40::~TowerCollapseEffect_8049CA40() {
 }
 
 // FIXME: 99.66 %, missing/extra; behaviour clean.
-// The original's mode-1 dispatch has a second unconditional
-// `b` to the end after the state-0 test (0x3E8); ours has one.
 void TowerCollapseEffect_8049CA40::update() {
     switch (mMode) {
     case 0:
@@ -119,6 +117,9 @@ void TowerCollapseEffect_8049CA40::update() {
             }
             break;
         case 1:
+            // Nothing sets state 1 in mode 1; the dispatch keeps it apart from state 2.
+            return;
+        case 2:
             break;
         }
         break;
