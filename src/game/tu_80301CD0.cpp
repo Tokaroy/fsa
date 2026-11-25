@@ -1006,10 +1006,29 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     }
 }
 
+// A record's checksum: the sum of its bytes from the sprite words on. The
+// original holds the loop twice, once per state of the player's queue head entry.
+static inline u8 recordChecksum(s32 player, const cls_804AA858Sub11C* record) {
+    u8 sum = 0;
+    if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        const u8* bytes = (const u8*)&record->f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
+    } else {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        const u8* bytes = (const u8*)&record->f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
+    }
+    return sum;
+}
+
 // The per-frame GBA link update: counts the linked GBAs (the transfer length
 // index), then for every player either sends the regular record, feeds the
 // transfer queue (file words, kinds 6-8) or the message words (kinds 10-12).
-// Still differs: the original has each checksum loop twice (branch on the queue head entry's mUsed).
 // 0x80304FB0
 // FIXME: 77.05 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_80304FB0() {
@@ -1214,12 +1233,7 @@ void cls_804AA8B8::fn_80304FB0() {
                             for (; i < count; i++) {
                                 record->f.mSprites[i].mWord = 0;
                             }
-                            u8 sum = 0;
-                            u8* bytes = (u8*)&record->f.mSprites[0];
-                            s32 size = lbl_80541618[lbl_8053AD08] * 4;
-                            for (s32 k = 8; k < size; k++) {
-                                sum += *bytes++;
-                            }
+                            u8 sum = recordChecksum(player, record);
                             record->f.field_0x0 = sum;
                         } else {
                             fn_8030801C(player);
@@ -1246,12 +1260,7 @@ void cls_804AA8B8::fn_80304FB0() {
                     for (; i < count; i++) {
                         record->f.mSprites[i].mWord = 0;
                     }
-                    u8 sum = 0;
-                    u8* bytes = (u8*)&record->f.mSprites[0];
-                    s32 size = lbl_80541618[lbl_8053AD08] * 4;
-                    for (s32 k = 8; k < size; k++) {
-                        sum += *bytes++;
-                    }
+                    u8 sum = recordChecksum(player, record);
                     record->f.field_0x0 = sum;
                 } else {
                     fn_80307B58(player, false);
@@ -1311,12 +1320,7 @@ void cls_804AA8B8::fn_80304FB0() {
                     break;
                 }
             }
-            u8 sum = 0;
-            u8* bytes = (u8*)&record->f.mSprites[0];
-            s32 size = lbl_80541618[lbl_8053AD08] * 4;
-            for (s32 k = 8; k < size; k++) {
-                sum += *bytes++;
-            }
+            u8 sum = recordChecksum(player, record);
             record->f.field_0x0 = sum;
         } else {
             record->f.mKind = 6;
@@ -1334,12 +1338,7 @@ void cls_804AA8B8::fn_80304FB0() {
             }
             record->f.mSprites[0].mWord = swapBytes(entry->field_0x11a);
             record->f.mSprites[1].mWord = swapBytes(entry->mAddress);
-            u8 sum = 0;
-            u8* bytes = (u8*)&record->f.mSprites[0];
-            s32 size = lbl_80541618[lbl_8053AD08] * 4;
-            for (s32 k = 8; k < size; k++) {
-                sum += *bytes++;
-            }
+            u8 sum = recordChecksum(player, record);
             entry->field_0x104 = 0;
             record->f.field_0x0 = sum;
             entry->field_0x119 = 1;
