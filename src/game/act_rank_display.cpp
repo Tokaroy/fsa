@@ -73,27 +73,28 @@ void RankDisplay_804A8F74::init() {
     mUpdateWhilePaused_0x11f = 1;
 }
 
-// FIXME: 99.2 %. Register allocation only: the loop counters and the read-once
-// rank values sit in other callee-saved registers (r23/r24/r31/r29 swapped),
-// the zero stored for absent players comes from the counter register in the
-// original (mr r27, r31), and the rank counter is cleared one slot earlier.
+// Register allocation only: the loop counters sit in other callee-saved registers.
+// FIXME: 99.67 %, regalloc-only; behaviour clean.
 void RankDisplay_804A8F74::update() {
     JGeometry::TVec3f* player = getPlayerPos_8023E724(0);
     mPos.x = player->x;
     mPos.y = player->y;
     mPos.z = player->z;
+    s32 i;
+    s32 j;
+    s32 rank;
     if (gGameRoot_8053AAF8->field_0x7e == 1) {
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
             // One time per player that takes part in the stage, ranked by
             // fn_80236100 (the lowest time first).
             s32 times[4];
-            for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
+            for (i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
                 times[i] = fn_80236100(i);
             }
-            for (s32 i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
-                s32 rank = 0;
+            for (i = 0; i < gGameRoot_8053AAF8->getPlayerCount_80138A30(); i++) {
+                rank = 0;
                 s32 time = times[i];
-                for (s32 j = 0; j < gGameRoot_8053AAF8->getPlayerCount_80138A30(); j++) {
+                for (j = 0; j < gGameRoot_8053AAF8->getPlayerCount_80138A30(); j++) {
                     if (i != j && time < times[j]) {
                         rank++;
                     }
@@ -102,22 +103,22 @@ void RankDisplay_804A8F74::update() {
             }
         } else {
             s32 pl[4];
-            for (s32 i = 0; i < 4; i++) {
-                if (playerTakesPart(i) == true) {
-                    pl[i] = getPlayerLife_80237774(i);
+            for (j = 0; j < 4; j++) {
+                if (playerTakesPart(j) == true) {
+                    pl[j] = getPlayerLife_80237774(j);
                 } else {
-                    pl[i] = 0;
+                    pl[j] = 0;
                 }
             }
-            for (s32 k = 0; k < 4; k++) {
-                s32 rank = 0;
-                s32 value = pl[k];
-                for (s32 j = 0; j < 4; j++) {
-                    if (k != j && value < pl[j]) {
+            for (i = 0; i < 4; i++) {
+                rank = 0;
+                s32 value = pl[i];
+                for (j = 0; j < 4; j++) {
+                    if (i != j && value < pl[j]) {
                         rank++;
                     }
                 }
-                field_0x244[k] = rank;
+                field_0x244[i] = rank;
             }
         }
     }
