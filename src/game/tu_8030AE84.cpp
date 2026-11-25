@@ -270,12 +270,9 @@ s32* cls_804AA8D8::fn_8030B1E8(u8 layer, u8 mode, u16 scroll) {
         break;
     }
     s16 angle = field_0x2ba;
-    s32* out = field_0x4;
-    for (int i = 0; i < 20; i++) {
-        for (int k = 0; k < 8; k++) {
-            *out++ = (s32)(field_0x2b8 * JMASSin((s16)(angle + k * 0x200)));
-        }
-        angle += 0x1000;
+    for (int i = 0; i < 160; i++) {
+        field_0x4[i] = (s32)(field_0x2b8 * JMASSin(angle));
+        angle += 0x200;
     }
     if (field_0x284 == 0 || field_0x284 == 4) {
         field_0x2b8--;
