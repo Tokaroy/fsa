@@ -29,7 +29,8 @@ void Fairy_804A03B8::vfunc_0x44() {
     }
 }
 
-// FIXME: 97.86 %. Apart from the float literals (`@NNN` against lbl_8053D6xx, a data split), the
+// FIXME: 98.05 %, scheduling+regalloc; behaviour clean.
+// Apart from the float literals (`@NNN` against lbl_8053D6xx, a data split), the
 // save-file block differs in registers: the original keeps the row pointer in r6, loads
 // lbl_80529DEC's count before the 0x339 argument and keeps the table base in r3/r5; ours
 // keeps the row in r5 and loads the count after li r4, 0x339.
@@ -113,7 +114,7 @@ void Fairy_804A03B8::init() {
 }
 
 // 0x8016088C.
-// FIXME(shotgun): 94.67 %, different + reloc-name
+// FIXME(shotgun): 99.16 %, missing/extra; behaviour clean.
 void Fairy_804A03B8::update() {
     if (field_0x268 == 0 && (mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
