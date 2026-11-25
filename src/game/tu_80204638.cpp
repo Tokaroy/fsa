@@ -81,6 +81,23 @@ void cls_80204638::fn_80204834() {
     }
 }
 
+inline s32 cls_80204638::getNearest(const JGeometry::TVec3f* pos) const {
+    s32 nearest = 0;
+    if (mCount > 1) {
+        f32 best = FLT_MAX;
+        for (s32 i = 0; i < mCount; i++) {
+            f32 dy = mPositions[i].y - pos->y;
+            f32 dx = mPositions[i].x - pos->x;
+            f32 dist = square(dx) + square(dy);
+            if (dist < best) {
+                best = dist;
+                nearest = i;
+            }
+        }
+    }
+    return nearest;
+}
+
 // FIXME(shotgun): 95.83 %, missing/extra; behaviour drift.
 bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
     if (mCount >= 10) {
@@ -89,19 +106,7 @@ bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
     bool moved = false;
     if (mCount >= 1) {
         JGeometry::TVec2f p(pos->x, pos->y);
-        s32 nearest = 0;
-        if (mCount > 1) {
-            f32 best = FLT_MAX;
-            for (s32 i = 0; i < mCount; i++) {
-                f32 dy = mPositions[i].y - pos->y;
-                f32 dx = mPositions[i].x - pos->x;
-                f32 dist = square(dx) + square(dy);
-                if (dist < best) {
-                    best = dist;
-                    nearest = i;
-                }
-            }
-        }
+        s32 nearest = getNearest(pos);
         moved = fn_801CB85C((const JGeometry::TVec2f*)&mPositions[nearest], (const JGeometry::TVec2f*)vel, &p, 20.0f, 0.5f);
         if (moved) {
             pos->x = p.x;
