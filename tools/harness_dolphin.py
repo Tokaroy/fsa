@@ -80,6 +80,34 @@ GLOBALS = [  # name, type, guard (None or path), path
     ('gGameRoot2_8053AB10->field_0x24->mViewBox_0x164', 'box2', STAGE_SUB,
      ['gGameRoot2_8053AB10', '*', '+24', '*', '+164']),
 ]
+# Fields a script's `set` step may write besides GLOBALS (Dolphin-side extension, docs/HARNESS_DOLPHIN.md):
+# GameState's saved stage/level, which fsaport's ?stage= sets together with mStage/mLevel.
+SETTABLES = [
+    ('lbl_80529DEC.field_0x128', 's32', ['lbl_80529DEC', '+128']),
+    ('lbl_80529DEC.field_0x12c', 's32', ['lbl_80529DEC', '+12c']),
+]
+# Extra fields for localising a divergence (`run --watch GROUP`), written under "watch" in the
+# state records; not in the port's records, so leave them off for port comparisons.
+GAMEOVER = STAGE_SUB + ['+18', '*']  # GameRootSub04_801F856C::field_0x18 (GameOverScreen_804B17A0)
+WATCH = {
+    # GameRoot_8049EF20's mode-switch state: the archive loads applyRequestedMode_80135494 waits on.
+    'root': [
+        ('gGameRoot_8053AAF8->field_0x7c', 's16', None, ROOT_ + ['+7c']),
+        ('gGameRoot_8053AAF8->field_0x84', 'u8', None, ROOT_ + ['+84']),
+        ('gGameRoot_8053AAF8->field_0xac', 'u32', None, ROOT_ + ['+ac']),
+        ('gGameRoot_8053AAF8->field_0xac->field_0x4', 's32', None, ROOT_ + ['+ac', '*', '+4']),
+        ('gGameRoot_8053AAF8->field_0xb0', 'u32', None, ROOT_ + ['+b0']),
+        ('gGameRoot_8053AAF8->field_0xb0->field_0x4', 's32', None, ROOT_ + ['+b0', '*', '+4']),
+    ],
+    'gameover': [(f'GameOverScreen_804B17A0.{n}', t, STAGE_SUB, GAMEOVER + [f'+{o:x}']) for n, t, o in [
+        ('field_0x38', 's32', 0x38), ('field_0x3c', 's32', 0x3C), ('field_0x40', 'u8', 0x40),
+        ('field_0x41', 'u8', 0x41), ('field_0x42', 'u8', 0x42), ('field_0x43', 'u8', 0x43),
+        ('field_0x44', 's32', 0x44), ('field_0x48', 's32', 0x48), ('field_0x4c', 'f32', 0x4C),
+        ('field_0x50', 'f32', 0x50), ('field_0x54', 's16', 0x54), ('field_0x56', 's16', 0x56),
+        ('field_0x58', 'u8', 0x58), ('field_0x59', 'u8', 0x59), ('field_0x5a', 'u8', 0x5A),
+        ('field_0x5b', 'u8', 0x5B), ('field_0x5c', 'u8', 0x5C), ('field_0x5d', 'u8', 0x5D),
+        ('field_0x5e', 'u8', 0x5E), ('field_0x5f', 'u8', 0x5F)]],
+}
 SCENE = [ROOT_ + ['+4c'], ['lbl_80529DEC', '+118'], ['lbl_80529DEC', '+11c']]
 ACTORS = (STAGE_SUB + ['+8', '*'], 0x8, 0x1008)    # ActorManager_804A5800: mActors[], mActorEnd
 ACTOR_FIELDS = [  # ActorBase_804A5770
@@ -173,7 +201,7 @@ def find_hook(dol_path, syms):
     raise SystemExit('harness_dolphin: no bl PADRead in JUTGamePad::read')
 
 
-def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, script=None):
+def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, script=None, watch=(), logreads=False):
     lines = ['# written by tools/harness_dolphin.py', f'out {out}']
     if inputs:
         lines.append(f'inputs {inputs}')
@@ -181,6 +209,8 @@ def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, scrip
         lines.append(f'script {script}')
     lines.append(f'stop {stop}')
     lines += [f'shot {n}' for n in shots]
+    if logreads:
+        lines.append('logreads')
     if tick != 60:
         lines.append(f'tick {tick}')
     lines.append(f'hook {find_hook(dol_path, syms):08X}')
@@ -189,6 +219,11 @@ def write_spec(path, dol_path, syms, out, inputs, stop, shots=(), tick=60, scrip
         lines.append(f'{key} {path_text(syms, p)}')
     for name, typ, guard, p in GLOBALS:
         lines.append(f'global {name} {typ} {path_text(syms, guard) if guard else "-"} {path_text(syms, p)}')
+    for group in watch:
+        for name, typ, guard, p in WATCH[group]:
+            lines.append(f'watch {name} {typ} {path_text(syms, guard) if guard else "-"} {path_text(syms, p)}')
+    for name, typ, p in SETTABLES:
+        lines.append(f'settable {name} {typ} {path_text(syms, p)}')
     p, arr, end = ACTORS
     lines.append(f'actors {path_text(syms, p)} {arr:X} {end:X}')
     for name, typ, off in ACTOR_FIELDS:
@@ -234,6 +269,42 @@ Options/Always Connected = True
 """
 
 
+def symbolizer(syms):
+    import bisect
+    funcs = sorted((a, size, n) for n, (a, size) in syms.items() if ':' not in n and size)
+    starts = [f[0] for f in funcs]
+
+    def name(addr):
+        i = bisect.bisect_right(starts, addr) - 1
+        if i >= 0 and addr < funcs[i][0] + funcs[i][1]:
+            return f'{funcs[i][2]}+0x{addr - funcs[i][0]:x}'
+        return f'{addr:08x}'
+    return name
+
+
+def invalid_accesses(log, syms):
+    """Dolphin's invalid-access reports (the fork prints LR and the stack's back chain), by read
+    when the run used --log-reads, with symbol names."""
+    name = symbolizer(syms)
+    out, read = [], None
+    try:
+        lines = open(log, errors='replace').read().splitlines()
+    except FileNotFoundError:
+        return out
+    for line in lines:
+        m = re.match(r'\[fsa-harness\] read (\d+)', line)
+        if m:
+            read = int(m.group(1))
+            continue
+        m = re.match(r'\[fsa-harness\] invalid (\w+) ([0-9A-F]+) pc ([0-9A-F]+) lr ([0-9A-F]+) stack(.*)', line)
+        if m:
+            chain = [name(int(x, 16)) for x in m.group(5).split()]
+            where = f'read {read}: ' if read is not None else ''
+            out.append(f'{where}{m.group(1)} {m.group(2)} at {name(int(m.group(3), 16))} '
+                       f'(lr {name(int(m.group(4), 16))}; callers {" < ".join(chain)})')
+    return out
+
+
 def disc_tree(dol, tag):
     """A Dolphin DirectoryBlob tree (sys/ + files/) whose main.dol is `dol`. Booting a bare DOL
     with the disc as Core.DefaultISO hangs before the first pad read; a tree boots like the disc."""
@@ -272,7 +343,16 @@ def run(args):
         shutil.rmtree(out)
     user = os.path.join(out, 'user')  # a fresh user dir each run: empty memory card, same SRAM
     os.makedirs(os.path.join(user, 'Config'))
-    open(os.path.join(user, 'Config', 'Dolphin.ini'), 'w').write(DOLPHIN_INI)
+    ini = DOLPHIN_INI
+    if args.overclock:
+        # A faster emulated CPU makes CPU-bound loads finish in the same number of frames in A
+        # and B (B's C can be slower or faster than the original code; the RNG advances per frame).
+        ini = ini.replace('[DSP]', f'OverclockEnable = True\nOverclock = {args.overclock}\n[DSP]')
+    if not args.disc_timing:
+        # The disc tree puts files after main.dol, so a DOL of another size moves every file and
+        # Dolphin's seek-time model changes load lengths; fast disc speed takes that out.
+        ini = ini.replace('FastDiscSpeed = False', 'FastDiscSpeed = True')
+    open(os.path.join(user, 'Config', 'Dolphin.ini'), 'w').write(ini)
     open(os.path.join(user, 'Config', 'GCPadNew.ini'), 'w').write(GCPAD_INI)
     boot = disc_tree(dol, args.dol if args.dol in ('A', 'B') else 'X-' + os.path.basename(out))
     spec = os.path.join(out, 'spec.txt')
@@ -281,7 +361,8 @@ def run(args):
     script = os.path.abspath(args.script) if args.script else None
     if script and inputs:
         raise SystemExit('harness_dolphin: --script and --inputs exclude each other')
-    write_spec(spec, dol, syms, out, inputs, args.reads, shots, args.tick, script)
+    write_spec(spec, dol, syms, out, inputs, args.reads, shots, args.tick, script,
+               args.watch.split(',') if args.watch else (), args.log_reads)
     name = args.name or 'hd-' + os.path.basename(out)
     log = os.path.join(out, 'dolphin.log')
     env = ['env', '-u', 'DISPLAY', '-u', 'WAYLAND_DISPLAY',
@@ -322,7 +403,12 @@ def run(args):
                 ends.append(line.strip())
     except FileNotFoundError:
         pass
-    print(f'{out}: last sync at read {reads}, {time.time() - t0:.0f}s {" ".join(ends)}')
+    bad = invalid_accesses(log, syms)
+    if bad:
+        with open(os.path.join(out, 'invalid.txt'), 'w') as f:
+            f.write('\n'.join(bad) + '\n')
+    print(f'{out}: last sync at read {reads}, {time.time() - t0:.0f}s {" ".join(ends)}'
+          + (f'; {len(bad)} invalid accesses (OUT/invalid.txt), first: {bad[0]}' if bad else ''))
 
 
 # --- inputs -----------------------------------------------------------------------------------------
@@ -386,10 +472,24 @@ def build_b(args):
         boot = ('import sys,os;sys.path.insert(0,os.getcwd());sys.argv=["configure.py"]+sys.argv[1:];'
                 f'exec(compile(open({conf!r}).read(),"configure.py","exec"),'
                 '{"__name__":"__main__","__file__":os.path.abspath("configure.py")})')
-        subprocess.run([sys.executable, '-c', boot] + cargs, cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
-        r = subprocess.run(['ninja', '-j', str(args.jobs), 'build/G4SE01/fsa_game_code.dol'], cwd=ROOT,
-                           capture_output=True, text=True)
+        # build.ninja regenerates itself with the plain configure.py whenever dtk's config.json
+        # (or configure.py) is newer, which silently links the original objects again: bring
+        # config.json up to date first, then write build.ninja, and check the link inputs after.
+        for _ in range(3):
+            subprocess.run(['ninja', 'build/G4SE01/config.json'], cwd=ROOT, capture_output=True)
+            subprocess.run([sys.executable, '-c', boot] + cargs, cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+            r = subprocess.run(['ninja', '-j', str(args.jobs), 'build/G4SE01/fsa_game_code.dol'], cwd=ROOT,
+                               capture_output=True, text=True)
+            if 'RUN configure.py' not in r.stdout:
+                break
         log = r.stdout + r.stderr
+        ninja_text = open(os.path.join(ROOT, 'build.ninja')).read()
+        link = ninja_text[ninja_text.index('build build/G4SE01/fsa_game_code.elf'):]
+        link = link[:link.index('\n\n')]
+        from_c = sum(1 for u in units - excluded if f'build/G4SE01/src/game/{u}.o' in link)
+        if from_c != len(units - excluded):
+            raise SystemExit(f'harness_dolphin: build.ninja links {from_c} of {len(units - excluded)} '
+                             'units from C (regenerated by the plain configure.py?)')
         open(os.path.join(ROOT, 'build', 'harness_b.log'), 'w').write(log)
         if r.returncode == 0:
             break
@@ -417,8 +517,61 @@ def build_b(args):
         print('harness_dolphin: still not linking after --max-iter')
         return 1
     open(os.path.join(ROOT, 'build', 'harness_b_excluded.txt'), 'w').write('\n'.join(sorted(excluded)) + '\n')
+    same = open(B_DOL, 'rb').read() == open(A_DOL, 'rb').read()
+    if same:
+        print('harness_dolphin: B is byte-identical to the original DOL')
+        return 1
     print(f'B linked: {len(units) - len(excluded)} of {len(units)} NonMatching game units from C; '
           f'excluded {len(excluded)} (build/harness_b_excluded.txt)')
+    return 0
+
+
+def first_diff(args):
+    """The first state record (by anchor order, then offset) where two runs differ, with each
+    differing field and, for actors, the ActorId and slot. Run with --tick 1 for read precision."""
+    sys.path.insert(0, os.path.join(PORT, 'tools'))
+    from harness_compare import diff
+
+    def load(run):
+        anchors, states = [], {}
+        for line in open(os.path.join(run, 'sync.jsonl')):
+            o = json.loads(line)
+            if o['sync'] == 'scene':
+                anchors.append((('scene', o['mode'], o['stage'], o['level']), o['n']))
+            elif o['sync'] == 'step':
+                anchors.append((('step', o['step']), o['n']))
+        for line in open(os.path.join(run, 'state.jsonl')):
+            o = json.loads(line)
+            states[o['n']] = o
+        return anchors, states
+
+    (aa, sa), (ab, sb) = load(args.a), load(args.b)
+    for i, ((ida, na), (idb, nb)) in enumerate(zip(aa, ab)):
+        if ida != idb:
+            print(f'anchor {i}: {ida} at A {na} vs {idb} at B {nb}: sequences differ')
+            return 1
+        enda = aa[i + 1][1] if i + 1 < len(aa) else max(sa) + 1
+        endb = ab[i + 1][1] if i + 1 < len(ab) else max(sb) + 1
+        for off in range(0, min(enda - na, endb - nb)):
+            x, y = sa.get(na + off), sb.get(nb + off)
+            if x is None or y is None:
+                continue
+            x, y = dict(x), dict(y)
+            for o in (x, y):
+                o.pop('n'), o.pop('sync')
+            d = list(diff(x, y))
+            if not d:
+                continue
+            print(f'first difference: anchor {ida} +{off} (A read {na + off}, B read {nb + off}), {len(d)} fields')
+            for path, u, v in d[:args.show]:
+                who = ''
+                m = re.match(r'actors\[(\d+)\]', path)
+                if m and x.get('actors') and int(m.group(1)) < len(x['actors']):
+                    act = x['actors'][int(m.group(1))]
+                    who = f" ({act['mActorId']} slot {act['mSlot']})"
+                print(f'  {path}{who}: {json.dumps(u)} vs {json.dumps(v)}')
+            return 1
+    print('no difference in the matched anchors')
     return 0
 
 
@@ -442,6 +595,11 @@ def main():
     r.add_argument('-o', '--out', required=True)
     r.add_argument('--name', help='sbg process name')
     r.add_argument('--timeout', type=int, default=1800)
+    r.add_argument('--overclock', type=float, help='emulated CPU clock factor (e.g. 4): CPU-bound loads take the same frames in A and B')
+    r.add_argument('--disc-timing', action='store_true',
+                   help="emulate disc timing (default: fast disc speed, so loads don't depend on the DOL's size)")
+    r.add_argument('--watch', help='extra field groups under "watch": ' + ','.join(WATCH))
+    r.add_argument('--log-reads', action='store_true', help='log every read to dolphin.log (places invalid accesses at a read)')
     r.add_argument('--tick', type=int, default=60, help='tick sync points every N reads (default 60, as the port; 1 for a full trace)')
     r.add_argument('--shots', help='comma-separated reads n to screenshot (OUT/shots/nNNNNNN.png)')
     r.add_argument('--keep-user', action='store_true', help='keep the Dolphin user dir (card, logs)')
@@ -462,6 +620,10 @@ def main():
     c.add_argument('--upto', type=int)
     c.add_argument('--show', type=int, default=3)
     c.add_argument('--anchor', choices=['scene'], help='scene/step-anchored comparison (script runs, port vs Dolphin)')
+    f = sub.add_parser('first-diff', help='the first differing state record, anchor-aligned (use --tick 1 runs)')
+    f.add_argument('a')
+    f.add_argument('b')
+    f.add_argument('--show', type=int, default=20)
     args = ap.parse_args()
     if args.cmd == 'run':
         run(args)
@@ -469,6 +631,8 @@ def main():
         make_inputs(args)
     elif args.cmd == 'build-b':
         sys.exit(build_b(args))
+    elif args.cmd == 'first-diff':
+        sys.exit(first_diff(args))
     elif args.cmd == 'compare':
         sys.exit(compare(args))
 

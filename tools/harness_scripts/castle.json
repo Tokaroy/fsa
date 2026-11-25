@@ -1,0 +1,283 @@
+{
+ "version": 1,
+ "comment": "opening.json continued: the opening cutscene (START through the narration, A through its messages) to the Four Sword room, then walking, sword swings, a spin attack, A to pick up / talk, then A every 30 (ends in script_timeout by design). docs/HARNESS_DOLPHIN.md",
+ "steps": [
+  {
+   "comment": "0: boot loader until the title (mode 1)",
+   "wait": {
+    "mode": 1
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "1: title: START until the main menu (mode 2)",
+   "press": [
+    "START"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 2
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "2: main menu: A on Hyrulean Adventure, then A on its START! button, until the file select (mode 3)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 3
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "3: file select: wait for the 'create a file for this game on the Memory Card in Slot A?' prompt (state 7)",
+   "wait": {
+    "lbl_8053ADB0->mState": 7
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "4: move its cursor to Yes (field_0x114 0)",
+   "press": [
+    "LEFT"
+   ],
+   "every": 10,
+   "until": {
+    "lbl_8053ADB0->field_0x114": 0
+   },
+   "timeout": 300
+  },
+  {
+   "comment": "5: A on Yes: state 8 writes the file, state 9 waits for the card",
+   "press": [
+    "A"
+   ],
+   "every": 10,
+   "until": {
+    "lbl_8053ADB0->mState": [
+     8,
+     9,
+     10
+    ]
+   },
+   "timeout": 300
+  },
+  {
+   "comment": "6: until the card write is done ('file created' message, state 10)",
+   "wait": {
+    "lbl_8053ADB0->mState": 10
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "7: the message closes by itself; wait for the file rows (state 5, picking a file)",
+   "wait": {
+    "lbl_8053ADB0->mState": 5
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "8: A on file 1, then A on its menu, until the stage loader (mode 4)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 4
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "9: player count (mode 4): A on Single-Player Game (and on what follows) until the stage is chosen (stage 8, level 3)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "stage": 8,
+    "level": 3
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "10: the stage loads: the opening narration",
+   "wait": {
+    "mode": 7,
+    "stage": 8,
+    "level": 3
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "11: narration: START every 30 until the demo timer (fn_8011921C()->field_0x8) restarts after it (the cutscene)",
+   "press": [
+    "START"
+   ],
+   "every": 30,
+   "until": {
+    "fn_8011921C()->field_0x8": [
+     100,
+     101,
+     102,
+     103,
+     104,
+     105,
+     106,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     113,
+     114,
+     115,
+     116,
+     117,
+     118,
+     119,
+     120
+    ]
+   },
+   "timeout": 6000
+  },
+  {
+   "comment": "12: the cutscene walks Link up to the Four Sword room; A every 30 for its messages, until its demo timer stops at 1551 (Link below the sword, controllable)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "fn_8011921C()->field_0x8": 1551
+   },
+   "timeout": 14000
+  },
+  {
+   "wait_reads": 120
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4,
+   "comment": "sword swings"
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 60,
+   "comment": "walk left and back"
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 60
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 30,
+   "comment": "walk down and back"
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 30
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "comment": "spin attack: hold B, release",
+   "hold": [
+    "B"
+   ],
+   "reads": 120
+  },
+  {
+   "wait_reads": 90
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 70,
+   "comment": "step up to the sword"
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "comment": "grab the Four Sword: hold A, then pull back (stick down) with A held",
+   "hold": [
+    "A"
+   ],
+   "reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 120,
+   "buttons": [
+    "A"
+   ]
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "comment": "A on the Four Sword, then A every 30 through what follows (ends in script_timeout by design)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 99
+   },
+   "timeout": 12000
+  }
+ ]
+}
