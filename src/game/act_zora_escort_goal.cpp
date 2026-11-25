@@ -88,7 +88,7 @@ void ZoraEscortGoal_8049E424::init() {
     }
 }
 
-// FIXME: 98.09 %, missing/extra; behaviour drift.
+// FIXME: 98.37 %, scheduling; behaviour drift.
 // ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for openMessage_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
 void ZoraEscortGoal_8049E424::update() {
     ActorBase_804A5770::update();
@@ -235,7 +235,6 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
     return false;
 }
 
-// FIXME: 99.30 %, missing/extra; behaviour drift.
 void ZoraEscortGoal_8049E424::setState_80126A4C(s32 arg) {
     field_0x230 = arg;
     switch (arg) {
