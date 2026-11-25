@@ -703,12 +703,6 @@ bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
     return true;
 }
 
-static inline void setLifeMeter(LifeMeter_804B174C* meter, s32 serial, f32 yOffset, s32 index) {
-    meter->field_0x250 = serial;
-    meter->field_0x254 = yOffset;
-    meter->field_0x24c = index;
-}
-
 void PrincessZelda_8049CEE0::fn_80109534() {
     if (field_0x310 < 0) {
         field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
@@ -731,9 +725,9 @@ void PrincessZelda_8049CEE0::fn_80109534() {
     switch (field_0x328) {
     case 12:
         if (mSpriteAnim.mKey < 8) {
-            setLifeMeter(meter, mSerial, -28.0f, mLife + 2);
+            meter->fn_8019CEF8(mSerial, -28.0f, mLife + 2);
         } else if (mSpriteAnim.mKey < 12) {
-            setLifeMeter(meter, mSerial, -28.0f, mLife);
+            meter->fn_8019CEF8(mSerial, -28.0f, mLife);
         } else {
             meter->mDrawEnabled = false;
         }
@@ -744,11 +738,11 @@ void PrincessZelda_8049CEE0::fn_80109534() {
             return;
         }
         if (life == 4) {
-            setLifeMeter(meter, mSerial, -28.0f, life);
+            meter->fn_8019CEF8(mSerial, -28.0f, life);
         } else if (field_0x30c < 45 && field_0x2f8 != 0) {
-            setLifeMeter(meter, mSerial, -28.0f, life + 2);
+            meter->fn_8019CEF8(mSerial, -28.0f, life + 2);
         } else {
-            setLifeMeter(meter, mSerial, -28.0f, life);
+            meter->fn_8019CEF8(mSerial, -28.0f, life);
         }
         break;
     }
