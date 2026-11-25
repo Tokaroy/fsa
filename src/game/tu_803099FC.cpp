@@ -78,7 +78,7 @@ s32 getPlayerInputSlot_8030AAF4(s32 player) {
     return -0x3E7;
 }
 
-// FIXME(shotgun): 98.31 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.67 %, missing/extra; behaviour near.
 // What still differs: the target materialises mState >= 4 as a value (li 4; subi; orc; srwi;
 // subf; srwi.) as main in tu_801344C0 does, where we emit cmplwi 4; and the target does not mask
 // fn_803006E8's result at the call (ours clrlwi), which suggests it returns a 32-bit value.
