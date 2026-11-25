@@ -364,7 +364,7 @@ static inline s32 getRank(s32 p) {
     return rank;
 }
 
-// FIXME(shotgun): 98.10 %, different; behaviour clean.
+// FIXME(shotgun): 99.83 %, regalloc-only; behaviour clean.
 void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
