@@ -456,10 +456,12 @@ void SlingshotSeed_804AB3A8::update() {
 }
 
 // 0x803239A0.
-// FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
 void SlingshotSeed_804AB3A8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x10.a = (u8)(s32)field_0x234;
+    params.field_0x1d = 0;
+    params.field_0x1c = 0;
+    params.field_0x20 = 0;
     if (field_0x94 == 1 && mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, 0xE7, &params, 1.0f, 1.0f);
