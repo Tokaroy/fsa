@@ -117,7 +117,8 @@ def argregs(name):
 def sort_key(e):
     """Order for commutative operands that doesn't depend on register names (entry symbols
     are paired between the sides, so their names must not decide the order)."""
-    return re.sub(r"\('entry', \d+, '[to]', '[rf]\d+'\)", "E", repr(e))
+    k = re.sub(r"\('entry', \d+, '[to]', '[rf]\d+'\)", "E", repr(e))
+    return re.sub(r"\('rel', '[^']*'\)", "R", k)  # relocation names differ between the objects too
 
 
 class Side:
