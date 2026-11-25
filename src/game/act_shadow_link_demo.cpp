@@ -82,6 +82,7 @@ inline void ShadowLinkCutscene_8049DB90::movePlayers_8011C4A8() {
 }
 
 // Only register numbers differ.
+// FIXME: 99.85 %, regalloc-only; behaviour drift.
 void ShadowLinkCutscene_8049DB90::update() {
     DemoActorBase_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
