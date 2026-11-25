@@ -1756,6 +1756,16 @@ void ActorBase_804A5770::playSe_801F0D20(u32 id) {
     gAudioMgr_8053AF80->playSystemSound_80458880(id, -1);
 }
 
+// Draws frame `frame` of the "SOB " bank `name` at pos on a map layer (below 8). drawSprite_801F06F0
+// tests the layer twice in a row (bge / bge at 0x801F0C50): its own test and this one's.
+static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame,
+                           SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY) {
+    if (layer < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, scaleX, scaleY);
+    }
+}
+
 // FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (drawShadow_801EF830) unless
@@ -1821,8 +1831,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
         }
     }
     if (mLayer_0x4 < 8) {
-        void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, r, frame, &sp, scaleX, scaleY);
+        drawSob(mLayer_0x4, &mPos, name, frame, &sp, scaleX, scaleY);
     } else if (mLayer_0x4 == 8 && name[6] != 'g') {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TVec3f pos = mPos;
