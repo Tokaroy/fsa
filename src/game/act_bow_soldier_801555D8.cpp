@@ -1111,7 +1111,10 @@ void BowSoldier_804A00C8::update() {
 
 // FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
 void BowSoldier_804A00C8::draw() {
-    if (field_0x94 == 2 || field_0x278 != 0) {
+    if (field_0x94 == 2) {
+        return;
+    }
+    if (field_0x278 != 0) {
         return;
     }
     SpriteParams_801F5AE0 params;
@@ -1164,7 +1167,7 @@ void BowSoldier_804A00C8::draw() {
         JGeometry::TVec3f pos = mPos;
         mPos.y -= 6.0f;
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x274 + 0x4F, &params, -1, 1.0f, 1.0f);
-        mPos = pos;
+        mPos.set(pos);
         mtx[0][0] = 1.3f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
