@@ -36,7 +36,6 @@ TowerCollapseEffect_8049CA40::~TowerCollapseEffect_8049CA40() {
     }
 }
 
-// FIXME: 99.66 %, missing/extra; behaviour clean.
 void TowerCollapseEffect_8049CA40::update() {
     switch (mMode) {
     case 0:
@@ -144,7 +143,7 @@ void TowerCollapseEffect_8049CA40::draw() {
     }
 }
 
-// FIXME: 98.53 %, operands; behaviour drift.
+// FIXME: 98.54 %, regalloc-only; behaviour clean.
 // FIXME: setRotScaleMtx float regalloc.
 void TowerCollapseEffect_8049CA40::fn_80103348() {
     SpriteParams_801F5AE0 params;
