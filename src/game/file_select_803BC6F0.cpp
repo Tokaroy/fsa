@@ -1807,10 +1807,8 @@ void FileSelect_804AFF60::fn_803CABAC() {
 // FIXME: 98.32 %, different; behaviour near.
 // (try.py: different, same length; registers shift from it).
 // As fn_803C2E24: the original keeps &others in r27 from the fill loop on
-// (`mr r3, r27`) and walks it in the row loop; ours computes &others again
-// before the row loop. A second pointer variable holding &others gets the
-// fill right but copies it for the walk (98.39, one more instruction).
-// Every field, call and branch is the original's.
+// (`mr r3, r27`, a separate fill pointer) and walks it in the row loop.
+// Registers and instruction order still differ.
 // State 20 (copy, from fn_803C1340): the board slides out while row
 // field_0xa4 takes its highlighted colours (fadeFileRow_803BC6F0), the four buttons
 // slide out, and the other two rows slide back in, spaced around the middle
@@ -1837,9 +1835,10 @@ void FileSelect_804AFF60::fn_803C9F80() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -1867,30 +1866,30 @@ void FileSelect_804AFF60::fn_803C9F80() {
     // The middle of the second and third rows' places.
     f32 midRow = (field_0x38[1]->field_0xc + field_0x38[2]->field_0xc) * 0.5f;
     f32 midTab = (field_0x44[1]->field_0xc + field_0x44[2]->field_0xc) * 0.5f;
-    for (s32 i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            if (others[i] == 0) {
+            if (*other == 0) {
                 field_0x70[0] = midRow - field_0x38[0]->field_0xc;
                 field_0x64[0] = midTab - field_0x44[0]->field_0xc;
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[0]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[0]);
-            } else if (others[i] == 1) {
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[0]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[0]);
+            } else if (*other == 1) {
                 field_0x70[1] = (midRow - field_0x38[1]->field_0xc) + i * (field_0x38[2]->field_0xc - field_0x38[1]->field_0xc);
                 field_0x64[1] = (midTab - field_0x44[1]->field_0xc) + i * (field_0x44[2]->field_0xc - field_0x44[1]->field_0xc);
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[1]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[1]);
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[1]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[1]);
             } else {
                 field_0x70[2] = midRow - field_0x38[1]->field_0xc;
                 field_0x64[2] = midTab - field_0x44[1]->field_0xc;
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[2]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[2]);
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[2]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[2]);
             }
-            field_0x38[others[i]]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->animateAlpha_80402628(rowFrames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->animateAlpha_80402628(rowFrames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     field_0x70[field_0xa4] = field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc;
