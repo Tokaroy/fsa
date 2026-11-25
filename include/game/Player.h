@@ -565,7 +565,7 @@ public:
     bool fn_80270ABC() const; // bool: its body only returns li 1 / li 0 and a neg/andc/srwi test; fn_80270C88 returns it unchanged as its bool
     void fn_802709C8(); // BgRewrite fn_802A20F0 on mFrontPos_0x30c; called by player_80256C74
     void fn_80270D08(); // counts field_0x464 and field_0x468 down; called by player_8023FBF0 and player_80285E58
-    bool hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg); // hitPlayerGroup_80238548 on this player; called with (0, &mPos, 0x12)
+    u8 hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg); // hitPlayerGroup_80238548 on this player; called with (0, &mPos, 0x12)
     void fn_8027221C(s32 value); // field_0xbf4 = value
     // player_8026FC20, not written yet; called by the reset resetSlot_80254744 and update A.
     void fn_80276538(); // sets the box field_0x4c0 around mPos
@@ -623,7 +623,7 @@ public:
     void fn_80248E94(bool flag); // via fn_8022AF78 (tu_8022AD64); clrlwi 24, compared with 1
     void fn_80270948(const JGeometry::TVec3f* pos); // called by player_8023FBF0 fn_802422D0; 0xD10 = pos (mPos if NULL) once while down
     void fn_8027057C(); // called by fn_80277F98 (update of state 0x33): revive (inlines addLife_80270DDC)
-    bool fn_80271098(const JGeometry::TVec3f* pos); // via fn_802379E4
+    u8 fn_80271098(const JGeometry::TVec3f* pos); // via fn_802379E4
     s32 fn_80272184(); // via fn_8023B630
     s32 fn_802721A8(); // via fn_8023B6CC
     bool fn_802729F0(s32 serial) const; // via fn_80239718
@@ -1177,8 +1177,8 @@ public:
     void fn_8024ECCC(s32 value); // via fn_8023619C
     void fn_8024ED4C(s32 value); // via fn_802362C4
     bool fn_80247594(s32 arg); // via fn_80237488
-    bool fn_80271038(const JGeometry::TVec2f* pos); // via fn_802378AC
-    bool fn_80271068(const JGeometry::TVec2f* pos); // via fn_80237948
+    u8 fn_80271038(const JGeometry::TVec2f* pos); // via fn_802378AC
+    u8 fn_80271068(const JGeometry::TVec2f* pos); // via fn_80237948
     bool fn_80256C74(const JGeometry::TBox2f* box, s32 layer); // player_80256C74; box test on field_0x5dc, called by fn_8023A6CC
     // player_8023FBF0 (0x80241618): field_0xc10 = item, field_0xc14 = level (kept at 2 or more
     // unless level >= 2), sets the player's bit in lbl_8053AED0 0x255; returns true. Result unused.
@@ -1747,7 +1747,7 @@ void fn_8023DF68(s32 player, const JGeometry::TVec3f* pos);
 // active, fn_80271098(player object, pos), which is hitPlayerGroup_80238548(player, 0,
 // pos, 13): the hit position (act_cactus passes its mPos; the others a stack
 // vector whose x and y they store).
-bool fn_802379E4(s32 player, const JGeometry::TVec3f* pos);
+u8 fn_802379E4(s32 player, const JGeometry::TVec3f* pos);
 
 // Owner unit tu_8022AD64. 1 unit (act_thwomp). If `player`
 // is active (slot present, byte 0xCAC set), fn_802732C4(player object, box,
@@ -1820,7 +1820,7 @@ s32 fn_80239108(s32 serial);
 bool arePlayersInSameGroup_8022E438(s32 player, s32 other);
 // Hits `player` at `pos` and every player of its group at the same offset from its own
 // position (damagePlayersInBox_801F2B7C: hitPlayerGroup_80238548(player, damage, &pos, arg)); reads pos+0/+4 only.
-bool hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg);
+u8 hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg);
 // Whether fn_8024D058(flag) / fn_8024157C(arg) accepts for every present player of a present
 // `player`'s group (arePlayersInSameGroup_8022E438). fn_8023061C: 4 units (act_dummy_conversation, act_shop_item,
 // ...; li 0); fn_802370FC: 1 unit (act_great_fairy_bfry).
@@ -1985,13 +1985,13 @@ bool fn_8023B848(s32 player, const JGeometry::TBox2f* box, s32 layer, JGeometry:
 void fn_8023DEDC(s32 player, const JGeometry::TVec3f* offset);
 s32 fn_8023EC54(s32 player);
 s32 getPlayerHeldPlayer_8023ECF0(s32 player);
-bool fn_80237948(s32 player, const JGeometry::TVec2f* pos);
+u8 fn_80237948(s32 player, const JGeometry::TVec2f* pos);
 void fn_8022E114(s32 player, JGeometry::TVec3f* out);
 s32 fn_8022F340(s32 player);
 bool fn_80230E1C(s32 player, bool flag);
 void dropPlayerForceGems_80236074(s32 player, s32 value, s32 arg);
 void fn_802362C4(s32 player, s32 value);
-bool fn_802378AC(s32 player, const JGeometry::TVec2f* pos);
+u8 fn_802378AC(s32 player, const JGeometry::TVec2f* pos);
 bool fn_8022F784(s32 player, s32 a, const JGeometry::TVec3f* pos);
 bool fn_802302C4(s32 player, s32 a, u8 b);
 bool fn_802303FC(s32 player, const JGeometry::TVec3f* pos, u8 flag);

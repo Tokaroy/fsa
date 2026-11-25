@@ -1542,11 +1542,7 @@ s32 fn_8023885C(s32 serial) {
 // same offset from its own position (fn_802710C8, then endFormActor_80248FF0 when it
 // lands); then fn_80270D34(damage) on every player who follows a leader.
 // Whether `player` itself was hit.
-// The original returns `clrlwi r3, hit, 24`, ours `mr`: a u8 return gives the
-// clrlwi but breaks the bool wrappers fn_80271038 / fn_80271068 / fn_80271098 /
-// hitOwnGroup_80272160.
-// FIXME: 99.70 %, different; behaviour near.
-bool hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
+u8 hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }
@@ -1679,7 +1675,7 @@ bool fn_80237A80(s32 player) {
     return true;
 }
 
-bool fn_802379E4(s32 player, const JGeometry::TVec3f* pos) {
+u8 fn_802379E4(s32 player, const JGeometry::TVec3f* pos) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }
@@ -1689,7 +1685,7 @@ bool fn_802379E4(s32 player, const JGeometry::TVec3f* pos) {
     return false;
 }
 
-bool fn_80237948(s32 player, const JGeometry::TVec2f* pos) {
+u8 fn_80237948(s32 player, const JGeometry::TVec2f* pos) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }
@@ -1699,7 +1695,7 @@ bool fn_80237948(s32 player, const JGeometry::TVec2f* pos) {
     return false;
 }
 
-bool fn_802378AC(s32 player, const JGeometry::TVec2f* pos) {
+u8 fn_802378AC(s32 player, const JGeometry::TVec2f* pos) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }
