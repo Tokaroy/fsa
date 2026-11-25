@@ -22,11 +22,11 @@ f32 lbl_804A3108[48] = {
     -10.0f, 8.0f, 10.0f, 32.0f, -10.0f, -36.0f, 10.0f, -12.0f,
 };
 // Boxes by direction (x0, y0, x1, y1).
-f32 lbl_804A31C8[16] = {
-    0.0f, -8.0f, 100.0f, 8.0f,
-    -100.0f, -8.0f, 0.0f, 8.0f,
-    -8.0f, 0.0f, 8.0f, 100.0f,
-    -8.0f, -100.0f, 8.0f, 0.0f,
+f32 lbl_804A31C8[4][4] = {
+    { 0.0f, -8.0f, 100.0f, 8.0f },
+    { -100.0f, -8.0f, 0.0f, 8.0f },
+    { -8.0f, 0.0f, 8.0f, 100.0f },
+    { -8.0f, -100.0f, 8.0f, 0.0f },
 };
 // Sprite names by animation frame.
 const char* lbl_804A3208[75] = {
@@ -721,8 +721,8 @@ void Dodongo_804A3334::fn_801ACCF0() {
         }
 
         if (mTimers[0] == 0) {
-            const f32* boxData = &lbl_804A31C8[mDir_0x98 * 4];
-            mBox.set(scale * boxData[0], scale * boxData[1], scale * boxData[2], scale * boxData[3]);
+            mBox.set(scale * lbl_804A31C8[mDir_0x98][0], scale * lbl_804A31C8[mDir_0x98][1],
+                     scale * lbl_804A31C8[mDir_0x98][2], scale * lbl_804A31C8[mDir_0x98][3]);
             damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
             fn_801F2B20(5);
 
