@@ -6,6 +6,13 @@
 #include "game/Player.h"
 #include "game/act/act_blizzard_8033F448.h"
 
+// The visible box is passed by value: that is what makes the original copy it to
+// the stack (lwz/stw) before reading it with lfs.
+static inline void getCenter(f32& x, f32& y, JGeometry::TBox2f box) {
+    x = box.f.x + 0.5f * (box.i.x - box.f.x);
+    y = box.f.y + 0.5f * (box.i.y - box.f.y);
+}
+
 void Blizzard_804AC388::init() {
     field_0x230 = 300;
     field_0x234 = (mSpawnParam_0x90 >> 4) & 0xF;
@@ -15,15 +22,8 @@ void Blizzard_804AC388::init() {
 }
 
 // FIXME: 91.71 %, missing/extra; behaviour drift.
-// Three differences remain. (1) The original builds the
-// hitPlayerGroup_80238548 position as an 8-byte stack object (x, y copied from the player
-// at 0x8/0xC, then +0.1 and -0.1; hitPlayerGroup_80238548 reads only x and y), while a
-// TVec3f local puts it at 0x14 and skips the copy; a const TVec2f* prototype
-// would fit but act_attack_hitbox_when_player_is_thrown passes &mPos. (2) The
-// visible box is copied to the stack with lwz/stw (0x1C..0x28) and then read
-// with lfs; here the copy is elided and the lfs read the view directly. (3) The
-// spawned flag is r28 and the second loop's i r29 in the original, the reverse
-// here (the frame is 0x10 bytes larger in the original for (1) and (2)).
+// The spawned flag is r28 and the loop counters r29 in the original, the
+// reverse here; everything else is the same.
 void Blizzard_804AC388::update() {
     bool spawned = false;
     if (field_0x23c == true) {
@@ -53,9 +53,9 @@ void Blizzard_804AC388::update() {
             field_0x230 = 300;
         }
         if (spawned) {
-            JGeometry::TBox2f box = getGameView_802D6A9C()->mVisibleBox;
-            f32 x = box.f.x + 0.5f * (box.i.x - box.f.x);
-            f32 y = box.f.y + 0.5f * (box.i.y - box.f.y);
+            f32 x;
+            f32 y;
+            getCenter(x, y, getGameView_802D6A9C()->mVisibleBox);
             startSound_801F0E34(0x30036, 0);
             JGeometry::TVec3f pos(x, y, 0.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
