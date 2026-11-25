@@ -141,7 +141,7 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
 }
 
 // Still differs: cases 0 and 7 lay their shared block out first and branch back to it.
-// FIXME: 93.97 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.42 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
