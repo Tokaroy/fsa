@@ -81,13 +81,6 @@ bool WoodenForceGem_804AB1F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
     return tile != 0;
 }
 
-// FIXME: 98.27%. The emitter block in case 3 still differs: the original also stores 1
-// at offset 0x24 of the emitter (after the status-bit store, which stopCreateParticle
-// covers) and orders the pointer and status work differently, so the registers differ.
-// include/JSystem/JParticle/JPAEmitter.h has no field at 0x24 (mEmitterRot is an s16
-// vector there), so it needs a header decision outside include/game/. The original also
-// stores and reloads field_0x250 near the end of the function (the field_0x248 == 1
-// block), which ours does not.
 void WoodenForceGem_804AB1F0::update() {
     JGeometry::TBox2f box(mBox.i, mBox.f);
     JGeometry::TVec2f p(mPos.x, mPos.y);
@@ -143,7 +136,7 @@ void WoodenForceGem_804AB1F0::update() {
     }
     case 3:
         if (field_0x230 == 3 && mEmitter268 != NULL) {
-            mEmitter268->stopCreateParticle();
+            mEmitter268->becomeInvalidEmitter();
             mEmitter268 = NULL;
         }
         // fall through
@@ -158,7 +151,8 @@ void WoodenForceGem_804AB1F0::update() {
     if (field_0x248 == 1) {
         field_0x24c--;
         if (field_0x24c <= 0) {
-            field_0x250 = (field_0x250 + 1) & 3;
+            field_0x250++;
+            field_0x250 &= 3;
             if (field_0x250 == 0) {
                 field_0x24c = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 60.0f) + 60;
             } else {
@@ -168,7 +162,8 @@ void WoodenForceGem_804AB1F0::update() {
     }
 }
 
-// FIXME: 98.60 %. Register allocation and scheduling only: the scale (field_0x240,
+// FIXME: 98.60 %, scheduling+regalloc; behaviour clean.
+// Register allocation and scheduling only: the scale (field_0x240,
 // or field_0x238 * field_0x240 in the branch) and the sine results sit in other
 // saved registers than the original's, and the products take another operand order.
 void WoodenForceGem_804AB1F0::draw() {
