@@ -2472,8 +2472,9 @@ bool fn_80234134(s32 player) {
     return gPlayerManager_8053AC90->mPlayers[player]->fn_80240870();
 }
 
-// No final return (see progress/game__tu_8022AD64.md, "Missing final return"): an inactive
-// player falls through with r3 still the index, which the caller uses.
+// The original has no final return: an inactive player falls through with r3 still the
+// index, which the caller (cls_804AA8B8::fn_80306A94) uses. Written out as `return player`
+// (same code under MWCC) so other compilers return it too (found by the browser port).
 s32 fn_802340A0(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
@@ -2481,6 +2482,7 @@ s32 fn_802340A0(s32 player) {
     if (isPlayerActive_8023F264(player)) {
         return gPlayerManager_8053AC90->mPlayers[player]->fn_80240868();
     }
+    return player;
 }
 
 s32 fn_80234004(s32 player) {
