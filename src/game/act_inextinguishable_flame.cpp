@@ -97,8 +97,9 @@ InextinguishableFlame_804A9D28::~InextinguishableFlame_804A9D28() {
 // The state machine. States: 0 wait for the view (field_0x300), 1 search for a
 // tile, 2 spawn the grid, 3 hit, 4 spawn a BLZE actor, 5 count down, 6 wait
 // for the player's hit. The grids are walked in the order of the spawn loops.
-// FIXME: 99.57 %, operands; behaviour drift.
 void InextinguishableFlame_804A9D28::update() {
+    s32 i;
+    s32 j;
     JGeometry::TVec3f pos = mPos;
     if (mState >= 1) {
         fn_8020D58C()->addBox(mSerial);
@@ -111,8 +112,8 @@ void InextinguishableFlame_804A9D28::update() {
         if (mFlag300 == 0 || (mFlag300 != 0 && isScreenFlagSet_0x34() == true)) {
             JGeometry::TVec3f grid = mPos;
             s32 n = 0;
-            for (s32 i = 0; i < mCountX; i++) {
-                for (s32 j = 0; j < mCountY; j++) {
+            for (i = 0; i < mCountX; i++) {
+                for (j = 0; j < mCountY; j++) {
                     mEmitters[0][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
                     mEmitters[1][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
                     mEmitters[2][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
@@ -134,7 +135,7 @@ void InextinguishableFlame_804A9D28::update() {
         break;
     }
     case 1:
-        for (s32 i = 0; i < 8; i++) {
+        for (i = 0; i < 8; i++) {
             JGeometry::TVec3f tile;
             tile.x = mPos.x + lbl_8046F0C8[i];
             tile.y = mPos.y + lbl_8046F108[i];
@@ -153,8 +154,8 @@ void InextinguishableFlame_804A9D28::update() {
             getGameView_802D6A9C()->setSwitchBit_802D8050(mViewBit, true, 0xFF);
             vfunc_0x54();
             s32 n = 0;
-            for (s32 i = 0; i < mCountX; i++) {
-                for (s32 j = 0; j < mCountY; j++) {
+            for (i = 0; i < mCountX; i++) {
+                for (j = 0; j < mCountY; j++) {
                     mEmitters[0][n] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4f2, 1, 0, NULL, NULL, true, 1.0f);
                     pos.y += 16.0f;
                     n++;
@@ -169,14 +170,15 @@ void InextinguishableFlame_804A9D28::update() {
         }
         {
             JGeometry::TVec3f origin = mPos;
-            for (s32 i = 0; i < mCountX; i++) {
-                for (s32 j = 0; j < mCountY; j++) {
+            JGeometry::TBox2f box;
+            for (i = 0; i < mCountX; i++) {
+                for (j = 0; j < mCountY; j++) {
                     JGeometry::TVec3f probe = mPos;
                     if (vfunc_0x58(&probe) == true) {
                         mState = 3;
                         return;
                     }
-                    JGeometry::TBox2f box(mBox);
+                    box.set(mBox);
                     box.addPos(mPos.x, mPos.y);
                     damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 7);
                     box = mMapBox_0x80;
@@ -194,8 +196,8 @@ void InextinguishableFlame_804A9D28::update() {
         break;
     case 3:
         vfunc_0x54();
-        for (s32 i = 0; i < mCountX; i++) {
-            for (s32 j = 0; j < mCountY; j++) {
+        for (i = 0; i < mCountX; i++) {
+            for (j = 0; j < mCountY; j++) {
                 getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &pos, (mDir_0x98 << 4) | 0xF, -1, -1);
                 mActorId = 'BLZE';
                 pos.y += 16.0f;
