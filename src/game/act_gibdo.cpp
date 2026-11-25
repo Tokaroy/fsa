@@ -199,7 +199,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
 void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
-        if (mFlags & 0x8000) {
+        if (checkFlag(0x8000)) {
             if (mStateTimer >= 5) {
                 mFlags &= ~0x8000;
             }
@@ -220,7 +220,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 fn_801B9DD4(1);
             } else {
                 bool turn = false;
-                if (mFlags & 0x2000) {
+                if (checkFlag(0x2000)) {
                     mFlags &= ~0x2000;
                     turn = true;
                 }
@@ -237,7 +237,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
     case 1:
         if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             bool turn = false;
-            if (mFlags & 0x2000) {
+            if (checkFlag(0x2000)) {
                 mFlags &= ~0x2000;
                 turn = true;
             }
@@ -279,10 +279,10 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 dir = 3;
                 break;
             }
-            if (mDir_0x98 == dir) {
-                fn_801B9DD4(0);
-            } else {
+            if (dir != mDir_0x98) {
                 fn_801B9DD4(2);
+            } else {
+                fn_801B9DD4(0);
             }
         }
         break;
@@ -302,7 +302,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         break;
     }
 
-    if (mState != 0 || (mFlags & 0x8000)) {
+    if (mState != 0 || checkFlag(0x8000)) {
         mTargetSpeed = 0.0f;
     } else {
         switch (mAnim.mCel) {
