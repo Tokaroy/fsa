@@ -98,8 +98,7 @@ void GreatFairy_8049EB8C::init() {
     mDrawEnabled = false;
     if (field_0x238 == 1 && isScreenFlagSet_0x34()) {
         mDrawEnabled = true;
-        JGeometry::TVec3f pos = mPos;
-        field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+        spawnAuraEmitter();
         setState_80132454(2);
     }
 }
@@ -131,8 +130,7 @@ void GreatFairy_8049EB8C::update() {
     case 1:
         field_0x244++;
         if (field_0x244 >= 40) {
-            JGeometry::TVec3f pos = mPos;
-            field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+            spawnAuraEmitter();
             mDrawEnabled = true;
             startSound_801F0E34(0x40090, 0);
             setState_80132454(2);
@@ -288,7 +286,6 @@ u8 GreatFairy_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
 // FIXME: 99.94 %, operands; behaviour drift.
 void GreatFairy_8049EB8C::setState_80132454(s32 index) {
     switch (field_0x234 = index) {
@@ -306,8 +303,7 @@ void GreatFairy_8049EB8C::setState_80132454(s32 index) {
         startSound_801F0E34(0x400D9, 0);
         break;
     case 5: {
-        JGeometry::TVec3f pos = mPos;
-        field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+        spawnAuraEmitter();
         mDrawEnabled = true;
         startSound_801F0E34(0x40090, 0);
         break;
@@ -551,7 +547,7 @@ void GreatFairy_8049EB8C::placeAtBarrier() {
         pos.x += 20.0f;
         setPlayerFacing_80230BF4(i, 3);
         fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-        fn_802303FC(i, &pos, true);
+        fn_802303FC(i, &pos, 0xFF);
     }
 }
 
