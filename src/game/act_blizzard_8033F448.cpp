@@ -21,9 +21,8 @@ void Blizzard_804AC388::init() {
     field_0x23c = false;
 }
 
-// FIXME: 99.06 %, operands; behaviour clean.
-// The spawned flag is r28 and the loop counters r29 in the original, the
-// reverse here; everything else is the same.
+// FIXME: regalloc-only. The spawned flag is r28 and the second and third loop
+// counter r29 in the original, the reverse here.
 void Blizzard_804AC388::update() {
     bool spawned = false;
     if (field_0x23c == true) {
@@ -57,8 +56,7 @@ void Blizzard_804AC388::update() {
             f32 y;
             getCenter(x, y, getGameView_802D6A9C()->mVisibleBox);
             startSound_801F0E34(0x30036, 0);
-            JGeometry::TVec3f pos(x, y, 0.0f);
-            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(x, y, 0.0f), 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
         }
         for (s32 i = 0; i < 4; i++) {
             if (!hasPlayerLeader_8022F514(i) && fn_80236A18(i) && isPlayerActive_8023F264(i)) {
