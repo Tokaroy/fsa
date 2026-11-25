@@ -14,6 +14,9 @@
 // The point in front of a player, by its facing (getPlayerFacing_80230CFC): (x, y) offsets.
 static const f32 lbl_80472190[4][2] = {{16.0f, 0.0f}, {-16.0f, 0.0f}, {0.0f, 16.0f}, {0.0f, -16.0f}};
 
+static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+    return x >= x0 && y >= y0 && x < x1 && y < y1;
+}
 
 void TwoPersonLiftableRock_804AC950::init() {
     mBox.i.x = -14.0f;
@@ -112,19 +115,22 @@ void TwoPersonLiftableRock_804AC950::vfunc_0x10() {
 // FIXME(shotgun): 94.59 %, different; behaviour near.
 void TwoPersonLiftableRock_804AC950::update() {
     JGeometry::TBox2f box(mMapBox_0x80);
-    f32 x0 = -16.0f + mPos.x;
-    f32 y0 = -16.0f + mPos.y;
-    f32 x1 = 16.0f + mPos.x;
-    f32 y1 = 16.0f + mPos.y;
+    f32 x0 = -16.0f;
+    f32 y0 = -16.0f;
+    f32 x1 = 16.0f;
+    f32 y1 = 16.0f;
     box.i.x += mPos.x;
     box.f.x += mPos.x;
+    x0 += mPos.x;
+    x1 += mPos.x;
     box.i.y += mPos.y;
     box.f.y += mPos.y;
+    y0 += mPos.y;
+    y1 += mPos.y;
     switch (field_0x230) {
     case 0: {
         fn_80239914(&box, mLayer_0x4, mSerial);
-        CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, mLayer_0x4, mSerial);
+        fn_8020D58C()->addBox(&box, mLayer_0x4, mSerial);
         field_0x234[0] = -1;
         field_0x234[1] = -1;
         field_0x234[2] = -1;
@@ -146,17 +152,9 @@ void TwoPersonLiftableRock_804AC950::update() {
             py += lbl_80472190[dir][1];
             field_0x25c[i] = fn_8022C004(i);
             if (field_0x25c[i] == 1 && fn_8023E8F0(i) == 1 && fn_8023188C(i) == 1 && fn_802319B4(i, 0x11) == 1 &&
-                !fn_80234D94(i)) {
-                bool inside = false;
-                if (px >= x0 && py >= y0 && px < x1 && py < y1) {
-                    inside = true;
-                }
-                if (inside == 1) {
-                    field_0x234[i] = dir;
-                    field_0x244[field_0x234[i]]++;
-                } else {
-                    field_0x25c[i] = 0;
-                }
+                !fn_80234D94(i) && contains(px, py, x0, y0, x1, y1) == 1) {
+                field_0x234[i] = dir;
+                field_0x244[field_0x234[i]]++;
             } else {
                 field_0x25c[i] = 0;
             }
@@ -187,21 +185,11 @@ void TwoPersonLiftableRock_804AC950::update() {
             for (s32 j = 0; j < field_0x244[field_0x388] - 2; j++) {
                 f32 best = 0.0f;
                 s32 far;
-                if (best < dist[0]) {
-                    best = dist[0];
-                    far = 0;
-                }
-                if (best < dist[1]) {
-                    best = dist[1];
-                    far = 1;
-                }
-                if (best < dist[2]) {
-                    best = dist[2];
-                    far = 2;
-                }
-                if (best < dist[3]) {
-                    best = dist[3];
-                    far = 3;
+                for (s32 k = 0; k < 4; k++) {
+                    if (best < dist[k]) {
+                        best = dist[k];
+                        far = k;
+                    }
                 }
                 if (best > 0.0f) {
                     field_0x234[far] = -1;
@@ -216,7 +204,8 @@ void TwoPersonLiftableRock_804AC950::update() {
                 field_0x320[i].field_0x10 = fn_8022CAF8(i);
                 if (field_0x234[i] == field_0x388 && count < 2) {
                     if (fn_8022F9E4(i, mSerial, true, false)) {
-                        field_0x254[count++] = i;
+                        field_0x254[count] = i;
+                        count++;
                         if (count >= 2) {
                             if (getScreenFlagBit_0x3C() > 0) {
                                 setScreenFlag_0x30(0xFF, true);
@@ -265,8 +254,7 @@ void TwoPersonLiftableRock_804AC950::update() {
                     f32 dx = pos.x - prev.x;
                     f32 dy = pos.y - prev.y;
                     if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) > 2.0f) {
-                        JGeometry::TVec3f back = prev - pos;
-                        fn_8023DFF4(i, &back);
+                        fn_8023DFF4(i, &(prev - pos));
                     }
                 }
                 if (field_0x234[i] == field_0x388) {
@@ -277,9 +265,7 @@ void TwoPersonLiftableRock_804AC950::update() {
             held[0].add(held[1]);
             held[0].scale(0.5f);
             if (held[0].z > 0.0f) {
-                mPos.x = held[0].x;
-                mPos.y = held[0].y;
-                mPos.z = held[0].z;
+                mPos.set(held[0]);
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             }
             if (mPos.z <= 0.0f) {
@@ -302,7 +288,7 @@ void TwoPersonLiftableRock_804AC950::update() {
                 field_0x230 = 2;
                 field_0x37c = 0;
             } else {
-                u8 mask = getPlayersInBox_801F2740(-1);
+                s32 mask = getPlayersInBox_801F2740(-1);
                 bool hit = false;
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {
