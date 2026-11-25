@@ -171,7 +171,7 @@ inline bool CrystalCutscene_8049D83C::isSkipPressed() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour drift.
 void CrystalCutscene_8049D83C::update() {
     DemoActorBase_8049D140::update();
     updateCameraFocus();
@@ -347,7 +347,7 @@ void CrystalCutscene_8049D83C::vfunc_0x54() {
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.93 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 98.07 %, scheduling+regalloc; behaviour drift.
 void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -557,7 +557,6 @@ static inline void drawSob_80113B54(ActorBase_804A5770* actor, const char* name,
     }
 }
 
-// FIXME: 96.91 %, missing/extra; behaviour clean.
 void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -572,7 +571,6 @@ void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     }
 }
 
-// FIXME(shotgun): 99.68 %, same-text; behaviour clean.
 void CrystalCutscene_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
