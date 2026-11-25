@@ -850,11 +850,13 @@ void BigMoldorm_8049F6C8::draw() {
     params.field_0x1d = 1;
     if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
         if (lbl_8053AB34 == 1) {
-            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 0, true, 1.0f, 1.0f);
+            drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x176, NULL, -1, 1, false, 1.0f, 1.0f);
         }
         return;
     }
-    JGeometry::TVec3f saved = mPos;
+    f32 savedX = mPos.x;
+    f32 savedY = mPos.y;
+    f32 savedZ = mPos.z;
     mPos.x = field_0x2c0[7].x;
     mPos.y = field_0x2c0[7].y;
     mPos.z = field_0x2c0[7].z;
@@ -866,13 +868,21 @@ void BigMoldorm_8049F6C8::draw() {
         mPos.x = field_0x2c0[i + 1].x;
         mPos.y = field_0x2c0[i + 1].y;
         mPos.z = field_0x2c0[i + 1].z;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
         f32 scale = 1.0f - 0.08f * i;
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x2ac[i + 1] / -10430.219f, 0.0f), scale);
         params.mMtx = mtx;
         drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[field_0x25c + 3]), &params, -1, 0.0f, 0.0f, 0.0f);
     }
-    mPos.set(saved);
+    mPos.x = savedX;
+    mPos.y = savedY;
+    mPos.z = savedZ;
     params.field_0x1d = 7;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x284 / -10430.219f, 0.0f), 1.0f);
     params.mMtx = mtx;
     drawSpriteRes_801EFD34(getBossArchiveResource_804032E8('DEGT', lbl_8049F698[lbl_80539F60[field_0x258]]), &params, -1, 0.0f, 0.0f, 0.0f);
