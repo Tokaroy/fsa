@@ -37,9 +37,48 @@ void TingleTimeUpManager_804ACBF0::init() {
     field_0x260 = 0.0f;
 }
 
+// The force gems still lying around are removed when the time is up.
+static inline void removeForceGems() {
+    s32 count = getActorManager_801F856C()->getActorEnd();
+    for (s32 i = 0; i < count; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+        if (actor != NULL) {
+            u32 id = actor->mActorId;
+            if (id == ACTOR_RUPY) {
+                ForceGem_804AB6D8* gem = static_cast<ForceGem_804AB6D8*>(actor);
+                s32 state = gem->field_0x230;
+                // Range tests written as (u32)(state - N) <= K: the natural == / >= && <= forms compile to different code (tried: 90.9 % and 90.0 % vs 91.2 %).
+                if (state == 0 || (u32)(state - 15) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 13) {
+                    actor->markDead_801F3668();
+                }
+            } else if (id == ACTOR_ESRY) {
+                FleeingForceGem_804AB170* gem = static_cast<FleeingForceGem_804AB170*>(actor);
+                s32 state = gem->field_0x230;
+                if (state == 0 || (u32)(state - 3) <= 1 || state == 10) {
+                    actor->markDead_801F3668();
+                }
+            } else if (id == ACTOR_HNRY) {
+                WingedForceGem_804AB098* gem = static_cast<WingedForceGem_804AB098*>(actor);
+                s32 state = gem->field_0x230;
+                if (state == 0 || state == 3 || state == 4) {
+                    if (gem->field_0x281 == 0) {
+                        actor->markDead_801F3668();
+                    }
+                }
+            } else if (id == ACTOR_WDRY) {
+                actor->markDead_801F3668();
+            } else if (id == ACTOR_BRRY) {
+                BuriedForceGem_804AB258* gem = static_cast<BuriedForceGem_804AB258*>(actor);
+                if (gem->field_0x230 == 0) {
+                    actor->markDead_801F3668();
+                }
+            }
+        }
+    }
+}
+
 // FIXME: 97.98 %, different; behaviour drift.
-// FIXME: `this` is kept in r30 instead of r28, and state 2's loop sets its
-// i*4 offset with li 0 where the original copies i (mr) after loading the count.
+// FIXME: a few volatile float/int registers differ in the pos/vel expressions.
 void TingleTimeUpManager_804ACBF0::update() {
     if (mState != 0 && mState != 7) {
         cls_804A03A8* obj30 = gGameRoot2_8053AB10->field_0x30;
@@ -129,42 +168,7 @@ void TingleTimeUpManager_804ACBF0::update() {
         if (mTimer <= 0) {
             mTimer = 150;
             mState = 5;
-            s32 count = getActorManager_801F856C()->getActorEnd();
-            for (s32 i = 0; i < count; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-                if (actor != NULL) {
-                    u32 id = actor->mActorId;
-                    if (id == ACTOR_RUPY) {
-                        ForceGem_804AB6D8* gem = static_cast<ForceGem_804AB6D8*>(actor);
-                        s32 state = gem->field_0x230;
-                        // Range tests written as (u32)(state - N) <= K: the natural == / >= && <= forms compile to different code (tried: 90.9 % and 90.0 % vs 91.2 %).
-                        if (state == 0 || (u32)(state - 15) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 13) {
-                            actor->markDead_801F3668();
-                        }
-                    } else if (id == ACTOR_ESRY) {
-                        FleeingForceGem_804AB170* gem = static_cast<FleeingForceGem_804AB170*>(actor);
-                        s32 state = gem->field_0x230;
-                        if (state == 0 || (u32)(state - 3) <= 1 || state == 10) {
-                            actor->markDead_801F3668();
-                        }
-                    } else if (id == ACTOR_HNRY) {
-                        WingedForceGem_804AB098* gem = static_cast<WingedForceGem_804AB098*>(actor);
-                        s32 state = gem->field_0x230;
-                        if (state == 0 || state == 3 || state == 4) {
-                            if (gem->field_0x281 == 0) {
-                                actor->markDead_801F3668();
-                            }
-                        }
-                    } else if (id == ACTOR_WDRY) {
-                        actor->markDead_801F3668();
-                    } else if (id == ACTOR_BRRY) {
-                        BuriedForceGem_804AB258* gem = static_cast<BuriedForceGem_804AB258*>(actor);
-                        if (gem->field_0x230 == 0) {
-                            actor->markDead_801F3668();
-                        }
-                    }
-                }
-            }
+            removeForceGems();
         }
         break;
     case 5:
