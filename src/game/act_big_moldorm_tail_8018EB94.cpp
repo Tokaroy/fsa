@@ -97,7 +97,7 @@ void BigMoldormTail_804A1FA0::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 96.39 %, different; behaviour drift.
+// FIXME(shotgun): 97.57 %, missing/extra; behaviour drift.
 // The four indexed history copies add 0x2d0 with an extra addi; the original folds it into the load offsets.
 void BigMoldormTail_804A1FA0::update() {
     JGeometry::TVec3f savedPos = mPos;
