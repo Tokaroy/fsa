@@ -122,7 +122,7 @@ void GamblingShop_804AAA70::vfunc_0x10() {
     }
 }
 
-// FIXME: 99.03 %, missing/extra; behaviour drift.
+// FIXME: 99.18 %, scheduling+regalloc; behaviour drift.
 void GamblingShop_804AAA70::update() {
     // FIXME: 98.67 %. The layer is read through getField_0x4() (before the
     // getPlayerLayer_8023DE58 calls, as the original). The player/layer and
@@ -441,6 +441,7 @@ void GamblingShop_804AAA70::swapTwoChests() {
         field_0x250[2] = tmp;
         break;
     }
+    case 2:
     default: {
         s32 tmp = field_0x250[0];
         field_0x250[0] = field_0x250[2];
