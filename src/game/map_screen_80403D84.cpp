@@ -61,9 +61,15 @@ static const u64 lbl_8048C2F8[32][2] = {
     {'Ppoint49', 'Ppoint50'}, {'Ppoint51', 'Ppoint52'}, {'Ppoint53', 'Ppoint54'}, {'Ppoint55', 'Ppoint56'},
     {'Ppoint57', 'Ppoint58'}, {'Ppoint59', 'Ppoint60'}, {'Ppoint61', 'Ppoint62'}, {'Ppoint63', 'Ppoint64'},
 };
-static const u64 lbl_8048C4F8[27] = {
+// Three arrays: the constructor indexes the Ptink and Ttlv tables from their own
+// addresses (rodata base + 0x340 / + 0x380).
+static const u64 lbl_8048C4F8[8] = {
     'Ndata11', 'Ndata12', 'Ndata13', 'Ndata14', 'Ndata15', 'Ndata16', 'Ndata17', 'Ndata18',
+};
+static const u64 lbl_8048C538[8] = {
     'Ptink01', 'Ptink02', 'Ptink03', 'Ptink04', 'Ptink05', 'Ptink06', 'Ptink07', 'Ptink08',
+};
+static const u64 lbl_8048C578[11] = {
     'Ttlv11', 'Ttlv12', 'Ptlvb11', 'Ptlvbk11', 'Ptlvb12', 'Ptlvbk12', 'Ptlvb13', 'Ptlvb14',
     'Ptlvb15', 'Ptlvbk13', 'Ptlvbk14',
 };
@@ -76,27 +82,22 @@ static const u64 lbl_8048C618[4][2] = {
     {'Plicu01', 'Plicu02'}, {'Plicu07', 'Plicu08'}, {'Plicu03', 'Plicu04'}, {'Plicu05', 'Plicu06'},
 };
 // The level rows (two bars and a text box each), the 15 Pbs/Pdot marks and the
-// 24 Ppl panes in 8 rows of 3.
-static const struct {
-    u64 rows[8][3];
-    u64 marks[15];
-    u64 pl[8][3];
-} lbl_8048C658 = {
-    {
-        {'Plv1b02', 'Plv1b01', 'Tlv01'}, {'Plv2b02', 'Plv2b01', 'Tlv02'},
-        {'Plv3b02', 'Plv3b01', 'Tlv03'}, {'Plv4b02', 'Plv4b01', 'Tlv04'},
-        {'Plv5b02', 'Plv5b01', 'Tlv05'}, {'Plv6b02', 'Plv6b01', 'Tlv06'},
-        {'Plv7b02', 'Plv7b01', 'Tlv07'}, {'Plv8b02', 'Plv8b01', 'Tlv08'},
-    },
-    {
-        'Pbsk01', 'Pdot03', 'Pdot02', 'Pdot01', 'Pbsbb05', 'Pbsbb04', 'Pbsbb03', 'Pbsbb02',
-        'Pbsbb01', 'Pbsb05', 'Pbsb04', 'Pbsb03', 'Pbsb02', 'Pbsb01', 'Pbs01',
-    },
-    {
-        {'Ppl01', 'Ppl02', 'Ppl03'}, {'Ppl04', 'Ppl05', 'Ppl06'}, {'Ppl07', 'Ppl08', 'Ppl09'},
-        {'Ppl10', 'Ppl11', 'Ppl12'}, {'Ppl13', 'Ppl14', 'Ppl15'}, {'Ppl16', 'Ppl17', 'Ppl18'},
-        {'Ppl19', 'Ppl20', 'Ppl21'}, {'Ppl22', 'Ppl23', 'Ppl24'},
-    },
+// 24 Ppl panes in 8 rows of 3: three arrays, the constructor indexes the marks and
+// the Ppl table from their own addresses (rodata base + 0x520 / + 0x598).
+static const u64 lbl_8048C658[8][3] = {
+    {'Plv1b02', 'Plv1b01', 'Tlv01'}, {'Plv2b02', 'Plv2b01', 'Tlv02'},
+    {'Plv3b02', 'Plv3b01', 'Tlv03'}, {'Plv4b02', 'Plv4b01', 'Tlv04'},
+    {'Plv5b02', 'Plv5b01', 'Tlv05'}, {'Plv6b02', 'Plv6b01', 'Tlv06'},
+    {'Plv7b02', 'Plv7b01', 'Tlv07'}, {'Plv8b02', 'Plv8b01', 'Tlv08'},
+};
+static const u64 lbl_8048C718[15] = {
+    'Pbsk01', 'Pdot03', 'Pdot02', 'Pdot01', 'Pbsbb05', 'Pbsbb04', 'Pbsbb03', 'Pbsbb02',
+    'Pbsbb01', 'Pbsb05', 'Pbsb04', 'Pbsb03', 'Pbsb02', 'Pbsb01', 'Pbs01',
+};
+static const u64 lbl_8048C790[8][3] = {
+    {'Ppl01', 'Ppl02', 'Ppl03'}, {'Ppl04', 'Ppl05', 'Ppl06'}, {'Ppl07', 'Ppl08', 'Ppl09'},
+    {'Ppl10', 'Ppl11', 'Ppl12'}, {'Ppl13', 'Ppl14', 'Ppl15'}, {'Ppl16', 'Ppl17', 'Ppl18'},
+    {'Ppl19', 'Ppl20', 'Ppl21'}, {'Ppl22', 'Ppl23', 'Ppl24'},
 };
 static const f32 lbl_8048C850[7] = {
     1034.0f, 1277.0f, 1277.0f, 1034.0f, 1216.0f, 1277.0f, 1034.0f,
@@ -298,7 +299,7 @@ void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src) {
     *dst = *src;
 }
 
-// FIXME(shotgun): 98.00 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.74 %, missing/extra + reloc-name; behaviour drift.
 MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053ADF8 = this;
     lbl_80529DEC.field_0x23e[1] = 0;
@@ -359,8 +360,8 @@ MapScreen_804B1288::MapScreen_804B1288() {
     static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv13'))->setFont(lbl_8053AD78->getFont());
     static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search('Ttlv14'))->setFont(lbl_8053AD78->getFont());
     for (s32 i = 0; i < 8; i++) {
-        static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][2]))->setFont(lbl_8053AD78->getFont());
-        getMessageText_803832BC(static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][2]))->getStringPtr(),
+        static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658[i][2]))->setFont(lbl_8053AD78->getFont());
+        getMessageText_803832BC(static_cast<J2DTextBox*>(mMapAreaScreen_0x10->search(lbl_8048C658[i][2]))->getStringPtr(),
                                 lbl_8048C218[i], 0, NULL, NULL);
     }
     for (s32 i = 0; i < 8; i++) {
@@ -368,28 +369,29 @@ MapScreen_804B1288::MapScreen_804B1288() {
     }
     static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmmt02'))->setFont(lbl_8053AD78->getFont());
     static_cast<J2DTextBox*>(mMessageWindowScreen_0x18->search('Tmmt01'))->setFont(lbl_8053AD78->getFont());
-    field_0x404 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.x - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.x;
-    field_0x408 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.y - mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->getBounds()->i.y;
+    field_0x404 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.x - mMapAreaScreen_0x10->search(lbl_8048C658[1][0])->getBounds()->i.x;
+    field_0x408 = mMapAreaScreen_0x10->search('Plvcu')->getBounds()->i.y - mMapAreaScreen_0x10->search(lbl_8048C658[1][0])->getBounds()->i.y;
     mMapAreaScreen_0x10->search('Plvcu')->setAlpha(0);
-    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][0])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][0])->getBounds()->i.x,
-                                              (mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][0])->getBounds()->i.y + mMapAreaScreen_0x10->search(lbl_8048C658.rows[2][0])->getBounds()->i.y) * 0.5f);
-    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][1])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][1])->getBounds()->i.x,
-                                              mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][1])->getBounds()->i.y);
-    mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][2])->move(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][2])->getBounds()->i.x,
-                                              mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][2])->getBounds()->i.y);
+    // Differs: the original loads each getBounds() float right after the call, ours keeps the pointer.
+    mMapAreaScreen_0x10->search(lbl_8048C658[1][0])->move(mMapAreaScreen_0x10->search(lbl_8048C658[0][0])->getBounds()->i.x,
+                                              (mMapAreaScreen_0x10->search(lbl_8048C658[0][0])->getBounds()->i.y + mMapAreaScreen_0x10->search(lbl_8048C658[2][0])->getBounds()->i.y) * 0.5f);
+    mMapAreaScreen_0x10->search(lbl_8048C658[1][1])->move(mMapAreaScreen_0x10->search(lbl_8048C658[0][1])->getBounds()->i.x,
+                                              mMapAreaScreen_0x10->search(lbl_8048C658[0][1])->getBounds()->i.y);
+    mMapAreaScreen_0x10->search(lbl_8048C658[1][2])->move(mMapAreaScreen_0x10->search(lbl_8048C658[0][2])->getBounds()->i.x,
+                                              mMapAreaScreen_0x10->search(lbl_8048C658[0][2])->getBounds()->i.y);
     for (s32 i = 0; i < 3; i++) {
-        mMapAreaScreen_0x10->search(lbl_8048C658.rows[1][i])->resize(mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][i])->getWidth(),
-                                                        mMapAreaScreen_0x10->search(lbl_8048C658.rows[0][i])->getHeight());
+        mMapAreaScreen_0x10->search(lbl_8048C658[1][i])->resize(mMapAreaScreen_0x10->search(lbl_8048C658[0][i])->getWidth(),
+                                                        mMapAreaScreen_0x10->search(lbl_8048C658[0][i])->getHeight());
     }
     for (s32 i = 0; i < 8; i++) {
         for (s32 j = 0; j < 3; j++) {
             mLevelRowPanes_0x28[i][j] = new PaneCtrl_804AF86C;
-            mLevelRowPanes_0x28[i][j]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.rows[i][j]));
+            mLevelRowPanes_0x28[i][j]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658[i][j]));
         }
     }
     for (s32 i = 0; i < 15; i++) {
         field_0x278[i] = new PaneCtrl_804AF86C;
-        field_0x278[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.marks[i]));
+        field_0x278[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C718[i]));
         for (s32 j = 0; j < 20; j++) {
             field_0x278[i]->animateAlpha_80402628(20, field_0x278[i]->field_0x28, 0);
         }
@@ -423,11 +425,11 @@ MapScreen_804B1288::MapScreen_804B1288() {
     }
     for (s32 i = 0; i < 24; i++) {
         field_0x1a8[i] = new PaneCtrl_804AF86C;
-        field_0x1a8[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C658.pl[i / 3][i % 3]));
+        field_0x1a8[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C790[i / 3][i % 3]));
     }
     for (s32 i = 0; i < 8; i++) {
         mTinkPanes_0x208[i] = new PaneCtrl_804AF86C;
-        mTinkPanes_0x208[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C4F8[8 + i]));
+        mTinkPanes_0x208[i]->setPane_80402F04(mMapAreaScreen_0x10->search(lbl_8048C538[i]));
     }
     mLevelCursorPanes_0x228[0][0] = new PaneCtrl_804AF86C;
     mLevelCursorPanes_0x228[0][0]->setPane_80402F04(mMapAreaScreen_0x10->search('Plvcu01'));
@@ -502,7 +504,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
         }
     }
     for (s32 i = 0; i < 11; i++) {
-        field_0x64b[i] = mMapAreaScreen_0x10->search(lbl_8048C4F8[16 + i])->getAlpha();
+        field_0x64b[i] = mMapAreaScreen_0x10->search(lbl_8048C578[i])->getAlpha();
     }
     for (s32 i = 0; i < 9; i++) {
         field_0x642[i] = mMapTenScreen_0x14->search(lbl_8048C5D0[i])->getAlpha();
@@ -983,8 +985,8 @@ void MapScreen_804B1288::update_804108B4() {
         }
     }
     if (mStage_0x340 < 8) {
-        mMapAreaScreen_0x10->search('Plvcu')->move(field_0x404 + mMapAreaScreen_0x10->search(lbl_8048C658.rows[mStage_0x340][0])->getBounds()->i.x,
-                                          field_0x408 + mMapAreaScreen_0x10->search(lbl_8048C658.rows[mStage_0x340][0])->getBounds()->i.y);
+        mMapAreaScreen_0x10->search('Plvcu')->move(field_0x404 + mMapAreaScreen_0x10->search(lbl_8048C658[mStage_0x340][0])->getBounds()->i.x,
+                                          field_0x408 + mMapAreaScreen_0x10->search(lbl_8048C658[mStage_0x340][0])->getBounds()->i.y);
         if (!isCursorState() || field_0x42e != 0) {
             field_0x42e++;
             if (field_0x42e >= 60) {
