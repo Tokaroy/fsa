@@ -45,8 +45,6 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
     }
 }
 
-// FIXME: 99.61 %, missing/extra; behaviour near.
-// One instruction differs (see try.py).
 void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0xE;
@@ -54,7 +52,8 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
     if (viewLayerFlag(mLayer_0x4)) {
         params.field_0x1f = 0;
     }
-    if (field_0x560 != 4 && (mState == 8 || mState == 9)) {
+    s32 playerNo = field_0x560;
+    if (playerNo != 4 && (mState == 8 || mState == 9)) {
         if (mState == 8) {
             params.field_0x10.a = 0xFF;
         } else {
@@ -73,8 +72,8 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
             drawSprite_801F06F0("player_sob.bin", frame, &params, 7, 1.0f, 1.0f);
         }
     } else {
-        if (field_0x560 != 4 && mState > 8 && mState != 0x29) {
-            params.field_0x0[7] = field_0x560 + 0xC;
+        if (playerNo != 4 && mState > 8 && mState != 0x29) {
+            params.field_0x0[7] = playerNo + 0xC;
         }
         if (mState == 0x10) {
             if (mSpriteParams.mMtx == NULL) {
