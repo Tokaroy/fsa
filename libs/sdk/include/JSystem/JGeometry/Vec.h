@@ -284,7 +284,7 @@ namespace JGeometry {
             return *this;
         }
 
-        TVec3 operator-(const TVec3 &operand)
+        TVec3 operator-(const TVec3 &operand) const
         {
             TVec3 tmp(*this);
             tmp -= operand;
