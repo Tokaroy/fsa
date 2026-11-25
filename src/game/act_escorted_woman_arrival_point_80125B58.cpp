@@ -81,7 +81,7 @@ inline void EscortedWomanArrivalPoint_8049E350::enterState() {
 }
 
 // 0x80125EFC.
-// FIXME: 93.08 %, missing/extra; behaviour clean.
+// FIXME: 98.45 %, scheduling; behaviour clean.
 void EscortedWomanArrivalPoint_8049E350::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
