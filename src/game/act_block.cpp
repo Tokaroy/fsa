@@ -6,7 +6,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 
-static const f32 lbl_8046C120[4][3] = {
+static const Vec lbl_8046C120[4] = {
     {0.5f, 0.0f, 0.0f},
     {-0.5f, 0.0f, 0.0f},
     {0.0f, 0.5f, 0.0f},
@@ -49,16 +49,15 @@ f32 lbl_804A79E0[4][3] = {
 };
 
 // FIXME: 97.59 %, different + reloc-name; behaviour drift.
-// Same length; the int-to-float conversion of the first position is scheduled differently (stw/lis/stfd order)
-// and one table load is lfsx instead of lfs (class: different + reloc-name).
+// Only the float literal symbol names differ (pool not yet in the original order).
 void Block_804A7A10::init() {
     field_0x244 = 0;
     s32 type = mSpawnParam_0x90 & 3;
     if (type == 0) {
         mPos.x = (s32)mPos.x / 16 * 16 + 8;
         mPos.y = (s32)mPos.y / 16 * 16 + 8;
-        u8 dir = (mSpawnParam_0x90 >> 2) & 3;
-        mVel_0x3c.set(lbl_8046C120[dir][0], lbl_8046C120[dir][1], lbl_8046C120[dir][2]);
+        const Vec* dirVec = &lbl_8046C120[(mSpawnParam_0x90 >> 2) & 3];
+        mVel_0x3c.set(dirVec->x, dirVec->y, dirVec->z);
         JGeometry::TVec3f checkPos = mVel_0x3c;
         checkPos.normalize();
         checkPos.scale(16.0f);
