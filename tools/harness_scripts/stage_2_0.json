@@ -102,12 +102,13 @@
    "timeout": 1200
   },
   {
-   "comment": "10: Dolphin-side `set` step (not in the port's interpreter): enter stage 2 level 0 instead of the opening, as fsaport's ?stage= does (mStage/mLevel and GameState 0x128/0x12C)",
+   "comment": "10: `set` step (fsaport docs/HARNESS.md): enter stage 2 level 0 instead of the opening, as fsaport's ?stage= does (mStage/mLevel and GameState 0x128/0x12C), and start it from RNG seed 12345 (seed_on_stage: applied when createModeScreen_80135020(7) builds the stage, before its actors spawn), so runs whose menus took different numbers of frames start the stage alike",
    "set": {
     "lbl_80529DEC.mStage_0x118": 2,
     "lbl_80529DEC.field_0x128": 2,
     "lbl_80529DEC.mLevel_0x11c": 0,
-    "lbl_80529DEC.field_0x12c": 0
+    "lbl_80529DEC.field_0x12c": 0,
+    "seed_on_stage": 12345
    }
   },
   {

@@ -140,12 +140,19 @@ timer are identical at every offset; only the seed differs.
   B swings, a spin attack, A for lifting / throwing / talking / messages),
   about 25,000 reads (7 minutes of game time). Other stages or lengths:
   `python3 tools/harness_scripts/gen_stage.py S L ROUNDS`.
-- `set` (`{"set": {GLOBAL: number, ...}}`, zero reads) is a **Dolphin-side
-  extension**: the port's interpreter does not have it, so these scripts are
-  for A vs B. Settable names are the state globals plus `SETTABLES` in the
-  driver (`lbl_80529DEC.field_0x128` / `field_0x12c`). The port could do the
-  same write in its harness; until it does, compare stages with the port
-  through its own `?stage=`.
+- `set` (`{"set": {NAME: number, ...}}`, zero reads) follows fsaport
+  docs/HARNESS.md "set": GameState's `lbl_80529DEC.mStage_0x118` (alias
+  `stage`), `.mLevel_0x11c` (`level`), `.field_0x128`, `.field_0x12c`,
+  `gGameRoot_8053AAF8->mRandom.seed` (alias `seed`, written at once) and
+  `seed_on_stage` (u32): kept and written to the seed by a second HLE hook
+  at the entry of `GameRoot_8049EF20::createModeScreen_80135020` (spec
+  `stagehook`, 0x80135020 in A, from the map in B) when r4 (the mode) is 7,
+  i.e. before `GameRootSub04_801F856C`'s constructor spawns the stage's
+  actors, then disarmed (dolphin.log: `[fsa-harness] seed ... applied`). The
+  Dolphin side also accepts any other state global by name. The stage
+  scripts set `seed_on_stage` 12345 in the step that sets the stage, so the
+  stage starts from the same RNG state however long the menus took (the
+  port's menus are shorter than Dolphin's).
 - **Localising a divergence**: `run --tick 1` (a state record every read),
   `run --watch GROUP` (extra fields under `"watch"` in the state records,
   e.g. `root` for GameRoot's mode-switch archive loads, `gameover` for
