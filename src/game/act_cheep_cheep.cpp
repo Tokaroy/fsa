@@ -71,7 +71,7 @@ bool CheepCheep_804A11B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos
     return false;
 }
 
-// FIXME: 98.81%. try.py class different, same instruction count: the 0.0f / hitVec.y loads for the fcmpu are swapped between f0 and f1; in case 1 the constant loads (0.3f, 1.0f, 16.0f, 96.0f) and the get_ufloat_1 temporaries use other float registers, and the fabs/fsubs operands are scheduled differently; the stack slots of the float-conversion temporaries in case 1 (sp+0x8) and the std::sqrtf (sp+0xC) are swapped; the r3/r4 argument loads for isOutsideView_801F6758 in case 1 are swapped.
+// FIXME: operands: in case 1 the constant loads (0.3f, 1.0f, 16.0f, 96.0f) and the get_ufloat_1 temporaries use other float registers; the stack slots of the get_ufloat_1 conversion temporary (sp+0x8) and the std::sqrtf one (sp+0xC) are swapped.
 void CheepCheep_804A11B8::update() {
     JGeometry::TVec3f hitVec;
     u8 turnAround = 0;
@@ -84,7 +84,7 @@ void CheepCheep_804A11B8::update() {
     hitVec.y = 0.0f;
     hitVec.x = 0.0f;
     u8 hit = sweepMapBox_801F2618(&hitVec, false);
-    if (field_0x258 == 1 && hitVec.y != 0.0f) {
+    if (field_0x258 == 1 && hitVec.y) {
         hit = 0;
     }
     if (damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 1)) {
