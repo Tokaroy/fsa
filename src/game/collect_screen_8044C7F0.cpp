@@ -78,7 +78,7 @@ bool fn_80453848(JPABaseEmitter* emitter) {
 
 WindowCornerColors_80453830::WindowCornerColors_80453830() {}
 
-// FIXME: 97.31 %, missing/extra; behaviour near.
+// FIXME: 97.63 %, missing/extra; behaviour near.
 CollectScreen_804B1D58::CollectScreen_804B1D58() {
     lbl_8053AF40 = this;
     mScreen = new J2DScreen;
@@ -346,7 +346,7 @@ void CollectScreen_804B1D58::fn_804522C8() {
 // Steps the screen's states (field_0xfa): slides the tabs and data panes in and out, moves the
 // cursor between the three tabs, runs the yes/no window, plays the two row-clear sequences;
 // then blinks 'Pswbli' / 'Pcul01', runs the animations and keeps the emitters on their panes.
-// FIXME: 98.54 %, missing/extra; behaviour drift.
+// FIXME: 98.85 %, missing/extra; behaviour drift.
 s32 CollectScreen_804B1D58::fn_8044F680() {
     field_0x184 = 9;
     s16 start = lbl_8050DB0C.field_0x4c[(0x238 - 0x4C) / 2];
@@ -1005,7 +1005,7 @@ inline void CollectScreen_804B1D58::setDigits(s32 value) {
 
 // Refreshes the screen: recolours the three tabs, shows the rupee count, the players' rows and
 // emitters, the second list's rows, and the total (field_0x11c) or the digits of what is left.
-// FIXME: 97.17 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.39 %, missing/extra; behaviour clean.
 void CollectScreen_804B1D58::fn_8044D894() {
     for (s32 i = 0; i < 3; i++) {
         if (i == field_0xf8) {
@@ -1249,7 +1249,6 @@ void CollectScreen_804B1D58::fn_8044D894() {
 }
 
 // Selects row `arg` (0-3) of the second list; like fn_8044CB08, with one emitter (field_0xb0).
-// FIXME(shotgun): 99.37 %, same-text; behaviour clean.
 void CollectScreen_804B1D58::fn_8044D298(int arg) {
     if (arg >= 0 && arg <= 3) {
         gGameRoot_8053AAF8->fn_80134D20(false);
@@ -1302,7 +1301,6 @@ u8 CollectScreen_804B1D58::fn_8044D290() {
 
 // Selects row `arg` (0-6): recolours the cursor panes, hides the row's panes and starts its two
 // emitters (stopped at once: the status bits 1, 2 and 4).
-// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void CollectScreen_804B1D58::fn_8044CB08(int arg) {
     if (arg >= 0 && arg <= 6) {
         gGameRoot_8053AAF8->fn_80134D20(false);
