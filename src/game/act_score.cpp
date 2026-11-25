@@ -243,36 +243,26 @@ void Score_804AF4C0::updateState2() {
 }
 
 #pragma auto_inline off
-// Draws one digit of the gem value at x, in the gem-yellow colour.
-static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
-
 // Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
-static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
-    if (self->mLayer_0x4 < 8) {
-        JGeometry::TVec3f pos = JGeometry::TVec3f(self->mPos);
-        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
-    }
-}
-
 #define SCORE_2(a, b) \
-    pool_80543188(this, fade, mPos.x - 5.0f, a); \
-    pool_80543188(this, fade, mPos.x + 5.0f, b)
+    putScoreDigit(JGeometry::TVec3f(mPos.x - 5.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(JGeometry::TVec3f(5.0f + mPos.x, mPos.y, mPos.z), b, fade)
 #define SCORE_3(a, b, c) \
-    pool_80543188(this, fade, mPos.x - 10.0f, a); \
-    putScoreDigitMid(this, fade, b); \
-    pool_80543188(this, fade, mPos.x + 10.0f, c)
+    putScoreDigit(JGeometry::TVec3f(mPos.x - 10.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(mPos, b, fade); \
+    putScoreDigit(JGeometry::TVec3f(10.0f + mPos.x, mPos.y, mPos.z), c, fade)
 #define SCORE_4(a, b, c, d) \
-    pool_80543188(this, fade, mPos.x - 5.0f - 10.0f, a); \
-    pool_80543188(this, fade, mPos.x - 5.0f, b); \
-    pool_80543188(this, fade, mPos.x + 5.0f, c); \
-    pool_80543188(this, fade, 10.0f + (mPos.x + 5.0f), d)
+    putScoreDigit(JGeometry::TVec3f(mPos.x - 5.0f - 10.0f, mPos.y, mPos.z), a, fade); \
+    putScoreDigit(JGeometry::TVec3f(mPos.x - 5.0f, mPos.y, mPos.z), b, fade); \
+    putScoreDigit(JGeometry::TVec3f(5.0f + mPos.x, mPos.y, mPos.z), c, fade); \
+    putScoreDigit(JGeometry::TVec3f(10.0f + (5.0f + mPos.x), mPos.y, mPos.z), d, fade)
 
 // FIXME: 96.72 %, operands; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     switch (mValue) {
-    case 0: putScoreDigitMid(this, fade, 1); break;
-    case 1: putScoreDigitMid(this, fade, 5); break;
+    case 0: putScoreDigit(mPos, 1, fade); break;
+    case 1: putScoreDigit(mPos, 5, fade); break;
     case 2: SCORE_2(2, 0); break;
     case 3: SCORE_2(5, 0); break;
     case 4: SCORE_3(1, 0, 0); break;
@@ -318,15 +308,11 @@ void Score_804AF4C0::fn_80391D44() {
 }
 #pragma auto_inline reset
 
-// R2 pool helper (inlined at 8 call sites); was putScoreDigit.
-static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
-    Vec v;
-    v.x = x;
-    v.y = self->mPos.y;
-    v.z = self->mPos.z;
-    if (self->mLayer_0x4 < 8) {
-        JGeometry::TVec3f pos = JGeometry::TVec3f(v);
-        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
+// Draws one digit of the gem value at pos, in the gem-yellow colour. A plain function below
+// fn_80391D44: the original creates its 0.3f before that function's literals.
+void Score_804AF4C0::putScoreDigit(const JGeometry::TVec3f& pos, s32 digit, f32 fade) {
+    if (mLayer_0x4 < 8) {
+        putTimeDigit(0.3f, digit, pos, JUtility::TColor(255, 0xD2, 0, fade));
     }
 }
 
