@@ -99,7 +99,7 @@ void Manhandla_804A2FB0::fn_801AA8F4() {
     }
 }
 
-// FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 98.63 %, regalloc-only; behaviour clean.
 void Manhandla_804A2FB0::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -174,7 +174,7 @@ Manhandla_804A2FB0::~Manhandla_804A2FB0() {
     }
 }
 
-// FIXME(shotgun): 99.85 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.88 %, regalloc-only; behaviour drift.
 void Manhandla_804A2FB0::fn_801A9CF4() {
     mLife = 10000;
     updateHitReaction_801F3D94(0);
@@ -289,7 +289,7 @@ void Manhandla_804A2FB0::fn_801A9CF4() {
     fn_801AA8F4();
 }
 
-// FIXME(shotgun): 94.62 %, different; behaviour near.
+// FIXME(shotgun): 95.03 %, scheduling+regalloc; behaviour clean.
 void Manhandla_804A2FB0::fn_801A96B4() {
     f32 speed = 0.0f;
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -331,8 +331,9 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         }
         s32 stepAngle = 0;
         for (int i = 0; i < 4; i++) {
-            if (field_0x270[i] != 0) {
-                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[i]));
+            s32 serial = field_0x270[i];
+            if (serial != 0) {
+                Manhandla_804A2FB0* child = static_cast<Manhandla_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != 0) {
                     if (field_0x26c == 1) {
                         child->field_0x26c = 1;
@@ -426,12 +427,15 @@ void Manhandla_804A2FB0::fn_801A96B4() {
         if (field_0x234[0] == 0) {
             if (field_0x244 > 3) {
                 die_0x24();
-            } else if (field_0x270[field_0x244] >= 0) {
-                ActorBase_804A5770* child = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270[field_0x244]);
-                if (child != 0) {
-                    child->die_0x24();
-                    field_0x234[0] = 10;
-                    field_0x244++;
+            } else {
+                s32 serial = field_0x270[field_0x244];
+                if (serial >= 0) {
+                    ActorBase_804A5770* child = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    if (child != 0) {
+                        child->die_0x24();
+                        field_0x234[0] = 10;
+                        field_0x244++;
+                    }
                 }
             }
         }
