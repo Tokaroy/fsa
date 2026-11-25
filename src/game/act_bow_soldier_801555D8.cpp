@@ -113,9 +113,9 @@ void BowSoldier_804A00C8::init() {
     field_0x274 = 0;
     field_0x278 = 0;
     field_0x298 = 1.0f;
-    field_0x2b4 = 0.0f;
-    field_0x2b0 = 0.0f;
-    field_0x2ac = 0.0f;
+    field_0x2ac.z = 0.0f;
+    field_0x2ac.y = 0.0f;
+    field_0x2ac.x = 0.0f;
     mVel_0x3c.z = 0.0f;
     mVel_0x3c.y = 0.0f;
     mVel_0x3c.x = 0.0f;
@@ -238,9 +238,9 @@ BOOL BowSoldier_804A00C8::vfunc_0x54() {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
-        field_0x2ac = 0.0f;
-        field_0x2b0 = 0.0f;
-        field_0x2b4 = 0.0f;
+        field_0x2ac.x = 0.0f;
+        field_0x2ac.y = 0.0f;
+        field_0x2ac.z = 0.0f;
         field_0x254 = 10000;
         mState = 0xC;
         mLife = 200;
@@ -249,7 +249,7 @@ BOOL BowSoldier_804A00C8::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.01 %, missing/extra; behaviour near.
 void BowSoldier_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
@@ -263,12 +263,14 @@ void BowSoldier_804A00C8::update() {
             if (getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                 return;
             }
+            s32 layer = mLayer_0x4;
             JGeometry::TVec2f tmpPos(mPos.x, mPos.y);
-            field_0x2aa = getTileAt_80226998(tmpPos, mLayer_0x4);
+            field_0x2aa = getTileAt_80226998(tmpPos, layer);
             return;
         }
+        s32 layer = mLayer_0x4;
         JGeometry::TVec2f tmpPos(mPos.x, mPos.y);
-        if (field_0x2aa == getTileAt_80226998(tmpPos, mLayer_0x4)) {
+        if (field_0x2aa == getTileAt_80226998(tmpPos, layer)) {
             return;
         }
         field_0x254 = 40;
@@ -309,9 +311,9 @@ void BowSoldier_804A00C8::update() {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
-            field_0x2b4 = 0.0f;
-            field_0x2b0 = 0.0f;
-            field_0x2ac = 0.0f;
+            field_0x2ac.z = 0.0f;
+            field_0x2ac.y = 0.0f;
+            field_0x2ac.x = 0.0f;
         }
         if (!vfunc_0x54()) {
             sweepMapBox_801F2618(NULL, false);
@@ -367,9 +369,9 @@ void BowSoldier_804A00C8::update() {
                         mVel_0x3c.z = 0.0f;
                         mVel_0x3c.y = 0.0f;
                         mVel_0x3c.x = 0.0f;
-                        field_0x2b4 = 0.0f;
-                        field_0x2b0 = 0.0f;
-                        field_0x2ac = 0.0f;
+                        field_0x2ac.z = 0.0f;
+                        field_0x2ac.y = 0.0f;
+                        field_0x2ac.x = 0.0f;
                         sweepMapBox_801F2618(NULL, false);
                         return;
                     }
@@ -406,8 +408,8 @@ void BowSoldier_804A00C8::update() {
                 mState = 11;
             }
         }
-        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2ac, 0.3f, 1.0f);
-        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b0, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2ac.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2ac.y, 0.3f, 1.0f);
         mPos += mVel_0x3c;
         if (field_0x298 > 0.2f) {
             damagePlayersInBox_801F2B7C(-100, -1, 1);
@@ -423,9 +425,9 @@ void BowSoldier_804A00C8::update() {
     switch (mState) {
     case 0:
         if (moved && field_0x24c == 0) {
-            field_0x2b4 = 0.0f;
-            field_0x2b0 = 0.0f;
-            field_0x2ac = 0.0f;
+            field_0x2ac.z = 0.0f;
+            field_0x2ac.y = 0.0f;
+            field_0x2ac.x = 0.0f;
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
@@ -437,9 +439,9 @@ void BowSoldier_804A00C8::update() {
             break;
         }
         if (field_0x23c == 0) {
-            field_0x2b4 = 0.0f;
-            field_0x2b0 = 0.0f;
-            field_0x2ac = 0.0f;
+            field_0x2ac.z = 0.0f;
+            field_0x2ac.y = 0.0f;
+            field_0x2ac.x = 0.0f;
             field_0x25c = 0;
             field_0x260 = (s32)(1.99f * randFloat_80154744()) + 1;
             field_0x238 = 8;
@@ -464,24 +466,16 @@ void BowSoldier_804A00C8::update() {
         if (field_0x238 == 0) {
             switch (mDir_0x98) {
             case 0:
-                field_0x2ac = field_0x2a4;
-                field_0x2b0 = 0.0f;
-                field_0x2b4 = 0.0f;
+                field_0x2ac.set(field_0x2a4, 0.0f, 0.0f);
                 break;
             case 1:
-                field_0x2ac = -field_0x2a4;
-                field_0x2b0 = 0.0f;
-                field_0x2b4 = 0.0f;
+                field_0x2ac.set(-field_0x2a4, 0.0f, 0.0f);
                 break;
             case 2:
-                field_0x2ac = 0.0f;
-                field_0x2b0 = field_0x2a4;
-                field_0x2b4 = 0.0f;
+                field_0x2ac.set(0.0f, field_0x2a4, 0.0f);
                 break;
             case 3:
-                field_0x2ac = 0.0f;
-                field_0x2b0 = -field_0x2a4;
-                field_0x2b4 = 0.0f;
+                field_0x2ac.set(0.0f, -field_0x2a4, 0.0f);
                 break;
             }
             field_0x25c = 0;
@@ -515,24 +509,16 @@ void BowSoldier_804A00C8::update() {
                 }
                 switch (mDir_0x98) {
                 case 0:
-                    field_0x2ac = field_0x2a4;
-                    field_0x2b0 = 0.0f;
-                    field_0x2b4 = 0.0f;
+                    field_0x2ac.set(field_0x2a4, 0.0f, 0.0f);
                     break;
                 case 1:
-                    field_0x2ac = -field_0x2a4;
-                    field_0x2b0 = 0.0f;
-                    field_0x2b4 = 0.0f;
+                    field_0x2ac.set(-field_0x2a4, 0.0f, 0.0f);
                     break;
                 case 2:
-                    field_0x2ac = 0.0f;
-                    field_0x2b0 = field_0x2a4;
-                    field_0x2b4 = 0.0f;
+                    field_0x2ac.set(0.0f, field_0x2a4, 0.0f);
                     break;
                 case 3:
-                    field_0x2ac = 0.0f;
-                    field_0x2b0 = -field_0x2a4;
-                    field_0x2b4 = 0.0f;
+                    field_0x2ac.set(0.0f, -field_0x2a4, 0.0f);
                     break;
                 }
                 field_0x23c = (s32)(50.0f * randFloat_80154744()) + 50;
@@ -550,9 +536,9 @@ void BowSoldier_804A00C8::update() {
         break;
 
     case 3:
-        field_0x2b4 = 0.0f;
-        field_0x2b0 = 0.0f;
-        field_0x2ac = 0.0f;
+        field_0x2ac.z = 0.0f;
+        field_0x2ac.y = 0.0f;
+        field_0x2ac.x = 0.0f;
         field_0x25c = 0;
         field_0x260 = 0;
         field_0x264 = 0;
@@ -597,17 +583,17 @@ void BowSoldier_804A00C8::update() {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
-            field_0x264 = (field_0x264 + 0x4000) & 0xF000;
+            field_0x264 += 0x4000;
+            field_0x264 &= 0xF000;
         }
         if (field_0x250 == 0 && field_0x268 >= 0 && isPlayerActive_8023F264(field_0x268)) {
             if (dir != -1) {
                 mDir_0x98 = dir;
             }
-            const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-            f32 s = sincos.sinShort(field_0x264);
+            f32 s = JMath::sincosTable_.sinShort(field_0x264);
             f32 px = getPlayerPos_8023E724(field_0x268)->x + 70.0f * s;
             f32 dx = mPos.x - px;
-            f32 c = sincos.cosShort(field_0x264);
+            f32 c = JMath::sincosTable_.cosShort(field_0x264);
             f32 py = getPlayerPos_8023E724(field_0x268)->y + 70.0f * c;
             f32 dy = mPos.y - py;
             dist = sqrtf_80154378(dx * dx + dy * dy);
@@ -628,14 +614,14 @@ void BowSoldier_804A00C8::update() {
                     }
                 }
             }
-            field_0x2ac = field_0x294 * sincos.sinShort(angle);
-            field_0x2b0 = field_0x294 * sincos.cosShort(angle);
+            field_0x2ac.x = field_0x294 * JMath::sincosTable_.sinShort(angle);
+            field_0x2ac.y = field_0x294 * JMath::sincosTable_.cosShort(angle);
         }
         if ((dist < 2.0f && field_0x244 == 0) || field_0x240 == 0) {
             field_0x25c = 0;
-            field_0x2b4 = 0.0f;
-            field_0x2b0 = 0.0f;
-            field_0x2ac = 0.0f;
+            field_0x2ac.z = 0.0f;
+            field_0x2ac.y = 0.0f;
+            field_0x2ac.x = 0.0f;
             field_0x238 = 8;
             mState = 6;
         }
@@ -665,16 +651,15 @@ void BowSoldier_804A00C8::update() {
             field_0x26c = 0;
         }
         mDir_0x98 = angleToDir_801F681C(field_0x234);
-        const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-        field_0x2ac = 1.5f * sincos.sinShort(field_0x234);
-        field_0x2b0 = 1.5f * sincos.cosShort(field_0x234);
+        field_0x2ac.x = 1.5f * JMath::sincosTable_.sinShort(field_0x234);
+        field_0x2ac.y = 1.5f * JMath::sincosTable_.cosShort(field_0x234);
         if (field_0x240 == 0) {
             field_0x238 = 20;
             field_0x23c = (s32)(50.0f * randFloat_80154744()) + 50;
             field_0x240 = (s32)((f32)(field_0x27c & 7) * randFloat_80154744()) + 30;
-            field_0x2b4 = 0.0f;
-            field_0x2b0 = 0.0f;
-            field_0x2ac = 0.0f;
+            field_0x2ac.z = 0.0f;
+            field_0x2ac.y = 0.0f;
+            field_0x2ac.x = 0.0f;
             mState = 0;
         }
         break;
@@ -707,9 +692,9 @@ void BowSoldier_804A00C8::update() {
         case 0:
             field_0x238 = 15;
             if (field_0x23c == 0) {
-                field_0x2b4 = 0.0f;
-                field_0x2b0 = 0.0f;
-                field_0x2ac = 0.0f;
+                field_0x2ac.z = 0.0f;
+                field_0x2ac.y = 0.0f;
+                field_0x2ac.x = 0.0f;
                 field_0x25c = 0;
                 field_0x260 = 0;
                 field_0x264 = 0;
@@ -721,7 +706,7 @@ void BowSoldier_804A00C8::update() {
                 field_0x240 = (s32)((f32)(field_0x27c & 7) * randFloat_80154744()) + 30;
                 mState = 0;
             } else if (mSpawnParam_0x90 != 3) {
-                field_0x238 = 0;
+                field_0x238 = 8;
                 field_0x244 = 10;
                 field_0x240 = (s32)(70.0f * ((f32)(field_0x27c & 7) * randFloat_80154744())) + 70;
                 mState = 4;
@@ -856,9 +841,9 @@ void BowSoldier_804A00C8::update() {
         break;
 
     case 12:
-        field_0x2b4 = 0.0f;
-        field_0x2b0 = 0.0f;
-        field_0x2ac = 0.0f;
+        field_0x2ac.z = 0.0f;
+        field_0x2ac.y = 0.0f;
+        field_0x2ac.x = 0.0f;
         mVel_0x3c.z = 0.0f;
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.x = 0.0f;
@@ -870,12 +855,14 @@ void BowSoldier_804A00C8::update() {
         mState = 13;
         // fallthrough
 
-    case 13:
+    case 13: {
         mHitTimer_0xd8 = 0;
         mHitTimerStart_0xdc = 0;
         addCalc2_801F71A4(&mPos.x, field_0x2b8.x, 0.1f, 0.5f);
         addCalc2_801F71A4(&mPos.y, field_0x2b8.y, 0.1f, 0.5f);
-        if (field_0x23c == 0 && sqrtf_80154378((mPos.x - field_0x2b8.x) * (mPos.x - field_0x2b8.x) + (mPos.y - field_0x2b8.y) * (mPos.y - field_0x2b8.y)) < 2.0f) {
+        f32 dx = mPos.x - field_0x2b8.x;
+        f32 dy = mPos.y - field_0x2b8.y;
+        if (field_0x23c == 0 && sqrtf_80154378(dx * dx + dy * dy) < 2.0f) {
             if (mSpawnParam_0x90 == 2) {
                 if (field_0x274 != 20) {
                     startSound_801F0E34(0x4001A, 0);
@@ -913,6 +900,7 @@ void BowSoldier_804A00C8::update() {
             field_0x274 = lbl_8049FEB8[mDir_0x98 * 4 + field_0x25c];
         }
         break;
+    }
 
     case 14: {
         mState = 0;

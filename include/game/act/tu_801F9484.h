@@ -237,9 +237,7 @@ public:
     /* 0x2A8 */ u8 field_0x2a8;
     /* 0x2A9 */ u8 field_0x2a9;
     /* 0x2AA */ u16 field_0x2aa;
-    /* 0x2AC */ f32 field_0x2ac;
-    /* 0x2B0 */ f32 field_0x2b0;
-    /* 0x2B4 */ f32 field_0x2b4;
+    /* 0x2AC */ JGeometry::TVec3f field_0x2ac;
     /* 0x2B8 */ JGeometry::TVec3f field_0x2b8;
 }; // Size: 0x2C4
 
