@@ -71,8 +71,8 @@ void KnightOfHyrule_804AABA8::vfunc_0x10() {
     field_0x268.z = 0.0f;
 }
 
-// FIXME: 99.87 %, operands; behaviour near.
-// FIXME: fn_802303FC's 3rd arg is declared bool in Player.h (passes 1 instead of 0xFF); slot uses r29 instead of r30.
+// FIXME: 99.87 %, regalloc-only; behaviour near.
+// slot uses r29 instead of r30.
 void KnightOfHyrule_804AABA8::update() {
     JGeometry::TVec3f pos;
     switch (mState) {
@@ -165,7 +165,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (mTimer <= 0) {
             fn_80230498(field_0x244, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
         } else {
-            fn_802303FC(field_0x244, &pos, true);
+            fn_802303FC(field_0x244, &pos, 0xFF);
         }
         if (mTimer <= 0) {
             mState = 5;
@@ -274,7 +274,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (mTimer <= 0) {
             fn_80230498(field_0x244, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
         } else {
-            fn_802303FC(field_0x244, &pos, true);
+            fn_802303FC(field_0x244, &pos, 0xFF);
         }
         if (mTimer < 60) {
             addCalc2_801F71A4(&mVel_0x3c.z, -0.2f, 0.02f, 0.01f);
