@@ -111,7 +111,7 @@ static inline s32 findKind(s32 start, s32 amount) {
     return 0;
 }
 
-// FIXME(shotgun): 84.04 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.89 %, missing/extra + reloc-name; behaviour near.
 // Still differs: the original reuses the loop condition's field_0x238 for findKind (ours reloads it);
 // in the mode 6 branch the sin/cos table loads are scheduled after the speed.
 void ForceGemSpawner_804AB660::update() {
