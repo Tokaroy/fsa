@@ -22,7 +22,7 @@ void ShadowLink2_804A43E8::fn_801C6784() {
     }
 }
 
-// FIXME(shotgun): 99.14 %, scheduling+regalloc
+// FIXME(shotgun): 99.36 %, scheduling+regalloc + reloc-name; behaviour clean.
 // Called by fn_801C5B08 once field_0x338 holds the nearest player: picks the
 // attack state (0x22, 0x25, 0x26) when close, or turns away and switches to 0x1C.
 void ShadowLink2_804A43E8::fn_801C6260() {
@@ -92,7 +92,8 @@ void ShadowLink2_804A43E8::fn_801C6260() {
     }
 }
 
-// FIXME: 98.61 %. Same instructions except the copy of the angle temporary
+// FIXME: 99.23 %, missing/extra; behaviour clean.
+// Same instructions except the copy of the angle temporary
 // (the original keeps the (s16) result in r31 and copies it to r4 for
 // stepAngle_801CD930; ours computes it straight into r4) and the literal labels
 // (@NNN vs lbl_ for lbl_8053EE70, EE78, EE80: data split, not code).
@@ -168,7 +169,8 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     stepAngle_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
-// FIXME: 97.07 %. Register choice for the locals (the original holds the entry
+// FIXME: 98.06 %, missing/extra; behaviour drift.
+// Register choice for the locals (the original holds the entry
 // index in r26 and the rail index in r27, the player in r30, ours differs),
 // and the literal labels (@NNN vs lbl_ for lbl_8053EE6C, EE70, EE74, EE80,
 // EE88: data split).
