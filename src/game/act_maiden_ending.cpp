@@ -138,7 +138,6 @@ void MaidenEnding_804AD5B8::fn_8035D6C4() {
 }
 
 // FIXME: 95.68 %, missing/extra; behaviour near.
-// 3 fewer instructions in field_0x248 ladder.
 void MaidenEnding_804AD5B8::fn_8035D4B8() {
     // The sequencer tests below are written `== true`: the original compares the bool
     // with cmplwi 1 where a plain test gives clrlwi. (92 % instead of 95.7 % here).
@@ -160,19 +159,26 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
             field_0x248 = 0x14;
             field_0x244 = 9;
         } else if (field_0x244 == 0) {
-            if (field_0x248 == 0x14) {
-                field_0x248 = 0x18;
-                field_0x244 = 0x3C;
-            } else if (field_0x248 == 0x18) {
-                field_0x248 = 0x19;
-                field_0x244 = 3;
-            } else {
-                field_0x248 = 8;
-                field_0x24c = 0;
-                mState = 2;
-                field_0x234 = lbl_80472780[mSpawnParam_0x90 & 7] + 0x128;
-                field_0x238 = 0;
+            // The original stores 8 before leaving the loop and again after it, with an
+            // unreachable branch after the break: the ladder sits in a loop that returns.
+            while (true) {
+                if (field_0x248 == 0x14) {
+                    field_0x248 = 0x18;
+                    field_0x244 = 0x3C;
+                } else if (field_0x248 == 0x18) {
+                    field_0x248 = 0x19;
+                    field_0x244 = 3;
+                } else {
+                    field_0x248 = 8;
+                    break;
+                }
+                return;
             }
+            field_0x248 = 8;
+            field_0x24c = 0;
+            mState = 2;
+            field_0x234 = lbl_80472780[mSpawnParam_0x90 & 7] + 0x128;
+            field_0x238 = 0;
         }
     } else if (field_0x238 == 4) {
         if (field_0x244 == 0) {
