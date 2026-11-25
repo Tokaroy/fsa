@@ -106,3 +106,12 @@ with `gc_div_s32(a, b)` from `libs/sdk/include/portable/Divide.h`: the plain
 division under MWCC (same code), 0 for a zero divisor elsewhere. First case:
 `JPAVolumeSphere` (fixed-interval sphere emissions start with
 `mVolumeAngleMax - 1 == 0`; it crashed the browser port's staff roll).
+
+## Float to u16 angles
+
+`(u16)(f)` of a negative float wraps on the GameCube (fctiwz gives a 32-bit
+integer, the cast keeps the low 16 bits); wasm and most hosts clamp it to 0, so
+an angle to something on the left became "straight down". Write
+`(u16)(s32)(f)` where MWCC's code stays the same (most sites), else
+`gc_f32_to_u16(f)` from `libs/sdk/include/portable/FloatConv.h`
+(actor_base_801EE24C findTargetPlayer_801EEC98, act_cucco).

@@ -1,6 +1,7 @@
 // The actor base class (include/game/ActorBase.h) and the code around it.
 
 #include "game/ActorBase.h"
+#include "portable/FloatConv.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
 #include "game/EmitterDelete.h"
@@ -2156,12 +2157,12 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
             if (mode == 0 || mode == 2) {
                 if (bestDist == -1.0f) {
                     bestDist = std::sqrtf(dx * dx + dy * dy);
-                    angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                    angle = gc_f32_to_u16(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                     found = i;
                 } else if (bestDist > std::sqrtf(dx * dx + dy * dy)) {
                     bestDist = std::sqrtf(dx * dx + dy * dy);
-                    angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                    angle = gc_f32_to_u16(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                     found = i;
                 }
@@ -2171,7 +2172,7 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
             {
                 bestA = fn_80236228(i);
                 bestDist = std::sqrtf(dx * dx + dy * dy);
-                angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                angle = gc_f32_to_u16(JMath::atanTable_.atan2_(-dx, -dy) *
                         (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                 found = i;
             }
@@ -2180,7 +2181,7 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
             {
                 bestB = getPlayerLife_80237774(i);
                 bestDist = std::sqrtf(dx * dx + dy * dy);
-                angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                angle = gc_f32_to_u16(JMath::atanTable_.atan2_(-dx, -dy) *
                         (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                 found = i;
             }
