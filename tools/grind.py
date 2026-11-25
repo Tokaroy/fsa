@@ -389,6 +389,24 @@ def structural_status(wt=None):
 
 STATUS = {}  # refreshed per unit pick by the worker in --goal structural
 
+PORT_TRACES = Path("/bigdata/agent-tom/projects/fsaport/logs/fntrace-answers")
+
+
+def port_trace(fn, limit=40):
+    """The port's runtime trace summary of `fn` (fsaport tools/fntrace_run.py answers, one .md per
+    function, file name = mangled name with <>/ as _), first `limit` lines; [] when there is none."""
+    key = re.sub(r"[<>/]", "_", fn)
+    try:  # exact name, else a file named after a prefix of it (requests sent with shortened names)
+        hits = sorted(PORT_TRACES.glob(f"*/{key}.md")) or sorted(
+            p for p in PORT_TRACES.glob("*/*.md") if len(p.stem) >= 24 and key.startswith(p.stem))
+    except OSError:
+        return []
+    if not hits:
+        return []
+    lines = hits[-1].read_text(errors="replace").splitlines()
+    return lines[:limit] + ([f"... ({hits[-1]})"] if len(lines) > limit else [])
+
+
 def live_fns():
     """{unit source (game/X.cpp): {function}}: functions below 100 % the browser port runs
     (g2-logs/port_live_fns.tsv from tools/port_diag.py --tsv); --goal structural takes their
@@ -759,6 +777,10 @@ def build_packet(wt, unit, fn, ev, note=None):
            f"Commands: `python3 tools/try.py {unit} '{fn}'`   `python3 tools/grind.py check`", ""]
     if note:
         out += [f"A reviewer rejected an earlier change to this function: {note} Don't repeat that.", ""]
+    trace = port_trace(fn)
+    if trace:
+        out += ["== Runtime trace from the browser port (real argument/return values, which fields it wrote, "
+                "which paths ran; offsets are this decomp's) =="] + trace + [""]
     asm, first = asm_block(wt, unit, fn)
     if lane != "write":
         if e["todo"]:
