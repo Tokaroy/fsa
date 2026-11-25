@@ -71,7 +71,7 @@ static inline bool hop(ShadowLinkCutscene_8049DB90* self, s32 t, f32 base, f32 v
     return false;
 }
 
-// FIXME: 99.32 %, different; behaviour drift.
+// FIXME: 99.71 %, operands; behaviour drift.
 void ShadowLinkCutscene_8049DB90::update() {
     DemoActorBase_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
