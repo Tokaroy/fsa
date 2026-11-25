@@ -230,6 +230,7 @@ void BTINPC_804A927C::update() {
     }
 }
 
+// FIXME: 93.21 %, missing/extra + reloc-name; behaviour near.
 // FIXME: the original hoists lbl_804A90F0's base into r29 (and the string-literal base into r30); register choice and order in the inlined setRotScaleMtxS16 also differ.
 void BTINPC_804A927C::draw() {
     if (field_0x230 == 1) {
