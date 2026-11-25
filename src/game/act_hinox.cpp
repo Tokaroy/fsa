@@ -65,33 +65,11 @@ void Hinox_8049F9B4::init() {
     mState = 0;
 }
 
-// FIXME(shotgun): 99.79 %, operands; behaviour clean.
+// FIXME(shotgun): 99.71 %, scheduling+regalloc; behaviour clean.
+// Still differs: the saved x/z registers, and the order of the vel.x/vel.y stores.
+// The tail repeats vfunc_0x44: calling it instead puts the two vectors in swapped stack slots.
 Hinox_8049F9B4::~Hinox_8049F9B4() {
-    JGeometry::TVec3f dir;
-    dir.zero();
-    if (mDir_0x98 == 2) {
-        dir.set(0.0f, 15.0f, 0.0f);
-    } else {
-        dir.set(0.0f, -15.0f, 0.0f);
-    }
-    if (field_0x254 >= 0) {
-        f32 x = mPos.x;
-        f32 y = mPos.y;
-        f32 z = mPos.z;
-        JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(field_0x254);
-        mPos.x = playerPos->x;
-        mPos.y = playerPos->y;
-        mPos.z = playerPos->z;
-        if (sweepMapBox_801F2618(NULL, false)) {
-            f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
-            dir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
-            dir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
-        }
-        mPos.x = x;
-        mPos.y = y;
-        mPos.z = z;
-        fn_8022F784(field_0x254, mSerial, &dir);
-    }
+    releasePlayer();
     s32 serial = field_0x250;
     if (serial >= 0) {
         ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
