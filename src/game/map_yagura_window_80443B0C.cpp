@@ -15,7 +15,7 @@ static MapYaguraWindow_804B1B60::StateFunc lbl_804B1B30[4] = {
     &MapYaguraWindow_804B1B60::fn_80443D5C,
 };
 
-// FIXME(shotgun): 92.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.92 %, regalloc-only; behaviour clean.
 MapYaguraWindow_804B1B60::MapYaguraWindow_804B1B60() {
     mScreen = new J2DScreen();
     mScreen->setPriority("map_yagura_window.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
@@ -244,7 +244,7 @@ void MapYaguraWindow_804B1B60::pool_80543D70() {
     field_0x48 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
 }
 
-// FIXME(shotgun): 85.76 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 94.90 %, scheduling+regalloc; behaviour clean.
 void MapYaguraWindow_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
     MessageInf1_804AF070* inf1 =
         &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
