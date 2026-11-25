@@ -101,7 +101,7 @@ TinglesTowerWarp_804A38D4::~TinglesTowerWarp_804A38D4() {
 }
 
 // 0x801B56A0.
-// FIXME(shotgun): 86.71 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 89.37 %, missing/extra; behaviour drift.
 void TinglesTowerWarp_804A38D4::fn_801B56A0() {
     JGeometry::TVec3f target;
     JGeometry::TBox2f box = mBox;
