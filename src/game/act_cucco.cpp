@@ -977,13 +977,13 @@ void Cucco_804AB8C0::update() {
     case 3:
         if (!field_0xc4) {
             switch (field_0x290) {
+            default:
             case 0:
             case 1:
             case 4:
             case 5:
             case 6:
-            case 7:
-            default: {
+            case 7: {
                 field_0x23c = 0x12;
                 field_0x2b8.x = mVel_0x3c.x;
                 field_0x2b8.y = mVel_0x3c.y;
@@ -1068,7 +1068,7 @@ void Cucco_804AB8C0::update() {
                 }
                 if (outPlayer != field_0x94) {
                     if (field_0x25c == fn_8022F340(field_0x94) || field_0x8 < 8 ||
-                        (getPlayerLayer_8023DE58(field_0x94) >= 8 && field_0x8 != getPlayerLayer_8023DE58(field_0x94)))
+                        (getPlayerLayer_8023DE58(field_0x94) >= 8 && getField_0x8() != getPlayerLayer_8023DE58(field_0x94)))
                     {
                         outDir = -1;
                     } else {
@@ -1097,7 +1097,7 @@ void Cucco_804AB8C0::update() {
             field_0x298 = 100;
             if (outPlayer != field_0x94) {
                 if (field_0x25c == getPlayerLeader_8022F3DC(field_0x94) || field_0x8 < 8 ||
-                    (getPlayerLayer_8023DE58(field_0x94) >= 8 && field_0x8 != getPlayerLayer_8023DE58(field_0x94)))
+                    (getPlayerLayer_8023DE58(field_0x94) >= 8 && getField_0x8() != getPlayerLayer_8023DE58(field_0x94)))
                 {
                     outDir = -1;
                 } else {
@@ -1109,7 +1109,7 @@ void Cucco_804AB8C0::update() {
         }
         if (isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
             if (field_0x94 <= 3) {
-                if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
+                if (getField_0x4() != getPlayerLayer_8023DE58(field_0x94)) {
                     if (getPlayerLayer_8023DE58(field_0x94) < 8) {
                         mLayer_0x4 = getPlayerLayer_8023DE58(field_0x94);
                         s32 pLayer = getPlayerLayer_8023DE58(field_0x94);
@@ -1132,7 +1132,7 @@ void Cucco_804AB8C0::update() {
             }
         }
         if (field_0x238 == 0) {
-            if (outDir >= 0 && field_0x94 <= 3 && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x94)) {
+            if (outDir >= 0 && field_0x94 <= 3 && getField_0x4() == getPlayerLayer_8023DE58(field_0x94)) {
                 addCalcAngle2_801F714C((u16*)&field_0x29c, field_0x29e, 1, 0x1000);
             }
             field_0x238 = (s32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 2;
@@ -1227,7 +1227,7 @@ void Cucco_804AB8C0::update() {
         break;
     case 9:
         if (field_0x238 == 0) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && isPlayerActive_8023F264(field_0x25c) &&
+            if (getField_0x4() == getPlayerLayer_8023DE58(field_0x25c) && isPlayerActive_8023F264(field_0x25c) &&
                 !fn_8022DCD8(field_0x25c) && !isPlayerDead_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
@@ -1247,7 +1247,7 @@ void Cucco_804AB8C0::update() {
             }
         }
         if (isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
-            if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
+            if (getField_0x4() != getPlayerLayer_8023DE58(field_0x25c)) {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0x25c);
                 s32 pLayer = getPlayerLayer_8023DE58(field_0x25c);
                 GameView_804A9950* view = getGameView_802D6A9C();

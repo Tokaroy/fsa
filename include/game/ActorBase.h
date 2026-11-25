@@ -502,6 +502,7 @@ public:
     // expression, so the original reads these before the calls they are
     // compared with (lwz into a saved register ahead of the bl; RULES_CARD).
     s32 getField_0x4() const { return mLayer_0x4; }
+    s32 getField_0x8() const { return field_0x8; }
     s32 getSerial() const { return mSerial; }
     // mSpawnParam_0x90 read as a signed value (act_big_moldorm_80147B50 compares it with cmpwi).
     s32 getField_0x90() const { return mSpawnParam_0x90; }
