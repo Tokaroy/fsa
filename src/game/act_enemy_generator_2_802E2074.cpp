@@ -10,10 +10,6 @@ s32 lbl_804D4768[0x50];
 // Frame counter of the update; 0 after init.
 s32 lbl_8053ACB0;
 
-// FIXME: 96.17 %, missing/extra + reloc-name; behaviour clean.
-// The column (field_0x234) is read before the view is fetched and the 0xFF test is on the
-// screen's byte before it becomes the map number. The archive type is 'B   ' plus the stage
-// name's chars less ' ', added after the sprintf (GameView spawnScreenActors_802D8328's form).
 void EnemyGenerator2_804A9BC8::init() {
     for (int i = 0; i < 0x50; i++) {
         lbl_804D4768[i] = -1;
@@ -52,7 +48,7 @@ const u16 lbl_8046E9D8[4][4] = {
     {0x38, 0x3A, 0x3C, 0x3E},
 };
 
-// FIXME: 90.72 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 95.42 %, missing/extra; behaviour near.
 // The original tests each collected actor for NULL twice (two beq in a row).
 // Still differs: the original masks x/y to 16 bits (clrlwi 16) before the float conversion; ours has no mask.
 void EnemyGenerator2_804A9BC8::update() {
