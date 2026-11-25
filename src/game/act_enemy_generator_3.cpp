@@ -36,6 +36,7 @@ void EnemyGenerator3_804AA1D0::init() {
 // The original compares findNextActorById_801F78F4's result before copying it
 // to the found register (cmpwi; mr), ours copies first; the mLayer_0x4
 // register (r29 here, r30 in the original) also differs.
+// FIXME: 99.10 %, missing/extra; behaviour drift.
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
     case 0:
