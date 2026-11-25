@@ -3668,11 +3668,6 @@ void FileSelect_804AFF60::fn_803BD5E0(s32 file) {
     setGroup4Colors(this, file, JUtility::TColor(0xB4, 0xB4, 0xB4, 0x00), JUtility::TColor(0xB4, 0xB4, 0xB4, 0xFF));
 }
 
-// FIXME: 98.71 %, missing/extra; behaviour clean.
-// 8 instructions missing: in groups 1-4 the original copies
-// black / white into the group copies (sp 0xE4 / 0xE0 ...) through a second
-// temporary (sp 0x20 / 0x24 ...: one extra word store each), which plain
-// copies don't produce; stack offsets shift from there.
 // Fades file `file`'s row pictures between their colours and grey:
 // alpha 0 keeps the colours read by the constructor, alpha 1 sets each
 // group's black and white to fixed grey levels.
@@ -3704,15 +3699,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[1].g + (0xB4 - field_0xe8[1].g) * alpha;
     white.b = field_0xe8[1].b + (0xB4 - field_0xe8[1].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black1 = black;
-    JUtility::TColor white1 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B90[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B78[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B60[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B48[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B30[file]))
-        ->setBlackWhite(JUtility::TColor(black1.r, black1.g, black1.b, 0xFF), white1);
+    setGroup1Colors(this, file, black, white);
 
     black.r = field_0xfc[2].r + (0x50 - field_0xfc[2].r) * alpha;
     black.g = field_0xfc[2].g + (0x50 - field_0xfc[2].g) * alpha;
@@ -3722,14 +3709,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[2].g + (0x80 - field_0xe8[2].g) * alpha;
     white.b = field_0xe8[2].b + (0x80 - field_0xe8[2].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black2 = black;
-    JUtility::TColor white2 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B18[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B00[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AE8[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AD0[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AB8[file]))->setBlackWhite(black2, white2);
+    setGroup2Colors(this, file, black, white);
 
     black.r = field_0xfc[3].r + (0x82 - field_0xfc[3].r) * alpha;
     black.g = field_0xfc[3].g + (0x82 - field_0xfc[3].g) * alpha;
@@ -3739,15 +3719,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[3].g + (0xB4 - field_0xe8[3].g) * alpha;
     white.b = field_0xe8[3].b + (0xB4 - field_0xe8[3].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black3 = black;
-    JUtility::TColor white3 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C98[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C80[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C68[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C50[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C38[file]))
-        ->setBlackWhite(JUtility::TColor(black3.r, black3.g, black3.b, 0xFF), white3);
+    setGroup3Colors(this, file, black, white);
 
     black.r = field_0xfc[4].r + (0xB4 - field_0xfc[4].r) * alpha;
     black.g = field_0xfc[4].g + (0xB4 - field_0xfc[4].g) * alpha;
@@ -3757,13 +3729,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[4].g + (0xB4 - field_0xe8[4].g) * alpha;
     white.b = field_0xe8[4].b + (0xB4 - field_0xe8[4].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black4 = black;
-    JUtility::TColor white4 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C20[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C08[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476BF0[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476BD8[file]))->setBlackWhite(black4, white4);
+    setGroup4Colors(this, file, black, white);
 }
 
 // One step of the 'kk_' fade (fn_803CE9EC's cases 1 and 2 have the same
