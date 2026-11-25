@@ -144,7 +144,7 @@ void GiantBomb_804AC588::update() {
         corner0.y += mBox.i.y;
         corner1.x += mBox.f.x;
         corner1.y += mBox.f.y;
-        lbl_8053AED0->fn_8043E398(corner0, corner1);
+        showOnHud(corner0, corner1);
     }
     if (mState == 6 && mTimer > 0) {
         fn_802397B4(&box, mLayer_0x4, mSerial);
