@@ -131,27 +131,29 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
 // FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
-    s32 nearPlayer = -1;
     f32 nearDist;
+    s32 nearPlayer = -1;
     if (mKind == 1) {
         findTargetPlayer_801EEC98(mSerial, NULL, &nearPlayer, &nearDist, NULL, 0, 0);
     }
     msgPos.y -= 50.0f;
-    JGeometry::TVec3f dropPos(mPos.x, mPos.y, mPos.z);
+    JGeometry::TVec3f dropPos;
+    dropPos.set(mPos);
     JGeometry::TVec3f camPos = mPos;
     JGeometry::TBox2f box = mBox;
-    box.i.x += mPos.x;
-    box.i.y += mPos.y;
-    box.f.x += mPos.x;
-    box.f.y += mPos.y;
+    box.i.x += dropPos.x;
+    box.i.y += dropPos.y;
+    box.f.x += dropPos.x;
+    box.f.y += dropPos.y;
     if (field_0x250 != 1) {
         fn_80239914(&box, mLayer_0x4, mSerial);
     }
+    const JGeometry::TVec3f* pos = &mPos;
     box = mBox2;
-    box.i.x += mPos.x;
-    box.i.y += mPos.y;
-    box.f.x += mPos.x;
-    box.f.y += mPos.y;
+    box.i.x += pos->x;
+    box.i.y += pos->y;
+    box.f.x += pos->x;
+    box.f.y += pos->y;
 
     switch (mState) {
     case 0:
@@ -210,7 +212,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x268 = fn_8022FD8C(mSerial);
         if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
             u32 msg = mKind == 0 ? 0x41A : 0x422;
-            if (openMessage_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
+            if (talk(field_0x268, msg, mLayer_0x4, mSerial, msgPos, 0x100)) {
                 JGeometry::TVec3f delta;
                 f32 dist;
                 getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
@@ -313,8 +315,9 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             mBox.set(-24.0f, 0.0f, 24.0f, 32.0f);
             field_0x26c = findOverlappingActor_801F2718('FISH');
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-            if (field_0x26c >= 0) {
-                ActorBase_804A5770* fish = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x26c);
+            s32 serial = field_0x26c;
+            if (serial >= 0) {
+                ActorBase_804A5770* fish = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (fish != NULL) {
                     f32 dy = fish->mPos.y - mPos.y;
                     f32 dx = fish->mPos.x - mPos.x;
@@ -328,8 +331,9 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 }
             }
         }
-        if (field_0x26c >= 0) {
-            ActorBase_804A5770* fish = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x26c);
+        s32 serial = field_0x26c;
+        if (serial >= 0) {
+            ActorBase_804A5770* fish = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (fish != NULL) {
                 f32 dy = fish->mPos.y - mPos.y;
                 f32 dx = fish->mPos.x - mPos.x;
@@ -348,7 +352,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 } else {
                     JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
                     fish->mVel_0x3c = zero;
-                    dropPos.set(fish->mPos.x, fish->mPos.y, fish->mPos.z);
+                    dropPos.set(fish->mPos);
                     addCalc2_801F71A4(&dropPos.x, mPos.x, 0.3f, 1.0f);
                     addCalc2_801F71A4(&dropPos.y, mPos.y, 0.3f, 1.0f);
                     fish->mPos = dropPos;
@@ -364,22 +368,20 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         break;
     }
     case 5:
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(pos);
         field_0x244++;
         if (field_0x244 > 50) {
             field_0x244 = 51;
-            s32 layer = getPlayerLayer_8023DE58(0);
-            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
+                talk(getRepresentativePlayer_8022EA0C(0), 0x41D, mLayer_0x4, mSerial, msgPos, 0x102);
                 mState = 6;
             }
         }
         break;
     case 6: {
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-        s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(pos);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
         if (stepMessageWindow_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             gGameRoot_8053AAF8->startStageMusic_80138B7C();
             if (field_0x25c >= 10) {
@@ -399,8 +401,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->mFocusPos_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->mOverrideBlend_0x7f6 = 0;
         }
-        s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
         if (stepMessageWindow_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             field_0x244 = 50;
             if (field_0x25c >= 10) {
@@ -420,11 +421,11 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 }
                 u32 arg = 0x80000;
                 if (field_0x25c > 40) {
-                    arg = 0x80003;
+                    arg += 3;
                 } else if (field_0x25c > 30) {
-                    arg = 0x80002;
+                    arg += 2;
                 } else if (field_0x25c > 20) {
-                    arg = 0x80001;
+                    arg += 1;
                 }
                 s32 hnrySerial = getActorManager_801F856C()->spawnActor_801F9484('HNRY', mLayer_0x4, &mPos, arg, -1, -1);
                 if (hnrySerial >= 0) {
@@ -469,8 +470,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->mFocusPos_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->mOverrideBlend_0x7f6 = 0;
         }
-        s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), getPlayerLayer_8023DE58(0), mSerial, false, false);
         if (stepMessageWindow_803865B8(getRepresentativePlayer_8022EA0C(0)) && fn_80384C58(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
             setScreenFlag_0x30(0xFF, true);
@@ -493,8 +493,8 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             field_0x268 = fn_8022FD8C(mSerial);
             if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
-                u32 msg = field_0x25c < 10 ? 0x421 : 0x41F;
-                if (openMessage_8038AD24(field_0x268, msg, mSerial, mLayer_0x4, msgPos, 0x100)) {
+                u32 msg = field_0x25c >= 10 ? 0x41F : 0x421;
+                if (talk(field_0x268, msg, mLayer_0x4, mSerial, msgPos, 0x100)) {
                     JGeometry::TVec3f delta;
                     f32 dist;
                     getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
