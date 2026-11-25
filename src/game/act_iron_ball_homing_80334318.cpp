@@ -78,7 +78,6 @@ void IronBallHoming_804AB9C0::init() {
 }
 
 // 0x80335688.
-// FIXME(shotgun): 99.68 %, different; behaviour clean.
 bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = getTileCollisionCode_8022461C(pos, layer);
     if (field_0x230 != 3 && (tile == 0xC || tile == 3 || tile == 0xE)) {
@@ -88,14 +87,14 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
         field_0x230 = 7;
         return false;
     }
-    if (tile == 0 || tile == 0x22) {
-        return false;
+    if (tile != 0 && tile != 0x22) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // 0x80334A04.
-// FIXME(shotgun): 82.68 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.07 %, missing/extra + reloc-name; behaviour drift.
 void IronBallHoming_804AB9C0::update() {
     u16 angle = 0;
     s32 player;
