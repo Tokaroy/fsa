@@ -419,14 +419,14 @@ def port_trace(fn, limit=40):
     function, file name = mangled name with <>/ as _), first `limit` lines; [] when there is none."""
     key = re.sub(r"[<>/]", "_", fn)
     try:  # exact name, else a file named after a prefix of it (requests sent with shortened names)
-        hits = sorted(PORT_TRACES.glob(f"**/{key}.md")) or sorted(
-            p for p in PORT_TRACES.glob("**/*.md") if len(p.stem) >= 24 and key.startswith(p.stem))
+        hits = sorted(PORT_TRACES.glob(f"*/{key}.md")) or sorted(
+            p for p in PORT_TRACES.glob("*/*.md") if len(p.stem) >= 24 and key.startswith(p.stem))
     except OSError:
         return []
     if not hits:
         return []
     # every batch: a later one (forced runs) doesn't replace the normal-play answer
-    out, each = [], max(12, limit // len(hits))
+    out, each = [], max(15, limit // len(hits))
     for h in hits:
         lines = h.read_text(errors="replace").splitlines()
         out += [f"-- {h.parent.relative_to(PORT_TRACES)} --"] + lines[:each] + ([f"... ({h})"] if len(lines) > each else [])
