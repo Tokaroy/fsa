@@ -1,5 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/GameView.h"
+#include "game/GameMath.h"
 #include "game/act_leever_80182914.h"
 #include "game/act_light_environment_control_802EF76C.h"
 #include "game/GameGlobals.h"
@@ -9,10 +10,9 @@
 #include "game/cls_804AE9B0.h"
 #include "game/act/act_vaati_time_up.h"
 
-// FIXME: 99.51 %, operands; behaviour clean.
-// mPos.y's sum takes f4/f5 where the original uses f5/f6, the
-// u32-to-float conversions differ in one li, and the epilogue reloads r0 and r31 in
-// the other order.
+// FIXME: 99.52 %, scheduling+regalloc; behaviour clean.
+// mPos.y's sum takes f4/f5 where the original uses f5/f6, and the epilogue
+// reloads r0 and r31 in the other order.
 void VaatiTimeUp_804ACCC0::init() {
     cls_801EBA14 rec;
 
@@ -54,12 +54,10 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2ec = -(0.4f * field_0x2dc) / 60.0f;
     field_0x2f0 = -(0.4f * field_0x2e0) / 60.0f;
     mVel_0x3c.x = -2.0f;
-    field_0x2b8 = 1;
+    field_0x2b8 = 0;
 }
 
-// FIXME: 96.07 %, missing/extra; behaviour drift.
-// FIXME(shotgun): the original's copy of pickTarget keeps the compare of the squared distance
-// with 0.0f (fcmpo, cror, no branch) although its result is unused; ours drops it.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 void VaatiTimeUp_804ACCC0::update() {
     if (field_0x2b8 != 0) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
@@ -187,18 +185,18 @@ void VaatiTimeUp_804ACCC0::steer() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a4, 0.1f, 0.2f);
 }
 
-// With the timer up the target becomes the point 192 left of the view box; else tells whether the
-// target is reached (steer does not use the result; the 0.0f is this compare's).
+// With the timer up the target becomes the point 192 left of the view box; else takes the distance
+// to the target, which nothing uses (only sqrt's compare with 0.0f is left of it).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
-bool VaatiTimeUp_804ACCC0::pickTarget() {
+void VaatiTimeUp_804ACCC0::pickTarget() {
     if (field_0x2c0 <= 0) {
         field_0x290 = mViewBox.i.x - 192.0f;
         field_0x294 = (mViewBox.i.y + mViewBox.f.y) * 0.5f + 96.0f;
-        return false;
+    } else {
+        f32 dx = field_0x290 - mPos.x;
+        f32 dy = field_0x294 - mPos.y;
+        f32 dist = JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy));
     }
-    f32 dx = field_0x290 - mPos.x;
-    f32 dy = field_0x294 - mPos.y;
-    return dx * dx + dy * dy <= 0.0f;
 }
 
 VaatiTimeUp_804ACCC0::~VaatiTimeUp_804ACCC0() {}
