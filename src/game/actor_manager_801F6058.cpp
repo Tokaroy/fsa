@@ -836,14 +836,14 @@ void ActorManager_804A5800::fn_801F6A4C() {
                 continue;
             }
             s32 tries = 0;
-            while (JGeometry::TBox2f(boxA).intersect(boxB) && tries < 8) {
+            while (boxesOverlap(boxA, boxB) && tries < 8) {
                 a->field_0x9c = b->mSerial;
                 JGeometry::TVec3f pos = a->mPos;
                 f32 dx = a->mPos.x - b->mPos.x;
                 f32 dy = a->mPos.y - b->mPos.y;
-                boxA = a->mBox;
-                s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) +
-                            (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                boxA.set(a->mBox);
+                s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                angle += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 pos.x += JMath::sincosTable_.sinShort(angle);
                 pos.y += JMath::sincosTable_.cosShort(angle);
                 if (b->mActorId == 'BOYO') {
