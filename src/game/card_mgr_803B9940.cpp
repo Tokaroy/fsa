@@ -96,7 +96,6 @@ static inline bool mapCardResult(CardMgr_804AFB48* self, s32 result) {
 }
 
 // 0x803B9F40
-// FIXME(shotgun): 98 %, different (written from asm)
 void CardMgr_804AFB48::fn_803B9F40() {
     while (true) {
         OSLockMutex(&mMutex);
