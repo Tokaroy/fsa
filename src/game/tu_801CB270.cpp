@@ -208,9 +208,9 @@ s32 fn_801CD580(s32 except) {
 // FIXME(shotgun): 98.59 %, different; behaviour clean.
 s32 fn_801CD398(s32 a, s32 b) {
     if (a == b) {
-        s32 choices[4];
-        s32 count = 0;
+        s32 choices[3];
         s32* out = choices;
+        s32 count = 0;
         for (s32 i = 0; i < 4; i++) {
             if (i != a) {
                 *out++ = i;
@@ -219,9 +219,9 @@ s32 fn_801CD398(s32 a, s32 b) {
         }
         return choices[(s32)(count * gGameRoot_8053AAF8->mRandom.get_ufloat_1())];
     } else {
-        s32 choices[4];
-        s32 count = 0;
+        s32 choices[2];
         s32* out = choices;
+        s32 count = 0;
         for (s32 i = 0; i < 4; i++) {
             if (i != a && i != b) {
                 *out++ = i;
