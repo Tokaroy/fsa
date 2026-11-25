@@ -128,7 +128,7 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
     }
 }
 
-// FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.73 %, different; behaviour near.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
     f32 nearDist;
