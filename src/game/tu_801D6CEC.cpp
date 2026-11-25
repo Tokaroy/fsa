@@ -195,12 +195,12 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
             if (t < FLT_EPSILON) {
                 field_0x60 = 1.0f;
             } else {
-                field_0x60 = (1.0f / t) * (1.0f - field_0x60) + field_0x60;
+                field_0x60 += (1.0f / t) * (1.0f - field_0x60);
             }
             if (t < FLT_EPSILON) {
                 field_0x5c = 60.0f;
             } else {
-                field_0x5c = (1.0f / t) * (60.0f - field_0x5c) + field_0x5c;
+                field_0x5c += (1.0f / t) * (60.0f - field_0x5c);
             }
         }
         break;
@@ -217,21 +217,22 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     case 4:
         break;
     }
-    if (field_0x44 < 4 && field_0x44 >= 2) {
-        for (s32 i = 0; i < 16; i++) {
-            s32 serial = field_0x0[i];
-            if (serial >= 0) {
-                ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (a != NULL) {
-                    s16 ang = -(s16)(field_0x54 + i * 0xFFF);
-                    f32 s = JMath::sincosTable_.sinShort(ang);
-                    f32 c = JMath::sincosTable_.cosShort(ang);
-                    JGeometry::TVec2f r(0.0f, field_0x5c);
-                    JGeometry::TVec3f p(field_0x48.x + (r.x * c - r.y * s), field_0x48.y + (r.x * s + r.y * c), field_0x48.z);
-                    a->mPos = p;
-                    if (field_0x44 == 2) {
-                        ((UnknownBGBL_804A4BB0*)a)->fn_801D7DB4(field_0x60);
-                    }
+    if (!(field_0x44 < 4 && field_0x44 >= 2)) {
+        return;
+    }
+    for (s32 i = 0; i < 16; i++) {
+        s32 serial = field_0x0[i];
+        if (serial >= 0) {
+            ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (a != NULL) {
+                s16 ang = -(s16)(field_0x54 + i * 0xFFF);
+                f32 s = JMath::sincosTable_.sinShort(ang);
+                f32 c = JMath::sincosTable_.cosShort(ang);
+                JGeometry::TVec2f r(0.0f, field_0x5c);
+                JGeometry::TVec3f p(field_0x48.x + (r.x * c - r.y * s), field_0x48.y + (r.x * s + r.y * c), field_0x48.z);
+                a->mPos = p;
+                if (field_0x44 == 2) {
+                    ((UnknownBGBL_804A4BB0*)a)->fn_801D7DB4(field_0x60);
                 }
             }
         }
