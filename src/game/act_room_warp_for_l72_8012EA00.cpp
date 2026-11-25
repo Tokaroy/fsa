@@ -68,6 +68,7 @@ void RoomWarpForL72_8049E8F8::init() {
 
 // The player's x and y are loaded into f1 and f0 in the original and f0 and
 // f1 here (registers only).
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 void RoomWarpForL72_8049E8F8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
