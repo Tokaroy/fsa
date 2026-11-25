@@ -1804,13 +1804,11 @@ void FileSelect_804AFF60::fn_803CABAC() {
     }
 }
 
-// FIXME: 98.32 %, different; behaviour near.
+// FIXME: 99.13 %, scheduling+regalloc; behaviour clean.
 // (try.py: different, same length; registers shift from it).
 // As fn_803C2E24: the original keeps &others in r27 from the fill loop on
-// (`mr r3, r27`) and walks it in the row loop; ours computes &others again
-// before the row loop. A second pointer variable holding &others gets the
-// fill right but copies it for the walk (98.39, one more instruction).
-// Every field, call and branch is the original's.
+// (`mr r3, r27`, a separate fill pointer) and walks it in the row loop.
+// Registers and instruction order still differ.
 // State 20 (copy, from fn_803C1340): the board slides out while row
 // field_0xa4 takes its highlighted colours (fadeFileRow_803BC6F0), the four buttons
 // slide out, and the other two rows slide back in, spaced around the middle
@@ -1837,9 +1835,10 @@ void FileSelect_804AFF60::fn_803C9F80() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -1867,30 +1866,30 @@ void FileSelect_804AFF60::fn_803C9F80() {
     // The middle of the second and third rows' places.
     f32 midRow = (field_0x38[1]->field_0xc + field_0x38[2]->field_0xc) * 0.5f;
     f32 midTab = (field_0x44[1]->field_0xc + field_0x44[2]->field_0xc) * 0.5f;
-    for (s32 i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            if (others[i] == 0) {
+            if (*other == 0) {
                 field_0x70[0] = midRow - field_0x38[0]->field_0xc;
                 field_0x64[0] = midTab - field_0x44[0]->field_0xc;
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[0]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[0]);
-            } else if (others[i] == 1) {
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[0]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[0]);
+            } else if (*other == 1) {
                 field_0x70[1] = (midRow - field_0x38[1]->field_0xc) + i * (field_0x38[2]->field_0xc - field_0x38[1]->field_0xc);
                 field_0x64[1] = (midTab - field_0x44[1]->field_0xc) + i * (field_0x44[2]->field_0xc - field_0x44[1]->field_0xc);
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[1]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[1]);
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[1]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[1]);
             } else {
                 field_0x70[2] = midRow - field_0x38[1]->field_0xc;
                 field_0x64[2] = midTab - field_0x44[1]->field_0xc;
-                field_0x38[others[i]]->moveFromCentre_80402E08(0.0f, field_0x70[2]);
-                field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[2]);
+                field_0x38[*other]->moveFromCentre_80402E08(0.0f, field_0x70[2]);
+                field_0x44[*other]->moveFromCentre_80402E08(0.0f, field_0x64[2]);
             }
-            field_0x38[others[i]]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->animateAlpha_80402628(rowFrames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->slideX_80402B10(rowFrames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->animateAlpha_80402628(rowFrames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     field_0x70[field_0xa4] = field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc;
@@ -3668,11 +3667,6 @@ void FileSelect_804AFF60::fn_803BD5E0(s32 file) {
     setGroup4Colors(this, file, JUtility::TColor(0xB4, 0xB4, 0xB4, 0x00), JUtility::TColor(0xB4, 0xB4, 0xB4, 0xFF));
 }
 
-// FIXME: 98.71 %, missing/extra; behaviour clean.
-// 8 instructions missing: in groups 1-4 the original copies
-// black / white into the group copies (sp 0xE4 / 0xE0 ...) through a second
-// temporary (sp 0x20 / 0x24 ...: one extra word store each), which plain
-// copies don't produce; stack offsets shift from there.
 // Fades file `file`'s row pictures between their colours and grey:
 // alpha 0 keeps the colours read by the constructor, alpha 1 sets each
 // group's black and white to fixed grey levels.
@@ -3704,15 +3698,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[1].g + (0xB4 - field_0xe8[1].g) * alpha;
     white.b = field_0xe8[1].b + (0xB4 - field_0xe8[1].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black1 = black;
-    JUtility::TColor white1 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B90[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B78[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B60[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B48[file]))->setBlackWhite(black1, white1);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B30[file]))
-        ->setBlackWhite(JUtility::TColor(black1.r, black1.g, black1.b, 0xFF), white1);
+    setGroup1Colors(this, file, black, white);
 
     black.r = field_0xfc[2].r + (0x50 - field_0xfc[2].r) * alpha;
     black.g = field_0xfc[2].g + (0x50 - field_0xfc[2].g) * alpha;
@@ -3722,14 +3708,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[2].g + (0x80 - field_0xe8[2].g) * alpha;
     white.b = field_0xe8[2].b + (0x80 - field_0xe8[2].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black2 = black;
-    JUtility::TColor white2 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B18[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476B00[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AE8[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AD0[file]))->setBlackWhite(black2, white2);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476AB8[file]))->setBlackWhite(black2, white2);
+    setGroup2Colors(this, file, black, white);
 
     black.r = field_0xfc[3].r + (0x82 - field_0xfc[3].r) * alpha;
     black.g = field_0xfc[3].g + (0x82 - field_0xfc[3].g) * alpha;
@@ -3739,15 +3718,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[3].g + (0xB4 - field_0xe8[3].g) * alpha;
     white.b = field_0xe8[3].b + (0xB4 - field_0xe8[3].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black3 = black;
-    JUtility::TColor white3 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C98[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C80[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C68[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C50[file]))->setBlackWhite(black3, white3);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C38[file]))
-        ->setBlackWhite(JUtility::TColor(black3.r, black3.g, black3.b, 0xFF), white3);
+    setGroup3Colors(this, file, black, white);
 
     black.r = field_0xfc[4].r + (0xB4 - field_0xfc[4].r) * alpha;
     black.g = field_0xfc[4].g + (0xB4 - field_0xfc[4].g) * alpha;
@@ -3757,13 +3728,7 @@ void FileSelect_804AFF60::fadeFileRow_803BC6F0(s32 file, f32 alpha) {
     white.g = field_0xe8[4].g + (0xB4 - field_0xe8[4].g) * alpha;
     white.b = field_0xe8[4].b + (0xB4 - field_0xe8[4].b) * alpha;
     white.a = 0xFF;
-    // The original copies the group colours through a per-group temporary (sp 0xE4 / 0xE0 ...).
-    JUtility::TColor black4 = black;
-    JUtility::TColor white4 = white;
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C20[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476C08[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476BF0[file]))->setBlackWhite(black4, white4);
-    ((J2DPicture*)mScreenHuuin->search(lbl_80476BD8[file]))->setBlackWhite(black4, white4);
+    setGroup4Colors(this, file, black, white);
 }
 
 // One step of the 'kk_' fade (fn_803CE9EC's cases 1 and 2 have the same
