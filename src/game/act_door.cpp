@@ -331,13 +331,15 @@ void Door_804A8D88::update() {
             }
             if (field_0x230 == 0) {
                 field_0x230 = 1;
-            } else if (field_0x234 == 0 && field_0x240 != 0) {
-                field_0x230 = 6;
-            } else if (field_0x234 == 0 && mLayer_0x4 < 8 && field_0x24c != 0) {
-                field_0x230 = 9;
-                field_0x250 = 120;
+            } else if (field_0x234 != 0 || field_0x240 == 0) {
+                if (field_0x234 == 0 && mLayer_0x4 < 8 && field_0x24c != 0) {
+                    field_0x230 = 9;
+                    field_0x250 = 120;
+                } else {
+                    field_0x230 = 5;
+                }
             } else {
-                field_0x230 = 5;
+                field_0x230 = 6;
             }
         } else if (field_0x230 == 3) {
             if (field_0x234 == 5) {
@@ -591,32 +593,31 @@ void Door_804A8D88::update() {
         }
         break;
     case 7: {
-        if (field_0x248 < 0) {
-            field_0x230 = 3;
-            break;
-        }
-        if (fn_802308E0(field_0x248) != true) {
-            break;
-        }
-        s32 leader = field_0x248;
-        if (hasPlayerLeader_8022F514(field_0x248)) {
-            leader = getPlayerLeader_8022F3DC(field_0x248);
-        }
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f player = *getPlayerPos_8023E724(i);
-            JGeometry::TVec3f p = player;
-            p.x = 1.0f + player.x;
-            p.y = player.y - 12.0f;
-            p.z = player.z;
-            if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
-                if (i == field_0x248) {
-                    getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
+        if (field_0x248 >= 0) {
+            if (fn_802308E0(field_0x248) == true) {
+                s32 leader = field_0x248;
+                if (hasPlayerLeader_8022F514(field_0x248)) {
+                    leader = getPlayerLeader_8022F3DC(field_0x248);
                 }
-            } else if (i == leader && i == field_0x248) {
-                getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
+                for (s32 i = 0; i < 4; i++) {
+                    JGeometry::TVec3f player = *getPlayerPos_8023E724(i);
+                    JGeometry::TVec3f p = player;
+                    p.x = 1.0f + player.x;
+                    p.y = player.y - 12.0f;
+                    p.z = player.z;
+                    if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
+                        if (i == field_0x248) {
+                            getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
+                        }
+                    } else if (i == leader && i == field_0x248) {
+                        getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
+                    }
+                }
+                field_0x230 = 3;
             }
+        } else {
+            field_0x230 = 3;
         }
-        field_0x230 = 3;
         break;
     }
     case 8:
