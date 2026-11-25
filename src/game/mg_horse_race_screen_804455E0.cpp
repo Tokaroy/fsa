@@ -128,13 +128,9 @@ void MgHorseRaceScreen_804B1BB0::fn_80445CDC() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME: 91.85 %. Only the time-digit block (after the field_0x44 bit test, before
-// the rank part) differs: the original loads field_0x3c's seconds into r8 (ours r7),
-// schedules lis lbl_804B1B78 before lis 0x5449, and loads field_0x38 before the
-// 0x6667 constant; it keeps the minutes picture in r23 (a ninth callee-saved
-// register), while ours stores it in r25. Tried: separate minutes, seconds and
-// centiseconds texture locals (90.9-91.05 %), a minutes local for the division.
+// Registers only: the loop counter and two digit values sit in rotated callee-saved registers (r25/r26/r27).
 void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
+    const ResTIMG* res;
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
             field_0x8[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());
@@ -160,24 +156,24 @@ void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
             if (field_0x38[i] >= 100) {
                 field_0x38[i] = 99;
             }
-            s32 seconds = field_0x3c[i];
-            s32 secs = seconds % 60;
-            s32 centis = field_0x38[i];
-            s32 secTens = secs / 10;
-            s32 centiTens = centis / 10;
-            const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[seconds / 60]));
+            s32 minutes = field_0x3c[i] / 60;
+            s32 secTens = (field_0x3c[i] % 60) / 10;
+            s32 secOnes = (field_0x3c[i] % 60) % 10;
+            s32 centiTens = field_0x38[i] / 10;
+            s32 centiOnes = field_0x38[i] % 10;
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[minutes]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][13]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][14]))->changeTexture(res, 0);
             res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[secTens]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][15]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][16]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[secs % 10]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[secOnes]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][17]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][18]))->changeTexture(res, 0);
             res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[centiTens]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][19]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][20]))->changeTexture(res, 0);
-            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[centis % 10]));
+            res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1B78[centiOnes]));
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][21]))->changeTexture(res, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][22]))->changeTexture(res, 0);
         }
@@ -193,7 +189,7 @@ void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
         if (mScreen->search(lbl_8048FC08[i][1])->isVisible()) {
             u8 rank = field_0x40[i];
             if (rank >= 1 && rank <= 4) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1BA0[rank - 1]));
+                res = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1BA0[rank - 1]));
                 static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][0]))->changeTexture(res, 0);
                 static_cast<J2DPicture*>(mScreen->search(lbl_8048FC08[i][1]))->changeTexture(res, 0);
             }
