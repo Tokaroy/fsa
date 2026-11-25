@@ -68,10 +68,10 @@ void PrincessZeldaSpawnerEscape_804A3698::init() {
 }
 
 // 0x801B29EC.
-// FIXME(shotgun): 99.25 %, different; behaviour near.
+// FIXME(shotgun): 99.43 %, different; behaviour near.
 // Still differs: the actor loop's second zero is a register copy (mr) in the original; the life-meter stores
 // load field_0x328 before mSerial (LifeMeter_804B174C::fn_8019CEF8 inlined in the original; it needs to be a
-// header inline), state 8 loads mLayer_0x4 before getPlayerLayer_8023DE58, and registers and stack slots.
+// header inline), and registers and stack slots.
 void PrincessZeldaSpawnerEscape_804A3698::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -362,8 +362,9 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         }
         s32 near = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && getRepresentativePlayer_8022EA0C(i) == i &&
-                !fn_80230188(i) && !fn_8022DCD8(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
+            if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
+                getRepresentativePlayer_8022EA0C(i) == i && !fn_80230188(i) && !fn_8022DCD8(i) &&
+                !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                 f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
                 if (std::sqrtf(dx * dx + dy * dy) < 128.0f) {
