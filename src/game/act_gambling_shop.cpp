@@ -441,6 +441,7 @@ void GamblingShop_804AAA70::swapTwoChests() {
         field_0x250[2] = tmp;
         break;
     }
+    case 2:
     default: {
         s32 tmp = field_0x250[0];
         field_0x250[0] = field_0x250[2];
