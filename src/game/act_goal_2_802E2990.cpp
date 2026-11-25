@@ -203,7 +203,7 @@ static const f32 lbl_8046F060[6][2] = {
 
 
 // 0x802E3B2C.
-// FIXME(shotgun): 84.33 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.95 %, different; behaviour clean.
 void Goal2_804A9C20::init() {
     field_0x238 = mSpawnParam_0x90 & 0x1F;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
@@ -284,7 +284,7 @@ Goal2_804A9C20::~Goal2_804A9C20() {
 }
 
 // 0x802E2C28.
-// FIXME(shotgun): 94.24 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.97 %, regalloc-only; behaviour clean.
 void Goal2_804A9C20::update() {
     if (field_0x230 < 1) {
         field_0x248++;
