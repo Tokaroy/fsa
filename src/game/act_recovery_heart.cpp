@@ -40,9 +40,9 @@ void RecoveryHeart_8049F4F0::vfunc_0x40() {
 }
 
 // FIXME: 99.89 %, operands; behaviour clean.
-// FIXME: stack slots of probe (0x24 vs 0x34) and box (0x30 vs 0x24) are swapped.
 void RecoveryHeart_8049F4F0::update() {
     JGeometry::TVec2f basePos(mPos.x, mPos.y);
+    JGeometry::TBox2f box;
     if (field_0x240 == 0) {
         field_0x234 -= 1;
         if (field_0x234 <= 0) {
@@ -112,7 +112,7 @@ void RecoveryHeart_8049F4F0::update() {
         break;
     }
     case 4: {
-        JGeometry::TBox2f box(mBox);
+        box.set(mBox);
         box.addPos(basePos);
         bool flag = true;
         if (gGameRoot_8053AAF8->field_0x7f != 0) {
@@ -124,15 +124,13 @@ void RecoveryHeart_8049F4F0::update() {
             fn_8023B768(&box, mLayer_0x4, &basePos);
         }
         if (player >= 0) {
-            s32 owner = getPlayerMaxLife_80237810(player);
-            if (owner == getPlayerLife_80237774(player)) {
+            if (getPlayerLife_80237774(player) == getPlayerMaxLife_80237810(player)) {
                 fn_80230EB8(player, 9);
             }
             healPlayerGroup_80236554(player, 4, 0);
             mAlive = false;
         } else if (hitPlayer >= 0) {
-            s32 owner = getPlayerMaxLife_80237810(hitPlayer);
-            if (owner == getPlayerLife_80237774(hitPlayer)) {
+            if (getPlayerLife_80237774(hitPlayer) == getPlayerMaxLife_80237810(hitPlayer)) {
                 fn_80230EB8(hitPlayer, 9);
             }
             healPlayerGroup_80236554(hitPlayer, 4, 0);
