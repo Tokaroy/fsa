@@ -230,7 +230,7 @@ inline void MovingHouse_804A7AE0::snapshotTiles() {
     field_0x2b5 = 1;
 }
 
-// FIXME(shotgun): 98.87 %, operands; behaviour clean.
+// FIXME(shotgun): 99.27 %, regalloc-only; behaviour clean.
 // initial position/box arithmetic is scheduled differently, 5 instructions
 void MovingHouse_804A7AE0::vfunc_0x10() {
     snapshotTiles();
@@ -391,7 +391,7 @@ void MovingHouse_804A7AE0::fn_8029A974() {
 }
 
 // Remaining: one loop pointer copy in `bakeTiles`.
-// FIXME: 99.01 %, different; behaviour near.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
@@ -451,7 +451,7 @@ void MovingHouse_804A7AE0::fn_8029A494() {
 }
 
 // Remaining: one loop pointer copy in `bakeTiles`.
-// FIXME: 99.01 %, different; behaviour near.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_80299FB0() {
     if (!field_0x250.isZero()) {
         return;
@@ -961,6 +961,7 @@ inline void MovingHouse_804A7AE0::restoreTiles() {
     }
 }
 
+// FIXME: 95.62 %, missing/extra + reloc-name; behaviour near.
 void MovingHouse_804A7AE0::update() {
     mPos.set(field_0x238);
     for (s32 i = 0; i < 4; i++) {
