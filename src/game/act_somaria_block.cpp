@@ -59,7 +59,10 @@ void CaneOfSomariaBlock_804AA9F0::init() {
 // the lift, 9 leaves it.
 void CaneOfSomariaBlock_804AA9F0::update() {
     JGeometry::TBox2f box = mBox;
-    box.addPos(mPos.x, mPos.y);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
     if (mState <= 6 && field_0xc4 == 0 && mPos.z <= 0.0f) {
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
@@ -116,7 +119,10 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             break;
         }
         JGeometry::TBox2f here = mBox;
-        here.addPos(mPos.x, mPos.y);
+        here.i.x += mPos.x;
+        here.f.x += mPos.x;
+        here.i.y += mPos.y;
+        here.f.y += mPos.y;
         pool_80541740(&here);
         s32 dir = fn_80238BC4(mSerial);
         if (dir >= 0 && dir < 4) {
@@ -161,8 +167,12 @@ void CaneOfSomariaBlock_804AA9F0::update() {
     case 3: {
         mPos.add(mVel_0x3c);
         box.set(mBox);
-        box.addPos(mPos.x, mPos.y);
-        JGeometry::TBox2f here = box;
+        box.i.x += mPos.x;
+        box.f.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.y += mPos.y;
+        JGeometry::TBox2f here = mBox;
+        here.set(box);
         pool_80541740(&here);
         if ((field_0x244 & 0x1F) == 0) {
             startSound_801F0E34(0x30004, 0);
@@ -344,7 +354,7 @@ void CaneOfSomariaBlock_804AA9F0::fn_8030EA00() {
 void CaneOfSomariaBlock_804AA9F0::pool_80541740(JGeometry::TBox2f* here) {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x246[i] == 1) {
-            if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
+            if (!fn_8022DB04(i) || fn_80238CB4(i) == getSerial()) {
                 fn_80239878(i, here, mLayer_0x4, mSerial);
             }
         } else if (!fn_8023B0F4(i, here, mLayer_0x4, false, 8.0f)) {
@@ -357,10 +367,11 @@ void CaneOfSomariaBlock_804AA9F0::pool_80541740(JGeometry::TBox2f* here) {
 bool CaneOfSomariaBlock_804AA9F0::pool_80541738() {
     JGeometry::TBox2f box = mMapBox_0x80;
     box.addPos(mPos.x, mPos.y);
-    JGeometry::TVec3f centre;
+    // The original's centre is an 8-byte stack slot (x, y only).
+    JGeometry::TVec2f centre;
     centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
-    s32 tile = getTileCollisionCodeAlt_802265FC(&centre, mLayer_0x4);
+    s32 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&centre, mLayer_0x4);
     if (tile == 3 || tile == 0xD || tile == 0xE || tile == 0x3B) {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
