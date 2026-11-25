@@ -37,6 +37,7 @@ public:
     u8 fn_8044D290(); // 0x8044D290: field_0x140
     void fn_8044D298(int arg); // 0x8044D298
     void fn_8044D894(); // 0x8044D894
+    void setDigits(s32 value); // inline in game/collect_screen_8044C7F0.cpp (fn_8044D894, twice)
     s32 fn_8044F680(); // 0x8044F680
     void fn_804522C8(); // 0x804522C8
     void fn_80452308(); // 0x80452308

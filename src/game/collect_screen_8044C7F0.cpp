@@ -977,6 +977,32 @@ s32 fn_8044F664() {
     return 9;
 }
 
+// Hides the six digit panes of both rows, then shows the digits of value without leading zeros
+// (inlined twice by fn_8044D894).
+inline void CollectScreen_804B1D58::setDigits(s32 value) {
+    s32 div = 10000;
+    bool leading = true;
+    for (s32 i = 0; i < 6; i++) {
+        mScreen->search(lbl_80491070[i])->hide();
+        mScreen->search(lbl_804910A0[i])->hide();
+    }
+    for (s32 i = 0; i < 5; i++) {
+        s32 digit = value / div;
+        value %= div;
+        div /= 10;
+        if (!leading || digit != 0 || i >= 4) {
+            if (leading) {
+                leading = false;
+            }
+            const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[digit]));
+            static_cast<J2DPicture*>(mScreen->search(lbl_80491070[i]))->changeTexture(image, 0);
+            static_cast<J2DPicture*>(mScreen->search(lbl_804910A0[i]))->changeTexture(image, 0);
+            mScreen->search(lbl_80491070[i])->show();
+            mScreen->search(lbl_804910A0[i])->show();
+        }
+    }
+}
+
 // Refreshes the screen: recolours the three tabs, shows the rupee count, the players' rows and
 // emitters, the second list's rows, and the total (field_0x11c) or the digits of what is left.
 // FIXME: 97.17 %, missing/extra + reloc-name; behaviour near.
@@ -1006,13 +1032,13 @@ void CollectScreen_804B1D58::fn_8044D894() {
     if (lbl_8050EC80.getCurrentFile().field_0x67 & 1) {
         field_0xc[8]->mPane->show();
         field_0xc[9]->mPane->show();
-        u8 rupees = lbl_80529DEC.field_0x24f;
-        s32 ones = rupees % 10;
+        s32 rupees = lbl_80529DEC.field_0x24f;
         s32 tens = rupees / 10;
+        rupees %= 10;
         const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[tens]));
         static_cast<J2DPicture*>(mScreen->search('Pfsk01'))->changeTexture(image, 0);
         static_cast<J2DPicture*>(mScreen->search('Pfs01'))->changeTexture(image, 0);
-        image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[ones]));
+        image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[rupees]));
         static_cast<J2DPicture*>(mScreen->search('Pfsk02'))->changeTexture(image, 0);
         static_cast<J2DPicture*>(mScreen->search('Pfs02'))->changeTexture(image, 0);
     } else {
@@ -1187,28 +1213,7 @@ void CollectScreen_804B1D58::fn_8044D894() {
         field_0x11c += fn_80236100(i);
     }
     if (fn_80237060(0) == 2) {
-        s32 value = 0;
-        s32 div = 10000;
-        bool leading = true;
-        for (s32 i = 0; i < 6; i++) {
-            mScreen->search(lbl_80491070[i])->hide();
-            mScreen->search(lbl_804910A0[i])->hide();
-        }
-        for (s32 i = 0; i < 5; i++) {
-            s32 digit = value / div;
-            value %= div;
-            div /= 10;
-            if (!leading || digit != 0 || i >= 4) {
-                if (leading) {
-                    leading = false;
-                }
-                const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[digit]));
-                static_cast<J2DPicture*>(mScreen->search(lbl_80491070[i]))->changeTexture(image, 0);
-                static_cast<J2DPicture*>(mScreen->search(lbl_804910A0[i]))->changeTexture(image, 0);
-                mScreen->search(lbl_80491070[i])->show();
-                mScreen->search(lbl_804910A0[i])->show();
-            }
-        }
+        setDigits(0);
         field_0xc[6]->mPane->show();
         field_0xc[10]->mPane->hide();
         field_0x12c = mAnm_0xf4->getFrameMax();
@@ -1221,27 +1226,7 @@ void CollectScreen_804B1D58::fn_8044D894() {
         if (value < 0) {
             value = 0;
         }
-        s32 div = 10000;
-        bool leading = true;
-        for (s32 i = 0; i < 6; i++) {
-            mScreen->search(lbl_80491070[i])->hide();
-            mScreen->search(lbl_804910A0[i])->hide();
-        }
-        for (s32 i = 0; i < 5; i++) {
-            s32 digit = value / div;
-            value %= div;
-            div /= 10;
-            if (!leading || digit != 0 || i >= 4) {
-                if (leading) {
-                    leading = false;
-                }
-                const ResTIMG* image = static_cast<const ResTIMG*>(getMain2DResource_804030C4('TIMG', lbl_804B1D30[digit]));
-                static_cast<J2DPicture*>(mScreen->search(lbl_80491070[i]))->changeTexture(image, 0);
-                static_cast<J2DPicture*>(mScreen->search(lbl_804910A0[i]))->changeTexture(image, 0);
-                mScreen->search(lbl_80491070[i])->show();
-                mScreen->search(lbl_804910A0[i])->show();
-            }
-        }
+        setDigits(value);
         field_0xc[6]->mPane->hide();
         if (fn_802DE814()) {
             field_0xc[10]->mPane->hide();
