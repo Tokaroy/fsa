@@ -11,21 +11,9 @@
 #include "JSystem/JMath/JMath.h"
 #include <float.h>
 
-// Breaks the 'SBAL' tiles `radius` ahead of the ball along `angle`.
-// FIXME(shotgun): the original adds a whole TVec3f offset whose z is never set: pos.z gets
-// the stack word at sp+0x18 added (psq_l / ps_add / psq_st, 4 instructions per call), and
-// nothing in update ever writes that word. Reading it would be undefined behaviour, so only
-// x and y are added here; that is the one intended deviation from the asm.
-static inline void breakTiles(IronBallHoming_804AB9C0* self, u16 angle, f32 radius) {
-    JGeometry::TVec3f pos(self->mPos);
-    pos.x += radius * JMath::sincosTable_.sinShort(angle);
-    pos.y += radius * JMath::sincosTable_.cosShort(angle);
-    gBgRewrite_8053AC98->fn_802A1688(&pos, self->mLayer_0x4, 'SBAL');
-}
-
 // States 1 and 2 turn toward the last player position seen (field_0x260), or away from
 // a wall (sweepMapBox_801F2618) for 10 frames.
-static inline void steer(IronBallHoming_804AB9C0* self, u8 hitWall, s32 player) {
+static inline void steer(IronBallHoming_804AB9C0* self, u8 hitWall, const s32& player) {
     if (self->field_0x254 == 0 && player >= 0) {
         if (hitWall) {
             self->field_0x26c += 0x2000;
@@ -98,15 +86,43 @@ bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
 void IronBallHoming_804AB9C0::update() {
     u16 angle = 0;
     s32 player;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f offset;
     mPos.add(mVel_0x3c);
+    // Breaks the 'SBAL' tiles ahead of the ball. All six share one offset and one pos on the
+    // stack. offset.z is never set, as in the original (pos.z gets that stack word added).
     if (mSpawnParam_0x90 & 1) {
-        breakTiles(this, field_0x26c, 25.0f);
-        breakTiles(this, field_0x26c + 0x1500, 25.0f);
-        breakTiles(this, field_0x26c - 0x1500, 25.0f);
+        pos = mPos;
+        offset.x = 25.0f * JMath::sincosTable_.sinShort(field_0x26c);
+        offset.y = 25.0f * JMath::sincosTable_.cosShort(field_0x26c);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
+        pos = mPos;
+        offset.x = 25.0f * JMath::sincosTable_.sinShort(field_0x26c + 0x1500);
+        offset.y = 25.0f * JMath::sincosTable_.cosShort(field_0x26c + 0x1500);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
+        pos = mPos;
+        offset.x = 25.0f * JMath::sincosTable_.sinShort(field_0x26c - 0x1500);
+        offset.y = 25.0f * JMath::sincosTable_.cosShort(field_0x26c - 0x1500);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
     } else {
-        breakTiles(this, field_0x26c, 13.0f);
-        breakTiles(this, field_0x26c + 0x1500, 13.0f);
-        breakTiles(this, field_0x26c - 0x1500, 13.0f);
+        pos = mPos;
+        offset.x = 13.0f * JMath::sincosTable_.sinShort(field_0x26c);
+        offset.y = 13.0f * JMath::sincosTable_.cosShort(field_0x26c);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
+        pos = mPos;
+        offset.x = 13.0f * JMath::sincosTable_.sinShort(field_0x26c + 0x1500);
+        offset.y = 13.0f * JMath::sincosTable_.cosShort(field_0x26c + 0x1500);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
+        pos = mPos;
+        offset.x = 13.0f * JMath::sincosTable_.sinShort(field_0x26c - 0x1500);
+        offset.y = 13.0f * JMath::sincosTable_.cosShort(field_0x26c - 0x1500);
+        pos.add(offset);
+        gBgRewrite_8053AC98->fn_802A1688(&pos, mLayer_0x4, 'SBAL');
     }
     u8 hitWall = sweepMapBox_801F2618(NULL, false);
     findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 1);
@@ -121,9 +137,7 @@ void IronBallHoming_804AB9C0::update() {
             hit = damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 4) != 0;
         }
         if (hit) {
-            mVel_0x3c.x = -mVel_0x3c.x;
-            mVel_0x3c.y = -mVel_0x3c.y;
-            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.set(-mVel_0x3c.x, -mVel_0x3c.y, 0.0f);
             field_0x244 = 20;
             field_0x230 = 3;
         }
