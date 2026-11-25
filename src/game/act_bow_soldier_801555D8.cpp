@@ -249,7 +249,7 @@ BOOL BowSoldier_804A00C8::vfunc_0x54() {
     return FALSE;
 }
 
-// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.01 %, missing/extra; behaviour near.
 void BowSoldier_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
