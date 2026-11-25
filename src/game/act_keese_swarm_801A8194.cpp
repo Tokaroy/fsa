@@ -270,6 +270,7 @@ void KeeseSwarm_804A2EC0::draw() {
             mtx[2][0] = 0.0f;
             mtx[2][1] = 0.0f;
             mtx[2][2] = scale;
+            params.mMtx = mtx;
             frame--;
             if (frame < 0) {
                 frame = 2;
