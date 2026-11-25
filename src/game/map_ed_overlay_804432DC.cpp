@@ -51,10 +51,8 @@ MapEdOverlay_804B1AE8::~MapEdOverlay_804B1AE8() {
 // Empty; hud_mgr_8043A0E8 calls it on lbl_8053AEF0.
 void MapEdOverlay_804B1AE8::fn_80443688() {}
 
-// FIXME: 81.5 %. The target tests the state with a branchless "!= 3"
-// (subfic / subi / or / srwi.) and keeps it in r4; ours compares it with cmpwi.
 void MapEdOverlay_804B1AE8::fn_80443638() {
-    if (mState != 3) {
+    if (isRunning()) {
         (lbl_8053AEF0->*lbl_804B1AC4[mState])();
     }
 }
