@@ -103,7 +103,7 @@ u8 AfterGoalOpening_8049DD68::vfunc_0x5C() {
 // Not auto-inlined: update and vfunc_0x54 call setState_8011D1B8 / fn_8011CF48 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 96.99 %, different; behaviour drift.
+// FIXME(shotgun): 99.82 %, regalloc-only; behaviour drift.
 // jump table is not yet a named jumptable_8049DDF0; stack layout still differs
 void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
     switch (state) {
@@ -113,7 +113,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
             setPlayerFacing_80230BF4(i, 3);
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0, -0x80, -0x80, true);
         }
-        fn_8011921C()->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100001B, false, 0);
         break;
     case 2:
@@ -140,6 +140,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
             }
             fn_80230498(i, pos, 0x3F, 0, -0x80, -0x80, true);
         }
+        JGeometry::TVec3f spawnPos;
         cls_801192AC* area = fn_8011921C();
         ActorBase_804A5770** it = area->fn_8011871C(area->mActors.mBegin, ACTOR_DMLK);
         JGeometry::TVec3f zero;
@@ -150,7 +151,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
         } else {
             pos = &(*it)->mSpawnPos;
         }
-        JGeometry::TVec3f spawnPos = *pos;
+        spawnPos = *pos;
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x33F, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x340, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x341, 0, 0, NULL, NULL, true, 1.0f);
@@ -203,7 +204,6 @@ void AfterGoalOpening_8049DD68::setOverlayRect() {
 }
 
 #pragma auto_inline off
-// FIXME(shotgun): 97.92 %, missing/extra; behaviour drift.
 void AfterGoalOpening_8049DD68::fn_8011CF48() {
     switch (field_0x234) {
     case 0:
@@ -218,6 +218,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         moveToward_801CD950(&field_0x240.y, mSpawnPos.y - 440.0f, field_0x23c);
         {
             JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+            c.y = field_0x240.y;
             gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         }
         break;
@@ -240,11 +241,13 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
             }
         }
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+        c.y = field_0x240.y;
         gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
     case 7: {
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
+        c.y = field_0x240.y;
         gGameRoot2_8053AB10->field_0x24->requestBox_8030C7C4(&c, field_0x258);
         break;
     }
