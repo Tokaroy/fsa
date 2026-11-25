@@ -63,16 +63,13 @@ void Vulture_804A4230::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 86.03 %, missing/extra + reloc-name; behaviour clean.
-// Compiler promotes the local TVec2fs to registers instead of keeping stack temporaries
-// at 0x8, 0x10, 0x18, 0x20 (frame 0x60 instead of 0x80); literal names differ (reloc-name).
+// FIXME: 97.74 %, missing/extra; behaviour clean.
+// Ours loads field_0x2b0 into r4 and then copies it to r5 (one extra mr); the original
+// loads it straight into r5. Literal names differ (reloc-name).
 void Vulture_804A4230::fn_801C0634() {
-    JGeometry::TVec2f diff = field_0x2b8;
-    diff.y -= field_0x2c0.y;
-    diff.x -= field_0x2c0.x;
+    JGeometry::TVec2f diff = field_0x2b8 - field_0x2c0;
     diff.normalize();
-    diff.x *= field_0x2ac;
-    diff.y *= field_0x2ac;
+    diff.scale(field_0x2ac);
 
     f32 targetX;
     f32 targetY;
@@ -88,15 +85,11 @@ void Vulture_804A4230::fn_801C0634() {
     approachValue_801CD8E4(&field_0x2c0.x, targetX, 1.0f, 0.0f);
     approachValue_801CD8E4(&field_0x2c0.y, targetY, 1.0f, 0.0f);
 
-    JGeometry::TVec2f target = field_0x2c0;
-    target.x += diff.x;
-    target.y += diff.y;
+    JGeometry::TVec2f target = field_0x2c0 + diff;
     approachValue_801CD8E4(&field_0x2b8.x, target.x, 0.05f, 0.0f);
     approachValue_801CD8E4(&field_0x2b8.y, target.y, 0.05f, 0.0f);
 
-    JGeometry::TVec2f diff2 = field_0x2b8;
-    diff2.x -= field_0x2c0.x;
-    diff2.y -= field_0x2c0.y;
+    JGeometry::TVec2f diff2 = field_0x2b8 - field_0x2c0;
 
     f32 dist;
     if (field_0x2a8 >= 0) {
@@ -107,8 +100,8 @@ void Vulture_804A4230::fn_801C0634() {
 
     s16 angle = field_0x2b0;
     if (dist > 0.001f) {
-        s32 a = (s32)((1.0f / dist) * (field_0x2ac * (f32)field_0x2b0));
-        if ((s16)a > field_0x2b0) {
+        s32 a = (s32)((1.0f / dist) * (field_0x2ac * (f32)angle));
+        if ((s16)a > angle) {
             angle = field_0x2b0;
         } else if ((s16)a < 0x100) {
             angle = 0x100;
@@ -129,10 +122,8 @@ void Vulture_804A4230::fn_801C0634() {
     f32 s = JMath::sincosTable_.sinShort(rot);
     f32 c = JMath::sincosTable_.cosShort(rot);
 
-    JGeometry::TVec2f res = field_0x2c0;
-    res.x += diff2.x * c - diff2.y * s;
-    res.y += diff2.x * s + diff2.y * c;
-    field_0x2b8 = res;
+    JGeometry::TVec2f rotated(diff2.x * c - diff2.y * s, diff2.x * s + diff2.y * c);
+    field_0x2b8 = field_0x2c0 + rotated;
 }
 
 void Vulture_804A4230::setState_801C0438(s32 state) {
