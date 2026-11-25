@@ -23,16 +23,16 @@ struct SaveSector_803BACF8 {
     /* 0x1FAE */ u8 pad_0x1FAE[0x4E];
     /* 0x1FFC */ u32 mChecksum;
 
+    SaveFile_803B950C* getFiles() { return (SaveFile_803B950C*)mData; }
 
     u32 calcChecksum() const {
         const u16* halfwords = (const u16*)this;
         u32 sum = 0;
         u16 inv = 0;
-        for (int i = 0; i < 0xFFE; i += 2) {
-            sum += halfwords[i];
-            inv += ~halfwords[i];
-            sum += halfwords[i + 1];
-            inv += ~halfwords[i + 1];
+        for (u32 i = 0; i < 0x1FFC; i += 2) {
+            sum += *halfwords;
+            inv += ~*halfwords;
+            halfwords++;
         }
         return (sum << 16) | inv;
     }
@@ -53,28 +53,31 @@ SaveFileBody_803B950C lbl_80526020[3] ATTRIBUTE_ALIGN(32);
 static inline bool isCardStatusValid(CARDFileInfo* file) {
     CARDStat stat;
     CARDGetStatus(lbl_8051C1A0.field_0x1ff4, file->fileNo, &stat);
-    return stat.iconAddr == 0 && stat.commentAddr == 0x1C00 &&
-           CARDGetBannerFormat(&stat) == CARD_STAT_BANNER_C8 &&
-           CARDGetIconAnim(&stat) == CARD_STAT_ANIM_LOOP &&
-           CARDGetIconFormat(&stat, 0) == CARD_STAT_ICON_C8 &&
-           CARDGetIconFormat(&stat, 1) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 2) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 3) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 4) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 5) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 6) == CARD_STAT_ICON_NONE &&
-           CARDGetIconFormat(&stat, 7) == CARD_STAT_ICON_NONE &&
-           CARDGetIconSpeed(&stat, 0) == CARD_STAT_SPEED_SLOW &&
-           CARDGetIconSpeed(&stat, 1) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 2) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 3) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 4) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 5) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 6) == CARD_STAT_SPEED_END &&
-           CARDGetIconSpeed(&stat, 7) == CARD_STAT_SPEED_END;
+    if (stat.iconAddr != 0 || stat.commentAddr != 0x1C00 ||
+    CARDGetBannerFormat(&stat) != CARD_STAT_BANNER_C8 ||
+        CARDGetIconAnim(&stat) != CARD_STAT_ANIM_LOOP ||
+        CARDGetIconFormat(&stat, 0) != CARD_STAT_ICON_C8 ||
+        CARDGetIconFormat(&stat, 1) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 2) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 3) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 4) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 5) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 6) != CARD_STAT_ICON_NONE ||
+        CARDGetIconFormat(&stat, 7) != CARD_STAT_ICON_NONE ||
+        CARDGetIconSpeed(&stat, 0) != CARD_STAT_SPEED_SLOW ||
+        CARDGetIconSpeed(&stat, 1) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 2) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 3) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 4) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 5) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 6) != CARD_STAT_SPEED_END ||
+        CARDGetIconSpeed(&stat, 7) != CARD_STAT_SPEED_END) {
+        return false;
+    }
+    return true;
 }
 
-// FIXME: 82.26 %, missing/extra; behaviour near.
+// FIXME: 92.47 %, missing/extra; behaviour near.
 s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 bodySize) {
     snprintf((char*)(lbl_805222C0 + 0x1C00), 0x20, "Four Swords Adventures");
     OSCalendarTime cal;
@@ -179,7 +182,7 @@ s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 body
 // Reads both save images, repairs each file of the first from the second (or
 // clears it) when its checksum fails, writes the images back when it took a copy,
 // clamps every file's counters, and hands the save data and bodies out.
-// FIXME: 71.06 %, missing/extra; behaviour drift.
+// FIXME: 93.77 %, missing/extra; behaviour near.
 s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 bodySize) {
     SaveSector_803BACF8* img1 = &lbl_8051E2C0;
     SaveSector_803BACF8* img2 = &lbl_805202C0;
@@ -189,69 +192,70 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
     if (res != 0) {
         return res;
     }
-    SaveFile_803B950C* files1 = (SaveFile_803B950C*)img1->mData;
-    SaveFile_803B950C* files2 = (SaveFile_803B950C*)img2->mData;
-    s32 ok1_0 = isSaveChecksumValid_803BADAC(&files1[0]);
-    s32 ok1_1 = isSaveChecksumValid_803BADAC(&files1[1]);
-    s32 ok1_2 = isSaveChecksumValid_803BADAC(&files1[2]);
+    s32 ok1_0 = isSaveChecksumValid_803BADAC(&img1->getFiles()[0]);
+    s32 ok1_1 = isSaveChecksumValid_803BADAC(&img1->getFiles()[1]);
+    s32 ok1_2 = isSaveChecksumValid_803BADAC(&img1->getFiles()[2]);
 
     res = CARDRead(file, img2, 0x2000, 0x4000);
     if (res != 0) {
         return res;
     }
-    s32 ok2_0 = isSaveChecksumValid_803BADAC(&files2[0]);
-    s32 ok2_1 = isSaveChecksumValid_803BADAC(&files2[1]);
-    s32 ok2_2 = isSaveChecksumValid_803BADAC(&files2[2]);
+    s32 ok2_0 = isSaveChecksumValid_803BADAC(&img2->getFiles()[0]);
+    s32 ok2_1 = isSaveChecksumValid_803BADAC(&img2->getFiles()[1]);
+    s32 ok2_2 = isSaveChecksumValid_803BADAC(&img2->getFiles()[2]);
 
     if (!ok1_0) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)&files1[0];
-        for (int i = 0; i < 0xC8; i++) {
-            sum += bytes[i];
+        const u8* bytes = &img1->mData[0 * sizeof(SaveFile_803B950C)];
+        for (int i = 0; i < 0xC8; i++, bytes++) {
+            sum += *bytes;
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C(files1, 0);
-            writeSaveChecksum_803BACF8(files1, 0);
+            lbl_8050EC80.fn_803B933C(img1->getFiles(), 0);
+            writeSaveChecksum_803BACF8(img1->getFiles(), 0);
+            isSaveChecksumValid_803BADAC(&img1->getFiles()[0]);
         } else if (ok2_0) {
-            memcpy(&files1[0], &files2[0], sizeof(SaveFile_803B950C));
+            memcpy(&img1->getFiles()[0], &img2->getFiles()[0], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy(&files2[0], &files1[0], sizeof(SaveFile_803B950C));
+        memcpy(&img2->getFiles()[0], &img1->getFiles()[0], sizeof(SaveFile_803B950C));
     }
 
     if (!ok1_1) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)&files1[1];
-        for (int i = 0; i < 0xC8; i++) {
-            sum += bytes[i];
+        const u8* bytes = &img1->mData[1 * sizeof(SaveFile_803B950C)];
+        for (int i = 0; i < 0xC8; i++, bytes++) {
+            sum += *bytes;
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C(files1, 1);
-            writeSaveChecksum_803BACF8(files1, 1);
+            lbl_8050EC80.fn_803B933C(img1->getFiles(), 1);
+            writeSaveChecksum_803BACF8(img1->getFiles(), 1);
+            isSaveChecksumValid_803BADAC(&img1->getFiles()[1]);
         } else if (ok2_1) {
-            memcpy(&files1[1], &files2[1], sizeof(SaveFile_803B950C));
+            memcpy(&img1->getFiles()[1], &img2->getFiles()[1], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy(&files2[1], &files1[1], sizeof(SaveFile_803B950C));
+        memcpy(&img2->getFiles()[1], &img1->getFiles()[1], sizeof(SaveFile_803B950C));
     }
 
     if (!ok1_2) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)&files1[2];
-        for (int i = 0; i < 0xC8; i++) {
-            sum += bytes[i];
+        const u8* bytes = &img1->mData[2 * sizeof(SaveFile_803B950C)];
+        for (int i = 0; i < 0xC8; i++, bytes++) {
+            sum += *bytes;
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C(files1, 2);
-            writeSaveChecksum_803BACF8(files1, 2);
+            lbl_8050EC80.fn_803B933C(img1->getFiles(), 2);
+            writeSaveChecksum_803BACF8(img1->getFiles(), 2);
+            isSaveChecksumValid_803BADAC(&img1->getFiles()[2]);
         } else if (ok2_2) {
-            memcpy(&files1[2], &files2[2], sizeof(SaveFile_803B950C));
+            memcpy(&img1->getFiles()[2], &img2->getFiles()[2], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy(&files2[2], &files1[2], sizeof(SaveFile_803B950C));
+        memcpy(&img2->getFiles()[2], &img1->getFiles()[2], sizeof(SaveFile_803B950C));
     }
 
     if (!isCardStatusValid(file)) {
@@ -270,15 +274,15 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
     }
 
     for (int i = 0; i < 3; i++) {
-        SaveFile_803B950C* f = &files1[i];
+        SaveFile_803B950C* f = (SaveFile_803B950C*)&img1->mData[i * sizeof(SaveFile_803B950C)];
         u8 locked = 0;
         u8 dirty = 0;
         if (f->field_0x65 & 1) {
             if (!(f->field_0x65 & 2)) {
-                f->field_0x14 = 0;
+                f->field_0x14[0] = 0;
                 locked = 1;
                 dirty = 1;
-                f->field_0x16 = 0;
+                f->field_0x14[1] = 0;
                 f->field_0x58 = 0;
                 f->field_0x59 = 50;
                 f->field_0x66 = 0;
@@ -287,8 +291,8 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         } else {
             f->field_0x65 = 0;
             locked = 1;
-            f->field_0x14 = 0;
-            f->field_0x16 = 0;
+            f->field_0x14[0] = 0;
+            f->field_0x14[1] = 0;
             f->field_0x58 = 0;
             f->field_0x59 = 50;
             f->field_0x66 = 0;
@@ -356,45 +360,38 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
             f->field_0x58 = 0;
             dirty = 1;
         }
-        if (f->field_0x14 > 999) {
-            f->field_0x14 = 999;
-            dirty = 1;
+        for (int mode = 0; mode < 2; mode++) {
+            if (f->field_0x14[mode] > 999) {
+                f->field_0x14[mode] = 999;
+                dirty = 1;
+            }
+            if (f->field_0x5c[mode] > 1) {
+                if (mode == 0) {
+                    f->field_0x5c[mode] = 1;
+                } else {
+                    f->field_0x5c[mode] = 0;
+                }
+                dirty = 1;
+            }
+            if (f->field_0x5e[mode] > 1) {
+                f->field_0x5e[mode] = 0;
+                dirty = 1;
+            }
+            if (f->field_0x68[mode] > 1) {
+                f->field_0x68[mode] = 1;
+                dirty = 1;
+            }
         }
-        if (f->field_0x5c > 1) {
-            f->field_0x5c = 1;
-            dirty = 1;
-        }
-        if (f->field_0x5e > 1) {
-            f->field_0x5e = 0;
-            dirty = 1;
-        }
-        if (f->field_0x68 > 1) {
-            f->field_0x68 = 1;
-            dirty = 1;
-        }
-        if (f->field_0x16 > 999) {
-            f->field_0x16 = 999;
-            dirty = 1;
-        }
-        if (f->field_0x5d > 1) {
-            f->field_0x5d = 0;
-            dirty = 1;
-        }
-        if (f->field_0x5f > 1) {
-            f->field_0x5f = 0;
-            dirty = 1;
-        }
-        if (f->field_0x69 > 1) {
-            f->field_0x69 = 1;
-            dirty = 1;
-        }
-        for (int j = 0; j < 28; j++) {
+        for (int j = 0; j < 32; j++) {
             if (f->field_0x18[j] > 99999) {
                 f->field_0x18[j] = 0;
                 dirty = 1;
             }
         }
-        // When dirty is set the original runs an empty 0xC0-count ctr loop here (no stores).
+        if (dirty) {
+            // The result is not used: an empty 0xC0-count loop is all that is left of it.
+            isSaveChecksumValid_803BADAC(f);
+        }
     }
 
     memcpy(dst, img1->mData, size);
@@ -426,32 +423,28 @@ s32 fn_803BAE68(CARDFileInfo* file) {
 }
 
 // True when the checksum words of the save file match its first 0xC0 bytes.
-// FIXME(shotgun): 60.55 %, missing/extra; behaviour clean.
-// (our unrolled checksum loop needs more registers)
+// FIXME: 94.36 %, regalloc-only; behaviour clean.
 bool isSaveChecksumValid_803BADAC(SaveFile_803B950C* file) {
-    u32 sum = 0;
     u32 inverse = 0;
+    u32 sum = 0;
     const u8* bytes = (const u8*)file; // byte view for the checksum
-    for (int i = 0; i < 0xC0; i++) {
+    for (int i = 0; i < 0xC0; i++, bytes++) {
         sum += *bytes;
         inverse += ~*bytes;
-        bytes++;
     }
     return ((sum ^ file->field_0xc0) | (inverse ^ file->field_0xc4)) == 0;
 }
 
 // Writes the checksum words of files[file].
-// FIXME(shotgun): 62.33 %, missing/extra; behaviour clean.
-// (as isSaveChecksumValid_803BADAC)
+// FIXME: 94.78 %, regalloc-only; behaviour clean.
 void writeSaveChecksum_803BACF8(SaveFile_803B950C* files, u8 file) {
     SaveFile_803B950C* f = &files[file];
-    u32 sum = 0;
     u32 inverse = 0;
+    u32 sum = 0;
     const u8* bytes = (const u8*)f; // byte view for the checksum
-    for (int i = 0; i < 0xC0; i++) {
+    for (int i = 0; i < 0xC0; i++, bytes++) {
         sum += *bytes;
         inverse += ~*bytes;
-        bytes++;
     }
     f->field_0xc4 = inverse;
     f->field_0xc0 = sum;

@@ -497,7 +497,7 @@ void BattleHud_804B146C::fn_804263A8() {
             field_0x4->search(lbl_8048EFA0[i])->show();
             field_0x4->search(lbl_8048EFE0[i])->hide();
             field_0x4->search(lbl_8048F020[i])->show();
-            if (lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x68[1] != 0) {
                 field_0x4->search(lbl_8048F040[i])->show();
             } else {
                 field_0x4->search(lbl_8048F040[i])->hide();
@@ -559,7 +559,7 @@ void BattleHud_804B146C::fn_80425F6C() {
         Vec screen;
         f32 x;
         f32 y;
-        if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
+        if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68[1] != 0) {
             gGameRoot2_8053AB10->field_0x24->worldToScreen_8030C5F0(getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)), false, false, &screen);
             pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
@@ -1221,7 +1221,7 @@ void BattleHud_804B146C::fn_80422824() {
         ranks[i] = 0;
         done[i] = 0;
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            if (lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x68[1] != 0) {
                 mScreen->search(lbl_8048EF20[i])->show();
             } else {
                 mScreen->search(lbl_8048EF20[i])->hide();

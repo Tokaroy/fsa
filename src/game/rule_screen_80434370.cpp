@@ -133,7 +133,7 @@ void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
     rotateArrowPane(field_0xc[1]->mPane, (f32)(field_0x64 + field_0x66));
     if (field_0x6c == 0) {
         f32 w1 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq01'))->getStringPtr(), 0x129, 0, NULL, NULL);
-        field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5c;
+        field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5c[0];
         f32 scale = fontSizeW / 24.0f;
         f32 boxW1 = w1 * scale + 24.0f;
         f32 halfW1 = boxW1 * 0.5f;
@@ -143,7 +143,7 @@ void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
         field_0x1c[1]->mPane->resize(boxW1, field_0x1c[1]->field_0x1c);
 
         f32 w2 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq02'))->getStringPtr(), 0x24D, 0, NULL, NULL);
-        field_0x69 = lbl_8050EC80.getCurrentFile().field_0x68;
+        field_0x69 = lbl_8050EC80.getCurrentFile().field_0x68[0];
         f32 boxW2 = w2 * scale + 24.0f;
         f32 halfW2 = boxW2 * 0.5f;
         field_0x1c[2]->mPane->move(field_0x1c[2]->field_0x10 - halfW2, field_0x1c[2]->field_0xc);
@@ -152,7 +152,7 @@ void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
         field_0x1c[3]->mPane->resize(boxW2, field_0x1c[3]->field_0x1c);
     } else {
         f32 w1 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq01'))->getStringPtr(), 0xF8, 0, NULL, NULL);
-        field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5d;
+        field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5c[1];
         f32 scale = fontSizeW / 24.0f;
         f32 boxW1 = w1 * scale + 24.0f;
         f32 halfW1 = boxW1 * 0.5f;
@@ -162,7 +162,7 @@ void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
         field_0x1c[1]->mPane->resize(boxW1, field_0x1c[1]->field_0x1c);
 
         f32 w2 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq02'))->getStringPtr(), 0xF9, 0, NULL, NULL);
-        field_0x69 = lbl_8050EC80.getCurrentFile().field_0x5f;
+        field_0x69 = lbl_8050EC80.getCurrentFile().field_0x5e[1];
         f32 boxW2 = w2 * scale + 24.0f;
         f32 halfW2 = boxW2 * 0.5f;
         field_0x1c[2]->mPane->move(field_0x1c[2]->field_0x10 - halfW2, field_0x1c[2]->field_0xc);
@@ -171,7 +171,7 @@ void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
         field_0x1c[3]->mPane->resize(boxW2, field_0x1c[3]->field_0x1c);
 
         f32 w3 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq03'))->getStringPtr(), 0x24D, 0, NULL, NULL);
-        field_0x6a = lbl_8050EC80.getCurrentFile().field_0x69;
+        field_0x6a = lbl_8050EC80.getCurrentFile().field_0x68[1];
         f32 boxW3 = w3 * scale + 24.0f;
         f32 halfW3 = boxW3 * 0.5f;
         field_0x1c[4]->mPane->move(field_0x1c[4]->field_0x10 - halfW3, field_0x1c[4]->field_0xc);
@@ -266,30 +266,30 @@ void RuleScreen_804B16A8::fn_804361A8() {
     if (lbl_8053AD30->fn_80309C4C(0x1100, field_0x54)) {
         if (field_0x6c == 0) {
             if (field_0x68 != 0) {
-                lbl_8050EC80.getCurrentFile().field_0x5c = 1;
+                lbl_8050EC80.getCurrentFile().field_0x5c[0] = 1;
             } else {
-                lbl_8050EC80.getCurrentFile().field_0x5c = 0;
+                lbl_8050EC80.getCurrentFile().field_0x5c[0] = 0;
             }
             if (field_0x69 != 0) {
-                lbl_8050EC80.getCurrentFile().field_0x68 = 1;
+                lbl_8050EC80.getCurrentFile().field_0x68[0] = 1;
             } else {
-                lbl_8050EC80.getCurrentFile().field_0x68 = 0;
+                lbl_8050EC80.getCurrentFile().field_0x68[0] = 0;
             }
         } else {
             if (field_0x68 != 0) {
-                lbl_8050EC80.getCurrentFile().field_0x5d = 1;
+                lbl_8050EC80.getCurrentFile().field_0x5c[1] = 1;
             } else {
-                lbl_8050EC80.getCurrentFile().field_0x5d = 0;
+                lbl_8050EC80.getCurrentFile().field_0x5c[1] = 0;
             }
             if (field_0x69 != 0) {
-                lbl_8050EC80.getCurrentFile().field_0x5f = 1;
+                lbl_8050EC80.getCurrentFile().field_0x5e[1] = 1;
             } else {
-                lbl_8050EC80.getCurrentFile().field_0x5f = 0;
+                lbl_8050EC80.getCurrentFile().field_0x5e[1] = 0;
             }
             if (field_0x6a != 0) {
-                lbl_8050EC80.getCurrentFile().field_0x69 = 1;
+                lbl_8050EC80.getCurrentFile().field_0x68[1] = 1;
             } else {
-                lbl_8050EC80.getCurrentFile().field_0x69 = 0;
+                lbl_8050EC80.getCurrentFile().field_0x68[1] = 0;
             }
         }
         field_0x6b = 2;

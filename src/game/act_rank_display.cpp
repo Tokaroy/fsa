@@ -130,8 +130,8 @@ void RankDisplay_804A8F74::update() {
                         continue;
                     }
                     u8 mode = gGameRoot_8053AAF8->field_0x7f;
-                    if (!((mode == 1 && lbl_8050EC80.getCurrentFile().field_0x68 != 0) ||
-                          (mode == 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0))) {
+                    if (!((mode == 1 && lbl_8050EC80.getCurrentFile().field_0x68[0] != 0) ||
+                          (mode == 0 && lbl_8050EC80.getCurrentFile().field_0x68[1] != 0))) {
                         continue;
                     }
                     if (getPlayerLayer_8023DE58(k) >= 8) {

@@ -12,14 +12,14 @@ struct SaveFile_803B950C {
     // Sets the defaults every cleared file gets: initSaveFile_803B950C, and the copies
     // fn_803B933C / fn_803B93E8 make on the stack, inline it after their memsets.
     void setDefaults() {
-        field_0x5c = 1;
+        field_0x5c[0] = 1;
         field_0x59 = 50;
         for (int stage = 0; stage < 7; stage++) {
             mFlags |= 1 << (stage * 4 + 2);
         }
         mFlags |= 1 << (7 * 4 + 1);
-        field_0x68 = 1;
-        field_0x69 = 1;
+        field_0x68[0] = 1;
+        field_0x68[1] = 1;
     }
     // An empty file has no time (refreshFileRows_803CE4CC tests the returned flag).
     BOOL isUsed() const {
@@ -40,21 +40,19 @@ struct SaveFile_803B950C {
     // The results screen (result_screen_803A8DFC fn_803A9AB8 and its 3P / 4P
     // counterparts) adds the round's field_0x320 totals, clamped to +-99999.
     /* 0x10 */ s32 field_0x10;
-    /* 0x14 */ u16 field_0x14; // fn_803A3034 (game/tu_803944C8.cpp) returns it
-    /* 0x16 */ u16 field_0x16; // fn_803A3018 returns it
-    /* 0x18 */ u16 field_0x18[28]; // fn_803BAEF4 clears entries above 99999
-    /* 0x50 */ u8 field_0x50[0x58 - 0x50];
+    // One entry per GameRoot field_0x7f mode, as 0x5C, 0x5E and 0x68 (fn_803BAEF4 clamps
+    // the four in one loop over the two): fn_803A3034 (game/tu_803944C8.cpp) returns [0], fn_803A3018 [1].
+    /* 0x14 */ u16 field_0x14[2];
+    /* 0x18 */ u16 field_0x18[32]; // fn_803BAEF4 walks all 32 (0x18-0x57) and clears entries above 99999
     /* 0x58 */ u8 field_0x58; // written by fn_80215BCC (the stopwatch's centis)
     /* 0x59 */ u8 field_0x59; // written by fn_80215BCC (the stopwatch's seconds)
     /* 0x5A */ u8 field_0x5a[0x5C - 0x5A]; // byte 0: bit tests in MapScreen_804B1288::fn_804045F8
-    // GameView_804A9950::fn_802D7440 (game/game_view_802D39B8.cpp): field_0x5c while
-    // GameRoot's field_0x7f is set, else field_0x5d; 1 lets the time limit run.
-    /* 0x5C */ u8 field_0x5c;
-    /* 0x5D */ u8 field_0x5d;
-    // Read by Player::fn_802710C8 (player_8026FC20): 0x5E while GameRoot's field_0x7f is set,
-    // else 0x5F; a value of 1 there calls fn_8024E500 on a hit of 4 or more.
-    /* 0x5E */ u8 field_0x5e;
-    /* 0x5F */ u8 field_0x5f;
+    // GameView_804A9950::fn_802D7440 (game/game_view_802D39B8.cpp): [0] while
+    // GameRoot's field_0x7f is set, else [1]; 1 lets the time limit run.
+    /* 0x5C */ u8 field_0x5c[2];
+    // Read by Player::fn_802710C8 (player_8026FC20): [0] while GameRoot's field_0x7f is set,
+    // else [1]; a value of 1 there calls fn_8024E500 on a hit of 4 or more.
+    /* 0x5E */ u8 field_0x5e[2];
     /* 0x60 */ u8 field_0x60;
     /* 0x61 */ u8 field_0x61; // 1 when the battle stage chosen last is 5 or more (battle_stage_select_80414F6C fn_80415028)
     /* 0x62 */ u8 field_0x62[0x65 - 0x62];
@@ -62,9 +60,8 @@ struct SaveFile_803B950C {
     /* 0x66 */ u8 field_0x66; // fn_803B8C74 / fn_803B8C90
     /* 0x67 */ u8 field_0x67; // bit 0: act_fairy's init has shown message 0x339
     // Tested by act_rank_display's update before it shows a rank change:
-    // field_0x68 when GameRoot's field_0x7f is 1, field_0x69 when it is 0.
-    /* 0x68 */ u8 field_0x68;
-    /* 0x69 */ u8 field_0x69;
+    // [0] when GameRoot's field_0x7f is 1, [1] when it is 0.
+    /* 0x68 */ u8 field_0x68[2];
     /* 0x6A */ u8 field_0x6a[0xC0 - 0x6A];
     // Checksum of bytes 0x00-0xBF: their sum, then the sum of their
     // complements (isSaveChecksumValid_803BADAC compares both).

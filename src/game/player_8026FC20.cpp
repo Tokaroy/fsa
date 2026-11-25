@@ -19,8 +19,8 @@
 
 // The current save row's byte 0x7E while the game root's field_0x7f is set, else 0x7F.
 static inline u8 saveRowFlag() {
-    return gGameRoot_8053AAF8->field_0x7f ? lbl_8050EC80.getCurrentFile().field_0x5e
-                                    : lbl_8050EC80.getCurrentFile().field_0x5f;
+    return gGameRoot_8053AAF8->field_0x7f ? lbl_8050EC80.getCurrentFile().field_0x5e[0]
+                                    : lbl_8050EC80.getCurrentFile().field_0x5e[1];
 }
 
 // The angle of the hit as an s16 (pos -> player).
