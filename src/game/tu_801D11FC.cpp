@@ -73,7 +73,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 
 // 0x801D12CC.
 // dx/dy of the arrival check sit in swapped float registers (f3/f4).
-// FIXME: 99.57 %, missing/extra; behaviour near.
+// FIXME: 99.91 %, regalloc-only; behaviour clean.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
     if (field_0x338 >= 0 && canTargetPlayer_801D0B44(field_0x338)) {
