@@ -20,8 +20,24 @@ static inline void waypoint(const cls_804A46F4& self, s32 i, JGeometry::TVec2f& 
     out = self.mPath[i];
 }
 
+// The x of waypoint `i`, or of the first when it is past the end.
+static inline f32 waypointX(const cls_804A46F4& self, s32 i) {
+    if (self.mPathCount <= i) {
+        i = 0;
+    }
+    return self.mPath[i].x;
+}
+
+// The y of waypoint `i`, or of the first when it is past the end.
+static inline f32 waypointY(const cls_804A46F4& self, s32 i) {
+    if (self.mPathCount <= i) {
+        i = 0;
+    }
+    return self.mPath[i].y;
+}
+
 // Appends (x, y) to the waypoints unless the list is full.
-static inline void pushWaypoint(cls_804A46F4& self, f32 x, f32 y) {
+static inline void pushWaypoint(cls_804A46F4& self, const f32& x, const f32& y) {
     if (self.mPathCount < 16) {
         s32 n = self.mPathCount;
         self.mPath[n].x = x;
@@ -38,7 +54,8 @@ cls_804A46F4::cls_804A46F4() : mPathCount(0) {
 }
 
 // 0x801D183C.
-// FIXME: 99.2 %, scheduling+regalloc: the original keeps the result in r30
+// FIXME: 99.24 %, scheduling+regalloc; behaviour clean.
+// the original keeps the result in r30
 // and the player index in r31; ours has them the other way round.
 bool cls_804A46F4::fn_801D183C(f32 range) {
     bool result = false;
@@ -65,12 +82,11 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
 }
 
 // 0x801D12CC.
-// FIXME: 86 %, 30 instructions fewer than the original. (1) The front-pop
-// loop mPath[i] = mPath[i + 1] unrolls with the source index recomputed per
-// element (addi/slwi/add) and a walking store pointer (stfsu); ours strength
-// reduces both to one pointer. (2) The final field_0x32c.set(mPath[0]...) in
-// the original clamps the index twice (cmpwi remnants, y loaded first).
-// (3) The pos push in the else branch loads pos.x after the address.
+// The front-pop loop mPath[i] = mPath[i + 1] unrolls in the original with
+// the source index recomputed per element (addi/slwi/add) and a walking store
+// pointer (stfsu); ours strength reduces both to one pointer. The pos push in
+// the else branch reloads mPathCount, the original does not.
+// FIXME: 89.15 %, missing/extra; behaviour drift.
 bool cls_804A46F4::fn_801D12CC() {
     bool result = false;
     if (field_0x338 >= 0 && canTargetPlayer_801D0B44(field_0x338)) {
@@ -154,9 +170,7 @@ bool cls_804A46F4::fn_801D12CC() {
                     pushWaypoint(*this, pos.x, pos.y);
                 }
             }
-            JGeometry::TVec2f first;
-            waypoint(*this, 0, first);
-            field_0x32c.set(first.x, first.y, 0.0f);
+            field_0x32c.set(waypointX(*this, 0), waypointY(*this, 0), 0.0f);
         }
     }
     if (!result) {
@@ -167,7 +181,8 @@ bool cls_804A46F4::fn_801D12CC() {
 
 // 0x801D11FC: turns field_0x33c by 0x5B0 whichever way is nearer the angle
 // of mMapHitDir.
-// FIXME: 96.2 %, regalloc only: the original keeps field_0x33c in r5 and
+// FIXME: 98.08 %, regalloc-only; behaviour clean.
+// regalloc only: the original keeps field_0x33c in r5 and
 // the left angle in r5 (lis r3 0x4330 for the int-to-float constant, f0 for
 // the 1/32768 scale); ours uses r3/r4/r5 and r0 for the constant.
 void cls_804A46F4::fn_801D11FC() {
