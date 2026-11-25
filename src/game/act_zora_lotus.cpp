@@ -62,7 +62,7 @@ void ZoraLotus_804AC3E0::vfunc_0xA4() {
     mPos.y = mSpawnPos.y;
 }
 
-// FIXME: 97.52 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.66 %, scheduling+regalloc; behaviour clean.
 // The box bounds are loaded and the outline point's x/y kept in another register order.
 void ZoraLotus_804AC3E0::vfunc_0xA8() {
     if (field_0x2b0 != 0) {
