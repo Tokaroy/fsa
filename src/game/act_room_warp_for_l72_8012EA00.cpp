@@ -42,6 +42,8 @@ inline bool RoomWarpForL72_8049E8F8::playersInside() {
 inline void RoomWarpForL72_8049E8F8::setState(s32 state) {
     field_0x230 = state;
     switch (field_0x230) {
+    case 0:
+        break;
     case 1:
         fn_8023077C();
         fn_80119DD0()->startFade_80119998(0x3C, 0, 1, 0, 1, 0x5A, 0);
@@ -64,10 +66,8 @@ void RoomWarpForL72_8049E8F8::init() {
     mMapBox_0x80.f = mBox.f;
 }
 
-// FIXME: 98.5 %. Two differences remain. (1) The player's x and y are loaded
-// into f1 and f0 in the original and f0 and f1 here. (2) The inlined switch in
-// setState is compiled as cmpwi 1 / beq / bge, then cmpwi 3 / bge (case 2) in
-// the original, and as cmpwi 2 first here.
+// The player's x and y are loaded into f1 and f0 in the original and f0 and
+// f1 here (registers only).
 void RoomWarpForL72_8049E8F8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
