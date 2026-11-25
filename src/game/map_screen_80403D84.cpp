@@ -297,7 +297,7 @@ void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src) {
     *dst = *src;
 }
 
-// FIXME(shotgun): 97.80 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.00 %, missing/extra + reloc-name; behaviour drift.
 MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053ADF8 = this;
     lbl_80529DEC.field_0x23e[1] = 0;
