@@ -73,7 +73,8 @@ void MapEdOverlay_804B1AE8::fn_804435B8() {
     mState = 1;
 }
 
-// FIXME: 96.6 %. Only the scale's division: the original loads the pane's
+// FIXME: 96.64 %, scheduling+regalloc; behaviour clean.
+// Only the scale's division: the original loads the pane's
 // field_0x18 before the table value (lfs f2 / lfsx f0); ours loads them the
 // other way round.
 void MapEdOverlay_804B1AE8::fn_804434B8() {
@@ -96,7 +97,8 @@ void MapEdOverlay_804B1AE8::fn_80443494() {
 
 // Starts the window animation of kind 0-7 with timer a and hold time b (only
 // while idle). Returns false.
-// FIXME: 98.0 %. Scheduling only: the target computes the table addresses
+// FIXME: 98.18 %, scheduling; behaviour clean.
+// Scheduling only: the target computes the table addresses
 // (addi r5 / r4, lbl_8048FBA4 / lbl_8048FBB4) before the first sth, and its
 // int-to-float constant is the named lbl_80543D68 where ours is an anonymous
 // literal.
