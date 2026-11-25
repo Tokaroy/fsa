@@ -1129,10 +1129,11 @@ void EscortBase_8049E0C8::vfunc_0x90() {}
 
 void EscortBase_8049E0C8::vfunc_0x8C() {}
 
-s32 EscortBase_8049E0C8::vfunc_0x88() {}
+// Bare blr: r3 is still `this`, which is what the original returns (the caller discards it).
+s32 EscortBase_8049E0C8::vfunc_0x88() { return (s32)this; }
 
 // 0x84/0x88: s32 slots whose result the caller (fn_80123394) passes on, but the base body is a bare blr.
-s32 EscortBase_8049E0C8::vfunc_0x84() {}
+s32 EscortBase_8049E0C8::vfunc_0x84() { return (s32)this; }
 
 void EscortBase_8049E0C8::vfunc_0x74() {}
 

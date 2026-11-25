@@ -47,6 +47,11 @@ s32 lbl_8053AB30;
 s32 lbl_8053AB34;
 s32 lbl_8053AB38;
 
+// Only 0-7 have a case, but init draws mDir_0x98 = (s32)(15.0f * rand), 0-14. For 8-14 the
+// original falls off the end and stores whatever r8 holds: on its only call path
+// (spawnActor_801F9484) the last getEnemyParam_801F620C result, the 'voic' column. So about
+// 7 in 15 Big Moldorm spawns start with that value as heading. Kept as is: this switch is what
+// matches. Other compilers return an undefined value here (the port reproduces it under FSA_PORT).
 static inline u16 dirToAngle(s32 dir) {
     switch (dir) {
     case 0:
