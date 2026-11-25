@@ -127,7 +127,7 @@ static inline s32 exchangeInitialPacket_80300E1C(GbaClient_803007D0* client, u32
     return 1;
 }
 
-// FIXME(shotgun): 84.31 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.90 %, missing/extra + reloc-name; behaviour drift.
 // What still differs: the original leaves the poll loop from inside the switch without the two
 // flags (nextMsg, sleepBeforeRetry): one sleep block ahead of the loop head and one failure tail
 // inside case 5, both jumped to from every case. It also inlines fn_803006E8 where we call it
