@@ -69,7 +69,7 @@ void ShadowLinkGenerator_804A4310::init() {
     getShadowLinkFight_801C0D70()->field_0x50 = mSerial;
 }
 
-// FIXME(shotgun): 94.36 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.88 %, different; behaviour drift.
 void ShadowLinkGenerator_804A4310::update() {
     mPieces.fn_8021C2B4();
     mStateTimer++;
