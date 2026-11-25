@@ -20,6 +20,7 @@ void BanditHerdingNPC_804ACB40::init() {
     field_0x240.f.y += mPos.y;
 }
 
+// FIXME: 98.35 %, scheduling+regalloc; behaviour clean.
 void BanditHerdingNPC_804ACB40::update() {
     field_0x238 = 0;
     s32 serial = -1;
