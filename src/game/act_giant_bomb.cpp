@@ -123,7 +123,6 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 // 0x80342850.
-// FIXME(shotgun): 99.98 %, operands; behaviour drift.
 void GiantBomb_804AC588::update() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
@@ -298,8 +297,7 @@ void GiantBomb_804AC588::update() {
         break;
     }
     if (mState != 2) {
-        JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&JGeometry::TVec3f(mPos.x, mPos.y - mPos.z, 0.0f));
     }
     if (mTimer < 300 && mState == 6) {
         field_0x240++;
