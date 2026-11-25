@@ -36,6 +36,23 @@ inline bool Rat_8049C400::startChase_inline() {
     return false;
 }
 
+// update, state 2: a player nearer than 120 turns the walk his way.
+inline void Rat_8049C400::turnToPlayer_inline() {
+    u16 angle = 0;
+    f32 dist = 0.0f;
+    s32 dir = 0;
+    s32 player = 0;
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    if (player != -1 && dist < 120.0f) {
+        for (u8 i = 0; i < 4; i++) {
+            if (dir == lbl_80539E68[i]) {
+                mStep = i;
+                break;
+            }
+        }
+    }
+}
+
 void Rat_8049C400::init() {
     mBox.i.set(-8.0f, -8.0f);
     mBox.f.set(8.0f, 8.0f);
@@ -48,14 +65,14 @@ void Rat_8049C400::init() {
     field_0x238 = 0;
     field_0x23c = 0;
     mDir = 0;
-    field_0x244 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32;
+    field_0x244 = (s32)randomFloat(50.0f) + 0x32;
     mSpawnParam_0x90 &= 1;
 }
 
 // Wanders in the four directions (states 0, 1, 3 and the chase 2: a player nearer than 120 turns it his way).
-// FIXME(shotgun): 98.26 %, different + reloc-name (one instruction-order change around the chase flag)
-
-// FIXME: 99.66 %, operands; behaviour clean.
+// Left: in state 1, gGameRoot and the random multiplier sit in r8/r7 the other way round; the two guard
+// branches of the chase test (states 0 and 3) skip the result test, ours go to its `return false`.
+// FIXME: 99.82 %, scheduling+regalloc; behaviour clean.
 void Rat_8049C400::update() {
     if (updateHitReaction_801F3D94(true) || checkHits_801F305C()) {
         sweepMapBox_801F2618(NULL, false);
@@ -97,7 +114,7 @@ void Rat_8049C400::update() {
         mPos.y += lbl_8049C3E0[lbl_80539E68[mStep]][1];
         field_0x23c++;
         if (field_0x23c == field_0x244) {
-            field_0x244 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32;
+            field_0x244 = (s32)randomFloat(50.0f) + 0x32;
             field_0x230 = 1;
             field_0x23c = 0;
         }
@@ -107,8 +124,8 @@ void Rat_8049C400::update() {
         mDir = 1;
         field_0x23c++;
         if (field_0x23c == field_0x244) {
-            field_0x244 = (s32)(80.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
-            mStep = (u8)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            field_0x244 = (s32)randomFloat(80.0f) + 10;
+            mStep = (u8)randomFloat(4.0f);
             field_0x230 = 0;
             startSound_801F0E34(0x400A6, 0);
             field_0x23c = 0;
@@ -119,19 +136,7 @@ void Rat_8049C400::update() {
         mPos.x += lbl_8049C3E0[lbl_80539E68[mStep]][0];
         mPos.y += lbl_8049C3E0[lbl_80539E68[mStep]][1];
         if (!(field_0x23c & 0x1111)) {
-            u16 angle = 0;
-            f32 dist = 0.0f;
-            s32 dir = 0;
-            s32 player = 0;
-            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
-            if (player != -1 && dist < 120.0f) {
-                for (u8 i = 0; i < 4; i++) {
-                    if (dir == lbl_80539E68[i]) {
-                        mStep = i;
-                        break;
-                    }
-                }
-            }
+            turnToPlayer_inline();
         }
         if (bumped == 1) {
             field_0x244 = 100;
@@ -140,7 +145,7 @@ void Rat_8049C400::update() {
         } else {
             field_0x23c++;
             if (field_0x23c == 100 || hit) {
-                field_0x244 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32;
+                field_0x244 = (s32)randomFloat(50.0f) + 0x32;
                 field_0x230 = 1;
                 field_0x23c = 0;
             }

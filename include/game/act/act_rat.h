@@ -15,6 +15,7 @@ public:
     /* 0x20 */ virtual void draw();
 
     bool startChase_inline();
+    void turnToPlayer_inline();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 mDir;  // draw: 2 frames per step
