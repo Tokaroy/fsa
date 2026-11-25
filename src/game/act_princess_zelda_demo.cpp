@@ -264,6 +264,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
             case 2:
                 enterDemoState_8010E2D4(2);
                 break;
+            case 3:
+                break;
             }
             field_0x238 = 2;
         }
@@ -285,6 +287,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                 case 2:
                     enterDemoState_8010E2D4(0xD);
                     break;
+                case 3:
+                    break;
                 }
                 field_0x238 = 0xD;
                 switch (field_0x234) {
@@ -294,6 +298,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     break;
                 case 2:
                     enterDemoState_8010E2D4(0x3E);
+                    break;
+                case 3:
                     break;
                 }
                 field_0x238 = 0x3E;
@@ -306,6 +312,8 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
                     break;
                 case 2:
                     enterDemoState_8010E2D4(1);
+                    break;
+                case 3:
                     break;
                 }
                 field_0x238 = 1;
@@ -1487,7 +1495,12 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
     s32 doneX = moveToward_801CD950(&mPos.x, field_0x27c.x, mVel_0x3c.x);
     s32 doneY = moveToward_801CD950(&mPos.y, field_0x27c.y, mVel_0x3c.y);
     moveToward_801CD950(&field_0x270, 0.05f, -0.005f);
-    bool arrived = doneX == 0 && doneY == 0;
+    bool arrived;
+    if (doneX == 0 && doneY == 0) {
+        arrived = true;
+    } else {
+        arrived = false;
+    }
     if (arrived) {
         switch (field_0x234) {
         case 0:
@@ -1496,6 +1509,8 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
             break;
         case 2:
             enterDemoState_8010E2D4(0x24);
+            break;
+        case 3:
             break;
         }
         field_0x238 = 0x24;
