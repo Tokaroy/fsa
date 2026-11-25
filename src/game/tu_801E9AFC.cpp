@@ -8,6 +8,13 @@
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
+// The actor with this serial, or NULL. This file looks actors up through one inline
+// helper, used at all 3 sites: written out by hand, ActorBase_804A5770::fn_801E9B58 differs
+// (97.38 %) (docs/analysis/INLINE_LEADS.md).
+static inline ActorBase_804A5770* actorBySerial(s32 serial) {
+    return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+}
+
 const f32 lbl_8053F650 = 6.0f;
 
 // The texture of each sprite (0-2); the fourth entry ends the table.
@@ -36,7 +43,7 @@ inline void cls_801E9B54::drawSprites() {
     for (s32 i = 0, n = field_0x74; i < n; i++) {
         s32 serial = field_0x64[i];
         if (serial >= 0) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            ActorBase_804A5770* actor = actorBySerial(serial);
             if (actor != NULL) {
                 ((IronPot_804A5418*)actor)->fn_801E6DE8();
             }
@@ -76,7 +83,7 @@ void cls_801E9B54::fn_801EA75C(u8 id, u8 flag, u8 index, s32 layer, const JGeome
         JGeometry::TVec3f spawnPos(pos->x, pos->y, 0.0f);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FSOB, layer, &spawnPos, id, -1, -1);
         if (serial >= 0) {
-            field_0x0[field_0x60].actor = (UnknownFSOB_804A5568*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            field_0x0[field_0x60].actor = (UnknownFSOB_804A5568*)actorBySerial(serial);
             if (field_0x0[field_0x60].actor != NULL) {
                 if (flag != 0) {
                     field_0x0[i].actor->field_0x94 = flag;
@@ -275,13 +282,11 @@ void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
     vec->y = x * JMath::sincosTable_.sinShort(-turn) + vec->y * JMath::sincosTable_.cosShort(-turn);
 }
 
-// FIXME: 97.38 %, missing/extra; behaviour clean.
 // The looked-up actor is used as the Fire Rod fire ('FIRE', FireRodFire_804A89F0; fn_802BAA00 lives in its file).
 s32 ActorBase_804A5770::fn_801E9B58() {
     s32 serial = getActorManager_801F856C()->fn_801F7F58(this, lbl_80469C78, mSerial, 32.0f);
     if (serial >= 0 && serial != mSerial) {
-        FireRodFire_804A89F0* fire =
-            static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+        FireRodFire_804A89F0* fire = static_cast<FireRodFire_804A89F0*>(actorBySerial(serial));
         if (fire != NULL) {
             if (fn_801CC8E4(fire)) {
                 serial = -1;
