@@ -145,8 +145,7 @@ static inline s32 getFlagBit(const s32* flags, s32 player) {
 }
 
 // FIXME(shotgun): 99.83 %, missing/extra; behaviour near.
-// Still differs: state 0's switch on mSpawnParam_0x90 has a `blt` to the default block between
-// its `beq` and `b` in the original; ours has no such branch.
+// Still differs: `layer` is in r29 in the original, r28 in ours.
 void GreatFairy_804AF338::update() {
     if (field_0x248 != 1) {
         JGeometry::TVec3f pos;
@@ -203,6 +202,8 @@ void GreatFairy_804AF338::update() {
                 case 0:
                     field_0x260 = 0x25E;
                     break;
+                case 1:
+                case 2:
                 default:
                     field_0x260 = 0x25F;
                     break;
