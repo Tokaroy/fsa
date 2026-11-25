@@ -808,7 +808,7 @@ void Cucco_804AB8C0::update() {
                     f32 dx = mPos.x - field_0x2d0.x;
                     f32 dy = mPos.y - field_0x2d0.y;
                     if (sqrtf_80154378(dx * dx + dy * dy) > 48.0f && field_0x290 == 0) {
-                        outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
+                        outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                     } else {
                         outAngle = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     }
@@ -884,7 +884,7 @@ void Cucco_804AB8C0::update() {
                 field_0x238 = 2;
                 findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &dist, NULL, 0, 0);
                 if (outDir < 0 || field_0x174 > 0 || dist > 64.0f) {
-                    outAngle = (s32)(JMath::atanTable_.atan2_(-(mPos.x - field_0x2d0.x), -(mPos.y - field_0x2d0.y)) * 10430.378f);
+                    outAngle = (s32)(JMath::atanTable_.atan2_(-(mPos.x - field_0x2d0.x), -(mPos.y - field_0x2d0.y)) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                 }
                 outAngle += 0x8000;
                 if (r27 == 1) {
