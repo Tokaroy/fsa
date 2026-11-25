@@ -363,17 +363,8 @@ void AudioMgr_8045A080::init_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void
     setVolumeMode_80458744(0);
 }
 
-// 0x80459674
-// FIXME(shotgun): 99.38 %, missing/extra + reloc-name; behaviour drift.
-void AudioMgr_8045A080::fn_80459674() {
-    if (field_0x6b != 0) {
-        field_0x6b--;
-    }
-    if (field_0x7c != 0) {
-        if (field_0x7c != 0 && field_0x2c->checkDone() != 0) {
-            field_0x30->stop();
-        }
-    }
+// The music volume factor (field_0x54) of fn_80459674, moved onto the playing sequence.
+inline void AudioMgr_8045A080::updateMusicVolume() {
     if (field_0x84) {
         field_0x54 = 0.0f;
         if (field_0x80) {
@@ -407,6 +398,10 @@ void AudioMgr_8045A080::fn_80459674() {
             field_0x80->getAuxiliary().moveVolume(field_0x4c * field_0x54, lbl_8053A254);
         }
     }
+}
+
+// fn_80459674's start of the sequence waiting in field_0x5c, lbl_8053A25C frames after the request.
+inline void AudioMgr_8045A080::startPendingMusic() {
     if (field_0x68 != 0 && field_0x64 >= 0) {
         if ((u32)field_0x64 >= lbl_8053A25C) {
             if (field_0x4 == 0) {
@@ -437,8 +432,24 @@ void AudioMgr_8045A080::fn_80459674() {
             field_0x64++;
         }
     }
-    field_0x30->calc();
-    field_0x30->mixOut();
+}
+
+// 0x80459674
+// FIXME(shotgun): 99.38 %, missing/extra + reloc-name; behaviour drift.
+void AudioMgr_8045A080::fn_80459674() {
+    if (field_0x6b != 0) {
+        field_0x6b--;
+    }
+    if (field_0x7c != 0) {
+        if (field_0x7c != 0 && field_0x2c->checkDone() != 0) {
+            field_0x30->stop();
+        }
+    }
+    updateMusicVolume();
+    startPendingMusic();
+    JAUSoundMgr* soundMgr = field_0x30;
+    soundMgr->calc();
+    soundMgr->mixOut();
     field_0x0++;
     if (field_0x6c != 0) {
         field_0x6c--;
