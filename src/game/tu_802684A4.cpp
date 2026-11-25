@@ -89,6 +89,12 @@ static inline u16 probeTile(const JGeometry::TVec2f& p, s32 layer) {
     return getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&p, layer);
 }
 
+// probeTile at (x, y) on the player's layer, which is read after the temporary is built.
+inline u16 Player_804A6F38::probeTileAt(f32 x, f32 y) {
+    JGeometry::TVec2f p(x, y);
+    return probeTile(p, mLayer_0x3b4);
+}
+
 // probeTile at (x, y), through the caller's temporary `p`.
 static inline u16 probeTileXY(JGeometry::TVec2f& p, f32 x, f32 y, s32 layer) {
     p.set(x, y);
@@ -1808,8 +1814,7 @@ void Player_804A6F38::fn_80268B3C() {
 // 12 instructions fewer: the original keeps the three step
 // TVec2fs in stack slots (0x18, 0x10, 0x8) and stores each one's mPos x / y
 // and then its difference there (never read back); ours keeps them in
-// registers, so the probe slots move up by 0x18. The second probe loads
-// mLayer_0x3b4 before its corner's x / y in ours.
+// registers, so the probe slots move up by 0x18.
 // Moves the player by its step, mPos - mPrevPos_0x2c. A step of at least 5
 // keeps its direction and is set to 5 long (the first two cases, both on
 // passable tiles); a step of 6.5 to 20 keeps its direction at 6.5 unless the
@@ -1823,14 +1828,12 @@ void Player_804A6F38::fn_802685D4() {
         !(fn_8025F418() && field_0x1216 == 0 && field_0x1228 == 0 && fn_8022D75C(mHeldPlayer_0xd70)) &&
         !fn_802413E8() && fn_80241E28(field_0x3bc, &mPrevPos_0x2c))
     {
-        JGeometry::TVec2f corner(mPos.x, mPrevPos_0x2c.y);
-        JGeometry::TVec2f other;
-        if (probeTile(corner, mLayer_0x3b4) == 1 &&
-            probeTileXY(other, mPrevPos_0x2c.x, mPos.y, mLayer_0x3b4) == 1)
+        if (probeTileAt(mPos.x, mPrevPos_0x2c.y) == 1 &&
+            probeTileAt(mPrevPos_0x2c.x, mPos.y) == 1)
         {
             JGeometry::TVec2f step1(mPos.x, mPos.y);
             step1.set(mPos.x - mPrevPos_0x2c.x, mPos.y - mPrevPos_0x2c.y);
-            if (step1.x * step1.x + step1.y * step1.y >= 25.0f) {
+            if (step1.squared() >= 25.0f) {
                 normalize2D(step1);
                 step1.x *= 5.0f;
                 step1.y *= 5.0f;
@@ -1838,11 +1841,10 @@ void Player_804A6F38::fn_802685D4() {
             mPos.x = mPrevPos_0x2c.x + step1.x;
             mPos.y = mPrevPos_0x2c.y + step1.y;
         } else {
-            JGeometry::TVec2f here(mPos.x, mPos.y);
-            if (probeTile(here, mLayer_0x3b4) == 1) {
+            if (probeTileAt(mPos.x, mPos.y) == 1) {
                 JGeometry::TVec2f step2(mPos.x, mPos.y);
                 step2.set(mPos.x - mPrevPos_0x2c.x, mPos.y - mPrevPos_0x2c.y);
-                if (step2.x * step2.x + step2.y * step2.y >= 25.0f) {
+                if (step2.squared() >= 25.0f) {
                     normalize2D(step2);
                     step2.x *= 5.0f;
                     step2.y *= 5.0f;
@@ -1852,7 +1854,7 @@ void Player_804A6F38::fn_802685D4() {
             } else {
                 JGeometry::TVec2f step3(mPos.x, mPos.y);
                 step3.set(mPos.x - mPrevPos_0x2c.x, mPos.y - mPrevPos_0x2c.y);
-                f32 lenSq = step3.x * step3.x + step3.y * step3.y;
+                f32 lenSq = step3.squared();
                 if (lenSq >= 42.25f && lenSq <= 400.0f && !field_0xce8 && !fn_80240D64()) {
                     normalize2D(step3);
                     step3.x *= 6.5f;

@@ -116,6 +116,7 @@ public:
     bool fn_80240B84() const; // via fn_80233EDC
     bool fn_80240D50(); // via fn_80234D94
     bool fn_80240D64(); // via fn_80234E30
+    u16 probeTileAt(f32 x, f32 y); // inline, tu_802684A4.cpp
     bool fn_80240DAC(); // via fn_80234ECC
     bool fn_80240DCC() const; // via fn_8022F64C
     bool fn_80240ED4(); // via fn_80234F68
