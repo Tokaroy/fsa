@@ -31,10 +31,6 @@ static inline void invalidateEmitter(JPABaseEmitter*& emitter) {
     }
 }
 
-// FIXME: 98.37 %, missing/extra; behaviour clean.
-// One instruction more than the original: it sets the zero it
-// reuses for the state-0 store (`li r28, 0`) before the first loop's
-// float literal load, ours has it later.
 void InextinguishableFlame_804A9D28::init() {
     mCountX = ((mSpawnParam_0x90 >> 22) & 0x1F) + 1;
     mCountY = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
@@ -42,7 +38,8 @@ void InextinguishableFlame_804A9D28::init() {
     mFlag300 = (mSpawnParam_0x90 >> 4) & 1;
     mViewBit = (mSpawnParam_0x90 >> 12) & 0x1F;
 
-    for (int i = 0; i < 16; i++) {
+    int i;
+    for (i = 0; i < 16; i++) {
         mEmitters[0][i] = NULL;
         mEmitters[1][i] = NULL;
         mEmitters[2][i] = NULL;
@@ -51,7 +48,7 @@ void InextinguishableFlame_804A9D28::init() {
     if (mFlag300 == 0) {
         JGeometry::TVec3f pos = mPos;
         s32 n = 0;
-        for (s32 i = 0; i < mCountX; i++) {
+        for (i = 0; i < mCountX; i++) {
             for (s32 j = 0; j < mCountY; j++) {
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
