@@ -361,8 +361,14 @@ static inline bool playerTouches(Frostare_804A4C58* boss, s32 i) {
 u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
     u8 hit = false;
     bool active = false;
-    if (mState == 5 || (mState >= 4 && mState < 8)) {
+    switch (mState) {
+    case 5:
+        break;
+    case 4:
+    case 6:
+    case 7:
         active = true;
+        break;
     }
     s32 outFlag;
     if (active) {
@@ -371,12 +377,13 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
         mBox.i.y = -16.0f;
         mBox.f.x = 40.0f;
         mBox.f.y = 50.0f;
-        if (findOverlappingPlayer_801F285C(NULL, &outFlag, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             setState_801D9C58(5);
         }
         mBox.set(saved);
     }
-    if (mState == 0x11) {
+    switch (mState) {
+    case 0x11: {
         JGeometry::TBox2f saved = mBox;
         mBox.i.x = -20.0f;
         mBox.i.y = -26.0f;
@@ -441,7 +448,12 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                 }
             }
         }
-    } else if (mState >= 0xB && mState < 0xF) {
+        break;
+    }
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0xE:
         if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
             bool sound = false;
             JGeometry::TVec2f where;
@@ -453,8 +465,7 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                             hit = true;
                         }
                     } else {
-                        JGeometry::TVec2f p(mPos.x, mPos.y);
-                        fn_80237948(i, &p);
+                        fn_80237948(i, (const JGeometry::TVec2f*)&mPos);
                         if (outFlag == 1 && field_0x1dc.startTimer_801EAC20(i)) {
                             JGeometry::TVec3f at(where.x, where.y, 0.0f);
                             fn_801CB538(mLayer_0x4, &at, 0, 0);
@@ -482,6 +493,7 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
                 }
             }
         }
+        break;
     }
     return hit;
 }
