@@ -116,7 +116,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
     field_0x3041 = 0;
 }
 
-// FIXME(shotgun): 96.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.11 %, scheduling+regalloc; behaviour clean.
 // The per-frame update pass. Clears the per-frame serial list (mPushSerials_0x201c), steps the
 // collision box lists, then updates each live actor: with GameView's isInTransition_802DCD0C only those
 // flagged for it (0x11E / 0xC4 / 0xCC); otherwise all of them unless paused (0x11F keeps them
@@ -794,7 +794,7 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     }
 }
 
-// FIXME(shotgun): 84.87 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.79 %, different; behaviour clean.
 // The pairwise push pass over the actors fn_801F871C listed in mPushSerials_0x201c: each pair on the
 // same layer whose boxes overlap (and the second's 0xBC is not lower) records the other's
 // serial in field_0x9c. Kind 2 (0xB8) only records it; the others are pushed out of the overlap
