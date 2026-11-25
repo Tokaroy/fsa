@@ -24,8 +24,12 @@ static struct {
 inline void MalonAndTalonController_8049EA88::setState(s32 state) {
     field_0x230 = state;
     switch (field_0x230) {
+    case 0:
+        break;
     case 1:
         field_0x24c = 0;
+        break;
+    case 2:
         break;
     case 3:
         field_0x248 = 0;
@@ -79,11 +83,12 @@ void MalonAndTalonController_8049EA88::update() {
     ActorBase_804A5770::update();
     if (field_0x230 >= 2 && field_0x230 <= 4) {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+        JGeometry::TBox2f box(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->mShowWholeArea_0x7f5 == 0) {
             camera->mFocusOverride_0x7f4 = 1;
             camera->mFocusMode_0x7f8 = 5;
-            camera->mFocusBox_0x808.set(mPos.x, mPos.y - 96.0f, mPos.x, 96.0f + mPos.y);
+            camera->mFocusBox_0x808.set(box);
             camera->mOverrideBlend_0x7f6 = 0;
         }
     }
@@ -145,16 +150,18 @@ void MalonAndTalonController_8049EA88::update() {
             sub->field_0x28c = 0.05f;
         }
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        bool done = false;
-        if (stepMessageWindow_803865B8(0)) {
+        bool done;
+        if (!stepMessageWindow_803865B8(0)) {
+            done = false;
+        } else {
             fn_80388EEC(0);
             s32 serial = 0;
             switch (lbl_8049EA58[field_0x244].mode) {
-            case 0:
-                serial = field_0x234;
-                break;
             case 1:
                 serial = field_0x238;
+                break;
+            case 0:
+                serial = field_0x234;
                 break;
             case 2:
                 serial = field_0x238;
