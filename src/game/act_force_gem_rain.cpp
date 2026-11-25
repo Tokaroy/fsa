@@ -41,10 +41,8 @@ void ForceGemRain_804A8010::init() {
     }
 }
 
-// FIXME: 95.75 %, missing/extra + reloc-name; behaviour drift.
-// FIXME: the four `range == 0.0f` tests are materialised by mfcr/cntlzw in the
-// original; layer, spawnId and angle sit in r25, r30 and r28 instead of r27,
-// r28 and r30. Data: jumptable_804A8064 vs @NNN and sdata2 literals (@NNN vs lbl_).
+// FIXME: the angle loop's setup (the original copies i's zero into a second register with mr) and
+// the order of the 32.0f circle's pos.set differ; also registers and literal names.
 void ForceGemRain_804A8010::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -61,8 +59,8 @@ void ForceGemRain_804A8010::update() {
         if (!isScreenFlagSet_0x34()) {
             break;
         }
-        u32 spawnId;
         u32 spawnArg = 0;
+        u32 spawnId;
         if (field_0x248 > 0) {
             field_0x248--;
         }
@@ -146,7 +144,6 @@ void ForceGemRain_804A8010::update() {
             }
             if (field_0x244 == 2 || field_0x244 == 4 || (u32)(field_0x244 - 8) <= 3 ||
                 field_0x244 == 0xD) {
-                s32 angle = 0;
                 for (s32 i = 0; i < field_0x240; i++) {
                     if (field_0x244 == 8) {
                         if (i == 0) {
@@ -166,7 +163,7 @@ void ForceGemRain_804A8010::update() {
                     } else if (field_0x244 == 0xB || field_0x244 == 0xD) {
                         u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                         f32 range = 8.0f * (f32)n;
-                        if (range == 0.0f) {
+                        if (!range) {
                             range = 64.0f;
                         }
                         f32 twoRange = 2.0f * range;
@@ -175,8 +172,9 @@ void ForceGemRain_804A8010::update() {
                             mPos.y + (range - twoRange * gGameRoot_8053AAF8->mRandom.get_ufloat_1()),
                             50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 300.0f);
                     } else {
-                        f32 s = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
-                        f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+                        u16 angle = i * 0x2000;
+                        f32 s = JMath::sincosTable_.mTable[angle >> 5].first;
+                        f32 c = JMath::sincosTable_.mTable[angle >> 5].second;
                         pos.set(mPos.x + 32.0f * s, mPos.y + 32.0f * c, 1000.0f);
                     }
                     if (viewLayerFlag(mLayer_0x4)) {
@@ -190,7 +188,6 @@ void ForceGemRain_804A8010::update() {
                             actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
                         }
                     }
-                    angle += 0x2000;
                 }
                 field_0x248 = 0x28;
                 field_0x230 = 4;
@@ -239,13 +236,12 @@ void ForceGemRain_804A8010::update() {
         pos.x = mPos.x;
         pos.y = mPos.y;
         pos.z = mPos.z;
-        s32 k = 0;
-        do {
+        for (s32 k = 0; k < 2; k++) {
             if (viewLayerFlag(mLayer_0x4)) {
                 if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
                     u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                     f32 range = 8.0f * (f32)n;
-                    if (range == 0.0f) {
+                    if (!range) {
                         range = 64.0f;
                     }
                     f32 twoRange = 2.0f * range;
@@ -258,7 +254,7 @@ void ForceGemRain_804A8010::update() {
                 if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
                     u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                     f32 range = 8.0f * (f32)n;
-                    if (range == 0.0f) {
+                    if (!range) {
                         range = 64.0f;
                     }
                     f32 twoRange = 2.0f * range;
@@ -284,7 +280,10 @@ void ForceGemRain_804A8010::update() {
             }
             getActorManager_801F856C()->spawnActorSimple_801F8544('RUPY', mLayer_0x4, &pos, pick);
             field_0x23c++;
-        } while (++k < 2 && field_0x23c < field_0x240);
+            if (field_0x23c >= field_0x240) {
+                break;
+            }
+        }
         if (field_0x23c < field_0x240) {
             break;
         }
@@ -298,7 +297,7 @@ void ForceGemRain_804A8010::update() {
             } else if (field_0x244 == 6 || field_0x244 == 7 || field_0x244 == 0xC) {
                 u32 n = (mSpawnParam_0x90 >> 8) & 0xF;
                 f32 range = 8.0f * (f32)n;
-                if (range == 0.0f) {
+                if (!range) {
                     range = 64.0f;
                 }
                 f32 twoRange = 2.0f * range;
