@@ -1956,6 +1956,8 @@ struct GameRootSub24_8016A3AC {
     void setField_0x1cc(u8 value) { field_0x1cb[1] = value; }
     void setField_0x1cd(u8 value) { field_0x1cb[2] = value; }
     void setField_0x1ce(u8 value) { field_0x1cb[3] = value; }
+    // Same shape (bl fn_8016A3AC; li; stw 0x1d8) in UnknownENDM_804AA0FC::update.
+    void setField_0x1d8(s32 value) { field_0x1d8 = value; }
     ~GameRootSub24_8016A3AC();
 };
 // game/game_root_sub_24_8016A2B4.cpp (0x8016A3AC): returns gGameRoot_8053AAF8->field_0x4->field_0x24.
