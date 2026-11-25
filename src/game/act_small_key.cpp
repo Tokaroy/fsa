@@ -162,7 +162,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 99.33 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.58 %, missing/extra; behaviour near.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
