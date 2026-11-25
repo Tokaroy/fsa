@@ -187,6 +187,7 @@ void Bombchu_804AB464::vfunc_0x48() {
 
 // Only registers differ: in state 2 (layer flag clear) the hit mask and the
 // loop index swap r29 / r30.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void Bombchu_804AB464::update() {
     if (field_0x230 == 1) {
         if (fn_8022F9E4(field_0x26c, mSerial, false, false) == true) {
