@@ -35,6 +35,7 @@ void OshinUnidentified_804AB528::init() {
         if (other->field_0x248 == field_0x248) {
             if (!isOutsideView_801F6758(0.0f, &other->mPos, other->mLayer_0x4)) {
                 mAlive = false;
+                break;
             }
         }
     }
