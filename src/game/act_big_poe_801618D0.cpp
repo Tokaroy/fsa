@@ -3,6 +3,7 @@
 #include "game/GameView.h"
 #include "game/Player.h"
 #include "game/act/tu_801F9484.h"
+#include "game/act/act_poe.h"
 #include "game/ActorManager.h"
 #include "game/Camera.h"
 #include "game/Effect.h"
@@ -53,10 +54,10 @@ void BigPoe_804A0440::init() {
     field_0x248 = 0;
     field_0x24c = 0;
     field_0x250 = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
-    field_0x240 = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
+    field_0x234[3] = 0;
     field_0x258 = 0;
     field_0x25c = 5;
     field_0x27c = 1.0f;
@@ -65,15 +66,15 @@ void BigPoe_804A0440::init() {
     field_0x274 = 0.0f;
     field_0x278 = 0.05f;
     field_0x254 = 0;
-    field_0x294[5] = 0.0f;
-    field_0x294[4] = 0.0f;
-    field_0x294[3] = 0.0f;
-    field_0x294[0] = mPos.x;
-    field_0x294[1] = mPos.y;
-    field_0x294[2] = mPos.z;
-    field_0x294[6] = mPos.x;
-    field_0x294[7] = mPos.y;
-    field_0x294[8] = mPos.z;
+    field_0x2a0.z = 0.0f;
+    field_0x2a0.y = 0.0f;
+    field_0x2a0.x = 0.0f;
+    field_0x294.x = mPos.x;
+    field_0x294.y = mPos.y;
+    field_0x294.z = mPos.z;
+    field_0x2ac.x = mPos.x;
+    field_0x2ac.y = mPos.y;
+    field_0x2ac.z = mPos.z;
     field_0x260 = 0;
     field_0x288 = 0.0f;
     field_0x28c = 0.0f;
@@ -137,6 +138,7 @@ void BigPoe_804A0440::update() {
     f32 y1 = 30.0f;
     f32 px = mPos.x;
     f32 py = mPos.y;
+    JGeometry::TVec3f pos;
     if (field_0x268 == 0) {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x179 == 0) {
@@ -154,10 +156,8 @@ void BigPoe_804A0440::update() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->mBlendBoxOn_0x840 == 0) {
             cam->mBlendBoxOn_0x840 = 1;
-            cam->mBlendBox_0x844.f.x = mPos.x;
-            cam->mBlendBox_0x844.i.x = mPos.x;
-            cam->mBlendBox_0x844.f.y = mPos.y;
-            cam->mBlendBox_0x844.i.y = mPos.y;
+            cam->mBlendBox_0x844.i.x = cam->mBlendBox_0x844.f.x = mPos.x;
+            cam->mBlendBox_0x844.i.y = cam->mBlendBox_0x844.f.y = mPos.y;
             cam->mBlendWeight_0x854 = 1.0f;
             cam->mMargin_0x1d4 = -1.0f;
             cam->mMinHalfWidth_0x1d8 = -1.0f;
@@ -170,9 +170,9 @@ void BigPoe_804A0440::update() {
         field_0x248++;
         field_0x248 &= 0xF;
         if (field_0x248 == 0) {
-            JGeometry::TVec3f pos(mPos);
-            pos.x += -(64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 32.0f);
-            pos.y += -(64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 32.0f);
+            pos.set(mPos);
+            pos.x += 32.0f - 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+            pos.y += 32.0f - 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1FF, 1, 4, NULL, NULL, true, 1.0f);
         }
         if (mBossDeathTimer_0x188 == 1) {
@@ -180,20 +180,13 @@ void BigPoe_804A0440::update() {
         }
         return;
     }
-    if (field_0x234 > 0) {
-        field_0x234--;
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
-    }
-    if (field_0x240 > 0) {
-        field_0x240--;
+    for (s32 i = 0; i < 4; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+        }
     }
     if (field_0x268 == 0) {
-        fn_80161F98(field_0x258, field_0x234);
+        fn_80161F98(field_0x258, field_0x234[0]);
         if (field_0x230 != 0 && field_0x230 != 1) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }
@@ -204,12 +197,12 @@ void BigPoe_804A0440::update() {
             return;
         }
         if (field_0x230 == 2 || field_0x230 == 4) {
-            f32 dx = field_0x294[0] - mPos.x;
-            f32 dy = field_0x294[1] - mPos.y;
+            f32 dx = field_0x294.x - mPos.x;
+            f32 dy = field_0x294.y - mPos.y;
             if (getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
                 if (std::sqrtf(dx * dx + dy * dy) < 40.0f && field_0x258 != 3) {
                     field_0x258 = 3;
-                    field_0x234 = 10;
+                    field_0x234[0] = 10;
                     startSound_801F0E34(0x4001F, 0);
                 }
             }
@@ -222,14 +215,14 @@ void BigPoe_804A0440::update() {
                 field_0x25c--;
                 getGameView_802D6A9C()->fn_802D7E34((mSpawnParam_0x90 >> 7) & 0x1F);
                 field_0x258 = 6;
-                field_0x234 = 10;
+                field_0x234[0] = 10;
                 if (field_0x25c > 0) {
                     field_0x27c = 2.5f * (0.2f * (f32)field_0x25c);
                     field_0x280 = 0.2f * (f32)field_0x25c;
                     startSound_801F0E34(0x40014, 0);
-                    field_0x23c = 50;
+                    field_0x234[2] = 50;
                     field_0x258 = 6;
-                    field_0x234 = 10;
+                    field_0x234[0] = 10;
                     field_0x230 = 5;
                 } else {
                     field_0x230 = 9;
@@ -240,8 +233,8 @@ void BigPoe_804A0440::update() {
         }
         if (field_0x230 != 3) {
             addCalc2_801F71A4(&field_0x274, field_0x278, 0.1f, 0.1f);
-            addCalc2_801F71A4(&mPos.x, field_0x294[0], 0.3f, field_0x274 * std::fabsf(mPos.x - field_0x294[0]));
-            addCalc2_801F71A4(&mPos.y, field_0x294[1], 0.3f, field_0x274 * std::fabsf(mPos.y - field_0x294[1]));
+            addCalc2_801F71A4(&mPos.x, field_0x294.x, 0.3f, field_0x274 * std::fabsf(mPos.x - field_0x294.x));
+            addCalc2_801F71A4(&mPos.y, field_0x294.y, 0.3f, field_0x274 * std::fabsf(mPos.y - field_0x294.y));
         }
     }
     switch (field_0x230) {
@@ -267,47 +260,47 @@ void BigPoe_804A0440::update() {
         if (cam->mShowWholeArea_0x7f5 == 0) {
             cam->mFocusOverride_0x7f4 = 1;
             cam->mFocusMode_0x7f8 = 4;
-            cam->mFocusPos_0x7fc = mPos;
+            cam->mFocusPos_0x7fc.set(mPos);
             cam->mOverrideBlend_0x7f6 = 0;
         }
-        if (field_0x258 == 1 && field_0x234 == 1) {
+        if (field_0x258 == 1 && field_0x234[0] == 1) {
             getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 7) & 0x1F, false, 0xFF);
         }
-        if (field_0x238 == 0) {
+        if (field_0x234[1] == 0) {
             field_0x258++;
             switch (field_0x258) {
             case 1:
-                field_0x234 = 10;
-                field_0x238 = 180;
+                field_0x234[0] = 10;
+                field_0x234[1] = 180;
                 break;
             case 3:
                 mParamDstr_0x1a8 = true;
                 getActorManager_801F856C()->setAllDefeated_801F6204(0);
                 // fall through
             case 2:
-                field_0x234 = 30;
-                field_0x238 = 30;
+                field_0x234[0] = 30;
+                field_0x234[1] = 30;
                 break;
             }
             if (field_0x258 > 3) {
                 field_0x258 = 4;
-                field_0x234 = 10;
+                field_0x234[0] = 10;
                 field_0x254 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 field_0x254 &= 3;
                 field_0x274 = 0.0f;
-                field_0x294[0] = field_0x2b8[field_0x254].x;
-                field_0x294[1] = field_0x2b8[field_0x254].y;
+                field_0x294.x = field_0x2b8[field_0x254].x;
+                field_0x294.y = field_0x2b8[field_0x254].y;
                 field_0x230 = 2;
             }
         }
         break;
     }
     case 2: {
-        f32 dx = field_0x294[0] - mPos.x;
-        f32 dy = field_0x294[1] - mPos.y;
+        f32 dx = field_0x294.x - mPos.x;
+        f32 dy = field_0x294.y - mPos.y;
         if (std::sqrtf(dx * dx + dy * dy) < 2.0f) {
             if (field_0x258 == 3) {
-                field_0x23c = 180;
+                field_0x234[2] = 180;
                 field_0x248 = 0;
                 field_0x230 = 4;
             } else {
@@ -318,18 +311,18 @@ void BigPoe_804A0440::update() {
                     field_0x24c = 0;
                     field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
-                    field_0x294[0] = field_0x2b8[field_0x254].x;
-                    field_0x294[1] = field_0x2b8[field_0x254].y;
-                    JGeometry::TVec3f pos(mPos);
+                    field_0x294.x = field_0x2b8[field_0x254].x;
+                    field_0x294.y = field_0x2b8[field_0x254].y;
+                    pos.set(mPos);
                     field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('BPOH', mLayer_0x4, &pos, 1, -1, -1);
                     if (field_0x26c >= 0) {
                         field_0x258 = 5;
-                        field_0x234 = 10;
-                        field_0x238 = 3;
+                        field_0x234[0] = 10;
+                        field_0x234[1] = 3;
                         field_0x280 = 0.2f * (f32)field_0x25c;
                         field_0x27c = 1.5f * (0.2f * (f32)field_0x25c);
                         field_0x28c = 0.0f;
-                        field_0x23c = 300;
+                        field_0x234[2] = 300;
                         field_0x230 = 3;
                     }
                 } else {
@@ -337,8 +330,8 @@ void BigPoe_804A0440::update() {
                     field_0x274 = 0.0f;
                     field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
-                    field_0x294[0] = field_0x2b8[field_0x254].x;
-                    field_0x294[1] = field_0x2b8[field_0x254].y;
+                    field_0x294.x = field_0x2b8[field_0x254].x;
+                    field_0x294.y = field_0x2b8[field_0x254].y;
                     field_0x230 = 2;
                 }
             }
@@ -350,19 +343,19 @@ void BigPoe_804A0440::update() {
         if (serial >= 0) {
             BigPoe_804A0440* child = static_cast<BigPoe_804A0440*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (child != NULL) {
-                child->field_0x294[6] = mPos.x;
-                child->field_0x294[7] = mPos.y;
-                child->field_0x294[8] = mPos.z;
+                child->field_0x2ac.x = mPos.x;
+                child->field_0x2ac.y = mPos.y;
+                child->field_0x2ac.z = mPos.z;
                 child->field_0x290 = (u16)field_0x290 + 0x8000;
-                if (field_0x23c != 0) {
+                if (field_0x234[2] != 0) {
                     field_0x290 = (u16)field_0x290 + (s32)field_0x28c;
                     addCalc2_801F71A4(&field_0x28c, 2000.0f, 0.3f, 10.0f);
                 }
-                child->field_0x294[6] += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.sinShort((u16)field_0x290);
-                child->field_0x294[7] += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.cosShort((u16)field_0x290);
+                child->field_0x2ac.x += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.sinShort((u16)field_0x290);
+                child->field_0x2ac.y += (10.0f * (f32)field_0x25c) * JMath::sincosTable_.cosShort((u16)field_0x290);
             }
             damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
-            if (field_0x23c == 0) {
+            if (field_0x234[2] == 0) {
                 field_0x28c = (u16)field_0x290;
                 addCalc2_801F71A4(&field_0x28c, 0.0f, 0.3f, 100.0f);
                 field_0x290 = (s32)field_0x28c;
@@ -370,7 +363,7 @@ void BigPoe_804A0440::update() {
                     field_0x290 = 0;
                     child->field_0x94 = 1;
                     field_0x258 = 4;
-                    field_0x234 = 10;
+                    field_0x234[0] = 10;
                     field_0x230 = 2;
                 }
             }
@@ -383,28 +376,28 @@ void BigPoe_804A0440::update() {
         }
         if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 && field_0x258 == 3) {
             if (!getGameView_802D6A9C()->isScreenFlagSet_802D800C((mSpawnParam_0x90 >> (27 - field_0x254 * 5)) & 0x1F)) {
-                field_0x23c = 0;
+                field_0x234[2] = 0;
                 field_0x248 = 60;
             }
         }
-        if (field_0x23c == 0) {
+        if (field_0x234[2] == 0) {
             field_0x284 = 0.01f;
             field_0x280 = 0.2f * (f32)field_0x25c;
-            if (std::fabsf(field_0x27c - field_0x280) <= 0.1f) {
+            if (!(std::fabsf(field_0x27c - field_0x280) > 0.1f)) {
                 field_0x248++;
                 if (field_0x25c == 1) {
                     field_0x248 += 9;
                 }
                 if (field_0x248 > 60) {
                     field_0x258 = 4;
-                    field_0x234 = 10;
+                    field_0x234[0] = 10;
                     startSound_801F0E34(0x40022, 0);
                     field_0x284 = 0.4f;
                     field_0x274 = 0.0f;
                     field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
-                    field_0x294[0] = field_0x2b8[field_0x254].x;
-                    field_0x294[1] = field_0x2b8[field_0x254].y;
+                    field_0x294.x = field_0x2b8[field_0x254].x;
+                    field_0x294.y = field_0x2b8[field_0x254].y;
                     field_0x230 = 2;
                 }
             }
@@ -412,18 +405,16 @@ void BigPoe_804A0440::update() {
         break;
     case 5:
         field_0x258 = 5;
-        field_0x234 = 10;
+        field_0x234[0] = 10;
         field_0x280 = 10.0f;
         field_0x278 = 0.2f;
         field_0x274 = 0.0f;
-        field_0x294[0] = field_0x294[3];
-        field_0x294[1] = field_0x294[4];
-        field_0x294[2] = field_0x294[5];
+        field_0x294.set(field_0x2ac);
         field_0x230 = 6;
         // fall through
     case 6: {
-        f32 dx = field_0x294[0] - mPos.x;
-        f32 dy = field_0x294[1] - mPos.y;
+        f32 dx = field_0x294.x - mPos.x;
+        f32 dy = field_0x294.y - mPos.y;
         addCalc2_801F71A4(&field_0x27c, field_0x280, 0.5f, 1.0f);
         if (std::sqrtf(dx * dx + dy * dy) < 2.0f && std::fabsf(field_0x280 - field_0x27c) < 0.1f) {
             field_0x280 = 0.2f * (f32)field_0x25c;
@@ -439,18 +430,18 @@ void BigPoe_804A0440::update() {
             }
             startSound_801F0E34(0x40021, 0);
             for (s32 i = 0, param = 0; i < 6; i++, param += 0x2AAA00) {
-                JGeometry::TVec3f pos(mPos);
+                pos.set(mPos);
                 getActorManager_801F856C()->spawnActor_801F9484('POOH', mLayer_0x4, &pos, param | 10, -1, -1);
             }
             field_0x27c = 1.5f * (0.2f * (f32)field_0x25c);
-            field_0x23c = 20;
+            field_0x234[2] = 20;
             field_0x230 = 8;
         }
         break;
     case 8:
-        if (field_0x23c == 0) {
+        if (field_0x234[2] == 0) {
             field_0x258 = 4;
-            field_0x234 = 10;
+            field_0x234[0] = 10;
             field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             field_0x254 &= 3;
             field_0x274 = 0.0f;
@@ -458,23 +449,21 @@ void BigPoe_804A0440::update() {
             if (field_0x25c == 1) {
                 field_0x278 = 0.2f;
             }
-            field_0x294[0] = field_0x2b8[field_0x254].x;
-            field_0x294[1] = field_0x2b8[field_0x254].y;
+            field_0x294.x = field_0x2b8[field_0x254].x;
+            field_0x294.y = field_0x2b8[field_0x254].y;
             field_0x27c = 0.2f * (f32)field_0x25c;
             field_0x230 = 2;
         }
         break;
     case 9:
-        field_0x294[0] = field_0x294[3];
-        field_0x294[1] = field_0x294[4];
-        field_0x294[2] = field_0x294[5];
+        field_0x294.set(field_0x2ac);
         lbl_8053AB58 = 1;
         field_0x27c = 0.2f;
         field_0x280 = 1.0f;
         field_0x284 = 0.4f;
         field_0x258 = 6;
-        field_0x234 = 10;
-        field_0x238 = 100;
+        field_0x234[0] = 10;
+        field_0x234[1] = 100;
         field_0x244 = 0;
         field_0x230 = 10;
         // fall through
@@ -484,7 +473,7 @@ void BigPoe_804A0440::update() {
             ActorBase_804A5770* list[0x400];
             s32 count = getActorManager_801F856C()->collectActorsById_801F7818('POOH', mLayer_0x4, list, -1);
             for (s32 i = 0; i < count; i++) {
-                BigPoe_804A0440* pooh = static_cast<BigPoe_804A0440*>(list[i]);
+                Poe_8049F330* pooh = static_cast<Poe_8049F330*>(list[i]);
                 if (pooh != NULL) {
                     pooh->field_0x234 = 1;
                 }
@@ -496,25 +485,23 @@ void BigPoe_804A0440::update() {
         break;
     case 12:
         if (field_0x2e8 == NULL) {
-            JGeometry::TVec3f emitPos(field_0x294[6], field_0x294[7], field_0x294[8]);
-            field_0x2e8 = spawnEmitter_8013CC50(mLayer_0x4, &emitPos, 0x53, 1, 1, NULL, NULL, true, field_0x288);
+            field_0x2e8 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2ac, 0x53, 1, 1, NULL, NULL, true, field_0x288);
         }
         field_0x230 = 13;
         // fall through
     case 13:
-        if (field_0x234 == 0) {
-            mPos.x = field_0x294[6];
-            mPos.y = field_0x294[7];
-            mPos.z = field_0x294[8];
+        if (field_0x234[0] == 0) {
+            mPos.x = field_0x2ac.x;
+            mPos.y = field_0x2ac.y;
+            mPos.z = field_0x2ac.z;
             mVel_0x3c.x = -20.0f * JMath::sincosTable_.sinShort((u16)field_0x290);
             mVel_0x3c.y = -40.0f * JMath::sincosTable_.cosShort((u16)field_0x290);
-            field_0x234 = 3;
+            field_0x234[0] = 3;
         }
         mPos.add(mVel_0x3c);
         damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
         if (field_0x2e8 != NULL) {
-            JGeometry::TVec3f emitPos(field_0x294[6], field_0x294[7], field_0x294[8]);
-            setEmitterPos_8013CB44(field_0x2e8, &emitPos, 1, 1, true);
+            setEmitterPos_8013CB44(field_0x2e8, &field_0x2ac, 1, 1, true);
             JPAGetXYZRotateMtx(0, field_0x290, -0x8000, field_0x2e8->mGlobalRot);
         }
         startSound_801F0E34(0x30011, 0);
@@ -526,14 +513,14 @@ void BigPoe_804A0440::update() {
         }
         break;
     case 14:
-        field_0x238 = 100;
-        field_0x23c = 500;
+        field_0x234[1] = 100;
+        field_0x234[2] = 500;
         field_0x230 = 15;
         // fall through
     case 15:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-        if (field_0x238 == 0) {
-            field_0x294[4] = -0.5f;
+        if (field_0x234[1] == 0) {
+            field_0x2a0.y = -0.5f;
             if (mPos.z > 0.0f) {
                 mVel_0x3c.z -= 1.0f;
             }
@@ -542,23 +529,23 @@ void BigPoe_804A0440::update() {
                 mVel_0x3c.z = 3.0f;
                 startSound_801F0E34(0x50086, 0);
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                    field_0x294[3] = 0.5f;
+                    field_0x2a0.x = 0.5f;
                 } else {
-                    field_0x294[3] = -0.5f;
+                    field_0x2a0.x = -0.5f;
                 }
             }
-            if (field_0x234 == 0) {
+            if (field_0x234[0] == 0) {
                 field_0x244++;
                 field_0x244 &= 3;
-                field_0x234 = 8;
+                field_0x234[0] = 8;
                 field_0x258 = lbl_804A0430[field_0x244];
             }
-            if (field_0x23c == 0 || isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
+            if (field_0x234[2] == 0 || isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) {
                 mAlive = false;
             }
         }
-        addCalc2_801F71A4(&mVel_0x3c.x, field_0x294[3], 0.3f, 1.0f);
-        addCalc2_801F71A4(&mVel_0x3c.y, field_0x294[4], 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a0.y, 0.3f, 1.0f);
         mPos.add(mVel_0x3c);
         break;
     }
