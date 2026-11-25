@@ -107,6 +107,7 @@ void cls_804A51E4::fn_801E2D88() {
 // Whether a player-side object (arrow, bomb, sword, ...) hits the actor's box.
 // FIXME: 94.98 %, missing/extra; behaviour clean.
 bool cls_804A51E4::vfunc_0x58() {
+    JGeometry::TVec3f bombVel;
     bool arrow = false;
     bool direct = false;
     bool bomb = false;
@@ -115,7 +116,6 @@ bool cls_804A51E4::vfunc_0x58() {
     JGeometry::TBox2f box;
     fn_801F317C(&box);
     JGeometry::TVec2f pos2;
-    JGeometry::TVec3f bombVel;
     s32 player = fn_8023AE34(&box, mLayer_0x4, &pos2);
     if (player >= 0) {
         arrow = fn_801CC820(player, &arrowVel);
@@ -145,9 +145,9 @@ bool cls_804A51E4::vfunc_0x58() {
         if (direct) {
             type = 4;
         } else if (bomb) {
-            from = bombVel;
+            from.set(bombVel);
         } else {
-            from = mPos - arrowVel;
+            from.set(mPos - arrowVel);
             if (arrow) {
                 type = 3;
             }
