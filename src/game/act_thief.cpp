@@ -360,11 +360,11 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
     mState = newState;
 }
 
-// FIXME: 95.75 %, different + reloc-name; behaviour drift.
-// Ours has one more instruction (539 vs 538), the rest is register allocation (this in r29 vs
-// r31, the layer argument of isWayBlocked_801CF888 in states 0 and 6 is loaded into a saved register before
-// getPlayerPos_8023E724 in the original) and literal relocations (the original pools 1.0f before
-// 1.2f / 2.0f; ours pools it last).
+// FIXME: 95.48 %, missing/extra + reloc-name; behaviour drift.
+// Ours has four more instructions: mapHit is converted to bool for fn_8021B904 (the original
+// passes the register as it is), and the layer argument of isWayBlocked_801CF888 in states 0 and 6
+// is loaded into a saved register before getPlayerPos_8023E724 in the original. The rest is
+// register allocation and the order of the float literals.
 void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     if (mapHit) {
         fn_801F11B4();
@@ -432,6 +432,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
 
     switch (mState) {
     case 0:
+    case 8:
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
         } else if (field_0x338 >= 0) {
@@ -467,8 +468,12 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             f32 dy = field_0x32c.y - mPos.y;
             if (square(dx) + square(dy) <= 100.0f) {
                 startSound_801F0E34(0x4009F, 0);
-                s32 value = target->fn_8032D564(target->mSpawnParam_0x90 & 0xFF);
-                s32 amount = (value > 3000) ? 3000 : ((value < 1) ? 1 : value);
+                s32 amount = target->fn_8032D564(target->mSpawnParam_0x90 & 0xFF);
+                if (amount > 3000) {
+                    amount = 3000;
+                } else if (amount < 1) {
+                    amount = 1;
+                }
                 field_0x344 += amount;
                 ForceGem_804AB6D8* gem = static_cast<ForceGem_804AB6D8*>(target);
                 gem->field_0x94 = 1;
@@ -484,7 +489,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) <= 0 || !canTargetPlayer_801D0B44(field_0x338) ||
-                   fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) == 0) {
+                   isPlayerOutOfRange()) {
             setState_80205E0C(0);
         } else if (!fn_801D12CC()) {
             setState_80205E0C(0);
@@ -533,7 +538,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         if (field_0x340 >= 0) {
             setState_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !canTargetPlayer_801D0B44(field_0x338) ||
-                   !fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ||
+                   isPlayerOutOfRange() ||
                    isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
             setState_80205E0C(0);
         } else if (mapHit) {
@@ -547,13 +552,11 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             setState_80205E0C(0);
         }
         break;
-    case 8:
+    case 9:
         if (mapHit) {
             fn_801D11FC();
         }
         field_0x33c = field_0x374.fn_8021B904(field_0x33c, mapHit);
-        break;
-    case 9:
         break;
     }
 
