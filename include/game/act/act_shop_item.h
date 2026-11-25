@@ -17,6 +17,9 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Inlined in update(): the player is loaded once before the switch and
+    // every arm ends in its own true/false.
+    bool canAfford(s32 player);
     /* 0x230 */ SpriteAnim_801D267C mAnim;
     /* 0x268 */ s32 mKind;   // 0-7 (init() takes it from the spawn argument); the constructor sets 8
     /* 0x26C */ s32 mState;  // the state update() dispatches on, 0-6

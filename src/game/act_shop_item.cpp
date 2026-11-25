@@ -33,6 +33,28 @@ static inline bool showMessage(s32 player, u32 msg, s32 serial, s32 layer,
     return openMessage_8038AD24(player, msg, serial, layer, pos, 0x28);
 }
 
+inline bool ShopItem_8049CDC0::canAfford(s32 player) {
+    switch (mKind) {
+    case 2:
+        if (getPlayerLife_80237774(player) > lbl_80464028[mKind]) {
+            return true;
+        }
+        return false;
+    case 0:
+    case 1:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        if (fn_80236228(player) >= lbl_80464028[mKind]) {
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
+
 ShopItem_8049CDC0::ShopItem_8049CDC0() {
     mKind = 8;
     mState = 0;
@@ -55,10 +77,6 @@ void ShopItem_8049CDC0::init() {
     mAnim.setFrame_801D1F14(0.0f);
 }
 
-// FIXME: 97.63 %. In state 1 the original reloads mPlayer (lwz 0x270) where ours
-// zeroes canAfford up front (li r29, 0), so the affordability test is shaped
-// differently there (4 instructions fewer here); the jump tables are @NNN, not
-// jumptable_8049CE14/34/54.
 void ShopItem_8049CDC0::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box = mBox;
@@ -97,26 +115,7 @@ void ShopItem_8049CDC0::update() {
         }
         switch (fn_8037EFB4(mPlayer)) {
         case 0: {
-            bool canAfford = false;
-            switch (mKind) {
-            case 2:
-                if (getPlayerLife_80237774(mPlayer) > lbl_80464028[mKind]) {
-                    canAfford = true;
-                }
-                break;
-            case 0:
-            case 1:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                if (fn_80236228(mPlayer) >= lbl_80464028[mKind]) {
-                    canAfford = true;
-                }
-                break;
-            }
-            if (canAfford) {
+            if (canAfford(mPlayer)) {
                 fn_80388CAC(mPlayer, mSerial);
                 fn_802308E0(mPlayer);
                 mState = 2;
