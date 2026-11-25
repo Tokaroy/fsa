@@ -3,6 +3,7 @@
 
 #include "game/GameGlobals.h"
 #include "game/GameRootSub20.h"
+#include "game/PlayerBit.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // A key table of mAnim: (cel, frames) s16 pairs, ended by a cel of -1.
@@ -48,14 +49,15 @@ void GoalOpening_8049DB30::init() {
 }
 
 // FIXME: 95.34 %, different + reloc-name; behaviour near.
-// Ours keeps the constant 1 stored at 0x7A8 in r30 (saved)
-// instead of loading it into r0 at the store, lacks the bge/b pair after the
-// switch's cmpwi 2, swaps f3/f4 in the box sums and loads the 1 of the bit mask
-// later (no clrlwi); the float literals are not split into this unit yet.
+// Ours loads the 1 of the player-bit shift into r0 and a second 1 for the flag;
+// the original shares one li r5, 1 for both.
 void GoalOpening_8049DB30::update() {
     DemoActorBase_8049D140::update();
-    fn_801902C0()->field_0x7a8 = 1;
+    GameRootSub20_801902C0* sub20 = fn_801902C0();
+    sub20->field_0x7a8 = 1;
     switch (field_0x234) {
+    case 1:
+        break;
     case 2:
         if (isScreenFlagSet_0x34()) {
             if (mEmitter254 == NULL) {
@@ -86,7 +88,7 @@ void GoalOpening_8049DB30::update() {
                 flag = false;
             } else {
                 flag = true;
-                if (!(gGameRoot_8053AAF8->mPlayerMask & (1 << player))) {
+                if (!fn_8018A614(player)) {
                     flag = false;
                 }
             }
@@ -97,6 +99,8 @@ void GoalOpening_8049DB30::update() {
                 field_0x234 = 3;
             }
         }
+        break;
+    case 3:
         break;
     }
     cls_804A03A8* field30 = gGameRoot2_8053AB10->field_0x30;
