@@ -14,6 +14,7 @@
 #include "game/Message.h"
 #include "game/Player.h"
 #include "game/PlayerBit.h"
+#include "game/Vec2Ops.h"
 #include "game/ViewLayer.h"
 #include "game/escort_base_801213EC.h"
 #include "math.h"
@@ -74,14 +75,6 @@ bool fn_8022F478(s32 player);
 s32 getPlayerLeader_8022F3DC(s32 player);
 s32 fn_8022D7F8(s32 player);
 bool fn_8022D75C(s32 player);
-
-GameRoot_8049EF20* fn_8023F9B0() {
-    return gGameRoot_8053AAF8;
-}
-
-bool GameRoot_8049EF20::fn_8023F98C(s32 player) {
-    return isPlayerBitSet(this, player);
-}
 
 PlayerManager_804A6F28::PlayerManager_804A6F28() {
     gPlayerManager_8053AC90 = this;
@@ -655,7 +648,8 @@ u16 fn_8023D21C(s32 player, s32 viewer) {
 // The screen y (y - z) of player `player` in its layer's view box, relative to
 // `viewer`'s fn_8023CD74; 0xE0 outside [-0x30, 0xD0) or without either player, 0
 // without the manager.
-// FIXME: 99.84 %, regalloc only: the box lives in r30 and the first position in r31
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
+// regalloc only: the box lives in r30 and the first position in r31
 // in the original (swapped in ours).
 u16 fn_8023CEAC(s32 player, s32 viewer) {
     if (gPlayerManager_8053AC90 == NULL) {
@@ -1548,12 +1542,10 @@ s32 fn_8023885C(s32 serial) {
 // same offset from its own position (fn_802710C8, then endFormActor_80248FF0 when it
 // lands); then fn_80270D34(damage) on every player who follows a leader.
 // Whether `player` itself was hit.
-// FIXME: 91.52 %. The original keeps `offset` on the stack (stores pos, then the
-// difference; frame 0x40, ours 0x30, so `at` is at 0x10 there, 0x8 here) and
-// returns `clrlwi r3, hit, 24`; ours keeps offset in registers (5 fewer
-// instructions) and returns `mr`. A copy-constructed offset (`offset(*pos)`)
-// compiles the same; a u8 return gives the clrlwi but breaks the bool
-// wrappers fn_80271038 / fn_80271068 / fn_80271098 / hitOwnGroup_80272160 (100 -> 55-67 %).
+// The original returns `clrlwi r3, hit, 24`, ours `mr`: a u8 return gives the
+// clrlwi but breaks the bool wrappers fn_80271038 / fn_80271068 / fn_80271098 /
+// hitOwnGroup_80272160.
+// FIXME: 99.70 %, different; behaviour near.
 bool hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
@@ -1565,12 +1557,10 @@ bool hitPlayerGroup_80238548(s32 player, s32 damage, const JGeometry::TVec2f* po
     for (s32 i = 0; i < 4; i++) {
         if (arePlayersInSameGroup_8022E438(i, player)) {
             const JGeometry::TVec3f* origin = getPlayerPos_8023E724(player);
-            JGeometry::TVec2f offset(pos->x, pos->y);
-            offset.x -= origin->x;
-            offset.y -= origin->y;
+            JGeometry::TVec2f offset = *pos - xy(*origin);
             const JGeometry::TVec3f* own = getPlayerPos_8023E724(i);
-            JGeometry::TVec2f at(own->x, own->y);
-            at.add(offset);
+            JGeometry::TVec2f at(xy(*own));
+            at += offset;
             if (gPlayerManager_8053AC90->mPlayers[i]->fn_802710C8(player, damage, &at, arg)) {
                 gPlayerManager_8053AC90->mPlayers[i]->endFormActor_80248FF0();
                 if (i == player) {
@@ -2107,17 +2097,11 @@ void fn_80235FE8(s32 player) {
     }
 }
 
-// FIXME: 96.55 %. The original tests the mPlayerMask bit through an inline chain
-// whose deeper copies MWCC calls out of line as the recursion is inlined: level 2
-// calls fn_8023F9B0 (the game-root getter) and inlines GameRoot::fn_8023F98C, level 3
-// calls both, level 4 calls fn_8018A614 (the one-argument form, act_phantom_ganon_2);
-// here isPlayerBitSet loads gGameRoot_8053AAF8 directly (one instruction more at
-// level 2, and isPlayerBitSet's own copy and isPlayerActive_8023F264 at the deepest level).
 // fn_80270360(serial) on the player when it takes part (mPlayerMask), else, while it
 // follows one (hasPlayerLeader_8022F514), on its leader (getPlayerLeader_8022F3DC), recursively.
 void fn_80235B68(s32 player, s32 serial) {
     if (gPlayerManager_8053AC90 != NULL && isPlayerActive_8023F264(player)) {
-        if (isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+        if (fn_8018A614(player)) {
             gPlayerManager_8053AC90->mPlayers[player]->fn_80270360(serial);
         } else if (hasPlayerLeader_8022F514(player)) {
             fn_80235B68(getPlayerLeader_8022F3DC(player), serial);
@@ -2614,7 +2598,8 @@ void fn_80233BA0(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src) {
 // inline budget it also calls the unit's small queries out of line.
 // The three pushes of j by -dir pass the address of negated(dir)'s value (the
 // original's two stack TVec3fs: the negation, then the copy, z through frsp).
-// FIXME: 99.40 %. Float registers and load order only: the moves of boxA / boxB
+// FIXME: 99.40 %, scheduling+regalloc; behaviour clean.
+// Float registers and load order only: the moves of boxA / boxB
 // by their view corner (addPos) load i.y before i.x in ours (x first in the
 // original); the rest is float register numbering.
 void fn_80232A0C() {

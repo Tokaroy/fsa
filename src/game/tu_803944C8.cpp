@@ -17,6 +17,7 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JMessage/TResource.h"
 #include "game/cls_804B20F8.h"
+#include "game/PlayerBit.h"
 #include "JSystem/JMessage/TParse.h"
 #include "JSystem/JMessage/TControl.h"
 

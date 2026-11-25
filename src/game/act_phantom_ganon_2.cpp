@@ -125,12 +125,6 @@ void fn_8018A63C() {
     getActorManager_801F856C()->fn_801F6884();
 }
 
-// Whether bit `player` of the game root's mPlayerMask is set (game/PlayerBit.h,
-// on gGameRoot_8053AAF8 itself).
-bool fn_8018A614(s32 player) {
-    return isPlayerBitSet(gGameRoot_8053AAF8, player);
-}
-
 // The effect system's particle emitter manager, fetched through a getter.
 JPAEmitterManager* getEmitterManager_8018A5F0() {
     return getEffectSystem_8013C824()->mEmitterManager;

@@ -436,7 +436,8 @@ struct GameRoot_8049EF20 {
     // The number of players that take part: the set bits 0-3 of
     // mPlayerMask. Its body reads gGameRoot_8053AAF8 itself; callers load it into r3.
     s32 getPlayerCount_80138A30();
-    // game/tu_8022AD64.cpp (0x8023F98C): whether bit `player` of mPlayerMask is set.
+    // Header inline (game/PlayerBit.h; its out-of-line copy is in game/tu_8022AD64.cpp,
+    // 0x8023F98C): whether bit `player` of mPlayerMask is set.
     bool fn_8023F98C(s32 player);
     // Owner: not written yet (0x8013670C, 0x8C bytes). Called by
     // fn_8019CD9C (game/act_princess_zelda_ganon_battle_80197070.cpp) with its s32 argument; r3 is
@@ -615,8 +616,6 @@ s32 spawnActor_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg
 bool fn_8018E930(s32 bit);
 void setScreenFlag_8018E8DC(s32 bit, bool set, u8 value);
 s32 fn_8018E89C();
-// game/act_phantom_ganon_2.cpp: whether the player takes part.
-bool fn_8018A614(s32 player);
 // game/game_root_80134C04.cpp: the 2-bit field of gGameRoot_8053AAF8->field_0x83 for `index` (0-3).
 u8 fn_8013997C(s32 index);
 s32 randInt_801CD664(s32 n);     // [0, n); game/tu_801CB270.cpp
