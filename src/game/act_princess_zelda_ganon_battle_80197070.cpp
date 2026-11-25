@@ -1796,98 +1796,94 @@ void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
             break;
         }
         s32 serial = field_0x25c;
-        if (serial < 0) {
-            field_0x258 = 0;
-            break;
-        }
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor == NULL) {
-            field_0x258 = 0;
-            break;
-        }
-        f32 dx = actor->mPos.x - mPos.x;
-        f32 dy = actor->mPos.y - mPos.y;
-        f32 distSq = dx * dx + dy * dy;
-        if (std::sqrtf(distSq) <= 90.0f) {
-            field_0x274.z = 0.0f;
-            field_0x274.y = 0.0f;
-            field_0x274.x = 0.0f;
-            mVel_0x3c.zero();
-            field_0x248 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
-            field_0x24c = (s32)std::sqrtf(distSq);
-            for (int i = 0; i < 13; i++) {
-                JPABaseEmitter* emitter = mEmitters[i];
-                if (emitter != NULL) {
-                    emitter->mGlobalPScl.x = 1.5f;
-                    emitter->mGlobalPScl.y = 1.5f;
+        if (serial >= 0) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (actor != NULL) {
+                f32 dx = actor->mPos.x - mPos.x;
+                f32 dy = actor->mPos.y - mPos.y;
+                f32 distSq = dx * dx + dy * dy;
+                if (std::sqrtf(distSq) <= 90.0f) {
+                    field_0x274.z = 0.0f;
+                    field_0x274.y = 0.0f;
+                    field_0x274.x = 0.0f;
+                    mVel_0x3c.zero();
+                    field_0x248 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
+                    field_0x24c = (s32)std::sqrtf(distSq);
+                    for (int i = 0; i < 13; i++) {
+                        JPABaseEmitter* emitter = mEmitters[i];
+                        if (emitter != NULL) {
+                            emitter->mGlobalPScl.x = 1.5f;
+                            emitter->mGlobalPScl.y = 1.5f;
+                        }
+                    }
+                    mBox.i.x = -10.0f;
+                    mBox.i.y = -10.0f;
+                    mBox.f.x = 10.0f;
+                    mBox.f.y = 10.0f;
+                    mState = 0x48;
                 }
+                serial = field_0x25c;
+                if (serial < 0) {
+                    break;
+                }
+                actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                if (actor == NULL || field_0x250 == 0) {
+                    break;
+                }
+                dy = actor->mPos.y - mPos.y;
+                dx = actor->mPos.x - mPos.x;
+                f32 dist = std::sqrtf(dx * dx + dy * dy);
+                if (field_0x250 >= 1 && dist <= 80.0f) {
+                    takeToken(this, actor);
+                } else {
+                    field_0x258 = 0;
+                }
+                break;
             }
-            mBox.i.x = -10.0f;
-            mBox.i.y = -10.0f;
-            mBox.f.x = 10.0f;
-            mBox.f.y = 10.0f;
-            mState = 0x48;
         }
-        serial = field_0x25c;
-        if (serial < 0) {
-            break;
-        }
-        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor == NULL || field_0x250 == 0) {
-            break;
-        }
-        dy = actor->mPos.y - mPos.y;
-        dx = actor->mPos.x - mPos.x;
-        f32 dist = std::sqrtf(dx * dx + dy * dy);
-        if (field_0x250 >= 1 && dist <= 80.0f) {
-            takeToken(this, actor);
-        } else {
-            field_0x258 = 0;
-        }
+        field_0x258 = 0;
         break;
     }
     case 0x48: {
         startSound_801F0E34(0x30056, 0);
         s32 serial = field_0x25c;
-        if (serial < 0) {
-            field_0x258 = 0;
-            break;
-        }
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor == NULL) {
-            field_0x258 = 0;
-            break;
-        }
-        if ((u8)actor->field_0xb0 != 0xE) {
-            field_0x258 = 0;
-            break;
-        }
-        if (field_0x250 == 0) {
-            addCalc2_801F71A4(&mPos.x,
-                              actor->mPos.x + field_0x24c * JMath::sincosTable_.sinShort(field_0x248),
-                              0.8f, 10.0f);
-            addCalc2_801F71A4(&mPos.y,
-                              actor->mPos.y + field_0x24c * JMath::sincosTable_.cosShort(field_0x248),
-                              0.8f, 10.0f);
-            field_0x248 += 0x150;
-        } else {
-            serial = field_0x25c;
-            if (serial < 0) {
+        if (serial >= 0) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (actor != NULL) {
+                if ((u8)actor->field_0xb0 != 0xE) {
+                    field_0x258 = 0;
+                    break;
+                }
+                if (field_0x250 == 0) {
+                    addCalc2_801F71A4(&mPos.x,
+                                      actor->mPos.x + field_0x24c * JMath::sincosTable_.sinShort(field_0x248),
+                                      0.8f, 10.0f);
+                    addCalc2_801F71A4(&mPos.y,
+                                      actor->mPos.y + field_0x24c * JMath::sincosTable_.cosShort(field_0x248),
+                                      0.8f, 10.0f);
+                    field_0x248 += 0x150;
+                } else {
+                    serial = field_0x25c;
+                    if (serial < 0) {
+                        break;
+                    }
+                    actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    if (actor == NULL || field_0x250 == 0) {
+                        break;
+                    }
+                    f32 dy = actor->mPos.y - mPos.y;
+                    f32 dx = actor->mPos.x - mPos.x;
+                    f32 dist = std::sqrtf(dx * dx + dy * dy);
+                    if (field_0x250 >= 1 && dist <= 80.0f) {
+                        takeToken(this, actor);
+                    } else {
+                        field_0x258 = 0;
+                    }
+                }
                 break;
             }
-            actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            if (actor == NULL || field_0x250 == 0) {
-                break;
-            }
-            f32 dy = actor->mPos.y - mPos.y;
-            f32 dx = actor->mPos.x - mPos.x;
-            f32 dist = std::sqrtf(dx * dx + dy * dy);
-            if (field_0x250 >= 1 && dist <= 80.0f) {
-                takeToken(this, actor);
-            } else {
-                field_0x258 = 0;
-            }
         }
+        field_0x258 = 0;
         break;
     }
     case 0x49:
