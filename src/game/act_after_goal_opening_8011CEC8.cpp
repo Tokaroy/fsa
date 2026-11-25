@@ -103,7 +103,7 @@ u8 AfterGoalOpening_8049DD68::vfunc_0x5C() {
 // Not auto-inlined: update and vfunc_0x54 call setState_8011D1B8 / fn_8011CF48 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 96.99 %, different; behaviour drift.
+// FIXME(shotgun): 99.82 %, regalloc-only; behaviour drift.
 // jump table is not yet a named jumptable_8049DDF0; stack layout still differs
 void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
     switch (state) {
@@ -204,7 +204,6 @@ void AfterGoalOpening_8049DD68::setOverlayRect() {
 }
 
 #pragma auto_inline off
-// FIXME(shotgun): 97.92 %, missing/extra; behaviour drift.
 void AfterGoalOpening_8049DD68::fn_8011CF48() {
     switch (field_0x234) {
     case 0:
