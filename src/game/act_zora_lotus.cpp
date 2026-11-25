@@ -7,12 +7,15 @@ static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
     return x >= x0 && y >= y0 && x < x1 && y < y1;
 }
 
-// Does one of player `i`'s 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
-static inline bool outlineInBox(ZoraLotus_804AC3E0* self, s32 i) {
+// Is player `i` on the lotus's layer with one of its 8 outline points inside the lotus's box? The first one inside is reported (fn_8022DF48).
+inline bool ZoraLotus_804AC3E0::outlineInBox(s32 i) {
+    if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
+        return false;
+    }
     for (int j = 0; j < 8; j++) {
         JGeometry::TVec3f point;
         fn_8022E088(i, j, &point);
-        point -= self->mPos;
+        point -= mPos;
         point.z = 0.0f;
         f32 rad = JMath::atanTable_.atan2_(point.y, point.x);
         s16 angle = rad * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
@@ -20,7 +23,7 @@ static inline bool outlineInBox(ZoraLotus_804AC3E0* self, s32 i) {
         point.z = 0.0f;
         point.y = dist * JMath::sincosTable_.sinShort(angle);
         point.x = dist * JMath::sincosTable_.cosShort(angle);
-        if (contains(point.x, point.y, self->mBox.i.x, self->mBox.i.y, self->mBox.f.x, self->mBox.f.y)) {
+        if (contains(point.x, point.y, mBox.i.x, mBox.i.y, mBox.f.x, mBox.f.y)) {
             fn_8022DF48(i);
             return true;
         }
@@ -60,7 +63,7 @@ void ZoraLotus_804AC3E0::vfunc_0xA4() {
 }
 
 // FIXME: 97.52 %, missing/extra + reloc-name; behaviour clean.
-// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
+// The box bounds are loaded and the outline point's x/y kept in another register order.
 void ZoraLotus_804AC3E0::vfunc_0xA8() {
     if (field_0x2b0 != 0) {
         field_0x2b2 += 0x800;
@@ -69,13 +72,8 @@ void ZoraLotus_804AC3E0::vfunc_0xA8() {
             field_0x2b0 = 0;
         }
     }
-    for (int i = 0; i < 4; i++) {
-        bool touching;
-        if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
-            touching = false;
-        } else {
-            touching = outlineInBox(this, i);
-        }
+    for (s32 i = 0; i < 4; i++) {
+        bool touching = outlineInBox(i);
         if (fn_80233E40(i)) {
             if ((1 << i) & getPlayersInBox_801F2740(-1)) {
                 if (mSpawnParam_0x90 & 1) {
@@ -162,7 +160,7 @@ u8 ZoraLotus_804AC3E0::attackPlayers_0x68() {
 }
 
 // FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
-// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
+// The box bounds are loaded and the outline point's x/y kept in another register order.
 void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
@@ -186,9 +184,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
                         }
                         setState_801BACE8(0);
                     }
-                    if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
-                        outlineInBox(this, i);
-                    }
+                    outlineInBox(i);
                 }
             }
             if (mState == 5) {
@@ -252,9 +248,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
     case 5:
         resetBoxes(this);
         for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
-                outlineInBox(this, i);
-            }
+            outlineInBox(i);
         }
         if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             setState_801BACE8(0);
