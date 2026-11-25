@@ -82,7 +82,6 @@ void ColourBlock1Player_804AE620::init() {
     }
 }
 
-// FIXME: 99.65 %, missing/extra; behaviour near.
 void ColourBlock1Player_804AE620::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
