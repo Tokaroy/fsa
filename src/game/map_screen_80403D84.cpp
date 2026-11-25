@@ -2031,8 +2031,8 @@ void MapScreen_804B1288::fn_80409FDC() {
         if (mCursorX_0x394 == x) {
             field_0x360 = 0x10;
         } else {
-            u16 angle = JMath::atanTable_.atan2_(-dx, -dy) *
-                        (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+            u32 angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                              (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
             if (angle < 0x2000 || angle >= 0xE000) {
                 field_0x360 = 0x18;
             } else if (angle >= 0x2000 && angle < 0x6000) {
@@ -2090,10 +2090,13 @@ void MapScreen_804B1288::fn_80409FDC() {
             gAudioMgr_8053AF80->playSystemSound_80458880(0xb, -1);
         } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             if (field_0x663) {
-                for (int i = 0; i < 2; i++) {
-                    if (mCursorEmitters_0x308[i] != NULL) {
-                        mCursorEmitters_0x308[i]->becomeInvalidEmitter();
-                        mCursorEmitters_0x308[i] = NULL;
+                // the original re-tests the flag here (beq / bne pair at 8040AAE8)
+                if (!field_0x663) {
+                    for (int i = 0; i < 2; i++) {
+                        if (mCursorEmitters_0x308[i] != NULL) {
+                            mCursorEmitters_0x308[i]->becomeInvalidEmitter();
+                            mCursorEmitters_0x308[i] = NULL;
+                        }
                     }
                 }
                 field_0x663 = 0;
