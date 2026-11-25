@@ -39,7 +39,7 @@ void RainbowBridge_8049E610::init() {
     mMapBox_0x80.set(mBox);
 }
 
-// FIXME: 97.88% (missing/extra: one extra instruction, a copy of the player index (mr r27,r26) from the inlined isPlayerOn parameter, which also costs one more saved register (stmw r26 vs r27); the rest is the same register renaming as __dt__ in the emitter loops).
+// Still differs: the contains() result's li 0 is scheduled one instruction later in the original, and the emitter loops swap two registers as in __dt__.
 void RainbowBridge_8049E610::update() {
     ActorBase_804A5770::update();
     switch (field_0x238) {
@@ -47,7 +47,7 @@ void RainbowBridge_8049E610::update() {
         pool_8053CB48();
         break;
     case 1:
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (isPlayerOn(i)) {
                 fn_8023DF68(i, &(mPos - mPrevPos));
             }
@@ -59,8 +59,9 @@ void RainbowBridge_8049E610::update() {
                 field_0x234 = -1;
             }
         }
-        if (field_0x230 >= 0) {
-            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x230, true, 0xFF);
+        s32 bit = field_0x230;
+        if (bit >= 0) {
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
         break;
     }
@@ -125,9 +126,7 @@ bool RainbowBridge_8049E610::isPlayerOn(s32 player) {
         s32 angle = (s32)(JMath::atanTable_.atan2_(v.y, v.x) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         f32 len = JGeometry::TUtil<f32>::sqrt(v.x * v.x + v.y * v.y);
-        v.z = 0.0f;
-        v.x = len * JMACosShort(angle);
-        v.y = len * JMASinShort(angle);
+        v.set(len * JMACosShort(angle), len * JMASinShort(angle), 0.0f);
         if (contains(box, v)) {
             fn_8022DF48(player);
             return true;
