@@ -499,7 +499,7 @@ bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
 }
 
 // Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
-// Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
+// Still differs: register choice and instruction order only.
 // FIXME: 91.37 %, missing/extra; behaviour drift.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
     f32 ty = field_0x244.y;
@@ -538,9 +538,9 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
 void UnknownENDM_804AA0FC::pool_805412F8() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus(pos);
-    focus += offset;
-    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
+    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TBox2f view;
+    view = gGameRoot2_8053AB10->field_0x24->mViewBox_0x164;
     f32 halfW = view.getWidth() * 0.5f;
     f32 halfH = view.getHeight() * 0.5f;
     if (focus.x + halfW >= field_0x268) {
