@@ -78,7 +78,6 @@ void MalonAndTalonController_8049EA88::vfunc_0x10() {
     mPos.y += 24.0f;
 }
 
-// FIXME(shotgun): 90.39 %, missing/extra + reloc-name; behaviour near.
 void MalonAndTalonController_8049EA88::update() {
     ActorBase_804A5770::update();
     if (field_0x230 >= 2 && field_0x230 <= 4) {
@@ -229,7 +228,7 @@ s32 MalonAndTalonController_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) 
 }
 #pragma auto_inline reset
 
-// FIXME: 98.93 %, regalloc-only.
+// FIXME: 98.94 %, regalloc-only; behaviour clean.
 bool MalonAndTalonController_8049EA88::fn_80130370() {
     ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
     if (target == NULL) {
