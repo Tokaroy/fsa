@@ -10,11 +10,8 @@ static const f32 lbl_80491680[4] = {1.0f, 1.1f, 0.9f, 0.85f};
 PlayerSoundObj_804B20F8::PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
     : ActorSoundObj_804578F4(pos, heap, numHandles), field_0x5c(kind) {}
 
-// FIXME: 95.7%. (1) The original reads the group byte once into r31 and does clrlwi before each
-// compare; ours compares r31 directly. (2) The original's sound-less early return jumps straight to
-// the epilogue (no mr r3, r30); ours folds it into the nested if. (3) kind is in r4 in the original
-// (r0 in ours) and the three pitch constants load in a different order, so the registers of the
-// random pitch expression differ.
+// The original reads the group byte once into r31 and does clrlwi before each compare; ours
+// compares r31 directly.
 JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     u8 type = id.mId.mBytes.mGroupId;
     JAISeMgr* seMgr = gAudioMgr_8053AF80->field_0x34;
@@ -61,14 +58,17 @@ JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     if (handle == NULL) {
         return NULL;
     }
-    if (handle->sound_ != NULL && (u32)id - 0x20000 != 0x33 && (u32)id - 0x20000 != 0x49) {
-        static JMath::TRandom_fast_ lbl_8053AF8C(0);
+    if (handle->sound_ == NULL) {
+        return handle;
+    }
+    if ((u32)id - 0x20000 != 0x33 && (u32)id - 0x20000 != 0x49) {
+        static JMath::TRandom_<JMath::TRandom_fast_> lbl_8053AF8C(0);
         s32 kind = field_0x5c;
         if (kind >= 0 && kind < 4) {
             if (type == 1) {
                 handle->sound_->getAuxiliary().movePitch(lbl_80491680[kind], 0);
             } else if (type == 2) {
-                f32 pitch = 1.0f + (0.03f * lbl_8053AF8C.get_ufloat_1() - 0.015f * (1.0f - FLT_EPSILON));
+                f32 pitch = 1.0f + (lbl_8053AF8C.get_ufloat(0.03f) - 0.015f * (1.0f - FLT_EPSILON));
                 handle->sound_->getAuxiliary().movePitch(pitch, 0);
             }
         }
