@@ -10,35 +10,28 @@
 #include "game/ActorManager.h"
 #include "game/act/act_log_monitor_npc.h"
 
-// The actor in slot i if it has the given id.
-static inline ActorBase_804A5770* getActorWithId(s32 i, u32 id) {
-    ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-    if (actor != NULL && actor->mActorId == id) {
-        return actor;
-    }
-    return NULL;
-}
-
 // The serial of a log whose box overlaps this actor's and that is not
 // raised (z <= 0), or -1.
-// FIXME: update() is 90.6 %: the target hoists the first search's
-// serial = -1 to the top of update(), checks the slot's actor for NULL a
-// second time without a branch for the NULL result, and keeps the boxes at
-// 0x34/0x44 (ours 0x28/0x38); otherwise the same.
+// update() still differs: the target copies the slot's actor into a second
+// register for the log at its second NULL check and hoists the first
+// search's serial = -1 to the top of update(); the boxes sit at 0x34/0x44.
 inline s32 LogMonitorNpc_804AD278::findLog() {
+    s32 end = getActorManager_801F856C()->getActorEnd();
     s32 serial = -1;
-    s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
-        ActorBase_804A5770* log = getActorWithId(i, ACTOR_MRTA);
-        if (log != NULL) {
-            JGeometry::TBox2f box;
-            JGeometry::TBox2f logBox;
-            getBoxAtPos_801F31C4(&box);
-            log->getBoxAtPos_801F31C4(&logBox);
-            JGeometry::TBox2f overlap = box;
-            if (overlap.intersect(logBox) && log->mPos.z <= 0.0f) {
-                serial = log->mSerial;
-                break;
+        ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+        if (actor != NULL && actor->mActorId == ACTOR_MRTA) {
+            ActorBase_804A5770* log = actor;
+            if (log != NULL) {
+                JGeometry::TBox2f box;
+                JGeometry::TBox2f logBox;
+                getBoxAtPos_801F31C4(&box);
+                log->getBoxAtPos_801F31C4(&logBox);
+                JGeometry::TBox2f overlap = box;
+                if (overlap.intersect(logBox) && log->mPos.z <= 0.0f) {
+                    serial = log->mSerial;
+                    break;
+                }
             }
         }
     }
