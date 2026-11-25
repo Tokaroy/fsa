@@ -76,7 +76,7 @@ u32 cls_800FE3EC::fn_800FE21C(u8 index) {
 // 0x800FE090
 // auto_inline off: the original's stepAlongRail_800FDEA0 (bl at 0x800FDEFC) calls it out of line.
 #pragma auto_inline off
-// FIXME: 90.29 %, missing/extra; behaviour near.
+// FIXME: 94.29 %, missing/extra; behaviour near.
 s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
     s32 result = 0;
     f32 dx = field_0x4[field_0x3]->mPos.x - pos->x;
