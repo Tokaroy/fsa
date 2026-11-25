@@ -111,6 +111,75 @@ timer are identical at every offset; only the seed differs.
 - **PADRead's return value** (`sRumbleSupported`) is left as Dolphin's PADRead
   computed it; only the four `PADStatus` are replaced (analogA/B 0, as the port).
 - The `start` sync line carries `"emu":"dolphin"`; compare ignores it.
+- **Fast disc speed by default** (`--disc-timing` turns Dolphin's disc timing
+  model back on). The disc tree puts the files after `main.dol`, so a DOL of
+  another size moves every file; with emulated seek times B's loads then took
+  a frame or two more or less than A's, and since the RNG
+  (`gGameRoot_8053AAF8->mRandom`) advances once per loading frame, every
+  enemy spawned on stage entry got different random directions (the Octoroks'
+  `mDir_0x98` in stage 1) and everything after diverged. With fast disc speed
+  A and B reach every scene at the same read (and the title at read 124, the
+  port's is 122) and stage 1 is identical for 25,000 reads.
+  `--overclock F` (emulated CPU clock) exists too but did not remove the
+  difference: the loads were disc-bound, not CPU-bound.
+
+## Beyond the opening: gameplay scripts (A vs B)
+
+- `castle.json`: `opening.json`, then START through the narration, A through
+  the opening cutscene until its demo timer (`fn_8011921C()->field_0x8`)
+  stops at 1551 (Link controllable below the Four Sword), then walking in
+  four directions, sword swings, a spin attack, walking up to the sword and
+  A / grab-and-pull on it, then A every 30 reads (the sword does not come
+  out this way; the script ends in `script_timeout` by design). 30,000 reads.
+- `stage_S_L.json` (S = 1..6, L = 0): the menus of `opening.json`, then a
+  **`set` step** writes GameState's stage and level (`mStage_0x118`,
+  `mLevel_0x11c` and the saved copies `field_0x128` / `field_0x12c`, as
+  fsaport's `?stage=` does at mode-7 creation) right after the player count
+  screen chose stage 8/3, so the loader builds stage S level L instead; then
+  30 rounds of a play pattern (walk the four directions and two diagonals,
+  B swings, a spin attack, A for lifting / throwing / talking / messages),
+  about 25,000 reads (7 minutes of game time). Other stages or lengths:
+  `python3 tools/harness_scripts/gen_stage.py S L ROUNDS`.
+- `set` (`{"set": {GLOBAL: number, ...}}`, zero reads) is a **Dolphin-side
+  extension**: the port's interpreter does not have it, so these scripts are
+  for A vs B. Settable names are the state globals plus `SETTABLES` in the
+  driver (`lbl_80529DEC.field_0x128` / `field_0x12c`). The port could do the
+  same write in its harness; until it does, compare stages with the port
+  through its own `?stage=`.
+- **Localising a divergence**: `run --tick 1` (a state record every read),
+  `run --watch GROUP` (extra fields under `"watch"` in the state records,
+  e.g. `root` for GameRoot's mode-switch archive loads, `gameover` for
+  GameOverScreen_804B17A0; add groups to `WATCH` in the driver), and
+  `run --log-reads` (a `[fsa-harness] read N` line per read in dolphin.log).
+  The Dolphin fork prints every invalid memory access (what Dolphin reports
+  as "the game would have crashed on real hardware") with LR and the stack's
+  back chain; `run` writes them symbolised, by read, to `OUT/invalid.txt` and
+  names the first one in its summary line. A null pointer B dereferences and
+  A doesn't is the fastest lead to a bug.
+- `first-diff A B`: the first state record where two runs differ, aligned by
+  the scene/step anchors, with the ActorId of each differing actor. Use runs
+  made with `--tick 1` for read precision.
+
+### Results (2026-11-24, B = 386 of 387 NonMatching game units from C)
+
+| Script | reads | A vs B (`--anchor scene`) |
+|---|---|---|
+| opening.json | 3,000 | 20/20 anchors, state 59/59 identical |
+| castle.json | 30,000 | 43/43 anchors, state 519/519 identical |
+| stage_1_0 / 3_0 / 4_0 / 5_0 / 6_0 | 25,000 each | 716 anchors each, state 809/809 identical |
+| stage_1_1 / 5_1 | 25,000 each | state 809/809 identical |
+| stage_2_0, stage_3_1, stage_7_0 | 25,000 each | identical until Link's game over leads to the map select (reads 18541 / 11453 / 3480), then B stays in mode 12: the same bug (below) |
+
+Stage 2: Link dies (life 0) at read ~17430: game over (mode 11, then 12);
+the script's A presses choose the option that requests mode 6 (map select);
+A switches to mode 6 at read 18542, B never does. At read 18541 B makes 25
+invalid reads under `MapYaguraWindow_804B1B60::MapYaguraWindow_804B1B60`
+(game/map_yagura_window_80443B0C.cpp, structural 92.27 % missing/extra):
+`mScreen->search('Nda01')` returns NULL and `PaneCtrl_804AF86C::setPane_80402F04`
+/ `moveFromCentre_80402E08` dereference it. The original searches
+`'Ndata01'` (`lis r4,0x4e; addi r5,r4,0x6461` / `lis r5,0x7461; addi r6,r5,0x3031`
+at 0x80444C00). Call chain: `fn_80137300` < `applyRequestedMode_80135494` <
+`createModeScreen_80135020(6)` < `cls_804AF480` ctor < `MapScreen_804B1288` ctor.
 
 ## B: linking the decomp's C
 
@@ -124,7 +193,17 @@ the C does not define, a unit with a multiply-defined symbol, and the
 referencing unit of an undefined name nobody owns (a C++-mangled call to an
 asm function). The excluded units go to `build/harness_b_excluded.txt`.
 
-2026-11-24: 349 of 387 NonMatching game units link from C (plus every
+`build.ninja` regenerates itself with the plain configure.py whenever dtk's
+`config.json` (or configure.py) is newer, which silently links the original
+objects again (B then equals A byte for byte). `build-b` brings `config.json`
+up to date first, checks that the link step lists every included unit's
+`build/G4SE01/src/game/*.o`, and refuses a B identical to the original DOL.
+After a `git merge` run `build-b` again before any B run.
+
+2026-11-24 (later, after the grind2 merge): 386 of 387 link from C; only
+act_fire_rod_fire goes back to asm (`lbl_8046CB88` undefined).
+
+2026-11-24 (first run): 349 of 387 NonMatching game units link from C (plus every
 NonMatching JSystem unit); 38 go back to asm after 6 iterations. The first
 blockers, by symbol: `gGameRoot_8053AAF8`, `gGameRoot2_8053AB10`
 (game_root_sub_04_80139BE8), `gPlayerManager_8053AC90`, `lbl_8053ACA8`

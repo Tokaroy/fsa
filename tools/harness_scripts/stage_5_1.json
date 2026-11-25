@@ -1,0 +1,4120 @@
+{
+ "version": 1,
+ "comment": "Stage 5 level 1 play (A vs B in Dolphin; uses the Dolphin-side set step). Menus as opening.json. docs/HARNESS_DOLPHIN.md",
+ "steps": [
+  {
+   "comment": "0: boot loader until the title (mode 1)",
+   "wait": {
+    "mode": 1
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "1: title: START until the main menu (mode 2)",
+   "press": [
+    "START"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 2
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "2: main menu: A on Hyrulean Adventure, then A on its START! button, until the file select (mode 3)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 3
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "3: file select: wait for the 'create a file for this game on the Memory Card in Slot A?' prompt (state 7)",
+   "wait": {
+    "lbl_8053ADB0->mState": 7
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "4: move its cursor to Yes (field_0x114 0)",
+   "press": [
+    "LEFT"
+   ],
+   "every": 10,
+   "until": {
+    "lbl_8053ADB0->field_0x114": 0
+   },
+   "timeout": 300
+  },
+  {
+   "comment": "5: A on Yes: state 8 writes the file, state 9 waits for the card",
+   "press": [
+    "A"
+   ],
+   "every": 10,
+   "until": {
+    "lbl_8053ADB0->mState": [
+     8,
+     9,
+     10
+    ]
+   },
+   "timeout": 300
+  },
+  {
+   "comment": "6: until the card write is done ('file created' message, state 10)",
+   "wait": {
+    "lbl_8053ADB0->mState": 10
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "7: the message closes by itself; wait for the file rows (state 5, picking a file)",
+   "wait": {
+    "lbl_8053ADB0->mState": 5
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "8: A on file 1, then A on its menu, until the stage loader (mode 4)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "mode": 4
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "9: player count (mode 4): A on Single-Player Game (and on what follows) until the stage is chosen (stage 8, level 3)",
+   "press": [
+    "A"
+   ],
+   "every": 30,
+   "until": {
+    "stage": 8,
+    "level": 3
+   },
+   "timeout": 1200
+  },
+  {
+   "comment": "10: Dolphin-side `set` step (not in the port's interpreter): enter stage 5 level 1 instead of the opening, as fsaport's ?stage= does (mStage/mLevel and GameState 0x128/0x12C)",
+   "set": {
+    "lbl_80529DEC.mStage_0x118": 5,
+    "lbl_80529DEC.field_0x128": 5,
+    "lbl_80529DEC.mLevel_0x11c": 1,
+    "lbl_80529DEC.field_0x12c": 1
+   }
+  },
+  {
+   "comment": "11: the stage loads",
+   "wait": {
+    "mode": 7,
+    "stage": 5,
+    "level": 1
+   },
+   "timeout": 3000
+  },
+  {
+   "comment": "12: settle",
+   "wait_reads": 300
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 0: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 1: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 2: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 3: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 4: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 5: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 6: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 7: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 8: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 9: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 10: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 11: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 12: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 13: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 14: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 15: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 16: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 17: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 18: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 19: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 20: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 21: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 22: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 23: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 24: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 25: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 26: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 27: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 28: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "stick": [
+    127,
+    0
+   ],
+   "reads": 90,
+   "comment": "play pattern 29: walk the four directions and diagonals, B swings, a spin attack, A (lift / throw / talk / messages)"
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    -127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -127,
+    0
+   ],
+   "reads": 120
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 30
+  },
+  {
+   "stick": [
+    0,
+    127
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 90
+  },
+  {
+   "wait_reads": 60
+  },
+  {
+   "stick": [
+    90,
+    90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "B"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 20
+  },
+  {
+   "stick": [
+    -90,
+    -90
+   ],
+   "reads": 60
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "hold": [
+    "A"
+   ],
+   "reads": 4
+  },
+  {
+   "wait_reads": 40
+  },
+  {
+   "end": true
+  }
+ ]
+}
