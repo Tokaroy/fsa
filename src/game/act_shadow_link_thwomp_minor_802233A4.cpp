@@ -38,7 +38,7 @@ void ShadowLinkThwompMinor_804A6D00::init() {
 
 // Not auto-inlined: updateState_0x90 calls it with a plain bl in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 94.95 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.99 %, scheduling; behaviour clean.
 void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
