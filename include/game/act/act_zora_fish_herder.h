@@ -19,7 +19,7 @@ public:
     /* 0x20 */ virtual void draw();
     void fn_801A68DC();
     void fn_801A7C48();
-    void faceTalkingPlayer();
+    void faceTalkingPlayer_801A68DC();
     void setAnimMode(s32 mode) {
         if (field_0x250 != mode) {
             field_0x250 = mode;

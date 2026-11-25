@@ -129,7 +129,7 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
 }
 
 // Turns toward the player who is being talked to when that player is close.
-inline void ZoraFishHerding_804A2E30::faceTalkingPlayer() {
+inline void ZoraFishHerding_804A2E30::faceTalkingPlayer_801A68DC() {
     JGeometry::TVec3f delta;
     f32 dist;
     getNearestPlayerDir_801EE8F4(&delta, &dist, field_0x268 + 1);
@@ -232,7 +232,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
             u32 msg = mKind == 0 ? 0x41A : 0x422;
             if (openMessage_8038AD24(field_0x268, msg, getSerial(), getField_0x4(), msgPos, 0x100)) {
-                faceTalkingPlayer();
+                faceTalkingPlayer_801A68DC();
                 mState = 2;
             }
         }
@@ -498,7 +498,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             if (field_0x268 >= 0 && fn_802300EC(field_0x268)) {
                 u32 msg = field_0x25c >= 10 ? 0x41F : 0x421;
                 if (openMessage_8038AD24(field_0x268, msg, getSerial(), getField_0x4(), msgPos, 0x100)) {
-                    faceTalkingPlayer();
+                    faceTalkingPlayer_801A68DC();
                     mState = 11;
                 }
             }
