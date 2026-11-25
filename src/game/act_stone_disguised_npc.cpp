@@ -25,6 +25,7 @@ void NPCDisguisedAsAStone_804A8750::init() {
     mState = 0;
 }
 
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
 void NPCDisguisedAsAStone_804A8750::update() {
     switch (mState) {
     case 0: {
