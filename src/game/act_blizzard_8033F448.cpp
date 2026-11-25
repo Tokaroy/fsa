@@ -21,7 +21,7 @@ void Blizzard_804AC388::init() {
     field_0x23c = false;
 }
 
-// FIXME: 91.71 %, missing/extra; behaviour drift.
+// FIXME: 99.06 %, operands; behaviour clean.
 // The spawned flag is r28 and the loop counters r29 in the original, the
 // reverse here; everything else is the same.
 void Blizzard_804AC388::update() {
