@@ -29,7 +29,7 @@ Link2Ending_804AE338::~Link2Ending_804AE338() {
     }
 }
 
-// FIXME(shotgun): 73.21 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.29 %, regalloc-only + reloc-name; behaviour clean.
 void Link2Ending_804AE338::init() {
     field_0x230 = 0;
     field_0x234 = 0;
@@ -103,7 +103,7 @@ void Link2Ending_804AE338::init() {
     }
 }
 
-// FIXME(shotgun): 89.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.57 %, different + reloc-name; behaviour drift.
 void Link2Ending_804AE338::update() {
     if (field_0x234 != 0) {
         field_0x234--;
