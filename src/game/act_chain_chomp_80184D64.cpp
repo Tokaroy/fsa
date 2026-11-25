@@ -54,7 +54,7 @@ void ChainChomp_804A18E0::init() {
 }
 
 // 0x80184FC0.
-// FIXME(shotgun): 99.13 %, different; behaviour near.
+// FIXME(shotgun): 99.16 %, scheduling+regalloc; behaviour near.
 void ChainChomp_804A18E0::update() {
     f32 box80_ix = mMapBox_0x80.i.x;
     f32 box80_iy = mMapBox_0x80.i.y;
@@ -123,7 +123,7 @@ void ChainChomp_804A18E0::update() {
         if (field_0x260 >= 0) {
             if (field_0x270 !=
                 getTileAt_80226998(JGeometry::TVec2f(field_0x384[0], field_0x384[1]), getField_0x4())) {
-                field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                field_0x240 = (s32)randomFloat(50.0f) + 50;
                 field_0x230 = 6;
             } else {
                 field_0x260 = -1;
@@ -135,7 +135,7 @@ void ChainChomp_804A18E0::update() {
     case 0:
         field_0x234 = 0;
         field_0x24c = 0;
-        field_0x238 = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
+        field_0x238 = (s32)randomFloat(30.0f) + 30;
         field_0x26c = 8.0f;
         field_0x288[2] = 0.0f;
         field_0x288[1] = 0.0f;
@@ -157,7 +157,7 @@ void ChainChomp_804A18E0::update() {
             field_0x288[0] = 0.0f;
             field_0x272 = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-            field_0x238 = (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
+            field_0x238 = (s32)randomFloat(10.0f) + 10;
         } else {
             field_0x294[9].x = mPos.x;
             field_0x294[9].y = mPos.y;
@@ -167,7 +167,7 @@ void ChainChomp_804A18E0::update() {
             field_0x30c[9].z = mPos.z;
         }
         if (field_0x238 == 0 && field_0x23c == 0) {
-            field_0x23c = (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
+            field_0x23c = (s32)randomFloat(10.0f) + 10;
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
@@ -176,8 +176,8 @@ void ChainChomp_804A18E0::update() {
             field_0x288[0] = 0.0f;
         }
         if (field_0x23c == 1) {
-            field_0x238 = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
-            field_0x272 += (s32)(16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            field_0x238 = (s32)randomFloat(30.0f) + 30;
+            field_0x272 += (s32)randomFloat(16384.0f);
             startSound_801F0E34(0x400B0, 0);
         }
         if (mPos.z > 0.0f) {
@@ -277,7 +277,7 @@ void ChainChomp_804A18E0::update() {
             mVel_0x3c.z = 3.0f;
         }
         if (std::sqrtf(dx * dx + dy * dy) < 24.0f) {
-            field_0x240 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
+            field_0x240 = (s32)randomFloat(20.0f) + 20;
             field_0x230 = 0;
         }
         break;
@@ -310,7 +310,7 @@ void ChainChomp_804A18E0::update() {
                             field_0x25c = 0;
                             field_0x23c = 0;
                             field_0x258 = 0;
-                            field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                            field_0x240 = (s32)randomFloat(50.0f) + 50;
                             field_0x230 = 8;
                             return;
                         }
@@ -327,7 +327,7 @@ void ChainChomp_804A18E0::update() {
                 field_0x25c = 0;
                 field_0x238 = 0;
                 field_0x23c = 0;
-                field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+                field_0x240 = (s32)randomFloat(50.0f) + 50;
                 field_0x230 = 8;
                 return;
             }
@@ -357,7 +357,7 @@ void ChainChomp_804A18E0::update() {
             field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
         } else if (field_0x238 == 0 && field_0x23c == 0) {
             startSound_801F0E34(0x400B0, 0);
-            field_0x23c = (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
+            field_0x23c = (s32)randomFloat(10.0f) + 10;
             field_0x288[2] = 0.0f;
             field_0x288[1] = 0.0f;
             field_0x288[0] = 0.0f;
@@ -366,10 +366,10 @@ void ChainChomp_804A18E0::update() {
             mVel_0x3c.x = 0.0f;
         }
         if (field_0x23c == 1) {
-            field_0x272 += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            field_0x272 += (s32)getRandFX(8192.0f);
             field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
             field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
-            field_0x238 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+            field_0x238 = (s32)randomFloat(50.0f) + 50;
         }
         if (outDir != -1) {
             mDir_0x98 = outDir;
@@ -411,7 +411,7 @@ void ChainChomp_804A18E0::update() {
         if (field_0x240 == 0) {
             field_0x238 = 0;
             field_0x23c = 0;
-            field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
+            field_0x240 = (s32)randomFloat(50.0f) + 50;
             field_0x248 = 100;
             field_0x230 = 7;
         }
@@ -421,10 +421,11 @@ void ChainChomp_804A18E0::update() {
         f32 x1 = box80_fx + posX;
         f32 y0 = box80_iy + posY;
         f32 y1 = box80_fy + posY;
-        JGeometry::TVec3f center;
+        // getTileCollisionCodeAlt_802265FC reads only x and y: the original passes an 8-byte point.
+        JGeometry::TVec2f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (getTileCollisionCodeAlt_802265FC(&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(-16.0f, &mPos, mLayer_0x4)) {
+        if (getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(-16.0f, &mPos, mLayer_0x4)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;

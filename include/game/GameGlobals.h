@@ -460,6 +460,17 @@ struct GameRoot_8049EF20 {
 
 extern GameRoot_8049EF20* gGameRoot_8053AAF8;
 
+// A random value in [0, max). The original reaches mRandom.get_ufloat() through this extra
+// inline level (its union slot is allocated after std::sqrtf's slot); the name is ours.
+inline f32 randomFloat(f32 max) {
+    return gGameRoot_8053AAF8->mRandom.get_ufloat(max);
+}
+
+// A random value in (-max, max]; the name is ours.
+inline f32 getRandFX(f32 max) {
+    return max - 2.0f * max * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+}
+
 // Owner: game/tu_801E667C.cpp (.sdata). Read by player_window_select_80441318 and act_horse_race_man.
 extern s32 lbl_8053A160;
 // .sbss flags: game/act_princess_zelda_ganon_battle_80197070.cpp (the ZLD2 actor) and act_dodongo; the
