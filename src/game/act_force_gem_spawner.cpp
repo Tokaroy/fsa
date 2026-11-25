@@ -6,6 +6,7 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/Map.h"
 #include "game/SpriteParams.h"
+#include "game/ViewLayer.h"
 #include "game/act/act_force_gem_spawner.h"
 
 s32 lbl_804AB630[12] = {
@@ -99,29 +100,37 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
     }
 }
 
+// The highest index, from `start` down, whose value in lbl_804AB630 fits in `amount`
+// (update() has the loop with its own exit to the store and a separate `li 0` fall-out).
+static inline s32 findKind(s32 start, s32 amount) {
+    for (s32 i = start; i > 0; i--) {
+        if (amount >= lbl_804AB630[i]) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 // FIXME(shotgun): 84.04 %, missing/extra + reloc-name; behaviour near.
+// Still differs: the original reuses the loop condition's field_0x238 for findKind (ours reloads it);
+// in the mode 6 branch the sin/cos table loads are scheduled after the speed.
 void ForceGemSpawner_804AB660::update() {
     switch (field_0x230) {
     case 0: {
         u16 baseAngle = dirToAngle_801F6874(mDir_0x98);
         JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
         for (s32 i = 0; i < 100 && field_0x238 > 0; i++) {
-            s32 idx = field_0x240;
-            for (; idx > 0; idx--) {
-                if (field_0x238 >= lbl_804AB630[idx]) {
-                    break;
-                }
-            }
-            field_0x240 = idx;
+            field_0x240 = findKind(field_0x240, field_0x238);
             u32 kind = (u32)((field_0x240 + 1) * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-            if (field_0x238 < 20) {
-                if (field_0x238 > 5 && kind == 2) {
+            s32 amount = field_0x238;
+            if (amount < 20) {
+                if (amount > 5 && kind == 2) {
                     kind = 1;
                 } else {
                     kind = 0;
                 }
             }
-            if (field_0x238 < lbl_804AB630[kind]) {
+            if (amount < lbl_804AB630[kind]) {
                 continue;
             }
             field_0x238 -= lbl_804AB630[kind];
@@ -135,7 +144,7 @@ void ForceGemSpawner_804AB660::update() {
             }
             s32 mode = (mSpawnParam_0x90 >> 16) & 0xF;
             if (mode == 0) {
-                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                if (viewLayerFlag(mLayer_0x4) == 0) {
                     f32 vz = (0.5f * field_0x23c + 1.0f) *
                              (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                     f32 vy = (0.5f * field_0x23c + 1.0f) *
@@ -151,18 +160,19 @@ void ForceGemSpawner_804AB660::update() {
                     gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                 }
             } else if (mode == 6) {
-                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
+                if (viewLayerFlag(mLayer_0x4) == 0) {
                     s32 ang = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                    f32 spd = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.7f;
-                    f32 vx = spd * JMASSin(ang);
-                    f32 vy = spd * JMASCos(ang);
-                    f32 scale = 0.5f * field_0x23c + 1.0f;
-                    vx *= scale;
-                    vy *= scale;
-                    f32 vz = scale * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
+                    f32 cosAng = JMASCos(ang);
+                    f32 sinAng = JMASSin(ang);
+                    f32 spd = 0.7f + 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                    f32 vz = (0.5f * field_0x23c + 1.0f) *
+                             (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
+                    f32 vy = (0.5f * field_0x23c + 1.0f) * (spd * cosAng);
+                    f32 vx = (0.5f * field_0x23c + 1.0f) * (spd * sinAng);
                     gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, vz);
                 } else {
-                    s32 s = 1 - 2 * ((s32)(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 0);
+                    s32 side = (s32)(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                    s32 s = (side == 1) - (side == 0);
                     f32 vy = (0.5f * field_0x23c + 1.0f) *
                              -(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                     f32 vx = (0.5f * field_0x23c + 1.0f) *
@@ -171,10 +181,10 @@ void ForceGemSpawner_804AB660::update() {
                 }
             } else {
                 s32 ang = (s32)((f32)baseAngle + (8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-                f32 vx = (0.5f * field_0x23c + 1.0f) * (1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                vel.x = vx * JMASSin(ang);
-                f32 vy = (0.5f * field_0x23c + 1.0f) * (1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                vel.y = vy * JMASCos(ang);
+                vel.x = (0.5f * field_0x23c + 1.0f) * (1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                vel.x *= JMASSin(ang);
+                vel.y = (0.5f * field_0x23c + 1.0f) * (1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                vel.y *= JMASCos(ang);
                 vel.z = (0.25f * field_0x23c + 1.0f) *
                         (3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 3.0f;
                 gem->mVel_0x3c = vel;
@@ -242,14 +252,14 @@ void ForceGemSpawner_804AB660::update() {
             }
         }
         if ((mSparkTimer_0xe4 == 1 && mSparksLeft_0xe8 > 0) || checkHits_801F305C()) {
+            JGeometry::TVec3f pos(mPos);
+            pos.x += 8.0f;
+            pos.y += 12.0f;
             u16 outAngle = 0;
             mHitTimer_0xd8 = 20;
             mHitTimerStart_0xdc = 20;
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             field_0x248 = 2.0f;
-            JGeometry::TVec3f pos(mPos);
-            pos.x += 8.0f;
-            pos.y += 12.0f;
             if (field_0x238 == 0) {
                 field_0x238++;
                 field_0x234 = 500;
