@@ -139,7 +139,7 @@ s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeo
     }
     // still differs: the original has one more (dead) branch after `angle = current + arg`
     s32 newAngle;
-    if (outStep->x == 0.0f && outStep->y == 0.0f && (u8)(((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1) ^ 1)) {
+    if (outStep->x == 0.0f && outStep->y == 0.0f && !((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1)) {
         newAngle = angle;
     } else {
         s32 current = (s32)(JMath::atanTable_.atan2_(outStep->x, outStep->y) *
