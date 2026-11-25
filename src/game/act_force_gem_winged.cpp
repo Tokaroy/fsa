@@ -184,7 +184,7 @@ void WingedForceGem_804AB098::update() {
         mPos.add(mVel_0x3c);
     }
     if (field_0x230 != 5 && field_0x230 != 6) {
-        field_0x27c += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+        field_0x27c += 0x200 + (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat(256.0f));
         addCalc2_801F71A4(&field_0x2b0.z, 3.0f + 3.0f * JMath::sincosTable_.sinShort(field_0x27c), 0.1f, 0.2f);
     }
     JGeometry::TBox2f box(mBox);
@@ -196,7 +196,7 @@ void WingedForceGem_804AB098::update() {
         JGeometry::TVec3f saved(mPos);
         mPos.y -= field_0x248;
         mPos.y -= mPos.z;
-        s32 player = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
+        int player = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (viewLayerFlag(mLayer_0x4)) {
             hitWall = sweepMapBox_801F2618(NULL, false);
         }
@@ -580,7 +580,7 @@ void WingedForceGem_804AB098::updateRise() {
             addCalc2_801F71A4(&field_0x248, 0.0f, 0.05f, 0.2f);
         }
     }
-    field_0x260 += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    field_0x260 += 0x200 + (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat(256.0f));
 }
 
 WingedForceGem_804AB098::~WingedForceGem_804AB098() {}
