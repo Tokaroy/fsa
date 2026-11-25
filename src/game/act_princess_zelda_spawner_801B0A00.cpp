@@ -130,7 +130,6 @@ PrincessZeldaSpawner_804A35AC::~PrincessZeldaSpawner_804A35AC() {
 }
 
 // 0x801B2138.
-// FIXME(shotgun): 96.26 %, missing/extra + reloc-name; behaviour clean.
 void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
     if (field_0x254 != arg) {
         field_0x254 = arg;
@@ -144,16 +143,16 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
     switch (field_0x250) {
     case 0:
         field_0x24c = mDir_0x98 << 3;
-    // fall through
+        break;
     case 1:
         field_0x24c = (mDir_0x98 << 3) + field_0x240;
         field_0x234 = 5;
         field_0x240++;
         field_0x240 &= 7;
-    // fall through
+        break;
     case 2:
         field_0x24c = 2;
-    // fall through
+        break;
     case 3:
         field_0x24c = lbl_804A35A0[field_0x240];
         field_0x234 = 8;
@@ -167,7 +166,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
         field_0x240 = 0;
         field_0x250 = 4;
         field_0x254 = field_0x250;
-    // fall through
+        break;
     case 4:
         switch (mDir_0x98) {
         case 0:
@@ -199,13 +198,13 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2138(s32 arg) {
 // Not auto-inlined: update calls fn_801B2000 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x801B2000.
-// FIXME: 84.40 %, missing/extra; behaviour near.
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
 // FIXME: operands differ: fn_802303FC's original call passes 0xFF for its bool flag (we pass true); loop pointer and layer registers differ.
 void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
     f32 y = mPos.y - yOffset;
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerActive_8023F264(i)) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
                 field_0x288[i].x = pos->x;
                 field_0x288[i].y = pos->y;
@@ -230,7 +229,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
 #pragma auto_inline reset
 
 // 0x801B0A90.
-// FIXME: 98.70 %, scheduling+regalloc + reloc-name; behaviour near.
+// FIXME: 98.71 %, scheduling+regalloc; behaviour near.
 void PrincessZeldaSpawner_804A35AC::update() {
     JGeometry::TBox2f box;
     JGeometry::TVec3f pos;
@@ -584,11 +583,9 @@ void PrincessZeldaSpawner_804A35AC::update() {
 }
 
 // 0x801B0A00.
-// FIXME(shotgun): 97.31 %, different + reloc-name; behaviour drift.
-// mSpawnParam_0x90 compare is cmplwi (u32), original cmpwi
 void PrincessZeldaSpawner_804A35AC::draw() {
     s32 frame = 0x9B;
-    if (mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 0) {
         if (field_0x250 == 2 || field_0x250 == 3) {
             frame = 0x274;
         }
