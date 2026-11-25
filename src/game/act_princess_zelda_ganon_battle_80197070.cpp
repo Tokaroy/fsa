@@ -1776,7 +1776,7 @@ static inline void takeToken(PrincessZeldaGanonBattle_804A2944* self, ActorBase_
     deleteEmitter(&self->mEmitters[1]);
 }
 
-// FIXME(shotgun): 96.31 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.36 %, missing/extra; behaviour clean.
 void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
     switch (mState) {
     case 0x46:
