@@ -144,7 +144,7 @@ static inline s32 getFlagBit(const s32* flags, s32 player) {
     return flags[fn_8022F340(player)];
 }
 
-// FIXME(shotgun): 93.33 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.83 %, missing/extra; behaviour near.
 // Still differs: state 0's switch on mSpawnParam_0x90 has a `blt` to the default block between
 // its `beq` and `b` in the original; ours has no such branch.
 void GreatFairy_804AF338::update() {
@@ -542,7 +542,6 @@ void GreatFairy_804AF338::update() {
     }
 }
 
-// FIXME(shotgun): 99.55 %, reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && mSpawnParam_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
