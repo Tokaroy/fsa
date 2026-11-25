@@ -245,7 +245,6 @@ void Snowball_8049D020::update() {
     mSprite.update_801D1C18();
 }
 
-// FIXME: 99.17 %, missing/extra; behaviour clean.
 void Snowball_8049D020::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params2;
