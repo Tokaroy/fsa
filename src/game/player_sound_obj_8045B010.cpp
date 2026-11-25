@@ -76,16 +76,15 @@ JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     return handle;
 }
 
-// FIXME: 98.6%. The original keeps the id in r4 for the fn_80458F04 call; ours reloads it from the
-// stack (one extra lwz r4, 0x10(r1) before that call).
 void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9) {
-    JAISoundID id = lbl_8052DEE0[index];
+    u32 soundId = lbl_8052DEE0[index];
+    JAISoundID id = soundId;
     JAISoundHandle* handle = NULL;
     u8 section = id.mId.mBytes.mSectionId;
     u8 group = id.mId.mBytes.mGroupId;
     if (section == 1) {
         if (id == 0x1000002 || id == 0x1000023) {
-            gAudioMgr_8053AF80->fn_80458F04(id);
+            gAudioMgr_8053AF80->fn_80458F04(soundId);
         } else {
             gAudioMgr_8053AF80->startBgm_80458FF0(id, true, false);
         }
