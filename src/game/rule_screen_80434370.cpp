@@ -118,7 +118,7 @@ RuleScreen_804B16A8::~RuleScreen_804B16A8() {
     field_0x34 = NULL;
 }
 
-// FIXME(shotgun): 96.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.43 %, regalloc-only; behaviour clean.
 void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Tq01'))->mFontSize.x;
     field_0x58 = 0;
