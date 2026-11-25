@@ -18,7 +18,6 @@ s32 lbl_80539F80 = -1;
 s32 lbl_80539F84 = -1;
 
 // 0x80179F64.
-// FIXME(shotgun): 99.75 %, reloc-name
 void Searchlight_804A0FF8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -111,6 +110,7 @@ void Searchlight_804A0FF8::init() {
 }
 
 // 0x80179388.
+// FIXME: 99.89 %, regalloc-only; behaviour near.
 void Searchlight_804A0FF8::update() {
     s32 player = 0;
     f32 dist = 0.0f;
@@ -313,7 +313,7 @@ void Searchlight_804A0FF8::update() {
 }
 
 // 0x801791B0.
-// FIXME(shotgun): 87.37 %, different
+// FIXME(shotgun): 87.38 %, scheduling+regalloc; behaviour clean.
 void Searchlight_804A0FF8::draw() {
     if (mSpawnParam_0x90 == 0xD) {
         SpriteParams_801F5AE0 params;
