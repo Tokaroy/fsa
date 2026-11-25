@@ -1695,6 +1695,9 @@ public:
     // lbl_8053ACA8 and (1, 0x80000000, 0) or (0, 0, 0). Not written yet;
     // the body never reads `this`.
     void fn_802B1BE0(s32 reset, u32 code, bool menu);
+    // Inlined in fn_802B1610: keeps the resetting pad's port (0..3, else 0xFF)
+    // in the save region and here.
+    void setPort(s32 port);
 
     /* 0x4 */ u8 field_0x4;
     /* 0x5 */ u8 field_0x5;

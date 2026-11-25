@@ -110,10 +110,18 @@ void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
     }
 }
 
+inline void cls_804A8578::setPort(s32 port) {
+    if (port >= 0 && port <= 3) {
+        lbl_80529DEC.mSaveRegion.f.field_0xc = port;
+        field_0x7 = port;
+    } else {
+        lbl_80529DEC.mSaveRegion.f.field_0xc = 0xFF;
+        field_0x7 = 0xFF;
+    }
+}
+
 // FIXME(shotgun): 96.81 %, missing/extra; behaviour drift.
 // 0x802B1610
-// Still differs: the original tests save-region byte 0xB with a signed
-// compare (cmpwi) and loads lbl_8053ACA8 once before the port range test.
 void cls_804A8578::fn_802B1610(s32 port, void* arg) {
     if (lbl_80529DEC.mSaveRegion.f.field_0x9 != 0) {
         return;
@@ -123,7 +131,7 @@ void cls_804A8578::fn_802B1610(s32 port, void* arg) {
         JUTGamePad::clearForReset();
         JUTGamePad::CRumble::setEnabled(0xF0000000);
     } else {
-        if (lbl_80529DEC.mSaveRegion.f.field_0xb != 0) {
+        if ((s32)lbl_80529DEC.mSaveRegion.f.field_0xb != 0) {
             JUTGamePad::C3ButtonReset::sResetOccurred = false;
             JUTGamePad::C3ButtonReset::sCallback = fn_80139994;
             JUTGamePad::C3ButtonReset::sCallbackArg = NULL;
@@ -131,14 +139,7 @@ void cls_804A8578::fn_802B1610(s32 port, void* arg) {
         }
         lbl_80529DEC.mSaveRegion.f.field_0xb = 1;
         lbl_8053ACA8->field_0x6 = 1;
-        s32 pad = (u8)port;
-        if (pad >= 0 && pad <= 3) {
-            lbl_80529DEC.mSaveRegion.f.field_0xc = pad;
-            lbl_8053ACA8->field_0x7 = pad;
-        } else {
-            lbl_80529DEC.mSaveRegion.f.field_0xc = 0xFF;
-            lbl_8053ACA8->field_0x7 = 0xFF;
-        }
+        lbl_8053ACA8->setPort((u8)port);
         JUTGamePad::clearForReset();
         JUTGamePad::CRumble::setEnabled(0xF0000000);
     }
