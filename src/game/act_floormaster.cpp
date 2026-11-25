@@ -54,6 +54,25 @@ inline void Floormaster_804A6004::setEmitterColor() {
                                    lerp(255.0f, 255.0f, field_0x2b4));
 }
 
+// Whether the targeted player stands in the grab box (state 3 only).
+inline bool Floormaster_804A6004::canGrabPlayer() {
+    bool flag = false;
+    if (mState == 3 && field_0x2b8 >= 0 && !fn_80230188(field_0x2b8) &&
+        fn_802300EC(field_0x2b8) && !fn_8022DCD8(field_0x2b8) &&
+        !fn_801CD1D0(field_0x2b8)) {
+        mBox.set(-10.0f, -16.0f, 10.0f, 10.0f);
+        if (getPlayersInBox_801F2740(-1) & (1 << field_0x2b8)) {
+            flag = true;
+        }
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
+        mBox2.i.x = mBox.i.x;
+        mBox2.i.y = mBox.i.y;
+        mBox2.f.x = mBox.f.x;
+        mBox2.f.y = mBox.f.y;
+    }
+    return flag;
+}
+
 inline void Floormaster_804A6004::onHit() {
     // The flag form matches; calling setState_8020ED5C(4) straight from the cases drops the callers to 92-97 %.
     bool change = false;
@@ -71,8 +90,8 @@ inline void Floormaster_804A6004::onHit() {
 }
 
 Floormaster_804A6004::Floormaster_804A6004() {
-    field_0x2a8 = 0.0f;
-    field_0x2ac = 0.0f;
+    field_0x2a8.x = 0.0f;
+    field_0x2a8.y = 0.0f;
     mEmitter2b0 = NULL;
     field_0x2b4 = 0.0f;
     field_0x2b8 = -1;
@@ -90,8 +109,7 @@ void Floormaster_804A6004::init() {
         mFlags |= 0x2000;
         f32 y = 8.0f + (f32)(((mSpawnParam_0x90 >> 8) & 0x3F) * 8);
         f32 x = 8.0f + (f32)(((mSpawnParam_0x90 >> 16) & 0x3F) * 8);
-        field_0x2a8 = x;
-        field_0x2ac = y;
+        field_0x2a8.set(x, y);
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     // Field-wise copy throughout: `mBox2 = mBox` drops init/setState_8020ED5C/updateAnim_0x94 to 72-93 %.
@@ -342,8 +360,7 @@ void Floormaster_804A6004::fn_8020EB08() {
 }
 #pragma auto_inline reset
 
-// case 3 sets the flag with `mr r30, r4` where ours has `li r30, 1`;
-// case 7 stores x/y from pos in the other order and swaps pos/vec stack slots;
+// case 7 swaps the pos/vec stack slots;
 // setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
 // FIXME: 98.13 %, different; behaviour drift.
 void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
@@ -389,21 +406,7 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
         if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             startSound_801F0E34(0x50088, 0);
             if (field_0x2b8 >= 0) {
-                bool flag = false;
-                if (mState == 3 && field_0x2b8 >= 0 && !fn_80230188(field_0x2b8) &&
-                    fn_802300EC(field_0x2b8) && !fn_8022DCD8(field_0x2b8) &&
-                    !fn_801CD1D0(field_0x2b8)) {
-                    mBox.set(-10.0f, -16.0f, 10.0f, 10.0f);
-                    if (getPlayersInBox_801F2740(-1) & (1 << field_0x2b8)) {
-                        flag = true;
-                    }
-                    mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
-                    mBox2.i.x = mBox.i.x;
-                    mBox2.i.y = mBox.i.y;
-                    mBox2.f.x = mBox.f.x;
-                    mBox2.f.y = mBox.f.y;
-                }
-                if (flag) {
+                if (canGrabPlayer()) {
                     if (fn_80230AD4(field_0x2b8)) {
                         setState_8020ED5C(5);
                     } else {
@@ -450,10 +453,9 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
             JGeometry::TVec3f pos;
             if (!(mFlags & 0x2000)) {
                 fn_801CD150(&mPos, &pos);
-                field_0x2a8 = pos.x;
-                field_0x2ac = pos.y;
+                field_0x2a8.set(pos.x, pos.y);
             }
-            JGeometry::TVec3f temp(field_0x2a8, field_0x2ac, 0.0f);
+            JGeometry::TVec3f temp(field_0x2a8.x, field_0x2a8.y, 0.0f);
             JGeometry::TVec3f vec;
             vec = temp;
             fn_802316C8(field_0x2b8, 8, &vec);
