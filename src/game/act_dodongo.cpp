@@ -10,10 +10,102 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/act/act_dodongo.h"
 
-extern const f32 lbl_804A3108[];
-extern const f32 lbl_804A31C8[];
-extern const char* lbl_804A3208[];
-extern const s32 lbl_804689C0[];
+// The emitters' y rotation by direction.
+const s32 lbl_804689C0[4] = {0xC000, 0x4000, 0x8000, 0};
+// Box and offset quads fn_801ACFF4 reads by direction.
+f32 lbl_804A3108[48] = {
+    20.0f, 0.0f, -20.0f, 0.0f, 0.0f, 20.0f, 0.0f, -26.0f,
+    36.0f, 8.0f, -36.0f, 8.0f, 0.0f, 28.0f, 0.0f, -28.0f,
+    -16.0f, -10.0f, 16.0f, 10.0f, -16.0f, -10.0f, 16.0f, 10.0f,
+    -10.0f, -14.0f, 10.0f, 14.0f, -10.0f, -18.0f, 10.0f, 14.0f,
+    8.0f, -12.0f, 32.0f, 10.0f, -32.0f, -12.0f, -8.0f, 10.0f,
+    -10.0f, 8.0f, 10.0f, 32.0f, -10.0f, -36.0f, 10.0f, -12.0f,
+};
+// Boxes by direction (x0, y0, x1, y1).
+f32 lbl_804A31C8[16] = {
+    0.0f, -8.0f, 100.0f, 8.0f,
+    -100.0f, -8.0f, 0.0f, 8.0f,
+    -8.0f, 0.0f, 8.0f, 100.0f,
+    -8.0f, -100.0f, 8.0f, 0.0f,
+};
+// Sprite names by animation frame.
+const char* lbl_804A3208[75] = {
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_aruki_yoko_1.bti",
+    "e-dod_aruki_yoko_2.bti",
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_aruki_yoko_1.bti",
+    "e-dod_aruki_yoko_2.bti",
+    "e-dod_aruki_mae_0.bti",
+    "e-dod_aruki_mae_1.bti",
+    "e-dod_aruki_mae_2.bti",
+    "e-dod_aruki_ushiro_0.bti",
+    "e-dod_aruki_ushiro_1.bti",
+    "e-dod_aruki_ushiro_2.bti",
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_kuchi_yoko_0.bti",
+    "e-dod_kuchi_yoko_1.bti",
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_kuchi_yoko_0.bti",
+    "e-dod_kuchi_yoko_1.bti",
+    "e-dod_aruki_mae_0.bti",
+    "e-dod_kuchi_mae_0.bti",
+    "e-dod_kuchi_mae_1.bti",
+    "e-dod_aruki_ushiro_0.bti",
+    "e-dod_kuchi_ushiro_0.bti",
+    "e-dod_kuchi_ushiro_1.bti",
+    "e-dod_kuchi_yoko_0.bti",
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_kuchi_yoko_0.bti",
+    "e-dod_aruki_yoko_0.bti",
+    "e-dod_kuchi_mae_0.bti",
+    "e-dod_aruki_mae_0.bti",
+    "e-dod_kuchi_ushiro_0.bti",
+    "e-dod_aruki_ushiro_0.bti",
+    "e-dod_hara_yoko.bti",
+    "e-dod_hara_yoko.bti",
+    "e-dod_hara_mae.bti",
+    "e-dod_hara_ushiro.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_aruki_yoko_l1.bti",
+    "e-dod_aruki_yoko_l2.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_aruki_yoko_l1.bti",
+    "e-dod_aruki_yoko_l2.bti",
+    "e-dod_aruki_mae_l0.bti",
+    "e-dod_aruki_mae_l1.bti",
+    "e-dod_aruki_mae_l2.bti",
+    "e-dod_aruki_ushiro_l0.bti",
+    "e-dod_aruki_ushiro_l1.bti",
+    "e-dod_aruki_ushiro_l2.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_kuchi_yoko_l0.bti",
+    "e-dod_kuchi_yoko_l1.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_kuchi_yoko_l0.bti",
+    "e-dod_kuchi_yoko_l1.bti",
+    "e-dod_aruki_mae_l0.bti",
+    "e-dod_kuchi_mae_l0.bti",
+    "e-dod_kuchi_mae_l1.bti",
+    "e-dod_aruki_ushiro_l0.bti",
+    "e-dod_kuchi_ushiro_l0.bti",
+    "e-dod_kuchi_ushiro_l1.bti",
+    "e-dod_kuchi_yoko_l0.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_kuchi_yoko_l0.bti",
+    "e-dod_aruki_yoko_l0.bti",
+    "e-dod_kuchi_mae_l0.bti",
+    "e-dod_aruki_mae_l0.bti",
+    "e-dod_kuchi_ushiro_l0.bti",
+    "e-dod_aruki_ushiro_l0.bti",
+    "e-dod_hara_yokol.bti",
+    "e-dod_hara_yokol.bti",
+    "e-dod_hara_mael.bti",
+    "e-dod_hara_ushirol.bti",
+    "e-dod_kaiten_l2.bti",
+    "e-dod_kaiten_l1.bti",
+    "e-dod_kaiten_l0.bti",
+};
 u16 lbl_8053A110[] = { 0x168, 0x167, 0x166, 0x169 };
 s32 lbl_8053ABE0;
 u8 lbl_8053ABE8;
@@ -154,7 +246,7 @@ void Dodongo_804A3334::init() {
     }
 }
 
-// FIXME: 95.33 %. missing/extra + reloc-name: ours has 14 fewer instrs (1216 vs 1230). The original keeps TVec3f temporaries on the stack (stfs/lfs at 0x34-0x3C(r1), around 0x738 and 0xE38) that ours lacks, addresses lbl_804A3108 through a base register with lfsx, and schedules some loads differently.
+// FIXME: 95.45 %. missing/extra + reloc-name: ours has 14 fewer instrs (1216 vs 1230). The original keeps TVec3f temporaries on the stack (stfs/lfs at 0x34-0x3C(r1), around 0x738 and 0xE38) that ours lacks, addresses lbl_804A3108 through a base register with lfsx, and schedules some loads differently.
 void Dodongo_804A3334::fn_801ACFF4() {
     const f32* data = lbl_804A3108;
     f32 posY = mPos.y;
@@ -175,10 +267,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
     }
 
     const f32* boxData = &data[16 + mDir_0x98 * 4];
-    mBox.i.x = scale * boxData[0];
-    mBox.i.y = scale * boxData[1];
-    mBox.f.x = scale * boxData[2];
-    mBox.f.y = scale * boxData[3];
+    mBox.set(scale * boxData[0], scale * boxData[1], scale * boxData[2], scale * boxData[3]);
     mMapBox_0x80 = mBox;
 
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
@@ -441,10 +530,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                     f4 = 1.2f;
                 }
                 const f32* p = &data[32 + mDir_0x98 * 4];
-                mBox.i.x = f4 * p[0];
-                mBox.i.y = f4 * p[1];
-                mBox.f.x = f4 * p[2];
-                mBox.f.y = f4 * p[3];
+                mBox.set(f4 * p[0], f4 * p[1], f4 * p[2], f4 * p[3]);
                 field_0x264 = findOverlappingActor_801F2718('HBMB');
                 if (field_0x264 >= 0) {
                     ActorBase_804A5770* bombBase = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264);
@@ -607,7 +693,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
     }
 }
 
-// FIXME: 96.62 %. different: same length, 3 opcodes differ. Register allocation (f30/f31, r29/r30) and boxData indexing.
+// FIXME: 97.05 %. Register allocation (f30/f31, r29/r30).
 void Dodongo_804A3334::fn_801ACCF0() {
     f32 scale = 1.0f;
     if (field_0x294 == 1) {
@@ -636,10 +722,7 @@ void Dodongo_804A3334::fn_801ACCF0() {
 
         if (mTimers[0] == 0) {
             const f32* boxData = &lbl_804A31C8[mDir_0x98 * 4];
-            mBox.i.x = boxData[0] * scale;
-            mBox.i.y = boxData[1] * scale;
-            mBox.f.x = boxData[2] * scale;
-            mBox.f.y = boxData[3] * scale;
+            mBox.set(scale * boxData[0], scale * boxData[1], scale * boxData[2], scale * boxData[3]);
             damagePlayersInBox_801F2B7C(mParamAtcp_0x114, -1, 9);
             fn_801F2B20(5);
 
