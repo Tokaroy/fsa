@@ -203,8 +203,6 @@ void StrangeBlock_804AC2D8::update() {
 
 // 0x8033D4CC. Called when the block is idle: pushes it one step when a player has been
 // shoving it long enough, or lets it slide back to its spawn position.
-// FIXME: 99.97 %, operands; behaviour clean.
-// FIXME(shotgun): stack slot order and literal pool names differ.
 void StrangeBlock_804AC2D8::fn_8033D4CC() {
     s32 pushers = fn_80239108(mSerial);
     if (pushers >= field_0x260) {
@@ -308,22 +306,7 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             field_0x248--;
         }
     } else {
-        JGeometry::TBox2f box = mBox;
-        box.i.x += mPos.x;
-        box.i.y += mPos.y;
-        box.f.x += mPos.x;
-        box.f.y += mPos.y;
-        if (field_0x25c == 0 || field_0x25c == 2) {
-            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
-            field_0x258 = fn_8022FD8C(mSerial);
-            if (field_0x258 >= 0 && getPlayerPos_8023E724(field_0x258)->z == 0.0f && fn_802300EC(field_0x258)) {
-                if (openMessageById_8038C678(field_0x258, field_0x268, getSerial(), getField_0x4(), mPos, 0)) {
-                    field_0x234 = 1;
-                    field_0x254 = getPlayerFacing_80230CFC(field_0x258);
-                    field_0x254 = field_0x254 ^ 1;
-                }
-            }
-        }
+        checkTalk();
     }
 }
 
