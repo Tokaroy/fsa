@@ -145,7 +145,6 @@ void Antlion_804A6340::fn_80213774(int mode) {
     }
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour drift.
 void Antlion_804A6340::updateState_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
@@ -246,7 +245,7 @@ void Antlion_804A6340::updateAnim_0x94() {
     }
 }
 
-// FIXME(shotgun): 95.81 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
 void Antlion_804A6340::draw() {
     // The original materialises isZero()'s bool (mfcr; extrwi.) before testing it.
     if (field_0x54.isZero()) {
