@@ -12,8 +12,6 @@
 // The "TIMG" texture names (by field_0x250).
 static const char* lbl_804AB518[4] = {"said_a.bti", "said_b.bti", "said_c.bti", "said_d.bti"};
 
-// FIXME: 95.00 %, missing/extra; behaviour drift.
-// FIXME(shotgun): the found actor is kept in r3 instead of r4 (null test as cmplwi, not mr.)
 void OshinUnidentified_804AB528::init() {
     field_0x94 = mSpawnParam_0x90 & 0xF;
     field_0x240 = (mSpawnParam_0x90 >> 4) & 0xF;
@@ -35,6 +33,7 @@ void OshinUnidentified_804AB528::init() {
         if (other->field_0x248 == field_0x248) {
             if (!isOutsideView_801F6758(0.0f, &other->mPos, other->mLayer_0x4)) {
                 mAlive = false;
+                break;
             }
         }
     }
@@ -79,7 +78,7 @@ void OshinUnidentified_804AB528::init() {
     }
 }
 
-// FIXME(shotgun): 93.02 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
 void OshinUnidentified_804AB528::update() {
     if (field_0x25c < 1.0f) {
         if (isScreenFlagSet_0x34() == 1 && field_0x25a == 1) {
@@ -96,13 +95,12 @@ void OshinUnidentified_804AB528::update() {
         return;
     }
 
+    s32 blocked = 0;
+    JGeometry::TVec2<f32> pos(mPos.x, mPos.y);
     JGeometry::TBox2f worldBox(mBox);
-    worldBox.i.x += mPos.x;
-    worldBox.i.y += mPos.y;
-    worldBox.f.x += mPos.x;
-    worldBox.f.y += mPos.y;
+    worldBox.addPos(pos);
     JGeometry::TBox2f box;
-    box.set(worldBox);
+    box = worldBox;
     box.i.x += 4.0f;
     box.i.y -= 2.0f;
     box.f.x -= 4.0f;
@@ -119,7 +117,6 @@ void OshinUnidentified_804AB528::update() {
         }
     }
 
-    s32 blocked = 0;
     if (!isOutsideView_801F6758(-40.0f, &mPos, mLayer_0x4)) {
         blocked = sweepMapBox_801F2618(NULL, false);
     }
@@ -240,13 +237,15 @@ void OshinUnidentified_804AB528::update() {
             if (field_0x94 == 2) {
                 if (mPos.x - getGameView_802D6A9C()->mVisibleBox.f.x > 40.0f) {
                     s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->mScreenX_0x14 + 1, row);
+                    GameView_804A9950* view = getGameView_802D6A9C();
+                    getGameView_802D6A9C()->fn_802D9FE8(view->mScreenX_0x14 + 1, row);
                     gGameRoot_8053AAF8->fn_80136798(0x11, 0);
                 }
             } else if (field_0x94 == 3) {
                 if (mPos.x - getGameView_802D6A9C()->mVisibleBox.i.x < -40.0f) {
                     s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->mScreenX_0x14 - 1, row);
+                    GameView_804A9950* view = getGameView_802D6A9C();
+                    getGameView_802D6A9C()->fn_802D9FE8(view->mScreenX_0x14 - 1, row);
                     gGameRoot_8053AAF8->fn_80136798(0x11, 0);
                 }
             }
@@ -305,39 +304,37 @@ void OshinUnidentified_804AB528::update() {
     }
 }
 
-// FIXME(shotgun): 70.24 %, missing/extra + reloc-name; behaviour near.
-// the Mtx diagonal setup and the sprite call order
 void OshinUnidentified_804AB528::draw() {
     if (field_0x25c == 0.0f) {
         return;
     }
-    if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) {
+    if (getGameView_802D6A9C()->mStage_0x4 != 7 || getGameView_802D6A9C()->mLevel_0x8 != 2) {
+        SpriteParams_801F5AE0 params;
+        Mtx mtx;
+        PSMTXIdentity(mtx);
+        f32 scale = (f32)(field_0x240 + 1) * field_0x25c;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][2] = 0.0f;
+        mtx[0][0] = scale;
+        mtx[1][1] = scale;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = scale;
+        params.mMtx = mtx;
+        s32 frame = field_0x234 + 0x141;
+        if (mLayer_0x4 < 8) {
+            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        }
+        showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234 + 0x141, field_0x240 != 0, 2, -1, false, 0, 0);
+    } else {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804AB518[field_0x250]);
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, NULL);
         }
-        return;
     }
-    SpriteParams_801F5AE0 params;
-    Mtx mtx;
-    PSMTXIdentity(mtx);
-    f32 scale = (f32)(field_0x240 + 1) * field_0x25c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][2] = 0.0f;
-    mtx[0][0] = scale;
-    mtx[1][1] = scale;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = scale;
-    params.mMtx = mtx;
-    s32 frame = field_0x234 + 0x141;
-    if (mLayer_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
-    }
-    showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
 }
 
 OshinUnidentified_804AB528::~OshinUnidentified_804AB528() {}
