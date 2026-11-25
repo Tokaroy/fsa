@@ -979,8 +979,7 @@ void CrystalBall_804AB308::die_0x24() {
         }
         case 4: {
             s32 param = ((field_0x23c & 3) << 8) + 3;
-            JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &p, param, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y - mPos.z, 0.0f), param, -1, -1);
             break;
         }
         case 6:
@@ -1011,8 +1010,7 @@ void CrystalBall_804AB308::die_0x24() {
                     }
                 }
                 if (mVel_0x3c.x == 0.0f) {
-                    JGeometry::TVec3f p(mPos.x, mPos.y, 0.0f);
-                    s32 a = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BMTY, mLayer_0x4, &p, 2, -1, -1);
+                    s32 a = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BMTY, mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y, 0.0f), 2, -1, -1);
                     if (a >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(a);
                         if (actor != NULL) {
@@ -1058,8 +1056,7 @@ void CrystalBall_804AB308::die_0x24() {
             } else {
                 param = ((field_0x23c & 3) << 8) + 0x38;
             }
-            JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
-            s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &p, param, -1, -1);
+            s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y - mPos.z, 0.0f), param, -1, -1);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
