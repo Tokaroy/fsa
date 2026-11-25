@@ -169,7 +169,7 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     field_0x44 = 4;
 }
 
-// FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.64 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (isUpperLayer_801CD2F8(field_0x40)) {
