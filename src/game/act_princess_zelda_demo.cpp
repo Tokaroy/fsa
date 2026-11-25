@@ -218,7 +218,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 98.01 %, missing/extra; behaviour drift.
+// FIXME: 98.91 %, different; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -1066,7 +1066,7 @@ void PrincessZeldaDemo_8049D208::setDemoState_8010F478(s32 arg) {
 void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
-// FIXME: 99.87 %, operands; behaviour drift.
+// FIXME: 99.85 %, operands; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
     case 3:
