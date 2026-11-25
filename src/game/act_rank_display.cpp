@@ -74,6 +74,7 @@ void RankDisplay_804A8F74::init() {
 }
 
 // Register allocation only: the loop counters sit in other callee-saved registers.
+// FIXME: 99.67 %, regalloc-only; behaviour clean.
 void RankDisplay_804A8F74::update() {
     JGeometry::TVec3f* player = getPlayerPos_8023E724(0);
     mPos.x = player->x;
