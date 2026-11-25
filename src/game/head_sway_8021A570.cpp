@@ -31,6 +31,21 @@ static inline void pickNext(HeadSway_8021ACE0* self) {
     }
 }
 
+// Starts the centre pause; false when field_0xc forbids it.
+static inline bool settle(HeadSway_8021ACE0* self) {
+    bool settled = false;
+    if (self->field_0xc == 0) {
+        self->mState = 0;
+        self->mTimer = 0xF;
+        self->mTimer2 = 0;
+        self->mSpeed = 0;
+        settled = true;
+    } else {
+        self->mTimer = 0;
+    }
+    return settled;
+}
+
 HeadSway_8021ACE0::HeadSway_8021ACE0() {
     mState = 0;
     mAngle = 0;
@@ -45,11 +60,7 @@ void HeadSway_8021ACE0::fn_8021ABC0() {
     pickNext(this);
 }
 
-// FIXME: 98.8%. In the settle-at-half-turn block (c == 0: state 0, timer 0xF)
-// the original keeps the bool in r3 and reuses that register as the 0 for the
-// state/timer2/speed stores and the else branch's timer = 0; we put the bool in
-// r4 and use separate li 0s (so the branch layout and the registers of the
-// stores after it differ).
+// Registers only: r4/r5 swapped in the inlined pickNext after mAngle = 0.
 bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
     bool result = false;
     if (mTimer != 0) {
@@ -109,18 +120,8 @@ bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
             if ((prev <= 0 && mAngle >= 0) || (prev >= 0 && mAngle <= 0)) {
                 if (mTimer == 0 || field_0xc != 0) {
                     if (nearHalfTurn(mAngle)) {
-                        bool settled = false;
                         mAngle = -0x8000;
-                        if (field_0xc == 0) {
-                            mState = 0;
-                            mTimer = 0xF;
-                            mTimer2 = 0;
-                            mSpeed = 0;
-                            settled = true;
-                        } else {
-                            mTimer = 0;
-                        }
-                        if (settled) {
+                        if (settle(this)) {
                             result = true;
                         }
                     } else {
