@@ -330,7 +330,7 @@ public:
     // (clrlwi 29; neg; or; srwi.) before the ENEMY_FLAG_NO_ATTACK test.
     bool isHit() const { return (mFlags & 7) ? true : false; }
     // ShadowLink2's fn_801C9CB0 (0x801C9D4C) has this test as a materialised bool (mfcr; extrwi.).
-    bool isOnGround() const { return mPos.z <= 0.0f; }
+    u8 isOnGround() const { return mPos.z <= 0.0f ? true : false; }
 
     /* 0x230 */ u32 mFlags; // EnemyFlag_804A4808
     /* 0x234 */ JGeometry::TVec3f mPrevVel; // mVel_0x3c at the start of update()
