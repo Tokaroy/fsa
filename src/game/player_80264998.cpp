@@ -74,9 +74,8 @@ inline void Player_804A6F38::setStandingFrame_80268194() {
     }
 }
 
-// FIXME: 96.69. Case 4 of the switch gets its own copy of the closing
-// `mCel_0x3c4 += mPose_0x3fb` in the original (cases 0-3 and the default
-// share the other); ours shares one copy for all.
+// Case 4 has its own copy of the closing `mCel_0x3c4 += mPose_0x3fb` in the
+// original (b past the shared one at 0x80268168).
 void Player_804A6F38::fn_80267ECC() {
     if (mPose_0x3fb >= 8) {
         setStandingFrame_80268194();
@@ -97,7 +96,8 @@ void Player_804A6F38::fn_80267ECC() {
         break;
     case 4:
         setFacingFrame(this, 0x262, 0x268, 0x26E, 0x274);
-        break;
+        mCel_0x3c4 += mPose_0x3fb;
+        return;
     }
     mCel_0x3c4 += mPose_0x3fb;
 }
