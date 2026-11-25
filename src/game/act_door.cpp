@@ -12,7 +12,6 @@
 #include "game/act/act_small_key.h"
 #include "game/act/act_warp.h"
 
-// FIXME(shotgun): 98.90 %, missing/extra; behaviour drift.
 void Door_804A8D88::init() {
     field_0x258 = mPos;
     field_0x234 = mSpawnParam_0x90 & 0x7F;
