@@ -17,12 +17,8 @@ FireBarManager_804A3F90::FireBarManager_804A3F90() {
     mTangent = 0;
 }
 
-// FIXME: 86.8%. A named local for the `!mFlag` spawn argument (kept in a
-// register across the call, as the target does) gives 96.95%, but it only steers
-// register allocation, so the natural `!mFlag` stays: it costs one saved
-// register (four stw instead of stmw r27). Otherwise the same instructions; saved registers are numbered differently
-// (target: this copy r27, loop counter r29, spawn flag r28, bit r27 in the
-// second getSpeed()) and the sin/cos table base and angle take r3/r4 swapped.
+// Same instructions; saved registers are numbered differently and a few
+// instructions around the sin/cos table load are ordered differently.
 void FireBarManager_804A3F90::init() {
     EnemyBase_804A4808::init();
     if (!((mSpawnParam_0x90 >> 17) & 1)) {
@@ -82,7 +78,7 @@ void FireBarManager_804A3F90::init() {
     pos.x += mStep * dx;
     pos.y += mStep * dy;
     for (s32 i = 0; i < mCount; i++) {
-        mBars[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FBOB, mLayer_0x4, &pos, !mFlag, -1, -1);
+        mBars[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FBOB, mLayer_0x4, &pos, mFlag ? 0 : 1, -1, -1);
         static_cast<cls_804A4038*>(getActorManager_801F856C()->findActorBySerial_801F666C(mBars[i]))->fn_801BD8C0(&pos, mTangent);
         pos.x += dx;
         pos.y += dy;
