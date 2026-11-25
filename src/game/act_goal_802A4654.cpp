@@ -95,9 +95,6 @@ static inline void burst(Goal_804A7EB0* self) {
 }
 
 // 0x802A6600.
-// FIXME(shotgun): 71.57 %, missing/extra; behaviour drift.
-// the player-mask test needs a bool form and the
-// 1000-subtraction loop is unrolled here but not in the original
 void Goal_804A7EB0::init() {
     mBox.set(-3.0f, -3.0f, 3.0f, 3.0f);
     field_0x230 = 0;
@@ -131,14 +128,17 @@ void Goal_804A7EB0::init() {
     fn_8022ADE4();
     s32 total = 0;
     for (s32 p = 0; p < 4; p++) {
-        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) != 0) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, p) == true) {
             total += fn_80236228(p);
         }
     }
     field_0x314 = 0;
     field_0x318 = 0;
     field_0x31c = 1;
-    while (total >= 1000) {
+    while (true) {
+        if (total < 1000) {
+            break;
+        }
         total -= 1000;
         field_0x314++;
     }
