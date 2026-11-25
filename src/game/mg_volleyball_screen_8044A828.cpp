@@ -84,7 +84,7 @@ void MgVolleyballScreen_804B1D00::fn_8044AF90() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME: 88.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 88.22 %, missing/extra + reloc-name; behaviour near.
 // Still differs: the original works out the last digit of field_0x10 and of
 // field_0x13 only after the earlier pictures are set (from the value it keeps
 // in r31); ours works them out before the first getMain2DResource_804030C4.
