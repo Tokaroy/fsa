@@ -208,7 +208,7 @@ OtherCharactersEnding_804ADF28::~OtherCharactersEnding_804ADF28() {
 
 // Still differs: the original keeps the switch value in a register for case 4/0x11's test (ours reloads field_0x234;
 // a local for it leaves only case 5's loop start, where the original copies i into the slot offset and stores i's 0).
-// FIXME: 97.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.34 %, missing/extra; behaviour drift.
 void OtherCharactersEnding_804ADF28::init() {
     s32 i;
     field_0x234 = mSpawnParam_0x90 & 0x1f;
@@ -806,7 +806,6 @@ void OtherCharactersEnding_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void OtherCharactersEnding_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&mVel_0x3c);
@@ -1095,7 +1094,7 @@ void OtherCharactersEnding_804ADF28::fn_80363F7C() {
     mPos.add(mVel_0x3c);
 }
 
-// FIXME(shotgun): 98.47 %, different; behaviour near.
+// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
 void OtherCharactersEnding_804ADF28::fn_80363880() {
     s32 i = field_0x24c;
     if (i >= 0) {
@@ -1301,7 +1300,7 @@ static inline u32 anyPlayerInput(u32 mask) {
 
 // Still differs: the original keeps the 0 that clears field_0x30c[i] in r26 (shared with case 6's
 // player counter) and colours i before the two loop pointers; the jump table's name.
-// FIXME: 97.78 %, different + reloc-name; behaviour drift.
+// FIXME: 97.90 %, different; behaviour drift.
 void OtherCharactersEnding_804ADF28::fn_80362C44() {
     s32 i;
     s32 skip = 0;
