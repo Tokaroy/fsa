@@ -29,7 +29,7 @@ void TalkingSign_804AF428::init() {
     }
 }
 
-// FIXME: 91.56 %, missing/extra; behaviour clean.
+// FIXME: 99.65 %, regalloc-only; behaviour clean.
 // Registers only: the view helper's layer and flags land in other callee-saved registers.
 void TalkingSign_804AF428::update() {
     s32 tile = getRawTile_80226850(&mPos, mLayer_0x4);
