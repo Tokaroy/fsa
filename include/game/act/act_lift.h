@@ -20,6 +20,7 @@ public:
     void fn_80256410();
     // Tests lift `index` (fn_802565BC); clrlwi 24 by its caller.
     bool fn_802565BC(s32 index);
+    void carryPlayer(s32 i);
 
     // The mode is the low 7 bits of mSpawnParam_0x90, compared as signed.
     s32 getMode() { return mSpawnParam_0x90 & 0x7F; }
