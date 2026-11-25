@@ -54,11 +54,8 @@ void Bumper_804A0260::init() {
     field_0x230 = 0;
 }
 
-// FIXME: 97.13 %. The loop bases sit in other registers (and the boxA / pos
-// stores are scheduled in another order). The layer is read through
-// getField_0x4() (before getPlayerLayer_8023DE58, as the original). The candidate test materialises `ok` (li,
-// mr, clrlwi.) where the original branches on the fn_8022F478 flag directly
-// (rewriting it as `continue` made the match worse). 4 instructions more.
+// The loop bases sit in other registers and the boxA / pos stores are
+// scheduled in another order.
 void Bumper_804A0260::update() {
     mBox.i.x = -17.0f;
     mBox.i.y = -17.0f;
@@ -114,11 +111,9 @@ void Bumper_804A0260::update() {
             continue;
         }
         bool ok = false;
-        if (fn_8022CAF8(idx[k]) == 4 || fn_8022CAF8(idx[k]) == 5) {
-            if (!fn_8022F478(idx[k])) {
-                ok = true;
-            }
-        } else {
+        if (fn_8022CAF8(idx[k]) != 4 && fn_8022CAF8(idx[k]) != 5) {
+            ok = true;
+        } else if (!fn_8022F478(idx[k])) {
             ok = true;
         }
         if (ok == true && fn_8023B0F4(idx[k], &boxB, mLayer_0x4, false, 0.0f)) {
@@ -131,12 +126,9 @@ void Bumper_804A0260::update() {
     s32 actorHit = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
     field_0xb0 = 0x42304;
 
-    bool clear = false;
-    if (found < 0 && touchPlayer < 0 && actorHit < 0 && field_0x9c < 0 && field_0x94 != 1) {
-        clear = fn_801A4D1C(mSerial, &boxA, &pos) == 0 && fn_801A6108(mSerial, &boxA, &pos) == 0 &&
-                fn_801A46FC(mSerial, &boxA, &pos) == 0 && fn_801A4F5C(mSerial, &boxA, &pos) == 0;
-    }
-    if (!clear) {
+    if (found >= 0 || touchPlayer >= 0 || actorHit >= 0 || field_0x9c >= 0 || field_0x94 == 1 ||
+        fn_801A4D1C(mSerial, &boxA, &pos) != 0 || fn_801A6108(mSerial, &boxA, &pos) != 0 ||
+        fn_801A46FC(mSerial, &boxA, &pos) != 0 || fn_801A4F5C(mSerial, &boxA, &pos) != 0) {
         c.x = 0.5f * (boxB.i.x - boxB.f.x) + boxB.f.x;
         c.y = 0.5f * (boxB.i.y - boxB.f.y) + boxB.f.y;
         field_0x94 = 0;
@@ -201,16 +193,22 @@ void Bumper_804A0260::update() {
         break;
     }
 
-    if (field_0x230 == 1 && field_0x23c == 0) {
-        field_0x248 += 1;
-        if (field_0x248 > 6) {
-            field_0x258 = 0;
-            field_0x248 = 0;
-            field_0x230 = 0;
-        } else {
-            field_0x258 = lbl_804A0228[field_0x248];
-            field_0x23c = lbl_804A0244[field_0x248];
+    switch (field_0x230) {
+    case 0:
+        break;
+    case 1:
+        if (field_0x23c == 0) {
+            field_0x248 += 1;
+            if (field_0x248 > 6) {
+                field_0x258 = 0;
+                field_0x248 = 0;
+                field_0x230 = 0;
+            } else {
+                field_0x258 = lbl_804A0228[field_0x248];
+                field_0x23c = lbl_804A0244[field_0x248];
+            }
         }
+        break;
     }
     if (field_0x23c > 0) {
         field_0x23c -= 1;
