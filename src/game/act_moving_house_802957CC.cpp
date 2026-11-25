@@ -201,9 +201,8 @@ void MovingHouse_804A7AE0::init() {
     field_0x238.set(mPos);
 }
 
-// FIXME(shotgun): 98.87 %, operands; behaviour clean.
-// initial position/box arithmetic is scheduled differently, 5 instructions
-void MovingHouse_804A7AE0::vfunc_0x10() {
+// Snapshots the 6x6 tiles of both layers under the actor (vfunc_0x10).
+inline void MovingHouse_804A7AE0::snapshotTiles() {
     JGeometry::TVec3f origin = mPos;
     origin.x += mBox.i.x;
     origin.y += mBox.i.y;
@@ -228,6 +227,12 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
         p.x += 16.0f;
     }
     field_0x2b5 = 1;
+}
+
+// FIXME(shotgun): 98.87 %, operands; behaviour clean.
+// initial position/box arithmetic is scheduled differently, 5 instructions
+void MovingHouse_804A7AE0::vfunc_0x10() {
+    snapshotTiles();
     f32 minX = mBox.i.x + mPos.x;
     f32 minY = mBox.i.y + mPos.y;
     f32 maxX = mBox.f.x + mPos.x;
