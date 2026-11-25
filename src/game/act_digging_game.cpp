@@ -20,10 +20,6 @@ static inline void setCameraScript(const JGeometry::TVec3f& pos) {
     }
 }
 
-static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
-}
-
 // Turns the keeper towards the player that started the talk (field_0x23c)
 // when that player is within 100 units.
 static inline void faceTalker(DiggingGameKeeper_8049C970* self) {
@@ -41,6 +37,34 @@ static inline void faceTalker(DiggingGameKeeper_8049C970* self) {
             self->field_0x235 = 2;
         } else {
             self->field_0x235 = 0;
+        }
+    }
+}
+
+// No address (update inlines it in case 6): the players' digging results.
+// Everyone but the best digger gets the item back that they held before the
+// game. A function of its own in the original: its score[] sits below the
+// by-value position copies of update's openMessage_8038AD24 calls and between
+// the two faceTalker copies' locals on update's stack, where a block local of
+// update would sit above them.
+inline void DiggingGameKeeper_8049C970::restoreItems() {
+    s32 i;
+    s32 score[4];
+    s32 maxDiff = -10000;
+    for (i = 0; i < 4; i++) {
+        score[i] = 0;
+        if (!hasPlayerLeader_8022F514(i)) {
+            score[i] = fn_80236100(i) - field_0x274[i];
+            if (score[i] > maxDiff) {
+                maxDiff = score[i];
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (!hasPlayerLeader_8022F514(i)) {
+            if (maxDiff != score[i]) {
+                fn_802372F8(i, field_0x254[i], field_0x264[i]);
+            }
         }
     }
 }
@@ -69,18 +93,16 @@ void DiggingGameKeeper_8049C970::init() {
     }
 }
 
-// FIXME: 97.49 %, missing/extra; behaviour drift.
-// (one more instruction than the original, 616 vs 615). The box
-// setup at the top keeps the mPos.y sum in a different register and stores
-// box.i.y one instruction later; the stack slots of the by-value position
-// temporaries for openMessage_8038AD24 / getNearestPlayerDir_801EE8F4 and the loop counters and
-// pointers of cases 1 and 6 sit in other registers; case 5 schedules the
-// state store and the 0x3b argument in another order.
+// Same instructions as the original up to order and registers: case 1's first
+// loop keeps its counter in r25 where the original has r30, and case 4
+// schedules the state store and the 0x3b argument in another order.
+// FIXME: 99.14 %, scheduling+regalloc; behaviour drift.
 void DiggingGameKeeper_8049C970::update() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 50.0f;
     JGeometry::TVec3f camPos = mPos;
     JGeometry::TBox2f box(mBox);
+    s32 i;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
@@ -109,10 +131,10 @@ void DiggingGameKeeper_8049C970::update() {
         }
         // Both branches are the same message here; the original still tests field_0x236 == 1.
         u32 msg = (field_0x236 == 1) ? 0x32e : 0x32e;
-        if (!talk(field_0x23c, msg, mSerial, mLayer_0x4, pos, 0)) {
+        if (!openMessage_8038AD24(field_0x23c, msg, getSerial(), getField_0x4(), pos, 0)) {
             break;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             fn_802308E0(i);
         }
         field_0x230 = 1;
@@ -142,15 +164,15 @@ void DiggingGameKeeper_8049C970::update() {
             fn_8038470C(field_0x23c, msg);
             field_0x230 = 3;
             field_0x244 = 0;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x254[i] = fn_802373EC(i);
                 field_0x264[i] = fn_8023725C(i);
                 fn_802372F8(i, 9, 2);
             }
-            for (s32 j = 0; j < 4; j++) {
-                if (!hasPlayerLeader_8022F514(j)) {
-                    fn_8023619C(j, -100);
-                    field_0x274[j] = fn_80236100(j);
+            for (i = 0; i < 4; i++) {
+                if (!hasPlayerLeader_8022F514(i)) {
+                    fn_8023619C(i, -100);
+                    field_0x274[i] = fn_80236100(i);
                 }
             }
             break;
@@ -212,7 +234,7 @@ void DiggingGameKeeper_8049C970::update() {
         if (field_0x244 > 50 && field_0x250 == 1) {
             fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
             if (fn_8022FD8C(mSerial) == 0) {
-                talk(0, 0x331, mSerial, mLayer_0x4, pos, 2);
+                openMessage_8038AD24(0, 0x331, getSerial(), getField_0x4(), pos, 2);
                 field_0x230 = 6;
                 field_0x244 = 0;
                 fn_8022B130();
@@ -230,24 +252,7 @@ void DiggingGameKeeper_8049C970::update() {
         field_0x244 = 0;
         fn_80230534(false);
 
-        s32 score[4];
-        s32 maxDiff = -10000;
-        for (s32 i = 0; i < 4; i++) {
-            score[i] = 0;
-            if (!hasPlayerLeader_8022F514(i)) {
-                score[i] = fn_80236100(i) - field_0x274[i];
-                if (score[i] > maxDiff) {
-                    maxDiff = score[i];
-                }
-            }
-        }
-        for (s32 j = 0; j < 4; j++) {
-            if (!hasPlayerLeader_8022F514(j)) {
-                if (maxDiff != score[j]) {
-                    fn_802372F8(j, field_0x254[j], field_0x264[j]);
-                }
-            }
-        }
+        restoreItems();
         gAudioMgr_8053AF80->startBgm_80458FF0(field_0x248, true, 0);
         break;
     }
@@ -257,7 +262,7 @@ void DiggingGameKeeper_8049C970::update() {
         if (field_0x23c < 0) {
             break;
         }
-        if (!talk(field_0x23c, 0x332, mSerial, mLayer_0x4, pos, 0)) {
+        if (!openMessage_8038AD24(field_0x23c, 0x332, getSerial(), getField_0x4(), pos, 0)) {
             break;
         }
         field_0x230 = 8;
