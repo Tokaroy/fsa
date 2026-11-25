@@ -1109,7 +1109,7 @@ void BowSoldier_804A00C8::update() {
     }
 }
 
-// FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.09 %, scheduling+regalloc; behaviour clean.
 void BowSoldier_804A00C8::draw() {
     if (field_0x94 == 2) {
         return;
