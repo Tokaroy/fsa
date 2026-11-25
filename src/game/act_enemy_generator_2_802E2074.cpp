@@ -53,8 +53,10 @@ const u16 lbl_8046E9D8[4][4] = {
 };
 
 // FIXME: 90.72 %, missing/extra + reloc-name; behaviour near.
-// FIXME(shotgun): one instr short; float literals not split into this unit (lbl_805411B8/BC), loop index in r29 not r30
+// The original tests each collected actor for NULL twice (two beq in a row).
+// Still differs: the original masks x/y to 16 bits (clrlwi 16) before the float conversion; ours has no mask.
 void EnemyGenerator2_804A9BC8::update() {
+    s32 serial;
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -66,7 +68,7 @@ void EnemyGenerator2_804A9BC8::update() {
     case 0:
         if (lbl_8053ACB0 != 0) {
             for (int i = 0; i < 0x50; i++) {
-                s32 serial = lbl_804D4768[i];
+                serial = lbl_804D4768[i];
                 if (serial >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) == NULL) {
                     lbl_804D4768[i] = -1;
                     lbl_8053ACB0--;
@@ -75,7 +77,10 @@ void EnemyGenerator2_804A9BC8::update() {
                         s32 count = getActorManager_801F856C()->collectActorsById_801F7818('GEN2', mLayer_0x4, list, -1);
                         for (s32 k = 0; k < count; k++) {
                             if (list[k] != NULL) {
-                                static_cast<EnemyGenerator2_804A9BC8*>(list[k])->field_0x230 = 1;
+                                EnemyGenerator2_804A9BC8* gen = static_cast<EnemyGenerator2_804A9BC8*>(list[k]);
+                                if (gen != NULL) {
+                                    gen->field_0x230 = 1;
+                                }
                             }
                         }
                         field_0x230 = 1;
@@ -89,77 +94,83 @@ void EnemyGenerator2_804A9BC8::update() {
         // fall through
     case 1:
         field_0x240 = 0;
-        for (;;) {
-            const u8* entry = field_0x244 + offset;
-            u32 tag = (entry[0] << 24) | (entry[1] << 16) | (entry[2] << 8) | entry[3];
-            bool go = true;
-            if (tag == 0x20202020) {
-                field_0x24c += 2;
-                offset = 0;
-                go = false;
-                field_0x240++;
-                if (field_0x24c != field_0x24e) {
-                    continue;
-                }
-                done = true;
-                if (field_0x24c == 0x40) {
-                    markDead_801F3668();
-                } else {
-                    field_0x24e += 8;
-                }
-            } else if (field_0x23c < 2) {
-                if (field_0x24c != entry[6]) {
-                    offset += 0xB;
-                    continue;
-                }
-            } else {
-                if (field_0x24c != entry[5]) {
-                    offset += 0xB;
-                    continue;
-                }
-            }
-            if (go == true) {
+        do {
+            bool go;
+            const u8* entry;
+            u32 tag;
+            for (;;) {
                 entry = field_0x244 + offset;
-                offset += 0xB;
-                u32 arg = (entry[7] << 24) | (entry[8] << 16) | (entry[9] << 8) | entry[10];
-                f32 originX;
-                f32 originY;
-                s32 spawnLayer;
-                if (entry[4] == 0) {
-                    originY = box.i.y;
-                    originX = box.i.x;
-                    spawnLayer = 0;
-                } else {
-                    originY = 0.0f;
-                    spawnLayer = entry[4] + 7;
-                    originX = originY;
+                tag = (entry[0] << 24) | (entry[1] << 16) | (entry[2] << 8) | entry[3];
+                go = true;
+                if (tag == 0x20202020) {
+                    field_0x24c += 2;
+                    offset = 0;
+                    go = false;
+                    field_0x240++;
+                    if (field_0x24c != field_0x24e) {
+                        continue;
+                    }
+                    done = true;
+                    if (field_0x24c == 0x40) {
+                        markDead_801F3668();
+                    } else {
+                        field_0x24e += 8;
+                    }
+                    break;
                 }
                 if (field_0x23c < 2) {
-                    JGeometry::TVec3f pos;
-                    pos.y = 8.0f * (f32)lbl_8046E9D8[field_0x23c][field_0x240] + originY;
-                    pos.x = 8.0f * (f32)(u16)entry[5] + originX;
-                    pos.z = 0.0f;
-                    lbl_804D4768[lbl_8053ACB0] = getActorManager_801F856C()->spawnActor_801F9484(tag, spawnLayer, &pos, arg, 0, -1);
+                    if (field_0x24c == entry[6]) {
+                        break;
+                    }
                 } else {
-                    JGeometry::TVec3f pos;
-                    pos.x = 8.0f * (f32)lbl_8046E9D8[field_0x23c][field_0x240] + originX;
-                    pos.y = 8.0f * (f32)(u16)entry[6] + originY;
-                    pos.z = 0.0f;
-                    lbl_804D4768[lbl_8053ACB0] = getActorManager_801F856C()->spawnActor_801F9484(tag, spawnLayer, &pos, arg, 0, -1);
-                }
-                if (lbl_804D4768[lbl_8053ACB0] >= 0) {
-                    lbl_8053ACB0++;
-                    if (lbl_8053ACB0 >= 0x50) {
-                        markDead_801F3668();
+                    if (field_0x24c == entry[5]) {
                         break;
                     }
                 }
-                if (done != true) {
-                    continue;
+                offset += 0xB;
+            }
+            if (go != true) {
+                break;
+            }
+            entry = field_0x244 + offset;
+            offset += 0xB;
+            u8 layerNo = entry[4];
+            u16 x = entry[5];
+            u16 y = entry[6];
+            f32 originX;
+            f32 originY;
+            s32 spawnLayer;
+            u32 arg = (entry[7] << 24) | (entry[8] << 16) | (entry[9] << 8) | entry[10];
+            if (layerNo == 0) {
+                originY = box.i.y;
+                originX = box.i.x;
+                spawnLayer = 0;
+            } else {
+                originY = 0.0f;
+                spawnLayer = layerNo + 7;
+                originX = originY;
+            }
+            if (field_0x23c < 2) {
+                JGeometry::TVec3f pos;
+                pos.y = 8.0f * (f32)lbl_8046E9D8[field_0x23c][field_0x240] + originY;
+                pos.x = 8.0f * (f32)x + originX;
+                pos.z = 0.0f;
+                lbl_804D4768[lbl_8053ACB0] = getActorManager_801F856C()->spawnActor_801F9484(tag, spawnLayer, &pos, arg, 0, -1);
+            } else {
+                JGeometry::TVec3f pos;
+                pos.x = 8.0f * (f32)lbl_8046E9D8[field_0x23c][field_0x240] + originX;
+                pos.y = 8.0f * (f32)y + originY;
+                pos.z = 0.0f;
+                lbl_804D4768[lbl_8053ACB0] = getActorManager_801F856C()->spawnActor_801F9484(tag, spawnLayer, &pos, arg, 0, -1);
+            }
+            if (lbl_804D4768[lbl_8053ACB0] >= 0) {
+                lbl_8053ACB0++;
+                if (lbl_8053ACB0 >= 0x50) {
+                    markDead_801F3668();
+                    break;
                 }
             }
-            break;
-        }
+        } while (done != true);
         field_0x230 = 0;
         break;
     case 2:
