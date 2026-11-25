@@ -88,7 +88,7 @@ static const s32 lbl_8046C448[6] = {1, 0, 2, 3, 4, 5};
 static const s32 lbl_8046C460[6] = {0x3A, 0x3B, 0x3C, 0x39, 0x3E, 0x3E};
 static const s32 lbl_8046C478[6] = {0x41, 0x42, 0x39, 0x39, 0x39, 0x40};
 
-// FIXME: 72.89 %, different; behaviour clean.
+// FIXME: 72.89 %, scheduling; behaviour clean.
 // Block order only: the original places the `dir >= 0` and `changed` blocks right
 // after the D-pad tests (the stick tests branch back to them; the Left/Right
 // branches skip them).
