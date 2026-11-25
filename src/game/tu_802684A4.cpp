@@ -1810,7 +1810,7 @@ void Player_804A6F38::fn_80268B3C() {
     }
 }
 
-// FIXME: 94.69 %, missing/extra; behaviour clean.
+// FIXME: 95.07 %, missing/extra; behaviour clean.
 // 12 instructions fewer: the original keeps the three step
 // TVec2fs in stack slots (0x18, 0x10, 0x8) and stores each one's mPos x / y
 // and then its difference there (never read back); ours keeps them in
