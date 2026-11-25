@@ -585,10 +585,9 @@ void PrincessZeldaSpawner_804A35AC::update() {
 
 // 0x801B0A00.
 // FIXME(shotgun): 97.31 %, different + reloc-name; behaviour drift.
-// mSpawnParam_0x90 compare is cmplwi (u32), original cmpwi
 void PrincessZeldaSpawner_804A35AC::draw() {
     s32 frame = 0x9B;
-    if (mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 0) {
         if (field_0x250 == 2 || field_0x250 == 3) {
             frame = 0x274;
         }
