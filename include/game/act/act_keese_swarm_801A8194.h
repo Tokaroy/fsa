@@ -14,9 +14,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230; // state: 0, 1, 2
-    /* 0x234 */ s32 field_0x234;
-    /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ s32 field_0x23c;
+    /* 0x234 */ s32 field_0x234[3]; // countdown timers
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;

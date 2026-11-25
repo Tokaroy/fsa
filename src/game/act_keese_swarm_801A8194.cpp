@@ -26,9 +26,9 @@ void KeeseSwarm_804A2EC0::init() {
     field_0x254 = 0;
     field_0x258 = 0;
     field_0x25c = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
     field_0x270 = 72.0f;
     field_0x11e = 1;
     field_0x26c = 1.2f;
@@ -74,7 +74,7 @@ void KeeseSwarm_804A2EC0::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 99.39 %, different; behaviour near.
+// FIXME(shotgun): 99.86 %, scheduling+regalloc; behaviour clean.
 // sqrtf expansion and trail-collision loop
 void KeeseSwarm_804A2EC0::update() {
     s32 player = -1;
@@ -93,14 +93,14 @@ void KeeseSwarm_804A2EC0::update() {
         field_0x25c = 1;
     }
     findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &player, 0, 1);
-    if (field_0x230 == 1 && field_0x238 == 0) {
+    if (field_0x230 == 1 && field_0x234[1] == 0) {
         field_0x294[0] = mPos;
         for (s32 i = 39; i > 0; i--) {
             field_0x294[i].x = field_0x294[i - 1].x;
             field_0x294[i].y = field_0x294[i - 1].y;
             field_0x294[i].z = field_0x294[i - 1].z;
         }
-        field_0x238 = 3;
+        field_0x234[1] = 3;
     }
     if (field_0x264 > 0) {
         f32 savedX = mPos.x;
@@ -174,7 +174,7 @@ void KeeseSwarm_804A2EC0::update() {
             startSound_801F0E34(0x4000F, 0);
             startSound_801F0E34(0x400A9, 0);
             if (player >= 0) {
-                findTargetPlayer_801EEC98(mSerial, &field_0x268, NULL, NULL, NULL, 0, 2);
+                findTargetPlayer_801EEC98(mSerial, &field_0x268, NULL, NULL, NULL, player, 2);
                 field_0x268 += 0x8000;
             }
             field_0x230 = 1;
@@ -189,12 +189,12 @@ void KeeseSwarm_804A2EC0::update() {
             }
             field_0x27c.y += 16.0f;
             field_0x268 += 0x200;
-            if (field_0x234 <= 0) {
+            if (field_0x234[0] <= 0) {
                 field_0x260++;
                 if (field_0x260 > 2) {
                     field_0x260 = 0;
                 }
-                field_0x234 = 6;
+                field_0x234[0] = 6;
             }
             break;
         case 2:
@@ -207,18 +207,14 @@ void KeeseSwarm_804A2EC0::update() {
             break;
         }
     }
-    if (field_0x234 > 0) {
-        field_0x234--;
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
+    for (s32 i = 0; i < 3; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+        }
     }
 }
 
-// FIXME: 98.52 %, missing/extra; behaviour clean.
+// FIXME: 99.49 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): missing/extra: the original keeps the saved position in f28-f30 and reloads it after the trail loop's stores; the instruction schedule differs
 void KeeseSwarm_804A2EC0::draw() {
     SpriteParams_801F5AE0 params;
@@ -270,6 +266,7 @@ void KeeseSwarm_804A2EC0::draw() {
             mtx[2][0] = 0.0f;
             mtx[2][1] = 0.0f;
             mtx[2][2] = scale;
+            params.mMtx = mtx;
             frame--;
             if (frame < 0) {
                 frame = 2;
