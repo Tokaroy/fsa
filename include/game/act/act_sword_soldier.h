@@ -7,7 +7,7 @@
 
 // Small out-of-line helpers of game/act_sword_soldier.cpp, called from other units.
 void zeroVec_801546BC(JGeometry::TVec3f* v);
-s32 atan2Short_8015465C(f32 y, f32 x);
+s16 atan2Short_8015465C(f32 y, f32 x); // callers pass the result to s16 params without extsh
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
 void addVec2_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
 f32 sinShort_801544FC(s16 angle);
