@@ -159,7 +159,7 @@ void Poe_8049F330::update() {
         field_0x230 = 1;
     case 1:
         addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x238[5]) + 20.0f, 0.3f, 1.0f);
-        field_0x238[5] = (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + field_0x238[5] + 0x200;
+        field_0x238[5] += 0x200 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         if ((field_0x94 == 2 || field_0x94 == 6) && field_0x238[0] == 0) {
             field_0x238[0] = (s32)(150.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 150;
             field_0x238[4]++;
