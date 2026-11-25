@@ -41,6 +41,7 @@ void ForceGemRain_804A8010::init() {
     }
 }
 
+// FIXME: 98.25 %, different + reloc-name; behaviour near.
 // FIXME: the angle loop's setup (the original copies i's zero into a second register with mr) and
 // the order of the 32.0f circle's pos.set differ; also registers and literal names.
 void ForceGemRain_804A8010::update() {
