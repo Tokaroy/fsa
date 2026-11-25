@@ -92,8 +92,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
 
 // FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
 // The original reuses the loaded field_0x230 (case 5 test) and c->field_0x25c (the field_0x284
-// store); ours loads each again. At the openMessage_8038AD24 calls the original also orders the
-// argument loads differently around the by-value position copy.
+// store); ours loads each again. Stack slots and some registers differ too.
 void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -131,7 +130,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
+            if (talk(mSerial, mLayer_0x4, mPos, 0)) {
                 field_0x230 = 1;
             }
         }
@@ -223,7 +222,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0) {
                 fn_8038938C(field_0x240, field_0x24c);
-                if (talk(field_0x240, 0x42f, mSerial, mLayer_0x4, mPos, 0x112)) {
+                if (talk(0x42f, mSerial, mLayer_0x4, mPos, 0x112)) {
                     field_0x230 = 5;
                 }
             }
@@ -306,7 +305,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                     break;
                 }
                 if (fn_802300EC(field_0x240)) {
-                    if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 1)) {
+                    if (talk(mSerial, mLayer_0x4, mPos, 1)) {
                         field_0x230 = 7;
                     }
                 }
@@ -374,7 +373,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                     fn_803894BC(field_0x240, field_0x254);
                     break;
                 }
-                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0x112)) {
+                if (talk(mSerial, mLayer_0x4, mPos, 0x112)) {
                     field_0x230 = 10;
                 }
             }
@@ -452,7 +451,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                 break;
             }
             if (fn_802300EC(field_0x240)) {
-                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
+                if (talk(mSerial, mLayer_0x4, mPos, 0)) {
                     field_0x230 = 12;
                 }
             }
