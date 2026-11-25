@@ -318,7 +318,8 @@ void Boulder_8049C4C0::fn_800F555C() {
             }
         }
         if (field_0x232 == -1 && mVel_0x3c.z == 0.0f) {
-            if ((s32)field_0x234 == 1) {
+            switch (field_0x234) {
+            case 1:
                 switch (field_0x233) {
                 case 0:
                     field_0x232 = 3;
@@ -333,7 +334,8 @@ void Boulder_8049C4C0::fn_800F555C() {
                     field_0x232 = 1;
                     break;
                 }
-            } else {
+                break;
+            default:
                 switch (field_0x233) {
                 case 0:
                     field_0x232 = 2;
@@ -348,6 +350,7 @@ void Boulder_8049C4C0::fn_800F555C() {
                     field_0x232 = 0;
                     break;
                 }
+                break;
             }
         }
     } else {
