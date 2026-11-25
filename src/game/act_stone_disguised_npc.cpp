@@ -4,6 +4,7 @@
 #include "game/Effect.h"
 #include "game/Map.h"
 #include "game/Player.h"
+#include "game/Vec2Ops.h"
 #include "game/act/act_stone_disguised_npc.h"
 
 static inline void normalize(JGeometry::TVec2f& v) {
@@ -78,10 +79,7 @@ void NPCDisguisedAsAStone_804A8750::update() {
         break;
     case 3: {
         JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x24c);
-        // FIXME: 97.7%. The original also copies target's x and y (y first)
-        // to the 8-byte slot at sp+8 before subtracting mPos (two stfs, then
-        // stfs of the differences): four dead stores that MWCC drops here.
-        JGeometry::TVec2f dir(target->x - mPos.x, target->y - mPos.y);
+        JGeometry::TVec2f dir = xy(*target) - xy(mPos);
         normalize(dir);
         field_0x234 = dir.x * field_0x244;
         field_0x238 = dir.y * field_0x244;
