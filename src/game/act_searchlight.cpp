@@ -111,10 +111,10 @@ void Searchlight_804A0FF8::init() {
 }
 
 // 0x80179388.
-// FIXME(shotgun): 97.4 %, missing/extra (two extra clrlwi narrowing field_0x334 / fn_800FE21C's u8 result in case 2)
 void Searchlight_804A0FF8::update() {
-    f32 dist = 0.0f;
     s32 player = 0;
+    f32 dist = 0.0f;
+    u8 points[0x20];
     if (field_0x2f8 != 3) {
         addCalc2_801F71A4(&mVel_0x3c.x, field_0x370.x, 0.3f, 1.0f);
         addCalc2_801F71A4(&mVel_0x3c.y, field_0x370.y, 0.3f, 1.0f);
@@ -133,23 +133,21 @@ void Searchlight_804A0FF8::update() {
         mPos.x = field_0x348 * JMath::sincosTable_.sinShort(field_0x340) + field_0x34c.x;
         mPos.y = field_0x348 * JMath::sincosTable_.cosShort(field_0x340) + field_0x34c.y;
         break;
-    case 2: {
-        u8 points[0x20];
-        if (field_0x230.fn_800FE3EC(field_0x334, mPos, mLayer_0x4)) {
-            field_0x338 = field_0x230.fn_800FE21C(0xFF);
-            field_0x338 = field_0x338 * 60;
-            if (field_0x338 == 0) {
-                field_0x338 = 3;
-            }
-            field_0x33c = field_0x230.fn_800FD894(mLayer_0x4, points, 0x20);
-            field_0x314 = 0;
-            field_0x318 = 0;
-            field_0x2f8 = 3;
-            field_0x2fc = field_0x2f8;
+    case 2:
+        if (!field_0x230.fn_800FE3EC(field_0x334, mPos, mLayer_0x4)) {
+            break;
         }
-    }
+        field_0x338 = field_0x230.fn_800FE21C(0xFF);
+        field_0x338 = field_0x338 * 60;
+        if (field_0x338 == 0) {
+            field_0x338 = 3;
+        }
+        field_0x33c = field_0x230.fn_800FD894(mLayer_0x4, points, 0x20);
+        field_0x314 = 0;
+        field_0x318 = 0;
+        field_0x2f8 = 3;
+        field_0x2fc = field_0x2f8;
     case 3: {
-        u8 points[0x20];
         mVel_0x3c = field_0x230.fn_800FD998(field_0x358, field_0x314, field_0x338, 0xFF);
         field_0x314++;
         if (field_0x314 > field_0x338) {
@@ -178,7 +176,7 @@ void Searchlight_804A0FF8::update() {
         if (field_0x328 != 0) {
             gAudioMgr_8053AF80->playSystemSound_80458880(0x36, -1);
         }
-        if (lbl_80539F80 >= 0 && mLayer_0x4 == getPlayerLayer_8023DE58(lbl_80539F80)) {
+        if (lbl_80539F80 >= 0 && getField_0x4() == getPlayerLayer_8023DE58(lbl_80539F80)) {
             f32 dx = getPlayerPos_8023E724(lbl_80539F80)->x - mPos.x;
             f32 dy = getPlayerPos_8023E724(lbl_80539F80)->y - mPos.y;
             if (std::sqrtf(dx * dx + dy * dy) > 5.0f) {
@@ -199,9 +197,12 @@ void Searchlight_804A0FF8::update() {
                     getActorManager_801F856C()->fn_801F6884();
                     if (field_0x328 == 0) {
                         for (s32 i = 0; i < 20; i++) {
-                            JGeometry::TVec3f pos = mPos;
-                            pos.x = 80.0f * JMath::sincosTable_.sinShort((i + 1) * 0xC30) + mPos.x;
-                            pos.y = 80.0f * JMath::sincosTable_.cosShort((i + 1) * 0xC30) + mPos.y;
+                            JGeometry::TVec3f pos;
+                            pos.x = mPos.x;
+                            pos.y = mPos.y;
+                            pos.z = mPos.z;
+                            pos.x += 80.0f * JMath::sincosTable_.sinShort((i + 1) * 0xC30);
+                            pos.y += 80.0f * JMath::sincosTable_.cosShort((i + 1) * 0xC30);
                             if (getActorManager_801F856C()->spawnActor_801F9484('POOH', mLayer_0x4, &pos, 0, -1, -1) >= 0) {
                                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1FD, 1, 1, NULL, NULL, true, 1.0f);
                             }
