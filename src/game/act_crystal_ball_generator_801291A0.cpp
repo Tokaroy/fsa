@@ -57,7 +57,7 @@ void CrystalBallGenerator_8049E5B8::init() {
     mTimer = 150;
 }
 
-// FIXME: 95.60 %, missing/extra; behaviour clean.
+// FIXME: 96.97 %, scheduling+regalloc; behaviour clean.
 // FIXME: try.py class: missing/extra. Ours keeps this in r31 and the serial
 // in r30; the original has this in r30 and the serial in r31.
 void CrystalBallGenerator_8049E5B8::update() {
