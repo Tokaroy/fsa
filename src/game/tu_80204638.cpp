@@ -26,7 +26,7 @@ void cls_80204638::fn_80204ABC(bool reset) {
 
 // FIXME(shotgun): 98.46 %, different; behaviour near.
 void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
-    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->field_0x34a];
+    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == NULL) {
         slot[0] = actor;
         if (slot[1] != NULL && slot[1]->fn_80204D44()) {
@@ -42,7 +42,7 @@ void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
 
 // FIXME(shotgun): 96.25 %, different; behaviour near.
 void cls_80204638::fn_802049E0(ActorBase_804A5770* actor) {
-    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->field_0x34a];
+    ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == actor) {
         slot[0] = NULL;
     } else if (slot[1] == actor) {
