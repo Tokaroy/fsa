@@ -296,7 +296,7 @@ void Tingle_804B0478::draw() {
     if (fn_80237060(0) >= 2) {
         base = 0x364;
     }
-    if (mSpawnParam_0x90 == 0) {
+    if (getField_0x90() == 0) {
         f32 x = mPos.x;
         f32 y = mPos.y;
         f32 z = mPos.z;
