@@ -2390,7 +2390,7 @@ bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a,
 // Only in state 0: sets field_0x450 to `id` (a negative id leaves it; id
 // 0xE8 becomes 0x1C5 in turn-based group mode when it is not this player's
 // turn), field_0xca2 to `flag` and field_0x456.
-bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
+bool Player_804A6F38::fn_8024DA64(s32 id, u8 flag) {
     if (mState_0x1240 != 0) {
         return false;
     }
