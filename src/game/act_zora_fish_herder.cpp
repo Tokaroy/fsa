@@ -147,7 +147,7 @@ inline void ZoraFishHerding_804A2E30::faceTalkingPlayer_801A68DC() {
     }
 }
 
-// FIXME(shotgun): 97.73 %, different; behaviour near.
+// FIXME(shotgun): 99.91 %, regalloc-only; behaviour near.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
     f32 nearDist;
