@@ -324,6 +324,6 @@ s32 fn_8040F474();
 // Out-of-line copy of JUtility::TColor::operator= (0x8041499C).
 void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src);
 // 0x804149C0 (game/map_screen_80403D84.cpp): bit 0 of the current save row's byte 0x87.
-bool fn_804149C0();
+BOOL fn_804149C0();
 
 #endif
