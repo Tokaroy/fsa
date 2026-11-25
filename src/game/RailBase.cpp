@@ -121,7 +121,7 @@ s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* o
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 87.20 %, missing/extra; behaviour near.
+// FIXME(shotgun): 91.92 %, missing/extra; behaviour near.
 // 0x800FDEA0
 s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer,
                               u16* outAngle, s32 arg) {
@@ -199,7 +199,7 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 
     return diff;
 }
 
-// FIXME(shotgun): 80.59 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.88 %, operands; behaviour clean.
 // (only stack slots differ: the original's target point is the by-value result of an inlined getter - the body of
 // getRailPointPos_800FE294 - copied into dest, so its temporary sits below dir and dest)
 // 0x800FD998
