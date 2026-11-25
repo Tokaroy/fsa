@@ -1957,17 +1957,20 @@ void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0
     }
 }
 
-// Shadow scale per kind (drawShadow_801EF830).
-static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
+
+// Shadow scale per kind (drawShadow_801EF830). The table is the local static
+// of a non-static inline: the original addresses it with its own lis/addi,
+// which MWCC does only for an object that is not a plain static of the file
+// (a file-level or function-local static shares one .rodata base register
+// with the two strings).
+inline f32 getShadowScale(s32 kind) {
+    static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
+    return lbl_80469FA8[kind];
+}
 
 // FIXME: 93.44 %, missing/extra + reloc-name; behaviour near.
-// One instruction extra: MWCC keeps the .rodata base
-// (lbl_80469FA8 and the two strings) in r30 from the prologue (one more
-// saved register, shifting r20-r30); the original addresses each with its
-// own lis/addi. Also the copy of params' 0x1C/0x1D stores 0x1C before
-// loading 0x1D (the original loads both first).
 // Draws the shadow of kind `flags & 0x3FF` under pos on `layer` (flags -1:
-// none): "kage_sob.bin" frame `kind` scaled by lbl_80469FA8[kind], kind 7 a
+// none): "kage_sob.bin" frame `kind` scaled by getShadowScale(kind), kind 7 a
 // flattened copy of the sprite `name` (or the loaded `res`), and kind 0 on
 // tile 0x39 at z 0 an animated "enemy_both2_sob.bin" frame instead. No
 // shadow on the tiles in lbl_8053F730 (the last one only unless
@@ -2053,7 +2056,7 @@ void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_8
             }
         } else {
             JGeometry::TVec3f p(pos->x, pos->y, 0.0f);
-            f32 scale = lbl_80469FA8[kind];
+            f32 scale = getShadowScale(kind);
             if (layer < 8) {
                 void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&p, r, kind, &sp, scale, 1.0f);
