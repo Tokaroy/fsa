@@ -108,7 +108,7 @@ void Poe_8049F330::init() {
     field_0x25c = lbl_8049F2B8[row * 8 + field_0x238[8]];
 }
 
-// FIXME(shotgun): 99.95 %, operands; behaviour clean.
+// FIXME(shotgun): 99.96 %, operands; behaviour clean.
 void Poe_8049F330::update() {
     u16 angle = 0;
     s32 dir = 0;
