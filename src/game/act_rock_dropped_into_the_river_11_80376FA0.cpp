@@ -72,18 +72,12 @@ void RockDroppedIntoTheRiver11_804AE7D8::init() {
     }
 }
 
-// FIXME: 99.27 %, missing/extra; behaviour clean.
+// FIXME: 99.49 %, regalloc-only; behaviour clean.
 // Float registers of the box sums differ (here and in
 // touchesPlayer, whose layer, counter and sums sit in r30/f27-f30 instead of
-// r28/f27-f30 in another order), the field_0x260 < 10 test branches to the
-// increment instead of falling into it.
+// r28/f27-f30 in another order).
 void RockDroppedIntoTheRiver11_804AE7D8::update() {
-    // Stack slots: the box (highest), then the position and the probe
-    // result, as the original's frame lays them out.
     JGeometry::TBox2f box(mBox);
-    JGeometry::TVec3f pos;
-    JGeometry::TVec3f tmp;
-
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
@@ -165,24 +159,23 @@ void RockDroppedIntoTheRiver11_804AE7D8::update() {
                             } else if (index + 1 != field_0x258) {
                                 return;
                             }
-                            if (index < 0 || index >= 4) {
-                                return;
-                            }
-                            fn_80238E08(mSerial);
-                            mVel_0x3c.x = lbl_80475148[index][0];
-                            mVel_0x3c.y = lbl_80475148[index][1];
-                            mVel_0x3c.z = lbl_80475148[index][2];
-                            field_0x248.set(mPos);
-                            startSound_801F0E34(0x30004, 0);
-                            mPos += mVel_0x3c;
-                            if (index == 0) {
-                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31a, 1, 1, NULL, NULL, true, 1.0f);
-                            } else if (index == 1) {
-                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31b, 1, 1, NULL, NULL, true, 1.0f);
-                            } else if (index == 2) {
-                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31c, 1, 1, NULL, NULL, true, 1.0f);
-                            } else {
-                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
+                            if (index >= 0 && index < 4) {
+                                fn_80238E08(mSerial);
+                                mVel_0x3c.x = lbl_80475148[index][0];
+                                mVel_0x3c.y = lbl_80475148[index][1];
+                                mVel_0x3c.z = lbl_80475148[index][2];
+                                field_0x248.set(mPos);
+                                startSound_801F0E34(0x30004, 0);
+                                mPos += mVel_0x3c;
+                                if (index == 0) {
+                                    mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31a, 1, 1, NULL, NULL, true, 1.0f);
+                                } else if (index == 1) {
+                                    mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31b, 1, 1, NULL, NULL, true, 1.0f);
+                                } else if (index == 2) {
+                                    mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31c, 1, 1, NULL, NULL, true, 1.0f);
+                                } else {
+                                    mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
+                                }
                             }
                         }
                     }
@@ -201,7 +194,7 @@ void RockDroppedIntoTheRiver11_804AE7D8::update() {
             }
         }
         for (s32 player = 0; player < 4; player++) {
-            if (touchesPlayer(player, tmp)) {
+            if (touchesPlayer(player)) {
                 fn_8022DF48(player);
             }
         }
@@ -241,7 +234,8 @@ void RockDroppedIntoTheRiver11_804AE7D8::rewriteTiles() {
 // Whether one of the player's eight probe points (fn_8022E088) lies in the
 // actor's box; only players on the actor's layer count.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
-bool RockDroppedIntoTheRiver11_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
+bool RockDroppedIntoTheRiver11_804AE7D8::touchesPlayer(s32 player) {
+    JGeometry::TVec3f point;
     s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
