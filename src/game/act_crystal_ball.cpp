@@ -911,7 +911,7 @@ void CrystalBall_804AB308::draw() {
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, frame + 0x90, 0, 2, -1, held, 0, 0);
 }
 
-// FIXME(shotgun): 99.04 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.11 %, scheduling+regalloc + reloc-name; behaviour drift.
 void CrystalBall_804AB308::die_0x24() {
     s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (code == 3 && mPos.z < 0.1f) {
