@@ -114,6 +114,12 @@ bool fn_80453848(JPABaseEmitter* emitter);
 // Data of game/collect_screen_8044C7F0.cpp.
 extern CollectScreen_804B1D58* lbl_8053AF40;
 
+// Header inline: fn_8044F680 on the screen at lbl_8053AF40. cls_804AE9B0::fn_8037AEAC
+// copies its result per branch, which only an inlined wrapper gives.
+inline s32 fn_8044F680_lbl_8053AF40() {
+    return lbl_8053AF40->fn_8044F680();
+}
+
 // 0x8044F664 (game/collect_screen_8044C7F0.cpp): 9 without lbl_8053AF40, else its
 // field_0x184.
 s32 fn_8044F664();

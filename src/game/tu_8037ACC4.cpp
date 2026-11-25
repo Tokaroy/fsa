@@ -55,16 +55,12 @@ void cls_804AE9B0::fn_8037AF4C() {
     }
 }
 
-// FIXME: 92.5%. The original copies the result into r31 in each branch
-// (mr r31, r3 right after the two calls); ours does one mr after the join
-// and schedules it after the lbl_8053AD70 load. if/else, ternary and an
-// inline getter all give ours.
 s32 cls_804AE9B0::fn_8037AEAC() {
     s32 result;
     if (gGameRoot_8053AAF8->field_0x7f) {
-        result = lbl_8053AF40->fn_8044F680();
+        result = fn_8044F680_lbl_8053AF40();
     } else {
-        result = lbl_8053AF48->fn_80453B14();
+        result = fn_80453B14_lbl_8053AF48();
     }
     if (fn_8037AE60() != 9) {
         field_0xc = 0;
