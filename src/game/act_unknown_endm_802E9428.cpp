@@ -142,6 +142,7 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
 
 // Still differs: three of the four tickTimer() tests fold to cmpwi (the original keeps the byte);
 // cases 0 and 7 lay their shared block out first and branch back to it.
+// FIXME: 93.97 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -502,7 +503,7 @@ bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
 
 // Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
 // Still differs: register choice and instruction order only.
-// FIXME: 91.37 %, missing/extra; behaviour drift.
+// FIXME: 99.06 %, scheduling+regalloc; behaviour clean.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
     f32 ty = field_0x244.y;
     f32 tx = field_0x244.x;
