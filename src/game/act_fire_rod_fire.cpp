@@ -238,7 +238,7 @@ void FireRodFire_804A89F0::update() {
     case 0: {
         if (field_0x278 != mLayer_0x4) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                if (8 > mLayer_0x4) {
+                if (mLayer_0x4 < 8) {
                     JGeometry::TVec3f pos = mPos;
                     switch (mDir_0x98) {
                     case 0:
