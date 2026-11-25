@@ -21,9 +21,11 @@ static inline bool isNotSpawnedItem(u32 id) {
     case ACTOR_LSTI:
     case ACTOR_CRTL:
     case ACTOR_NNJN:
-        return false;
+        break;
+    default:
+        return true;
     }
-    return true;
+    return false;
 }
 
 void CrystalBallGenerator_8049E5B8::init() {
