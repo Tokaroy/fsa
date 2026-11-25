@@ -110,8 +110,6 @@ void cls_804AFAB0::fn_803B8188() {
     fn_8013A884(&color);
 }
 
-// FIXME(shotgun): 99.96 %, different; behaviour drift.
-// (one branch of the inner switch)
 void cls_804AFAB0::fn_803B7F6C() {
     switch (field_0x294) {
     case 0:
@@ -147,8 +145,6 @@ void cls_804AFAB0::fn_803B7F6C() {
         break;
     case 2:
         switch (field_0x295) {
-        case 0:
-            break;
         case 1:
             field_0x280--;
             if (field_0x280 > 0) {
@@ -156,6 +152,9 @@ void cls_804AFAB0::fn_803B7F6C() {
                 field_0x295 = 2;
                 field_0x29b = 1;
             }
+            break;
+        case 2:
+        case 3:
             break;
         }
         break;
