@@ -594,9 +594,10 @@ void PrincessZelda_8049CEE0::stepSpeed(f32 dist) {
     }
 }
 
-// FIXME: 99.92 %, operands; behaviour drift.
+// FIXME: 99.98 %, operands; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
 bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
+    s32 limtSerial;
     field_0x32c = field_0x328;
     field_0x328 = state;
     field_0x338 = 0;
@@ -657,7 +658,7 @@ bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
                 fn_8023764C(i, 0);
             }
         }
-        s32 limtSerial = field_0x310;
+        limtSerial = field_0x310;
         if (limtSerial >= 0) {
             ActorBase_804A5770* limt = getActorManager_801F856C()->findActorBySerial_801F666C(limtSerial);
             if (limt != NULL && limt->mActorId == 'LIMT') {
@@ -676,17 +677,16 @@ bool PrincessZelda_8049CEE0::setState_801096C8(s32 state) {
         field_0x30c = 0;
         field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
         break;
-    case 15:
+    case 15: {
         if (field_0x2fc > 0 && field_0x320 == 0) {
             mRail.fn_800FE3EC(field_0x2fc, mPos, mLayer_0x4);
         }
         fn_8023077C();
-        {
-            JGeometry::TVec3f pos = mPos;
-            pos.y += -24.0f;
-            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
-        }
+        JGeometry::TVec3f pos(mPos);
+        pos.y += -24.0f;
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
         break;
+    }
     case 16:
         fn_80230534(false);
         mSpriteAnim.startAnim_801D22DC(7, 2, false);
