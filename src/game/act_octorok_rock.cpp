@@ -260,13 +260,12 @@ void OctorokRock_8049F5D8::draw() {
     case 0:
         if (mLayer_0x4 == 8) {
             GameView_804A9950* view = getGameView_802D6A9C();
-            // FIXME: 94.3 %. The original loads the four words of the view's box
-            // (0xCC-0xDB) into registers before storing them to the stack copy;
-            // here each word is loaded and stored in turn, and the position's
-            // scheduling follows from that.
+            // Order of the box copy's loads and stores still differs.
             JGeometry::TBox2f box;
             box = view->mVisibleBox;
-            JGeometry::TVec3f pos(mPos.x + box.i.x, mPos.y + box.i.y, mPos.z);
+            JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+            pos.x += box.i.x;
+            pos.y += box.i.y;
             drawSobSprite_801EF574("enemy_gc_sob.bin", 0x25, &pos, &params);
             drawSpriteScaled_801F02BC("enemy_both2_sob.bin", 0x317, &params, 1, 0, false, 1.0f, 1.0f);
         } else {
