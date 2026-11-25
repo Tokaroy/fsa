@@ -24,7 +24,6 @@ void cls_80204638::fn_80204ABC(bool reset) {
     }
 }
 
-// FIXME(shotgun): 98.46 %, different; behaviour near.
 void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
     ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == NULL) {
@@ -40,7 +39,6 @@ void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
     }
 }
 
-// FIXME(shotgun): 96.25 %, different; behaviour near.
 void cls_80204638::fn_802049E0(ActorBase_804A5770* actor) {
     ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->getSlotIndex()];
     if (slot[0] == actor) {
@@ -98,7 +96,7 @@ inline s32 cls_80204638::getNearest(const JGeometry::TVec3f* pos) const {
     return nearest;
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.17 %, regalloc-only; behaviour clean.
 bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
     if (mCount >= 10) {
         return false;
