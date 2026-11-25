@@ -746,38 +746,14 @@ void EscortBase_8049E0C8::fn_80122548() {
 // FIXME(shotgun): 96.87 %, different; behaviour drift.
 void EscortBase_8049E0C8::fn_80122148() {
     if (fn_8012285C() >= 0) {
-        s32 state = fn_8012285C();
-        s32 slot = state;
-        for (s32 i = 0; i < 4; i++) {
-            if (state == getPlayerHeldPlayer_8023ECF0(i)) {
-                slot = i;
-                break;
-            }
-        }
-        bool hidden = fn_80234E30(slot) || fn_80235448(state);
-        if (hidden || !fn_8023BCD4(fn_8012285C())) {
+        if (isPlayerHidden(fn_8012285C()) || !fn_8023BCD4(fn_8012285C())) {
             mDrawEnabled = false;
         } else {
             mDrawEnabled = true;
         }
         field_0x331 = 0;
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(fn_8012285C());
-        s32 q = fn_8012285C();
-        s32 found;
-        if (!fn_8023E98C(q)) {
-            found = -1;
-        } else {
-            found = 0;
-            while (found < 4) {
-                if (fn_8023ED8C(found) && q == getPlayerHeldPlayer_8023ECF0(found) && fn_8022D75C(found)) {
-                    break;
-                }
-                found++;
-            }
-            if (found >= 4) {
-                found = -1;
-            }
-        }
+        s32 found = findArrivedSlot(fn_8012285C());
         if (found >= 0 && found != fn_8012285C()) {
             pos.z = getPlayerPos_8023E724(found)->z;
         }
