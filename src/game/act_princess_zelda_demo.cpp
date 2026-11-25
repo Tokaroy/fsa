@@ -218,7 +218,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 98.91 %, different; behaviour drift.
+// FIXME: 99.29 %, different; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -347,69 +347,24 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         break;
     case 11:
         moveToward_801CD950(&mPos.y, getPlayerPos_8023E724(0)->y - 300.0f, 0.7f);
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            if (pos.y <= field_0x2dc.y) {
-                pos.y = field_0x2dc.y;
-                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            } else {
-                pos += field_0x2e8;
-                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-            }
-        }
+        inl_80110E9C();
         break;
     case 12:
         moveToward_801CD950(&mPos.y, getPlayerPos_8023E724(0)->y - 300.0f, 0.7f);
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            if (pos.y <= field_0x2dc.y) {
-                pos.y = field_0x2dc.y;
-                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            } else {
-                pos += field_0x2e8;
-                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-            }
-        }
+        inl_80110E9C();
         break;
     case 14:
         if (fn_8011921C()->field_0x8 >= 30) {
-            for (s32 i = 0; i < 4; i++) {
-                JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-                if (pos.y <= field_0x2dc.y) {
-                    pos.y = field_0x2dc.y;
-                    fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-                } else {
-                    pos += field_0x2e8;
-                    fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-                }
-            }
+            inl_80110E9C();
             mPos += field_0x2e8;
         }
         break;
     case 15:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            if (pos.y <= field_0x2dc.y) {
-                pos.y = field_0x2dc.y;
-                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            } else {
-                pos += field_0x2e8;
-                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-            }
-        }
+        inl_80110E9C();
         mPos += field_0x2e8;
         break;
     case 16:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            if (pos.y <= field_0x2dc.y) {
-                pos.y = field_0x2dc.y;
-                fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            } else {
-                pos += field_0x2e8;
-                fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
-            }
-        }
+        inl_80110E9C();
         mPos += field_0x2e8;
         if (mPos.y <= mSpawnPos.y) {
             mPos.y = mSpawnPos.y;
@@ -1408,6 +1363,22 @@ void PrincessZeldaDemo_8049D208::inl_8011093C(s32 dir) {
         if (dir + 6 != mAnim0.mAnim) {
             mAnim0.startAnim_801D22DC(dir + 6, 2, false);
             mAnim0.setFrame_801D1F14(0.0f);
+        }
+    }
+}
+
+// R2 helper (inlined at 5 call sites). Adds field_0x2e8 to each of the four players' positions;
+// one whose y has come down to field_0x2dc.y is held there. In the original each copy's local sits
+// below startTalk's on the stack.
+inline void PrincessZeldaDemo_8049D208::inl_80110E9C() {
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        if (pos.y <= field_0x2dc.y) {
+            pos.y = field_0x2dc.y;
+            fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
+        } else {
+            pos += field_0x2e8;
+            fn_80230498(i, &pos, mAnim1.mCel, 0xFF, -0x80, -0x80, true);
         }
     }
 }
