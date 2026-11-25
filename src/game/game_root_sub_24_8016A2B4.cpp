@@ -636,29 +636,33 @@ void GameRootSub24_8016A3AC::fn_8016D284() {
     }
 }
 
-// FIXME: 81.17 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 86.30 %, different + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016CB14() {
     if (field_0x1c7) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         f32 scrollB = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
-        f32 scrollC = 0.0009765625f * (f32)(field_0x1c0 & 0x3FF);
         JGeometry::TVec3f center;
+        JGeometry::TVec3f centerB;
+        JGeometry::TVec3f centerC;
         JGeometry::TVec3f half;
+        JGeometry::TVec3f halfB;
+        JGeometry::TVec3f halfC;
         pool_8053D938(center, half);
-        JGeometry::TVec3f centerB(center);
-        JGeometry::TVec3f centerC(center);
-        JGeometry::TVec3f halfB(half);
-        JGeometry::TVec3f halfC(half);
+        centerB.set(center);
+        centerC.set(center);
+        halfB.set(half);
+        halfC.set(half);
         centerB.scale(0.5f);
         centerB.x -= scrollB;
         centerB.y -= scrollB;
         halfB.scale(2.0f);
         centerC.mul(JGeometry::TVec3f(2.0f, 1.5f, 1.0f));
-        centerC.x -= scrollC;
-        halfC.mul(JGeometry::TVec3f(2.0f, 1.5f, 1.0f));
         center.mul(JGeometry::TVec3f(4.0f, 3.0f, 1.0f));
+        halfC.mul(JGeometry::TVec3f(2.0f, 1.5f, 1.0f));
         half.mul(JGeometry::TVec3f(4.0f, 3.0f, 1.0f));
+        f32 scrollC = 0.0009765625f * (f32)(field_0x1c0 & 0x3FF);
+        centerC.x -= scrollC;
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
         GXClearVtxDesc();
