@@ -1684,7 +1684,10 @@ bool Player_804A6F38::startTransition_80290070(s32 layer, const JGeometry::TVec3
         }
     } else if (kind == 0x17 || kind == 0x18) {
         if (requestState_80251AEC(0x1C)) {
-            JGeometry::TVec3f offset(0.0f, from->y - mPos.y, 0.0f);
+            JGeometry::TVec3f offset;
+            offset.x = 0.0f;
+            offset.y = from->y - mPos.y;
+            offset.z = 0.0f;
             fn_80252BAC(&offset);
         } else {
             return false;
