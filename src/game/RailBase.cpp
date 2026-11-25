@@ -34,7 +34,7 @@ bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     return true;
 }
 
-u8 cls_800FE3EC::fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer) {
+s32 cls_800FE3EC::fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer) {
     f32 best = 10000.0f;
     for (u16 i = 0; i < field_0x2; i++) {
         if (layer == fn_800FE25C(i)) {

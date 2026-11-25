@@ -181,7 +181,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         setState_801C3B7C(0x1E);
         return;
     }
-    s32 player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
+    const s32 player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
     if (player < 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
             setState_801C3B7C(0xF);
@@ -219,10 +219,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         u8 entry = field_0x358.fn_80214244()->field_0x3;
         pos = mPos;
         u8 index = field_0x358.fn_80214244()->fn_800FE2E4(&pos, mLayer_0x4);
-        cls_800FE3EC* rail = field_0x358.fn_80214244();
-        if (entry < rail->field_0x2) {
-            rail->field_0x3 = entry;
-        }
+        field_0x358.fn_80214244()->setIndex(entry);
         getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), index);
         JGeometry::TVec3f target = railPos;
         f32 dx = target.x - mPos.x;

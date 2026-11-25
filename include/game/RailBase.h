@@ -48,7 +48,7 @@ public:
     // RailBase.cpp (0x800FE2E4, not written yet): the entry index of the
     // point nearest to *pos on `layer`, as getRailPointPos_800FE294 takes it; game/
     // act_shadow_link_2_801C5B08.cpp (fn_801C5B08) calls it on the current buffer.
-    u8 fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer);
+    s32 fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer);
     void fn_800FDE38();
     // RailBase.cpp (0x800FDEA0, not written yet): r3 is the rail buffer; game/
     // act_princess_zelda.cpp passes the actor position, 1.0f, an out vector
