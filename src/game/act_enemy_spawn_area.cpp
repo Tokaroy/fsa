@@ -11,6 +11,7 @@ static u32 lbl_804A2C80[] = {
 };
 
 // Registers only: the -1 for mSerials and the final zero for mState are in swapped registers (r0/r4).
+// FIXME: 98.45 %, regalloc-only; behaviour clean.
 void EnemySpawnArea_804A2CB0::init() {
     field_0x28c = 0;
     field_0x290 = 0;
@@ -53,7 +54,8 @@ void EnemySpawnArea_804A2CB0::init() {
     mState = 0;
 }
 
-// FIXME: 99.6%. Register allocation only: the two random-offset sequences use r4/r5
+// FIXME: 99.56 %, scheduling+regalloc; behaviour clean.
+// Register allocation only: the two random-offset sequences use r4/r5
 // swapped for the global pointer and the LCG multiplier, and in the second loop the
 // counters i and gone are in r31/r30 here, r30/r31 in the original.
 void EnemySpawnArea_804A2CB0::update() {
