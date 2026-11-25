@@ -48,7 +48,7 @@ void GoalOpening_8049DB30::init() {
     getGameView_802D6A9C()->fn_802D7440(false);
 }
 
-// FIXME: 95.34 %, different + reloc-name; behaviour near.
+// FIXME: 99.25 %, missing/extra; behaviour clean.
 // Ours loads the 1 of the player-bit shift into r0 and a second 1 for the flag;
 // the original shares one li r5, 1 for both.
 void GoalOpening_8049DB30::update() {
