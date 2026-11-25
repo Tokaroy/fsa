@@ -21,8 +21,14 @@ public:
     void fn_8034ACF4();
     // Not in the binary: a plain function that init and update inline.
     void pool_80542558();
-    bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
+    // openMessage_8038AD24 takes the position by value. The original loads the serial and layer
+    // before that copy (parameters here) and the partner after it (read inside).
+    bool talk(u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
+        return openMessage_8038AD24(field_0x240, msg, serial, layer, pos, flags);
+    }
+    // The same with the current message, which the original reads after the position copy.
+    bool talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
+        return openMessage_8038AD24(field_0x240, field_0x2c0, serial, layer, pos, flags);
     }
     // Not in the binary (update inlines it; the loop leaves with li 1 / li 0): whether a cucco
     // ('NIWA') on this layer stands on the ground inside `area` and is not carried.

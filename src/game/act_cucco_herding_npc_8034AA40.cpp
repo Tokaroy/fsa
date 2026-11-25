@@ -91,6 +91,8 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
 }
 
 // FIXME(shotgun): 96.34 %, missing/extra + reloc-name; behaviour near.
+// The original reuses the loaded field_0x230 (case 5 test) and c->field_0x25c (the field_0x284
+// store); ours loads each again.
 void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -128,7 +130,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
+            if (talk(mLayer_0x4, mSerial, mPos, 0)) {
                 field_0x230 = 1;
             }
         }
@@ -220,7 +222,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0) {
                 fn_8038938C(field_0x240, field_0x24c);
-                if (talk(field_0x240, 0x42f, mSerial, mLayer_0x4, mPos, 0x112)) {
+                if (talk(0x42f, mLayer_0x4, mSerial, mPos, 0x112)) {
                     field_0x230 = 5;
                 }
             }
@@ -233,13 +235,13 @@ void CuccoHerdingNPC_804AC8C0::update() {
             gGameRoot_8053AAF8->startStageMusic_80138B7C();
             JGeometry::TBox2f area;
             area = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
-            for (s32 i = 0; i < 4; i++) {
-                field_0x274[i] = 0;
-            }
             area.i.x += mPos.x;
             area.i.y += mPos.y;
             area.f.x += mPos.x;
             area.f.y += mPos.y;
+            for (s32 i = 0; i < 4; i++) {
+                field_0x274[i] = 0;
+            }
             s32 cucco = -1;
             for (;;) {
                 cucco = getActorManager_801F856C()->findNextActorById_801F78F4('NIWA', cucco);
@@ -303,7 +305,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                     break;
                 }
                 if (fn_802300EC(field_0x240)) {
-                    if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 1)) {
+                    if (talk(mLayer_0x4, mSerial, mPos, 1)) {
                         field_0x230 = 7;
                     }
                 }
@@ -371,7 +373,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                     fn_803894BC(field_0x240, field_0x254);
                     break;
                 }
-                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0x112)) {
+                if (talk(mLayer_0x4, mSerial, mPos, 0x112)) {
                     field_0x230 = 10;
                 }
             }
@@ -449,7 +451,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                 break;
             }
             if (fn_802300EC(field_0x240)) {
-                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
+                if (talk(mLayer_0x4, mSerial, mPos, 0)) {
                     field_0x230 = 12;
                 }
             }
