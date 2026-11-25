@@ -274,7 +274,7 @@ void SeesawLift_804AD348::fn_8035AA54() {
 // Not auto-inlined: fn_8035AC84 and fn_8035AE9C call fn_8035A860 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.16 %, regalloc-only; behaviour clean.
+// FIXME: 99.24 %, regalloc-only; behaviour clean.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
         f32 slide = 0.3f * __fabsf(JMath::sincosTable_.sinShort(field_0x230)) *
