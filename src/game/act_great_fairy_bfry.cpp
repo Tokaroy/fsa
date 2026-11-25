@@ -140,17 +140,21 @@ void GreatFairy_804AF338::init() {
     mSpawnParam_0x90 = mSpawnParam_0x90 & 0xF;
 }
 
+static inline s32 getFlagBit(const s32* flags, s32 player) {
+    return flags[fn_8022F340(player)];
+}
+
 // FIXME(shotgun): 93.33 %, missing/extra + reloc-name; behaviour drift.
-// (partial)
-// FIXME(shotgun): states 2-13 (0x8038E900 onward) and the tail of state 1 (0x8038E8D4 and the
-// end of the function at 0x8038F31C) are not written.
+// Still differs: state 0's switch on mSpawnParam_0x90 has a `blt` to the default block between
+// its `beq` and `b` in the original; ours has no such branch.
 void GreatFairy_804AF338::update() {
     if (field_0x248 != 1) {
+        JGeometry::TVec3f pos;
         JGeometry::TBox2f box;
         if (mSpawnParam_0x90 != 3) {
             if (gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1 && mLayer_0x4 >= 8) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
+                    if (getPlayerLayer_8023DE58(i) == getField_0x4() && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
                         field_0x24c[fn_8022F340(i)] == 0)
                     {
                         fn_803037D4(fn_8022F340(i), 0x11);
@@ -169,14 +173,14 @@ void GreatFairy_804AF338::update() {
             fn_80239914(&box, mLayer_0x4, mSerial);
         }
         JGeometry::TBox2f near(-24.0f, -24.0f, 24.0f, 24.0f);
-        JGeometry::TBox2f far(-36.0f, -36.0f, 36.0f, 36.0f);
         near.i.x += mSpawnPos.x;
-        near.f.x += mSpawnPos.x;
-        far.i.x += mSpawnPos.x;
-        far.f.x += mSpawnPos.x;
         near.i.y += mSpawnPos.y;
+        near.f.x += mSpawnPos.x;
         near.f.y += mSpawnPos.y;
+        JGeometry::TBox2f far(-36.0f, -36.0f, 36.0f, 36.0f);
+        far.i.x += mSpawnPos.x;
         far.i.y += mSpawnPos.y;
+        far.f.x += mSpawnPos.x;
         far.f.y += mSpawnPos.y;
         switch (mState) {
         case 0: {
@@ -203,7 +207,7 @@ void GreatFairy_804AF338::update() {
                     field_0x260 = 0x25F;
                     break;
                 }
-                if (openMessage_8038AD24(field_0x234, field_0x260, mSerial, mLayer_0x4, mPos, 0x2080)) {
+                if (openMessage_8038AD24(field_0x234, field_0x260, getSerial(), getField_0x4(), mPos, 0x2080)) {
                     field_0x238 = field_0x234;
                     mState = 1;
                 }
@@ -231,8 +235,8 @@ void GreatFairy_804AF338::update() {
                     break;
                 case 2:
                     if (fn_80236E3C(fn_8022F340(field_0x234)) ||
-                        (field_0x274[fn_8022F340(field_0x234)] != 0 &&
-                         getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x274[fn_8022F340(field_0x234)]) == 1))
+                        (getFlagBit(field_0x274, field_0x234) != 0 &&
+                         getGameView_802D6A9C()->isScreenFlagSet_802D800C(getFlagBit(field_0x274, field_0x234)) == 1))
                     {
                         field_0x260 = 0x267;
                         fn_8038470C(field_0x234, field_0x260);
@@ -244,8 +248,8 @@ void GreatFairy_804AF338::update() {
                         if (field_0x270 >= 0) {
                             field_0x29c = 0xB;
                             mState = 5;
-                            if (field_0x274[fn_8022F340(field_0x234)] != 0) {
-                                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x274[fn_8022F340(field_0x234)], true, 0xFF);
+                            if (getFlagBit(field_0x274, field_0x234) != 0) {
+                                getGameView_802D6A9C()->setSwitchBit_802D8050(getFlagBit(field_0x274, field_0x234), true, 0xFF);
                             }
                         }
                     }
@@ -268,14 +272,14 @@ void GreatFairy_804AF338::update() {
             }
             break;
         case 3:
-            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.getField0xd8(fn_8022F340(field_0x234)) &&
                 field_0x25c == 0 && fn_8023061C(field_0x234, false) == 1)
             {
                 field_0x25c = 0x1E;
                 field_0x29c = 0;
                 mState = 6;
             }
-            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerMaxLife_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.getField0xd8(fn_8022F340(field_0x234)) &&
                 field_0x25c > 0)
             {
                 if (field_0x25c % 10 == 0) {
@@ -398,7 +402,7 @@ void GreatFairy_804AF338::update() {
             break;
         case 10: {
             field_0x284 += field_0x290;
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x234);
+            pos = *getPlayerPos_8023E724(field_0x234);
             if (pos.y - field_0x284.y < 8.0f) {
                 field_0x264 = 0;
                 mState = 11;
@@ -422,7 +426,6 @@ void GreatFairy_804AF338::update() {
             break;
         }
         case 11: {
-            JGeometry::TVec3f pos;
             pos.set(*getPlayerPos_8023E724(field_0x234));
             s32 idx;
             if (field_0x264 < 10) {
@@ -449,7 +452,7 @@ void GreatFairy_804AF338::update() {
                         mLayer_0x4, &field_0x284, 0x563, 0, 1, NULL, NULL, true, 0.6f);
                 }
                 if (field_0x264 >= 100) {
-                    if (fn_8038BD08(field_0x234, field_0x260, mLayer_0x4, mSpawnPos, 0x2022) == 1) {
+                    if (fn_8038BD08(field_0x234, field_0x260, getField_0x4(), mSpawnPos, 0x2022) == 1) {
                         mState = 12;
                         if (field_0x29c == 10) {
                             fn_80236ED8(fn_8022F340(field_0x234), 2);
@@ -494,12 +497,12 @@ void GreatFairy_804AF338::update() {
             }
             break;
         case 13:
-            if (getPlayerLife_80237774(fn_8022F340(field_0x234)) <= lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerLife_80237774(fn_8022F340(field_0x234)) <= lbl_80529DEC.getField0xd8(fn_8022F340(field_0x234)) &&
                 field_0x25c == 0)
             {
                 markDead_801F3668();
             }
-            if (getPlayerLife_80237774(fn_8022F340(field_0x234)) <= lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
+            if (getPlayerLife_80237774(fn_8022F340(field_0x234)) <= lbl_80529DEC.getField0xd8(fn_8022F340(field_0x234)) &&
                 field_0x25c > 0)
             {
                 if (field_0x25c % 10 == 0) {
@@ -522,12 +525,11 @@ void GreatFairy_804AF338::update() {
     }
     if (mSpawnParam_0x90 != 3 && gGameRoot_8053AAF8->getPlayerCount_80138A30() > 1) {
         u8 active[4];
-        active[0] = 0;
-        active[1] = 0;
-        active[2] = 0;
-        active[3] = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !isPlayerDead_80236B50(i)) {
+            active[i] = 0;
+        }
+        for (s32 i = 0; i < 4; i++) {
+            if (getPlayerLayer_8023DE58(i) == getField_0x4() && !fn_8022F478(i) && !isPlayerDead_80236B50(i)) {
                 active[fn_8022F340(i)] = 1;
             }
         }
@@ -568,10 +570,6 @@ void GreatFairy_804AF338::draw() {
             mPos = savedPos;
         }
     }
-}
-
-static inline s32 getFlagBit(const s32* flags, s32 player) {
-    return flags[fn_8022F340(player)];
 }
 
 void GreatFairy_804AF338::fn_8038DE74() {
