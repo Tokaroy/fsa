@@ -26,8 +26,37 @@ public:
     // field_0x32c; returns 0 or 1.
     bool fn_801D12CC();
 
-    /* 0x2A8 */ s32 mPathCount;
-    /* 0x2AC */ JGeometry::TVec2f mPath[16]; // waypoints (x, y)
+    // The waypoint list: fn_801D12CC addresses it from 0x2A8.
+    struct Path {
+        Path() : mCount(0) {}
+
+        // Appends (x, y) unless the list is full.
+        void push(const f32& x, const f32& y) {
+            s32 n = mCount;
+            if (n < 16) {
+                mPoints[n].x = x;
+                mPoints[n].y = y;
+                mCount++;
+            }
+        }
+
+        // Drops the first waypoint.
+        void popFront() {
+            if (mCount >= 1) {
+                s32 last = mCount - 1;
+                for (s32 i = 0; i < last; i++) {
+                    const JGeometry::TVec2f& next = mPoints[i + 1];
+                    mPoints[i] = next;
+                }
+                mCount = last;
+            }
+        }
+
+        /* 0x00 */ s32 mCount;
+        /* 0x04 */ JGeometry::TVec2f mPoints[16]; // waypoints (x, y)
+    };
+
+    /* 0x2A8 */ Path mPath;
     /* 0x32C */ JGeometry::TVec3f field_0x32c;
     /* 0x338 */ s32 field_0x338; // a player index, or -1
     /* 0x33C */ s16 field_0x33c; // an angle

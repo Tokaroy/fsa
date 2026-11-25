@@ -291,14 +291,14 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
         field_0x340 = -1;
         field_0x338 = -1;
         mTargetSpeed = 0.0f;
-        mPathCount = 0;
+        mPath.mCount = 0;
         field_0x368.fn_80217484();
         break;
     case 2:
         field_0x340 = -1;
         field_0x348 = 30;
         mTargetSpeed = lbl_8046A238[mType].field_0x0;
-        mPathCount = 0;
+        mPath.mCount = 0;
         mFlags |= ENEMY_FLAG_NO_MAP_HIT;
         break;
     case 1:
@@ -314,7 +314,7 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
-        mPathCount = 0;
+        mPath.mCount = 0;
         mFlags |= ENEMY_FLAG_NO_MAP_HIT;
         break;
     case 4:
@@ -323,13 +323,13 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
     case 5:
         field_0x340 = -1;
         field_0x338 = -1;
-        mPathCount = 0;
+        mPath.mCount = 0;
         break;
     case 6:
         field_0x340 = -1;
         field_0x348 = 30;
         mTargetSpeed = lbl_8046A238[mType].field_0x0;
-        mPathCount = 0;
+        mPath.mCount = 0;
         field_0x33c = getAngleToPlayer_801D0280(field_0x338) - 0x8000;
         break;
     case 7:
@@ -337,13 +337,13 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
         field_0x338 = -1;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        mPathCount = 0;
+        mPath.mCount = 0;
         break;
     case 8:
         field_0x340 = -1;
         field_0x338 = -1;
         mTargetSpeed = lbl_8046A238[mType].field_0x0;
-        mPathCount = 0;
+        mPath.mCount = 0;
         field_0x374.fn_8021BA30(field_0x33c);
         break;
     case 9:
@@ -351,7 +351,7 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
             field_0x340 = -1;
             field_0x338 = -1;
             mTargetSpeed = lbl_8046A238[mType].field_0x0;
-            mPathCount = 0;
+            mPath.mCount = 0;
             field_0x374.fn_8021BA30(field_0x33c);
         }
         break;
@@ -743,7 +743,7 @@ void Thief_804A5A30::move_0x98() {
             mVel_0x3c.z = 0.0f;
             if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0xc8)) {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
-                mPathCount = 0;
+                mPath.mCount = 0;
                 s32 player = field_0xc8;
                 if (hasPlayerLeader_8022F514(player)) {
                     player = getPlayerLeader_8022F3DC(player);
