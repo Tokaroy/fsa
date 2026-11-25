@@ -286,7 +286,6 @@ u8 GreatFairy_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 99.94 %, operands; behaviour drift.
 void GreatFairy_8049EB8C::setState_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
