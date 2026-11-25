@@ -209,7 +209,7 @@ void ActorBase_804A5770::savePrevPos() {
 
 void ActorBase_804A5770::draw() {}
 
-// FIXME: 99.32 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME: 99.39 %, regalloc-only + reloc-name; behaviour drift.
 // Register allocation only (r4-r11 in the switch prologue)
 // besides the data: the original's array initialisers are six separate
 // 4-byte objects (lbl_8053F728/72C 'NULL' at the very start of .sdata2,
@@ -391,7 +391,7 @@ void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
 // (ACTOR_GOLD) and five Force Gems (ACTOR_RUPY; Stone Arrghus' second form
 // three) thrown out at random, then the boss music ends (or GameRoot's
 // startStageMusic_80138B7C for Stone Arrghus' second form and the Helmaroc King).
-// FIXME: 98.96 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 98.99 %, regalloc-only; behaviour clean.
 // Register allocation only (the inlined random number
 // generator's scratch registers r5-r12); literals are @NNN until .sdata2 is
 // in order.
@@ -1766,7 +1766,7 @@ static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* 
     }
 }
 
-// FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 59.20 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (drawShadow_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
@@ -1977,7 +1977,7 @@ inline f32 getShadowScale(s32 kind) {
     return lbl_80469FA8[kind];
 }
 
-// FIXME: 93.44 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.17 %, scheduling+regalloc; behaviour clean.
 // Draws the shadow of kind `flags & 0x3FF` under pos on `layer` (flags -1:
 // none): "kage_sob.bin" frame `kind` scaled by getShadowScale(kind), kind 7 a
 // flattened copy of the sprite `name` (or the loaded `res`), and kind 0 on
