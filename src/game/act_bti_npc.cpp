@@ -6,7 +6,7 @@
 #include "game/Map.h"
 #include "JSystem/JMath/JMath.h"
 
-static const char* lbl_804A90F0[99] = {
+static const char* lbl_804A90F0[81] = {
     "d_iriguti_a.bti",
     "yaminosinden.bti",
     "koorinoshinden.bti",
@@ -88,6 +88,9 @@ static const char* lbl_804A90F0[99] = {
     "jen_red_tsume.bti",
     "hiroba.bti",
     "honoonotou_soto.bti",
+};
+
+static const char* lbl_804A9234[15] = {
     "d_iriguti_a_light.bti",
     "yaminosinden.bti",
     "koorinoshinden.bti",
@@ -103,6 +106,9 @@ static const char* lbl_804A90F0[99] = {
     "d_iriguti_h_light.bti",
     "d_iriguti_i_light.bti",
     "d_iriguti_k_light.bti",
+};
+
+static const char* lbl_804A9270[3] = {
     "umaana_1_hidari_kabuse.bti",
     "umaana_1_migi_kabuse.bti",
     "umaana_1_mae_kabuse.bti",
@@ -231,7 +237,7 @@ void BTINPC_804A927C::update() {
 }
 
 // FIXME: 93.21 %, missing/extra + reloc-name; behaviour near.
-// FIXME: the original hoists lbl_804A90F0's base into r29 (and the string-literal base into r30); register choice and order in the inlined setRotScaleMtxS16 also differ.
+// FIXME: register choice and order in the inlined setRotScaleMtxS16 differ.
 void BTINPC_804A927C::draw() {
     if (field_0x230 == 1) {
         Mtx mtx;
@@ -274,7 +280,7 @@ void BTINPC_804A927C::draw() {
                 params.field_0x10.a = 0x96;
                 params.field_0x2c = 0;
                 params.field_0x24 = 0;
-                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[0x51 + field_0x234]);
+                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A9234[field_0x234]);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res2, &params);
                 }
@@ -304,7 +310,7 @@ void BTINPC_804A927C::draw() {
             } else if (field_0x234 >= 0x37 && field_0x234 <= 0x39) {
                 params.field_0x2c = 0;
                 params.field_0x24 = 1;
-                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[0x60 + field_0x234 - 0x37]);
+                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A9270[field_0x234 - 0x37]);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res2, &params);
                 }
