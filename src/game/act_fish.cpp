@@ -54,10 +54,10 @@ void Fish_804AC658::init() {
         for (s32 x = 16; x < width; x += 16) {
             s32 packed = xi + 0x20;
             for (s32 y = 16; y < height; y += 16) {
-                JGeometry::TVec3f p;
+                JGeometry::TVec2f p;
                 p.x = x + x0;
                 p.y = y + y0;
-                s32 tile = getTileCollisionCodeAlt_802265FC(&p, mLayer_0x4);
+                s32 tile = getTileCollisionCodeAlt_802265FC((const JGeometry::TVec3f*)&p, mLayer_0x4);
                 if (tile == 0xD || tile == 0x3A) {
                     if (n >= 0x2C9) {
                         return;
