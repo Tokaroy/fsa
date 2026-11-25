@@ -20,7 +20,6 @@ void fn_802B7CD8(ActorBase_804A5770* actor);
 extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
 
 // 0x80439C78
-// FIXME: 99.90 %, same-text; behaviour drift.
 GameOverScreen_804B17A0::GameOverScreen_804B17A0() {
     lbl_8053AEC8 = this;
     field_0x4 = new J2DScreen;
@@ -346,16 +345,21 @@ void GameOverScreen_804B17A0::fn_80438E10(u8 flag) {
     fn_80439AB0();
 }
 
-// FIXME(shotgun): 98.44 %, missing/extra; behaviour clean.
+// The spawn goes through a helper: its arguments are evaluated (right to left) before
+// getActorManager_801F856C is called (docs/analysis/INLINE_LEADS.md, round 2).
+static inline s32 spawnActor(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 param, s32 arg_0x16c,
+                             s32 arg_0x110) {
+    return getActorManager_801F856C()->spawnActor_801F9484(id, layer, pos, param, arg_0x16c, arg_0x110);
+}
+
+// FIXME(shotgun): 99.72 %, regalloc-only; behaviour clean.
 // 0x80438C68
 void GameOverScreen_804B17A0::fn_80438C68() {
     switch (field_0x58) {
     case 0:
         if (field_0x44 == -1) {
-            s32 arg = field_0x48;
-            JGeometry::TVec3f* pos = getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(0));
-            s32 layer = getPlayerLayer_8023DE58(0);
-            field_0x44 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TNGL, layer, pos, arg, -1, -1);
+            field_0x44 = spawnActor(ACTOR_TNGL, getPlayerLayer_8023DE58(0),
+                                    getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(0)), field_0x48, -1, -1);
             field_0x5f = fn_8022ADB0();
             if (!field_0x5f) {
                 fn_8022ADE4();
