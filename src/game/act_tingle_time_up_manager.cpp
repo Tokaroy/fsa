@@ -77,7 +77,7 @@ static inline void removeForceGems() {
     }
 }
 
-// FIXME: 97.98 %, different; behaviour drift.
+// FIXME: 99.73 %, regalloc-only; behaviour drift.
 // FIXME: a few volatile float/int registers differ in the pos/vel expressions.
 void TingleTimeUpManager_804ACBF0::update() {
     if (mState != 0 && mState != 7) {
