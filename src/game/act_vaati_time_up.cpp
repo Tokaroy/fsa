@@ -10,9 +10,8 @@
 #include "game/act/act_vaati_time_up.h"
 
 // FIXME: 99.51 %, operands; behaviour clean.
-// mPos.y's sum takes f4/f5 where the original uses f5/f6, the
-// u32-to-float conversions differ in one li, and the epilogue reloads r0 and r31 in
-// the other order.
+// mPos.y's sum takes f4/f5 where the original uses f5/f6, and the epilogue
+// reloads r0 and r31 in the other order.
 void VaatiTimeUp_804ACCC0::init() {
     cls_801EBA14 rec;
 
@@ -54,7 +53,7 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2ec = -(0.4f * field_0x2dc) / 60.0f;
     field_0x2f0 = -(0.4f * field_0x2e0) / 60.0f;
     mVel_0x3c.x = -2.0f;
-    field_0x2b8 = 1;
+    field_0x2b8 = 0;
 }
 
 // FIXME: 96.07 %, missing/extra; behaviour drift.
