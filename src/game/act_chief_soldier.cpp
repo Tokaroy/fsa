@@ -16,7 +16,7 @@
 // Hit-box offsets.
 static f32 lbl_804A08C0[4][2] = {{-20.0f, -44.0f}, {20.0f, -46.0f}, {4.0f, -42.0f}, {-8.0f, -10.0f}};
 // Animation frames.
-static s32 lbl_804A08E0[4][4] = {{0, 1, 0, 2}, {3, 4, 3, 5}, {6, 7, 6, 8}, {9, 10, 9, 11}};
+static s32 lbl_804A08E0[16] = {0, 1, 0, 2, 3, 4, 3, 5, 6, 7, 6, 8, 9, 10, 9, 11};
 // The frame shown when the chief bumps into a wall.
 static s32 lbl_804A0920[4] = {6, 9, 3, 0};
 // Animation timings.
@@ -28,11 +28,11 @@ static s32 lbl_804A0940[40] = {
     27, 28, 29, 28, 27, 30, 31, 30,
     15, 5, 5, 3, 15, 5, 5, 3,
 };
-static s32 lbl_804A09E0[4][6] = {
-    {33, 32, 33, 34, 35, 36},
-    {38, 37, 38, 39, 40, 41},
-    {43, 42, 43, 44, 45, 46},
-    {49, 47, 48, 49, 50, 51},
+static s32 lbl_804A09E0[24] = {
+    33, 32, 33, 34, 35, 36,
+    38, 37, 38, 39, 40, 41,
+    43, 42, 43, 44, 45, 46,
+    49, 47, 48, 49, 50, 51,
 };
 static s32 lbl_804A0A40[6] = {3, 30, 2, 2, 2, 5};
 // Boxes.
@@ -355,7 +355,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
     case 0:
         if (field_0x240 == 0) {
             field_0x240 = lbl_804A0930[field_0x264];
-            field_0x280 = lbl_804A08E0[mDir_0x98][field_0x264];
+            field_0x280 = lbl_804A08E0[mDir_0x98 * 4 + field_0x264];
             field_0x264++;
             field_0x264 &= 3;
         }
@@ -390,7 +390,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xCB, 0, 3, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xCC, 0, 3, NULL, NULL, true, 1.0f);
             }
-            field_0x280 = lbl_804A09E0[mDir_0x98][field_0x264];
+            field_0x280 = lbl_804A09E0[mDir_0x98 * 6 + field_0x264];
             field_0x264++;
             if (field_0x264 == 6) {
                 field_0x240 += 15;
@@ -429,7 +429,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
                 break;
             }
             field_0x240 = lbl_804A0A40[field_0x264];
-            field_0x280 = lbl_804A09E0[mDir_0x98][field_0x264];
+            field_0x280 = lbl_804A09E0[mDir_0x98 * 6 + field_0x264];
             field_0x264--;
         }
         if (field_0x25c == 0) {
