@@ -77,8 +77,7 @@ static inline void beginShow(Goal_804A7EB0* self, JGeometry::TVec3f& pos, s32 d0
 }
 
 // The four burst effects at each shake offset; the actor then waits 10 frames in state 1.
-static inline void burst(Goal_804A7EB0* self) {
-    JGeometry::TVec3f pos;
+static inline void burst(Goal_804A7EB0* self, JGeometry::TVec3f& pos) {
     pos.z = self->mPos.z;
     for (s32 i = 0; i < 4; i++) {
         pos.x = self->mPos.x + (f32)lbl_8046C658[self->field_0x234][i];
@@ -159,21 +158,24 @@ Goal_804A7EB0::~Goal_804A7EB0() {
 // FIXME(shotgun): 97.06 %, different; behaviour near.
 // (states 0-2 only), missing/extra + reloc-name
 void Goal_804A7EB0::update() {
+    JGeometry::TVec3f pos;
+    JGeometry::TBox2f box;
+    s32 i;
     switch (field_0x230) {
     case 0:
         switch (field_0x238) {
         case 0:
             if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
-                burst(this);
+                burst(this, pos);
             }
             break;
         case 1:
             if (isScreenFlagSet_0x34()) {
-                burst(this);
+                burst(this, pos);
             }
             break;
         case 2:
-            burst(this);
+            burst(this, pos);
             break;
         }
         break;
@@ -198,7 +200,8 @@ void Goal_804A7EB0::update() {
                 if (id == 'HBMB') {
                     ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (bomb != NULL) {
-                        bomb->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -0.1f);
+                        JGeometry::TVec3f vel(0.0f, 0.0f, -0.1f);
+                        bomb->mVel_0x3c = vel;
                     }
                 }
             }
@@ -218,18 +221,17 @@ void Goal_804A7EB0::update() {
     case 3: {
         vfunc_0x54();
         u8 count = 0;
-        JGeometry::TVec3f pos;
         pos.z = mPos.z;
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             u8 n = gGameRoot_8053AAF8->getPlayerCount_80138A30();
             u8 found[4];
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 found[i] = 0;
             }
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 f32 dx = mPos.x + (f32)lbl_8046C658[field_0x234][i];
                 f32 dy = mPos.y + (f32)lbl_8046C6C8[field_0x234][i];
-                JGeometry::TBox2f box(mBox);
+                box.set(mBox);
                 box.addPos(dx, dy);
                 field_0x254[i] = -1;
                 for (s32 p = 0; p < n; p++) {
@@ -246,7 +248,7 @@ void Goal_804A7EB0::update() {
             }
             if (n == count && fn_8023077C()) {
                 s32 slot = 0;
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (found[i] == 0) {
                         for (; slot < 4; slot++) {
                             if (field_0x254[slot] < 0) {
@@ -260,7 +262,7 @@ void Goal_804A7EB0::update() {
                         slot++;
                     }
                 }
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (isPlayerBitSet(gGameRoot_8053AAF8, field_0x254[i]) == 1) {
                         fn_802382D0(field_0x254[i], false);
                     }
@@ -269,11 +271,10 @@ void Goal_804A7EB0::update() {
                 beginShow(this, pos, 0, 0, 0);
             }
         } else {
-            s32 i;
             for (i = 0; i < 4; i++) {
                 f32 dx = mPos.x + (f32)lbl_8046C658[field_0x234][i];
                 f32 dy = mPos.y + (f32)lbl_8046C6C8[field_0x234][i];
-                JGeometry::TBox2f box(mBox);
+                box.set(mBox);
                 box.addPos(dx, dy);
                 field_0x254[i] = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
                 if (field_0x254[i] == getRepresentativePlayer_8022EA0C(0)) {
@@ -315,7 +316,7 @@ void Goal_804A7EB0::update() {
         if (field_0x304 == 0) {
             field_0x308--;
             if (field_0x308 != 0) {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (mEmitters[2][i] != NULL) {
                         mEmitters[2][i]->setGlobalAlpha(field_0x308);
                     }
@@ -327,7 +328,7 @@ void Goal_804A7EB0::update() {
                     }
                 }
             } else {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     invalidateEmitter(mEmitters[2][i]);
                     invalidateEmitter(mEmitters[3][i]);
                     invalidateEmitter(mEmitters[4][i]);
@@ -342,7 +343,7 @@ void Goal_804A7EB0::update() {
         if (field_0x244 == 0) {
             field_0x248++;
             field_0x244 = lbl_8046C7A0[field_0x248];
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (field_0x254[i] >= 0) {
                     fn_80230498(field_0x254[i], &field_0x264[i], field_0x248 + 0xDB, 0xFF, -128, -128, true);
                     if (field_0x248 == 1) {
@@ -352,7 +353,7 @@ void Goal_804A7EB0::update() {
             }
             field_0x244 = 2;
             if (field_0x248 == 13) {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (field_0x254[i] >= 0) {
                         JGeometry::TVec3f a(7.0f + field_0x264[i].x, field_0x264[i].y - 27.0f, field_0x264[i].z);
                         spawnEmitter_8013CC50(mLayer_0x4, &a, 0xCB, 1, 0, NULL, NULL, true, 1.0f);
@@ -367,7 +368,7 @@ void Goal_804A7EB0::update() {
             }
         } else if (field_0x244 < 0x17C) {
             if (field_0x248 == 0) {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (!fn_80230188(i)) {
                         fn_80230AD4(i);
                     }
@@ -378,7 +379,7 @@ void Goal_804A7EB0::update() {
     case 6:
         field_0x244--;
         if (field_0x244 == 0x46) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 invalidateEmitter(mEmitters[0][i]);
             }
             field_0x230 = 7;
@@ -386,9 +387,8 @@ void Goal_804A7EB0::update() {
         break;
     case 7: {
         field_0x244--;
-        JGeometry::TVec3f pos;
         pos.z = mPos.z;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos.x = mPos.x + (f32)lbl_8046C658[field_0x234][i];
             pos.y = mPos.y + (f32)lbl_8046C6C8[field_0x234][i];
             spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8046C7F4[field_0x254[i]][0], 1, 0, NULL, NULL, true, 1.0f);
@@ -404,7 +404,7 @@ void Goal_804A7EB0::update() {
     case 8:
         field_0x304--;
         if (field_0x304 == 0) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 fn_80230498(field_0x254[i], &field_0x264[i], 0x121, 0xFF, -128, -128, true);
             }
             field_0x230 = 9;
@@ -460,9 +460,8 @@ void Goal_804A7EB0::update() {
         }
     }
     if (field_0x30c == 0 && field_0x310 == 0) {
-        JGeometry::TVec3f pos;
         pos.z = mPos.z;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos.x = mPos.x + (f32)lbl_8046C658[field_0x234][i];
             pos.y = mPos.y + (f32)lbl_8046C6C8[field_0x234][i];
             mEmitters[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x200, 1, 0, NULL, NULL, true, 1.0f);
