@@ -10,7 +10,7 @@
 #include "game/cls_804AE9B0.h"
 #include "game/act/act_vaati_time_up.h"
 
-// FIXME: 99.51 %, operands; behaviour clean.
+// FIXME: 99.52 %, scheduling+regalloc; behaviour clean.
 // mPos.y's sum takes f4/f5 where the original uses f5/f6, and the epilogue
 // reloads r0 and r31 in the other order.
 void VaatiTimeUp_804ACCC0::init() {
@@ -57,7 +57,7 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2b8 = 0;
 }
 
-// FIXME: 96.07 %, missing/extra; behaviour drift.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 void VaatiTimeUp_804ACCC0::update() {
     if (field_0x2b8 != 0) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
