@@ -109,7 +109,7 @@ u8 cls_804A61C8::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-// FIXME: 0.00 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 2.43 %, missing/extra + reloc-name; behaviour clean.
 // Same operations; the original also keeps the shared constants -1 and 0 in r26/r27 (stmw,
 // 0xB0 frame) and schedules the field loads ahead of the parameter stores.
 void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
