@@ -105,7 +105,7 @@ void BGMChangeNPC_804A9DA0::update() {
             } else {
                 s32 end = getActorManager_801F856C()->getActorEnd();
                 for (s32 i = 0; i < end; i++) {
-                    ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
+                    ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
                     if (other != NULL && other->mActorId == ACTOR_BGMN &&
                         (other->mSpawnParam_0x90 & 0x7F) == (u32)field_0x234) {
                         s32 layer = other->mLayer_0x4;
@@ -141,7 +141,7 @@ void BGMChangeNPC_804A9DA0::update() {
         s32 free = 1;
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
-            ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
+            ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
             if (other != NULL && i != mSerial && other->mActorId == ACTOR_BGMN &&
                 field_0x254 == other->mLayer_0x4) {
                 if (other->field_0x94 != 0xFFFF) {
@@ -161,16 +161,16 @@ void BGMChangeNPC_804A9DA0::update() {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x25c);
             s32 end = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < end; i++) {
-                ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
+                ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
                 if (other != NULL && other->mActorId == ACTOR_BGMN && field_0x254 == other->mLayer_0x4) {
                     if (((other->mSpawnParam_0x90 >> 12) & 0x1F) == 2) {
                         return;
                     }
                     if ((other->mSpawnParam_0x90 & 0x7F) == (u32)field_0x234) {
+                        JGeometry::TVec3f otherPos = other->mPos;
                         f32 halfW = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 22) & 0x1F) + 1);
                         f32 halfH = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 17) & 0x1F) + 1);
                         mBox.set(-halfW, -halfH, halfW, halfH);
-                        JGeometry::TVec3f otherPos = other->mPos;
                         JGeometry::TBox2f otherBox(mBox);
                         otherBox.addPos(otherPos.x, otherPos.y);
                         if (containsPoint(otherBox, pos)) {
@@ -194,30 +194,30 @@ void BGMChangeNPC_804A9DA0::update() {
             start = 1;
         }
         if (start == 1 && getGameView_802D6A9C()->field_0x131f4 == 0) {
-            if (field_0x240 != 4 && (current - 0x1000000 == 0x21 || current - 0x1000000 == 0x19)) {
-                return;
-            }
-            s32 id = field_0x234;
-            if (id == 0x11) {
-                gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
-            } else {
-                if (id == 0x14 || id == 0x1E) {
-                    gAudioMgr_8053AF80->fn_80458F04(lbl_8046F1C8[id]);
+            if (field_0x240 == 4 ||
+                (field_0x240 != 4 && current - 0x1000000 != 0x21 && current - 0x1000000 != 0x19)) {
+                s32 id = field_0x234;
+                if (id != 0x11) {
+                    if (id == 0x14 || id == 0x1E) {
+                        gAudioMgr_8053AF80->fn_80458F04(lbl_8046F1C8[id]);
+                    } else {
+                        gAudioMgr_8053AF80->startBgm_80458FF0(lbl_8046F1C8[id], false, 0);
+                    }
+                    s32 view = field_0x234;
+                    if (view < 0x11 || view == 0x26) {
+                        getGameView_802D6A9C()->fn_802D7970(view);
+                    }
                 } else {
-                    gAudioMgr_8053AF80->startBgm_80458FF0(lbl_8046F1C8[id], false, 0);
+                    gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
                 }
-                s32 view = field_0x234;
-                if (view < 0x11 || view == 0x26) {
-                    getGameView_802D6A9C()->fn_802D7970(view);
+                if (field_0x240 == 3 || field_0x240 == 4) {
+                    mAlive = false;
+                    return;
                 }
-            }
-            if (field_0x240 == 3 || field_0x240 == 4) {
-                mAlive = false;
-                return;
-            }
-            field_0x230 = 1;
-            if (field_0x258 >= 0) {
-                field_0x24c = field_0x258;
+                field_0x230 = 1;
+                if (field_0x258 >= 0) {
+                    field_0x24c = field_0x258;
+                }
             }
         }
         break;
