@@ -644,7 +644,7 @@ void Wizzrobe_804A0EDC::update() {
                 break;
             }
             if (mEmitters[0] != NULL) {
-                if ((s32)field_0x94 == 10) {
+                if (field_0x94 == 10) {
                     switch (mDir_0x98) {
                     case 0: {
                         JGeometry::TVec3f v;
@@ -673,14 +673,14 @@ void Wizzrobe_804A0EDC::update() {
                     mEmitters[0]->setGlobalRotation(rot);
                 }
             }
-            if ((s32)field_0x94 == 11 && mEmitters[1] != NULL) {
+            if (field_0x94 == 11 && mEmitters[1] != NULL) {
                 JGeometry::TVec3<s16> rot;
                 fn_80178ED4(&rot, 0, lbl_804A0EAC[mDir_0x98], 0);
                 mEmitters[1]->setGlobalRotation(rot);
             }
         } else {
             setEmitterPos_8013CB44(mEmitters[0], &mPos, 1, 1, true);
-            if ((s32)field_0x94 == 11) {
+            if (field_0x94 == 11) {
                 setEmitterPos_8013CB44(mEmitters[1], &mPos, 1, 1, true);
                 if (field_0x238 == 0) {
                     JGeometry::TVec3f p;
@@ -697,7 +697,7 @@ void Wizzrobe_804A0EDC::update() {
             u8 hitWall = sweepMapBox_801F2618(NULL, false);
             if (field_0x240 == 0 || (field_0x23c == 0 && isOutsideView_801F6758(0.0f, &mPos, mLayer_0x4)) || hitWall) {
                 mAlive = false;
-                if ((s32)field_0x94 == 11) {
+                if (field_0x94 == 11) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 1, 1, NULL, NULL, true, 1.0f);
                 }
                 if (mEmitters[0] != NULL) {
