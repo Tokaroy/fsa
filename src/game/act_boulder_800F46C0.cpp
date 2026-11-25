@@ -103,6 +103,8 @@ void Boulder_8049C4C0::init() {
 }
 
 // FIXME(shotgun): 98.56 %, different + reloc-name; behaviour clean.
+// still differs: two vector stack slots are swapped and 8.0f is pooled before -0.5f; both go away when the k loop
+// is a plain function defined below this one (single call site, so not written that way).
 void Boulder_8049C4C0::fn_800F5E08() {
     if (field_0x240 != 0) {
         field_0x244++;
@@ -119,7 +121,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
             return;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
@@ -353,7 +355,7 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
     } else {
         for (s32 i = 0; i < 4; i++) {
-            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
