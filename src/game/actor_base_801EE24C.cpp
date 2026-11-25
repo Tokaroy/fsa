@@ -209,7 +209,7 @@ void ActorBase_804A5770::savePrevPos() {
 
 void ActorBase_804A5770::draw() {}
 
-// FIXME: 99.32 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME: 99.39 %, regalloc-only + reloc-name; behaviour drift.
 // Register allocation only (r4-r11 in the switch prologue)
 // besides the data: the original's array initialisers are six separate
 // 4-byte objects (lbl_8053F728/72C 'NULL' at the very start of .sdata2,
@@ -391,7 +391,7 @@ void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
 // (ACTOR_GOLD) and five Force Gems (ACTOR_RUPY; Stone Arrghus' second form
 // three) thrown out at random, then the boss music ends (or GameRoot's
 // startStageMusic_80138B7C for Stone Arrghus' second form and the Helmaroc King).
-// FIXME: 98.96 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 98.99 %, regalloc-only; behaviour clean.
 // Register allocation only (the inlined random number
 // generator's scratch registers r5-r12); literals are @NNN until .sdata2 is
 // in order.
@@ -1756,7 +1756,17 @@ void ActorBase_804A5770::playSe_801F0D20(u32 id) {
     gAudioMgr_8053AF80->playSystemSound_80458880(id, -1);
 }
 
-// FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
+// Draws frame `frame` of the "SOB " bank `name` at pos on a map layer (below 8). drawSprite_801F06F0
+// tests the layer twice in a row (bge / bge at 0x801F0C50): its own test and this one's.
+static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame,
+                           SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY) {
+    if (layer < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, scaleX, scaleY);
+    }
+}
+
+// FIXME(shotgun): 59.20 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (drawShadow_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
@@ -1821,8 +1831,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
         }
     }
     if (mLayer_0x4 < 8) {
-        void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, r, frame, &sp, scaleX, scaleY);
+        drawSob(mLayer_0x4, &mPos, name, frame, &sp, scaleX, scaleY);
     } else if (mLayer_0x4 == 8 && name[6] != 'g') {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TVec3f pos = mPos;
@@ -1957,17 +1966,20 @@ void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0
     }
 }
 
-// Shadow scale per kind (drawShadow_801EF830).
-static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
 
-// FIXME: 93.44 %, missing/extra + reloc-name; behaviour near.
-// One instruction extra: MWCC keeps the .rodata base
-// (lbl_80469FA8 and the two strings) in r30 from the prologue (one more
-// saved register, shifting r20-r30); the original addresses each with its
-// own lis/addi. Also the copy of params' 0x1C/0x1D stores 0x1C before
-// loading 0x1D (the original loads both first).
+// Shadow scale per kind (drawShadow_801EF830). The table is the local static
+// of a non-static inline: the original addresses it with its own lis/addi,
+// which MWCC does only for an object that is not a plain static of the file
+// (a file-level or function-local static shares one .rodata base register
+// with the two strings).
+inline f32 getShadowScale(s32 kind) {
+    static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
+    return lbl_80469FA8[kind];
+}
+
+// FIXME: 99.17 %, scheduling+regalloc; behaviour clean.
 // Draws the shadow of kind `flags & 0x3FF` under pos on `layer` (flags -1:
-// none): "kage_sob.bin" frame `kind` scaled by lbl_80469FA8[kind], kind 7 a
+// none): "kage_sob.bin" frame `kind` scaled by getShadowScale(kind), kind 7 a
 // flattened copy of the sprite `name` (or the loaded `res`), and kind 0 on
 // tile 0x39 at z 0 an animated "enemy_both2_sob.bin" frame instead. No
 // shadow on the tiles in lbl_8053F730 (the last one only unless
@@ -2053,7 +2065,7 @@ void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_8
             }
         } else {
             JGeometry::TVec3f p(pos->x, pos->y, 0.0f);
-            f32 scale = lbl_80469FA8[kind];
+            f32 scale = getShadowScale(kind);
             if (layer < 8) {
                 void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&p, r, kind, &sp, scale, 1.0f);
