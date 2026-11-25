@@ -4,6 +4,7 @@
 // Code: game/act_zora_fish_herder.cpp.
 
 #include "game/ActorBase.h"
+#include "game/Message.h"
 
 // The SAYA actor ("Zora (fish-herding)", docs/names/actors.tsv, med
 // confidence): the spawner constructs it with fn_80201010, which stores this
@@ -19,6 +20,11 @@ public:
     /* 0x20 */ virtual void draw();
     void fn_801A68DC();
     void fn_801A7C48();
+    // openMessage_8038AD24 takes the position by value. The original loads the serial and
+    // layer before that copy, so they are parameters here.
+    bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
+        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
+    }
     void setAnimMode(s32 mode) {
         if (field_0x250 != mode) {
             field_0x250 = mode;
