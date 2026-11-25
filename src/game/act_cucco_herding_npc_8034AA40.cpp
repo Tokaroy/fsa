@@ -11,6 +11,7 @@
 #include "game/Map.h"
 #include "game/Message.h"
 #include "game/mg_kokko_screen_80447618.h"
+#include "game/ViewLayer.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_cucco_herding_npc_8034AA40.h"
 
@@ -90,9 +91,9 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     markRandomCucco(serials, count);
 }
 
-// FIXME(shotgun): 99.37 %, missing/extra; behaviour near.
-// The original reuses the loaded field_0x230 (case 5 test) and c->field_0x25c (the field_0x284
-// store); ours loads each again. Stack slots and some registers differ too.
+// FIXME(shotgun): missing/extra.
+// The original reuses the loaded c->field_0x25c for the field_0x284 store; ours loads it again.
+// Stack slots and some registers differ too.
 void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -115,7 +116,8 @@ void CuccoHerdingNPC_804AC8C0::update() {
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, layer, serial);
     fn_8034ACF4();
-    switch (field_0x230) {
+    s32 state = field_0x230;
+    switch (state) {
     case 0: {
         JGeometry::TBox2f area;
         area = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
@@ -174,11 +176,8 @@ void CuccoHerdingNPC_804AC8C0::update() {
     case 3:
     case 5:
     case 12:
-        if (field_0x230 == 5) {
-            s32 layer5 = mLayer_0x4;
-            GameView_804A9950* view = getGameView_802D6A9C();
-            const JGeometry::TBox2f* src = (layer5 < 8) ? &view->mVisibleBox : &view->field_0xdc;
-            box = *src;
+        if (state == 5) {
+            box = *layerBox(mLayer_0x4);
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
@@ -214,10 +213,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         break;
     case 4:
         if (getActorManager_801F856C()->fn_801F68E0() == 1) {
-            s32 layer4 = mLayer_0x4;
-            GameView_804A9950* view = getGameView_802D6A9C();
-            const JGeometry::TBox2f* src = (layer4 < 8) ? &view->mVisibleBox : &view->field_0xdc;
-            box = *src;
+            box = *layerBox(mLayer_0x4);
             fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0) {
@@ -350,10 +346,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
         if (field_0x250 > 0) {
             field_0x250--;
         } else if (field_0x28f) {
-            s32 layer9 = mLayer_0x4;
-            GameView_804A9950* view = getGameView_802D6A9C();
-            const JGeometry::TBox2f* src = (layer9 < 8) ? &view->mVisibleBox : &view->field_0xdc;
-            box = *src;
+            box = *layerBox(mLayer_0x4);
             switch (field_0x244) {
             case 0:
                 fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
@@ -382,10 +375,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
     case 10: {
         bool flag = true;
         if (field_0x244 == 0) {
-            s32 layer10 = mLayer_0x4;
-            GameView_804A9950* view = getGameView_802D6A9C();
-            const JGeometry::TBox2f* src = (layer10 < 8) ? &view->mVisibleBox : &view->field_0xdc;
-            box = *src;
+            box = *layerBox(mLayer_0x4);
             flag = false;
         }
         fn_8022FEB8(&box, mLayer_0x4, mSerial, flag, false);
