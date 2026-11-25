@@ -81,7 +81,7 @@ void updateRise(Cannon_8049CCF0* self);
 
 void pool_8053C2F4(Cannon_8049CCF0* self);
 
-// FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.95 %, operands; behaviour drift.
 void Cannon_8049CCF0::update() {
     if (getScreenFlagBit_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
@@ -111,10 +111,12 @@ void Cannon_8049CCF0::update() {
             // fn_80107360's FIXME); the box and the sin lookup are placed as
             // the original's, but the box corners are not added in its order.
             switch (field_0x274) {
+            case 1:
+                break;
             case 2:
                 fn_80230FD0(field_0x26c, 0x20035);
                 break;
-            case 1:
+            case 3:
                 break;
             }
         }
@@ -148,10 +150,10 @@ void Cannon_8049CCF0::update() {
             JGeometry::TBox2f box;
             JGeometry::TVec2f out;
             out.set(0.0f, 0.0f);
-            box.set(mBox2);
             JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
+            box.set(mBox2);
             box.addPos(p);
-            bool hit = false;
+            bool hit;
             if (fn_8023AA18(&box, mLayer_0x4, &out) >= 0) {
                 hit = true;
             } else {
@@ -169,6 +171,8 @@ void Cannon_8049CCF0::update() {
                         if (player >= 0) {
                             fn_801CC640(player, NULL, NULL);
                             hit = true;
+                        } else {
+                            hit = false;
                         }
                     }
                 }
@@ -206,7 +210,6 @@ void Cannon_8049CCF0::draw() {
     showGbaSprite_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }
 
-// FIXME: 98.39 %, missing/extra; behaviour clean.
 bool Cannon_8049CCF0::fn_80107360() {
     if (field_0x274 != 2) {
         return false;
@@ -221,15 +224,15 @@ bool Cannon_8049CCF0::fn_80107360() {
     gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
     field_0x278 = field_0x274;
     field_0x274 = 3;
-    // FIXME: 98.15 %. Only the branch layout differs: the original has one
-    // more unreachable `b` after the dispatch (beq, bge, b, b; ours beq,
-    // bge, b). The empty case 1 is there to produce the bge/b pair; its
-    // meaning is unknown (init() sets state 1 for some spawns).
+    // States 1 and 3 have nothing to start: the original's dispatch keeps
+    // a branch for each side of state 2 (beq, bge, b, b).
     switch (field_0x274) {
+    case 1:
+        break;
     case 2:
         fn_80230FD0(field_0x26c, 0x20035);
         break;
-    case 1:
+    case 3:
         break;
     }
     field_0x284 = 0.0f;
@@ -258,6 +261,7 @@ void pool_8053C2F8(Cannon_8049CCF0* c) {
         speed = 1.0f;
         rate = 4.0f;
         break;
+    case 0:
     default:
         speed = 0.5f;
         rate = 2.0f;
@@ -323,7 +327,7 @@ void updateRise(Cannon_8049CCF0* self) {
 void updateRecoil(Cannon_8049CCF0* self) {
     static s32 lbl_8053AA70 = 0;
     static f32 lbl_8053AA78 = 0.0f;
-    lbl_8053AA78 = lbl_8053AA78 + 0.1f;
+    lbl_8053AA78 += 0.1f;
     if (lbl_8053AA78 >= 1.0f) {
         lbl_8053AA78 = 1.0f;
     }
@@ -342,13 +346,13 @@ void updateRecoil(Cannon_8049CCF0* self) {
         self->mPos.y = self->mHomePos.y;
     }
     {
-        bool done = false;
-        if (lbl_8053AA78 >= 1.0f) {
-            if (lbl_8053AA70 >= 30) {
-                lbl_8053AA70 = 0;
-                lbl_8053AA78 = 0.0f;
-                done = true;
-            }
+        bool done;
+        if (lbl_8053AA78 >= 1.0f && lbl_8053AA70 >= 30) {
+            lbl_8053AA70 = 0;
+            lbl_8053AA78 = 0.0f;
+            done = true;
+        } else {
+            done = false;
         }
         if (done) {
             self->field_0x270 = 0;
