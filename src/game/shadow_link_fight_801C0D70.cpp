@@ -62,25 +62,23 @@ void ShadowLinkFight_801C0D70::fn_801C1440(s32 serial) {
 }
 
 // 0x801C1374
-// FIXME: 94.22 %, missing/extra; behaviour drift.
-// The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
-// the u16 compare and again (srwi, xori, clrlwi.) before fn_8022ADCC; ours keeps it in r5, tests
-// the second read with srwi. alone, and compares field_0x8 with 3 using cmplwi instead of cmpwi.
+// FIXME: 99.41 %, regalloc-only; behaviour clean.
+// Only r3/r5 are swapped between hasGen and the field_0x8 reload.
 void ShadowLinkFight_801C0D70::fn_801C1374(bool flag) {
-    bool clear = (field_0x50 >> 31) == 0;
+    bool hasGen = (s32)field_0x50 >= 0;
     field_0x8++;
-    if (field_0x8 == field_0x4 && (!clear || flag)) {
+    s32 count = field_0x8;
+    if (field_0x8 == field_0x4 && (!hasGen || flag)) {
         if (flag) {
             field_0x0 |= 0x200;
         }
         getGameView_802D6A9C()->fn_802D7440(true);
         gGameRoot_8053AAF8->startStageMusic_80138B7C();
         getGameView_802D6A9C()->fn_802D6BC8(0);
-        clear = (field_0x50 >> 31) == 0;
-        if (!clear) {
+        if (!hasGenerator()) {
             fn_8022ADCC();
         }
-    } else if (clear && field_0x8 == 3) {
+    } else if (hasGen && count == 3) {
         field_0x0 |= 0x100;
     }
 }
