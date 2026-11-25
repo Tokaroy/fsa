@@ -169,6 +169,9 @@ public:
     /* 0x1B4 */ s32 field_0x1b4[4]; // zeroed with field_0x1f4 by the constructor
     // Per player (fn_80402FBC indexes it with fn_8022F340's player index).
     /* 0x1C4 */ JGeometry::TVec3f field_0x1c4[4];
+    // Takes the position by value: both users (fn_80402FBC, GBAAppear_804B16E0::update) keep the
+    // argument copy on the stack and store x, y, z from it.
+    void setField_0x1c4(s32 i, JGeometry::TVec3f pos) { field_0x1c4[i].set(JGeometry::TVec3f(pos)); }
     /* 0x1F4 */ u16 field_0x1f4[4]; // per player; fn_802702EC clears one
     /* 0x1FC */ u8 field_0x1fc[8][3]; // 0xFF after the reset
     u8 getField1FC(s32 stage, s32 sub) const {
