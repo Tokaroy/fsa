@@ -59,7 +59,8 @@ WindEnvironment_8049CC98::~WindEnvironment_8049CC98() {
     }
 }
 
-// FIXME: 99.7 %, regalloc only: the centre's x and y are computed into f2 and
+// FIXME: 99.74 %, regalloc-only; behaviour clean.
+// regalloc only: the centre's x and y are computed into f2 and
 // f0 where the original has f0 and f1 (the box copy, with its stack slot, matches).
 void WindEnvironment_8049CC98::init() {
     ActorBase_804A5770::init();
