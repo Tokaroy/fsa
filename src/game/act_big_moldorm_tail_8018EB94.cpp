@@ -97,9 +97,8 @@ void BigMoldormTail_804A1FA0::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 96.39 %, different; behaviour drift.
-// the body of `if (field_0x230 == 0)` is laid out
-// with beq/b in the original, ours skips it with bne; register and literal differences in the rest.
+// FIXME(shotgun): 97.57 %, missing/extra; behaviour drift.
+// The four indexed history copies add 0x2d0 with an extra addi; the original folds it into the load offsets.
 void BigMoldormTail_804A1FA0::update() {
     JGeometry::TVec3f savedPos = mPos;
     f32 z0 = mPos.z;
@@ -110,7 +109,8 @@ void BigMoldormTail_804A1FA0::update() {
             field_0x234[i]--;
         }
     }
-    if (field_0x230 == 0) {
+    switch (field_0x230) {
+    case 0:
         for (s32 i = 0; i < 3; i++) {
             mPos = field_0x288[i];
             if (updateHitReaction_801F3D94(true) != 0 || checkHits_801F305C()) {
@@ -172,13 +172,12 @@ void BigMoldormTail_804A1FA0::update() {
             field_0x234[2] = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
             findTargetPlayer_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, 0);
             f32 a = (f32)outAngle;
-            s32 idx = 0;
-            for (s32 i = 0; i < 15; i++) {
+            s32 idx;
+            for (idx = 0; idx < 15; idx++) {
                 a -= 4000.0f;
                 if (a < 0.0f) {
                     break;
                 }
-                idx++;
             }
             field_0x25c = idx;
         }
@@ -188,6 +187,7 @@ void BigMoldormTail_804A1FA0::update() {
         }
         setHeading();
         field_0x270 += 500.0f;
+        break;
     }
     if (field_0x234[0] == 0) {
         field_0x234[0] = 2;
@@ -254,11 +254,11 @@ void BigMoldormTail_804A1FA0::setHeading() {
     s16 angle = (s32)(4000.0f * (f32)mDir_0x98);
     field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
     field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));
-    field_0x288[3] = mPos;
+    field_0x288[3].set(mPos);
     angle = (s32)(4000.0f * (f32)((mDir_0x98 - 2) & 0xF));
     field_0x288[3].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[3].y += 6.0f * JMath::sincosTable_.cosShort(angle);
-    field_0x288[4] = mPos;
+    field_0x288[4].set(mPos);
     angle = (s32)(4000.0f * (f32)((mDir_0x98 + 2) & 0xF));
     field_0x288[4].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[4].y += 6.0f * JMath::sincosTable_.cosShort(angle);
