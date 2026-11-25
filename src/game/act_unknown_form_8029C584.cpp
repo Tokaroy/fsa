@@ -8,7 +8,7 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JUtility/JUTGamePad.h"
 
-// FIXME: 96.62 %, different; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // Registers only: count/index/end sit in r28/r30/r29 in the original. The
 // 30.0f literal is lbl_8054075C in the original (data split).
 void UnknownFORM_804A7BE8::init() {
@@ -88,7 +88,7 @@ static const s32 lbl_8046C448[6] = {1, 0, 2, 3, 4, 5};
 static const s32 lbl_8046C460[6] = {0x3A, 0x3B, 0x3C, 0x39, 0x3E, 0x3E};
 static const s32 lbl_8046C478[6] = {0x41, 0x42, 0x39, 0x39, 0x39, 0x40};
 
-// FIXME: 71.25 %, missing/extra; behaviour drift.
+// FIXME: 72.89 %, different; behaviour clean.
 void UnknownFORM_804A7BE8::update() {
     if (field_0x254 != NULL && field_0x254->mState >= 1 && field_0x254->mState <= 10) {
         field_0x254->fn_803703C8();
@@ -229,7 +229,6 @@ void UnknownFORM_804A7BE8::update() {
     }
 }
 
-// FIXME(shotgun): 88.81 %, different + reloc-name; behaviour clean.
 void UnknownFORM_804A7BE8::draw() {
     JGeometry::TVec3f pos(mPos);
     JGeometry::TBox2f box;
