@@ -859,9 +859,6 @@ bool SmallKey_804A8CD8::inl_802C2C30(u16 tile) {
     return true;
 }
 
-// Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
-// Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
-// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 37-line definition): split out only where the .sdata2 order needs it.
 // Not in the binary: update inlines it twice (case 1 and the 11400-frame timeout).
 void SmallKey_804A8CD8::registerWithView() {
     s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
@@ -879,6 +876,9 @@ void SmallKey_804A8CD8::registerWithView() {
     getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
 }
 
+// Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
+// Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 37-line definition): split out only where the .sdata2 order needs it.
 bool SmallKey_804A8CD8::dropAtPlayer() {
     if (!field_0x2b0) {
         return true;
