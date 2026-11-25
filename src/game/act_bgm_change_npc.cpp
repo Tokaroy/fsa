@@ -36,7 +36,7 @@ void BGMChangeNPC_804A9DA0::init() {
     field_0x24c = -1;
 }
 
-// FIXME(shotgun): 91.68 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 96.37 %, different; behaviour clean.
 void BGMChangeNPC_804A9DA0::update() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
