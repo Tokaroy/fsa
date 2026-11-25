@@ -91,6 +91,7 @@ void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     markRandomCucco(serials, count);
 }
 
+// FIXME: 99.51 %, missing/extra; behaviour near.
 // FIXME(shotgun): missing/extra.
 // The original reuses the loaded c->field_0x25c for the field_0x284 store; ours loads it again.
 // Stack slots and some registers differ too.
