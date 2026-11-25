@@ -30,6 +30,7 @@
 #include "JSystem/JKernel/JKRHeap.h"
 #include "dolphin/os.h"
 #include "game/ActorManager.h"
+#include "portable/FloatConv.h"
 
 // Read by fn_804054B8 and fn_80405D00 (lbzx), and fn_8040B5A0 (lhax).
 static const u8 lbl_80543880[8] = {3, 1, 1, 0, 1, 1, 0, 1};
@@ -2031,8 +2032,8 @@ void MapScreen_804B1288::fn_80409FDC() {
         if (mCursorX_0x394 == x) {
             field_0x360 = 0x10;
         } else {
-            u32 angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
-                              (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+            u32 angle = gc_f32_to_u16(JMath::atanTable_.atan2_(-dx, -dy) *
+                                      (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
             if (angle < 0x2000 || angle >= 0xE000) {
                 field_0x360 = 0x18;
             } else if (angle >= 0x2000 && angle < 0x6000) {
