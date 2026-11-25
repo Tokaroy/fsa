@@ -360,7 +360,7 @@ void Thief_804A5A30::setState_80205E0C(s32 newState) {
     mState = newState;
 }
 
-// FIXME: 95.75 %, different + reloc-name; behaviour drift.
+// FIXME: 95.48 %, missing/extra + reloc-name; behaviour drift.
 // Ours has four more instructions: mapHit is converted to bool for fn_8021B904 (the original
 // passes the register as it is), and the layer argument of isWayBlocked_801CF888 in states 0 and 6
 // is loaded into a saved register before getPlayerPos_8023E724 in the original. The rest is
