@@ -46,6 +46,7 @@ inline void BlizzardBattle_8049E7F0::spawnPuff() {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     pos.x = -camera->mViewMtx_0x4[0][3];
     pos.y = -camera->mViewMtx_0x4[1][3];
+    pos.z = 0.0f;
     startSound_801F0E34(0x30036, 0);
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
     field_0x238 = 0;
@@ -97,9 +98,8 @@ void BlizzardBattle_8049E7F0::init() {
     }
 }
 
-// FIXME: 97.18 %. spawnPuff's camera position: the original stores z = 0 a second
-// time between x and y (stfs f1, 0x24 after the x store), we store it once in the
-// zeroed TVec3f. Its .sdata2 literals (1.0f, 0.5f) also come out in another order.
+// Same instructions as the original; register numbers and the order of a few
+// loads/stores still differ (spawnPuff's position, the frame limit compare).
 void BlizzardBattle_8049E7F0::update() {
     ActorBase_804A5770::update();
     switch (field_0x234) {
