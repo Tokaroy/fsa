@@ -74,7 +74,7 @@ void KeeseSwarm_804A2EC0::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 99.39 %, different; behaviour near.
+// FIXME(shotgun): 99.86 %, scheduling+regalloc; behaviour clean.
 // sqrtf expansion and trail-collision loop
 void KeeseSwarm_804A2EC0::update() {
     s32 player = -1;
@@ -214,7 +214,7 @@ void KeeseSwarm_804A2EC0::update() {
     }
 }
 
-// FIXME: 98.52 %, missing/extra; behaviour clean.
+// FIXME: 99.49 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): missing/extra: the original keeps the saved position in f28-f30 and reloads it after the trail loop's stores; the instruction schedule differs
 void KeeseSwarm_804A2EC0::draw() {
     SpriteParams_801F5AE0 params;
