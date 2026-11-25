@@ -28,6 +28,18 @@ static inline void addBox(s32 serial, const JGeometry::TBox2f* box, s32 layer) {
     boxes->mLists[boxes->field_0x0].fn_8020D8C0(box, layer, serial);
 }
 
+static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
 static inline void setBox(JGeometry::TBox2f* out, const JGeometry::TVec3f& scale) {
     out->set(-16.0f * scale.x, -24.0f * scale.y, 16.0f * scale.x, 8.0f * scale.y);
 }
@@ -98,32 +110,21 @@ u8 cls_804A61C8::checkHitByPlayer_0x5C() {
 }
 
 // FIXME: 0.00 %, missing/extra + reloc-name; behaviour clean.
-// Same operations, different allocation: the original keeps this, the three
-// arguments and the shared constants -1 and 0 in r26-r31 (stmw, 0xB0 frame), loads the three
-// field_0x54 scales right after the identity-table loop and the mPos copy as one psq pair;
-// this code needs only r28-r31 and schedules the loads and the stores of the sprite parameters
-// after each other.
+// Same operations; the original also keeps the shared constants -1 and 0 in r26/r27 (stmw,
+// 0xB0 frame) and schedules the field loads ahead of the parameter stores.
 void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
     ResTIMG* res = (ResTIMG*)getBossArchiveResource_804032E8('TIMG', lbl_804A61A8[mDir_0x98 + (arg0 ? 4 : 0)]);
     SpriteParams_801F5AE0 params;
+    params.field_0x1c = arg1;
+    params.field_0x1d = arg2;
+    params.field_0x14.r = arg3;
     Mtx mtx;
-    JGeometry::TVec3f pos(mPos);
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = 0.33333334f * field_0x54.x;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = 0.33333334f * field_0x54.y;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = 0.33333334f * field_0x54.z;
-    params.field_0x14.r = arg3;
-    params.field_0x1c = arg1;
-    params.field_0x1d = arg2;
+    setScaleMtx(mtx, 0.33333334f * field_0x54.x, 0.33333334f * field_0x54.y, 0.33333334f * field_0x54.z);
     params.mMtx = mtx;
+    JGeometry::TVec3f pos(mPos);
     pos.x += mtx[0][0] * (0.5f * res->mSizeX - lbl_8046A470[mDir_0x98]);
     pos.y += mtx[1][1] * (0.5f * res->mSizeY - lbl_8046A480[mDir_0x98]);
     if (mLayer_0x4 < 8) {
