@@ -204,7 +204,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
 }
 
-// FIXME(shotgun): 98.52 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.47 %, missing/extra; behaviour clean.
 void Boulder_8049C4C0::fn_800F555C() {
     JGeometry::TBox2f box(mPos.x - 16.0f, mPos.y - 16.0f, mPos.x + 16.0f, mPos.y + 16.0f);
     s32 anyPlayer = 0;
@@ -288,7 +288,7 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
         s32 code = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
         if (code == 3 || code == 0xE || code == 2) {
-            fn_800F82CC(&mVel_0x3c, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0.22f);
+            fn_800F82CC(&mVel_0x3c, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0.22f);
             if (mVel_0x3c.x == 0.0f && mVel_0x3c.y == 0.0f) {
                 getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3CF, 0, 0, NULL, NULL, true, 1.2f);
@@ -319,22 +319,6 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
         if (field_0x232 == -1 && mVel_0x3c.z == 0.0f) {
             switch (field_0x234) {
-            default:
-                switch (field_0x233) {
-                case 0:
-                    field_0x232 = 2;
-                    break;
-                case 1:
-                    field_0x232 = 3;
-                    break;
-                case 2:
-                    field_0x232 = 1;
-                    break;
-                case 3:
-                    field_0x232 = 0;
-                    break;
-                }
-                break;
             case 1:
                 switch (field_0x233) {
                 case 0:
@@ -348,6 +332,22 @@ void Boulder_8049C4C0::fn_800F555C() {
                     break;
                 case 3:
                     field_0x232 = 1;
+                    break;
+                }
+                break;
+            default:
+                switch (field_0x233) {
+                case 0:
+                    field_0x232 = 2;
+                    break;
+                case 1:
+                    field_0x232 = 3;
+                    break;
+                case 2:
+                    field_0x232 = 1;
+                    break;
+                case 3:
+                    field_0x232 = 0;
                     break;
                 }
                 break;

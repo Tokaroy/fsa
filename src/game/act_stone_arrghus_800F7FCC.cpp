@@ -1471,10 +1471,10 @@ static inline s32 stepAxis(f32& cur, f32 target, f32 step) {
     return 0;
 }
 
-s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
-    u8 arrived = stepAxis(cur->x, target->x, step);
-    arrived += stepAxis(cur->y, target->y, step);
-    arrived += stepAxis(cur->z, target->z, step);
+s8 fn_800F82CC(JGeometry::TVec3f* cur, Vec target, f32 step) {
+    u8 arrived = stepAxis(cur->x, target.x, step);
+    arrived += stepAxis(cur->y, target.y, step);
+    arrived += stepAxis(cur->z, target.z, step);
     return arrived == 3;
 }
 
