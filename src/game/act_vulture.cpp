@@ -63,9 +63,9 @@ void Vulture_804A4230::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 86.03 %, missing/extra + reloc-name; behaviour clean.
-// Compiler promotes the local TVec2fs to registers instead of keeping stack temporaries
-// at 0x8, 0x10, 0x18, 0x20 (frame 0x60 instead of 0x80); literal names differ (reloc-name).
+// FIXME: 97.74 %, missing/extra + reloc-name; behaviour clean.
+// Ours loads field_0x2b0 into r4 and then copies it to r5 (one extra mr); the original
+// loads it straight into r5. Literal names differ (reloc-name).
 void Vulture_804A4230::fn_801C0634() {
     JGeometry::TVec2f diff = field_0x2b8 - field_0x2c0;
     diff.normalize();
