@@ -146,9 +146,7 @@ bool Block_804A7A10::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 // FIXME: 96.11 %, missing/extra + reloc-name; behaviour drift.
-// missing/extra + reloc-name: ours has 4 more instructions (812 vs 808). The target compares the (mSpawnParam_0x90 & 3)
-// based indices with signed cmpwi and converts them with xoris (signed), ours uses cmplwi / unsigned; the (u16) tile result
-// is extended in ours (clrlwi) where the target moves it; some stack temporaries sit at other offsets.
+// Same instructions; a few float registers and the order of some instructions still differ.
 void Block_804A7A10::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -166,18 +164,18 @@ void Block_804A7A10::update() {
     box.f.y += -1.0f;
     fn_8020D58C()->addBox(mSerial);
 
-    if ((mSpawnParam_0x90 & 3) == 0) {
+    if (getType() == 0) {
         mPos += mVel_0x3c;
         JGeometry::TVec3f checkPos = mVel_0x3c;
         checkPos.normalize();
         checkPos.scale(16.0f);
         checkPos += mPos;
-        if (PSVECDistance(&checkPos, &field_0x230) >= 16.0f) {
+        if (PSVECDistance(&mPos, &field_0x230) >= 16.0f) {
             u16 tile1 = getTileCollisionCode_8022461C(&checkPos, mLayer_0x4);
             s32 tile2 = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
             if ((u16)tile2 == 0x50 && ((u16)tile1 == 0 || (u16)tile1 == 0x50)) {
                 JGeometry::TVec3f savedVel = mVel_0x3c;
-                if (fn_8028C518((mSpawnParam_0x90 >> 2) & 3)) {
+                if (fn_8028C518(getDir()) == 1) {
                     mVel_0x3c = savedVel;
                     field_0x230.x = mPos.x;
                     field_0x230.y = mPos.y;
@@ -197,9 +195,8 @@ void Block_804A7A10::update() {
             s32 player = fn_80239040(mSerial);
             for (s32 i = 0; i < 4; i++) {
                 if (player != i && !arePlayersInSameGroup_8022E438(player, i) && fn_8023B190(i, &box2, mLayer_0x4)) {
-                    JGeometry::TVec3f pPos = *getPlayerPos_8023E724(i);
-                    JGeometry::TVec3f diff = pPos - checkPos;
-                    if (JGeometry::TVec2f(diff.x, diff.y).length() < 8.0f) {
+                    const JGeometry::TVec3f& diff = *getPlayerPos_8023E724(i) - checkPos;
+                    if (JGeometry::TUtilf::sqrt(diff.x * diff.x + diff.y * diff.y) < 8.0f) {
                         hitPlayerGroup_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 4);
                         break;
                     }
@@ -212,7 +209,7 @@ void Block_804A7A10::update() {
             f32 dist = PSVECDistance(&mPos, &mSpawnPos);
             if (dist < 13.0f) {
                 threshold = 11.9f;
-            } else if (dist >= (f32)(((mSpawnParam_0x90 & 3) + 1) * 16) - 19.9f) {
+            } else if (dist >= (f32)((getType() + 1) * 16) - 19.9f) {
                 threshold = 19.9f;
             } else {
                 threshold = 15.9f;
@@ -235,8 +232,8 @@ void Block_804A7A10::update() {
             field_0x230 = mPos;
             mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             mPrevPos = mPos;
-            if (!((mSpawnParam_0x90 >> 7) & 1) && !((mSpawnParam_0x90 >> 8) & 1) &&
-                PSVECDistance(&mPos, &mSpawnPos) >= (f32)(((mSpawnParam_0x90 & 3) + 1) * 16) - 0.1f) {
+            if (!getParamBit7() && !getParamBit8() &&
+                PSVECDistance(&mPos, &mSpawnPos) >= (f32)((getType() + 1) * 16) - 0.1f) {
                 field_0x23c = -1;
                 setScreenFlag_0x30(0xFF, true);
             } else {
@@ -272,9 +269,9 @@ void Block_804A7A10::update() {
                 field_0x23c--;
             } else if (field_0x23c == 0) {
                 if (mVel_0x3c.isZero()) {
-                    if (fn_80239108(mSerial) >= (mSpawnParam_0x90 & 3) + 1) {
-                        if (((mSpawnParam_0x90 >> 8) & 1) ||
-                            PSVECDistance(&mPos, &mSpawnPos) < (f32)(((mSpawnParam_0x90 & 3) + 1) * 16) - 0.1f) {
+                    if (fn_80239108(mSerial) >= getType() + 1) {
+                        if (getParamBit8() ||
+                            PSVECDistance(&mPos, &mSpawnPos) < (f32)((getType() + 1) * 16) - 0.1f) {
                             s32 dir = fn_80238BC4(mSerial);
                             JGeometry::TVec3f offset(lbl_804A79E0[dir][0], lbl_804A79E0[dir][1], lbl_804A79E0[dir][2]);
                             JGeometry::TVec3f savedPos = mPos;
@@ -285,12 +282,12 @@ void Block_804A7A10::update() {
                             }
                             mPos = savedPos;
                             if (field_0x24e == 1) {
-                                if ((mSpawnParam_0x90 & 3) == 1) {
-                                    if ((u8)(dir >> 1) != ((mSpawnParam_0x90 >> 2) & 3)) {
+                                if (getType() != 1) {
+                                    if (dir != getDir()) {
                                         return;
                                     }
                                 } else {
-                                    if (dir != ((mSpawnParam_0x90 >> 2) & 3)) {
+                                    if ((u8)(dir >> 1) != getDir()) {
                                         return;
                                     }
                                 }
@@ -307,7 +304,7 @@ void Block_804A7A10::update() {
                             }
                             if (dir >= 0 && dir < 4) {
                                 fn_80238E08(mSerial);
-                                if ((mSpawnParam_0x90 & 3) != 0 && !fn_8028C364(dir)) {
+                                if (getType() != 0 && !fn_8028C364(dir)) {
                                     field_0x248 = 0;
                                     fn_80238D50(mSerial);
                                     return;
@@ -316,9 +313,9 @@ void Block_804A7A10::update() {
                                     getGameView_802D6A9C()->fn_802D7584(field_0x16c, dir + 1);
                                 }
                                 mVel_0x3c.set(lbl_8046C180[dir][0], lbl_8046C180[dir][1], lbl_8046C180[dir][2]);
-                                if ((mSpawnParam_0x90 & 3) == 3) {
+                                if (getType() == 3) {
                                     mVel_0x3c.scale(0.4f);
-                                } else if ((mSpawnParam_0x90 & 3) != 0) {
+                                } else if (getType() != 0) {
                                     mVel_0x3c.scale(0.7f);
                                 }
                                 if (field_0x24d == 1) {
@@ -331,7 +328,7 @@ void Block_804A7A10::update() {
                                 startSound_801F0E34(0x30004, 0);
                             }
                         }
-                    } else if ((mSpawnParam_0x90 >> 7) & 1) {
+                    } else if (getParamBit7()) {
                         if (PSVECDistance(&mPos, &mSpawnPos) > 1.0f) {
                             if (field_0x240 == 0) {
                                 mVel_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -381,8 +378,8 @@ bool Block_804A7A10::keepsMoving(f32 threshold) {
     return true;
 }
 
-bool Block_804A7A10::fn_8028C518(u8 dir) {
-    bool result = false;
+u8 Block_804A7A10::fn_8028C518(u8 dir) {
+    u8 result = false;
     s32 kind = mSpawnParam_0x90 & 3;
     JGeometry::TVec3f origPos = mPos;
 
