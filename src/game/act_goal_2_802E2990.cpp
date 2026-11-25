@@ -203,7 +203,6 @@ static const f32 lbl_8046F060[6][2] = {
 
 
 // 0x802E3B2C.
-// FIXME(shotgun): 98.95 %, different; behaviour clean.
 void Goal2_804A9C20::init() {
     field_0x238 = mSpawnParam_0x90 & 0x1F;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
