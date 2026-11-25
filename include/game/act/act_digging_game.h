@@ -15,6 +15,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    void restoreItems();
+
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 field_0x234;
     /* 0x235 */ u8 field_0x235;
