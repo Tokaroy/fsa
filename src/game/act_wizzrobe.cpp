@@ -181,7 +181,7 @@ void Wizzrobe_804A0EDC::init() {
     }
 }
 
-// FIXME(shotgun): 95.59 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.85 %, missing/extra; behaviour drift.
 void Wizzrobe_804A0EDC::update() {
     s32 dir = 0;
     s32 player = 0;
