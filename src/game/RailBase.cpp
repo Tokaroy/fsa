@@ -137,8 +137,10 @@ s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeo
         outStep->y = dy;
         return 4;
     }
-    if (outStep->x == 0.0f && outStep->y == 0.0f && !((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1)) {
-        // keep the angle to the point
+    // still differs: the original has one more (dead) branch after `angle = current + arg`
+    s32 newAngle;
+    if (outStep->x == 0.0f && outStep->y == 0.0f && (u8)(((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1) ^ 1)) {
+        newAngle = angle;
     } else {
         s32 current = (s32)(JMath::atanTable_.atan2_(outStep->x, outStep->y) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -150,11 +152,12 @@ s32 cls_800FE3EC::stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeo
         } else if (diff < -(s16)arg) {
             angle = current - arg;
         }
+        newAngle = angle;
     }
-    outStep->x = speed * JMASinShort(angle);
-    outStep->y = speed * JMACosShort(angle);
+    outStep->x = speed * JMASinShort(newAngle);
+    outStep->y = speed * JMACosShort(newAngle);
     if (outAngle != NULL) {
-        *outAngle = angle;
+        *outAngle = newAngle;
     }
     return result;
 }
