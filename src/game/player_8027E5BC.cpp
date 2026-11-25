@@ -923,9 +923,7 @@ void Player_804A6F38::fn_80283848() {
 }
 
 // FIXME: 99.25 %, missing/extra; behaviour near.
-// The distance moved: the original stores the TVec2f to the stack (0x8 / 0xC) and
-// squares it unfused (fmuls, fmuls, fadds); ours keeps it in registers with one fmadds (TVec2f::length).
-// Unfused square() with the same TVec2f keeps it in registers too.
+// The distance moved: the original also stores the TVec2f to the stack (0x8 / 0xC); ours keeps it in registers.
 // Update of state 0x4A (the 0x4B movement on view-flag-free layers): down (0x33) without life; a
 // follower with 0x1215 takes its leader's layer and position (0x4B on view-flag layers). On the
 // floor, the walk cycle 0x3F8; the mode 0x42C (timer 0xBE0 = 300, effects 0x15B / 0x15C, sounds
@@ -1047,8 +1045,10 @@ void Player_804A6F38::fn_80282FE0() {
         requestState_80251AEC(0);
     }
     fn_80268B3C();
-    JGeometry::TVec2f moved(mPos.x - mLastPos_0x14.x, mPos.y - mLastPos_0x14.y);
-    f32 dist = moved.length();
+    JGeometry::TVec2f moved;
+    moved.x = mPos.x - mLastPos_0x14.x;
+    moved.y = mPos.y - mLastPos_0x14.y;
+    f32 dist = JGeometry::TUtilf::sqrt(square(moved.x) + square(moved.y));
     if (dist > 1.0f) {
         field_0x401 += 6;
     } else if (dist > 0.1f) {
