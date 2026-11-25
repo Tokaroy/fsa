@@ -298,8 +298,7 @@ void GiantBomb_804AC588::update() {
         break;
     }
     if (mState != 2) {
-        JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&JGeometry::TVec3f(mPos.x, mPos.y - mPos.z, 0.0f));
     }
     if (mTimer < 300 && mState == 6) {
         field_0x240++;
