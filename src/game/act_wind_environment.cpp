@@ -115,12 +115,9 @@ void WindEnvironment_8049CC98::update() {
     mTimer++;
 }
 
-// FIXME: 97.0 %. After getRawTile_80226850 the original does `subi r0, r3, 0x3ee;
-// clrlwi r0, r0, 16; cmplwi r0, 1; ble` (one unsigned range test on the call
-// result); this compiles to two compares (cmplwi 0x3ee, cmplwi 0x3ef). The
-// forms that give the single test (`- 0x3EE > 1u`, with or without a u16
-// local) add a clrlwi of the result and make MWCC inline this function into
-// update, so they were not kept.
+// Not auto-inlined: update calls fn_80106ADC out of line (twice) in the
+// original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 void WindEnvironment_8049CC98::fn_80106ADC(s32 state) {
     JGeometry::TVec3f push(0.0f, 0.0f, 0.0f);
     f32 speed = 1.0f;
@@ -150,9 +147,10 @@ void WindEnvironment_8049CC98::fn_80106ADC(s32 state) {
         if (mLayer_0x4 == getPlayerLayer_8023DE58(i) && isPlayerActive_8023F264(i) && !fn_80234D94(i) && !fn_8022D75C(i) &&
             !fn_80230188(i) && (fn_8022CAF8(i) != 4 || !fn_8022F478(i))) {
             u16 tile = getRawTile_80226850(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i));
-            if (tile < 0x3EE || tile > 0x3EF) {
+            if (u16(tile - 0x3EE) > 1) {
                 fn_8023DFF4(i, &push);
             }
         }
     }
 }
+#pragma auto_inline reset
