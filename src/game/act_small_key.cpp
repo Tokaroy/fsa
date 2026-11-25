@@ -162,7 +162,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 99.33 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.58 %, missing/extra; behaviour near.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
@@ -197,19 +197,7 @@ void SmallKey_804A8CD8::update() {
             field_0x240 = 4;
             getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x3C00, -1, -1);
             fn_801F355C();
-            u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (getField_0x4() & 0xFF);
-            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
-                value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
-            } else {
-                value = field_0x2aa << 8;
-            }
-            JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
-            s32 layer = field_0x238;
-            JGeometry::TVec2f pos(mPos.x, mPos.y);
-            getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+            registerWithView();
         }
         break;
     case 2:
@@ -437,19 +425,7 @@ void SmallKey_804A8CD8::update() {
                 s32 layer = field_0x238;
                 getGameView_802D6A9C()->fn_802D6C10(pos, layer);
             }
-            u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (getField_0x4() & 0xFF);
-            if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
-                value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
-            } else {
-                value = field_0x2aa << 8;
-            }
-            JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
-            s32 layer = field_0x238;
-            JGeometry::TVec2f pos(mPos.x, mPos.y);
-            getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+            registerWithView();
         }
     }
 }
@@ -881,6 +857,23 @@ bool SmallKey_804A8CD8::inl_802C2C30(u16 tile) {
     }
     field_0x2b0 = true;
     return true;
+}
+
+// Not in the binary: update inlines it twice (case 1 and the 11400-frame timeout).
+void SmallKey_804A8CD8::registerWithView() {
+    s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+                (getField_0x4() & 0xFF);
+    if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
+        s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+        s32 col = getGameView_802D6A9C()->mScreenX_0x14;
+        value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
+    } else {
+        value = field_0x2aa << 8;
+    }
+    JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
+    s32 layer = field_0x238;
+    JGeometry::TVec2f pos(mPos.x, mPos.y);
+    getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
 }
 
 // Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
