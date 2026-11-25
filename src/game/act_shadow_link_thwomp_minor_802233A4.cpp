@@ -49,9 +49,7 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         break;
     case 6: {
         mTargetSpeed = 0.0f;
-        mVel_0x3c.x = -mVel_0x3c.x;
-        mVel_0x3c.y = -mVel_0x3c.y;
-        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.set(-mVel_0x3c.x, -mVel_0x3c.y, 0.0f);
         mVel_0x3c.normalize();
         mVel_0x3c.scale(1.2f);
         mVel_0x3c.z = 4.0f;
@@ -67,16 +65,20 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         }
         startSound_801F0E34(0x400EB, 0);
         JGeometry::TVec3f off(0.0f, 0.0f, 0.0f);
-        if (mDir_0x98 < 2 && mDir_0x98 >= 0) {
+        switch (mDir_0x98) {
+        case 0:
+        case 1:
             off.set(0.0f, -8.0f, 0.0f);
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 0.0f, 4.0f, false);
-        } else {
+            break;
+        default:
             getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
+            break;
         }
         gGameRoot_8053AAF8->startRumble_80134DE4(1, 0);
-        JGeometry::TVec3f n(-mVel_0x3c.y, -mVel_0x3c.x, 0.0f);
+        JGeometry::TVec3f n(-mVel_0x3c.x, -mVel_0x3c.y, 0.0f);
         n.normalize();
-        JGeometry::TVec3f at = mPos + off;
+        const JGeometry::TVec3f& at = mPos + off;
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->startHeightGridEffect_802F601C(&at, 3, &n, 1.0f, 1.0f);
         }
@@ -90,7 +92,8 @@ void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
         mVel_0x3c.y = 0.0f;
         mAnim.startAnimIfChanged_801D22A0(mDir_0x98, 0);
         if (state == 7) {
-            field_0x2b8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x565, 0, 1, NULL, NULL, true, 0.5f);
+            JGeometry::TVec3f pos = mPos;
+            field_0x2b8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x565, 0, 1, NULL, NULL, true, 0.5f);
             startSound_801F0E34(0x4000E, 0);
         }
         break;
