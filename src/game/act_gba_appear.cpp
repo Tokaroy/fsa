@@ -37,6 +37,7 @@ void GBAAppear_804B16E0::init() {
 }
 
 // Only the stack slots of the by-value copies still differ.
+// FIXME: 99.94 %, operands; behaviour clean.
 void GBAAppear_804B16E0::update() {
     JGeometry::TVec3f* player = getPlayerPos_8023E724(0);
     mPos.x = player->x;
@@ -86,7 +87,8 @@ void GBAAppear_804B16E0::update() {
     }
 }
 
-// FIXME: 96.7%. The original also computes `addi r4, r27, 0x1c4` (the position argument) later,
+// FIXME: 96.74 %, scheduling+regalloc; behaviour clean.
+// The original also computes `addi r4, r27, 0x1c4` (the position argument) later,
 // after the params stores, not before the camera/params setup as here. regalloc-only: the original keeps the scale in f29, cos x / cos y / cos z in
 // f31 / f30 / f3 and sin x / y / z in f28 / f27 / f26; ours has the scale in f31 and the sines
 // and cosines in other registers (the same shape as act_hardhat_beetle's setRotScaleMtx draw).
