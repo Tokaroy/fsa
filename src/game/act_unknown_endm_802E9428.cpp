@@ -171,7 +171,7 @@ void UnknownENDM_804AA0FC::update() {
             fn_80119DD0()->startFade_80119998(50, 0, 0, 0, 0, 0, 0);
             field_0x299 = 0;
         }
-        fn_8016A3AC()->field_0x1d8 = -1;
+        fn_8016A3AC()->setField_0x1d8(-1);
         fn_8016A3AC()->fn_8016A2B4();
         break;
     case 1:
