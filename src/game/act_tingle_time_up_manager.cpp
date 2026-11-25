@@ -16,7 +16,8 @@
 #include "game/act/act_tingle_time_up_803536C4.h"
 #include "game/act/act_tingle_time_up_manager.h"
 
-// FIXME: 99.8 %. Epilogue reloads r0 and r31 in the other order.
+// FIXME: 99.85 %, scheduling; behaviour clean.
+// Epilogue reloads r0 and r31 in the other order.
 void TingleTimeUpManager_804ACBF0::init() {
     mTimer = 0;
     field_0x238 = 0;
@@ -36,9 +37,9 @@ void TingleTimeUpManager_804ACBF0::init() {
     field_0x260 = 0.0f;
 }
 
-// FIXME: 91.2 % (missing/extra + reloc-name, 698 vs 699 instrs). `this` is kept
-// in r30 instead of r28, state 3/4 evaluate the TVec3f constructor before
-// __cvt_fp2unsigned, and state 2's loop counter setup is 1 instruction shorter.
+// FIXME: 97.98 %, different; behaviour drift.
+// FIXME: `this` is kept in r30 instead of r28, and state 2's loop sets its
+// i*4 offset with li 0 where the original copies i (mr) after loading the count.
 void TingleTimeUpManager_804ACBF0::update() {
     if (mState != 0 && mState != 7) {
         cls_804A03A8* obj30 = gGameRoot2_8053AB10->field_0x30;
@@ -88,7 +89,8 @@ void TingleTimeUpManager_804ACBF0::update() {
         break;
     case 3:
         if (mTimer <= 0) {
-            u32 param = ((u32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) << 4) | 1;
+            u32 param = 1;
+            param |= (u32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) << 4;
             JGeometry::TVec3f pos(32.0f + field_0x288.x, (field_0x27c.y + field_0x288.y) * 0.5f + 54.0f, 32.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, param, -1, -1);
             if (serial >= 0) {
@@ -106,7 +108,8 @@ void TingleTimeUpManager_804ACBF0::update() {
         break;
     case 4:
         if (mTimer <= 0) {
-            u32 param = ((u32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) << 4) | 2;
+            u32 param = 2;
+            param |= (u32)(8.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) << 4;
             JGeometry::TVec3f pos(32.0f + field_0x288.x, (field_0x27c.y + field_0x288.y) * 0.5f + 8.0f, 32.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, param, -1, -1);
             if (serial >= 0) {
