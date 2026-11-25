@@ -52,7 +52,8 @@ void FourSwitchMonitor_804A80A0::init() {
     }
 }
 
-// FIXME: 91.98 %. The original runs the same slot check twice, once in each arm
+// FIXME: 92.12 %, missing/extra; behaviour drift.
+// The original runs the same slot check twice, once in each arm
 // of `gGameRoot_8053AAF8->field_0x7e == 1` (two identical loops; `li r0, 0` before the
 // test), and ours runs it once, so the registers and block layout after it differ.
 // The switch table is `jumptable_804A80F4` in the original but a compiler-made
