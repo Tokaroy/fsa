@@ -380,17 +380,18 @@ void HammerShopMinigame_8049C858::update() {
     }
 }
 
-// FIXME: 80.47 %, different; behaviour clean.
-// Register allocation and instruction order differ in the unrolled score loop.
+// FIXME: 86.85 %, different; behaviour clean.
+// The unrolled time loop differs in registers, instruction order and stack frame size.
 void HammerShopMinigame_8049C858::draw() {
     if (field_0x230 == 4 || field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
         s32 count = gGameRoot_8053AAF8->getPlayerCount_80138A30();
         for (s32 i = 0; i < count; i++) {
             lbl_8053AF00->field_0x30 |= (u8)(1 << i);
-            s32 score = field_0x250[i];
-            s32 minutes = score / 60;
-            lbl_8053AF00->field_0x2c[i] = minutes;
-            lbl_8053AF00->field_0x28[i] = (f32)(score - minutes * 60) / 0.6f;
+            s32 time = field_0x250[i];
+            s32 seconds = time / 60;
+            lbl_8053AF00->field_0x2c[i] = seconds;
+            s32 hundredths = (f32)(time - seconds * 60) / 0.6f;
+            lbl_8053AF00->field_0x28[i] = hundredths;
         }
         lbl_8053AF00->field_0x30 |= (u8)(1 << (field_0x240 + 4));
         if (field_0x230 == 4) {
