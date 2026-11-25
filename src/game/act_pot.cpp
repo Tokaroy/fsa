@@ -87,7 +87,6 @@ Pot_804A9428::~Pot_804A9428() {
     }
 }
 
-// FIXME: 99.68 %, missing/extra; behaviour near.
 void Pot_804A9428::update() {
     field_0x254 = 0xFF;
     if (field_0xc4) {
