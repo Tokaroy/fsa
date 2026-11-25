@@ -2000,7 +2000,7 @@ void MapScreen_804B1288::fn_8040B388() {
 }
 
 
-// FIXME(shotgun): 99.69 %, different; behaviour near.
+// FIXME(shotgun): 99.87 %, scheduling+regalloc; behaviour clean.
 // pool literals + regalloc
 void MapScreen_804B1288::fn_80409FDC() {
     f32 x = 0.0f;
@@ -2729,7 +2729,7 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
-// FIXME(shotgun): 96.30 %, different; behaviour near.
+// FIXME(shotgun): 96.50 %, scheduling+regalloc; behaviour clean.
 // setRotScaleMtx's six sin / cos results land in
 // other saved FPRs (target sx f28, sy f27, sz f26, cx f31, cy f30, scale f29) and its
 // products are scheduled differently (unproven inline, see game/RotMatrix.h).
