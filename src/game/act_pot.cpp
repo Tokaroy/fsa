@@ -87,8 +87,6 @@ Pot_804A9428::~Pot_804A9428() {
     }
 }
 
-// FIXME: 99.68 %, missing/extra; behaviour near.
-// (missing/extra: duplicate null check in blz2 loop)
 void Pot_804A9428::update() {
     field_0x254 = 0xFF;
     if (field_0xc4) {
@@ -130,6 +128,9 @@ void Pot_804A9428::update() {
                     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
                     s32 count = getActorManager_801F856C()->collectActorsById_801F7818('BLZ2', mLayer_0x4, actors, -1);
                     for (s32 i = 0; i < count; i++) {
+                        if (actors[i] == NULL) {
+                            continue;
+                        }
                         ActorBase_804A5770* actor = actors[i];
                         if (actor != NULL) {
                             f32 dy = actor->mPos.y - mPos.y;
