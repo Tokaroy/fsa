@@ -115,16 +115,14 @@ void Link2Ending_804AE338::update() {
     }
     field_0x250->mPos = mPos;
     s32 live = 0;
-    JGeometry::TVec3f center;
-    center.z = 0.0f;
-    center.x = JUTVideo::getManager()->getFbWidth() * 0.5f;
-    center.y = JUTVideo::getManager()->getEfbHeight() * 0.5f;
+    JGeometry::TVec3f center((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
+                             (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
     for (s32 i = 0; i < 20; i++) {
         if (field_0x258[i] != NULL) {
             live++;
             if (field_0x258[i]->isEnableDeleteEmitter()) {
                 JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
-            manager->forceDeleteEmitter(field_0x258[i]);
+                manager->forceDeleteEmitter(field_0x258[i]);
                 field_0x258[i] = NULL;
             }
         }
@@ -144,9 +142,9 @@ void Link2Ending_804AE338::update() {
             }
         }
         if (field_0x238 < 0) {
-            s32 end = getActorManager_801F856C()->mActorEnd;
+            s32 end = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < end; i++) {
-                OtherCharactersEnding_804ADF28* actor = (OtherCharactersEnding_804ADF28*)getActorManager_801F856C()->mActors[i];
+                OtherCharactersEnding_804ADF28* actor = (OtherCharactersEnding_804ADF28*)getActorManager_801F856C()->getActor(i);
                 if (actor != NULL && actor->mActorId == ACTOR_EETC && actor->field_0x234 == 4 &&
                     (actor->field_0x238 == 0x26 || actor->field_0x238 == 0x27 || actor->field_0x238 == 0x28 ||
                      actor->field_0x238 == 0x29)) {
@@ -157,7 +155,7 @@ void Link2Ending_804AE338::update() {
         }
         s32 slot = field_0x238;
         if (slot >= 0) {
-            if (mPos.y - getActorManager_801F856C()->mActors[slot]->mPos.y < 20.0f) {
+            if (mPos.y - getActorManager_801F856C()->getActor(slot)->mPos.y < 20.0f) {
                 field_0x230++;
                 field_0x234 = 50;
                 field_0x244 = 0;
@@ -199,9 +197,10 @@ void Link2Ending_804AE338::update() {
         field_0x234 = 0x91;
         field_0x2B0 = 0;
     case 5:
-        if (field_0x254->field_0x234 >= 0x4A49) {
+        UnknownENDM_804AA0FC* endm = field_0x254;
+        if (endm->field_0x234 >= 0x4A49) {
             field_0x250->field_0x230 = 3;
-            field_0x254->field_0x231 = 1;
+            endm->field_0x231 = 1;
             field_0x230++;
         }
     case 6:
@@ -216,7 +215,8 @@ void Link2Ending_804AE338::update() {
                 JGeometry::TBox2f(30.0f, 139.0f, 274.0f, 269.0f),
                 JGeometry::TBox2f(304.0f, 139.0f, 578.0f, 269.0f),
             };
-            JGeometry::TBox2f box = sAreas[area];
+            JGeometry::TBox2f box;
+            box = sAreas[area];
             JGeometry::TVec3f p;
             bool inside;
             do {
@@ -250,11 +250,13 @@ void Link2Ending_804AE338::update() {
 }
 
 inline bool Link2Ending_804AE338::spawnSparkles(JGeometry::TVec3f pos) {
-    s32 slots[3] = {0, 0, 0};
+    s32 slots[3];
+    slots[0] = slots[1] = slots[2] = 0;
     s32 n = 0;
     for (s32 i = 0; i < 20; i++) {
         if (field_0x258[i] == NULL) {
-            slots[n++] = i;
+            slots[n] = i;
+            n++;
             if (n == 3) {
                 break;
             }
@@ -279,11 +281,13 @@ inline bool Link2Ending_804AE338::spawnSparkles(JGeometry::TVec3f pos) {
 }
 
 inline bool Link2Ending_804AE338::spawnSparkles2(JGeometry::TVec3f pos, s32 kind) {
-    s32 slots[2] = {0, 0};
+    s32 slots[2];
+    slots[0] = slots[1] = 0;
     s32 n = 0;
     for (s32 i = 0; i < 20; i++) {
         if (field_0x258[i] == NULL) {
-            slots[n++] = i;
+            slots[n] = i;
+            n++;
             if (n == 2) {
                 break;
             }
