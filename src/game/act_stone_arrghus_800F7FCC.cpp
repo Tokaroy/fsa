@@ -12,7 +12,6 @@
 
 // Data this unit owns, not written as source yet (shotgun pass): the position/slot
 // tables in .rodata.
-extern const char lbl_80463A58[];
 extern const s16 lbl_80463800[];
 extern const s16 lbl_804638C0[];
 
@@ -1421,7 +1420,7 @@ void StoneArrghusChildPuff_8049C678::draw() {
         mtx[2][1] = 0.0f;
         mtx[2][2] = 1.5f;
         params.mMtx = mtx;
-        drawSpriteScaled_801F02BC(lbl_80463A58, 0x25, &params, 0, 0, false, 1.0f, 1.0f);
+        drawSpriteScaled_801F02BC("enemy_both_sob.bin", 0x25, &params, 0, 0, false, 1.0f, 1.0f);
     } else {
         mtx[0][0] = 1.0f + a;
         mtx[0][1] = 0.0f;

@@ -10,7 +10,8 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/act/tu_801F9484.h"
 
-extern const s32 lbl_8046D388[4];
+// The emitters' y rotation by direction.
+const s32 lbl_8046D388[4] = {0x4000, 0xC000, 0x8000, 0};
 
 void FireRodFire_804A89F0::init() {
     field_0x284 = (mSpawnParam_0x90 >> 11) & 1;

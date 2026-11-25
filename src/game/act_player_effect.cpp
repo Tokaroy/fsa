@@ -9,9 +9,19 @@
 #include "game/Message.h"
 #include "game/Map.h"
 
-// FIXME(shotgun): table not written out; the (x, y) offsets of the tiles state 5 rewrites:
-// 9 pairs, then 12, then 16. Extern-declared, size from symbols.txt.
-extern const f32 lbl_8046ACC8[37][2];
+// The (x, y) offsets of the tiles state 5 rewrites: 9 pairs, then 12, then 16.
+const f32 lbl_8046ACC8[37][2] = {
+    {0.0f, 0.0f}, {-16.0f, -16.0f}, {0.0f, -16.0f}, {16.0f, -16.0f},
+    {-16.0f, 0.0f}, {16.0f, 0.0f}, {-16.0f, 16.0f}, {0.0f, 16.0f},
+    {16.0f, 16.0f},
+    {-16.0f, -32.0f}, {0.0f, -32.0f}, {16.0f, -32.0f}, {-32.0f, -16.0f},
+    {-32.0f, 0.0f}, {-32.0f, 16.0f}, {32.0f, -16.0f}, {32.0f, 0.0f},
+    {32.0f, 16.0f}, {-16.0f, 32.0f}, {0.0f, 32.0f}, {16.0f, 32.0f},
+    {-16.0f, -48.0f}, {0.0f, -48.0f}, {16.0f, -48.0f}, {-48.0f, -16.0f},
+    {-48.0f, 0.0f}, {-48.0f, 16.0f}, {48.0f, -16.0f}, {48.0f, 0.0f},
+    {48.0f, 16.0f}, {-16.0f, 48.0f}, {0.0f, 48.0f}, {16.0f, 48.0f},
+    {32.0f, 32.0f}, {32.0f, -32.0f}, {-32.0f, 32.0f}, {-32.0f, -32.0f},
+};
 
 // 0x8022A83C.
 // r4/r5 swapped in inlined mRandom.get_ufloat_1().
