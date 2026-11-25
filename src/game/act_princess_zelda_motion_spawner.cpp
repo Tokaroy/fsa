@@ -65,11 +65,12 @@ static inline void setViewBit(s32 bit) {
 // Message ids by the spawner's bits 8-11 (field_0x258).
 static u32 lbl_804A3740[] = {0x2D6, 0x2F0, 0x2F1, 0x2F3, 0x2F7, 0x2F8, 0x2F9};
 
-// FIXME(shotgun): 89.77 %, missing/extra + reloc-name; behaviour drift.
-// States 6-8 and the camera setup at the start of state 9 are not written
+// FIXME(shotgun): 94.58 %, scheduling+regalloc + reloc-name; behaviour drift.
+// Registers and instruction order still differ.
 void PrincessZeldaMotionObjectSpawner_804A375C::update() {
     s32 dir = -1;
     f32 dist = 0.0f;
+    JGeometry::TVec3f pos;
     switch (mState) {
     case 0:
         if (field_0x25c != 0) {
@@ -79,13 +80,16 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
             } else {
                 field_0x94 = 0;
                 JGeometry::TBox2f box = mBox2;
-                box.addPos(mHomePos.x, mHomePos.y);
+                box.i.x += mHomePos.x;
+                box.f.x += mHomePos.x;
+                box.i.y += mHomePos.y;
+                box.f.y += mHomePos.y;
                 fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
                 field_0x248 = fn_8022FD8C(mSerial);
                 if (field_0x248 >= 0 && fn_802300EC(field_0x248)) {
-                    JGeometry::TVec3f pos = mPos;
-                    pos.x -= 50.0f;
-                    if (openMessage_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0)) {
+                    JGeometry::TVec3f msgPos = mPos;
+                    msgPos.y -= 50.0f;
+                    if (openMessage_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, msgPos, 0)) {
                         mState = 3;
                     }
                 }
@@ -128,7 +132,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         } else {
             s32 count = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (isPlayerActive_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                if (isPlayerActive_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
                     !fn_80230188(i) && !fn_8022DCD8(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                     f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                     f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
@@ -160,11 +164,12 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         // fall through
     case 6: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+        pos.set(mPos.x, mPos.y, mPos.z);
         pos.y -= 8.0f;
         if (cam->mBlendBoxOn_0x840 == 0) {
             cam->mBlendBoxOn_0x840 = 1;
-            cam->mBlendBox_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            cam->mBlendBox_0x844.i.x = cam->mBlendBox_0x844.f.x = pos.x;
+            cam->mBlendBox_0x844.i.y = cam->mBlendBox_0x844.f.y = pos.y;
             cam->mBlendWeight_0x854 = 1.0f;
             cam->mMargin_0x1d4 = -1.0f;
             cam->mMinHalfWidth_0x1d8 = -1.0f;
@@ -176,14 +181,17 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         }
         JGeometry::TBox2f box;
         box.set(-64.0f, -64.0f, 64.0f, 64.0f);
-        box.addPos(mHomePos.x, mHomePos.y);
+        box.i.x += mHomePos.x;
+        box.f.x += mHomePos.x;
+        box.i.y += mHomePos.y;
+        box.f.y += mHomePos.y;
+        pos.set(0.0f, 0.0f, 0.0f);
+        pos.y = -10.0f;
         fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
         field_0x248 = fn_8022FD8C(mSerial);
         if (field_0x248 < 0) {
             field_0x248 = 0;
         }
-        pos.set(0.0f, 0.0f, 0.0f);
-        pos.y = -10.0f;
         if (openMessage_8038AD24(field_0x248, lbl_804A3740[field_0x258], mSerial, mLayer_0x4, pos, 0x4102)) {
             mState = 7;
         }
@@ -191,11 +199,12 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
     }
     case 7: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+        pos.set(mPos.x, mPos.y, mPos.z);
         pos.y -= 8.0f;
         if (cam->mBlendBoxOn_0x840 == 0) {
             cam->mBlendBoxOn_0x840 = 1;
-            cam->mBlendBox_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            cam->mBlendBox_0x844.i.x = cam->mBlendBox_0x844.f.x = pos.x;
+            cam->mBlendBox_0x844.i.y = cam->mBlendBox_0x844.f.y = pos.y;
             cam->mBlendWeight_0x854 = 1.0f;
             cam->mMargin_0x1d4 = -1.0f;
             cam->mMinHalfWidth_0x1d8 = -1.0f;
@@ -241,10 +250,11 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         break;
     case 9: {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+        pos.set(mPos.x, mPos.y, mPos.z);
         if (cam->mShowWholeArea_0x7f5 == 0) {
             cam->mFocusOverride_0x7f4 = 1;
             cam->mFocusMode_0x7f8 = 4;
-            cam->mFocusPos_0x7fc.set(mPos.x, mPos.y, mPos.z);
+            cam->mFocusPos_0x7fc.set(mPos);
             cam->mOverrideBlend_0x7f6 = 0;
         }
         cls_804A03A8* spot = gGameRoot2_8053AB10->field_0x30;
@@ -256,7 +266,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         playSe_801F0D20(0x50);
         if (field_0x234 == 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (isPlayerActive_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerActive_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                     healPlayerGroup_80236554(i, 0x20, false);
                 }
             }
