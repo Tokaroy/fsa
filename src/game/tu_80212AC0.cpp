@@ -26,21 +26,10 @@ void cls_80212AC0::fn_80212BA0(s32 serial) {
 }
 
 void cls_80212AC0::fn_80212AF0(JGeometry::TVec3f* pos) const {
-    // FIXME: 88.5 %. The original sets found (li r29, 0) before the mCount
-    // load and copies it into i (mr r30, r29), and numbers the registers
-    // differently (pos r26, this r27, actor r28, found r29, i r30; ours this
-    // r30, actor r27, i r28); ours sets i and found with two li after it.
-    ActorBase_804A5770* found = NULL;
-    for (s32 i = 0; i < mCount; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
-        if (actor != NULL && static_cast<Quicksand_804A6270*>(actor)->fn_80211000(pos)) {
-            found = actor;
-            break;
-        }
-    }
+    Quicksand_804A6270* found = find(pos);
     if (found != NULL) {
         JGeometry::TVec3f push;
-        static_cast<Quicksand_804A6270*>(found)->fn_80210E90(pos, &push);
+        found->fn_80210E90(pos, &push);
         *pos += push;
     }
 }
