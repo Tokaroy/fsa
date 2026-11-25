@@ -10,11 +10,6 @@
 #include "game/Player.h"
 #include "game/act/act_stone_arrghus_800F7FCC.h"
 
-// Data this unit owns, not written as source yet (shotgun pass): the position/slot
-// tables in .rodata.
-extern const s16 lbl_80463800[];
-extern const s16 lbl_804638C0[];
-
 static const char* lbl_8049C5D0[] = {
     "wart_eye1.bti",      "wart_eye2.bti",     "wart_eye3.bti",     "wart_eye4.bti",
     "wart_eye_red1.bti",  "wart_eye_red2.bti", "wart_eye_red3.bti", "wart_eye_left.bti",
@@ -24,6 +19,17 @@ static f32 lbl_8049C5FC[4][2] = {{1.4f, 1.4f}, {0.0f, 1.4f}, {-1.4f, 1.4f}, {1.4
 static u8 lbl_8049C61C[] = {0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 0xFF, 0};
 static u8 lbl_8049C628[] = {3, 3, 3, 3, 2, 2, 5, 3, 3, 3, 0xFF, 0};
 static f32 lbl_8049C634[5] = {38.0f, 46.0f, 32.0f, 17.0f, 15.0f};
+// Spawn offsets (x, y) by mIndex: the 0x30 child-puff slots, and the slots of the
+// mFlag248 == 2 variant (only the first two are set).
+static const s16 lbl_80463800[0x30 * 2] = {
+    20, 20, 50, 0, -20, 20, -40, 0, -50, -60, -40, -80, 40, -60, 45, -85,
+    70, -10, 70, 30, 70, -40, 55, 45, -50, 40, -30, 50, -20, 70, 20, 80,
+    90, 20, 100, 0, 0, -60, -90, 0, -100, -50, -80, -70, 100, -60, 60, -70,
+    100, 60, 120, 100, 130, 10, 140, 30, 0, 60, -10, -70, -40, 70, -65, 85,
+    -80, -20, 80, 90, 80, -60, -80, 30, -80, 60, -120, -50, -80, -80, 100, -30,
+    130, -20, 130, 70, -140, 0, -150, 20, -170, 30, -110, 30, -120, 0, -110, 80,
+};
+static const s16 lbl_804638C0[0x30 * 2] = {-170, 30, 170, -30};
 static const char* lbl_8049C648[] = {
     "wart_child1.bti",        "wart_child2.bti",
     "wart_child1_green.bti",  "wart_child2_green.bti",
