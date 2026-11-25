@@ -36,7 +36,6 @@ inline bool Rat_8049C400::startChase_inline() {
     return false;
 }
 
-// FIXME(shotgun): 100 % (written in the shotgun pass)
 void Rat_8049C400::init() {
     mBox.i.set(-8.0f, -8.0f);
     mBox.f.set(8.0f, 8.0f);
@@ -56,6 +55,7 @@ void Rat_8049C400::init() {
 // Wanders in the four directions (states 0, 1, 3 and the chase 2: a player nearer than 120 turns it his way).
 // FIXME(shotgun): 98.26 %, different + reloc-name (one instruction-order change around the chase flag)
 
+// FIXME: 99.66 %, operands; behaviour clean.
 void Rat_8049C400::update() {
     if (updateHitReaction_801F3D94(true) || checkHits_801F305C()) {
         sweepMapBox_801F2618(NULL, false);
