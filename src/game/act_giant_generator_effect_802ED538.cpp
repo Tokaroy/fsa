@@ -76,7 +76,7 @@ void GiantGeneratorEffect_804AA350::init() {
     mUpdateWhilePaused_0x11f = 1;
 }
 
-// FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 98.87 %, regalloc-only; behaviour clean.
 void GiantGeneratorEffect_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < count; i++) {
@@ -165,7 +165,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
     }
 }
 
-// FIXME(shotgun): 98.45 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.72 %, scheduling+regalloc; behaviour near.
 void GiantGeneratorEffect_804AA350::update() {
     switch (field_0x24c) {
     case 0:
@@ -404,7 +404,7 @@ void GiantGeneratorEffect_804AA350::fn_802ED7D8() {
     field_0x24c++;
 }
 
-// FIXME: 82.43 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.59 %, missing/extra; behaviour near.
 // JMAFastSqrtNewton's frsqrte result gets an frsp the original does not have
 bool GiantGeneratorEffect_804AA350::fn_802ED538() {
     bool result = true;
