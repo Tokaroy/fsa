@@ -13,7 +13,29 @@ static f32 lbl_8049C3E0[4][2] = {{2.0f, 0.0f}, {-2.0f, 0.0f}, {0.0f, 2.0f}, {0.0
 // Frame offsets per animation step.
 static u8 lbl_80539E68[] = {0, 3, 1, 2};
 
-// FIXME(shotgun): 100 % (written in the shotgun pass)
+// update: a player nearer than 120 starts the chase (state 2).
+inline bool Rat_8049C400::startChase_inline() {
+    if (mSpawnParam_0x90 != 0 && field_0x230 == 0) {
+        u16 angle = 0;
+        f32 dist = 0.0f;
+        s32 dir = 0;
+        s32 player = 0;
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+        if (player != -1 && dist < 120.0f) {
+            field_0x230 = 2;
+            field_0x23c = 0;
+            for (u8 i = 0; i < 4; i++) {
+                if (dir == lbl_80539E68[i]) {
+                    mStep = i;
+                    break;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
 void Rat_8049C400::init() {
     mBox.i.set(-8.0f, -8.0f);
     mBox.f.set(8.0f, 8.0f);
@@ -33,6 +55,7 @@ void Rat_8049C400::init() {
 // Wanders in the four directions (states 0, 1, 3 and the chase 2: a player nearer than 120 turns it his way).
 // FIXME(shotgun): 98.26 %, different + reloc-name (one instruction-order change around the chase flag)
 
+// FIXME: 99.66 %, operands; behaviour clean.
 void Rat_8049C400::update() {
     if (updateHitReaction_801F3D94(true) || checkHits_801F305C()) {
         sweepMapBox_801F2618(NULL, false);
@@ -67,26 +90,7 @@ void Rat_8049C400::update() {
             mStep++;
         }
         mStep &= 3;
-        bool chasing = false;
-        if (mSpawnParam_0x90 != 0 && field_0x230 == 0) {
-            u16 angle = 0;
-            f32 dist = 0.0f;
-            s32 dir = 0;
-            s32 player = 0;
-            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
-            if (player != -1 && dist < 120.0f) {
-                field_0x230 = 2;
-                field_0x23c = 0;
-                for (u8 i = 0; i < 4; i++) {
-                    if (dir == lbl_80539E68[i]) {
-                        mStep = i;
-                        break;
-                    }
-                }
-                chasing = true;
-            }
-        }
-        if (chasing) {
+        if (startChase_inline()) {
             return;
         }
         mPos.x += lbl_8049C3E0[lbl_80539E68[mStep]][0];
