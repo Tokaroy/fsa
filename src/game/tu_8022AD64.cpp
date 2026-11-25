@@ -3381,7 +3381,7 @@ bool fn_80230360(s32 player) {
     return false;
 }
 
-bool fn_802302C4(s32 player, s32 a, bool b) {
+bool fn_802302C4(s32 player, s32 a, u8 b) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }
