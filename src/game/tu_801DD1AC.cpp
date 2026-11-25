@@ -362,8 +362,6 @@ u8 Frostare_804A4C58::checkHitByPlayer_0x5C() {
     u8 hit = false;
     bool active = false;
     switch (mState) {
-    case 5:
-        break;
     case 4:
     case 6:
     case 7:
