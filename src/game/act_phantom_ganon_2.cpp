@@ -383,7 +383,7 @@ s32 PhantomGanon2_804A1A98::fn_80189DEC() {
     return field_0x94;
 }
 
-// FIXME(shotgun): 98.38 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.69 %, missing/extra; behaviour near.
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
@@ -1391,7 +1391,7 @@ void PhantomGanon2_804A1A98::update() {
     }
 }
 
-// FIXME: 85.45 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 98.79 %, scheduling+regalloc; behaviour drift.
 void PhantomGanon2_804A1A98::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
