@@ -51,7 +51,7 @@ void Gibdo_804A3BF8::init() {
     mAnim.setRandomFrame_801D1D60();
 }
 
-// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.58 %, missing/extra; behaviour drift.
 // the original keeps fewer values live (saves r30-r31 only)
 // and its jump table is named jumptable_804A3D24.
 void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
@@ -191,7 +191,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
     mState = mode;
 }
 
-// FIXME: 96.86 %, missing/extra; behaviour drift.
+// FIXME: 98.96 %, scheduling+regalloc; behaviour drift.
 // The original reloads mFlags before clearing 0x8000 (lwz after
 // the timer compare); ours reuses the first load. The two jump tables
 // (jumptable_804A3C9C, jumptable_804A3CE4) and the 120.0f / 0.1f literals are
