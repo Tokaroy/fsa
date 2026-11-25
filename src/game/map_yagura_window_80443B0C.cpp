@@ -21,7 +21,7 @@ MapYaguraWindow_804B1B60::MapYaguraWindow_804B1B60() {
     mScreen->setPriority("map_yagura_window.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
 
     field_0x8 = new PaneCtrl_804AF86C();
-    field_0x8->setPane_80402F04(mScreen->search('Nda01'));
+    field_0x8->setPane_80402F04(mScreen->search('Ndata01'));
     field_0x8->moveFromCentre_80402E08(0.0f, -480.0f);
     field_0x8->field_0x22 = 0;
 
@@ -60,12 +60,12 @@ MapYaguraWindow_804B1B60::MapYaguraWindow_804B1B60() {
     field_0x38 = static_cast<J2DTextBox*>(mScreen->search('Tmm03'))->getBlack();
     field_0x3c = static_cast<J2DTextBox*>(mScreen->search('Tmm03'))->getWhite();
 
-    static_cast<J2DTextBox*>(mScreen->search('Tmm01'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tmm02'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tmm03'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tmm04'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tmm05'))->setFont(lbl_8053AD78->mFont);
-    static_cast<J2DTextBox*>(mScreen->search('Tmm06'))->setFont(lbl_8053AD78->mFont);
+    static_cast<J2DTextBox*>(mScreen->search('Tmm01'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tmm02'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tmm03'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tmm04'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tmm05'))->setFont(lbl_8053AD78->getFont());
+    static_cast<J2DTextBox*>(mScreen->search('Tmm06'))->setFont(lbl_8053AD78->getFont());
 
     f32 y5 = mScreen->search('Tmm05')->getBounds()->i.y;
     f32 y3 = mScreen->search('Tmm03')->getBounds()->i.y;
