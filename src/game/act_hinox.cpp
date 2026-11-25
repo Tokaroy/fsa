@@ -65,7 +65,7 @@ void Hinox_8049F9B4::init() {
     mState = 0;
 }
 
-// FIXME(shotgun): 99.79 %, operands; behaviour clean.
+// FIXME(shotgun): 99.71 %, scheduling+regalloc; behaviour clean.
 // Still differs: the saved x/z registers, and the order of the vel.x/vel.y stores.
 // The tail repeats vfunc_0x44: calling it instead puts the two vectors in swapped stack slots.
 Hinox_8049F9B4::~Hinox_8049F9B4() {
