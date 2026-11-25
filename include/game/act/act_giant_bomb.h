@@ -2,6 +2,7 @@
 #define GAME_ACT_ACT_GIANT_BOMB_H
 
 #include "game/ActorBase.h"
+#include "game/GameGlobals.h"
 #include "game/SpriteParams.h"
 
 class JPABaseEmitter;
@@ -16,10 +17,13 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     // Not written yet (0x80341D08): drawn with a loaded resource at mPos + (offsetX, offsetY, offsetZ).
-    /* 0x54 */ virtual void vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 offsetX,
+    /* 0x54 */ virtual void vfunc_0x54(void* res, const SpriteParams_801F5AE0* params, s32 flags, f32 offsetX,
                                        f32 offsetY, f32 offsetZ);
 
     void fn_8034335C(s32 layer, const JGeometry::TVec3f* pos);
+    // Inlined in update(): the two corners are copied once into this helper's by-value
+    // parameters and again into fn_8043E398's.
+    void showOnHud_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) { lbl_8053AED0->fn_8043E398(a, b); }
 
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 mTimer;

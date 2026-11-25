@@ -123,7 +123,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 // 0x80342850.
-// FIXME(shotgun): 99.13 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.98 %, operands; behaviour drift.
 void GiantBomb_804AC588::update() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
@@ -144,7 +144,7 @@ void GiantBomb_804AC588::update() {
         corner0.y += mBox.i.y;
         corner1.x += mBox.f.x;
         corner1.y += mBox.f.y;
-        lbl_8053AED0->fn_8043E398(corner0, corner1);
+        showOnHud_8043E398(corner0, corner1);
     }
     if (mState == 6 && mTimer > 0) {
         fn_802397B4(&box, mLayer_0x4, mSerial);
@@ -382,9 +382,9 @@ void GiantBomb_804AC588::draw() {
     }
 }
 
-// FIXME(shotgun): 53.42 %, missing/extra; behaviour clean.
-// (the SpriteParams copy is field-wise in the original, one block per branch)
-void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 offsetX, f32 offsetY,
+// FIXME(shotgun): 99.42 %, scheduling+regalloc; behaviour clean.
+// (params is a pointer to const: the copies load every field before storing; registers and order of the fade differ)
+void GiantBomb_804AC588::vfunc_0x54(void* res, const SpriteParams_801F5AE0* params, s32 flags, f32 offsetX, f32 offsetY,
                                     f32 offsetZ) {
     if (mLayer_0x4 != 0) {
         return;

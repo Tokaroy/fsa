@@ -670,8 +670,8 @@ void releaseEmitter_801EE434(JPABaseEmitter* emitter);
 // loaded `res`, drawTimgImage_802F745C), on tile 0x39 an "enemy_both2_sob.bin" frame.
 // params (or NULL) gives the alpha (flag 0x400), 0x1C/0x1D and the matrix.
 // Callers pass an actor's field_0x4 and &mPos. Defined in this unit, so a
-// C++ name (drawShadow_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv).
-void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
+// C++ name (drawShadow_801EF830__FlPCQ29JGeometry8TVec3<f>PC21SpriteParams_801F5AE0lPCclPv).
+void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, const SpriteParams_801F5AE0* params, s32 flags,
                  const char* name, s32 frame, void* res);
 
 extern "C" {
