@@ -78,7 +78,7 @@ s32 getPlayerInputSlot_8030AAF4(s32 player) {
     return -0x3E7;
 }
 
-// FIXME(shotgun): 99.67 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.93 %, regalloc-only; behaviour clean.
 // What still differs: register allocation in the key-bit expression only.
 // 0x8030A43C
 void cls_804AA8C8::pollInputs_8030A43C() {
@@ -240,8 +240,6 @@ void cls_804AA8C8::pollInputs_8030A43C() {
     fn_8030A078();
 }
 
-// FIXME: 93.29 %, missing/extra; behaviour near.
-// 0x8030A3B0
 u8 cls_804AA8C8::fn_8030A3B0(s32 slot) {
     if (slot == -0x3E7) {
         return 0;
