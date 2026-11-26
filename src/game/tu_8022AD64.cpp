@@ -4190,7 +4190,7 @@ u32 fn_8022C52C(s32 player, u32 arg) {
     return 0;
 }
 
-s32 fn_8022C46C(s32 player, u32 arg) {
+u32 fn_8022C46C(s32 player, u32 arg) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0;
     }
