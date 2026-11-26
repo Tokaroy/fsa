@@ -16,6 +16,8 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
 
+    bool isLayerFree();
+
     /* 0x230 */ s32 field_0x230; // cleared by init
     /* 0x234 */ s32 field_0x234; // spawn parameter (0x90) & 0x7F
     // Each of the two counts is the parameter's 5-bit field + 1; the box
