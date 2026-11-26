@@ -295,8 +295,6 @@ f32 WarningWindow_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
     return total;
 }
 
-// FIXME(shotgun): 99.68 %, same-text; behaviour drift.
-// (string literal pool offsets)
 f32 WarningWindow_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     switch (noun) {
     case 1:
@@ -522,14 +520,14 @@ void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
     field_0x10[4]->scaleKeepCentre_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
-// FIXME(shotgun): 96.14 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.21 %, missing/extra; behaviour near.
 // Lays message `id` out into `str` with each line centred in 428 (a "\x1BCR[n]" prefix), the
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
 void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     MessageInf1_804AF070* inf1 =
         &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
-    const char* text = (const char*)inf1 + (inf1->size + inf1->entries[id].textOffset + 8);
+    const char* text = (const char*)inf1 + inf1->size + inf1->entries[id].textOffset + 8;
     // The font width of the text box 'Twt01' (J2DTextBox::mFontSize at 0x11C).
     f32 fontSize = static_cast<J2DTextBox*>(field_0x8->search('Twt01'))->mFontSize.x;
     f32 scale = fontSize / (f32)lbl_8053AD78->mFont->getCellWidth();
@@ -558,16 +556,17 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     widths[7] = 0.0f;
     widths[8] = 0.0f;
     widths[9] = 0.0f;
-    const char* p;
-    while ((p = text + i)[0] != 0) {
-        if (p[0] == '\n') {
+    while (text[i] != 0) {
+        char c = text[i];
+        const char* p = &text[i];
+        if (c == '\n') {
             if (field_0xb8[0] < lineW) {
                 field_0xb8[0] = lineW;
             }
             i++;
             widths[field_0xe4++ - 1] = lineW;
             lineW = 0.0f;
-        } else if (p[0] == 0x1A) {
+        } else if (c == 0x1A) {
             if (p[2] == 2) {
                 if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19) {
                     if (choice == 1) {
@@ -605,10 +604,11 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
             }
             i += p[1];
         } else {
-            code = (u8)p[0];
+            code = (u8)c;
             i++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                code = (code << 8) | (u8)text[i];
+                code <<= 8;
+                code |= (u8)text[i];
                 i++;
             }
             lineW += scale * charWidth(code);
@@ -638,8 +638,10 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
         snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
         strcat(str, prefix);
     }
-    while ((p = text + i)[0] != 0) {
-        if (p[0] == '\n') {
+    while (text[i] != 0) {
+        char c = text[i];
+        const char* p = &text[i];
+        if (c == '\n') {
             ch[0] = p[0];
             ch[1] = 0;
             strcat(str, ch);
@@ -650,7 +652,7 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
                 snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
                 strcat(str, prefix);
             }
-        } else if (p[0] == 0x1A) {
+        } else if (c == 0x1A) {
             if (p[2] == 3) {
                 ch[0] = digit;
                 code = digit;
@@ -673,7 +675,7 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
             i++;
         }
     }
-    ch[0] = p[0];
+    ch[0] = text[i];
     ch[1] = 0;
     strcat(str, ch);
 }
