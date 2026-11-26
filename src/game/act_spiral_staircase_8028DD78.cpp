@@ -431,9 +431,22 @@ void SpiralStaircase_804A7A68::update() {
 
 void SpiralStaircase_804A7A68::draw() {}
 
+// Bubble-sorts the first n entries of order[] by key[], restarting after every swap.
+static inline void sortByKey(s32* order, f32* key, s32 n) {
+    for (s32 i = 0; i < n - 1; i++) {
+        s32 a = order[i];
+        s32 b = order[i + 1];
+        if (key[a] > key[b]) {
+            order[i] = b;
+            order[i + 1] = a;
+            i = -1;
+        }
+    }
+}
+
 // 0x8028DDD8. Orders the players for the four marker slots: out[] gets the player indices
 // sorted by their x (y for the vertical variants 6 and 7), grouped by team for two players.
-// FIXME(shotgun): 98.19 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.42 %, regalloc-only; behaviour clean.
 void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
@@ -488,15 +501,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
         out[1] = 1;
         out[2] = 2;
         out[3] = 3;
-        for (s32 i = 0; i < 2; i++) {
-            s32 a = out[i];
-            s32 b = out[i + 1];
-            if (key[a] > key[b]) {
-                out[i] = b;
-                out[i + 1] = a;
-                i = -1;
-            }
-        }
+        sortByKey(out, key, 3);
         s32 leader = getPlayerLeader_8022F3DC(3);
         for (s32 i = 0; i < 3; i++) {
             if (leader == out[i]) {
@@ -517,15 +522,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
         out[1] = 1;
         out[2] = 2;
         out[3] = 3;
-        for (s32 i = 0; i < 3; i++) {
-            s32 a = out[i];
-            s32 b = out[i + 1];
-            if (key[a] > key[b]) {
-                out[i] = b;
-                out[i + 1] = a;
-                i = -1;
-            }
-        }
+        sortByKey(out, key, 4);
         break;
     case 1:
     default:
