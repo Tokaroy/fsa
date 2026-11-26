@@ -267,7 +267,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 95.75 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 96.03 %, missing/extra + reloc-name; behaviour near.
 // case 16 lacks the original's copy of fn_8023CBC0's result; fn_8038BD08's
 // by-value pos copy sits 12 bytes lower in our frame; regalloc differs.
 void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
