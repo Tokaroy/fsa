@@ -87,7 +87,7 @@ void cls_804A03A8::fn_8016005C() {
 
 static void drawLetterbox(f32 bar, JUtility::TColor color);
 
-// FIXME(shotgun): 97.94 %, different; behaviour clean.
+// FIXME(shotgun): 97.97 %, different; behaviour clean.
 // (stack slots of the arrays and colour copies are ordered differently; the white colour is not hoisted)
 // 0x8015F9C0
 void cls_804A03A8::fn_8015F9C0() {
@@ -189,8 +189,7 @@ void cls_804A03A8::fn_8015F9C0() {
         f32 sq = field_0x288 * field_0x288;
         JUtility::TColor color(0, 0, 0, (u8)(255.0f * sq));
         gGameRoot2_8053AB10->fn_8013B460();
-        f32 bar = 48.0f * sq;
-        drawLetterbox(bar, color);
+        drawLetterbox(48.0f * sq, color);
     }
 }
 
