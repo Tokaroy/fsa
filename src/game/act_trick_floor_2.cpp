@@ -142,7 +142,7 @@ void TrickFloor2_804AA628::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 96.37 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 96.51 %, missing/extra + reloc-name; behaviour near.
 // Finds who stands on the floor (fn_8023AF14, the 'SBAL' ball, fn_8023A97C per player), then:
 // 0 reads the tile under it, 2 waits for a rider (isScreenFlagSet_0x34) and drops (tiles 6, state 3) or,
 // for types 4 / 5, waits for all four players to open (state 6), 3 sinks to 1.6384, 4 holds
