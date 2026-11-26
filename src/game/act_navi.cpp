@@ -566,7 +566,7 @@ void Navi_804A6708::vfunc_0xA0() {
     }
 }
 
-// FIXME: 92.15 %, missing/extra; behaviour clean.
+// FIXME: 94.65 %, scheduling+regalloc; behaviour clean.
 // only register and order differences left around the frame-table load
 void Navi_804A6708::draw() {
     if (mState != 3 && field_0x2b8 > 0.0f) {
