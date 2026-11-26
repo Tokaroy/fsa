@@ -961,6 +961,35 @@ inline void MovingHouse_804A7AE0::restoreTiles() {
     }
 }
 
+// True when no active player stands inside the house's box on its layer, nor on the
+// house's warp layer. No copy of its own: update inlines it.
+inline bool MovingHouse_804A7AE0::isClearOfPlayers() {
+    f32 minX = mBox.i.x + mPos.x;
+    f32 maxX = mBox.f.x + mPos.x;
+    f32 minY = mBox.i.y + mPos.y;
+    f32 maxY = mBox.f.y + mPos.y;
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_8022D75C(i) == 1) {
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
+                const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(i);
+                bool inside = false;
+                if (pPos->x >= minX && pPos->y >= minY && pPos->x < maxX && pPos->y < maxY) {
+                    inside = true;
+                }
+                if (inside == 1) {
+                    return false;
+                }
+            }
+            s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
+            s32 layer = v == 0 ? 0 : v + 7;
+            if (getPlayerLayer_8023DE58(i) == layer) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 // FIXME: 95.62 %, missing/extra + reloc-name; behaviour near.
 void MovingHouse_804A7AE0::update() {
     mPos.set(field_0x238);
@@ -1039,8 +1068,8 @@ void MovingHouse_804A7AE0::update() {
                     bakeTiles();
                     field_0x230 = 3;
                     startSound_801F0E34(0x3000F, 0);
-                    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
-                    mVel_0x3c.z = gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 4.0f;
+                    mVel_0x3c.zero();
+                    mVel_0x3c.z = 4.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     for (s32 i = 0; i < 4; i++) {
                         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
                         s32 layer = v == 0 ? 0 : v + 7;
@@ -1102,33 +1131,7 @@ void MovingHouse_804A7AE0::update() {
                             fn_80239914(&b, 0, mSerial);
                         }
                     }
-                    f32 minX = mBox.i.x + mPos.x;
-                    f32 maxX = mBox.f.x + mPos.x;
-                    f32 minY = mBox.i.y + mPos.y;
-                    f32 maxY = mBox.f.y + mPos.y;
-                    u8 clear = 1;
-                    for (s32 i = 0; i < 4; i++) {
-                        if (fn_8022D75C(i) == 1) {
-                            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                                const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(i);
-                                bool inside = false;
-                                if (pPos->x >= minX && pPos->y >= minY && pPos->x < maxX && pPos->y < maxY) {
-                                    inside = true;
-                                }
-                                if (inside == 1) {
-                                    clear = 0;
-                                    break;
-                                }
-                            }
-                            s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
-                            s32 layer = v == 0 ? 0 : v + 7;
-                            if (getPlayerLayer_8023DE58(i) == layer) {
-                                clear = 0;
-                                break;
-                            }
-                        }
-                    }
-                    field_0x2b4 = clear;
+                    field_0x2b4 = isClearOfPlayers();
                     if (field_0x244 != 1 || (field_0x2b6 == 1 && field_0x2b7 == 1)) {
                         fn_8029A974();
                         fn_8029A494();
@@ -1321,8 +1324,7 @@ void MovingHouse_804A7AE0::update() {
         }
         break;
     }
-    JGeometry::TVec3f delta = mPos;
-    delta.sub(mPrevPos);
+    JGeometry::TVec3f delta = mPos - mPrevPos;
     if (!delta.isZero()) {
         for (s32 i = 0; i < mSerialCountA; i++) {
             Warp_804A6DC8* warp =

@@ -32,6 +32,7 @@ public:
     void snapshotTiles();
     void restoreTiles();
     void killSerialActors();
+    bool isClearOfPlayers();
     virtual void init(); // fn_8029B2EC
     virtual void vfunc_0x10(); // fn_8029AE58
     virtual void update(); // fn_80296A84
