@@ -516,7 +516,7 @@ void ShadowLink2_804A43E8::fn_801C79A0() {
     }
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.00 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     if (!(mFlags & 0x2000000)) {
         if (fn_801C5340()) {
@@ -617,9 +617,9 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     } else if (flag != 0) {
         fn_801C8C84(1, 0);
     }
-    s32 targetAngle = fn_801D02E0(&field_0x32c);
+    s16 targetAngle = fn_801D02E0(&field_0x32c);
     if (mFlags & 0x20000) {
-        stepAngle_801CD930(&field_0x33c, (s16)targetAngle, 0x500);
+        stepAngle_801CD930(&field_0x33c, targetAngle, 0x500);
     } else {
         field_0x33c = targetAngle;
     }
