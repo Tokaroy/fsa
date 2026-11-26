@@ -169,7 +169,7 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     stepAngle_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
-// FIXME: 98.06 %, missing/extra; behaviour drift.
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 // Register choice for the locals (the original holds the entry
 // index in r26 and the rail index in r27, the player in r30, ours differs),
 // and the literal labels (@NNN vs lbl_ for lbl_8053EE6C, EE70, EE74, EE80,
