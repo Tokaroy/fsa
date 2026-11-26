@@ -289,7 +289,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 99.92 %, operands; behaviour near.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour near.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
