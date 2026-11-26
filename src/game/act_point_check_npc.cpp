@@ -18,7 +18,7 @@ void PointCheckNPC_804A81C8::init() {
 }
 
 // Left: registers and load order (setTile_802F9974 argument loads).
-// FIXME: 98.67 %, missing/extra; behaviour drift.
+// FIXME: 98.90 %, scheduling+regalloc; behaviour drift.
 void PointCheckNPC_804A81C8::update() {
     JGeometry::TVec2<f32> p(mPos.x + 4.0f, mPos.y + 4.0f);
     JGeometry::TBox2f box(mBox);
