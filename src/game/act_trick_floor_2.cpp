@@ -337,7 +337,7 @@ void TrickFloor2_804AA628::update() {
                 for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
-                    if (mType != 1) {
+                    if (1 != mType) {
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
                     } else {
                         gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046F7C0[i][j]);
