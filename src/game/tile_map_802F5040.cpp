@@ -1043,12 +1043,7 @@ void TileMap_804AA858::fn_802FC80C() {
 }
 
 // FIXME: 94.86 %, missing/extra; behaviour near.
-// Structurally close (2 instructions more): the original builds
-// the four vertex indices as a chain of u16 truncations (clrlwi after +1, +65,
-// -1; ours folds them into offsets from one clrlwi), keeps the draw loop's
-// block counters in different stack slots / registers (one more spilled), and
-// orders the count loop's four field_0x24 loads differently. Literals and the
-// .rodata table (lbl_8046F9F0$NNN) are reloc-name.
+// Only register allocation differs in the draw loop's quad emission.
 // Draws the tile grid `grid` of `layer` (2 x 2 blocks of 16 x 16 tiles, up to
 // the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells of the height grid) at origin, raised
 // by (layer - 0.5) * 1024 in y and z, one palette at a time (field_0x18[0]):
@@ -1116,10 +1111,10 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
                                     if (((entry >> 12) & 0xF) == palette) {
                                         s32 cx = bx * 32 + x * 2 + i;
                                         s32 cy = by * 32 + y * 2 + j;
-                                        u16 corner = entry & 0xFFF;
-                                        f32 s = (origin->x + cx * 8) * 0.0078125f;
-                                        f32 t = (origin->y + cy * 8) * 0.0078125f;
+                                        int corner = entry & 0xFFF;
                                         u16 v0 = cx + cy * 65;
+                                        f32 s = (origin->x + cx * 8) / 128.0f;
+                                        f32 t = (origin->y + cy * 8) / 128.0f;
                                         GXPosition1x16(v0);
                                         GXColor1x16(v0);
                                         GXTexCoord1x16(corner);
