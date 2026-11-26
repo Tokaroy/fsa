@@ -67,8 +67,8 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
 
 // FIXME(shotgun): 97.46 %, different; behaviour drift.
 // PlayerSwordLevelCheckNPC_804AA590
-// Still differs: `(field_0x83 & 3) == 2` is an unsigned compare in the original; case 13 keeps
-// the raw level / view pointer across the getGameView calls; registers of the loop counters.
+// Still differs: case 13 keeps the raw level / view pointer across the getGameView calls;
+// registers of the loop counters.
 void PlayerSwordLevelCheckNPC_804AA590::update() {
     JGeometry::TVec3f pos;
     if (field_0x244 >= 1) {
@@ -102,7 +102,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x244 = 1;
             mSoundObj->startSound(0x50076);
             gAudioMgr_8053AF80->fn_8045873C(1);
-            if (gGameRoot_8053AAF8->field_0x7e == 0 && (gGameRoot_8053AAF8->field_0x83 & 3) == 2 &&
+            if (gGameRoot_8053AAF8->field_0x7e == 0 && (gGameRoot_8053AAF8->field_0x83 & 3U) == 2 &&
                 getPlayerLayer_8023DE58(0) >= 8) {
                 field_0x264[0] = 1;
                 field_0x264[1] = 1;
@@ -250,7 +250,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         if (field_0x250 == 0) {
             field_0x260 += 0x1000;
             for (s32 i = 0; i < 4; i++) {
-                pos = *getPlayerPos_8023E724(i);
+                JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 if (field_0x24c < 11) {
                     if (mEmitters[i] != NULL) {
                         JGeometry::TVec3f emPos = *getPlayerPos_8023E724(i);
