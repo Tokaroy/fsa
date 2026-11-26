@@ -1439,17 +1439,17 @@ void ConnectScreen_804B0F10::fn_803F8AE4() {
 
 // FIXME: 96.67 %, missing/extra; behaviour drift.
 // Registers throughout (one more saved register in the
-// original), the counter's first test is `lha r0; cmpwi` there but
-// `lha r3; extsh.` here, and the three-row loop's i * 10 sits in two
-// registers there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
+// original): the three-row loop's i * 10 sits in two registers
+// there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
 // Update state 7: slides mEntryConScreen_0xc's game-select panes in and fades them up
 // (field_0x240[0] counts the frames: the title from 0 to 25, the rows
 // 10 frames apart, the rule box from 0 to 15), then enters state 8 at 75.
 void ConnectScreen_804B0F10::fn_803F8354() {
     field_0x240[0]++;
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 25) {
-            s32 d = 25 - field_0x240[0];
+    s32 frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 25) {
+            s32 d = 25 - frame;
             field_0x164 = -200.0f * ((f32)(d * d) / 625.0f);
             f32 alpha = (f32)field_0x240[0] / 25.0f;
             if (alpha < 0.0f) {
@@ -1497,9 +1497,10 @@ void ConnectScreen_804B0F10::fn_803F8354() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 15) {
-            s32 d = 15 - field_0x240[0];
+    frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 15) {
+            s32 d = 15 - frame;
             field_0x198 = -450.0f * ((f32)(d * d) / 225.0f);
             f32 alpha = (f32)field_0x240[0] / 15.0f;
             if (alpha < 0.0f) {
