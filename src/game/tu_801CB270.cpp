@@ -740,7 +740,7 @@ static inline u16 cornerAngle(const JGeometry::TVec2f& d) {
 // Pushes a point inside box along `angle` out through the box edge the ray leaves by, then
 // `speed` further along that direction. Writes the result to out; leaves the point alone (out
 // = point) when it is outside the box.
-// FIXME(shotgun): 95.56 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.37 %, missing/extra; behaviour near.
 void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 angleArg, f32 speed, JGeometry::TVec2f* out) {
     out->set(p->x, p->y);
     bool inside = false;
@@ -780,7 +780,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         out->x += speed * JMASSin(angleArg);
         out->y += speed * JMASCos(angleArg);
     } else if (ua >= 0x4000 && ua <= 0x8000) {
-        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->f.x, box->i.y), p));
+        u16 ca = cornerAngle(JGeometry::TVec2f(box->f.x, box->i.y) - JGeometry::TVec2f(p->x, p->y));
         s16 a2 = 0x8000 - ua;
         if ((u32)(ca - ua) >> 31) { // sign bit of the difference
             out->x = p->x + JMAAbs(p->y - box->i.y) * edgeSlope(a2);
@@ -804,7 +804,7 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         out->x -= speed * JMASSin(a3);
         out->y -= speed * JMASCos(a3);
     } else {
-        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->i.x, box->f.y), p));
+        u16 ca = cornerAngle(JGeometry::TVec2f(box->i.x, box->f.y) - JGeometry::TVec2f(p->x, p->y));
         s16 a4 = 0x10000 - ua;
         if ((u32)(ca - ua) >> 31) {
             out->x = p->x - JMAAbs(box->f.y - p->y) * edgeSlope(a4);
