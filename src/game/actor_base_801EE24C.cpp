@@ -1908,6 +1908,8 @@ void ActorBase_804A5770::drawSpriteScaled_801F02BC(const char* name, s32 frame, 
 // drawSprite_801F06F0 for a loaded resource `res` (drawTimgImage_802F745C) at mPos + (x, y, z), below
 // layer 8. During the hit flash a fast knock-back (|mVel_0x3c|^2 > 1) sets the copy's 0x30 to 8;
 // otherwise the actor's matrix is used and the death countdown mBossDeathTimer_0x188 tints it (200, 0x41).
+// The original's `sp = *params` copies load every field before storing (as with a const params; the
+// mangled name says non-const), ours interleave them.
 void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX,
                                      f32 scaleY, f32 arg_f3) {
     if (mLayer_0x4 >= 8) {
@@ -1921,12 +1923,14 @@ void ActorBase_804A5770::drawSpriteRes_801EFD34(void* res, SpriteParams_801F5AE0
         if (params != NULL) {
             sp = *params;
         }
-        if (mHitTimer_0xd8 > mHitTimerStart_0xdc - 0x19 || mHitTimerStart_0xdc < 0x19) {
+        s32 total = mHitTimerStart_0xdc;
+        s32 excess = total - 0x19;
+        if (mHitTimer_0xd8 > excess || total < 0x19) {
             s32 v;
-            if (mHitTimerStart_0xdc < 0x19) {
-                v = mHitTimer_0xd8 * 0xFF / mHitTimerStart_0xdc;
+            if (total < 0x19) {
+                v = mHitTimer_0xd8 * 0xFF / total;
             } else {
-                v = (mHitTimer_0xd8 - (mHitTimerStart_0xdc - 0x19)) * 0xFF / 25;
+                v = (mHitTimer_0xd8 - excess) * 0xFF / 25;
             }
             if (mKnockbackKind_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
