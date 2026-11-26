@@ -2142,9 +2142,9 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
                     } else {
                         t = (f32)((50 - (field_0x25c - 50)) * (50 - (field_0x25c - 50))) / 2500.0f;
                     }
-                    field_0x8->search(lbl_804781B0[i])->setAlpha(t * field_0x265);
-                    field_0x8->search(lbl_804781D0[i])->setAlpha(t * field_0x266);
-                    field_0x8->search(lbl_804781F0[i])->setAlpha(t * field_0x267);
+                    field_0x8->search(lbl_804781B0[i])->setAlpha(field_0x265 * t);
+                    field_0x8->search(lbl_804781D0[i])->setAlpha(field_0x266 * t);
+                    field_0x8->search(lbl_804781F0[i])->setAlpha(field_0x267 * t);
                 }
             } else if (field_0x26b & (1 << (i + 4))) {
                 field_0x26b &= ~(1 << (i + 4));
