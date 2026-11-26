@@ -214,7 +214,7 @@ public:
     // 1 unit / 9 calls. Returns 1 when a slot already holds (b, id) (b within
     // epsilon of field_0x13148); otherwise fills the first slot whose
     // field_0x13128 is -1 with a, b, value and id and returns 0.
-    bool fn_802D6D70(JGeometry::TVec2f a, JGeometry::TVec2f b, s32 value, u32 id);
+    BOOL fn_802D6D70(JGeometry::TVec2f a, JGeometry::TVec2f b, s32 value, u32 id);
     // 1 unit / 3 calls. With add, puts (key, pos, value) into the first free
     // slot of field_0x13068 / field_0x13088 / field_0x130c8 (shifting the
     // list when full); else removes the entry matching key (bits 0xF80
