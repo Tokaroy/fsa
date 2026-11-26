@@ -2536,6 +2536,9 @@ void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void
             } else if (gy > 64) {
                 gy = 64;
             }
+            // the original scales row (gy * 65) and gx separately; it recomputes pt's
+            // offset where ours copies it (the 2 extra instructions left)
+            s32 row = gy * 65;
             f32 v1 = v0 + dv;
             f32 t2 = (j * 8) / 128.0f + t0;
             f32 t3 = 0.0625f + t2;
@@ -2547,30 +2550,29 @@ void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void
                 } else if (gx > 64) {
                     gx = 64;
                 }
-                s32 index = gy * 65 + gx;
-                JGeometry::TVec3f* pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx];
-                JUtility::TColor* color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index];
+                JGeometry::TVec3f* pt = *mHeightGrid_0x100[mHeightGridIndex_0x2388] + row + gx;
+                JUtility::TColor* color = mHeightGridColors_0x108[mHeightGridIndex_0x2388] + row + gx;
                 f32 s2 = (i * 8) / 128.0f + s0;
                 f32 s3 = 0.0625f + s2;
                 GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u0, v0);
                 GXTexCoord2f32(s2, t2);
-                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 1;
-                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 1];
+                pt = *mHeightGrid_0x100[mHeightGridIndex_0x2388] + row + gx + 1;
+                color = mHeightGridColors_0x108[mHeightGridIndex_0x2388] + row + gx + 1;
                 GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 f32 u1 = u0 + du;
                 GXTexCoord2f32(u1, v0);
                 GXTexCoord2f32(s3, t2);
-                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 66;
-                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 66];
+                pt = *mHeightGrid_0x100[mHeightGridIndex_0x2388] + row + gx + 66;
+                color = mHeightGridColors_0x108[mHeightGridIndex_0x2388] + row + gx + 66;
                 GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u1, v1);
                 GXTexCoord2f32(s3, t3);
-                pt = &mHeightGrid_0x100[mHeightGridIndex_0x2388][gy][gx] + 65;
-                color = &mHeightGridColors_0x108[mHeightGridIndex_0x2388][index + 65];
+                pt = *mHeightGrid_0x100[mHeightGridIndex_0x2388] + row + gx + 65;
+                color = mHeightGridColors_0x108[mHeightGridIndex_0x2388] + row + gx + 65;
                 GXPosition3f32(pt->x + mLayerOrigin_0x2368.x, out.z + (pt->y + mLayerOrigin_0x2368.y), pt->z + out.z);
                 GXColor4u8(color->r, color->g, color->b, color->a);
                 GXTexCoord2f32(u0, v1);
