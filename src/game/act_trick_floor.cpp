@@ -444,15 +444,15 @@ void TrickFloor_804A83A0::draw() {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    m[0][1] = 0.0f;
     m[0][0] = lbl_8046C940[field_0x234];
+    m[1][1] = 1.0f;
+    m[2][2] = lbl_8046C95C[field_0x234];
+    m[0][1] = 0.0f;
     m[0][2] = 0.0f;
     m[1][0] = 0.0f;
-    m[1][1] = 1.0f;
     m[1][2] = 0.0f;
     m[2][0] = 0.0f;
     m[2][1] = 0.0f;
-    m[2][2] = lbl_8046C95C[field_0x234];
     sp.mMtx = m;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
     JGeometry::TVec3f hole(mPos.x + lbl_8046C908[field_0x234], mPos.y + lbl_8046C924[field_0x234], mPos.z);
