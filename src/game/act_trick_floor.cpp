@@ -435,7 +435,7 @@ void TrickFloor_804A83A0::update() {
 // The hole picture "otosiana_bg_s.bti" under the floor (scaled per type), then the floor's two
 // halves tilted by field_0x248 (the left one about its edge, the right one mirrored); types 4 / 5
 // draw the ground or the house instead while falling.
-// FIXME: 97.41 %, missing/extra; behaviour clean.
+// FIXME: 99.17 %, scheduling+regalloc; behaviour clean.
 void TrickFloor_804A83A0::draw() {
     SpriteParams_801F5AE0 sp;
     sp.field_0x1c = -1;
@@ -444,15 +444,15 @@ void TrickFloor_804A83A0::draw() {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    m[0][1] = 0.0f;
     m[0][0] = lbl_8046C940[field_0x234];
+    m[1][1] = 1.0f;
+    m[2][2] = lbl_8046C95C[field_0x234];
+    m[0][1] = 0.0f;
     m[0][2] = 0.0f;
     m[1][0] = 0.0f;
-    m[1][1] = 1.0f;
     m[1][2] = 0.0f;
     m[2][0] = 0.0f;
     m[2][1] = 0.0f;
-    m[2][2] = lbl_8046C95C[field_0x234];
     sp.mMtx = m;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
     JGeometry::TVec3f hole(mPos.x + lbl_8046C908[field_0x234], mPos.y + lbl_8046C924[field_0x234], mPos.z);
