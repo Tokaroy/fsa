@@ -4,6 +4,8 @@
 #include "JSystem/JUtility/JUTGamePad.h"
 
 static u8 lbl_8053AD38[8];
+// 0x805076E8: 0x10 bytes at the start of this unit's .bss, not referenced by any code.
+static u8 lbl_805076E8[0x10];
 
 // Key repeat of one direction bit: repeats after 20 frames, then every 10.
 static inline void updateRepeat(const u32& held, const u32& pressed, u32& repeat, s32& counter, u32 bit) {
@@ -23,10 +25,8 @@ static inline void updateRepeat(const u32& held, const u32& pressed, u32& repeat
     }
 }
 
-// FIXME: __sinit_tu_803099FC_cpp (compiler-generated from the GameAudio.h include, no source
-// line of its own; precedent act_phantom_ganon_2.cpp) is 99.61 %: the JAudio pool records are
-// 0x10 lower in our .bss than in the original, whose first 0x10 bytes (0x805076E8) belong to an
-// object not identified yet (pollInputs_8030A43C, now written, has no static).
+// __sinit_tu_803099FC_cpp is compiler-generated from the GameAudio.h include (no source
+// line of its own; precedent act_phantom_ganon_2.cpp).
 
 // 0x8030AC4C
 cls_804AA8C8::cls_804AA8C8() {
