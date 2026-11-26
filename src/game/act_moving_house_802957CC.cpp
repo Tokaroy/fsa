@@ -990,7 +990,7 @@ inline bool MovingHouse_804A7AE0::isClearOfPlayers() {
     return true;
 }
 
-// FIXME: 95.62 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 96.47 %, missing/extra + reloc-name; behaviour near.
 void MovingHouse_804A7AE0::update() {
     mPos.set(field_0x238);
     for (s32 i = 0; i < 4; i++) {
