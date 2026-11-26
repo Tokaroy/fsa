@@ -566,19 +566,13 @@ void Navi_804A6708::vfunc_0xA0() {
     }
 }
 
-// FIXME: 92.15 %, missing/extra; behaviour clean.
-// the flag's 0 shares the constructor's zero register in the original (ours loads a second one)
+// FIXME: 94.65 %, scheduling+regalloc; behaviour clean.
+// only register and order differences left around the frame-table load
 void Navi_804A6708::draw() {
     if (mState != 3 && field_0x2b8 > 0.0f) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = (s32)field_0x2b8;
-        u8 flag = 0;
-        switch (mState) {
-        case 9:
-            flag = 1;
-            break;
-        }
-        params.field_0x20 = flag;
+        params.field_0x20 = isState9();
         drawSpriteScaled_801F02BC("enemy_both2_sob.bin", lbl_8046A7C0[field_0x2ac] + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
     }
 }
