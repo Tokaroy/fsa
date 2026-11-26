@@ -289,7 +289,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 99.92 %, operands; behaviour near.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour near.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -330,7 +330,7 @@ void ForceGem_804AB6D8::update() {
             break;
         }
         addCalc2_801F71A4(&field_0x290.z, 1.5f * JMath::sincosTable_.sinShort(field_0x270) + 3.0f, 0.1f, 0.1f);
-        field_0x270 += (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+        field_0x270 += (s32)randomFloat(256.0f) + 0x200;
         tickTimer();
         if (viewLayerFlag(mLayer_0x4) != 0) {
             if (field_0x27e == 0 && field_0x230 == 1) {
@@ -450,7 +450,7 @@ void ForceGem_804AB6D8::update() {
         }
         if (field_0x94 != 0x23 && field_0x94 != 0x24) {
             addCalc2_801F71A4(&field_0x290.z, 1.5f * JMath::sincosTable_.sinShort(field_0x270) + 3.0f, 0.1f, 0.1f);
-            field_0x270 += (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+            field_0x270 += (s32)randomFloat(256.0f) + 0x200;
         }
         if (viewLayerFlag(mLayer_0x4) != 0 && field_0x27e == 0) {
             field_0x230 = 0;
@@ -471,7 +471,7 @@ void ForceGem_804AB6D8::update() {
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RSNP, layer, &mPos, 0, -1, -1);
                 }
             }
-            field_0x250 = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
+            field_0x250 = (s32)randomFloat(60.0f) + 60;
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 field_0x24c = 0x3D9;
             } else {
@@ -485,7 +485,7 @@ void ForceGem_804AB6D8::update() {
         }
         break;
     case 0xE:
-        field_0x250 = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
+        field_0x250 = (s32)randomFloat(60.0f) + 60;
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             field_0x24c = 0x3D9;
         } else {
@@ -519,13 +519,13 @@ void ForceGem_804AB6D8::update() {
                 markDead_801F3668();
                 break;
             }
-            field_0x258 += (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+            field_0x258 += (s32)randomFloat(256.0f) + 0x200;
             addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x258) + 24.0f, 0.5f, 5.0f);
             if (mPos.z < 24.0f) {
                 break;
             }
             addCalcAngle2_801F714C(&field_0x240,
-                                   field_0x242 + (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dy)), 1, 0x1000);
+                                   field_0x242 + (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f), 1, 0x1000);
             addCalcAngle2_801F714C(&field_0x242, 0, 1, 0x500);
             mVel_0x3c.x = 5.0f * JMath::sincosTable_.sinShort(field_0x240);
             mVel_0x3c.y = 5.0f * JMath::sincosTable_.cosShort(field_0x240);
@@ -554,7 +554,7 @@ void ForceGem_804AB6D8::update() {
             field_0x254++;
             field_0x254 &= 3;
             if (field_0x254 == 0) {
-                field_0x250 = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
+                field_0x250 = (s32)randomFloat(60.0f) + 60;
             } else {
                 field_0x250 = 2;
             }
