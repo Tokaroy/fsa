@@ -36,9 +36,10 @@ static const char* lbl_804AF7D8[6][3] = {
 // Unreferenced by the surviving code, but present in the original .rodata
 // between "w_kumo5.bmd" and fn_803A5380's strings: 0x14 bytes of halfwords
 // and eight words (element types are a guess), followed by an unreferenced
-// "enemy_both2_sob.bin" that is not reproduced here.
+// "enemy_both2_sob.bin".
 static const s16 lbl_8047600C[10] = {0, 1, 2, 0, 1, 2, -1, 0, 0, 0};
 static const s32 lbl_80476020[8] = {1, 2, 1, 6, 3, 4, 5, 4};
+static const char enemyBoth2SobName_80476040[] = "enemy_both2_sob.bin";
 
 Title_804AF820* lbl_8053AD88;
 
@@ -124,8 +125,7 @@ inline void Title_804AF820::drawTitle(f32 blink) {
 
 // FIXME: 99.78 %, operands + reloc-name; behaviour drift.
 // Code identical; 0.0f's .sdata2 name differs (the original
-// pools 0.5f before every other literal of the unit), and later string offsets
-// are 0x14 short (the unreferenced "enemy_both2_sob.bin" is not reproduced).
+// pools 0.5f before every other literal of the unit).
 Title_804AF820::Title_804AF820() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053AD88 = this;
@@ -253,8 +253,7 @@ Title_804AF820::~Title_804AF820() {
 }
 
 // FIXME: 99.78 %, operands + reloc-name; behaviour drift.
-// Code identical; 0.0f's .sdata2 name differs and the string
-// offsets are 0x14 short (unreferenced "enemy_both2_sob.bin" not reproduced).
+// Code identical; 0.0f's .sdata2 name differs.
 void Title_804AF820::fn_803A5380() {
     if (lbl_80529DEC.field_0x242 == 0) {
         lbl_80529DEC.field_0x242 = 1;
