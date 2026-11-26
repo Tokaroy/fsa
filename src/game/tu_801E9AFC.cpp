@@ -210,22 +210,19 @@ void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
     drawQuadVertex(center, -4.0f, 4.0f, angle, z, s0, 1.0f);
 }
 
-// FIXME: 93.91 %, missing/extra; behaviour drift.
-// Three fewer-instruction spots: the original converts the
-// "outlines" / "sprites" tests to bool through a byte (clrlwi, neg, or, srwi)
-// where ours keeps the compare result; the rest is the same code, registers
-// shifted.
+// FIXME: 96.21 %, scheduling+regalloc; behaviour clean.
+// Same instructions as the original; registers and order still differ.
 void cls_801E9AFC::fn_801E9C74() {
     u8 both = getGameView_802D6A9C()->isInTransition_802DCD0C();
     u8 outlines;
     u8 sprites;
     if (both) {
-        outlines = field_0x0[0].hasSlots() || field_0x0[1].hasSlots();
-        sprites = outlines || field_0x0[0].hasSerials() || field_0x0[1].hasSerials();
+        outlines = field_0x0[0].hasSlots() || field_0x0[1].hasSlots() ? true : false;
+        sprites = outlines || field_0x0[0].hasSerials() || field_0x0[1].hasSerials() ? true : false;
     } else {
         cls_801E9B54* element = &field_0x0[field_0xf0];
         outlines = element->hasSlots();
-        sprites = outlines || element->hasSerials();
+        sprites = outlines || element->hasSerials() ? true : false;
     }
     if (outlines || sprites) {
         gGameRoot2_8053AB10->fn_8013B438();
