@@ -189,8 +189,7 @@ void cls_804A03A8::fn_8015F9C0() {
         f32 sq = field_0x288 * field_0x288;
         JUtility::TColor color(0, 0, 0, (u8)(255.0f * sq));
         gGameRoot2_8053AB10->fn_8013B460();
-        f32 bar = 48.0f * sq;
-        drawLetterbox(bar, color);
+        drawLetterbox(48.0f * sq, color);
     }
 }
 
