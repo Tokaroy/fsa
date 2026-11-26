@@ -1437,19 +1437,19 @@ void ConnectScreen_804B0F10::fn_803F8AE4() {
     }
 }
 
-// FIXME: 96.67 %, missing/extra; behaviour drift.
+// FIXME: 96.98 %, missing/extra; behaviour near.
 // Registers throughout (one more saved register in the
-// original), the counter's first test is `lha r0; cmpwi` there but
-// `lha r3; extsh.` here, and the three-row loop's i * 10 sits in two
-// registers there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
+// original): the three-row loop's i * 10 sits in two registers
+// there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
 // Update state 7: slides mEntryConScreen_0xc's game-select panes in and fades them up
 // (field_0x240[0] counts the frames: the title from 0 to 25, the rows
 // 10 frames apart, the rule box from 0 to 15), then enters state 8 at 75.
 void ConnectScreen_804B0F10::fn_803F8354() {
     field_0x240[0]++;
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 25) {
-            s32 d = 25 - field_0x240[0];
+    s32 frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 25) {
+            s32 d = 25 - frame;
             field_0x164 = -200.0f * ((f32)(d * d) / 625.0f);
             f32 alpha = (f32)field_0x240[0] / 25.0f;
             if (alpha < 0.0f) {
@@ -1497,9 +1497,10 @@ void ConnectScreen_804B0F10::fn_803F8354() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 15) {
-            s32 d = 15 - field_0x240[0];
+    frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 15) {
+            s32 d = 15 - frame;
             field_0x198 = -450.0f * ((f32)(d * d) / 225.0f);
             f32 alpha = (f32)field_0x240[0] / 15.0f;
             if (alpha < 0.0f) {
@@ -1979,10 +1980,11 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.17 %, missing/extra; behaviour clean.
+// Left: the else value of `t` goes through f0 (fmr f24) in the original.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
-        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4)) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4) != 0) {
             u8 alpha;
             if (field_0x210[i] == 0) {
                 field_0x25b &= ~(1 << i);
@@ -2140,8 +2142,9 @@ void ConnectScreen_804B0F10::fn_803F4120() {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
             } else if (count <= 36) {
-                void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (count - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(
+                    &pos, gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin"), (count - 10) / 2 + 0xDB,
+                    &params, 1.0f, 1.0f);
             } else if (count < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
