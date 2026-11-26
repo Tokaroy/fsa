@@ -463,9 +463,9 @@ inline f32 JMAFastSqrtNewton(f32 x)
     if (x > 0.0f)
     {
         f32 recip = __frsqrte(x);
-        x = recip * x;
-        recip = 3.0f - x * recip;
-        recip = recip * x;
+        f32 root = recip * x;
+        recip = 3.0f - root * recip;
+        recip = recip * root;
         recip = recip * 0.5f;
         return recip;
     }
