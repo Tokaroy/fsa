@@ -241,14 +241,14 @@ void cls_804AA8C8::pollInputs_8030A43C() {
 }
 
 // FIXME: 93.29 %, missing/extra; behaviour near.
-// FIXME: the original keeps the inlined fn_8030A308 byte in r3 and tests it with clrlwi./bnelr.
 // 0x8030A3B0
-bool cls_804AA8C8::fn_8030A3B0(s32 slot) {
+u8 cls_804AA8C8::fn_8030A3B0(s32 slot) {
     if (slot == -0x3E7) {
-        return false;
+        return 0;
     }
-    if (fn_8030A308(slot)) {
-        return true;
+    u8 result = fn_8030A308(slot);
+    if (result) {
+        return result;
     }
     return lbl_8053AD38[slot] != 0;
 }

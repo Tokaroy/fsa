@@ -156,7 +156,7 @@ public:
     u32 fn_80246B10(u32 arg); // via fn_8022C52C; tested with cmplwi by updateState_802870C8
     u32 fn_80246D1C(u32 arg); // via fn_8022C5EC
     u8 fn_80247534(); // via fn_8022C8EC
-    bool fn_80247564(); // via fn_8022C9AC
+    u8 fn_80247564(); // via fn_8022C9AC
     void fn_80248DAC(); // via fn_80234810
     bool fn_8024B108(s32 arg); // via fn_8022DE10
     bool fn_8024C4C4(s32 arg); // via fn_8022FBB8
@@ -1394,7 +1394,7 @@ bool fn_8022C3AC(s32 player); // -> fn_802466B4; else false (also for a player o
 u32 fn_8022C52C(s32 player, u32 arg); // -> fn_80246B10; else 0 (also for a player outside 0-3)
 u32 fn_8022C5EC(s32 player, u32 arg); // -> fn_80246D1C; else 0 (also for a player outside 0-3)
 u8 fn_8022C8EC(s32 player); // -> fn_80247534; else false (also for a player outside 0-3)
-bool fn_8022C9AC(s32 player); // -> fn_80247564; else false (also for a player outside 0-3)
+u8 fn_8022C9AC(s32 player); // -> fn_80247564; else false (also for a player outside 0-3)
 void fn_8022CA6C(s32 player, s32 a, bool b); // 11 units. act_post_warp_pillar_handling passes (i, 0, 1)
 s32 fn_8022CAF8(s32 player); // -> fn_802486A0; else 0
 void fn_8022CB94(s32 player); // -> fn_8024B9E8

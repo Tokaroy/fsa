@@ -4078,7 +4078,7 @@ void fn_8022CA6C(s32 player, s32 a, bool b) {
     }
 }
 
-bool fn_8022C9AC(s32 player) {
+u8 fn_8022C9AC(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return false;
     }

@@ -3662,7 +3662,7 @@ bool Player_804A6F38::fn_80247594(s32 arg) {
     return false;
 }
 
-bool Player_804A6F38::fn_80247564() {
+u8 Player_804A6F38::fn_80247564() {
     return lbl_8053AD30->fn_8030A3B0(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec));
 }
 
