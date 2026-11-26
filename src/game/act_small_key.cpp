@@ -430,7 +430,7 @@ void SmallKey_804A8CD8::update() {
     }
 }
 
-// FIXME(shotgun): 98.55 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.86 %, missing/extra; behaviour drift.
 // The key on the floor: kind 6 slides with friction; a player touching it picks it up
 // (kinds 3-5 spawn a 'TKRA' instead), players walking into it push it (field_0x2ae the
 // direction), pits and water drop it; keeps its place registered with the view.
