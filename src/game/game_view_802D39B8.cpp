@@ -1765,10 +1765,10 @@ void GameView_804A9950::fn_802D6F38(u32 key, JGeometry::TVec2f pos, s32 value, b
 }
 
 // FIXME: 88.02 %, missing/extra; behaviour drift.
-// Two instructions short: the target loads b.x once before the first loop
-// and reloads mView (lwz 0xc) for the id test after the epsilon compare; ours keeps both
-// in the loop body / one register. Registers differ throughout.
-bool GameView_804A9950::fn_802D6D70(JGeometry::TVec2f a, JGeometry::TVec2f b, s32 value, u32 id) {
+// Returns BOOL: the original widens the bool flag at return (clrlwi r3, r0, 24).
+// Still differs: the target reloads mView (lwz 0xc) for the id test after the epsilon
+// compare; ours keeps it in one register.
+BOOL GameView_804A9950::fn_802D6D70(JGeometry::TVec2f a, JGeometry::TVec2f b, s32 value, u32 id) {
     bool found = false;
     for (int i = 0; i < 8; i++) {
         if (epsilonEquals(getGameView_802D6A9C()->field_0x13148[i], b, JGeometry::TUtilf::epsilon()) &&
