@@ -1904,7 +1904,7 @@ void ActorBase_804A5770::drawSpriteScaled_801F02BC(const char* name, s32 frame, 
     }
 }
 
-// FIXME(shotgun): 58.62 %, missing/extra; behaviour near.
+// FIXME(shotgun): 59.07 %, missing/extra; behaviour clean.
 // drawSprite_801F06F0 for a loaded resource `res` (drawTimgImage_802F745C) at mPos + (x, y, z), below
 // layer 8. During the hit flash a fast knock-back (|mVel_0x3c|^2 > 1) sets the copy's 0x30 to 8;
 // otherwise the actor's matrix is used and the death countdown mBossDeathTimer_0x188 tints it (200, 0x41).
@@ -1982,7 +1982,7 @@ inline f32 getShadowScale(s32 kind) {
     return lbl_80469FA8[kind];
 }
 
-// FIXME: 99.17 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 // Draws the shadow of kind `flags & 0x3FF` under pos on `layer` (flags -1:
 // none): "kage_sob.bin" frame `kind` scaled by getShadowScale(kind), kind 7 a
 // flattened copy of the sprite `name` (or the loaded `res`), and kind 0 on
