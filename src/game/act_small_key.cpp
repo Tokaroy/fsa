@@ -430,7 +430,7 @@ void SmallKey_804A8CD8::update() {
     }
 }
 
-// FIXME(shotgun): 98.55 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.86 %, missing/extra; behaviour drift.
 // The key on the floor: kind 6 slides with friction; a player touching it picks it up
 // (kinds 3-5 spawn a 'TKRA' instead), players walking into it push it (field_0x2ae the
 // direction), pits and water drop it; keeps its place registered with the view.
@@ -583,19 +583,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         }
     }
     if (field_0x240 != 10) {
-        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
-        value |= mLayer_0x4 & 0xFF;
-        if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
-            s32 row = getGameView_802D6A9C()->mScreenY_0x18;
-            s32 col = getGameView_802D6A9C()->mScreenX_0x14;
-            value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
-        } else {
-            value = field_0x2aa << 8;
-        }
-        JGeometry::TVec2f home(field_0x230.x, field_0x230.y);
-        s32 layer = field_0x238;
-        JGeometry::TVec2f pos(mPos.x, mPos.y);
-        getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
+        registerWithView();
     }
     u16 tile = getTileCollisionCode_8022461C(&mPos, mLayer_0x4);
     if (field_0x298 != -1) {
