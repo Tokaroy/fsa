@@ -591,7 +591,7 @@ static inline void crcBit_803006E8(u32& crc, u32 bit) {
 }
 
 // The 8-bit check value of a 16-bit word (a CRC over two bytes, then eight clock-out steps).
-u8 fn_803006E8(u32 data) {
+u32 fn_803006E8(u32 data) {
     u32 crc = 0;
     for (u32 mask = 0x80; mask != 0; mask >>= 1) {
         crcBit_803006E8(crc, data & mask);
@@ -605,5 +605,5 @@ u8 fn_803006E8(u32 data) {
         crcBit_803006E8(crc, 0);
         i++;
     } while (i < 8);
-    return crc;
+    return crc & 0xFF;
 }

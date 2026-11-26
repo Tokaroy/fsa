@@ -59,6 +59,6 @@ extern GbaClient_803007D0 lbl_804DB798[4];
 extern const u8 lbl_80541618[4];
 // 0x803006E8 (not written yet): an 8-bit CRC (polynomial 0xCD) over the two low bytes of its
 // argument, low byte first; cls_804AA8C8::pollInputs_8030A43C checks a GBA key word's low byte against it.
-u8 fn_803006E8(u32 keys);
+u32 fn_803006E8(u32 keys);
 
 #endif
