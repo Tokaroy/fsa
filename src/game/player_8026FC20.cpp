@@ -12,6 +12,7 @@
 #include "game/GameMath.h"
 #include "game/BoxTest.h"
 #include "game/VecEpsilon.h"
+#include "game/Vec2Ops.h"
 #include "game/cls_804A71A8.h"
 #include "game/save_data_803B8C74.h"
 #include "game/act/act_tingle_803D9944.h"
@@ -25,9 +26,8 @@ static inline u8 saveRowFlag() {
 
 // The angle of the hit as an s16 (pos -> player).
 static inline s16 hitAngle(const Player_804A6F38* player, const JGeometry::TVec2f* pos) {
-    JGeometry::TVec2f diff(player->mPos.x, player->mPos.y);
-    diff.x -= pos->x;
-    diff.y -= pos->y;
+    JGeometry::TVec2f diff(xy(player->mPos));
+    diff -= *pos;
     return JMath::atanTable_.atan2_(diff.y, diff.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
@@ -2664,7 +2664,6 @@ void Player_804A6F38::fn_802756E4() {
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
 // member out of step (mode 4) drops to state 0. Then the facing boxes (setFacingBoxes_80276E5C, or
 // fn_80276BB8 at full charge).
-// FIXME: 99.75 %, same-text; behaviour drift.
 void Player_804A6F38::fn_80274CB8() {
     if (mPos.z > 0.0f) {
         if (mWalkAnimCounter_0x3f8 < 4) {
@@ -3624,10 +3623,8 @@ u8 Player_804A6F38::hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* po
     return hitPlayerGroup_80238548(mPlayerNo_0x4, damage, pos, arg);
 }
 
-// FIXME: 98.54 %, missing/extra; behaviour clean.
-// Structurally done but for the knockback direction: the original also stores
-// the TVec2f dir (mPos copy, then the difference) to its stack slot, four dead stfs ours drops;
-// in both hitAngle copies it loads mPos.x before mPos.y. The rest is register allocation
+// FIXME: 99.28 %, regalloc-only; behaviour clean.
+// What differs is register allocation and stack slots
 // (damage r30 / kind r28 / pos r27 there, r27 / r29 / r28 here; the scale constants in f29,
 // here f31).
 bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVec2f* pos, s32 kind) {
@@ -3783,9 +3780,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         return true;
     }
 
-    JGeometry::TVec2f dir(mPos.x, mPos.y);
-    dir.x -= pos->x;
-    dir.y -= pos->y;
+    JGeometry::TVec2f dir = xy(mPos) - *pos;
     if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
         dir.set(0.0f, 1.0f);
     } else {
@@ -3823,11 +3818,11 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         knockback.scale(1.5f);
         knockback.z = 4.0f;
     } else if (kind == 0x14 || kind == 0x15) {
-        knockback.zero();
+        knockback.set(0.0f, 0.0f, 0.0f);
     } else if (kind == 0x1b) {
         knockback.scale(6.0f);
     } else if (kind == 0xb || kind == 0xc) {
-        knockback.zero();
+        knockback.set(0.0f, 0.0f, 0.0f);
     } else if (kind == 0x1a) {
         knockback.scale(0.5f);
         knockback.z = 2.0f;
@@ -3839,7 +3834,8 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         requested = requestState_80251AEC(0x35);
     } else if (kind == 0xd) {
         if (mPushVel_0x35c.length() < 1.4f) {
-            mPushVel_0x35c.set(mPos - JGeometry::TVec3f(pos->x, pos->y, 0.0f));
+            JGeometry::TVec3f from(pos->x, pos->y, 0.0f);
+            mPushVel_0x35c.set(mPos - from);
             mPushVel_0x35c.z = 0.0f;
             mPushVel_0x35c.normalize();
             mPushVel_0x35c.scale(1.4f);
@@ -3851,7 +3847,8 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         }
     } else if (kind == 0xe) {
         if (mPushVel_0x35c.length() < 2.0f) {
-            mPushVel_0x35c.set(mPos - JGeometry::TVec3f(pos->x, pos->y, 0.0f));
+            JGeometry::TVec3f from(pos->x, pos->y, 0.0f);
+            mPushVel_0x35c.set(mPos - from);
             mPushVel_0x35c.z = 0.0f;
             mPushVel_0x35c.normalize();
             mPushVel_0x35c.scale(2.0f);
@@ -3863,7 +3860,8 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         }
     } else if (kind == 0xf) {
         if (mPushVel_0x35c.length() < 4.0f) {
-            mPushVel_0x35c.set(mPos - JGeometry::TVec3f(pos->x, pos->y, 0.0f));
+            JGeometry::TVec3f from(pos->x, pos->y, 0.0f);
+            mPushVel_0x35c.set(mPos - from);
             mPushVel_0x35c.z = 0.0f;
             mPushVel_0x35c.normalize();
             mPushVel_0x35c.scale(4.0f);
