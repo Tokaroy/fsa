@@ -1980,9 +1980,10 @@ void ConnectScreen_804B0F10::fn_803F5410() {
 }
 
 // FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
+// Left: the else value of `t` goes through f0 (fmr f24) in the original.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
-        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4)) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i + 4) != 0) {
             u8 alpha;
             if (field_0x210[i] == 0) {
                 field_0x25b &= ~(1 << i);
@@ -2140,8 +2141,9 @@ void ConnectScreen_804B0F10::fn_803F4120() {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xDB, &params, 1.0f, 1.0f);
             } else if (count <= 36) {
-                void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, (count - 10) / 2 + 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(
+                    &pos, gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin"), (count - 10) / 2 + 0xDB,
+                    &params, 1.0f, 1.0f);
             } else if (count < 100) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
