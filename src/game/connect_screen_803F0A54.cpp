@@ -1437,7 +1437,7 @@ void ConnectScreen_804B0F10::fn_803F8AE4() {
     }
 }
 
-// FIXME: 96.67 %, missing/extra; behaviour drift.
+// FIXME: 96.98 %, missing/extra; behaviour near.
 // Registers throughout (one more saved register in the
 // original): the three-row loop's i * 10 sits in two registers
 // there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
@@ -1980,7 +1980,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME(shotgun): 98.58 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.17 %, missing/extra; behaviour clean.
 // Left: the else value of `t` goes through f0 (fmr f24) in the original.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
