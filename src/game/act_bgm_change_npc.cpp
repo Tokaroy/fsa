@@ -36,7 +36,27 @@ void BGMChangeNPC_804A9DA0::init() {
     field_0x24c = -1;
 }
 
+// Whether no other BGMN on layer field_0x254 holds a player or uses the same BGM id.
+// Inlined into update: the original copies the loop counter (mr) for the slot offset.
+inline bool BGMChangeNPC_804A9DA0::isLayerFree() {
+    s32 free = 1;
+    s32 end = getActorManager_801F856C()->getActorEnd();
+    for (s32 i = 0; i < end; i++) {
+        ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
+        if (other != NULL && i != mSerial && other->mActorId == ACTOR_BGMN &&
+            field_0x254 == other->mLayer_0x4) {
+            if (other->field_0x94 != 0xFFFF) {
+                free = 0;
+            } else if ((u32)field_0x234 == (other->mSpawnParam_0x90 & 0x7F)) {
+                free = 0;
+            }
+        }
+    }
+    return free;
+}
+
 // FIXME(shotgun): 96.37 %, different; behaviour clean.
+// The other two actor loops start their slot offset with li 0 where the original copies the counter (mr).
 void BGMChangeNPC_804A9DA0::update() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
@@ -138,20 +158,7 @@ void BGMChangeNPC_804A9DA0::update() {
             field_0x258 = -1;
         }
     } else if (field_0x254 != mLayer_0x4) {
-        s32 free = 1;
-        s32 end = getActorManager_801F856C()->getActorEnd();
-        for (s32 i = 0; i < end; i++) {
-            ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
-            if (other != NULL && i != mSerial && other->mActorId == ACTOR_BGMN &&
-                field_0x254 == other->mLayer_0x4) {
-                if (other->field_0x94 != 0xFFFF) {
-                    free = 0;
-                } else if ((u32)field_0x234 == (other->mSpawnParam_0x90 & 0x7F)) {
-                    free = 0;
-                }
-            }
-        }
-        if (!free) {
+        if (!isLayerFree()) {
             return;
         }
     } else if (field_0x258 < 0) {
