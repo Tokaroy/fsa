@@ -65,14 +65,15 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
     }
 }
 
-// FIXME(shotgun): 97.56 %, different; behaviour near.
+// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
 // PlayerSwordLevelCheckNPC_804AA590
-// Still differs: case 13 keeps the raw level / view pointer across the getGameView calls;
-// registers of the loop counters.
+// Still differs: case 13 loads the 5C table's stage index only after the third
+// getGameView call; registers of the loop counters.
 void PlayerSwordLevelCheckNPC_804AA590::update() {
     JGeometry::TVec3f pos;
+    s32 i;
     if (field_0x244 >= 1) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
         }
@@ -80,13 +81,13 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
     switch (field_0x244) {
     case 0: {
         s32 total = 0;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true) {
                 total += fn_80236228(i);
             }
         }
         if (total >= 2000 && fn_8023077C() == 1) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 pos = *getPlayerPos_8023E724(i);
                 fn_80230498(i, &pos, 0x2E, 0xFF, 2, -0x80, true);
             }
@@ -125,7 +126,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         if (field_0x250 == 0) {
             field_0x24c++;
             field_0x250 = lbl_8046F628_0[field_0x24c];
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 pos = *getPlayerPos_8023E724(i);
                 if (field_0x24c < 6) {
                     fn_80230498(i, &pos, field_0x24c + 0x2E, 0xFF, 2, -0x80, true);
@@ -157,7 +158,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x250 = 4;
             field_0x244 = 4;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             if (getPlayerLayer_8023DE58(i) >= 8) {
                 if ((field_0x250 & field_0x264[i]) != 0) {
@@ -176,7 +177,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x250 = 0x64;
             field_0x244 = 5;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             if (getPlayerLayer_8023DE58(i) >= 8) {
                 if ((field_0x250 & field_0x264[i]) != 0) {
@@ -195,7 +196,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x244 = 6;
             field_0x250 = 0x3C;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             if (getPlayerLayer_8023DE58(i) >= 8) {
                 if ((field_0x250 & field_0x264[i]) != 0) {
@@ -210,7 +211,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         if (field_0x250 == 0x5A) {
             lbl_8053AED0->requestMessage_8043D67C(0x23F, 0, 0);
             fn_80230F44(0, 0x100002D);
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true) {
                     fn_80236ED8(i, 2);
                 }
@@ -226,12 +227,12 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x24c = 0;
             field_0x250 = 2;
             field_0x260 = 0;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 pos = *getPlayerPos_8023E724(i);
                 fn_80230498(i, &pos, 0xDB, 0xFF, 2, -0x80, true);
             }
         } else {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 pos = *getPlayerPos_8023E724(i);
                 if (getPlayerLayer_8023DE58(i) >= 8) {
                     if ((field_0x250 & field_0x264[i]) != 0) {
@@ -249,7 +250,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         field_0x250--;
         if (field_0x250 == 0) {
             field_0x260 += 0x1000;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 if (field_0x24c < 11) {
                     if (mEmitters[i] != NULL) {
@@ -311,7 +312,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         } else {
             field_0x250--;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             fn_80230498(i, &pos, 0x3BE, 0xFF, 2, -0x80, true);
         }
@@ -321,7 +322,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             mAlive = false;
             gAudioMgr_8053AF80->fn_8045873C(0);
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             if (getPlayerLayer_8023DE58(i) >= 8) {
                 if ((field_0x250 & field_0x264[i]) != 0) {
@@ -351,7 +352,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
         } else {
             field_0x250--;
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             if (getPlayerLayer_8023DE58(i) >= 8) {
                 if ((field_0x250 & field_0x264[i]) != 0) {
