@@ -740,7 +740,7 @@ static inline u16 cornerAngle(const JGeometry::TVec2f& d) {
 // Pushes a point inside box along `angle` out through the box edge the ray leaves by, then
 // `speed` further along that direction. Writes the result to out; leaves the point alone (out
 // = point) when it is outside the box.
-// FIXME(shotgun): 95.56 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.37 %, missing/extra; behaviour near.
 void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 angleArg, f32 speed, JGeometry::TVec2f* out) {
     out->set(p->x, p->y);
     bool inside = false;
