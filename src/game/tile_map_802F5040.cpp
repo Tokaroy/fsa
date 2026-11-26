@@ -494,7 +494,7 @@ void TileMap_804AA858::fn_802FEE68() {
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
-// FIXME: 94.49 %, missing/extra; behaviour near.
+// FIXME: 94.72 %, missing/extra; behaviour near.
 void TileMap_804AA858::fn_802FDDD4() {
     mHeightGridIndex_0x2388++;
     if (mHeightGridIndex_0x2388 >= 2) {
@@ -1042,7 +1042,7 @@ void TileMap_804AA858::fn_802FC80C() {
     }
 }
 
-// FIXME: 94.86 %, missing/extra; behaviour near.
+// FIXME: 98.23 %, regalloc-only; behaviour clean.
 // Only register allocation differs in the draw loop's quad emission.
 // Draws the tile grid `grid` of `layer` (2 x 2 blocks of 16 x 16 tiles, up to
 // the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells of the height grid) at origin, raised
@@ -2443,7 +2443,7 @@ static inline bool isOnScreen(const JGeometry::TVec3f* pos) {
 // field_0x24 and mUseFilterTex_0xe450 a further TEV stage multiplies in the player's
 // mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
 // field_0x30 adds the effect of addFadeSprite_802F6800.
-// FIXME: 92.19 %, missing/extra; behaviour near.
+// FIXME: 92.76 %, missing/extra; behaviour near.
 void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (!mDrawSprites_0x2364) {
         return;
