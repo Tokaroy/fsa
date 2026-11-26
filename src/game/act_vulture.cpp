@@ -64,8 +64,6 @@ void Vulture_804A4230::init() {
 }
 
 // FIXME: 97.74 %, missing/extra; behaviour clean.
-// Ours loads field_0x2b0 into r4 and then copies it to r5 (one extra mr); the original
-// loads it straight into r5. Literal names differ (reloc-name).
 void Vulture_804A4230::fn_801C0634() {
     JGeometry::TVec2f diff = field_0x2b8 - field_0x2c0;
     diff.normalize();
@@ -100,14 +98,13 @@ void Vulture_804A4230::fn_801C0634() {
 
     s16 angle = field_0x2b0;
     if (dist > 0.001f) {
-        s32 a = (s32)((1.0f / dist) * (field_0x2ac * (f32)angle));
-        if ((s16)a > angle) {
-            angle = field_0x2b0;
-        } else if ((s16)a < 0x100) {
-            angle = 0x100;
-        } else {
-            angle = a;
+        s16 a = (1.0f / dist) * (field_0x2ac * (f32)angle);
+        if (a > angle) {
+            a = angle;
+        } else if (a < 0x100) {
+            a = 0x100;
         }
+        angle = a;
     }
 
     if (mState == 5) {
