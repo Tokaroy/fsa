@@ -28,7 +28,7 @@ void OpeningNarration_8049E500::init() {
     fn_80128728(0);
 }
 
-// FIXME: 85.31 %, scheduling+regalloc; behaviour drift.
+// FIXME: 86.72 %, scheduling+regalloc; behaviour drift.
 // try.py class: scheduling+regalloc with reloc-name. The
 // original loads the 96.0f constant before the camera's byte at 0x179 is
 // stored (ours after), and the float pool (lbl_8053CAF8..CB18) and the state
@@ -78,7 +78,7 @@ void OpeningNarration_8049E500::update() {
         moveToward_801CD950(&field_0x238, 1640.0f, 0.4f);
         if (fn_80119DD0()->field_0x4 >= 0xB3) {
             fn_8011921C()->fn_801183BC();
-            fn_80119DD0()->field_0x1 = 1;
+            fn_80119DD0()->setField_0x1(1);
         }
         break;
     case 4:
@@ -159,26 +159,26 @@ static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
-// FIXME(shotgun): 93.15 %, different + reloc-name; behaviour drift.
-// cases 5 / 7: the by-value copy of pos for fn_8038BD08 is scheduled in another order; jump table is @NNN
+// FIXME(shotgun): 96.45 %, different; behaviour drift.
+// case 4's locals sit lower in the frame in the original; cases 5 / 7 schedule the by-value copy of pos differently.
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 0, 0, 0);
-        fn_80119DD0()->field_0x1 = 1;
+        fn_80119DD0()->setField_0x1(1);
         break;
     case 1:
         gAudioMgr_8053AF80->startBgm_80458FF0(0x100002C, false, 0);
         fn_8011921C()->fn_80118454();
-        fn_80119DD0()->field_0x1 = 0;
+        fn_80119DD0()->setField_0x1(0);
         break;
     case 3:
         fn_80119DD0()->startFade_80119998(0xB4, 0, 1, 0, 0, 0, 0);
-        fn_80119DD0()->field_0x1 = 0;
+        fn_80119DD0()->setField_0x1(0);
         break;
     case 4: {
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
-        fn_80119DD0()->field_0x1 = 0;
+        fn_80119DD0()->setField_0x1(0);
         JGeometry::TVec3f pos;
         setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33C, 1, 2, NULL, NULL, true, 1.0f);
@@ -189,7 +189,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         JUTVideo* video = JUTVideo::getManager();
         s32 height = video->getEfbHeight();
         s32 width = video->getFbWidth();
-        JGeometry::TVec3f pos(width * 0.5f, height * 0.5f - 40.0f, 0.0f);
+        JGeometry::TVec3f pos(0.5f * width, 0.5f * height - 40.0f, 0.0f);
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x231, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
@@ -204,7 +204,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         JUTVideo* video = JUTVideo::getManager();
         s32 height = video->getEfbHeight();
         s32 width = video->getFbWidth();
-        JGeometry::TVec3f pos(width * 0.5f, height * 0.5f - 40.0f, 0.0f);
+        JGeometry::TVec3f pos(0.5f * width, 0.5f * height - 40.0f, 0.0f);
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x23C, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
