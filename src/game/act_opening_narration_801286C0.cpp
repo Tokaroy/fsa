@@ -28,7 +28,7 @@ void OpeningNarration_8049E500::init() {
     fn_80128728(0);
 }
 
-// FIXME: 85.31 %, scheduling+regalloc; behaviour drift.
+// FIXME: 86.72 %, scheduling+regalloc; behaviour drift.
 // try.py class: scheduling+regalloc with reloc-name. The
 // original loads the 96.0f constant before the camera's byte at 0x179 is
 // stored (ours after), and the float pool (lbl_8053CAF8..CB18) and the state
@@ -159,7 +159,7 @@ static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
-// FIXME(shotgun): 93.15 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.45 %, different; behaviour drift.
 // case 4's locals sit lower in the frame in the original; cases 5 / 7 schedule the by-value copy of pos differently.
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
