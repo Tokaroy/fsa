@@ -65,7 +65,7 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
     }
 }
 
-// FIXME(shotgun): 97.56 %, different; behaviour near.
+// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
 // PlayerSwordLevelCheckNPC_804AA590
 // Still differs: case 13 loads the 5C table's stage index only after the third
 // getGameView call; registers of the loop counters.
