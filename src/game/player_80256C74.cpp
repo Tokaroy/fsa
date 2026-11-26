@@ -163,10 +163,7 @@ void Player_804A6F38::fn_8025E79C() {
 }
 
 // FIXME: 98.90 %, missing/extra; behaviour clean.
-// Structurally close (2 extra instructions): the burn loop's point is copied
-// once more (operator+'s result to the stack before pos; the original builds pos in place,
-// frame 0x100, ours 0x110) and field_0x4 / mLayer_0x3b4 are loaded after the sum; the
-// actor's offset reads the table x before y.
+// Float registers of the box/ledge stretch differ; the actor's offset reads the table x before y.
 // State 0x39 (item 1; enter fn_8025E79C, exit fn_8025D9FC): a dash. The ground under
 // the player (on a view-flag layer the probe 2 above the hand point) picks the trail
 // emitters: 0x3D4 (field_0x1368) on tile 0x39, else 0x116 (field_0x1360, callback
@@ -394,8 +391,7 @@ void Player_804A6F38::fn_8025DACC() {
         dir.normalize();
         for (int i = 0; i < 8; i++) {
             JGeometry::TVec3f offset(lbl_8046AF50[i].x, lbl_8046AF50[i].y, lbl_8046AF50[i].z);
-            JGeometry::TVec3f pos = mPos + offset;
-            gBgRewrite_8053AC98->fn_802A20F0(&pos, mPlayerNo_0x4, mLayer_0x3b4, 0, 1);
+            gBgRewrite_8053AC98->fn_802A20F0(&(mPos + offset), mPlayerNo_0x4, mLayer_0x3b4, 0, 1);
         }
     }
     fn_80268B3C();
