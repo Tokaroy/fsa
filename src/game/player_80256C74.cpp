@@ -162,7 +162,7 @@ void Player_804A6F38::fn_8025E79C() {
     field_0xbac = 0;
 }
 
-// FIXME: 98.90 %, missing/extra; behaviour clean.
+// FIXME: 98.87 %, scheduling+regalloc; behaviour clean.
 // Float registers of the box/ledge stretch differ; the actor's offset reads the table x before y.
 // State 0x39 (item 1; enter fn_8025E79C, exit fn_8025D9FC): a dash. The ground under
 // the player (on a view-flag layer the probe 2 above the hand point) picks the trail
