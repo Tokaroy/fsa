@@ -179,7 +179,6 @@ void Cucco_804AB8C0::init() {
     }
 }
 
-// FIXME(shotgun): 97.88 %, missing/extra; behaviour clean.
 void Cucco_804AB8C0::vfunc_0x10() {
     s32 next;
     ActorBase_804A5770* other;
