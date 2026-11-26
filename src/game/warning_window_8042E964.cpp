@@ -525,6 +525,7 @@ void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
 void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
+    s32 i;
     MessageInf1_804AF070* inf1 =
         &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + inf1->size + inf1->entries[id].textOffset + 8;
@@ -534,12 +535,10 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     lbl_8053AD78->mFont->getCellHeight();
     field_0xea = 0xFF;
     field_0xe4 = 1;
+    i = 0;
+    u8 choice = 0;
     int code = 0;
     int digit = value + '0';
-    s32 i = 0;
-    u8 choice = 0;
-    f32 lineW = 0.0f;
-    f32 spaceW = 0.0f;
     field_0xb8[0] = 0.0f;
     field_0xb8[1] = 0.0f;
     field_0xb8[2] = 0.0f;
@@ -556,6 +555,8 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     widths[7] = 0.0f;
     widths[8] = 0.0f;
     widths[9] = 0.0f;
+    f32 lineW = 0.0f;
+    f32 spaceW = 0.0f;
     while (text[i] != 0) {
         char c = text[i];
         const char* p = &text[i];
@@ -642,7 +643,7 @@ void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
         char c = text[i];
         const char* p = &text[i];
         if (c == '\n') {
-            ch[0] = p[0];
+            ch[0] = c;
             ch[1] = 0;
             strcat(str, ch);
             i++;
