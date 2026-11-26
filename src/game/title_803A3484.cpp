@@ -123,7 +123,7 @@ inline void Title_804AF820::drawTitle(f32 blink) {
     }
 }
 
-// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// FIXME: 99.81 %, reloc-name; behaviour clean.
 // Code identical; 0.0f's .sdata2 name differs (the original
 // pools 0.5f before every other literal of the unit).
 Title_804AF820::Title_804AF820() {
@@ -252,7 +252,7 @@ Title_804AF820::~Title_804AF820() {
     lbl_8053AD88 = NULL;
 }
 
-// FIXME: 99.78 %, operands + reloc-name; behaviour drift.
+// FIXME: 99.81 %, reloc-name; behaviour clean.
 // Code identical; 0.0f's .sdata2 name differs.
 void Title_804AF820::fn_803A5380() {
     if (lbl_80529DEC.field_0x242 == 0) {
