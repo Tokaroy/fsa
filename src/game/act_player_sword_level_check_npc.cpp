@@ -65,7 +65,7 @@ PlayerSwordLevelCheckNPC_804AA590::~PlayerSwordLevelCheckNPC_804AA590() {
     }
 }
 
-// FIXME(shotgun): 97.46 %, different; behaviour drift.
+// FIXME(shotgun): 97.56 %, different; behaviour near.
 // PlayerSwordLevelCheckNPC_804AA590
 // Still differs: case 13 keeps the raw level / view pointer across the getGameView calls;
 // registers of the loop counters.
