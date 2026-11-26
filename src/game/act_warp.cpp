@@ -463,7 +463,7 @@ static void updateSandHole(Warp_804A6DC8* self) {
 
 // 0x802278A8. Per player: the player's reaction to standing in the warp's box (by warp kind, the
 // low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (startPlayerTransition_802317F0).
-// FIXME: 95.27 %, missing/extra; behaviour drift.
+// FIXME: 95.71 %, missing/extra; behaviour near.
 // The box copy and offset keep their values in registers in the original (ours reloads them), and
 // the final grow's operand order differs.
 void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
@@ -555,7 +555,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
 
 // 0x80227530. Per player: runs fn_80226FC8, then marks the player on the warp and, for a player
 // that just stepped on and passes the checks, rewrites the four tiles around it and spawns the effect.
-// FIXME(shotgun): 87.77 %, missing/extra; behaviour near.
+// FIXME(shotgun): 85.93 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
@@ -609,7 +609,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
 
 // 0x80227290. The serial of a live actor on the warp's layer (not excludeSerial, one of `ids`, within
 // maxDz in z unless the layer ignores z) whose box overlaps the warp's, or -1.
-// FIXME(shotgun): 88.30 %, different; behaviour clean.
+// FIXME(shotgun): 88.60 %, different; behaviour clean.
 s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
     s32 found = -1;
     u8 anyZ = viewLayerFlag(mLayer_0x4);
