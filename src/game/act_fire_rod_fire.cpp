@@ -232,7 +232,6 @@ FireRodFire_804A89F0::~FireRodFire_804A89F0() {
     }
 }
 
-// FIXME(shotgun): 99.80 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::update() {
     switch (field_0x238) {
     case 0: {
