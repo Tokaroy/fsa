@@ -435,7 +435,7 @@ void TrickFloor_804A83A0::update() {
 // The hole picture "otosiana_bg_s.bti" under the floor (scaled per type), then the floor's two
 // halves tilted by field_0x248 (the left one about its edge, the right one mirrored); types 4 / 5
 // draw the ground or the house instead while falling.
-// FIXME: 97.41 %, missing/extra; behaviour clean.
+// FIXME: 99.17 %, scheduling+regalloc; behaviour clean.
 void TrickFloor_804A83A0::draw() {
     SpriteParams_801F5AE0 sp;
     sp.field_0x1c = -1;
