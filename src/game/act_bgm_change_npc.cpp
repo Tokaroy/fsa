@@ -55,7 +55,7 @@ inline bool BGMChangeNPC_804A9DA0::isLayerFree() {
     return free;
 }
 
-// FIXME(shotgun): 96.55 %, different; behaviour clean.
+// FIXME(shotgun): 97.82 %, scheduling+regalloc; behaviour clean.
 void BGMChangeNPC_804A9DA0::update() {
     s32 i;
     JGeometry::TBox2f box(mBox);
