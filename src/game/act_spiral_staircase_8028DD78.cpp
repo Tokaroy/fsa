@@ -446,7 +446,7 @@ static inline void sortByKey(s32* order, f32* key, s32 n) {
 
 // 0x8028DDD8. Orders the players for the four marker slots: out[] gets the player indices
 // sorted by their x (y for the vertical variants 6 and 7), grouped by team for two players.
-// FIXME(shotgun): 98.19 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.42 %, regalloc-only; behaviour clean.
 void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
