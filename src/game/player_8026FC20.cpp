@@ -2664,7 +2664,6 @@ void Player_804A6F38::fn_802756E4() {
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
 // member out of step (mode 4) drops to state 0. Then the facing boxes (setFacingBoxes_80276E5C, or
 // fn_80276BB8 at full charge).
-// FIXME: 99.75 %, same-text; behaviour drift.
 void Player_804A6F38::fn_80274CB8() {
     if (mPos.z > 0.0f) {
         if (mWalkAnimCounter_0x3f8 < 4) {
@@ -3624,7 +3623,7 @@ u8 Player_804A6F38::hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* po
     return hitPlayerGroup_80238548(mPlayerNo_0x4, damage, pos, arg);
 }
 
-// FIXME: 98.54 %, missing/extra; behaviour clean.
+// FIXME: 99.28 %, regalloc-only; behaviour clean.
 // What differs is register allocation and stack slots
 // (damage r30 / kind r28 / pos r27 there, r27 / r29 / r28 here; the scale constants in f29,
 // here f31).
