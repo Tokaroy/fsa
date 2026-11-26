@@ -801,6 +801,9 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
 // in random steps away from the other actor (up to 8 tries through fn_801F23BC), 'BOYO'
 // also knocking the actor back at 5 and flagging the BOYO's 0x94.
 void ActorManager_804A5800::fn_801F6A4C() {
+    JGeometry::TVec3f pos;
+    JGeometry::TBox2f boxB;
+    JGeometry::TBox2f boxA;
     for (s32 i = 0; i <= mPushSerialNum_0x301c; i++) {
         if (mPushSerials_0x201c[i] == -1) {
             return;
@@ -809,7 +812,6 @@ void ActorManager_804A5800::fn_801F6A4C() {
         if (a == NULL || !a->mAlive) {
             continue;
         }
-        JGeometry::TBox2f boxA;
         boxA = a->mBox;
         boxA.addPos(a->mPos.x, a->mPos.y);
         a->field_0x9c = -1;
@@ -824,7 +826,6 @@ void ActorManager_804A5800::fn_801F6A4C() {
             {
                 continue;
             }
-            JGeometry::TBox2f boxB;
             boxB = b->mBox;
             boxB.addPos(b->mPos.x, b->mPos.y);
             if ((u8)a->field_0xb8 == 2) {
@@ -838,7 +839,7 @@ void ActorManager_804A5800::fn_801F6A4C() {
             s32 tries = 0;
             while (boxesOverlap(boxA, boxB) && tries < 8) {
                 a->field_0x9c = b->mSerial;
-                JGeometry::TVec3f pos = a->mPos;
+                pos = a->mPos;
                 f32 dx = a->mPos.x - b->mPos.x;
                 f32 dy = a->mPos.y - b->mPos.y;
                 boxA.set(a->mBox);
