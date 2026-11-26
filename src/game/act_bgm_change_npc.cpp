@@ -55,7 +55,7 @@ inline bool BGMChangeNPC_804A9DA0::isLayerFree() {
     return free;
 }
 
-// FIXME(shotgun): 96.37 %, different; behaviour clean.
+// FIXME(shotgun): 96.55 %, different; behaviour clean.
 // The other two actor loops start their slot offset with li 0 where the original copies the counter (mr).
 void BGMChangeNPC_804A9DA0::update() {
     JGeometry::TBox2f box(mBox);
