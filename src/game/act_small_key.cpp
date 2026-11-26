@@ -83,7 +83,7 @@ void SmallKey_804A8CD8::init() {
     case 6: {
         field_0x240 = 4;
         field_0x2b1 = 1;
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
                     (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->mScreenY_0x18;
@@ -673,7 +673,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                     field_0x27c = 3;
                 }
                 mPos.set(field_0x248);
-                s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+                u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                             (mLayer_0x4 & 0xFF);
                 if (!getGameView_802D6A9C()->isInTransition_802DCD0C()) {
                     s32 row = getGameView_802D6A9C()->mScreenY_0x18;
