@@ -164,7 +164,7 @@ public:
     // -1 after the reset; player_window_select_80441318's update picks the window from it
     // (0-3 a player, 4 all players).
     /* 0x1A8 */ s32 field_0x1a8;
-    /* 0x1AC */ s32 field_0x1ac;
+    /* 0x1AC */ u32 field_0x1ac;
     /* 0x1B0 */ s32 field_0x1b0;
     /* 0x1B4 */ s32 field_0x1b4[4]; // zeroed with field_0x1f4 by the constructor
     // Per player (fn_80402FBC indexes it with fn_8022F340's player index).
