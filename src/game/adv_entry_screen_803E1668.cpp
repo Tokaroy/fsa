@@ -1560,8 +1560,9 @@ void AdvEntryScreen_804B0B00::fn_803E9A20() {
 
 static inline void fadeInSlide(AdvEntryScreen_804B0B00* self, s32 start, s32 duration, f32 dist, f32* pos,
                                const u64* tags, const u8* alphas, s32 count) {
+    s32 end = start + duration;
     if (self->field_0x254[0] > start) {
-        if (self->field_0x254[0] < start + duration) {
+        if (self->field_0x254[0] < end) {
             s32 d = duration - (self->field_0x254[0] - start);
             *pos = dist * ((f32)(d * d) / (f32)(duration * duration));
             f32 alpha = (f32)(self->field_0x254[0] - start) / (f32)duration;
@@ -1582,7 +1583,7 @@ static inline void fadeInSlide(AdvEntryScreen_804B0B00* self, s32 start, s32 dur
     }
 }
 
-// FIXME: 96.73 %, missing/extra; behaviour near.
+// FIXME: 96.95 %, missing/extra; behaviour near.
 void AdvEntryScreen_804B0B00::fn_803E926C() {
     field_0x254[0]++;
     fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
@@ -1594,7 +1595,7 @@ void AdvEntryScreen_804B0B00::fn_803E926C() {
             field_0x168 = 0.0f;
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (s32 i = 0; i < 3; i++) {
         fadeInSlide(this, i * 10, 15, 300.0f, &field_0x184[i], lbl_80478048[i], field_0x333[i], 5);
     }
     fadeInSlide(this, 0, 15, -450.0f, &field_0x198, lbl_804780C0, field_0x342, 26);
@@ -2095,7 +2096,7 @@ void AdvEntryScreen_804B0B00::fn_803E64A0() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME: 98.80 %, different; behaviour clean.
+// FIXME: 98.83 %, different; behaviour clean.
 // Left: the else value of `t` goes through f0 (fmr f24) in the original, and
 // the argument registers of the (count - 10) / 2 drawSobSprite call.
 void AdvEntryScreen_804B0B00::fn_803E51C4() {
@@ -2141,9 +2142,9 @@ void AdvEntryScreen_804B0B00::fn_803E51C4() {
                     } else {
                         t = (f32)((50 - (field_0x25c - 50)) * (50 - (field_0x25c - 50))) / 2500.0f;
                     }
-                    field_0x8->search(lbl_804781B0[i])->setAlpha(t * field_0x265);
-                    field_0x8->search(lbl_804781D0[i])->setAlpha(t * field_0x266);
-                    field_0x8->search(lbl_804781F0[i])->setAlpha(t * field_0x267);
+                    field_0x8->search(lbl_804781B0[i])->setAlpha(field_0x265 * t);
+                    field_0x8->search(lbl_804781D0[i])->setAlpha(field_0x266 * t);
+                    field_0x8->search(lbl_804781F0[i])->setAlpha(field_0x267 * t);
                 }
             } else if (field_0x26b & (1 << (i + 4))) {
                 field_0x26b &= ~(1 << (i + 4));
