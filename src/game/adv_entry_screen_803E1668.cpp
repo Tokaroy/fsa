@@ -1582,7 +1582,7 @@ static inline void fadeInSlide(AdvEntryScreen_804B0B00* self, s32 start, s32 dur
     }
 }
 
-// FIXME: 96.95 %, missing/extra; behaviour near.
+// FIXME: 96.97 %, missing/extra; behaviour near.
 void AdvEntryScreen_804B0B00::fn_803E926C() {
     field_0x254[0]++;
     fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
