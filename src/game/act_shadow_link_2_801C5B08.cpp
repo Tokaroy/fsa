@@ -169,7 +169,7 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     stepAngle_801CD930(&field_0x33c, angle, 0xAAA);
 }
 
-// FIXME: 98.06 %, missing/extra; behaviour drift.
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 // Register choice for the locals (the original holds the entry
 // index in r26 and the rail index in r27, the player in r30, ours differs),
 // and the literal labels (@NNN vs lbl_ for lbl_8053EE6C, EE70, EE74, EE80,
@@ -183,7 +183,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         setState_801C3B7C(0x1E);
         return;
     }
-    s32 player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
+    int player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
     if (player < 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
             setState_801C3B7C(0xF);
