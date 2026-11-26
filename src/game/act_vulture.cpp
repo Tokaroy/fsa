@@ -63,7 +63,7 @@ void Vulture_804A4230::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 97.74 %, missing/extra; behaviour clean.
+// FIXME: 99.36 %, regalloc-only; behaviour clean.
 void Vulture_804A4230::fn_801C0634() {
     JGeometry::TVec2f diff = field_0x2b8 - field_0x2c0;
     diff.normalize();
