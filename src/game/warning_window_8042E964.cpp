@@ -520,7 +520,7 @@ void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
     field_0x10[4]->scaleKeepCentre_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
-// FIXME(shotgun): 97.21 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.77 %, missing/extra; behaviour clean.
 // Lays message `id` out into `str` with each line centred in 428 (a "\x1BCR[n]" prefix), the
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
