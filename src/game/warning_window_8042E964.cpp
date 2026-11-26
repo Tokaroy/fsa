@@ -295,8 +295,6 @@ f32 WarningWindow_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
     return total;
 }
 
-// FIXME(shotgun): 99.68 %, same-text; behaviour drift.
-// (string literal pool offsets)
 f32 WarningWindow_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     switch (noun) {
     case 1:
@@ -522,7 +520,7 @@ void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
     field_0x10[4]->scaleKeepCentre_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
-// FIXME(shotgun): 96.14 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.21 %, missing/extra; behaviour near.
 // Lays message `id` out into `str` with each line centred in 428 (a "\x1BCR[n]" prefix), the
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
