@@ -87,7 +87,7 @@ void cls_804A03A8::fn_8016005C() {
 
 static void drawLetterbox(f32 bar, JUtility::TColor color);
 
-// FIXME(shotgun): 97.94 %, different; behaviour clean.
+// FIXME(shotgun): 97.97 %, different; behaviour clean.
 // (stack slots of the arrays and colour copies are ordered differently; the white colour is not hoisted)
 // 0x8015F9C0
 void cls_804A03A8::fn_8015F9C0() {
