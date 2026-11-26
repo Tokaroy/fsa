@@ -1967,7 +1967,7 @@ s32 fn_80238A68(s32 serial);
 s32 fn_8023885C(s32 serial);
 
 void fn_8022B8EC(s32 player, JGeometry::TBox2f* out);
-s32 fn_8022C46C(s32 player, u32 arg);
+u32 fn_8022C46C(s32 player, u32 arg);
 bool fn_8022DC3C(s32 player);
 bool fn_8022E1A0(s32 player, s32 arg);
 bool fn_8022FC54(s32 player, s32 arg);

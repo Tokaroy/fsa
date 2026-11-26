@@ -560,7 +560,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
         box->set(mBox);
-        box->set(box->i.x + mPos.x, box->i.y + mPos.y, box->f.x + mPos.x, box->f.y + mPos.y);
+        box->addPos(mPos.x, mPos.y);
         if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(player)) {
             if (getPlayerLayer_8023DE58(player) != warpLayer(mSpawnParam_0x90)) {
                 continue;
