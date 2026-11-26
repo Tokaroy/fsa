@@ -55,9 +55,9 @@ inline bool BGMChangeNPC_804A9DA0::isLayerFree() {
     return free;
 }
 
-// FIXME(shotgun): 96.55 %, different; behaviour clean.
-// The other two actor loops start their slot offset with li 0 where the original copies the counter (mr).
+// FIXME(shotgun): 97.82 %, scheduling+regalloc; behaviour clean.
 void BGMChangeNPC_804A9DA0::update() {
+    s32 i;
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
     field_0x258 = -1;
@@ -65,7 +65,7 @@ void BGMChangeNPC_804A9DA0::update() {
     field_0x94 = 0xFFFF;
     if (field_0x240 != 2) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1 && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                     if (containsPoint(box, pos)) {
@@ -89,7 +89,7 @@ void BGMChangeNPC_804A9DA0::update() {
             }
         }
     } else if (gGameRoot_8053AAF8->field_0x7e == 1) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 if (containsPoint(box, pos)) {
@@ -124,7 +124,7 @@ void BGMChangeNPC_804A9DA0::update() {
                 field_0x258 = field_0x24c;
             } else {
                 s32 end = getActorManager_801F856C()->getActorEnd();
-                for (s32 i = 0; i < end; i++) {
+                for (i = 0; i < end; i++) {
                     ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
                     if (other != NULL && other->mActorId == ACTOR_BGMN &&
                         (other->mSpawnParam_0x90 & 0x7F) == (u32)field_0x234) {
@@ -167,7 +167,7 @@ void BGMChangeNPC_804A9DA0::update() {
         } else {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x25c);
             s32 end = getActorManager_801F856C()->getActorEnd();
-            for (s32 i = 0; i < end; i++) {
+            for (i = 0; i < end; i++) {
                 ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
                 if (other != NULL && other->mActorId == ACTOR_BGMN && field_0x254 == other->mLayer_0x4) {
                     if (((other->mSpawnParam_0x90 >> 12) & 0x1F) == 2) {
