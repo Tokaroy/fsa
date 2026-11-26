@@ -1583,7 +1583,7 @@ static inline void fadeInSlide(AdvEntryScreen_804B0B00* self, s32 start, s32 dur
     }
 }
 
-// FIXME: 96.73 %, missing/extra; behaviour near.
+// FIXME: 96.95 %, missing/extra; behaviour near.
 void AdvEntryScreen_804B0B00::fn_803E926C() {
     field_0x254[0]++;
     fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
@@ -2096,7 +2096,7 @@ void AdvEntryScreen_804B0B00::fn_803E64A0() {
     lbl_8053AED8->draw_80440EE8();
 }
 
-// FIXME: 98.80 %, different; behaviour clean.
+// FIXME: 98.83 %, different; behaviour clean.
 // Left: the else value of `t` goes through f0 (fmr f24) in the original, and
 // the argument registers of the (count - 10) / 2 drawSobSprite call.
 void AdvEntryScreen_804B0B00::fn_803E51C4() {
