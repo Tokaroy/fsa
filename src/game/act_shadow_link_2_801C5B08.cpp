@@ -183,7 +183,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         setState_801C3B7C(0x1E);
         return;
     }
-    s32 player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
+    int player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
     if (player < 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
             setState_801C3B7C(0xF);
