@@ -268,8 +268,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x54() {
 }
 
 // FIXME: 95.75 %, missing/extra + reloc-name; behaviour near.
-// case 3 loads the loop's 0 twice (original copies it from i); case 16 lacks the
-// original's copy of fn_8023CBC0's result; regalloc and stack-slot order differ.
+// case 16 lacks the original's copy of fn_8023CBC0's result; fn_8038BD08's
+// by-value pos copy sits 12 bytes lower in our frame; regalloc differs.
 void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
     s32 i;
     JGeometry::TVec3f pos;
@@ -320,8 +320,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 7: {
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -330,8 +330,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 9: {
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, field_0x25c, true, false);
         fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -339,8 +339,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 10: {
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -348,8 +348,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 13: {
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -441,8 +441,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
             field_0x398 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
         }
         JGeometry::TVec3f pos;
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62)) {
@@ -519,8 +519,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         gAudioMgr_8053AF80->fn_8045873C(0);
         break;
     case 34: {
-        pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+        pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
         pos.y += -16.0f;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
